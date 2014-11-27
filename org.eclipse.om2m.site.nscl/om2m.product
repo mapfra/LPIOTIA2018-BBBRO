@@ -72,6 +72,8 @@
       <plugin id="org.eclipse.om2m.webapp.resourcesbrowser" autoStart="true" startLevel="3" />
       <property name="org.eclipse.equinox.http.jetty.http.port" value="8080" />
       <property name="org.eclipse.om2m.adminRequestingEntity" value="admin:admin" />
+      <property name="org.eclipse.om2m.coap.port" value="5683" />
+      <property name="org.eclipse.om2m.dbDefragmentPeriod" value="-1" />
       <property name="org.eclipse.om2m.dbFile" value="nscl.db4o" />
       <property name="org.eclipse.om2m.globalContext" value="" />
       <property name="org.eclipse.om2m.guestRequestingEntity" value="guest:guest" />
@@ -83,7 +85,6 @@
       <property name="org.eclipse.om2m.sclBaseProtocol.default" value="http" />
       <property name="org.eclipse.om2m.sclType" value="NSCL" />
       <property name="org.eclipse.om2m.webInterfaceContext" value="/" />
-      <property name="org.eclipse.om2m.coap.port" value="5683" />
    </configurations>
 
 </product>
