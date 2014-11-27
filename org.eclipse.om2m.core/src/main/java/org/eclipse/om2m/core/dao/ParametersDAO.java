@@ -21,6 +21,7 @@ package org.eclipse.om2m.core.dao;
 
 import java.util.Date;
 
+import org.eclipse.om2m.commons.resource.ContentInstances;
 import org.eclipse.om2m.commons.resource.MgmtObj;
 import org.eclipse.om2m.commons.resource.Parameters;
 import org.eclipse.om2m.commons.resource.ReferenceToNamedResource;
@@ -83,17 +84,20 @@ public class ParametersDAO extends DAO<Parameters> {
      * @return The requested {@link Parameters} collection resource otherwise null
      */
     public Parameters find(String uri) {
-    	ObjectContainer session = DB.ext().openSession();
+    	//ObjectContainer session = DB.ext().openSession();
 
         // Create the query based on the uri constraint
-        Query query=session.query();
+        Query query=SESSION.query();
         query.constrain(Parameters.class);
         query.descend("uri").constrain(uri);
         // Store all the founded resources
         ObjectSet<Parameters> result = query.execute();
         // Retrieve the first element corresponding to the researched resource if result is not empty
-        if(!result.isEmpty()){
-            return result.get(0);
+        if (!result.isEmpty()) {
+        	Parameters obj = result.get(0);
+    		SESSION.ext().refresh(obj, 1);
+
+            return obj;
         }
         // Return null if the resource is not found
         return null;

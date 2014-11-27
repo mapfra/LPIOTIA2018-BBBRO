@@ -19,6 +19,7 @@
  ******************************************************************************/
 package org.eclipse.om2m.core.dao;
 
+import org.eclipse.om2m.commons.resource.ContentInstances;
 import org.eclipse.om2m.commons.resource.MgmtObjs;
 import org.eclipse.om2m.commons.resource.ReferenceToNamedResource;
 import org.eclipse.om2m.commons.resource.Scl;
@@ -73,11 +74,11 @@ public class SclsDAO extends DAO<Scls>{
         Scls scls = lazyFind(uri);
 
         if(scls != null) {
-        	ObjectContainer session = DB.ext().openSession();
+        	//ObjectContainer session = DB.ext().openSession();
 
             // Find Scl sub-resources and add their references
             scls.getSclCollection().getNamedReference().clear();
-            Query queryScl = session.query();
+            Query queryScl = SESSION.query();
             queryScl.constrain(Scl.class);
             queryScl.descend("uri").constrain(uri).startsWith(true);
             ObjectSet<Scl> resultScl = queryScl.execute();
@@ -98,17 +99,20 @@ public class SclsDAO extends DAO<Scls>{
      * @return The requested {@link Scls} collection resource otherwise null
      */
     public Scls lazyFind(String uri) {
-    	ObjectContainer session = DB.ext().openSession();
+    	//ObjectContainer session = DB.ext().openSession();
 
         // Create the query based on the uri constraint
-        Query query = session.query();
+        Query query = SESSION.query();
         query.constrain(Scls.class);
         query.descend("uri").constrain(uri);
         // Store all the founded resources
         ObjectSet<Scls> result = query.execute();
         // Retrieve the first element corresponding to the researched resource if result is not empty
-        if(!result.isEmpty()){
-            return result.get(0);
+        if (!result.isEmpty()) {
+        	Scls obj = result.get(0);
+    		SESSION.ext().refresh(obj, 1);
+
+            return obj;
         }
         // Return null if the resource is not found
         return null;

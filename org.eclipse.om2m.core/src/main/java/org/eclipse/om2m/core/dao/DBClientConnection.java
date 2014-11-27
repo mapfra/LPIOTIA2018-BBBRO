@@ -106,6 +106,7 @@ public class DBClientConnection {
 							Router.readWriteLock.writeLock().lock();
 							LOGGER.info("DB Defragmenting..");
 							DAO.DB.close();
+							DAO.SESSION.close();
 							try {
 								DefragmentConfig config = new DefragmentConfig(Constants.DB_FILE);
 								config.forceBackupDelete(true);
@@ -115,6 +116,7 @@ public class DBClientConnection {
 							}
 							DAO.DB = Db4oEmbedded.openFile(getConfiguration(false),
 									Constants.DB_FILE);
+							DAO.SESSION = DAO.DB.ext().openSession();
 							LOGGER.info("DB Defragmented");
 							Router.readWriteLock.writeLock().unlock();
 						}

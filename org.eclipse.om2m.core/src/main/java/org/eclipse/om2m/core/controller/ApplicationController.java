@@ -210,18 +210,24 @@ public class ApplicationController extends Controller {
         // aPoCPaths:                       (response O)
         // locRequester:                    (response O)
 
+
         ResponseConfirm errorResponse = new ResponseConfirm();
+
+
         Application application = DAOFactory.getApplicationDAO().find(requestIndication.getTargetID());
 
         // Check if the resource exists in DataBase or Not
         if (application == null) {
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_NOT_FOUND,requestIndication.getTargetID()+" does not exist in DataBase"));
         }
+
+
         // Check AccessRight
         errorResponse = checkAccessRight(application.getAccessRightID(), requestIndication.getRequestingEntity(), Constants.AR_READ);
         if (errorResponse != null) {
             return errorResponse;
         }
+
         // Response
         return new ResponseConfirm(StatusCode.STATUS_OK, application);
     }

@@ -19,6 +19,7 @@
  ******************************************************************************/
 package org.eclipse.om2m.core.dao;
 
+import org.eclipse.om2m.commons.resource.ContentInstances;
 import org.eclipse.om2m.commons.resource.ExecInstance;
 import org.eclipse.om2m.commons.resource.ExecInstances;
 import org.eclipse.om2m.commons.resource.ReferenceToNamedResource;
@@ -63,10 +64,10 @@ public class ExecInstancesDAO extends DAO<ExecInstances> {
         ExecInstances execInstances = lazyFind(uri);
 
         if(execInstances != null){
-        	ObjectContainer session = DB.ext().openSession();
+        	//ObjectContainer session = DB.ext().openSession();
 
             //Find ExecInstances sub-resources and add their references
-            Query query = session.query();
+            Query query = SESSION.query();
             query.constrain(ExecInstances.class);
             query.descend("uri").constrain(uri).startsWith(true);
             ObjectSet<ExecInstances> result = query.execute();
@@ -88,17 +89,20 @@ public class ExecInstancesDAO extends DAO<ExecInstances> {
      * @return The requested {@link ExecInstances} collection resource otherwise null
      */
     public ExecInstances lazyFind(String uri) {
-    	ObjectContainer session = DB.ext().openSession();
+    	//ObjectContainer session = DB.ext().openSession();
 
         // Create the query based on the uri constraint
-        Query query=session.query();
+        Query query=SESSION.query();
         query.constrain(ExecInstances.class);
         query.descend("uri").constrain(uri);
         // Store all the founded resources
         ObjectSet<ExecInstances> result=query.execute();
         // Retrieve the first element corresponding to the researched resource if result is not empty
         if (!result.isEmpty()) {
-            return result.get(0);
+        	ExecInstances obj = result.get(0);
+    		SESSION.ext().refresh(obj, 1);
+
+            return obj;
         }
         // Return null if the resource is not found
         return null;

@@ -271,7 +271,8 @@ public class Activator implements BundleActivator {
                         }
                     }
                   //Create an NSCL Scl resource
-                	Router.readWriteLock.readLock().lock();
+                  if(DAOFactory.getSclDAO().find(Constants.SCL_ID+"/scls/"+Constants.NSCL_ID) == null){
+                    Router.readWriteLock.readLock().lock();
 
                     LOGGER.info("Create NSCL registration on GSCL");
                     Scl nscl = new Scl();
@@ -309,6 +310,7 @@ public class Activator implements BundleActivator {
 
                     LOGGER.info("NSCL is successfully registred on GSCL");
                     Router.readWriteLock.readLock().unlock();
+                    }
                 }
             }.start();
         }

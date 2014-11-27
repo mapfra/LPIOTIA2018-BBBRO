@@ -19,6 +19,7 @@
  ******************************************************************************/
 package org.eclipse.om2m.core.dao;
 
+import org.eclipse.om2m.commons.resource.ContentInstances;
 import org.eclipse.om2m.commons.resource.Group;
 import org.eclipse.om2m.commons.resource.GroupAnnc;
 import org.eclipse.om2m.commons.resource.Groups;
@@ -65,11 +66,11 @@ public class GroupsDAO extends DAO<Groups> {
         Groups groups = lazyFind(uri);
 
         if (groups != null){
-        	ObjectContainer session = DB.ext().openSession();
+        	//ObjectContainer session = DB.ext().openSession();
 
             //Find Group sub-resources and add their references
             groups.getGroupCollection().getNamedReference().clear();
-            Query queryGroup = session.query();
+            Query queryGroup = SESSION.query();
             queryGroup.constrain(Group.class);
             queryGroup.descend("uri").constrain(uri).startsWith(true);
             ObjectSet<Group> resultGroup = queryGroup.execute();
@@ -83,7 +84,7 @@ public class GroupsDAO extends DAO<Groups> {
 
             //Find GroupAnnc sub-resources and add their references
             groups.getGroupAnncCollection().getNamedReference().clear();
-            Query queryGroupAnnc = session.query();
+            Query queryGroupAnnc = SESSION.query();
             queryGroupAnnc.constrain(GroupAnnc.class);
             queryGroupAnnc.descend("uri").constrain(uri).startsWith(true);
             ObjectSet<GroupAnnc> resultGroupAnnc = queryGroupAnnc.execute();
@@ -104,17 +105,20 @@ public class GroupsDAO extends DAO<Groups> {
      * @return The requested {@link Groups} collection resource otherwise null
      */
     public Groups lazyFind(String uri) {
-    	ObjectContainer session = DB.ext().openSession();
+    	//ObjectContainer session = DB.ext().openSession();
 
         // Create the query based on the uri constraint
-        Query query = session.query();
+        Query query = SESSION.query();
         query.constrain(Groups.class);
         query.descend("uri").constrain(uri);
         // Store all the founded resources
         ObjectSet<Groups> result = query.execute();
         // Retrieve the first element corresponding to the researched resource if result is not empty
-        if(!result.isEmpty()){
-            return result.get(0);
+        if (!result.isEmpty()) {
+        	Groups obj = result.get(0);
+    		SESSION.ext().refresh(obj, 1);
+
+            return obj;
         }
         // Return null if the resource is not found
         return null;

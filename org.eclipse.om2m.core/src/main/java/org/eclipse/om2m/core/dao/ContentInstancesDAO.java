@@ -1,21 +1,21 @@
 /*******************************************************************************
- * Copyright (c) 2013-2014 LAAS-CNRS (www.laas.fr) 
+ * Copyright (c) 2013-2014 LAAS-CNRS (www.laas.fr)
  * 7 Colonel Roche 31077 Toulouse - France
- * 
+ *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     Thierry Monteil (Project co-founder) - Management and initial specification, 
- * 		conception and documentation.
- *     Mahdi Ben Alaya (Project co-founder) - Management and initial specification, 
- * 		conception, implementation, test and documentation.
+ *     Thierry Monteil (Project co-founder) - Management and initial specification,
+ *         conception and documentation.
+ *     Mahdi Ben Alaya (Project co-founder) - Management and initial specification,
+ *         conception, implementation, test and documentation.
  *     Christophe Chassot - Management and initial specification.
  *     Khalil Drira - Management and initial specification.
- *     Yassine Banouar - Initial specification, conception, implementation, test 
- * 		and documentation.
+ *     Yassine Banouar - Initial specification, conception, implementation, test
+ *         and documentation.
  ******************************************************************************/
 package org.eclipse.om2m.core.dao;
 
@@ -32,7 +32,7 @@ import com.db4o.query.Query;
  *
  * @author <ul>
  *         <li>Yessine Feki < yfeki@laas.fr > < yessine.feki@ieee.org ></li>
- *         <li>Mahdi Ben Alaya < ben.alaya@laas.fr > < benalaya.mahdi@gmail.com ></li>  
+ *         <li>Mahdi Ben Alaya < ben.alaya@laas.fr > < benalaya.mahdi@gmail.com ></li>
  *         <li>Yassine Banouar < ybanouar@laas.fr > < yassine.banouar@gmail.com ></li>
  *         </ul>
  */
@@ -43,7 +43,7 @@ public class ContentInstancesDAO extends DAO<ContentInstances> {
      * @param resource - The {@link ContentInstances} collection resource to create
      */
     public void create(ContentInstances resource) {
-    	
+
         //Set subscriptions reference
         resource.setSubscriptionsReference(resource.getUri()+"/subscriptions");
         // Store the created resource
@@ -64,20 +64,29 @@ public class ContentInstancesDAO extends DAO<ContentInstances> {
         ContentInstances contentInstances = lazyFind(uri);
 
         if(contentInstances != null){
-        	ObjectContainer session = DB.ext().openSession();
+//             System.out.println("DAO CIs FIND: DB open session..");
+//
+//             ObjectContainer session = DB.ext().openSession();
+//             System.out.println("DAO CIs FIND: DB open session.. OK");
             // Find contentInstance sub-resources and add their references
-            Query query = session.query();
+            Query query = SESSION.query();
             query.constrain(ContentInstance.class);
             query.descend("uri").constrain(uri).startsWith(true);
+
             ObjectSet<ContentInstance> result = query.execute();
             contentInstances.getContentInstanceCollection().getContentInstance().clear();
             for(int i = 0; i < result.size(); i++) {
                 contentInstances.getContentInstanceCollection().getContentInstance().add(result.get(i));
             }
+//            System.out.println("DAO CIs FIND: DB close session..");
+//            session.close();
+//
+//            System.out.println("DAO CIs FIND: DB close session.. OK");
         }
+
         return contentInstances;
 
-        
+
     }
 
     /**
@@ -86,23 +95,32 @@ public class ContentInstancesDAO extends DAO<ContentInstances> {
      * @return The requested {@link ContentInstances} collection resource otherwise null
      */
     public ContentInstances lazyFind(String uri) {
-
-    	ObjectContainer session = DB.ext().openSession();
+//        System.out.println("DAO CIs FIND LAZY: DB open session..");
+//
+//        ObjectContainer session = DB.ext().openSession();
+//        System.out.println("DAO CIs FIND LAZY: DB open session.. OK");
 
         // Create the query based on the uri constraint
-        Query query = session.query();
+        Query query = SESSION.query();
         query.constrain(ContentInstances.class);
         query.descend("uri").constrain(uri);
         // Store all the founded resources
+
         ObjectSet<ContentInstances> result = query.execute();
+
         // Retrieve the first element corresponding to the researched resource if result is not empty
         if (!result.isEmpty()) {
-            return result.get(0);
-        }
+            ContentInstances obj = result.get(0);
+            SESSION.ext().refresh(obj, 1);
 
+            return obj;
+        }
+//        System.out.println("DAO CIs FIND LAZY: DB close session..");
+//        session.close();
+//        System.out.println("DAO CIs FIND LAZY: DB close session.. OK");
         // Return null if the resource is not found
         return null;
-        
+
     }
 
     /**

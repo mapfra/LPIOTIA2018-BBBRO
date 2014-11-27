@@ -45,8 +45,8 @@ import com.db4o.ObjectContainer;
 public abstract class DAO<T> {
 	private static Log LOGGER = LogFactory.getLog(DAO.class);
 	public static ObjectContainer DB = DBClientConnection.getInstance();
-	public static Object lock = new Object();
-	public static Object commitLock = new Object();
+	public static ObjectContainer SESSION = DB.ext().openSession();
+
 
 	/**
 	 * Abstract create resource method in database.
@@ -106,14 +106,15 @@ public abstract class DAO<T> {
 	 * Validates the transaction.
 	 */
 	public void commit() {
-		new Thread() {
-			public void run() {
-				Router.readWriteLock.readLock().lock();
+		//new Thread() {
+			//public void run() {
+				//Router.readWriteLock.readLock().lock();
+				LOGGER.info("Commiting trasaction..");
 
 				DB.commit();
-				LOGGER.info("Transaction committed successfully");
-				Router.readWriteLock.readLock().unlock();
-			}
-		}.start();
+				LOGGER.info("Commiting trasaction.. OK");
+				//Router.readWriteLock.readLock().unlock();
+			//}
+		//}.start();
 	}
 }

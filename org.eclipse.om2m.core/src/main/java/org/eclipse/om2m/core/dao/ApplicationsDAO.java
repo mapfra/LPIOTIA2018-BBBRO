@@ -73,15 +73,21 @@ public class ApplicationsDAO extends DAO<Applications> {
     public Applications find(String uri) {
         Applications applications = lazyFind(uri);
 
+
         if(applications != null) {
-        	ObjectContainer session = DB.ext().openSession();
+//            System.out.println("DAO APPS FIND: DB open session..");
+//
+//            ObjectContainer session = DB.ext().openSession();
+//            System.out.println("DAO APPS FIND: DB open session.. OK");
 
             // Find Application sub-resources and add their references
             applications.getApplicationCollection().getNamedReference().clear();
-            Query queryApplication = session.query();
+            Query queryApplication = SESSION.query();
             queryApplication.constrain(Application.class);
             queryApplication.descend("uri").constrain(uri).startsWith(true);
+
             ObjectSet<Application> resultApplication = queryApplication.execute();
+
 
             for (int i=0; i<resultApplication.size(); i++) {
                 ReferenceToNamedResource reference = new ReferenceToNamedResource();
@@ -91,9 +97,10 @@ public class ApplicationsDAO extends DAO<Applications> {
             }
             // Find ApplicationAnnc sub-resources and add their references
             applications.getApplicationAnncCollection().getNamedReference().clear();
-            Query queryApplicationAnnc = session.query();
+            Query queryApplicationAnnc = SESSION.query();
             queryApplicationAnnc.constrain(ApplicationAnnc.class);
             queryApplicationAnnc.descend("uri").constrain(uri).startsWith(true);
+
             ObjectSet<ApplicationAnnc> resultApplicationAnnc = queryApplicationAnnc.execute();
 
             for (int i = 0; i < resultApplicationAnnc.size(); i++) {
@@ -102,7 +109,12 @@ public class ApplicationsDAO extends DAO<Applications> {
                 reference.setValue(resultApplicationAnnc.get(i).getUri());
                 applications.getApplicationAnncCollection().getNamedReference().add(reference);
             }
+//            System.out.println("DAO APPS FIND: DB close session..");
+//            session.close();
+//            System.out.println("DAO APPS FIND: DB close session.. OK");
         }
+
+
         return applications;
     }
 
@@ -112,14 +124,24 @@ public class ApplicationsDAO extends DAO<Applications> {
      * @return The requested {@link Applications} collection resource otherwise null
      */
     public Applications lazyFind(String uri) {
-        // Create the query based on the uri constraint
-    	ObjectContainer session = DB.ext().openSession();
+//        System.out.println("DAO APPS LAZY FIND: DB open session..");
+//
+//        // Create the query based on the uri constraint
+//        ObjectContainer session = DB.ext().openSession();
+//        System.out.println("DAO APPS LAZY FIND: DB open session.. OK");
 
-        Query query = session.query();
+
+        Query query = SESSION.query();
         query.constrain(Applications.class);
         query.descend("uri").constrain(uri);
         // Store all the founded resources
+
         ObjectSet<Applications> result = query.execute();
+
+//        System.out.println("DAO APPS LAZY FIND: DB close session..");
+//        session.close();
+//        System.out.println("DAO APPS LAZY FIND: DB close session.. OK");
+
         // Retrieve the first element corresponding to the researched resource if result is not empty
         if(!result.isEmpty()){
             return result.get(0);

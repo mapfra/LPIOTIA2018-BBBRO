@@ -22,6 +22,7 @@ package org.eclipse.om2m.core.dao;
 import org.eclipse.om2m.commons.resource.AccessRight;
 import org.eclipse.om2m.commons.resource.AccessRightAnnc;
 import org.eclipse.om2m.commons.resource.AccessRights;
+import org.eclipse.om2m.commons.resource.ContentInstances;
 import org.eclipse.om2m.commons.resource.ReferenceToNamedResource;
 import org.eclipse.om2m.commons.resource.Subscriptions;
 
@@ -65,10 +66,10 @@ public class AccessRightsDAO extends DAO<AccessRights> {
         AccessRights accessRights = lazyFind(uri);
 
         if(accessRights != null){
-        	ObjectContainer session = DB.ext().openSession();
+        	//ObjectContainer session = DB.ext().openSession();
 
             // Find AccessRight sub-resources and add their references
-            Query queryAccessRight = session.query();
+            Query queryAccessRight = SESSION.query();
             queryAccessRight.constrain(AccessRight.class);
             queryAccessRight.descend("uri").constrain(uri).startsWith(true);
             ObjectSet<AccessRight> resultAccessRight = queryAccessRight.execute();
@@ -83,7 +84,7 @@ public class AccessRightsDAO extends DAO<AccessRights> {
 
             // Find AccessRightAnnc sub-resources Resources and add their references
             accessRights.getAccessRightAnncCollection().getNamedReference().clear();
-            Query queryAccessRightAnnc = session.query();
+            Query queryAccessRightAnnc = SESSION.query();
             queryAccessRightAnnc.constrain(AccessRightAnnc.class);
             queryAccessRightAnnc.descend("uri").constrain(uri).startsWith(true);
             ObjectSet<AccessRightAnnc> resultAccessRightAnnc = queryAccessRightAnnc.execute();
@@ -105,15 +106,18 @@ public class AccessRightsDAO extends DAO<AccessRights> {
      */
     public AccessRights lazyFind(String uri) {
         // Create the query based on the uri constraint
-    	ObjectContainer session = DB.ext().openSession();
-        Query query = session.query();
+    	//ObjectContainer session = DB.ext().openSession();
+        Query query = SESSION.query();
         query.constrain(AccessRights.class);
         query.descend("uri").constrain(uri);
         // Store all the founded resources
         ObjectSet<AccessRights> result = query.execute();
         // Retrieve the first element corresponding to the researched resource if result is not empty
         if (!result.isEmpty()) {
-            return result.get(0);
+        	AccessRights obj = result.get(0);
+    		SESSION.ext().refresh(obj, 1);
+
+            return obj;
         }
         // Return null if the resource is not found
         return null;

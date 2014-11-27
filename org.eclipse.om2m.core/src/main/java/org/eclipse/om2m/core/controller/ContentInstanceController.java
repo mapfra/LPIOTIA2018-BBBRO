@@ -48,14 +48,14 @@ import org.eclipse.om2m.core.router.Router;
  */
 
 public class ContentInstanceController extends Controller {
-	public static Object lock = new Object();
+    //public static Object lock = new Object();
     /**
      * Creates {@link ContentInstance} resource.
      * @param requestIndication - The generic request to handle.
      * @return The generic returned response.
      */
     public ResponseConfirm doCreate (RequestIndication requestIndication) {
-    	
+
         // id:                  (createReq O)  (response M*)
         // href:                (createReq NP) (response O)
         // contentTypes:        (createReq O)  (response O)
@@ -67,22 +67,28 @@ public class ContentInstanceController extends Controller {
 
         ResponseConfirm errorResponse = new ResponseConfirm();
         ContentInstance contentInstance = new ContentInstance();
+
         ContentInstances contentInstances = DAOFactory.getContentInstancesDAO().lazyFind(requestIndication.getTargetID());
+
 
         // Check Resource Parent Existence
         if (contentInstances == null) {
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_NOT_FOUND,requestIndication.getTargetID()+" does not exist")) ;
         }
+
         // Check AccessRight
         Container container = DAOFactory.getContainerDAO().find(requestIndication.getTargetID().split("/contentInstances")[0]);
         errorResponse = checkAccessRight(container.getAccessRightID(), requestIndication.getRequestingEntity(), Constants.AR_CREATE);
         if (errorResponse != null) {
             return errorResponse;
         }
+
         // Check Resource Representation
         if (requestIndication.getRepresentation() == null) {
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Resource Representation is EMPTY")) ;
         }
+
+
         // Create a Content if its a direct content Creation with contentInstance
         if (checkMessageSyntax(requestIndication.getRepresentation(),"contentInstance.xsd") != null) {
             Base64Binary content = new Base64Binary();
@@ -92,6 +98,7 @@ public class ContentInstanceController extends Controller {
         } else {
             contentInstance = (ContentInstance) XmlMapper.getInstance().xmlToObject(requestIndication.getRepresentation());
         }
+
         //Check on attributes
         // href Must be NP
         if (contentInstance.getHref() != null) {
@@ -118,6 +125,8 @@ public class ContentInstanceController extends Controller {
                 || DAOFactory.getContentInstanceDAO().find(requestIndication.getTargetID()+"/"+contentInstance.getId()) != null) {
             contentInstance.setId(generateId("CI_",""));
         }
+
+
         // Set URI
         contentInstance.setUri(requestIndication.getTargetID()+ "/" +contentInstance.getId());
         // Set href
@@ -134,26 +143,34 @@ public class ContentInstanceController extends Controller {
         // Set LastModifiedTime
         contentInstance.setLastModifiedTime(DateConverter.toXMLGregorianCalendar(new Date()).toString());
 
+
         // Notify the subscribers
         Notifier.notify(StatusCode.STATUS_CREATED, contentInstance);
 
-        //Store contentInstance
-        DAOFactory.getContentInstanceDAO().create(contentInstance);
-     // delete the oldest contentInstance if the CurrentNrOfInstances reaches MaxNrOfInstances
+
+        // delete the oldest contentInstance if the CurrentNrOfInstances reaches MaxNrOfInstances
         if (contentInstances.getCurrentNrOfInstances() > container.getMaxNrOfInstances()-1) {
             final String oldestCI = requestIndication.getTargetID()+"/oldest";
-            new Thread(){
-                public void run(){
-                	Router.readWriteLock.readLock().lock();
+            //new Thread(){
+              //  public void run(){
+                    //Router.readWriteLock.readLock().lock();
 
-	                    ContentInstance contentInstanceOldest = DAOFactory.getContentInstanceDAO().find(oldestCI);
-	                    //Delete the oldest contentInstance
-	                    DAOFactory.getContentInstanceDAO().delete(contentInstanceOldest);
-	                	Router.readWriteLock.readLock().unlock();
-                }
-            }.start();
+
+                        ContentInstance contentInstanceOldest = DAOFactory.getContentInstanceDAO().find(oldestCI);
+
+
+                        //Delete the oldest contentInstance
+                        DAOFactory.getContentInstanceDAO().lazyDelete(contentInstanceOldest);
+
+
+                        //Router.readWriteLock.readLock().unlock();
+               // }
+            //}.start();
         }
 
+
+        //Store contentInstance
+        DAOFactory.getContentInstanceDAO().create(contentInstance);
 
         // Response
         return new ResponseConfirm(StatusCode.STATUS_CREATED, contentInstance);

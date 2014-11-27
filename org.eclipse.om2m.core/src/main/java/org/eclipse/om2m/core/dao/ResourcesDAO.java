@@ -49,10 +49,10 @@ public class ResourcesDAO extends DAO<Resources>{
      * @return The requested {@link Resources} otherwise null
      */
     public Resources find(String uri) {
-    	ObjectContainer session = DB.ext().openSession();
+    	//ObjectContainer session = DB.ext().openSession();
 
         // Create the query based on the uri constraint
-        Query query = session.query();
+        Query query = SESSION.query();
         query.constrain(Resource.class);
         if(uri != null){
             // Store all the founded resources

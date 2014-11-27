@@ -19,6 +19,7 @@
  ******************************************************************************/
 package org.eclipse.om2m.core.dao;
 
+import org.eclipse.om2m.commons.resource.ContentInstances;
 import org.eclipse.om2m.commons.resource.M2MPoc;
 import org.eclipse.om2m.commons.resource.M2MPocs;
 import org.eclipse.om2m.commons.resource.ReferenceToNamedResource;
@@ -56,11 +57,11 @@ public class M2MPocsDAO extends DAO<M2MPocs> {
         M2MPocs m2mPocs = lazyFind(uri);
 
         if (m2mPocs != null){
-        	ObjectContainer session = DB.ext().openSession();
+        	//ObjectContainer session = DB.ext().openSession();
 
             //Find M2MPoc sub-resources and add their references
             m2mPocs.getM2MPocCollection().getNamedReference().clear();
-            Query query = session.query();
+            Query query = SESSION.query();
             query.constrain(M2MPoc.class);
             query.descend("uri").constrain(uri).startsWith(true);
             ObjectSet<M2MPoc> result = query.execute();
@@ -81,17 +82,20 @@ public class M2MPocsDAO extends DAO<M2MPocs> {
      * @return The requested {@link M2MPocs} collection resource otherwise null
      */
     public M2MPocs lazyFind(String uri) {
-    	ObjectContainer session = DB.ext().openSession();
+    	//ObjectContainer session = DB.ext().openSession();
 
         // Create the query based on the uri constraint
-        Query query = session.query();
+        Query query = SESSION.query();
         query.constrain(M2MPocs.class);
         query.descend("uri").constrain(uri);
         // Store all the founded resources
         ObjectSet<M2MPocs> result = query.execute();
         // Retrieve the first element corresponding to the researched resource if result is not empty
-        if(!result.isEmpty()){
-            return result.get(0);
+        if (!result.isEmpty()) {
+        	M2MPocs obj = result.get(0);
+    		SESSION.ext().refresh(obj, 1);
+
+            return obj;
         }
         // Return null if the resource is not found
         return null;

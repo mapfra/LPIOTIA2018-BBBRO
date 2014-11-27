@@ -63,7 +63,7 @@ public class ContentInstanceDAO extends DAO<ContentInstance> {
 		contentInstances.setCurrentNrOfInstances(contentInstances.getCurrentNrOfInstances() + 1);
 		// Update
 		DB.store(contentInstances);
-
+		//DB.ext().refresh(contentInstances, 1);
 		// Validate the current transaction
 		commit();    
     }

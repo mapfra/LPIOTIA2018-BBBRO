@@ -109,7 +109,7 @@ public class Router implements SclService {
 
     /** Scls resource uri pattern. */
     private static Pattern  sclsPattern= Pattern.compile(sclBasePattern+"/+scls/*");
-    
+
     //private static Pattern ipuPattern2= Pattern.compile("("+Constants.SCL_ID+"/*"+"|"+Constants.SCL_ID+"/*"+"/+scls/*"+"/+"+idPattern+"/*"+")"+"/+applications/*"+"/+"+idPattern+"(?<!Annc)/*"+"/"+idPattern+"/*.*");
 
     /** Scl resource uri pattern. */
@@ -123,7 +123,7 @@ public class Router implements SclService {
 
     /** Interworking proxy unit uri pattern. */
     private static Pattern ipuPattern= Pattern.compile(applicationPattern+"/"+idPattern+"/*.*");
-    
+
     /** Coap Comm uri pattern. */
     private static Pattern coapCommPattern= Pattern.compile("coap/"+applicationPattern+"/"+idPattern+"/*.*");
 
@@ -271,6 +271,7 @@ public class Router implements SclService {
          if(requestIndication.getTargetID().endsWith("/")){
  requestIndication.setTargetID(requestIndication.getTargetID().substring(0,requestIndication.getTargetID().length()-1));
          }
+
          readWriteLock.readLock().lock();
 
          // Retagreting case
@@ -286,10 +287,15 @@ public class Router implements SclService {
                      LOGGER.info("ResourceController ["+controller.getClass().getSimpleName()+"]");
                      try{
 
+
                              switch(requestIndication.getMethod()){
-                             case Constants.METHOD_RETREIVE: responseConfirm = controller.doRetrieve(requestIndication);
+                             case Constants.METHOD_RETREIVE:
+                                responseConfirm = controller.doRetrieve(requestIndication);
+
                              break;
-                             case Constants.METHOD_CREATE: responseConfirm = controller.doCreate(requestIndication);
+                             case Constants.METHOD_CREATE:
+                                responseConfirm = controller.doCreate(requestIndication);
+
                              break;
                              case Constants.METHOD_UPDATE: responseConfirm = controller.doUpdate(requestIndication);
                              break;
@@ -300,6 +306,7 @@ public class Router implements SclService {
                              default: responseConfirm = new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Bad Method"));
                              break;
                          }
+
                      }catch(Exception e){
                          LOGGER.error("Controller Internal Error",e);
                          responseConfirm =  new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_INTERNAL_SERVER_ERROR,"Controller Internal Error"));
@@ -309,6 +316,7 @@ public class Router implements SclService {
              }
          }
          readWriteLock.readLock().unlock();
+
 
          LOGGER.info(responseConfirm);
          return responseConfirm;
@@ -349,7 +357,7 @@ public class Router implements SclService {
         }
         if(match(ipuPattern,uri)){
             // will forward to a RestClientController or IPUController;
-        	return new APocController();
+            return new APocController();
         }
         if(match(containersPattern,uri) && !method.equals(Constants.METHOD_CREATE)){
             return new ContainersController();

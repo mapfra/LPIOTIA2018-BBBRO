@@ -22,6 +22,7 @@ package org.eclipse.om2m.core.dao;
 import org.eclipse.om2m.commons.resource.Container;
 import org.eclipse.om2m.commons.resource.ContainerAnnc;
 import org.eclipse.om2m.commons.resource.Containers;
+import org.eclipse.om2m.commons.resource.ContentInstances;
 import org.eclipse.om2m.commons.resource.LocationContainer;
 import org.eclipse.om2m.commons.resource.LocationContainerAnnc;
 import org.eclipse.om2m.commons.resource.ReferenceToNamedResource;
@@ -67,11 +68,11 @@ public class ContainersDAO extends DAO<Containers> {
         Containers containers = lazyFind(uri);
 
         if(containers != null) {
-        	ObjectContainer session = DB.ext().openSession();
+        	//ObjectContainer session = DB.ext().openSession();
 
             // Find Container sub-resources and add their references
             containers.getContainerCollection().getNamedReference().clear();
-            Query queryContainer = session.query();
+            Query queryContainer = SESSION.query();
             queryContainer.constrain(Container.class);
             queryContainer.descend("uri").constrain(uri).startsWith(true);
             ObjectSet<Container> resultContainer = queryContainer.execute();
@@ -85,7 +86,7 @@ public class ContainersDAO extends DAO<Containers> {
 
             // Find ContainerAnnc sub-resources and add their references
             containers.getContainerAnncCollection().getNamedReference().clear();
-            Query queryContainerAnnc = session.query();
+            Query queryContainerAnnc = SESSION.query();
             queryContainerAnnc.constrain(ContainerAnnc.class);
             queryContainerAnnc.descend("uri").constrain(uri).startsWith(true);
             ObjectSet<ContainerAnnc> resultContainerAnnc = queryContainerAnnc.execute();
@@ -99,7 +100,7 @@ public class ContainersDAO extends DAO<Containers> {
 
             // Find LocationContainer sub-resources and add their references
             containers.getLocationContainerCollection().getNamedReference().clear();
-            Query queryLocationContainer = session.query();
+            Query queryLocationContainer = SESSION.query();
             queryLocationContainer.constrain(LocationContainer.class);
             queryLocationContainer.descend("uri").constrain(uri).startsWith(true);
             ObjectSet<LocationContainer> resultLocationContainer = queryLocationContainer.execute();
@@ -113,7 +114,7 @@ public class ContainersDAO extends DAO<Containers> {
 
             // Find LocationContainerAnnc sub-resources and add their references
             containers.getLocationContainerAnncCollection().getNamedReference().clear();
-            Query queryLocationContainerAnnc = session.query();
+            Query queryLocationContainerAnnc = SESSION.query();
             queryLocationContainerAnnc.constrain(LocationContainerAnnc.class);
             queryLocationContainerAnnc.descend("uri").constrain(uri).startsWith(true);
             ObjectSet<LocationContainerAnnc> resultLocationContainerAnnc = queryLocationContainerAnnc.execute();
@@ -135,16 +136,19 @@ public class ContainersDAO extends DAO<Containers> {
      */
     public Containers lazyFind (String uri) {
         // Create the query based on the uri constraint
-    	ObjectContainer session = DB.ext().openSession();
+    	//ObjectContainer session = DB.ext().openSession();
 
-        Query query = session.query();
+        Query query = SESSION.query();
         query.constrain(Containers.class);
         query.descend("uri").constrain(uri);
         // Store all the founded resources
         ObjectSet<Containers> result = query.execute();
         // Retrieve the first element corresponding to the researched resource if result is not empty
         if (!result.isEmpty()) {
-            return result.get(0);
+        	Containers obj = result.get(0);
+    		SESSION.ext().refresh(obj, 1);
+
+            return obj;
         }
         // Return null if the resource is not found
         return null;

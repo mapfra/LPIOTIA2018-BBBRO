@@ -19,6 +19,7 @@
  ******************************************************************************/
 package org.eclipse.om2m.core.dao;
 
+import org.eclipse.om2m.commons.resource.ContentInstances;
 import org.eclipse.om2m.commons.resource.MgmtCmd;
 import org.eclipse.om2m.commons.resource.MgmtObj;
 import org.eclipse.om2m.commons.resource.MgmtObjs;
@@ -65,10 +66,10 @@ public class MgmtObjsDAO extends DAO<MgmtObjs> {
         MgmtObjs mgmtObjs = lazyFind(uri);
 
         if(mgmtObjs != null){
-        	ObjectContainer session = DB.ext().openSession();
+        	//ObjectContainer session = DB.ext().openSession();
 
             // Find mgmtObj sub-resources and add their references
-            Query queryMgmtObj = session.query();
+            Query queryMgmtObj = SESSION.query();
             queryMgmtObj.constrain(MgmtObj.class);
             queryMgmtObj.descend("uri").constrain(uri).startsWith(true);
             ObjectSet<MgmtObj> resultMgmtObj = queryMgmtObj.execute();
@@ -82,7 +83,7 @@ public class MgmtObjsDAO extends DAO<MgmtObjs> {
             }
 
             // Find mgmtCmd sub-resources and add their references
-            Query queryMgmtCmd = session.query();
+            Query queryMgmtCmd = SESSION.query();
             queryMgmtCmd.constrain(MgmtCmd.class);
             queryMgmtCmd.descend("uri").constrain(uri).startsWith(true);
             ObjectSet<MgmtCmd> resultMgmtCmd = queryMgmtCmd.execute();
@@ -104,17 +105,20 @@ public class MgmtObjsDAO extends DAO<MgmtObjs> {
      * @return The requested {@link MgmtObjs} collection resource otherwise null
      */
     public MgmtObjs lazyFind(String uri) {
-    	ObjectContainer session = DB.ext().openSession();
+    	//ObjectContainer session = DB.ext().openSession();
 
         // Create the query based on the uri constraint
-        Query query = session.query();
+        Query query = SESSION.query();
         query.constrain(MgmtObjs.class);
         query.descend("uri").constrain(uri);
         // Store all the founded resources
         ObjectSet<MgmtObjs> result = query.execute();
         // Retrieve the first element corresponding to the researched resource if result is not empty
         if (!result.isEmpty()) {
-            return result.get(0);
+        	MgmtObjs obj = result.get(0);
+    		SESSION.ext().refresh(obj, 1);
+
+            return obj;
         }
         // Return null if the resource is not found
         return null;

@@ -19,6 +19,7 @@
  ******************************************************************************/
 package org.eclipse.om2m.core.dao;
 
+import org.eclipse.om2m.commons.resource.ContentInstances;
 import org.eclipse.om2m.commons.resource.ReferenceToNamedResource;
 import org.eclipse.om2m.commons.resource.Subscription;
 import org.eclipse.om2m.commons.resource.Subscriptions;
@@ -56,11 +57,11 @@ public class SubscriptionsDAO extends DAO<Subscriptions> {
         Subscriptions subscriptions = lazyFind(uri);
 
         if(subscriptions != null) {
-        	ObjectContainer session = DB.ext().openSession();
+        	//ObjectContainer session = DB.ext().openSession();
 
             // Find subscription sub-resources and add their references
             subscriptions.getSubscriptionCollection().getNamedReference().clear();
-            Query query = session.query();
+            Query query = SESSION.query();
             query.constrain(Subscription.class);
             query.descend("uri").constrain(uri).startsWith(true);
             ObjectSet<Subscription> result = query.execute();
@@ -81,17 +82,20 @@ public class SubscriptionsDAO extends DAO<Subscriptions> {
      * @return The requested {@link Subscriptions} collection resource otherwise null
      */
     public Subscriptions lazyFind(String uri) {
-    	ObjectContainer session = DB.ext().openSession();
+    	//ObjectContainer session = DB.ext().openSession();
 
         // Create the query based on the uri constraint
-        Query query = session.query();
+        Query query = SESSION.query();
         query.constrain(Subscriptions.class);
         query.descend("uri").constrain(uri);
         // Store all the founded resources
         ObjectSet<Subscriptions> result = query.execute();
         // Retrieve the first element corresponding to the researched resource if result is not empty
         if (!result.isEmpty()) {
-            return result.get(0);
+        	Subscriptions obj = result.get(0);
+    		SESSION.ext().refresh(obj, 1);
+
+            return obj;
         }
         // Return null if the resource is not found
         return null;
