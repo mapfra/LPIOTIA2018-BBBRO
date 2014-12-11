@@ -123,6 +123,7 @@ public class RestHttpClient implements RestClientService {
             LOGGER.error(url+ " Not Found"+responseConfirm,e);
         } finally {
             httpMethod.releaseConnection();
+            httpclient.getHttpConnectionManager().closeIdleConnections(0);
         }
 
         return responseConfirm;
