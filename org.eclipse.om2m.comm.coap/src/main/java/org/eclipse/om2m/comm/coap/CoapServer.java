@@ -239,10 +239,12 @@ class CoapMessageDeliverer implements MessageDeliverer {
        Response response= new Response(resCode);
 
 
-if(responseConfirm.getRepresentation()!=null){
-       //filling in the fields of the Coap response
-    	   response.setPayload(responseConfirm.getRepresentation());
-}
+       if(responseConfirm.getRepresentation()!=null){
+           //filling in the fields of the Coap response
+           if(statusCode != 2.01){
+        	   response.setPayload(responseConfirm.getRepresentation());
+           }
+    }
 
        response.setMID(mid);
        //request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_XML);
