@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013-2014 LAAS-CNRS (www.laas.fr) 
+ * Copyright (c) 2013-2015 LAAS-CNRS (www.laas.fr) 
  * 7 Colonel Roche 31077 Toulouse - France
  * 
  * All rights reserved. This program and the accompanying materials
@@ -16,6 +16,8 @@
  *     Khalil Drira - Management and initial specification.
  *     Yassine Banouar - Initial specification, conception, implementation, test 
  * 		and documentation.
+ *     Guillaume Garzone - Conception, implementation, test and documentation.
+ *     Francois Aissaoui - Conception, implementation, test and documentation.
  ******************************************************************************/
 package org.eclipse.om2m.core.controller;
 

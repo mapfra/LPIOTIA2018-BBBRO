@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013-2014 LAAS-CNRS (www.laas.fr) 
+ * Copyright (c) 2013-2015 LAAS-CNRS (www.laas.fr) 
  * 7 Colonel Roche 31077 Toulouse - France
  * 
  * All rights reserved. This program and the accompanying materials
@@ -16,19 +16,22 @@
  *     Khalil Drira - Management and initial specification.
  *     Yassine Banouar - Initial specification, conception, implementation, test 
  * 		and documentation.
+ *     Guillaume Garzone - Conception, implementation, test and documentation.
+ *     Francois Aissaoui - Conception, implementation, test and documentation.
  ******************************************************************************/
 package org.eclipse.om2m.core.dao;
 
-import org.eclipse.om2m.commons.resource.ContentInstances;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+
+import org.eclipse.om2m.commons.resource.DBEntities;
 import org.eclipse.om2m.commons.resource.MgmtCmd;
 import org.eclipse.om2m.commons.resource.MgmtObj;
 import org.eclipse.om2m.commons.resource.MgmtObjs;
 import org.eclipse.om2m.commons.resource.ReferenceToNamedResource;
 import org.eclipse.om2m.commons.resource.Subscriptions;
-
-import com.db4o.ObjectContainer;
-import com.db4o.ObjectSet;
-import com.db4o.query.Query;
+import org.eclipse.om2m.commons.resource.Refs;
 
 /**
  * Implements CRUD Methods for {@link MgmtObjs} collection resource persistence.
@@ -45,16 +48,9 @@ public class MgmtObjsDAO extends DAO<MgmtObjs> {
      * Creates an {@link MgmtObjs} collection resource in the DataBase.
      * @param resource - The {@link MgmtObjs} collection resource to create
      */
-    public void create(MgmtObjs resource) {
-        //Set subscriptions reference
-        resource.setSubscriptionsReference(resource.getUri()+"/subscriptions");
-        // Store the created resource
-        DB.store(resource);
-
-        // Subscriptions
-        Subscriptions subscriptions = new Subscriptions();
-        subscriptions.setUri(resource.getSubscriptionsReference());
-        DAOFactory.getSubscriptionsDAO().create(subscriptions);
+	@Override
+    public void create(MgmtObjs resource, EntityManager em) {
+		// NOT ALLOWED
     }
 
     /**
@@ -62,37 +58,37 @@ public class MgmtObjsDAO extends DAO<MgmtObjs> {
      * @param uri - uri of the {@link MgmtObjs} collection resource
      * @return The requested {@link MgmtObjs} collection resource otherwise null
      */
-    public MgmtObjs find(String uri) {
-        MgmtObjs mgmtObjs = lazyFind(uri);
-
+    public MgmtObjs find(String uri, EntityManager em) {
+        MgmtObjs mgmtObjs = new MgmtObjs();
+        mgmtObjs.setUri(uri);
+        
         if(mgmtObjs != null){
-        	//ObjectContainer session = DB.ext().openSession();
+        	mgmtObjs.getMgmtObjCollection().getNamedReference().clear();
+            mgmtObjs.getMgmtCmdCollection().getNamedReference().clear();
 
             // Find mgmtObj sub-resources and add their references
-            Query queryMgmtObj = SESSION.query();
-            queryMgmtObj.constrain(MgmtObj.class);
-            queryMgmtObj.descend("uri").constrain(uri).startsWith(true);
-            ObjectSet<MgmtObj> resultMgmtObj = queryMgmtObj.execute();
-            mgmtObjs.getMgmtObjCollection().getNamedReference().clear();
-
-            for (int i = 0; i < resultMgmtObj.size(); i++) {
+            String q = DBUtil.generateLikeRequest(DBEntities.MGMTOBJ_ENTITY, uri);
+        	javax.persistence.Query query = em.createQuery(q);
+        	@SuppressWarnings("unchecked")
+			List<MgmtObj> result = query.getResultList();
+            
+            for (MgmtObj obj : result) {
                 ReferenceToNamedResource reference = new ReferenceToNamedResource();
-                reference.setId(resultMgmtObj.get(i).getId());
-                reference.setValue(resultMgmtObj.get(i).getUri());
+                reference.setId(obj.getId());
+                reference.setValue(obj.getUri());
                 mgmtObjs.getMgmtObjCollection().getNamedReference().add(reference);
             }
 
             // Find mgmtCmd sub-resources and add their references
-            Query queryMgmtCmd = SESSION.query();
-            queryMgmtCmd.constrain(MgmtCmd.class);
-            queryMgmtCmd.descend("uri").constrain(uri).startsWith(true);
-            ObjectSet<MgmtCmd> resultMgmtCmd = queryMgmtCmd.execute();
-            mgmtObjs.getMgmtCmdCollection().getNamedReference().clear();
+        	String q2 = DBUtil.generateLikeRequest(DBEntities.MGMTCMD_ENTITY, uri);
+        	javax.persistence.Query query2 = em.createQuery(q2);
+        	@SuppressWarnings("unchecked")
+			List<MgmtCmd> result2 = query2.getResultList();
 
-            for (int i = 0; i < resultMgmtCmd.size(); i++) {
+            for (MgmtCmd cmd : result2) {
                 ReferenceToNamedResource reference = new ReferenceToNamedResource();
-                reference.setId(resultMgmtCmd.get(i).getId());
-                reference.setValue(resultMgmtCmd.get(i).getUri());
+                reference.setId(cmd.getId());
+                reference.setValue(cmd.getUri());
                 mgmtObjs.getMgmtObjCollection().getNamedReference().add(reference);
             }
         }
@@ -100,79 +96,45 @@ public class MgmtObjsDAO extends DAO<MgmtObjs> {
     }
 
     /**
-     * Retrieves the {@link MgmtObjs} collection resource based on its uri without sub-resources references.
-     * @param uri - uri of the {@link MgmtObjs} collection resource
-     * @return The requested {@link MgmtObjs} collection resource otherwise null
-     */
-    public MgmtObjs lazyFind(String uri) {
-    	//ObjectContainer session = DB.ext().openSession();
-
-        // Create the query based on the uri constraint
-        Query query = SESSION.query();
-        query.constrain(MgmtObjs.class);
-        query.descend("uri").constrain(uri);
-        // Store all the founded resources
-        ObjectSet<MgmtObjs> result = query.execute();
-        // Retrieve the first element corresponding to the researched resource if result is not empty
-        if (!result.isEmpty()) {
-        	MgmtObjs obj = result.get(0);
-    		SESSION.ext().refresh(obj, 1);
-
-            return obj;
-        }
-        // Return null if the resource is not found
-        return null;
-    }
-
-    /**
      * Updates an existing {@link MgmtObjs} collection resource in the DataBase
      * @param resource - The {@link MgmtObjs} the updated resource
      */
-    public void update(MgmtObjs resource) {
-        // Store the updated resource
-        DB.store(resource);
-        // Validate the current transaction
-        commit();
-    }
-
-    /**
-     * Deletes the {@link MgmtObjs} collection resource from the DataBase and validates the transaction
-     * @Param the {@link MgmtObjs} collection resource to delete
-     */
-    public void delete(MgmtObjs resource) {
-        // Delete the resource
-        lazyDelete(resource);
-        // Validate the current transaction
-        commit();
+    @Override
+    public void update(MgmtObjs resource, EntityManager em) {
+    	// NOT ALLOWED
     }
 
     /**
      * Deletes the {@link MgmtObjs} collection resource from the DataBase without validating the transaction
      * @Param the {@link MgmtObjs} collection resource to delete
      */
-    public void lazyDelete(MgmtObjs resource) {
+    public void delete(MgmtObjs resource, EntityManager em) {
+    	Subscriptions subscriptions = new Subscriptions();
+    	subscriptions.setUri(resource.getSubscriptionsReference());
+    	
         // Delete subscriptions
-        DAOFactory.getSubscriptionsDAO().lazyDelete(DAOFactory.getSubscriptionsDAO().lazyFind(resource.getSubscriptionsReference()));
+        DAOFactory.getSubscriptionsDAO().delete(subscriptions, em);
         // Delete mgmtObj sub-resources
-        Query queryMgmtObj = DB.query();
-        queryMgmtObj.constrain(MgmtObj.class);
-        queryMgmtObj.descend("uri").constrain(resource.getUri()).startsWith(true);
-        ObjectSet<MgmtObj> resultMgmtObj = queryMgmtObj.execute();
+    	String q = DBUtil.generateLikeRequest(DBEntities.MGMTOBJ_ENTITY, resource.getUri());
+    	javax.persistence.Query query = em.createQuery(q);
+    	@SuppressWarnings("unchecked")
+		List<MgmtObj> result = query.getResultList();
 
-        for (int i = 0; i < resultMgmtObj.size(); i++) {
-            DAOFactory.getMgmtObjDAO().lazyDelete(resultMgmtObj.get(i));
+        for (MgmtObj obj : result) {
+        	obj.setSubscriptionsReference(obj.getUri() + Refs.SUBSCRIPTIONS_REF);
+            DAOFactory.getMgmtObjDAO().delete(obj, em);
         }
 
-        // Delete mgmtCmd sub-resources
-        Query queryMgmtCmd = DB.query();
-        queryMgmtCmd.constrain(MgmtCmd.class);
-        queryMgmtCmd.descend("uri").constrain(resource.getUri()).startsWith(true);
-        ObjectSet<MgmtCmd> resultMgmtCmd = queryMgmtCmd.execute();
+        // Delete mgmtCmd sub-resource
+    	String q2 = DBUtil.generateLikeRequest(DBEntities.MGMTCMD_ENTITY, resource.getUri());
+    	javax.persistence.Query query2 = em.createQuery(q2);
+    	@SuppressWarnings("unchecked")
+		List<MgmtCmd> result2 = query2.getResultList();
 
-        for (int i = 0; i < resultMgmtCmd.size(); i++) {
-            DAOFactory.getMgmtCmdDAO().lazyDelete(resultMgmtCmd.get(i));
+        for (MgmtCmd cmd : result2) {
+        	cmd.setExecInstancesReference(cmd.getUri() + Refs.EXECINSTANCES_REF);
+        	cmd.setSubscriptionsReference(cmd.getUri() + Refs.SUBSCRIPTIONS_REF);
+            DAOFactory.getMgmtCmdDAO().delete(cmd, em);
         }
-        // Delete the resource
-        DB.delete(resource);
     }
 }

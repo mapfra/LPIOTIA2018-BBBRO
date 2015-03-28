@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013-2014 LAAS-CNRS (www.laas.fr) 
+ * Copyright (c) 2013-2015 LAAS-CNRS (www.laas.fr) 
  * 7 Colonel Roche 31077 Toulouse - France
  * 
  * All rights reserved. This program and the accompanying materials
@@ -16,22 +16,22 @@
  *     Khalil Drira - Management and initial specification.
  *     Yassine Banouar - Initial specification, conception, implementation, test 
  * 		and documentation.
+ *     Guillaume Garzone - Conception, implementation, test and documentation.
+ *     Francois Aissaoui - Conception, implementation, test and documentation.
  ******************************************************************************/
 package org.eclipse.om2m.core.controller;
 
-import java.util.Date;
+import javax.persistence.EntityManager;
 
 import org.eclipse.om2m.commons.resource.ErrorInfo;
-import org.eclipse.om2m.commons.resource.SclBase;
+import org.eclipse.om2m.commons.resource.Refs;
 import org.eclipse.om2m.commons.resource.Scls;
 import org.eclipse.om2m.commons.resource.StatusCode;
 import org.eclipse.om2m.commons.rest.RequestIndication;
 import org.eclipse.om2m.commons.rest.ResponseConfirm;
-import org.eclipse.om2m.commons.utils.DateConverter;
-import org.eclipse.om2m.commons.utils.XmlMapper;
 import org.eclipse.om2m.core.constants.Constants;
 import org.eclipse.om2m.core.dao.DAOFactory;
-import org.eclipse.om2m.core.notifier.Notifier;
+import org.eclipse.om2m.core.dao.DBAccess;
 
 /**
  * Implements Create, Retrieve, Update, Delete and Execute methods to handle
@@ -79,17 +79,30 @@ public class SclsController extends Controller {
         // lastModifiedTime:        (response M)
 
         ResponseConfirm errorResponse = new ResponseConfirm();
-        Scls scls = DAOFactory.getSclsDAO().find(requestIndication.getTargetID());
-
+        EntityManager em = DBAccess.createEntityManager();
+        em.getTransaction().begin();
+        String accessRightID = getAccessRightId(requestIndication.getTargetID(), em);
+        
         // Check resource existence
-        if (scls == null) {
+        if (accessRightID == null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_NOT_FOUND,requestIndication.getTargetID()+" does not exist")) ;
         }
         // Check AccessRight
-        errorResponse = checkAccessRight(scls.getAccessRightID(), requestIndication.getRequestingEntity(), Constants.AR_READ);
+        errorResponse = checkAccessRight(accessRightID, requestIndication.getRequestingEntity(), Constants.AR_READ);
         if (errorResponse != null) {
+        	em.close();
             return errorResponse;
         }
+
+        
+        Scls scls = DAOFactory.getSclsDAO().find(requestIndication.getTargetID(), em);
+		scls.setAccessRightID(accessRightID);
+        em.close();
+        
+        // Set references
+        scls.setMgmtObjsReference(scls.getUri() + Refs.MGMTOBJS_REF);
+        scls.setSubscriptionsReference(scls.getUri() + Refs.SUBSCRIPTIONS_REF);
         // Response
         return new ResponseConfirm(StatusCode.STATUS_OK, scls);
 
@@ -108,68 +121,8 @@ public class SclsController extends Controller {
         // accessRightID:           (updateReq O)  (response O)
         // creationTime:            (updateReq NP) (response M)
         // lastModifiedTime:        (updateReq NP) (response M)
-
-        ResponseConfirm errorResponse = new ResponseConfirm();
-        Scls scls = DAOFactory.getSclsDAO().lazyFind(requestIndication.getTargetID());
-
-        // Check resource existence
-        if (scls == null) {
-            return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_NOT_FOUND,requestIndication.getTargetID()+" does not exist")) ;
-        }
-        // Check AccessRight
-        errorResponse = checkAccessRight(scls.getAccessRightID(), requestIndication.getRequestingEntity(), Constants.AR_WRITE);
-        if (errorResponse != null) {
-            return errorResponse;
-        }
-        // Check Resource Representation
-        if (requestIndication.getRepresentation() == null) {
-            return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Resource Representation is EMPTY")) ;
-        }
-        //XML Validity
-        errorResponse = checkMessageSyntax(requestIndication.getRepresentation(),"scls.xsd");
-        if (errorResponse != null) {
-            return errorResponse;
-        }
-        // Check Attributes
-        Scls sclsNew = (Scls) XmlMapper.getInstance().xmlToObject(requestIndication.getRepresentation());
-        // sclCollection Must be NP
-        if (sclsNew.getSclCollection().getNamedReference() != null) {
-            return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Scl Collection UPDATE is Not Permitted")) ;
-        }
-        // SubscriptionsReference Must be NP
-        if (sclsNew.getSubscriptionsReference() != null) {
-            return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Subscriptions Reference UPDATE is Not Permitted")) ;
-        }
-        // MgmtReference Must be NP
-        if (sclsNew.getMgmtObjsReference() != null) {
-            return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Mgmt Reference UPDATE is Not Permitted")) ;
-        }
-        // CreationTime Must be NP
-        if (sclsNew.getCreationTime() != null) {
-            return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Creation Time UPDATE is Not Permitted")) ;
-        }
-        // LastModifiedTime Must be NP
-        if (sclsNew.getLastModifiedTime() != null) {
-            return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Last Modified Time UPDATE is Not Permitted")) ;
-        }
-
-        // Storage
-        // Set accessRightID if it exists
-        if (DAOFactory.getAccessRightDAO().find(sclsNew.getAccessRightID()) != null) {
-            scls.setAccessRightID(sclsNew.getAccessRightID());
-        }
-        // Notify the subscribers
-        Notifier.notify(StatusCode.STATUS_OK, scls);
-
-        // Store applicationsFind
-        DAOFactory.getSclsDAO().update(scls);
-        // Set LastModifiedTime
-        scls.setLastModifiedTime(DateConverter.toXMLGregorianCalendar(new Date()).toString());
-        // Update sclBase LastModifiedTime
-        SclBase sclBase = DAOFactory.getSclBaseDAO().find(requestIndication.getTargetID().split("/scls")[0]);
-        sclBase.setLastModifiedTime(DateConverter.toXMLGregorianCalendar(new Date()).toString());
-        // Response
-        return new ResponseConfirm(StatusCode.STATUS_OK, scls);
+    	
+        return new ResponseConfirm(StatusCode.STATUS_NOT_IMPLEMENTED);
 
     }
 

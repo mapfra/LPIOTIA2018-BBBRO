@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013-2014 LAAS-CNRS (www.laas.fr) 
+ * Copyright (c) 2013-2015 LAAS-CNRS (www.laas.fr) 
  * 7 Colonel Roche 31077 Toulouse - France
  * 
  * All rights reserved. This program and the accompanying materials
@@ -16,19 +16,25 @@
  *     Khalil Drira - Management and initial specification.
  *     Yassine Banouar - Initial specification, conception, implementation, test 
  * 		and documentation.
+ *     Guillaume Garzone - Conception, implementation, test and documentation.
+ *     Francois Aissaoui - Conception, implementation, test and documentation.
  ******************************************************************************/
 package org.eclipse.om2m.core.controller;
+
+import javax.persistence.EntityManager;
 
 import org.eclipse.om2m.commons.resource.Container;
 import org.eclipse.om2m.commons.resource.Content;
 import org.eclipse.om2m.commons.resource.ContentInstance;
 import org.eclipse.om2m.commons.resource.ContentInstances;
 import org.eclipse.om2m.commons.resource.ErrorInfo;
+import org.eclipse.om2m.commons.resource.Refs;
 import org.eclipse.om2m.commons.resource.StatusCode;
 import org.eclipse.om2m.commons.rest.RequestIndication;
 import org.eclipse.om2m.commons.rest.ResponseConfirm;
 import org.eclipse.om2m.core.constants.Constants;
 import org.eclipse.om2m.core.dao.DAOFactory;
+import org.eclipse.om2m.core.dao.DBAccess;
 
 /**
  * Implements Create, Retrieve, Update, Delete and Execute methods to handle
@@ -62,27 +68,31 @@ public class ContentController extends Controller {
 
         ResponseConfirm errorResponse = new ResponseConfirm();
         ContentInstance contentInstance = new ContentInstance();
-
         // Check URI validity
         if (!requestIndication.getTargetID().contains("contentInstances")) {
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Bad URI: "+requestIndication.getTargetID())) ;
         }
 
+        EntityManager em = DBAccess.createEntityManager();
+        em.getTransaction().begin();
         // Check contentInstances existence
-        String contentInstancesURI = new String(requestIndication.getTargetID().split("/contentInstances/")[0]+"/contentInstances");
-        ContentInstances contentInstances = DAOFactory.getContentInstancesDAO().lazyFind(contentInstancesURI);
+        String contentInstancesURI = new String(requestIndication.getTargetID().split(Refs.CONTENTINSTANCES_REF+"/")[0]+Refs.CONTENTINSTANCES_REF);
+        ContentInstances contentInstances = DAOFactory.getContentInstancesDAO().find(contentInstancesURI, em);
         if (contentInstances == null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_NOT_FOUND,contentInstancesURI+" does not exist")) ;
         }
         // Check AccessRight
-        Container container = DAOFactory.getContainerDAO().find(requestIndication.getTargetID().split("/contentInstances")[0]);
+        Container container = DAOFactory.getContainerDAO().find(requestIndication.getTargetID().split(Refs.CONTENTINSTANCES_REF)[0], em);
         errorResponse = checkAccessRight(container.getAccessRightID(), requestIndication.getRequestingEntity(), Constants.AR_READ);
         if (errorResponse != null) {
+        	em.close();
             return errorResponse;
         }
 
-        String contentInstanceURI = requestIndication.getTargetID().split("/contentInstances/")[0]+"/contentInstances/"+(requestIndication.getTargetID().split("/contentInstances/")[1].split("/content")[0]);
-        contentInstance = DAOFactory.getContentInstanceDAO().find(contentInstanceURI);
+        String contentInstanceURI = requestIndication.getTargetID().split(Refs.CONTENTINSTANCES_REF+"/")[0]+Refs.CONTENTINSTANCES_REF+"/"+(requestIndication.getTargetID().split(Refs.CONTENTINSTANCES_REF+"/")[1].split("/content")[0]);
+        contentInstance = DAOFactory.getContentInstanceDAO().find(contentInstanceURI, em);
+        em.close();
         if (contentInstance == null) {
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_NOT_FOUND,contentInstanceURI+" does not exist")) ;
         }

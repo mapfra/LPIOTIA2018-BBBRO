@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013-2014 LAAS-CNRS (www.laas.fr)
+ * Copyright (c) 2013-2015 LAAS-CNRS (www.laas.fr)
  * 7 Colonel Roche 31077 Toulouse - France
  *
  * All rights reserved. This program and the accompanying materials
@@ -16,19 +16,16 @@
  *     Khalil Drira - Management and initial specification.
  *     Yassine Banouar - Initial specification, conception, implementation, test
  *         and documentation.
+ *     Guillaume Garzone - Conception, implementation, test and documentation.
+ *     Francois Aissaoui - Conception, implementation, test and documentation.
  ******************************************************************************/
 package org.eclipse.om2m.core.dao;
 
-import java.util.Date;
+import javax.persistence.EntityManager;
 
 import org.eclipse.om2m.commons.resource.AttachedDevice;
-import org.eclipse.om2m.commons.resource.AttachedDevices;
 import org.eclipse.om2m.commons.resource.MgmtObjs;
 import org.eclipse.om2m.commons.resource.Subscriptions;
-import org.eclipse.om2m.commons.utils.DateConverter;
-
-import com.db4o.ObjectSet;
-import com.db4o.query.Query;
 
 /**
  * Implements CRUD Methods for {@link AttachedDevice} resource persistence.
@@ -42,122 +39,33 @@ import com.db4o.query.Query;
 public class AttachedDeviceDAO extends DAO<AttachedDevice> {
 
     /**
-     * Creates an {@link AttachedDevice} resource in the DataBase and validates the transaction
-     * @param resource - The {@link AttachedDevice} resource to create
-     */
-    public void create(AttachedDevice resource) {
-        // Store the created resource
-        DB.store(resource);
-        // MgmtObjs
-        MgmtObjs mgmtObjs = new MgmtObjs();
-        mgmtObjs.setUri(resource.getMgmtObjsReference());
-        mgmtObjs.setCreationTime(resource.getCreationTime());
-        mgmtObjs.setLastModifiedTime(resource.getLastModifiedTime());
-        mgmtObjs.setAccessRightID(resource.getAccessRightID());
-        DAOFactory.getMgmtObjsDAO().create(mgmtObjs);
-        // Subscriptions
-        Subscriptions subscriptions = new Subscriptions();
-        subscriptions.setUri(resource.getSubscriptionsReference());
-        DAOFactory.getSubscriptionsDAO().create(subscriptions);
-        // Create the query based on the uri constraint
-        Query query = DB.query();
-        query.constrain(AttachedDevices.class);
-        query.descend("uri").constrain(resource.getUri().split("/"+resource.getId())[0]);
-        // Store all the founded resources
-        ObjectSet<AttachedDevices> result = query.execute();
-        
-        // Update the lastModifiedTime attribute of the parent
-        AttachedDevices attachedDevices = result.get(0);
-        // Update the lastModifiedTime attribute of the parent
-        attachedDevices.setLastModifiedTime(DateConverter.toXMLGregorianCalendar(new Date()).toString());
-        DB.store(attachedDevices);
-        // Validate the current transaction
-        commit();
-    }
-
-    /**
      * Retrieves the {@link AttachedDevice} resource from the Database based on its uri
      * @param uri - uri of the {@link AttachedDevice} resource to retrieve
      * @return The requested {@link AttachedDevice} resource otherwise null
      */
-    public AttachedDevice find(String uri) {
-        // Create the query based on the uri constraint
-        Query query = DB.query();
-        query.constrain(AttachedDevice.class);
-        query.descend("uri").constrain(uri);
-        // Store all the founded resources
-        ObjectSet<AttachedDevice> result = query.execute();
-        // Retrieve the first element corresponding to the researched resource if result is not empty
-        if (!result.isEmpty()) {
-            return result.get(0);
-        }
+    public AttachedDevice find(String uri, EntityManager em) {
+    	if (uri == null){
+    		return null;    		
+    	}
+    	AttachedDevice result = em.find(AttachedDevice.class, uri);
         // Return null if the resource is not found
-        return null;
-    }
-
-    /**
-     * Retrieves the {@link AttachedDevice} resource from the Database based on the uri
-     * @param uri - uri of the {@link AttachedDevice} resource
-     * @return The requested {@link AttachedDevice} resource otherwise null
-     */
-    public AttachedDevice lazyFind(String uri) {
-        return find(uri);
-    }
-
-    /**
-     * Updates an existing {@link AttachedDevice} resource in the DataBase
-     * @param resource - The {@link AttachedDevice} the updated resource
-     */
-    public void update(AttachedDevice resource) {
-        // Store the updated resource
-        DB.store(resource);
-        // Create the query based on the uri constraint
-        Query query = DB.query();
-        query.constrain(AttachedDevices.class);
-        query.descend("uri").constrain(resource.getUri().split("/"+resource.getId())[0]);
-        // Store all the founded resources
-        ObjectSet<AttachedDevices> result = query.execute();
-        
-        // Update the lastModifiedTime attribute of the parent
-        AttachedDevices attachedDevices = result.get(0);
-        // Update the lastModifiedTime attribute of the parent
-        attachedDevices.setLastModifiedTime(DateConverter.toXMLGregorianCalendar(new Date()).toString());
-        DB.store(attachedDevices);
-        // Validate the current transaction
-        commit();
-    }
-
-    /**
-     * Deletes the {@link AttachedDevice} resource from the DataBase and validates the transaction
-     * @Param the {@link AttachedDevice} resource to delete
-     */
-    public void delete(AttachedDevice resource) {
-        // Delete the resource
-        lazyDelete(resource);
-        // Validate the current transaction
-        commit();
+        return result;
     }
 
     /**
      * Deletes the {@link AttachedDevice} resource from the DataBase without validating the transaction
      * @param resource - The {@link AttachedDevice} resource to delete
      */
-    public void lazyDelete(AttachedDevice resource) {
-        //delete subscriptions
-        DAOFactory.getSubscriptionsDAO().lazyDelete(DAOFactory.getSubscriptionsDAO().lazyFind(resource.getSubscriptionsReference()));
+    public void delete(AttachedDevice resource, EntityManager em) {
+		// Delete subscriptions
+		Subscriptions subscriptions = new Subscriptions();
+		subscriptions.setUri(resource.getSubscriptionsReference());
+		DAOFactory.getSubscriptionsDAO().delete(subscriptions, em);
         //delete mgmtObjs
-        DAOFactory.getMgmtObjsDAO().lazyDelete(DAOFactory.getMgmtObjsDAO().lazyFind(resource.getMgmtObjsReference()));
-        // Create the query based on the uri constraint
-        Query query = DB.query();
-        query.constrain(AttachedDevices.class);
-        query.descend("uri").constrain(resource.getUri().split("/"+resource.getId())[0]);
-        // Store all the founded resources
-        ObjectSet<AttachedDevices> result = query.execute();
+        MgmtObjs mgmtObjs = new MgmtObjs();
+        mgmtObjs.setUri(resource.getMgmtObjsReference());
+        DAOFactory.getMgmtObjsDAO().delete(mgmtObjs, em);
         
-        // Update the lastModifiedTime attribute of the parent
-        AttachedDevices attachedDevices = result.get(0);
-        // Update the lastModifiedTime attribute of the parent
-        attachedDevices.setLastModifiedTime(DateConverter.toXMLGregorianCalendar(new Date()).toString());
-        DB.store(attachedDevices);
+        em.remove(resource);
     }
 }

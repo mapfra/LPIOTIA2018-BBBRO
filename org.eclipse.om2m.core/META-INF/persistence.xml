@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
+	version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence">
+
+	<persistence-unit name="om2mdb" transaction-type="RESOURCE_LOCAL">
+
+		<!-- Classes to include in database -->
+		<class>org.eclipse.om2m.commons.resource.AccessRight</class>
+		<class>org.eclipse.om2m.commons.resource.AccessRightAnnc</class>
+		<class>org.eclipse.om2m.commons.resource.APoCPaths</class>
+		<class>org.eclipse.om2m.commons.resource.AttachedDevice</class>
+		<class>org.eclipse.om2m.commons.resource.Application</class>
+		<class>org.eclipse.om2m.commons.resource.ApplicationAnnc</class>
+		<class>org.eclipse.om2m.commons.resource.ChannelData</class>
+		<class>org.eclipse.om2m.commons.resource.ContainerAnnc</class>
+		<class>org.eclipse.om2m.commons.resource.Container</class>
+		<class>org.eclipse.om2m.commons.resource.ContentInstance</class>
+		<class>org.eclipse.om2m.commons.resource.ContentInstances</class>
+		<class>org.eclipse.om2m.commons.resource.ExecInstance</class>
+		<class>org.eclipse.om2m.commons.resource.Group</class>
+		<class>org.eclipse.om2m.commons.resource.GroupAnnc</class>
+		<class>org.eclipse.om2m.commons.resource.LocationContainer</class>
+		<class>org.eclipse.om2m.commons.resource.LocationContainerAnnc</class>
+		<class>org.eclipse.om2m.commons.resource.LongPollingChannelData</class>
+		<class>org.eclipse.om2m.commons.resource.M2MPoc</class>
+		<class>org.eclipse.om2m.commons.resource.MgmtCmd</class>
+		<class>org.eclipse.om2m.commons.resource.MgmtObj</class>
+		<class>org.eclipse.om2m.commons.resource.NotificationChannel</class>
+		<class>org.eclipse.om2m.commons.resource.Parameters</class>
+		<class>org.eclipse.om2m.commons.resource.PermissionType</class>
+		<class>org.eclipse.om2m.commons.resource.PermissionListType</class>
+		<class>org.eclipse.om2m.commons.resource.Scl</class>
+		<class>org.eclipse.om2m.commons.resource.SclBase</class>
+		<class>org.eclipse.om2m.commons.resource.Subscription</class>
+
+		<properties>
+			<!-- Actions performed at the start of the platform -->
+			<!-- <property name="eclipselink.ddl-generation" value="drop-and-create-tables" 
+				/> -->
+			<property name="eclipselink.ddl-generation.output-mode"
+				value="database" />
+			<!-- <property name="eclipselink.jdbc.batch-writing" value="JDBC"/> -->
+			<!-- <property name="eclipselink.persistence-context.persist-on-commit" 
+				value="false" /> -->
+
+			<!-- configure the database on startup to avoid costing first operation -->
+			<property name="eclipselink.deploy-on-startup" value="true" />
+			<property name="eclipselink.logging.level" value="INFO" />
+		</properties>
+	</persistence-unit>
+
+</persistence>

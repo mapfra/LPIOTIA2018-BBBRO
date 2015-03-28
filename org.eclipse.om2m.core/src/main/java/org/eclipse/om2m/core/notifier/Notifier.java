@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013-2014 LAAS-CNRS (www.laas.fr)
+ * Copyright (c) 2013-2015 LAAS-CNRS (www.laas.fr)
  * 7 Colonel Roche 31077 Toulouse - France
  *
  * All rights reserved. This program and the accompanying materials
@@ -21,6 +21,8 @@ package org.eclipse.om2m.core.notifier;
 
 import java.util.ArrayList;
 
+import javax.persistence.EntityManager;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.om2m.commons.resource.ContentInstance;
@@ -29,11 +31,13 @@ import org.eclipse.om2m.commons.resource.Resource;
 import org.eclipse.om2m.commons.resource.StatusCode;
 import org.eclipse.om2m.commons.resource.Subscription;
 import org.eclipse.om2m.commons.resource.Subscriptions;
+import org.eclipse.om2m.commons.resource.Refs;
 import org.eclipse.om2m.commons.rest.RequestIndication;
 import org.eclipse.om2m.commons.rest.ResponseConfirm;
 import org.eclipse.om2m.core.comm.RestClient;
 import org.eclipse.om2m.core.constants.Constants;
 import org.eclipse.om2m.core.dao.DAOFactory;
+import org.eclipse.om2m.core.dao.DBAccess;
 import org.eclipse.om2m.core.redirector.Redirector;
 import org.eclipse.om2m.core.router.Router;
 
@@ -57,15 +61,17 @@ public class Notifier {
     public static void notify(StatusCode statusCode, Resource resource) {
 
         // Get the subscriptions uri
-        String subscriptionsUri = resource.getUri().substring(0, resource.getUri().lastIndexOf("/"))+"/subscriptions";
+        String subscriptionsUri = resource.getUri().substring(0, resource.getUri().lastIndexOf("/"))+Refs.SUBSCRIPTIONS_REF;
         // Get the subscriptions collection from data base
-        Subscriptions subscriptions = DAOFactory.getSubscriptionsDAO().find(subscriptionsUri);
+        EntityManager em = DBAccess.createEntityManager();
+        em.getTransaction().begin();
+        Subscriptions subscriptions = DAOFactory.getSubscriptionsDAO().find(subscriptionsUri, em);
 
         if(subscriptions != null) {
             ArrayList<Subscription> subscriptionList = new ArrayList<Subscription>();
             // Finds each subscription resource and add it to the subscriptionList.
             for(int i=0; i<subscriptions.getSubscriptionCollection().getNamedReference().size() ; i++){
-                subscriptionList.add(DAOFactory.getSubscriptionDAO().find(subscriptions.getSubscriptionCollection().getNamedReference().get(i).getValue()));
+                subscriptionList.add(DAOFactory.getSubscriptionDAO().find(subscriptions.getSubscriptionCollection().getNamedReference().get(i).getValue(), em));
             }
 
             Notify notify;
@@ -115,6 +121,7 @@ public class Notifier {
                 }.start();
             }
         }
+        em.close();
     }
 
     public static ResponseConfirm notify(RequestIndication requestIndication, String contact){

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013-2014 LAAS-CNRS (www.laas.fr) 
+ * Copyright (c) 2013-2015 LAAS-CNRS (www.laas.fr) 
  * 7 Colonel Roche 31077 Toulouse - France
  * 
  * All rights reserved. This program and the accompanying materials
@@ -16,13 +16,15 @@
  *     Khalil Drira - Management and initial specification.
  *     Yassine Banouar - Initial specification, conception, implementation, test 
  * 		and documentation.
+ *     Guillaume Garzone - Conception, implementation, test and documentation.
+ *     Francois Aissaoui - Conception, implementation, test and documentation.
  ******************************************************************************/
 package org.eclipse.om2m.core.dao;
 
-import org.eclipse.om2m.commons.resource.Resource;
+import javax.persistence.EntityManager;
 
-import com.db4o.ObjectSet;
-import com.db4o.query.Query;
+import org.eclipse.om2m.commons.resource.Resource;
+import org.eclipse.om2m.core.router.Patterns;
 
 /**
  * Implements CRUD Methods for resource persistence.
@@ -36,7 +38,8 @@ import com.db4o.query.Query;
 public class ResourceDAO extends DAO<Resource>{
 
     @Override
-    public void create(Resource resource) {
+    public void create(Resource resource, EntityManager em) {
+    	// NOT ALLOWED
     }
 
     /**
@@ -44,34 +47,22 @@ public class ResourceDAO extends DAO<Resource>{
      * @param uri - uri of the {@link Resource}
      * @return The requested {@link Resource} otherwise null
      */
-    public Resource find(String uri) {
-        // Create the query based on the uri constraint
-        Query query = DB.query();
-        query.constrain(Resource.class);
-        query.descend("uri").constrain(uri);
-        // Store all the founded resources
-        ObjectSet<Resource> result = query.execute();
-        // Retrieve the first element corresponding to the researched resource if result is not empty
-        if (!result.isEmpty()) {
-            return result.get(0);
-        }
-        // Return null if the resource is not found
-        return null;
-    }
-
-    public Resource lazyFind(String uri) {
-        return find(uri);
+    public Resource find(String uri, EntityManager em) {
+    	@SuppressWarnings("rawtypes")
+		DAO dao = Patterns.getDAO(uri);
+    	if (dao == null){
+    		return null ; 
+    	}
+    	return (Resource) dao.find(uri, em);
     }
 
     @Override
-    public void update(Resource resource) {
+    public void update(Resource resource, EntityManager em) {
+    	// NOT ALLOWED
     }
 
     @Override
-    public void delete(Resource resource) {
-    }
-
-    @Override
-    public void lazyDelete(Resource resource) {
+    public void delete(Resource resource, EntityManager em) {
+    	// NOT ALLOWED
     }
 }

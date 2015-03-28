@@ -49,7 +49,6 @@
       <plugin id="org.eclipse.jetty.server"/>
       <plugin id="org.eclipse.jetty.servlet"/>
       <plugin id="org.eclipse.jetty.util"/>
-      <plugin id="org.eclipse.om2m.comm.coap"/>
       <plugin id="org.eclipse.om2m.comm.http"/>
       <plugin id="org.eclipse.om2m.comm.service"/>
       <plugin id="org.eclipse.om2m.commons"/>
@@ -65,24 +64,26 @@
       <plugin id="org.apache.felix.gogo.runtime" autoStart="true" startLevel="0" />
       <plugin id="org.apache.felix.gogo.shell" autoStart="true" startLevel="0" />
       <plugin id="org.eclipse.equinox.console" autoStart="true" startLevel="0" />
-      <plugin id="org.eclipse.equinox.http.jetty" autoStart="true" startLevel="2" />
-      <plugin id="org.eclipse.om2m.comm.coap" autoStart="true" startLevel="3" />
-      <plugin id="org.eclipse.om2m.comm.http" autoStart="true" startLevel="3" />
-      <plugin id="org.eclipse.om2m.core" autoStart="true" startLevel="1" />
-      <plugin id="org.eclipse.om2m.webapp.resourcesbrowser" autoStart="true" startLevel="3" />
+      <plugin id="org.eclipse.equinox.http.jetty" autoStart="true" startLevel="1" />
+      <plugin id="org.eclipse.om2m.comm.http" autoStart="true" startLevel="2" />
+      <plugin id="org.eclipse.om2m.core" autoStart="true" startLevel="4" />
+      <plugin id="org.eclipse.om2m.webapp.resourcesbrowser" autoStart="true" startLevel="2" />
       <property name="org.eclipse.equinox.http.jetty.http.port" value="8080" />
       <property name="org.eclipse.om2m.adminRequestingEntity" value="admin:admin" />
       <property name="org.eclipse.om2m.coap.port" value="5683" />
-      <property name="org.eclipse.om2m.dbDefragmentPeriod" value="-1" />
-      <property name="org.eclipse.om2m.dbFile" value="nscl.db4o" />
+      <property name="org.eclipse.om2m.dbDriver" value="org.h2.Driver" />
+      <property name="org.eclipse.om2m.dbPassword" value="om2m" />
+      <property name="org.eclipse.om2m.dbReset" value="true" />
+      <property name="org.eclipse.om2m.dbUrl" value="jdbc:h2:./database/db" />
+      <property name="org.eclipse.om2m.dbUser" value="om2m" />
       <property name="org.eclipse.om2m.globalContext" value="" />
       <property name="org.eclipse.om2m.guestRequestingEntity" value="guest:guest" />
-      <property name="org.eclipse.om2m.maxNrOfInstances" value="100" />
-      <property name="org.eclipse.om2m.reset" value="true" />
+      <property name="org.eclipse.om2m.maxNrOfInstances" value="10" />
       <property name="org.eclipse.om2m.sclBaseAddress" value="127.0.0.1" />
       <property name="org.eclipse.om2m.sclBaseContext" value="/om2m" />
       <property name="org.eclipse.om2m.sclBaseId" value="nscl" />
       <property name="org.eclipse.om2m.sclBaseProtocol.default" value="http" />
+      <property name="org.eclipse.om2m.sclRemoteConnection" value="false" />
       <property name="org.eclipse.om2m.sclType" value="NSCL" />
       <property name="org.eclipse.om2m.webInterfaceContext" value="/" />
    </configurations>

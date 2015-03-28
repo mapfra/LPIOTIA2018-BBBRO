@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013-2014 LAAS-CNRS (www.laas.fr)
+ * Copyright (c) 2013-2015 LAAS-CNRS (www.laas.fr)
  * 7 Colonel Roche 31077 Toulouse - France
  *
  * All rights reserved. This program and the accompanying materials
@@ -21,21 +21,20 @@ package org.eclipse.om2m.core.redirector;
 
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import javax.persistence.EntityManager;
+
 import org.eclipse.om2m.commons.resource.ErrorInfo;
 import org.eclipse.om2m.commons.resource.ReferenceToNamedResource;
+import org.eclipse.om2m.commons.resource.Refs;
 import org.eclipse.om2m.commons.resource.Scl;
 import org.eclipse.om2m.commons.resource.Scls;
 import org.eclipse.om2m.commons.resource.StatusCode;
 import org.eclipse.om2m.commons.rest.RequestIndication;
 import org.eclipse.om2m.commons.rest.ResponseConfirm;
-import org.eclipse.om2m.core.Activator;
 import org.eclipse.om2m.core.comm.RestClient;
 import org.eclipse.om2m.core.constants.Constants;
 import org.eclipse.om2m.core.dao.DAOFactory;
-
-import com.db4o.internal.logging.Logger;
+import org.eclipse.om2m.core.dao.DBAccess;
 
 /**
  * Re-target the REST request to the Distant SCL registered in the {@link Scls} Collection.
@@ -54,21 +53,26 @@ public class Redirector {
      */
     public ResponseConfirm retarget(RequestIndication requestIndication) {
         // Get scls collection from db
-        Scls scls = DAOFactory.getSclsDAO().find(Constants.SCL_ID+"/scls");
+    	EntityManager em = DBAccess.createEntityManager();
+    	em.getTransaction().begin();
+        Scls scls = DAOFactory.getSclsDAO().find(Constants.SCL_ID+Refs.SCLS_REF, em);
         // Check scls existence
         if (scls == null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_NOT_FOUND,"Impossible retargeting: Scls collection Not found")) ;
         }
 
         if (!checkRemoteSclReferenceExistence(scls, requestIndication.getTargetID())) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_NOT_FOUND,"Scl "+requestIndication.getTargetID().split("/")[0]+" does not exist in scls")) ;
         }
         // Found remote scl
-        String sclId = Constants.SCL_ID+"/scls/"+requestIndication.getTargetID().split("/")[0];
-        Scl scl = DAOFactory.getSclDAO().find(sclId);
+        String sclId = Constants.SCL_ID+Refs.SCLS_REF+"/"+requestIndication.getTargetID().split("/")[0];
+        Scl scl = DAOFactory.getSclDAO().find(sclId, em);
+        em.close();
         String base = scl.getPocs().getReference().get(0)+"/";
-        
-        requestIndication.setBase(base);  
+        requestIndication.setBase(base);
+
         // Retarget the request
         return new RestClient().sendRequest(requestIndication);
     }

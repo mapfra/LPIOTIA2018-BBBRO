@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013-2014 LAAS-CNRS (www.laas.fr)
+ * Copyright (c) 2013-2015 LAAS-CNRS (www.laas.fr)
  * 7 Colonel Roche 31077 Toulouse - France
  *
  * All rights reserved. This program and the accompanying materials
@@ -16,6 +16,8 @@
  *     Khalil Drira - Management and initial specification.
  *     Yassine Banouar - Initial specification, conception, implementation, test
  *         and documentation.
+ *     Guillaume Garzone - Conception, implementation, test and documentation.
+ *     Francois Aissaoui - Conception, implementation, test and documentation.
  ******************************************************************************/
 package org.eclipse.om2m.core.constants;
 
@@ -27,14 +29,14 @@ package org.eclipse.om2m.core.constants;
  *         </ul>
  */
 public class Constants {
-
-    //SclBase resource properties
+	
+	//SclBase resource properties
     /** SclBase type: NSCL or GSCL. */
     public static final String SCL_TYPE = System.getProperty("org.eclipse.om2m.sclType","NSCL");
     /** SclBase id. */
     public static final String SCL_ID = System.getProperty("org.eclipse.om2m.sclBaseId","nscl");
-    /** Reset database after each restart. */
-    public static final boolean RESET = Boolean.valueOf(System.getProperty("org.eclipse.om2m.reset","true"));
+    /** Connect to the remote SCL (if not NSCL) */
+    public static final boolean REMOTE_CONNECTION = Boolean.valueOf(System.getProperty("org.eclipse.om2m.sclRemoteConnection", "false"));
     /** Default admin access right profile */
     public static final String ADMIN_PROFILE_ID = "AR_ADMIN";
     /** Default admin requesting entity. (username/password) */
@@ -47,20 +49,18 @@ public class Constants {
     public static final long EXPIRATION_TIME = 999999999;
     /** Default ContentInstances collection maximum number of instance. */
     public static final Long MAX_NBR_OF_INSTANCES = Long.valueOf(System.getProperty("org.eclipse.om2m.maxNrOfInstances","10"));
-
     //SclBase communication properties
     /** SclBase default communication protocol. */
     public static final String SCL_DEFAULT_PROTOCOL = System.getProperty("org.eclipse.om2m.sclBaseProtocol.default","http");
     /** SclBase ip address. */
     public static final String SCL_IP = System.getProperty("org.eclipse.om2m.sclBaseAddress","127.0.0.1");
     /** SclBase listening port. */
-    public static final int SCL_PORT = Integer.parseInt(System.getProperty("org.eclipse.equinox.http.jetty.http.port","8080"));    
+    public static final int SCL_PORT = Integer.parseInt(System.getProperty("org.eclipse.equinox.http.jetty.http.port","8080"));
     /** gscl coap port. */
     public static final int COAP_PORT = Integer.parseInt(System.getProperty("org.eclipse.om2m.coapPort","5684"));
     /** listening context. */
     public static final String SCL_CONTEXT = System.getProperty("org.eclipse.om2m.sclBaseContext","/om2m");
-    
-   
+
     //The following properties are required only for GSCL to perform authentication on a remote NSCL
     /** Remote Nscl Id. (Required only for GSCL)*/
     public static final String NSCL_ID = System.getProperty("org.eclipse.om2m.remoteNsclId","nscl");
@@ -73,13 +73,19 @@ public class Constants {
     /** Remote Nscl listening context. */
     public static final String NSCL_CONTEXT = System.getProperty("org.eclipse.om2m.remoteNsclContext","/om2m");
 
-    //Remote Data base specific parameters
-    /** Database file name. (Required only for embeded data base)*/
-    public static final String DB_FILE = System.getProperty("org.eclipse.om2m.dbFile","db");
-    
-    //DB Defragment period
-    /** DB Defragment period in ms. */
-    public static final int DB_DEFRAGMENT_PERIOD = Integer.parseInt(System.getProperty("org.eclipse.om2m.dbDefragmentPeriod","-1"));
+    //DB parameters
+    /** Boolean specifying if the database should be reset */
+    public static final boolean DB_RESET = Boolean.valueOf(System.getProperty("org.eclipse.om2m.dbReset","true"));
+    /** URL of the database (file, memory, server...)*/
+	public static final String DB_URL = System.getProperty("org.eclipse.om2m.dbUrl", "jdbc:h2:./data/database");
+	/** JDBC Driver used for the database */
+	public static final String DB_DRIVER = System.getProperty("org.eclipse.om2m.dbDriver", "org.h2.Driver");
+	/** User parameter for the database */
+	public static final String DB_USER = System.getProperty("org.eclipse.om2m.dbUser", "om2m");
+	/** User password for the database */
+	public static final String DB_PASSWORD = System.getProperty("org.eclipse.om2m.dbPassword", "om2m");
+	/** Name of the persistence unit in persistence.xml file */
+	public static final String PERSISTENCE_UNIT_NAME = "om2mdb";
 
     //Rest Method names
     /** Retrieve method name. */
@@ -113,4 +119,3 @@ public class Constants {
     
 
 }
-

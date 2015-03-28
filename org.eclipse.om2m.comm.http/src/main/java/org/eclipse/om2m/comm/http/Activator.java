@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013-2014 LAAS-CNRS (www.laas.fr)
+ * Copyright (c) 2013-2015 LAAS-CNRS (www.laas.fr)
  * 7 Colonel Roche 31077 Toulouse - France
  *
  * All rights reserved. This program and the accompanying materials
@@ -44,7 +44,7 @@ public class Activator implements BundleActivator {
     /** SCL service tracker */
     private ServiceTracker<Object, Object> sclServiceTracker;
     /** Sclbase listening context */
-    private static final String sclBaseContext = System.getProperty("org.eclipse.om2m.sclBaseContext","/om2m");
+    private static final String SCL_BASE_CONTEXT = System.getProperty("org.eclipse.om2m.sclBaseContext","/om2m");
 
     @Override
     public void start(BundleContext bundleContext) throws Exception {
@@ -58,8 +58,8 @@ public class Activator implements BundleActivator {
             public void removedService(ServiceReference<Object> reference, Object service) {
                 LOGGER.info("HttpService removed");
                 try {
-                    LOGGER.info("Unregister "+sclBaseContext+" http context");
-                    ((HttpService) service).unregister(sclBaseContext);
+                    LOGGER.info("Unregister "+SCL_BASE_CONTEXT+" http context");
+                    ((HttpService) service).unregister(SCL_BASE_CONTEXT);
                 } catch (IllegalArgumentException e) {
                     LOGGER.error("Error unregistring SclServlet",e);
                 }
@@ -69,8 +69,8 @@ public class Activator implements BundleActivator {
                 LOGGER.info("HttpService discovered");
                 HttpService httpService = (HttpService) this.context.getService(reference);
                 try {
-                    LOGGER.info("Register "+sclBaseContext+" context");
-                    httpService.registerServlet(sclBaseContext, new RestHttpServlet(), null,null);
+                    LOGGER.info("Register "+SCL_BASE_CONTEXT+" context");
+                    httpService.registerServlet(SCL_BASE_CONTEXT, new RestHttpServlet(), null,null);
                 } catch (Exception e) {
                     LOGGER.error("Error registering SclServlet",e);
                 }

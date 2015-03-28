@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013-2014 LAAS-CNRS (www.laas.fr)
+ * Copyright (c) 2013-2015 LAAS-CNRS (www.laas.fr)
  * 7 Colonel Roche 31077 Toulouse - France
  *
  * All rights reserved. This program and the accompanying materials
@@ -88,15 +88,14 @@ public class XmlMapper {
      * @param representation - resource XML representation
      * @return resource Java object
      */
-
     public Object xmlToObject(String representation) {
         StringReader stringReader = new StringReader(representation);
         try {
             Unmarshaller unmarshaller = ctx.createUnmarshaller();
             return unmarshaller.unmarshal(stringReader);
         } catch (JAXBException e) {
-            LOGGER.error("JAXB unmarshalling error!", e);
-        }
+            LOGGER.debug("JAXB unmarshalling error!",e);
+        } 
         return null;
     }
 }

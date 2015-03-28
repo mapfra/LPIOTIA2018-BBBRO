@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013-2014 LAAS-CNRS (www.laas.fr)
+ * Copyright (c) 2013-2015 LAAS-CNRS (www.laas.fr)
  * 7 Colonel Roche 31077 Toulouse - France
  *
  * All rights reserved. This program and the accompanying materials
@@ -16,18 +16,15 @@
  *     Khalil Drira - Management and initial specification.
  *     Yassine Banouar - Initial specification, conception, implementation, test
  *         and documentation.
+ *     Guillaume Garzone - Conception, implementation, test and documentation.
+ *     Francois Aissaoui - Conception, implementation, test and documentation.
  ******************************************************************************/
 package org.eclipse.om2m.core.controller;
 
-import java.io.IOException;
 import java.security.SecureRandom;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
-import javax.xml.datatype.XMLGregorianCalendar;
+import javax.persistence.EntityManager;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -35,15 +32,17 @@ import org.eclipse.om2m.commons.resource.AccessRight;
 import org.eclipse.om2m.commons.resource.ErrorInfo;
 import org.eclipse.om2m.commons.resource.PermissionListType;
 import org.eclipse.om2m.commons.resource.PermissionType;
+import org.eclipse.om2m.commons.resource.Resource;
 import org.eclipse.om2m.commons.resource.SearchStrings;
 import org.eclipse.om2m.commons.resource.StatusCode;
 import org.eclipse.om2m.commons.rest.RequestIndication;
 import org.eclipse.om2m.commons.rest.ResponseConfirm;
 import org.eclipse.om2m.commons.utils.DateConverter;
-import org.eclipse.om2m.commons.utils.XmlValidator;
 import org.eclipse.om2m.core.constants.Constants;
+import org.eclipse.om2m.core.dao.DAO;
 import org.eclipse.om2m.core.dao.DAOFactory;
-import org.xml.sax.SAXException;
+import org.eclipse.om2m.core.dao.DBAccess;
+import org.eclipse.om2m.core.router.Patterns;
 
 /**
  * Controller class contains generic and abstract Create, Retrieve, Update, Delete and Execute
@@ -94,23 +93,32 @@ public abstract class Controller {
     public abstract ResponseConfirm doExecute (RequestIndication requestIndication);
 
     /**
-     * Checks the validity of the resource representation syntax based on the xsd schema verification
-     * @param resourceRepresentation - the XML representation of the resource
-     * @param xsd - XML Schema Definition
-     * @return the error with a specific status code if the representation is wrong otherwise null
+     * Gets the accessRight from the parent. 
+     * @param targetId
+     * @param em EntityManager to use for DB Transaction
+     * @return
      */
-    public ResponseConfirm checkMessageSyntax(String resourceRepresentation, String xsd) {
-        try {
-            XmlValidator.getInstance().validate(resourceRepresentation, xsd);
-        } catch (SAXException e) {
-            LOGGER.debug("Resource representation syntax error",e);
-            return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Resource representation syntax error: "+e.getMessage())) ;
-        } catch (IOException e) {
-            LOGGER.debug("XSD not found",e);
-            return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"XSD not found: "+e.getMessage())) ;
+    public String getAccessRightId(String targetId, EntityManager em){
+    	// Looks for the parent
+        Resource parent = DAOFactory.getResourceDAO().find(targetId, em);
+        String[] tabID = targetId.split("/");
+        boolean stop = !(parent == null) ; 
+        while (!stop && tabID.length > 1){
+        	String toRemove = tabID[tabID.length-1];
+        	targetId = targetId.split("/" + toRemove)[0];
+        	@SuppressWarnings("rawtypes")
+			DAO dao = Patterns.getDAO(targetId);
+        	// If the DAO is null it means the parent is a collection
+        	if (dao == null){
+        		tabID = targetId.split("/");        		
+        	} else {
+        		parent = DAOFactory.getResourceDAO().find(targetId, em);
+        		stop = true ;
+        	}
         }
-        return null;
+        return parent.getAccessRightID();
     }
+
 
     /**
      * Checks the Access Right based on accessRightID (Permission)
@@ -122,7 +130,10 @@ public abstract class Controller {
     public ResponseConfirm checkAccessRight(String accessRightID, String requestingEntity, String method) {
         boolean holderFound = false;
         boolean flagFound = false;
-        AccessRight accessRightFound = DAOFactory.getAccessRightDAO().find(accessRightID);
+        EntityManager em = DBAccess.createEntityManager();
+        em.getTransaction().begin();
+        AccessRight accessRightFound = DAOFactory.getAccessRightDAO().find(accessRightID, em);
+        em.close();
         // Check Resource accessRight existence not found
         if (accessRightFound == null) {
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_NOT_FOUND,"AccessRight for this resource is not found"));

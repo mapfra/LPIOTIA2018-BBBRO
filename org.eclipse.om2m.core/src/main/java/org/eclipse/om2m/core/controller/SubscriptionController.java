@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013-2014 LAAS-CNRS (www.laas.fr) 
+ * Copyright (c) 2013-2015 LAAS-CNRS (www.laas.fr) 
  * 7 Colonel Roche 31077 Toulouse - France
  * 
  * All rights reserved. This program and the accompanying materials
@@ -16,12 +16,17 @@
  *     Khalil Drira - Management and initial specification.
  *     Yassine Banouar - Initial specification, conception, implementation, test 
  * 		and documentation.
+ *     Guillaume Garzone - Conception, implementation, test and documentation.
+ *     Francois Aissaoui - Conception, implementation, test and documentation.
  ******************************************************************************/
 package org.eclipse.om2m.core.controller;
 
 import java.util.Date;
 
+import javax.persistence.EntityManager;
+
 import org.eclipse.om2m.commons.resource.ErrorInfo;
+import org.eclipse.om2m.commons.resource.Refs;
 import org.eclipse.om2m.commons.resource.StatusCode;
 import org.eclipse.om2m.commons.resource.Subscription;
 import org.eclipse.om2m.commons.resource.SubscriptionType;
@@ -32,6 +37,7 @@ import org.eclipse.om2m.commons.utils.DateConverter;
 import org.eclipse.om2m.commons.utils.XmlMapper;
 import org.eclipse.om2m.core.constants.Constants;
 import org.eclipse.om2m.core.dao.DAOFactory;
+import org.eclipse.om2m.core.dao.DBAccess;
 
 /**
  * Implements Create, Retrieve, Update, Delete and Execute methods to handle
@@ -65,14 +71,17 @@ public class SubscriptionController extends Controller {
 
 
         ResponseConfirm errorResponse = new ResponseConfirm();
-        Subscriptions subscriptions = DAOFactory.getSubscriptionsDAO().lazyFind(requestIndication.getTargetID());
-
+//        Subscriptions subscriptions = DAOFactory.getSubscriptionsDAO().lazyFind(requestIndication.getTargetID());
+        EntityManager em = DBAccess.createEntityManager();
+        em.getTransaction().begin();
+        String accessRightID = this.getAccessRightId(requestIndication.getTargetID(), em);
+        
         // Check Parent Existence
-        if (subscriptions == null) {
+        if (accessRightID == null) {
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_NOT_FOUND,requestIndication.getTargetID()+" does not exist")) ;
         }
         // Check AccessRight
-        errorResponse = checkAccessRight(getAccessRightID(subscriptions.getUri()), requestIndication.getRequestingEntity(), Constants.AR_CREATE);
+        errorResponse = checkAccessRight(accessRightID, requestIndication.getRequestingEntity(), Constants.AR_CREATE);
         if (errorResponse != null) {
             return errorResponse;
         }
@@ -80,40 +89,53 @@ public class SubscriptionController extends Controller {
         if (requestIndication.getRepresentation() == null) {
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Resource Representation is EMPTY")) ;
         }
-        // Check XML Validity
-        errorResponse = checkMessageSyntax(requestIndication.getRepresentation(),"subscription.xsd");
-        if (errorResponse != null) {
-            return errorResponse;
-        }
         // Checks on attributes
-        Subscription subscription = (Subscription) XmlMapper.getInstance().xmlToObject(requestIndication.getRepresentation());
+        Subscription subscription = null ; 
+        try{
+        	subscription = (Subscription) XmlMapper.getInstance().xmlToObject(requestIndication.getRepresentation());
+        } catch (ClassCastException e){
+        	em.close();
+        	LOGGER.debug("ClassCastException : Incorrect resource type in JAXB unmarshalling.",e);
+            return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST, "Incorrect resource type"));
+        }
+        if (subscription == null){
+        	em.close();
+            return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST, "Incorrect resource representation syntax")) ;
+        }
         // Check ExpirationTime
         if (subscription.getExpirationTime() != null && !checkExpirationTime(subscription.getExpirationTime())) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Expiration Time CREATE is Out of Date")) ;
         }
         // Contact Attribute is mandatory
         if (subscription.getContact() == null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Link attribute is mandatory")) ;
         }
         // CreationTime Must be NP
         if (subscription.getCreationTime() != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Creation Time CREATE is Not Permitted")) ;
         }
         // LastModifiedTime Must be NP
         if (subscription.getLastModifiedTime() != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Last Modified Time CREATE is Not Permitted")) ;
         }
         // subscriptionType Must be NP
         if (subscription.getSubscriptionType() != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"SubscriptionType CREATE is Not Permitted")) ;
         }
         // Check ContactURI conflict
-        if (checkContactURIExistence(requestIndication.getTargetID(), subscription.getContact())) {
+        if (checkContactURIExistence(requestIndication.getTargetID(), subscription.getContact(),em)) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_CONFLICT,"Subscription ContactURI Conflict")) ;
         }
         // Storage
         // Check the Id uniqueness
-        if (subscription.getId() != null && DAOFactory.getSubscriptionDAO().find(requestIndication.getTargetID()+"/"+subscription.getId()) != null) {
+        if (subscription.getId() != null && DAOFactory.getSubscriptionDAO().find(requestIndication.getTargetID()+"/"+subscription.getId(), em) != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_CONFLICT,"SubscriptionId Conflit")) ;
         }
         if (subscription.getId() == null || subscription.getId().isEmpty()) {
@@ -134,7 +156,9 @@ public class SubscriptionController extends Controller {
         subscription.setLastModifiedTime(DateConverter.toXMLGregorianCalendar(new Date()).toString());
 
         //Store subscription
-        DAOFactory.getSubscriptionDAO().create(subscription);
+        DAOFactory.getSubscriptionDAO().create(subscription, em);
+        em.getTransaction().commit();
+        em.close();
         // Response
         return new ResponseConfirm(StatusCode.STATUS_CREATED, subscription);
     }
@@ -157,17 +181,23 @@ public class SubscriptionController extends Controller {
         // Id:                              (response M*)
 
         ResponseConfirm errorResponse = new ResponseConfirm();
-        Subscription subscription = DAOFactory.getSubscriptionDAO().find(requestIndication.getTargetID());
+        EntityManager em = DBAccess.createEntityManager();
+        em.getTransaction().begin();
+        Subscription subscription = DAOFactory.getSubscriptionDAO().find(requestIndication.getTargetID(), em);
 
         // Check if the resource exists in DataBase or Not
         if (subscription == null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_NOT_FOUND,requestIndication.getTargetID()+" does not exist in DataBase")) ;
         }
+        String parentUri = subscription.getUri().split(Refs.SUBSCRIPTIONS_REF)[0];
         // Check AccessRight
-        errorResponse = checkAccessRight(getAccessRightID(subscription.getUri()), requestIndication.getRequestingEntity(), Constants.AR_READ);
+        errorResponse = checkAccessRight(getAccessRightId(parentUri,em), requestIndication.getRequestingEntity(), Constants.AR_READ);
         if (errorResponse != null) {
+        	em.close();
             return errorResponse;
         }
+        em.close();
         // Response
         return new ResponseConfirm(StatusCode.STATUS_OK, subscription);
 
@@ -191,39 +221,54 @@ public class SubscriptionController extends Controller {
         // Id:                              (updateReq NP) (response M*)
 
         ResponseConfirm errorResponse = new ResponseConfirm();
-        Subscription subscription = DAOFactory.getSubscriptionDAO().find(requestIndication.getTargetID());
+        EntityManager em = DBAccess.createEntityManager();
+        em.getTransaction().begin();
+        Subscription subscription = DAOFactory.getSubscriptionDAO().find(requestIndication.getTargetID(), em);
 
         // Check Existence
         if (subscription == null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_NOT_FOUND,requestIndication.getTargetID()+" does not exist in DataBase")) ;
         }
+        String parentUri = subscription.getUri().split(Refs.SUBSCRIPTIONS_REF)[0];
         // Check AccessRight
-        errorResponse = checkAccessRight(getAccessRightID(subscription.getUri()), requestIndication.getRequestingEntity(), Constants.AR_WRITE);
+        errorResponse = checkAccessRight(getAccessRightId(parentUri,em), requestIndication.getRequestingEntity(), Constants.AR_WRITE);
         if (errorResponse != null) {
+        	em.close();
             return errorResponse;
         }
         // Check Resource Representation
         if (requestIndication.getRepresentation() == null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Resource Representation is EMPTY")) ;
         }
-        // Check XML Validity
-        errorResponse= checkMessageSyntax(requestIndication.getRepresentation(),"subscription.xsd");
-        if (errorResponse != null) {
-            return errorResponse;
-        }
         // Check attributes
-        Subscription subscriptionNew = (Subscription) XmlMapper.getInstance().xmlToObject(requestIndication.getRepresentation());
+        Subscription subscriptionNew = null ; 
+        try{
+        	subscriptionNew = (Subscription) XmlMapper.getInstance().xmlToObject(requestIndication.getRepresentation());
+        } catch (ClassCastException e){
+        	em.close();
+        	LOGGER.debug("ClassCastException : Incorrect resource type in JAXB unmarshalling.",e);
+            return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST, "Incorrect resource type"));
+        }
+        if (subscriptionNew == null){
+        	em.close();
+            return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST, "Incorrect resource representation syntax")) ;
+        }
 
         // SubscriptionId UPDATE is NP
         if (subscriptionNew.getId() != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"subscriptionId UPDATE is Not Permitted")) ;
         }
         // Contact Update is NP
         if (subscriptionNew.getContact() != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Contact attribute UPDATE is Not Permitted")) ;
         }
         // SubscriptionType UPDATE is NP
         if (subscriptionNew.getSubscriptionType() != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"subscriptionType UPDATE is Not Permitted")) ;
         }
         // FilterCriteria UPDATE is NP
@@ -232,14 +277,17 @@ public class SubscriptionController extends Controller {
         }
         // CreattionTime UPDATE is NP
         if (subscriptionNew.getCreationTime() != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"CreationTime UPDATE is Not Permitted")) ;
         }
         // lastModifiedTime UPDATE is NP
         if (subscriptionNew.getLastModifiedTime() != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"LatModifiedTime UPDATE is Not Permitted")) ;
         }
         // Check ExpirationTime
         if (subscriptionNew.getExpirationTime() != null && !checkExpirationTime(subscriptionNew.getExpirationTime())) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Expiration Time Update is Out of Date")) ;
         }
 
@@ -260,7 +308,9 @@ public class SubscriptionController extends Controller {
         subscription.setLastModifiedTime(DateConverter.toXMLGregorianCalendar(new Date()).toString());
 
         // Store container
-        DAOFactory.getSubscriptionDAO().update(subscription);
+        DAOFactory.getSubscriptionDAO().update(subscription, em);
+        em.getTransaction().commit();
+        em.close();
         // Response
         return new ResponseConfirm(StatusCode.STATUS_OK, subscription);
 
@@ -272,21 +322,27 @@ public class SubscriptionController extends Controller {
      * @return The generic returned response.
      */
     public ResponseConfirm doDelete (RequestIndication requestIndication) {
-
-        Subscription subscription = DAOFactory.getSubscriptionDAO().find(requestIndication.getTargetID());
+    	EntityManager em = DBAccess.createEntityManager();
+    	em.getTransaction().begin();
+        Subscription subscription = DAOFactory.getSubscriptionDAO().find(requestIndication.getTargetID(), em);
         ResponseConfirm errorResponse = new ResponseConfirm();
 
         // Check Resource Existence
         if (subscription == null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_NOT_FOUND,requestIndication.getTargetID()+" does not exist")) ;
         }
+        String parentUri = subscription.getUri().split(Refs.SUBSCRIPTIONS_REF)[0];
         // Check AccessRight
-        errorResponse = checkAccessRight(getAccessRightID(subscription.getUri()), requestIndication.getRequestingEntity(), Constants.AR_DELETE);
+        errorResponse = checkAccessRight(getAccessRightId(parentUri,em), requestIndication.getRequestingEntity(), Constants.AR_DELETE);
         if (errorResponse != null) {
+        	em.close();
             return errorResponse;
         }
         //Delete
-        DAOFactory.getSubscriptionDAO().delete(subscription);
+        DAOFactory.getSubscriptionDAO().delete(subscription,em);
+        em.getTransaction().commit();
+        em.close();
         // Response
         return new ResponseConfirm(StatusCode.STATUS_OK);
 
@@ -309,11 +365,11 @@ public class SubscriptionController extends Controller {
      * @param contact
      * @return true if contactURI exists otherwise false
      */
-    public boolean checkContactURIExistence (String targetId, String contact) {
-        Subscriptions subscriptions = DAOFactory.getSubscriptionsDAO().find(targetId);
+    public boolean checkContactURIExistence (String targetId, String contact, EntityManager em) {
+        Subscriptions subscriptions = DAOFactory.getSubscriptionsDAO().find(targetId, em);
 
         for (int i=0; i<subscriptions.getSubscriptionCollection().getNamedReference().size(); i++) {
-            Subscription subscription = DAOFactory.getSubscriptionDAO().find(targetId+"/"+subscriptions.getSubscriptionCollection().getNamedReference().get(i).getId());
+            Subscription subscription = DAOFactory.getSubscriptionDAO().find(targetId+"/"+subscriptions.getSubscriptionCollection().getNamedReference().get(i).getId(), em);
 
             if (subscription.getContact().equalsIgnoreCase(contact)) {
                 return true;
@@ -323,28 +379,4 @@ public class SubscriptionController extends Controller {
         return false;
     }
 
-    /**
-     * Get the subscriptions collection parent AccessRightID
-     * @param subscriptionsUri
-     * @return accessRightID of the subscriptions collection Parent
-     */
-    public String getAccessRightID(String subscriptionsUri) {
-        String parentSubsUri;
-         // Return Container AccessRightID if ContentInstances resource is the parent
-         if (subscriptionsUri.contains("contentInstances")) {
-             parentSubsUri = subscriptionsUri.split("/contentInstances")[0];
-             return DAOFactory.getResourceDAO().find(parentSubsUri).getAccessRightID();
-         }
-         parentSubsUri = subscriptionsUri.split("/subscriptions")[0];
-
-         // Return AccessRightID if AccessRight resource is the parent
-         if(parentSubsUri.split("/").length>1){
-             if("accessRights".equals(parentSubsUri.split("/")[parentSubsUri.split("/").length-2])){
-                 return parentSubsUri;
-             }
-         }
-
-         // Return parent AccessRightID for other resources
-         return DAOFactory.getResourceDAO().find(parentSubsUri).getAccessRightID();
-    }
 }

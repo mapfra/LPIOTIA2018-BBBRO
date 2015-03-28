@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013-2014 LAAS-CNRS (www.laas.fr)
+ * Copyright (c) 2013-2015 LAAS-CNRS (www.laas.fr)
  * 7 Colonel Roche 31077 Toulouse - France
  *
  * All rights reserved. This program and the accompanying materials
@@ -16,15 +16,20 @@
  *     Khalil Drira - Management and initial specification.
  *     Yassine Banouar - Initial specification, conception, implementation, test
  *         and documentation.
+ *     Guillaume Garzone - Conception, implementation, test and documentation.
+ *     Francois Aissaoui - Conception, implementation, test and documentation.
  ******************************************************************************/
 package org.eclipse.om2m.core.controller;
 
 import java.util.Date;
 
+import javax.persistence.EntityManager;
+import javax.persistence.RollbackException;
+
 import org.eclipse.om2m.commons.resource.AnnounceTo;
 import org.eclipse.om2m.commons.resource.Application;
-import org.eclipse.om2m.commons.resource.Applications;
 import org.eclipse.om2m.commons.resource.ErrorInfo;
+import org.eclipse.om2m.commons.resource.Refs;
 import org.eclipse.om2m.commons.resource.StatusCode;
 import org.eclipse.om2m.commons.rest.RequestIndication;
 import org.eclipse.om2m.commons.rest.ResponseConfirm;
@@ -33,6 +38,7 @@ import org.eclipse.om2m.commons.utils.XmlMapper;
 import org.eclipse.om2m.core.announcer.Announcer;
 import org.eclipse.om2m.core.constants.Constants;
 import org.eclipse.om2m.core.dao.DAOFactory;
+import org.eclipse.om2m.core.dao.DBAccess;
 import org.eclipse.om2m.core.notifier.Notifier;
 
 /**
@@ -71,30 +77,45 @@ public class ApplicationController extends Controller {
         // locRequester:                    (createReq O)  (response O)
 
         ResponseConfirm errorResponse = new ResponseConfirm();
-        Applications applications = DAOFactory.getApplicationsDAO().lazyFind(requestIndication.getTargetID());
+        
+        EntityManager em = DBAccess.createEntityManager();
+        em.getTransaction().begin();
+        
+        String accessRightID = getAccessRightId(requestIndication.getTargetID(), em);
 
         // Check Parent Existence
-        if (applications == null) {
+        if (accessRightID == null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_NOT_FOUND,requestIndication.getTargetID()+" does not exist"));
         }
         // Check AccessRight
-        errorResponse = checkAccessRight(applications.getAccessRightID(), requestIndication.getRequestingEntity(), Constants.AR_CREATE);
+        errorResponse = checkAccessRight(accessRightID,requestIndication.getRequestingEntity(), Constants.AR_CREATE);
         if (errorResponse != null) {
+        	em.close();
             return errorResponse;
         }
         // Check Resource Representation
         if (requestIndication.getRepresentation() == null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Resource Representation is EMPTY"));
         }
-        // Check XML Validity
-        errorResponse = checkMessageSyntax(requestIndication.getRepresentation(),"application.xsd");
-        if (errorResponse != null) {
-            return errorResponse;
-        }
+        
         // Checks on attributes
-        Application application = (Application) XmlMapper.getInstance().xmlToObject(requestIndication.getRepresentation());
+        Application application = null ; 
+        try{
+        	application = (Application) XmlMapper.getInstance().xmlToObject(requestIndication.getRepresentation());        	
+        } catch (ClassCastException e){
+        	em.close();
+        	LOGGER.debug("ClassCastException : Incorrect resource type in JAXB unmarshalling.",e);
+        	return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST, "Incorrect resource type"));
+        }
+        if (application == null){
+        	em.close();
+        	return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST, "Incorrect resource representation syntax")) ;         	
+        }
         // Check the AppId uniqueness
-        if (application.getAppId() != null && DAOFactory.getApplicationDAO().find(requestIndication.getTargetID()+"/"+application.getAppId()) != null) {
+        if (application.getAppId() != null && DAOFactory.getApplicationDAO().find(requestIndication.getTargetID()+"/"+application.getAppId(), em) != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_CONFLICT,"ApplicationId Conflit"));
         }
         if (application.getAppId() == null || application.getAppId().isEmpty()) {
@@ -102,34 +123,42 @@ public class ApplicationController extends Controller {
         }
         // Check ExpirationTime
         if (application.getExpirationTime() != null && !checkExpirationTime(application.getExpirationTime())) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Expiration Time CREATE is Out of Date"));
         }
         // Containers Reference Must be NP
         if (application.getContainersReference() != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST," Containers Reference is Not Permitted"));
         }
         // Groups Reference Must be NP
         if (application.getGroupsReference() != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Groups Reference is Not Permitted"));
         }
         // AccessRightsReference Must be NP
         if (application.getAccessRightsReference() != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"AccessRights Reference is Not Permitted"));
         }
         // SubscriptionsReference Must be NP
         if (application.getSubscriptionsReference() != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"SubscriptionsReference is Not Permitted"));
         }
         // NotificationChannelsReference Must be NP
         if (application.getNotificationChannelsReference() != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"NotificationChannelsReference is Not Permitted"));
         }
         // CreationTime Must be NP
         if (application.getCreationTime() != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Creation Time is Not Permitted"));
         }
         // LastModifiedTime Must be NP
         if (application.getLastModifiedTime() != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Last Modified Time is Not Permitted"));
         }
         // Storage
@@ -140,13 +169,13 @@ public class ApplicationController extends Controller {
             //Expiration default value
             application.setExpirationTime(getNewExpirationTime(Constants.EXPIRATION_TIME));
         }
-        // Set AccessRightID from the Parent if it's null or nonexistent
-        if (DAOFactory.getAccessRightDAO().find(application.getAccessRightID()) == null) {
-            application.setAccessRightID(applications.getAccessRightID());
+//         Set AccessRightID from the Parent if it's null or nonexistent
+        if (DAOFactory.getAccessRightDAO().find(application.getAccessRightID(), em) == null) {
+            application.setAccessRightID(accessRightID);
         }
         if (application.getAPoCPaths() != null) {
             for (int i = 0; i<application.getAPoCPaths().getAPoCPath().size(); i++) {
-                if (DAOFactory.getAccessRightDAO().find(application.getAPoCPaths().getAPoCPath().get(i).getAccessRightID()) == null) {
+                if (DAOFactory.getAccessRightDAO().find(application.getAPoCPaths().getAPoCPath().get(i).getAccessRightID(), em) == null) {
                     application.getAPoCPaths().getAPoCPath().get(i).setAccessRightID(application.getAccessRightID());
                 }
             }
@@ -163,11 +192,11 @@ public class ApplicationController extends Controller {
             application.setAnnounceTo(announceTo);
         }
         // Set References
-        application.setContainersReference(application.getUri()+"/containers");
-        application.setGroupsReference(application.getUri()+"/groups");
-        application.setAccessRightsReference(application.getUri()+"/accessRights");
-        application.setSubscriptionsReference(application.getUri()+"/subscriptions");
-        application.setNotificationChannelsReference(application.getUri()+"/notificationChannels");
+        application.setContainersReference(application.getUri()+Refs.CONTAINERS_REF);
+        application.setGroupsReference(application.getUri()+Refs.GROUPS_REF);
+        application.setAccessRightsReference(application.getUri()+Refs.ACCESSRIGHTS_REF);
+        application.setSubscriptionsReference(application.getUri()+Refs.SUBSCRIPTIONS_REF);
+        application.setNotificationChannelsReference(application.getUri()+Refs.NOTIFICATIONCHANNELS_REF);
         // Set CreationTime
         application.setCreationTime(DateConverter.toXMLGregorianCalendar(new Date()).toString());
         // Set LastModifiedTime
@@ -182,7 +211,15 @@ public class ApplicationController extends Controller {
         Notifier.notify(StatusCode.STATUS_CREATED, application);
 
         // Store application
-        DAOFactory.getApplicationDAO().create(application);
+        try{
+        	DAOFactory.getApplicationDAO().create(application, em);
+        	em.getTransaction().commit();
+        	em.close();
+        } catch (RollbackException e){
+        	em.close();
+        	LOGGER.debug("ApplicationId Conflict",e);
+        	return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_CONFLICT,"ApplicationId Conflit"));
+        }
         // Response
         return new ResponseConfirm(StatusCode.STATUS_CREATED, application);
     }
@@ -210,24 +247,28 @@ public class ApplicationController extends Controller {
         // aPoCPaths:                       (response O)
         // locRequester:                    (response O)
 
-
         ResponseConfirm errorResponse = new ResponseConfirm();
-
-
-        Application application = DAOFactory.getApplicationDAO().find(requestIndication.getTargetID());
+        EntityManager em = DBAccess.createEntityManager();
+        em.getTransaction().begin();
+        Application application = DAOFactory.getApplicationDAO().find(requestIndication.getTargetID(), em);
+        em.close();
 
         // Check if the resource exists in DataBase or Not
         if (application == null) {
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_NOT_FOUND,requestIndication.getTargetID()+" does not exist in DataBase"));
         }
-
-
         // Check AccessRight
         errorResponse = checkAccessRight(application.getAccessRightID(), requestIndication.getRequestingEntity(), Constants.AR_READ);
         if (errorResponse != null) {
             return errorResponse;
         }
-
+        
+		application.setContainersReference(application.getUri() + Refs.CONTAINERS_REF);
+		application.setGroupsReference(application.getUri() + Refs.GROUPS_REF);
+		application.setAccessRightsReference(application.getUri() + Refs.ACCESSRIGHTS_REF);
+		application.setSubscriptionsReference(application.getUri() + Refs.SUBSCRIPTIONS_REF);
+		application.setNotificationChannelsReference(application.getUri() + Refs.NOTIFICATIONCHANNELS_REF);
+		
         // Response
         return new ResponseConfirm(StatusCode.STATUS_OK, application);
     }
@@ -256,67 +297,89 @@ public class ApplicationController extends Controller {
         // locRequester:                    (updateReq O)  (response O)
 
         ResponseConfirm errorResponse = new ResponseConfirm();
-        Application application = DAOFactory.getApplicationDAO().find(requestIndication.getTargetID());
+        EntityManager em = DBAccess.createEntityManager();
+        em.getTransaction().begin();
+        Application application = DAOFactory.getApplicationDAO().find(requestIndication.getTargetID(), em);
 
         // Check Existence
         if (application == null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_NOT_FOUND,requestIndication.getTargetID()+" does not exist in DataBase"));
         }
         // Check AccessRight
         errorResponse = checkAccessRight(application.getAccessRightID(), requestIndication.getRequestingEntity(), Constants.AR_WRITE);
         if (errorResponse != null) {
+        	em.close();
             return errorResponse;
         }
         // Check Resource Representation
         if (requestIndication.getRepresentation() == null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Resource Representation is EMPTY"));
         }
-        // Check XML Validity
-        errorResponse = checkMessageSyntax(requestIndication.getRepresentation(),"application.xsd");
-        if (errorResponse != null) {
-            return errorResponse;
+        // Checks on attributes 
+        Application applicationNew = null ;
+        try {
+        	applicationNew = (Application) XmlMapper.getInstance().xmlToObject(requestIndication.getRepresentation());
+        } catch(ClassCastException e){
+        	em.close();
+        	LOGGER.debug("ClassCastException : Incorrect resource type in JAXB unmarshalling.",e);
+        	return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST, "Incorrect resource type"));
         }
-        // Checks on attributes
-        Application applicationNew = (Application) XmlMapper.getInstance().xmlToObject(requestIndication.getRepresentation());
+        if (applicationNew == null){
+        	em.close();
+        	return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST, "Incorrect resource representation syntax"));
+        }
         //The Update of the AppId is NP
         if (applicationNew.getAppId() != null) {
-            return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"AppId UPDATE is Not Permitted"));
+        	if (!applicationNew.getAppId().equals(application.getAppId())){      
+        		em.close();
+        		return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"AppId UPDATE is Not Permitted"));
+        	}
         }
         // Check ExpirationTime
         if (applicationNew.getExpirationTime() != null && !checkExpirationTime(applicationNew.getExpirationTime())) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Expiration Time UPDATE is Out of Date"));
         }
         // Containers Reference Must be NP
         if (applicationNew.getContainersReference() != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Containers Reference UPDATE is Not Permitted"));
         }
         // Groups Reference Must be NP
         if (applicationNew.getGroupsReference() != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Groups Reference UPDATE is Not Permitted"));
         }
         // AccessRightsReference Must be NP
         if (applicationNew.getAccessRightsReference() != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"AccessRights Reference UPDATE is Not Permitted"));
         }
         // SubscriptionsReference Must be NP
         if (applicationNew.getSubscriptionsReference() != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"SubscriptionsReference UPDATE is Not Permitted"));
         }
         // NotificationChannelsReference Must be NP
         if (applicationNew.getNotificationChannelsReference() != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"NotificationChannelsReference UPDATE is Not Permitted"));
         }
         // CreationTime Must be NP
         if (applicationNew.getCreationTime() != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Creation Time UPDATE is Not Permitted"));
         }
         // LastModifiedTime Must be NP
         if (applicationNew.getLastModifiedTime() != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Last Modified Time UPDATE is Not Permitted"));
         }
         // Storage
         // Set accessRightID if it exists
-        if (DAOFactory.getAccessRightDAO().find(applicationNew.getAccessRightID()) != null) {
+        if (DAOFactory.getAccessRightDAO().find(applicationNew.getAccessRightID(), em) != null) {
             application.setAccessRightID(applicationNew.getAccessRightID());
         }
         // Set Expiration Time (could be null)
@@ -350,9 +413,19 @@ public class ApplicationController extends Controller {
         Notifier.notify(StatusCode.STATUS_OK, application);
 
         // Store updates
-        DAOFactory.getApplicationDAO().update(application);
+        DAOFactory.getApplicationDAO().update(application, em);
+
+        em.getTransaction().commit();
+        em.close();
+        
+		application.setContainersReference(application.getUri() + Refs.CONTAINERS_REF);
+		application.setGroupsReference(application.getUri() + Refs.GROUPS_REF);
+		application.setAccessRightsReference(application.getUri() + Refs.ACCESSRIGHTS_REF);
+		application.setSubscriptionsReference(application.getUri() + Refs.SUBSCRIPTIONS_REF);
+		application.setNotificationChannelsReference(application.getUri() + Refs.NOTIFICATIONCHANNELS_REF);
+        
         // Response
-        return new ResponseConfirm(StatusCode.STATUS_OK,application);
+        return new ResponseConfirm(StatusCode.STATUS_OK, application);
     }
 
     /**
@@ -363,15 +436,19 @@ public class ApplicationController extends Controller {
     public ResponseConfirm doDelete (RequestIndication requestIndication) {
 
         ResponseConfirm errorResponse = new ResponseConfirm();
-        Application application = DAOFactory.getApplicationDAO().find(requestIndication.getTargetID());
+        EntityManager em = DBAccess.createEntityManager();
+        em.getTransaction().begin();
+        Application application = DAOFactory.getApplicationDAO().find(requestIndication.getTargetID(), em);
 
         // Check Resource Existence
         if (application == null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_NOT_FOUND,requestIndication.getTargetID()+" does not exist"));
         }
         // Check AccessRight
         errorResponse = checkAccessRight(application.getAccessRightID(), requestIndication.getRequestingEntity(), Constants.AR_DELETE);
         if (errorResponse != null) {
+        	em.close();
             return errorResponse;
         }
 
@@ -384,7 +461,9 @@ public class ApplicationController extends Controller {
         Notifier.notify(StatusCode.STATUS_DELETED, application);
 
         // Delete
-        DAOFactory.getApplicationDAO().delete(application);
+        DAOFactory.getApplicationDAO().delete(application, em);
+        em.getTransaction().commit();
+        em.close();
         // Response
         return new ResponseConfirm(StatusCode.STATUS_OK);
     }

@@ -1,5 +1,5 @@
 <!--
-  Copyright (c) 2013-2014 LAAS-CNRS (www.laas.fr) 
+  Copyright (c) 2013-2015 LAAS-CNRS (www.laas.fr) 
   7 Colonel Roche 31077 Toulouse - France
   
   All rights reserved. This program and the accompanying materials
@@ -16,6 +16,8 @@
       Khalil Drira - Management and initial specification.
       Yassine Banouar - Initial specification, conception, implementation, test 
   		and documentation.
+      Guillaume Garzone - Conception, implementation, test and documentation.
+      Francois Aissaoui - Conception, implementation, test and documentation.
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
@@ -25,6 +27,6 @@
   <parent>
   	<groupId>org.eclipse.om2m</groupId>
   	<artifactId>org.eclipse.om2m</artifactId>
-  	<version>1.0.0-SNAPSHOT</version>
+  	<version>0.8.0-SNAPSHOT</version>
   </parent>
 </project>

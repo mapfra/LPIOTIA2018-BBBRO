@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013-2014 LAAS-CNRS (www.laas.fr) 
+ * Copyright (c) 2013-2015 LAAS-CNRS (www.laas.fr) 
  * 7 Colonel Roche 31077 Toulouse - France
  * 
  * All rights reserved. This program and the accompanying materials
@@ -16,17 +16,14 @@
  *     Khalil Drira - Management and initial specification.
  *     Yassine Banouar - Initial specification, conception, implementation, test 
  * 		and documentation.
+ *     Guillaume Garzone - Conception, implementation, test and documentation.
+ *     Francois Aissaoui - Conception, implementation, test and documentation.
  ******************************************************************************/
 package org.eclipse.om2m.core.dao;
 
-import java.util.Date;
+import javax.persistence.EntityManager;
 
 import org.eclipse.om2m.commons.resource.ContainerAnnc;
-import org.eclipse.om2m.commons.resource.Containers;
-import org.eclipse.om2m.commons.utils.DateConverter;
-
-import com.db4o.ObjectSet;
-import com.db4o.query.Query;
 
 /**
  * Implements CRUD Methods for {@link ContainerAnnc} resource persistence.
@@ -40,108 +37,22 @@ import com.db4o.query.Query;
 public class ContainerAnncDAO extends DAO<ContainerAnnc> {
 
     /**
-     * Creates an {@link ContainerAnnc} resource in the DataBase and validates the transaction
-     * @param resource - The {@link ContainerAnnc} resource to create
-     */
-    public void create(ContainerAnnc resource) {
-        // Store the created resource
-        DB.store(resource);
-     // Create the query based on the uri constraint
-        Query query = DB.query();
-        query.constrain(Containers.class);
-        query.descend("uri").constrain(resource.getUri().split("/"+resource.getId())[0]);
-        // Store all the founded resources
-        ObjectSet<Containers> result = query.execute();
-        
-        // Update the lastModifiedTime attribute of the parent
-        Containers containers = result.get(0);
-        // Update the lastModifiedTime attribute of the parent
-        containers.setLastModifiedTime(DateConverter.toXMLGregorianCalendar(new Date()).toString());
-        DB.store(containers);
-        // Validate the current transaction
-        commit();
-    }
-
-    /**
      * Retrieves the {@link ContainerAnnc} resource from the Database based on its uri
      * @param uri - uri of the {@link ContainerAnnc} resource to retrieve
      * @return The requested {@link ContainerAnnc} resource otherwise null
      */
-    public ContainerAnnc find(String uri) {
-        // Create the query based on the uri constraint
-        Query query = DB.query();
-        query.constrain(ContainerAnnc.class);
-        query.descend("uri").constrain(uri);
-        // Store all the founded resources
-        ObjectSet<ContainerAnnc> result = query.execute();
-        // Retrieve the first element corresponding to the researched resource if result is not empty
-        if (!result.isEmpty()) {
-            return result.get(0);
-        }
+    public ContainerAnnc find(String uri, EntityManager em) {
+    	ContainerAnnc resource = em.find(ContainerAnnc.class, uri);
         // Return null if the resource is not found
-        return null;
-    }
-
-    /**
-     * Retrieves the {@link ContainerAnnc} resource from the Database based on the uri
-     * @param uri - uri of the {@link ContainerAnnc} resource
-     * @return The requested {@link ContainerAnnc} resource otherwise null
-     */
-    public ContainerAnnc lazyFind(String uri) {
-        return find(uri);
-    }
-
-    /**
-     * Updates an existing {@link ContainerAnnc} resource in the DataBase
-     * @param resource - The {@link ContainerAnnc} the updated resource
-     */
-    public void update(ContainerAnnc resource) {
-        // Store the updated resource
-        DB.store(resource);
-     // Create the query based on the uri constraint
-        Query query = DB.query();
-        query.constrain(Containers.class);
-        query.descend("uri").constrain(resource.getUri().split("/"+resource.getId())[0]);
-        // Store all the founded resources
-        ObjectSet<Containers> result = query.execute();
-        
-        // Update the lastModifiedTime attribute of the parent
-        Containers containers = result.get(0);
-        // Update the lastModifiedTime attribute of the parent
-        containers.setLastModifiedTime(DateConverter.toXMLGregorianCalendar(new Date()).toString());
-        DB.store(containers);
-        commit();
-    }
-
-    /**
-     * Deletes the {@link ContainerAnnc} resource from the DataBase and validates the transaction
-     * @Param the {@link ContainerAnnc} resource to delete
-     */
-    public void delete(ContainerAnnc resource) {
-        // Delete the resource
-        lazyDelete(resource);
-        // Validate the current transaction
-        commit();
+    	return resource;
     }
 
     /**
      * Deletes the {@link ContainerAnnc} resource from the DataBase without validating the transaction
      * @param resource - The {@link ContainerAnnc} resource to delete
      */
-    public void lazyDelete(ContainerAnnc resource) {
+    public void delete(ContainerAnnc resource, EntityManager em) {
         // Delete the resource
-        DB.delete(resource);
-     // Create the query based on the uri constraint
-        Query query = DB.query();
-        query.constrain(Containers.class);
-        query.descend("uri").constrain(resource.getUri().split("/"+resource.getId())[0]);
-        // Store all the founded resources
-        ObjectSet<Containers> result = query.execute();
-        
-        // Update the lastModifiedTime attribute of the parent
-        Containers containers = result.get(0);
-        // Update the lastModifiedTime attribute of the parent
-        containers.setLastModifiedTime(DateConverter.toXMLGregorianCalendar(new Date()).toString());
-        DB.store(containers);
+    	em.remove(resource);
     }
 }

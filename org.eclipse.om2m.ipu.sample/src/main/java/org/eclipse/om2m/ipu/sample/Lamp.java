@@ -19,13 +19,13 @@
  ******************************************************************************/
 package org.eclipse.om2m.ipu.sample;
 
-import obix.Bool;
-import obix.Contract;
-import obix.Obj;
-import obix.Op;
-import obix.Str;
-import obix.Uri;
-import obix.io.ObixEncoder;
+import org.eclipse.om2m.commons.obix.Bool;
+import org.eclipse.om2m.commons.obix.Contract;
+import org.eclipse.om2m.commons.obix.Obj;
+import org.eclipse.om2m.commons.obix.Op;
+import org.eclipse.om2m.commons.obix.Str;
+import org.eclipse.om2m.commons.obix.Uri;
+import org.eclipse.om2m.commons.obix.io.ObixEncoder;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

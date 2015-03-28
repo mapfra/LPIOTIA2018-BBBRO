@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013-2014 LAAS-CNRS (www.laas.fr) 
+ * Copyright (c) 2013-2015 LAAS-CNRS (www.laas.fr) 
  * 7 Colonel Roche 31077 Toulouse - France
  * 
  * All rights reserved. This program and the accompanying materials
@@ -16,18 +16,24 @@
  *     Khalil Drira - Management and initial specification.
  *     Yassine Banouar - Initial specification, conception, implementation, test 
  * 		and documentation.
+ *     Guillaume Garzone - Conception, implementation, test and documentation.
+ *     Francois Aissaoui - Conception, implementation, test and documentation.
  ******************************************************************************/
 package org.eclipse.om2m.core.controller;
+
+import javax.persistence.EntityManager;
 
 import org.eclipse.om2m.commons.resource.Container;
 import org.eclipse.om2m.commons.resource.ContentInstances;
 import org.eclipse.om2m.commons.resource.ErrorInfo;
+import org.eclipse.om2m.commons.resource.Refs;
 import org.eclipse.om2m.commons.resource.StatusCode;
 import org.eclipse.om2m.commons.rest.RequestIndication;
 import org.eclipse.om2m.commons.rest.ResponseConfirm;
 import org.eclipse.om2m.commons.utils.XmlMapper;
 import org.eclipse.om2m.core.constants.Constants;
 import org.eclipse.om2m.core.dao.DAOFactory;
+import org.eclipse.om2m.core.dao.DBAccess;
 
 /**
  * Implements Create, Retrieve, Update, Delete and Execute methods to handle
@@ -79,18 +85,25 @@ public class ContentInstancesController extends Controller {
         // currentByteSize:             (response M*)
 
         ResponseConfirm errorResponse = new ResponseConfirm();
-        ContentInstances contentInstances =  DAOFactory.getContentInstancesDAO().find(requestIndication.getTargetID());
+        EntityManager em = DBAccess.createEntityManager();
+        em.getTransaction().begin();
+        ContentInstances contentInstances =  DAOFactory.getContentInstancesDAO().find(requestIndication.getTargetID(), em);
 
         // Check the resource existence
         if (contentInstances == null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_NOT_FOUND,requestIndication.getTargetID()+" does not exist")) ;
         }
         // Check AccessRight of the Container Parent
-        Container container = DAOFactory.getContainerDAO().find(requestIndication.getTargetID().split("/contentInstances")[0]);
+        Container container = DAOFactory.getContainerDAO().find(requestIndication.getTargetID().split(Refs.CONTENTINSTANCES_REF)[0], em);
         errorResponse = checkAccessRight(container.getAccessRightID(), requestIndication.getRequestingEntity(), Constants.AR_READ);
+        em.close();
         if (errorResponse != null) {
             return errorResponse;
         }
+        
+        contentInstances.setSubscriptionsReference(contentInstances.getUri()+Refs.SUBSCRIPTIONS_REF);
+        
         String xmlContentInstances = XmlMapper.getInstance().objectToXml(contentInstances);
         // Response
         contentInstances.getContentInstanceCollection().getContentInstance().clear();

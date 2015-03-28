@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013-2014 LAAS-CNRS (www.laas.fr) 
+ * Copyright (c) 2013-2015 LAAS-CNRS (www.laas.fr) 
  * 7 Colonel Roche 31077 Toulouse - France
  * 
  * All rights reserved. This program and the accompanying materials
@@ -70,6 +70,10 @@ import org.eclipse.om2m.commons.resource.Subscriptions;
 
 
 public class DAOFactory {
+	
+	private DAOFactory(){
+		//UTILITY CLASS
+	}
 
     /**
      * Returns an instance of the {@link SclBaseDAO}

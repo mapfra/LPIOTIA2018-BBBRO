@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013-2014 LAAS-CNRS (www.laas.fr) 
+ * Copyright (c) 2013-2015 LAAS-CNRS (www.laas.fr) 
  * 7 Colonel Roche 31077 Toulouse - France
  * 
  * All rights reserved. This program and the accompanying materials
@@ -16,16 +16,22 @@
  *     Khalil Drira - Management and initial specification.
  *     Yassine Banouar - Initial specification, conception, implementation, test 
  * 		and documentation.
+ *     Guillaume Garzone - Conception, implementation, test and documentation.
+ *     Francois Aissaoui - Conception, implementation, test and documentation.
  ******************************************************************************/
 package org.eclipse.om2m.core.controller;
+
+import javax.persistence.EntityManager;
 
 import org.eclipse.om2m.commons.resource.ErrorInfo;
 import org.eclipse.om2m.commons.resource.ExecInstances;
 import org.eclipse.om2m.commons.resource.StatusCode;
+import org.eclipse.om2m.commons.resource.Refs;
 import org.eclipse.om2m.commons.rest.RequestIndication;
 import org.eclipse.om2m.commons.rest.ResponseConfirm;
 import org.eclipse.om2m.core.constants.Constants;
 import org.eclipse.om2m.core.dao.DAOFactory;
+import org.eclipse.om2m.core.dao.DBAccess;
 
 /**
  * Implements Create, Retrieve, Update, Delete and Execute methods to handle
@@ -68,17 +74,24 @@ public class ExecInstancesController extends Controller {
         // lastModifiedTime:        (response M)
 
         ResponseConfirm errorResponse = new ResponseConfirm();
-        ExecInstances execInstances = DAOFactory.getExecInstancesDAO().find(requestIndication.getTargetID());
-
+        EntityManager em = DBAccess.createEntityManager();
+        em.getTransaction().begin();
+        String accessRightID = getAccessRightId(requestIndication.getTargetID(), em);
+        
         // Check the resource existence
-        if (execInstances == null) {
+        if (accessRightID == null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_NOT_FOUND,requestIndication.getTargetID()+" does not exist")) ;
         }
         // Check sclBase AccessRight
-        errorResponse = checkAccessRight(DAOFactory.getSclBaseDAO().lazyFind(Constants.SCL_ID).getAccessRightID(), requestIndication.getRequestingEntity(), Constants.AR_READ);
+        errorResponse = checkAccessRight(accessRightID, requestIndication.getRequestingEntity(), Constants.AR_READ);
         if (errorResponse != null) {
+        	em.close();
             return errorResponse;
         }
+        ExecInstances execInstances = DAOFactory.getExecInstancesDAO().find(requestIndication.getTargetID(), em);
+        execInstances.setSubscriptionsReference(execInstances.getUri() + Refs.SUBSCRIPTIONS_REF);
+        em.close();
         // Response
         return new ResponseConfirm(StatusCode.STATUS_OK, execInstances);
     }

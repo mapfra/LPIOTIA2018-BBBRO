@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013-2014 LAAS-CNRS (www.laas.fr) 
+ * Copyright (c) 2013-2015 LAAS-CNRS (www.laas.fr) 
  * 7 Colonel Roche 31077 Toulouse - France
  * 
  * All rights reserved. This program and the accompanying materials
@@ -16,22 +16,29 @@
  *     Khalil Drira - Management and initial specification.
  *     Yassine Banouar - Initial specification, conception, implementation, test 
  * 		and documentation.
+ *     Guillaume Garzone - Conception, implementation, test and documentation.
+ *     Francois Aissaoui - Conception, implementation, test and documentation.
  ******************************************************************************/
 package org.eclipse.om2m.core.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import javax.persistence.EntityManager;
 
 import org.eclipse.om2m.commons.resource.Base64Binary;
 import org.eclipse.om2m.commons.resource.ErrorInfo;
 import org.eclipse.om2m.commons.resource.Group;
 import org.eclipse.om2m.commons.resource.MembersContentResponses;
-import org.eclipse.om2m.commons.resource.StatusCode;
 import org.eclipse.om2m.commons.resource.MembersContentResponses.Status;
+import org.eclipse.om2m.commons.resource.StatusCode;
 import org.eclipse.om2m.commons.rest.RequestIndication;
 import org.eclipse.om2m.commons.rest.ResponseConfirm;
 import org.eclipse.om2m.commons.utils.DateConverter;
 import org.eclipse.om2m.core.constants.Constants;
 import org.eclipse.om2m.core.dao.DAOFactory;
+import org.eclipse.om2m.core.dao.DBAccess;
 import org.eclipse.om2m.core.router.Router;
 
 /**
@@ -54,8 +61,10 @@ public class MembersContentController extends Controller {
     public ResponseConfirm fanOutRequestIndication (RequestIndication requestIndication) {
 
         String groupUri = requestIndication.getTargetID().split("/membersContent")[0];
-        Group group = DAOFactory.getGroupDAO().find(groupUri);
-
+        EntityManager em = DBAccess.createEntityManager();
+        em.getTransaction().begin();
+        Group group = DAOFactory.getGroupDAO().find(groupUri, em);
+        em.close();
         // Check Parent Existence
         if (group == null) {
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_NOT_FOUND,groupUri+" does not exist")) ;
@@ -64,6 +73,7 @@ public class MembersContentController extends Controller {
         final MembersContentResponses membersContentResponses = new MembersContentResponses();
 
         if (group.getMembers() != null && !group.getMembers().getReference().isEmpty()) {
+        	List<Thread> threadPool = new ArrayList<Thread>();
             for (int i=0; i<group.getMembers().getReference().size(); i++) {
                 // Get the members references
                 String memberReference = group.getMembers().getReference().get(i);
@@ -89,18 +99,26 @@ public class MembersContentController extends Controller {
                             responseBody.setValue(responseConfirm.getRepresentation().getBytes());
                             status.setResultBody(responseBody);
                         }
-                      membersContentResponses.getStatus().add(status);
+                       synchronized (membersContentResponses) {
+                    	   membersContentResponses.getStatus().add(status);						
+                       }	
                     }
                 };
+                threadPool.add(thread);
                 thread.start();
-                try {
-                    thread.join();
-                } catch (InterruptedException e) {
-                    LOGGER.error("Group request thread join error",e);
-                }
+//                try {
+//                    thread.join();
+//                } catch (InterruptedException e) {
+//                    LOGGER.error("Group request thread join error",e);
+//                }
             }
-
-
+            try{
+            	for (Thread t : threadPool){
+            		t.join();
+            	}
+            } catch (InterruptedException e){
+              LOGGER.error("Group request thread join error",e);
+            }
         }
 
         if(requestIndication.getMethod().equals(Constants.METHOD_CREATE)){

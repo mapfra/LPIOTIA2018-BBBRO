@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013-2014 LAAS-CNRS (www.laas.fr) 
+ * Copyright (c) 2013-2015 LAAS-CNRS (www.laas.fr) 
  * 7 Colonel Roche 31077 Toulouse - France
  * 
  * All rights reserved. This program and the accompanying materials
@@ -16,12 +16,17 @@
  *     Khalil Drira - Management and initial specification.
  *     Yassine Banouar - Initial specification, conception, implementation, test 
  * 		and documentation.
+ *     Guillaume Garzone - Conception, implementation, test and documentation.
+ *     Francois Aissaoui - Conception, implementation, test and documentation.
  ******************************************************************************/
 package org.eclipse.om2m.core.controller;
 
 import java.util.Date;
 
+import javax.persistence.EntityManager;
+
 import org.eclipse.om2m.commons.resource.ErrorInfo;
+import org.eclipse.om2m.commons.resource.Refs;
 import org.eclipse.om2m.commons.resource.SclBase;
 import org.eclipse.om2m.commons.resource.StatusCode;
 import org.eclipse.om2m.commons.rest.RequestIndication;
@@ -30,6 +35,7 @@ import org.eclipse.om2m.commons.utils.DateConverter;
 import org.eclipse.om2m.commons.utils.XmlMapper;
 import org.eclipse.om2m.core.constants.Constants;
 import org.eclipse.om2m.core.dao.DAOFactory;
+import org.eclipse.om2m.core.dao.DBAccess;
 import org.eclipse.om2m.core.notifier.Notifier;
 
 /**
@@ -89,8 +95,10 @@ public class SclBaseController extends Controller {
         // aPocHandling:            (response O)
 
         ResponseConfirm errorResponse = new ResponseConfirm();
-        SclBase sclBase = DAOFactory.getSclBaseDAO().find(requestIndication.getTargetID());
-
+        EntityManager em = DBAccess.createEntityManager();
+        em.getTransaction().begin();
+        SclBase sclBase = DAOFactory.getSclBaseDAO().find(requestIndication.getTargetID(), em);
+        em.close();
         if (sclBase == null) {
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_NOT_FOUND,requestIndication.getTargetID()+ "does not exist")) ;
         }
@@ -99,6 +107,15 @@ public class SclBaseController extends Controller {
         if (errorResponse != null) {
             return errorResponse;
         }
+
+		sclBase.setAccessRightsReference(sclBase.getUri() + Refs.ACCESSRIGHTS_REF);
+		sclBase.setApplicationsReference(sclBase.getUri() + Refs.APPLICATIONS_REF);
+		sclBase.setContainersReference(sclBase.getUri() + Refs.CONTAINERS_REF);
+		sclBase.setDiscoveryReference(sclBase.getUri() + "/discovery");
+		sclBase.setGroupsReference(sclBase.getUri() + Refs.GROUPS_REF);
+		sclBase.setSclsReference(sclBase.getUri() + Refs.SCLS_REF);
+		sclBase.setSubscriptionsReference(sclBase.getUri() + Refs.SUBSCRIPTIONS_REF);
+		
         // Response
         return new ResponseConfirm(StatusCode.STATUS_OK, sclBase);
     }
@@ -124,68 +141,88 @@ public class SclBaseController extends Controller {
         // aPocHandling:            (updateReq O)  (response O)
 
         ResponseConfirm errorResponse = new ResponseConfirm();
-        SclBase sclBase = DAOFactory.getSclBaseDAO().find(requestIndication.getTargetID());
+        EntityManager em = DBAccess.createEntityManager();
+        em.getTransaction().begin();
+        SclBase sclBase = DAOFactory.getSclBaseDAO().find(requestIndication.getTargetID(), em);
 
         // Check resource Existence
         if (sclBase == null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_NOT_FOUND,requestIndication.getTargetID()+ "does not exist")) ;
         }
         // Check AccessRight
         errorResponse = checkAccessRight(sclBase.getAccessRightID(), requestIndication.getRequestingEntity(), Constants.AR_WRITE);
         if (errorResponse != null) {
+        	em.close();
             return errorResponse;
         }
         // Check Resource Representation
         if (requestIndication.getRepresentation() == null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Resource Representation is EMPTY")) ;
         }
-        // Check XML Validity
-        errorResponse = checkMessageSyntax(requestIndication.getRepresentation(),"sclBase.xsd");
-        if (errorResponse != null) {
-            return errorResponse;
-        }
         // Check Attributes
-        SclBase sclBaseNew = (SclBase) XmlMapper.getInstance().xmlToObject(requestIndication.getRepresentation());
+        SclBase sclBaseNew = null ;  
+        try{
+        	sclBaseNew = (SclBase) XmlMapper.getInstance().xmlToObject(requestIndication.getRepresentation());
+        } catch (ClassCastException e){
+        	em.close();
+        	LOGGER.debug("ClassCastException : Incorrect resource type in JAXB unmarshalling.",e);
+            return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST, "Incorrect resource type"));
+        }
+        if (sclBaseNew == null){
+        	em.close();
+            return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST, "Incorrect resource representation syntax")) ;
+        }
         // Scls References Must be NP
         if (sclBaseNew.getSclsReference() != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"sclsReference UPDATE is Not Permitted")) ;
         }
         // Applications Reference Must be NP
         if (sclBaseNew.getApplicationsReference() != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"ApplicationsReference UPDATE is Not Permitted")) ;
         }
         // ContainersReferences Must be NP
         if (sclBaseNew.getContainersReference() != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"ContainersReference UPDATE is Not Permitted")) ;
         }
         // GroupsReferences Must be NP
         if (sclBaseNew.getGroupsReference() != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"GroupsReference UPDATE is Not Permitted")) ;
         }
         // AccessRightsReferences Must be NP
         if (sclBaseNew.getAccessRightsReference() != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"AcessRightsReference UPDATE is Not Permitted")) ;
         }
         // SubscriptionsReference Must be NP
         if (sclBaseNew.getSubscriptionsReference() != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"SubscriptionsReference UPDATE is Not Permitted")) ;
         }
         // DiscoveryReference Must be NP
         if (sclBaseNew.getDiscoveryReference() != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"DiscoveryReference UPDATE is Not Permitted")) ;
         }
         // CreationTime Must be NP
         if (sclBaseNew.getCreationTime() != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Creation Time UPDATE is Not Permitted")) ;
         }
         // LastModifiedTime Must be NP
         if (sclBaseNew.getLastModifiedTime() != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Last Modified Time UPDATE is Not Permitted")) ;
         }
 
         // Storage
         // Set accessRightID if it exists
-        if (DAOFactory.getAccessRightDAO().find(sclBaseNew.getAccessRightID()) != null) {
+        if (DAOFactory.getAccessRightDAO().find(sclBaseNew.getAccessRightID(), em) != null) {
             sclBase.setAccessRightID(sclBaseNew.getAccessRightID());
         }
         if (sclBaseNew.getSearchStrings() != null) {
@@ -198,7 +235,19 @@ public class SclBaseController extends Controller {
         Notifier.notify(StatusCode.STATUS_OK, sclBase);
 
         // Store sclBase
-        DAOFactory.getSclBaseDAO().update(sclBase);
+        DAOFactory.getSclBaseDAO().update(sclBase, em);
+        
+        em.getTransaction().commit();
+        em.close();
+        
+		sclBase.setAccessRightsReference(sclBase.getUri() + Refs.ACCESSRIGHTS_REF);
+		sclBase.setApplicationsReference(sclBase.getUri() + Refs.APPLICATIONS_REF);
+		sclBase.setContainersReference(sclBase.getUri() + Refs.CONTAINERS_REF);
+		sclBase.setDiscoveryReference(sclBase.getUri() + "/discovery");
+		sclBase.setGroupsReference(sclBase.getUri() + Refs.GROUPS_REF);
+		sclBase.setSclsReference(sclBase.getUri() + Refs.SCLS_REF);
+		sclBase.setSubscriptionsReference(sclBase.getUri() + Refs.SUBSCRIPTIONS_REF);
+		
         // Response
         return new ResponseConfirm(StatusCode.STATUS_OK, sclBase);
     }

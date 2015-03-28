@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013-2014 LAAS-CNRS (www.laas.fr) 
+ * Copyright (c) 2013-2015 LAAS-CNRS (www.laas.fr) 
  * 7 Colonel Roche 31077 Toulouse - France
  * 
  * All rights reserved. This program and the accompanying materials
@@ -16,8 +16,12 @@
  *     Khalil Drira - Management and initial specification.
  *     Yassine Banouar - Initial specification, conception, implementation, test 
  * 		and documentation.
+ *     Guillaume Garzone - Conception, implementation, test and documentation.
+ *     Francois Aissaoui - Conception, implementation, test and documentation.
  ******************************************************************************/
 package org.eclipse.om2m.core.controller;
+
+import javax.persistence.EntityManager;
 
 import org.eclipse.om2m.commons.resource.ErrorInfo;
 import org.eclipse.om2m.commons.resource.StatusCode;
@@ -27,6 +31,7 @@ import org.eclipse.om2m.commons.rest.RequestIndication;
 import org.eclipse.om2m.commons.rest.ResponseConfirm;
 import org.eclipse.om2m.core.constants.Constants;
 import org.eclipse.om2m.core.dao.DAOFactory;
+import org.eclipse.om2m.core.dao.DBAccess;
 
 /**
  * Implements Create, Retrieve, Update, Delete and Execute methods to handle
@@ -61,19 +66,30 @@ public class SubscriptionsController extends Controller {
     public ResponseConfirm doRetrieve (RequestIndication requestIndication) {
 
         ResponseConfirm errorResponse = new ResponseConfirm();
-        Subscriptions subscriptions = DAOFactory.getSubscriptionsDAO().find(requestIndication.getTargetID());
-
+        
+        // Creating link to database
+        EntityManager em = DBAccess.createEntityManager();
+        em.getTransaction().begin();
+        // Get accessRightId of the collection
+        String accessRightID = getAccessRightId(requestIndication.getTargetID(), em);
+        
         // Check the resource existence
-        if (subscriptions == null) {
+        if (accessRightID == null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_NOT_FOUND,requestIndication.getTargetID()+" does not exist")) ;
         }
         // Check AccessRight
-        errorResponse = checkAccessRight(getAccessRightID(subscriptions.getUri()), requestIndication.getRequestingEntity(), Constants.AR_READ);
+        errorResponse = checkAccessRight(accessRightID, requestIndication.getRequestingEntity(), Constants.AR_READ);
         if (errorResponse != null) {
+        	em.close();
             return errorResponse;
         }
+        
+        Subscriptions subscriptions = DAOFactory.getSubscriptionsDAO().find(requestIndication.getTargetID(), em);
+        em.close();
+        
         // Response
-        return new ResponseConfirm(StatusCode.STATUS_OK, DAOFactory.getSubscriptionsDAO().find(requestIndication.getTargetID()));
+        return new ResponseConfirm(StatusCode.STATUS_OK, subscriptions);
 
     }
 
@@ -112,28 +128,4 @@ public class SubscriptionsController extends Controller {
         return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_NOT_IMPLEMENTED,requestIndication.getMethod()+" Method is not implmented"));
     }
 
-    /**
-     * Get the subscriptions collection parent AccessRightID
-     * @param subscriptionsUri
-     * @return accessRightID
-     */
-    public String getAccessRightID(String subscriptionsUri) {
-        String parentSubsUri;
-        // Return Container AccessRightID if ContentInstances resource is the parent
-        if (subscriptionsUri.contains("contentInstances")) {
-            parentSubsUri = subscriptionsUri.split("/contentInstances")[0];
-            return DAOFactory.getResourceDAO().find(parentSubsUri).getAccessRightID();
-        }
-        parentSubsUri = subscriptionsUri.split("/subscriptions")[0];
-
-        // Return AccessRightID if AccessRight resource is the parent
-        if(parentSubsUri.split("/").length>1){
-            if("accessRights".equals(parentSubsUri.split("/")[parentSubsUri.split("/").length-2])){
-                return parentSubsUri;
-            }
-        }
-
-        // Return parent AccessRightID for other resources
-        return DAOFactory.getResourceDAO().find(parentSubsUri).getAccessRightID();
-    }
 }

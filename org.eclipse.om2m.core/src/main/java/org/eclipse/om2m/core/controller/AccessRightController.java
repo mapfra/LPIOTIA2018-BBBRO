@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013-2014 LAAS-CNRS (www.laas.fr)
+ * Copyright (c) 2013-2015 LAAS-CNRS (www.laas.fr)
  * 7 Colonel Roche 31077 Toulouse - France
  *
  * All rights reserved. This program and the accompanying materials
@@ -16,15 +16,19 @@
  *     Khalil Drira - Management and initial specification.
  *     Yassine Banouar - Initial specification, conception, implementation, test
  *         and documentation.
+ *     Guillaume Garzone - Conception, implementation, test and documentation.
+ *     Francois Aissaoui - Conception, implementation, test and documentation.
  ******************************************************************************/
 package org.eclipse.om2m.core.controller;
 
 import java.util.Date;
 
+import javax.persistence.EntityManager;
+
 import org.eclipse.om2m.commons.resource.AccessRight;
-import org.eclipse.om2m.commons.resource.AccessRights;
 import org.eclipse.om2m.commons.resource.AnnounceTo;
 import org.eclipse.om2m.commons.resource.ErrorInfo;
+import org.eclipse.om2m.commons.resource.Refs;
 import org.eclipse.om2m.commons.resource.StatusCode;
 import org.eclipse.om2m.commons.rest.RequestIndication;
 import org.eclipse.om2m.commons.rest.ResponseConfirm;
@@ -33,6 +37,7 @@ import org.eclipse.om2m.commons.utils.XmlMapper;
 import org.eclipse.om2m.core.announcer.Announcer;
 import org.eclipse.om2m.core.constants.Constants;
 import org.eclipse.om2m.core.dao.DAOFactory;
+import org.eclipse.om2m.core.dao.DBAccess;
 import org.eclipse.om2m.core.notifier.Notifier;
 
 /**
@@ -65,31 +70,46 @@ public class AccessRightController extends Controller {
         // id:                      (createReq O)  (response M*)
 
         ResponseConfirm errorResponse = new ResponseConfirm();
-        AccessRights accessRights = DAOFactory.getAccessRightsDAO().lazyFind(requestIndication.getTargetID());
-
+        
+        EntityManager em = DBAccess.createEntityManager();
+        em.getTransaction().begin();
+        
+        String accessRightID = this.getAccessRightId(requestIndication.getTargetID(), em);
+        
         // Check Parent Resource Existence
-        if (accessRights == null) {
+        if (accessRightID == null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_NOT_FOUND,requestIndication.getTargetID()+" does not exist")) ;
         }
         // Check AccessRight
-        errorResponse = checkAccessRight(accessRights.getAccessRightID(), requestIndication.getRequestingEntity(), Constants.AR_CREATE);
+        errorResponse = checkAccessRight(accessRightID, requestIndication.getRequestingEntity(), Constants.AR_CREATE);
         if (errorResponse != null) {
+        	em.close();
             return errorResponse;
         }
         // Check Resource Representation
         if (requestIndication.getRepresentation() == null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Resource Representation is EMPTY")) ;
         }
-        // Check XML Validity
-        errorResponse = checkMessageSyntax(requestIndication.getRepresentation(),"accessRight.xsd");
-        if (errorResponse != null) {
-            return errorResponse;
-        }
         // Generate the Object from the XML Representation
-        AccessRight accessRight = (AccessRight) XmlMapper.getInstance().xmlToObject(requestIndication.getRepresentation());
+        AccessRight accessRight = null ; 
+        try{
+        	accessRight = (AccessRight) XmlMapper.getInstance().xmlToObject(requestIndication.getRepresentation());
+        } catch (ClassCastException e){
+        	em.close();
+        	LOGGER.debug("ClassCastException : Incorrect resource type in JAXB unmarshalling.",e);
+        	return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST, "Incorrect resource type"));
+        }
+        if (accessRight == null){
+        	em.close();
+        	return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST, "Incorrect resource representation syntax")) ;
+        }
+        
         // Checks on Attributes
         // Check the Id uniqueness
-        if (accessRight.getId() != null && DAOFactory.getAccessRightDAO().find(requestIndication.getTargetID()+"/"+accessRight.getId()) != null) {
+        if (accessRight.getId() != null && DAOFactory.getAccessRightDAO().find(requestIndication.getTargetID()+"/"+accessRight.getId(), em) != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_CONFLICT,"Access Right Id Conflit")) ;
         }
         // Generate the Id if does not exist
@@ -98,22 +118,27 @@ public class AccessRightController extends Controller {
         }
         // Check ExpirationTime
         if (accessRight.getExpirationTime() != null && !checkExpirationTime(accessRight.getExpirationTime())) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Expiration Time is out of Date")) ;
         }
         // SubscriptionsReference Must be NP
         if (accessRight.getSubscriptionsReference() != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Subscriptions Reference is not Permitted")) ;
         }
         // CreationTime Must be NP
         if (accessRight.getCreationTime() != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Creation Time is not Permitted")) ;
         }
         // LastModifiedTime Must be NP
         if (accessRight.getLastModifiedTime() != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Last Modified Time is Not Permitted")) ;
         }
         // selfPermissions attribute is Mandatory
         if (accessRight.getSelfPermissions().getPermission() == null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"selfPermissions attribute is Mandatory")) ;
         }
         // Storage
@@ -136,7 +161,7 @@ public class AccessRightController extends Controller {
             accessRight.setAnnounceTo(announceTo);
         }
         // Set References
-        accessRight.setSubscriptionsReference(accessRight.getUri()+"/subscriptions");
+        accessRight.setSubscriptionsReference(accessRight.getUri()+Refs.SUBSCRIPTIONS_REF);
         // Set CreationTime
         accessRight.setCreationTime(DateConverter.toXMLGregorianCalendar(new Date()).toString());
         // Set LastModifiedTime
@@ -151,7 +176,11 @@ public class AccessRightController extends Controller {
         Notifier.notify(StatusCode.STATUS_CREATED, accessRight);
 
         // Store accessRight
-        DAOFactory.getAccessRightDAO().create(accessRight);
+        DAOFactory.getAccessRightDAO().create(accessRight, em);
+        
+        em.getTransaction().commit();
+        em.close();
+        
         // Response
         return new ResponseConfirm(StatusCode.STATUS_CREATED, accessRight);
     }
@@ -174,7 +203,11 @@ public class AccessRightController extends Controller {
         // id:                      (response M*)
 
         ResponseConfirm errorResponse = new ResponseConfirm();
-        AccessRight accessRight = DAOFactory.getAccessRightDAO().find(requestIndication.getTargetID());
+        
+        EntityManager em = DBAccess.createEntityManager();
+        em.getTransaction().begin();
+        AccessRight accessRight = DAOFactory.getAccessRightDAO().find(requestIndication.getTargetID(), em);
+        em.close();
 
         // Check resource existence
         if (accessRight == null) {
@@ -185,7 +218,10 @@ public class AccessRightController extends Controller {
         if (errorResponse != null) {
             return errorResponse;
         }
-        // Response
+        
+		accessRight.setSubscriptionsReference(accessRight.getUri()+Refs.SUBSCRIPTIONS_REF);
+        
+		// Response
         return new ResponseConfirm(StatusCode.STATUS_OK, accessRight);
     }
 
@@ -207,50 +243,67 @@ public class AccessRightController extends Controller {
         // id:                      (updateReq NP) (response M*)
 
         ResponseConfirm errorResponse = new ResponseConfirm();
-        AccessRight accessRight = DAOFactory.getAccessRightDAO().find(requestIndication.getTargetID());
+        EntityManager em = DBAccess.createEntityManager();
+        em.getTransaction().begin();
+        AccessRight accessRight = DAOFactory.getAccessRightDAO().find(requestIndication.getTargetID(), em);
 
         // Check Existence
         if (accessRight == null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_NOT_FOUND,requestIndication.getTargetID()+" does not exist in DataBase")) ;
         }
         // Check AccessRight Based on self Permissions
         errorResponse =  checkSelfPermissions(accessRight.getSelfPermissions(), requestIndication.getRequestingEntity(), Constants.AR_WRITE);
         if (errorResponse != null) {
+        	em.close();
             return errorResponse;
         }
         // Check Resource Representation
         if (requestIndication.getRepresentation() == null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Resource Representation is EMPTY")) ;
         }
-        //Check XML Validity
-        errorResponse= checkMessageSyntax(requestIndication.getRepresentation(),"accessRight.xsd");
-        if (errorResponse != null) {
-            return errorResponse;
+        // Checks on attributes 
+        AccessRight accessRightNew = null ; 
+        try{
+        	accessRightNew = (AccessRight) XmlMapper.getInstance().xmlToObject(requestIndication.getRepresentation());
+        } catch (ClassCastException e){
+        	em.close();
+        	LOGGER.debug("ClassCastException : Incorrect resource type in JAXB unmarshalling.",e);
+        	return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST, "Incorrect resource type"));
         }
-        // Checks on attributes
-        AccessRight accessRightNew = (AccessRight) XmlMapper.getInstance().xmlToObject(requestIndication.getRepresentation());
+        if (accessRightNew == null){
+        	em.close();
+        	return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST, "Incorrect resource representation syntax")) ;
+        }
         // The Update of the accessRightId is NP
         if (accessRightNew.getId() != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"accessRightId is not Permitted")) ;
         }
         // Check ExpirationTime
         if (accessRightNew.getExpirationTime() != null && !checkExpirationTime(accessRightNew.getExpirationTime())) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Expiration Time is out of Date")) ;
         }
         // SubscriptionsReference Must be NP
         if (accessRightNew.getSubscriptionsReference() != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Subscriptions Reference is not Permitted")) ;
         }
         // CreationTime Must be NP
         if (accessRightNew.getCreationTime() != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Creation Time is not Permitted")) ;
         }
         // LastModifiedTime Must be NP
         if (accessRightNew.getLastModifiedTime() != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Last Modified Time is not Permitted")) ;
         }
         // selfPermissions is Mandatory
         if (accessRightNew.getSelfPermissions().getPermission() == null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"selfPermissions attribute is Mandatory")) ;
         }
         // Storage
@@ -278,7 +331,13 @@ public class AccessRightController extends Controller {
         Notifier.notify(StatusCode.STATUS_OK, accessRight);
 
         // Store accessRight
-        DAOFactory.getAccessRightDAO().update(accessRight);
+        DAOFactory.getAccessRightDAO().update(accessRight, em);
+        
+        em.getTransaction().commit();
+        em.close();
+
+		accessRight.setSubscriptionsReference(accessRight.getUri()+Refs.SUBSCRIPTIONS_REF);
+        
         // Response
         return new ResponseConfirm(StatusCode.STATUS_OK, accessRight);
     }
@@ -291,15 +350,19 @@ public class AccessRightController extends Controller {
     public ResponseConfirm doDelete (RequestIndication requestIndication) {
 
         ResponseConfirm errorResponse = new ResponseConfirm();
-        AccessRight accessRight = DAOFactory.getAccessRightDAO().find(requestIndication.getTargetID());
+        EntityManager em = DBAccess.createEntityManager();
+        em.getTransaction().begin();
+        AccessRight accessRight = DAOFactory.getAccessRightDAO().find(requestIndication.getTargetID(), em);
 
         // Check Resource Existence
         if (accessRight == null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_NOT_FOUND,requestIndication.getTargetID()+" does not exist")) ;
         }
         // Check AccessRight Based on self Permissions
         errorResponse = checkSelfPermissions(accessRight.getSelfPermissions(), requestIndication.getRequestingEntity(), Constants.AR_DELETE);
         if (errorResponse != null) {
+        	em.close();
             return errorResponse;
         }
 
@@ -312,7 +375,10 @@ public class AccessRightController extends Controller {
         Notifier.notify(StatusCode.STATUS_DELETED, accessRight);
 
         // Delete
-        DAOFactory.getAccessRightDAO().delete(accessRight);
+        DAOFactory.getAccessRightDAO().delete(accessRight, em);
+        em.getTransaction().commit();
+        em.close();
+        
         // Response
         return new ResponseConfirm(StatusCode.STATUS_OK);
     }

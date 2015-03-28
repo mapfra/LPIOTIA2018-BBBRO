@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013-2014 LAAS-CNRS (www.laas.fr) 
+ * Copyright (c) 2013-2015 LAAS-CNRS (www.laas.fr) 
  * 7 Colonel Roche 31077 Toulouse - France
  * 
  * All rights reserved. This program and the accompanying materials
@@ -16,17 +16,19 @@
  *     Khalil Drira - Management and initial specification.
  *     Yassine Banouar - Initial specification, conception, implementation, test 
  * 		and documentation.
+ *     Guillaume Garzone - Conception, implementation, test and documentation.
+ *     Francois Aissaoui - Conception, implementation, test and documentation.
  ******************************************************************************/
 package org.eclipse.om2m.core.dao;
 
-import org.eclipse.om2m.commons.resource.ContentInstances;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+
+import org.eclipse.om2m.commons.resource.DBEntities;
 import org.eclipse.om2m.commons.resource.M2MPoc;
 import org.eclipse.om2m.commons.resource.M2MPocs;
 import org.eclipse.om2m.commons.resource.ReferenceToNamedResource;
-
-import com.db4o.ObjectContainer;
-import com.db4o.ObjectSet;
-import com.db4o.query.Query;
 
 /**
  * Implements CRUD Methods for {@link M2mPocs} collection resource persistence.
@@ -43,9 +45,9 @@ public class M2MPocsDAO extends DAO<M2MPocs> {
      * Creates an {@link M2MPocs} collection resource in the DataBase.
      * @param resource - The {@link M2MPocs} collection resource to create
      */
-    public void create(M2MPocs resource) {
-        // Store the created resource
-        DB.store(resource);
+	@Override
+    public void create(M2MPocs resource, EntityManager em) {
+		// NOT ALLOWED
     }
 
     /**
@@ -53,91 +55,48 @@ public class M2MPocsDAO extends DAO<M2MPocs> {
      * @param uri - uri of the {@link M2MPocs} collection resource
      * @return The requested {@link M2MPocs} collection resource otherwise null
      */
-    public M2MPocs find(String uri) {
-        M2MPocs m2mPocs = lazyFind(uri);
+    public M2MPocs find(String uri, EntityManager em) {
+        M2MPocs m2mPocs = new M2MPocs();
+        m2mPocs.setUri(uri);
+        m2mPocs.getM2MPocCollection().getNamedReference().clear();
 
-        if (m2mPocs != null){
-        	//ObjectContainer session = DB.ext().openSession();
+        //Find M2MPoc sub-resources and add their references
+        String q = DBUtil.generateLikeRequest(DBEntities.M2MPOC_ENTITY, uri);
+        javax.persistence.Query query = em.createQuery(q);
+        @SuppressWarnings("unchecked")
+        List<M2MPoc> result = query.getResultList();
 
-            //Find M2MPoc sub-resources and add their references
-            m2mPocs.getM2MPocCollection().getNamedReference().clear();
-            Query query = SESSION.query();
-            query.constrain(M2MPoc.class);
-            query.descend("uri").constrain(uri).startsWith(true);
-            ObjectSet<M2MPoc> result = query.execute();
-
-            for (int i = 0; i < result.size(); i++) {
-                ReferenceToNamedResource reference = new ReferenceToNamedResource();
-                reference.setId(result.get(i).getId());
-                reference.setValue(result.get(i).getUri());
-                m2mPocs.getM2MPocCollection().getNamedReference().add(reference);
-            }
+        for (int i = 0; i < result.size(); i++) {
+        	ReferenceToNamedResource reference = new ReferenceToNamedResource();
+        	reference.setId(result.get(i).getId());
+        	reference.setValue(result.get(i).getUri());
+        	m2mPocs.getM2MPocCollection().getNamedReference().add(reference);
         }
         return m2mPocs;
-    }
-
-    /**
-     * Retrieves the {@link M2MPocs} collection resource based on its uri without sub-resources references.
-     * @param uri - uri of the {@link M2MPocs} collection resource
-     * @return The requested {@link M2MPocs} collection resource otherwise null
-     */
-    public M2MPocs lazyFind(String uri) {
-    	//ObjectContainer session = DB.ext().openSession();
-
-        // Create the query based on the uri constraint
-        Query query = SESSION.query();
-        query.constrain(M2MPocs.class);
-        query.descend("uri").constrain(uri);
-        // Store all the founded resources
-        ObjectSet<M2MPocs> result = query.execute();
-        // Retrieve the first element corresponding to the researched resource if result is not empty
-        if (!result.isEmpty()) {
-        	M2MPocs obj = result.get(0);
-    		SESSION.ext().refresh(obj, 1);
-
-            return obj;
-        }
-        // Return null if the resource is not found
-        return null;
     }
 
     /**
      * Updates an existing {@link M2MPocs} collection resource in the DataBase
      * @param resource - The {@link M2MPocs} the updated resource
      */
-    public void update(M2MPocs resource) {
-        // Store the updated resource
-        DB.store(resource);
-        // Validate the current transaction
-        commit();
-    }
-
-    /**
-     * Deletes the {@link M2MPocs} collection resource from the DataBase and validates the transaction
-     * @Param the {@link M2MPocs} collection resource to delete
-     */
-    public void delete(M2MPocs resource) {
-        // Delete the resource
-        lazyDelete(resource);
-        // Validate the current transaction
-        commit();
+    @Override
+    public void update(M2MPocs resource, EntityManager em) {
+    	// NOT ALLOWED
     }
 
     /**
      * Deletes the {@link M2MPocs} collection resource from the DataBase without validating the transaction
      * @Param the {@link M2MPocs} collection resource to delete
      */
-    public void lazyDelete(M2MPocs resource) {
+    public void delete(M2MPocs resource, EntityManager em) {
         // Delete m2mPocs sub-resources
-        Query query = DB.query();
-        query.constrain(M2MPoc.class);
-        query.descend("uri").constrain(resource.getUri()).startsWith(true);
-        ObjectSet<M2MPoc> result = query.execute();
+    	String q = DBUtil.generateLikeRequest(DBEntities.M2MPOC_ENTITY, resource.getUri());
+    	javax.persistence.Query query = em.createQuery(q);
+    	@SuppressWarnings("unchecked")
+		List<M2MPoc> result = query.getResultList();
 
-        for (int i = 0; i < result.size(); i++) {
-            DAOFactory.getM2MPocDAO().lazyDelete(result.get(i));
+        for (M2MPoc m2mPoc : result) {
+            DAOFactory.getM2MPocDAO().delete(m2mPoc, em);
         }
-        // Delete the resource
-        DB.delete(resource);
     }
 }

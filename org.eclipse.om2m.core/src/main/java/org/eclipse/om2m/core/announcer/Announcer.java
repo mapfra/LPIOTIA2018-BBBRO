@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013-2014 LAAS-CNRS (www.laas.fr)
+ * Copyright (c) 2013-2015 LAAS-CNRS (www.laas.fr)
  * 7 Colonel Roche 31077 Toulouse - France
  *
  * All rights reserved. This program and the accompanying materials
@@ -22,6 +22,8 @@ package org.eclipse.om2m.core.announcer;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import javax.persistence.EntityManager;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.om2m.commons.resource.AccessRightAnnc;
@@ -30,6 +32,7 @@ import org.eclipse.om2m.commons.resource.AnyURIList;
 import org.eclipse.om2m.commons.resource.ApplicationAnnc;
 import org.eclipse.om2m.commons.resource.ContainerAnnc;
 import org.eclipse.om2m.commons.resource.GroupAnnc;
+import org.eclipse.om2m.commons.resource.Refs;
 import org.eclipse.om2m.commons.resource.Scl;
 import org.eclipse.om2m.commons.resource.SearchStrings;
 import org.eclipse.om2m.commons.rest.RequestIndication;
@@ -38,6 +41,7 @@ import org.eclipse.om2m.commons.utils.XmlMapper;
 import org.eclipse.om2m.core.comm.RestClient;
 import org.eclipse.om2m.core.constants.Constants;
 import org.eclipse.om2m.core.dao.DAOFactory;
+import org.eclipse.om2m.core.dao.DBAccess;
 
 /**
  *Announces/De-Announces resources for which the announcement attribute is activated for each Creation/Delete.
@@ -65,14 +69,12 @@ public class Announcer {
             String resourceId = uri.split("/")[uri.split("/").length - 1];
             String parentUri = uri.split("/"+resourceId)[0];
             String parentId = parentUri.split("/")[parentUri.split("/").length - 1];
-          
 
             // Retrieve the scls from the SclList without redundancies
             final ArrayList<String> uniqueReferencesList = new ArrayList<String>(
                     new HashSet<String>(announceTo.getSclList().getReference()));
             final AnyURIList sclnewList = new AnyURIList();
             final String decodedRequestingEntity = requestingEntity;
-
 
             String partialPath = null;
             String representation = null;
@@ -86,7 +88,7 @@ public class Announcer {
                 applicationAnnc.setSearchStrings(searchStrings);
                 representation = XmlMapper.getInstance().objectToXml(applicationAnnc);
                 // Parent ApplicationAnnc partial path
-                partialPath = "/scls/"+Constants.SCL_ID+"/applications";
+                partialPath = Refs.SCLS_REF+"/"+Constants.SCL_ID+Refs.APPLICATIONS_REF;
             }
             // ContainerAnnc
             if ("containers".equalsIgnoreCase(parentId)) {
@@ -96,12 +98,12 @@ public class Announcer {
                 containerAnnc.setSearchStrings(searchStrings);
                 representation = XmlMapper.getInstance().objectToXml(containerAnnc);
                 // Parent ContainerAnnc partial path
-                if((Constants.SCL_ID+"/containers").equalsIgnoreCase(parentUri)) {
+                if((Constants.SCL_ID+Refs.CONTAINERS_REF).equalsIgnoreCase(parentUri)) {
                     // scl/containers/Container ==> distantScl/scls/scl/containers
-                    partialPath = "/scls/"+Constants.SCL_ID+"/containers";
+                    partialPath = Refs.SCLS_REF+"/"+Constants.SCL_ID+Refs.CONTAINERS_REF;
                 } else {
                     // scl/applications/App/containers/Container ==> distantScl/scls/scl/applications/AppAnnc/containers
-                    partialPath = "/scls/" + uri.split("/containers")[0]+"Annc"+"/containers";
+                    partialPath = Refs.SCLS_REF+"/" + uri.split(Refs.CONTAINERS_REF)[0]+"Annc"+Refs.CONTAINERS_REF;
                 }
             }
             // AccessRightAnnc
@@ -112,12 +114,12 @@ public class Announcer {
                 accessRightAnnc.setSearchStrings(searchStrings);
                 representation = XmlMapper.getInstance().objectToXml(accessRightAnnc);
                 // Parent AccessRightAnnc partial path
-                if((Constants.SCL_ID+"/accessRights").equalsIgnoreCase(parentUri)) {
+                if((Constants.SCL_ID+Refs.ACCESSRIGHTS_REF).equalsIgnoreCase(parentUri)) {
                     // scl/accessRights/AccessRight ==> -distantScl/scls/scl/accessRights
-                    partialPath = "/scls/"+Constants.SCL_ID+"/accessRights";
+                    partialPath = Refs.SCLS_REF+"/"+Constants.SCL_ID+Refs.ACCESSRIGHTS_REF;
                 } else {
                     // scl/applications/App/accessRights/AccessRight ==> distantScl/scls/scl/applications/AppAnnc/accessRights
-                    partialPath = "/scls/" + uri.split("/accessRights")[0]+"Annc"+"/accessRights";
+                    partialPath = Refs.SCLS_REF+"/" + uri.split(Refs.ACCESSRIGHTS_REF)[0]+"Annc"+Refs.ACCESSRIGHTS_REF;
                 }
             }
             // GroupAnnc
@@ -128,12 +130,12 @@ public class Announcer {
                 groupAnnc.setSearchStrings(searchStrings);
                 representation = XmlMapper.getInstance().objectToXml(groupAnnc);
                 // Parent GroupAnnc partial path
-                if((Constants.SCL_ID+"/groups").equalsIgnoreCase(parentUri)) {
+                if((Constants.SCL_ID+Refs.GROUPS_REF).equalsIgnoreCase(parentUri)) {
                     // scl/groups/Group ==> distantScl/scls/scl/groups
-                    partialPath = "/scls/"+Constants.SCL_ID+"/groups";
+                    partialPath = Refs.SCLS_REF+"/"+Constants.SCL_ID+Refs.GROUPS_REF;
                 } else {
                     // scl/applications/App/groups/Group ==> distantScl/scls/scl/applications/AppAnnc/groups
-                    partialPath = "/scls/" + uri.split("/groups")[0]+"Annc"+"/groups";
+                    partialPath = Refs.SCLS_REF+"/" + uri.split(Refs.GROUPS_REF)[0]+"Annc"+Refs.GROUPS_REF;
                 }
             }
 
@@ -141,8 +143,11 @@ public class Announcer {
             // Send to the remote scls
             for (int i=uniqueReferencesList.size()-1; i>=0; i--) {
                 final String hostingScl = uniqueReferencesList.get(i);
-                final String hostingSclURI = Constants.SCL_ID+"/scls/"+hostingScl;
-                final Scl scl = DAOFactory.getSclDAO().find(hostingSclURI);
+                final String hostingSclURI = Constants.SCL_ID+Refs.SCLS_REF+"/"+hostingScl;
+                EntityManager em = DBAccess.createEntityManager();
+                em.getTransaction().begin();
+                final Scl scl = DAOFactory.getSclDAO().find(hostingSclURI, em);
+                em.close();
 
                 if (scl != null) {
                     final String targetId = scl.getLink() + partialPath;
@@ -196,39 +201,39 @@ public class Announcer {
             // ApplicationAnnc
             if ("applications".equalsIgnoreCase(parentId)) {
                 // e.g. /scls/scl/applications/AppAnnc
-                partialPath = "/scls/"+Constants.SCL_ID+"/applications/"+resourceAnncId;
+                partialPath = Refs.SCLS_REF+"/"+Constants.SCL_ID+Refs.APPLICATIONS_REF+"/"+resourceAnncId;
             }
             // ContainerAnnc
             if ("containers".equalsIgnoreCase(parentId)) {
                 // AccessRightAnnc partial path
-                if((Constants.SCL_ID+"/containers").equalsIgnoreCase(uri.split("/"+resourceId)[0])) {
+                if((Constants.SCL_ID+Refs.CONTAINERS_REF).equalsIgnoreCase(uri.split("/"+resourceId)[0])) {
                     // scl/containers/Container ==> -distantScl/scls/scl/containers/ContainerAnnc
-                    partialPath = "/scls/"+Constants.SCL_ID+"/containers/"+resourceAnncId;
+                    partialPath = Refs.SCLS_REF+"/"+Constants.SCL_ID+Refs.CONTAINERS_REF+"/"+resourceAnncId;
                 } else {
                     // scl/applications/App/containers/Container ==> distantScl/scls/scl/applications/AppAnnc/containers/ContainerAnnc
-                    partialPath = "/scls/"+uri.split("/containers")[0]+"Annc"+"/containers/"+resourceAnncId;
+                    partialPath = Refs.SCLS_REF+"/"+uri.split(Refs.CONTAINERS_REF)[0]+"Annc"+Refs.CONTAINERS_REF+"/"+resourceAnncId;
                 }
             }
             // AccessRightAnnc
             if ("accessRights".equalsIgnoreCase(parentId)) {
                 // AccessRightAnnc partial path
-                if((Constants.SCL_ID+"/accessRights").equalsIgnoreCase(uri.split("/"+resourceId)[0])) {
+                if((Constants.SCL_ID+Refs.ACCESSRIGHTS_REF).equalsIgnoreCase(uri.split("/"+resourceId)[0])) {
                     // scl/accessRights/AccessRight ==> -distantScl/scls/scl/accessRights/AccessRightAnnc
-                    partialPath = "/scls/"+Constants.SCL_ID+"/accessRights/"+resourceAnncId;
+                    partialPath = Refs.SCLS_REF+"/"+Constants.SCL_ID+Refs.ACCESSRIGHTS_REF+"/"+resourceAnncId;
                 } else {
                     // scl/applications/App/accessRights/AccessRight ==> distantScl/scls/scl/applications/AppAnnc/accessRights/AccessRightAnnc
-                    partialPath = "/scls/" + uri.split("/accessRights")[0]+"Annc"+"/accessRights/"+resourceAnncId;
+                    partialPath = Refs.SCLS_REF+"/" + uri.split(Refs.ACCESSRIGHTS_REF)[0]+"Annc"+Refs.ACCESSRIGHTS_REF+"/"+resourceAnncId;
                 }
             }
             // GroupAnnc
             if ("groups".equalsIgnoreCase(parentId)) {
                 // GroupAnnc partial path
-                if((Constants.SCL_ID+"/groups").equalsIgnoreCase(uri.split("/"+resourceId)[0])) {
+                if((Constants.SCL_ID+Refs.GROUPS_REF).equalsIgnoreCase(uri.split("/"+resourceId)[0])) {
                     // scl/groups/Group ==> distantScl/scls/scl/groups/GroupAnnc
-                    partialPath = "/scls/"+Constants.SCL_ID+"/groups/"+resourceAnncId;
+                    partialPath = Refs.SCLS_REF+"/"+Constants.SCL_ID+"/groups/"+resourceAnncId;
                 } else {
                     // scl/applications/App/groups/Group ==> distantScl/scls/scl/applications/AppAnnc/groups/GroupAnnc
-                    partialPath = "/scls/" + uri.split("/groups")[0]+"Annc"+"/groups/"+resourceAnncId;
+                    partialPath = Refs.SCLS_REF+"/" + uri.split(Refs.GROUPS_REF)[0]+"Annc"+"/groups/"+resourceAnncId;
                 }
             }
             // Retrieve the scls from the SclList without redundancies
@@ -237,8 +242,11 @@ public class Announcer {
 
             for (int i = uniqueReferencesList.size() - 1; i >= 0; i--) {
                 final String hostingScl = uniqueReferencesList.get(i);
-                final String hostingSclURI = Constants.SCL_ID+"/scls/"+hostingScl;
-                final Scl scl = DAOFactory.getSclDAO().find(hostingSclURI);
+                final String hostingSclURI = Constants.SCL_ID+Refs.SCLS_REF+"/"+hostingScl;
+                EntityManager em = DBAccess.createEntityManager();
+                em.getTransaction().begin();
+                final Scl scl = DAOFactory.getSclDAO().find(hostingSclURI, em);
+                em.close();
 
                 if (scl != null) {
                     final String targetId = scl.getLink()+partialPath;

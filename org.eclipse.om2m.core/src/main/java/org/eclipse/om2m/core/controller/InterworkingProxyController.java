@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013-2014 LAAS-CNRS (www.laas.fr)
+ * Copyright (c) 2013-2015 LAAS-CNRS (www.laas.fr)
  * 7 Colonel Roche 31077 Toulouse - France
  *
  * All rights reserved. This program and the accompanying materials
@@ -16,22 +16,26 @@
  *     Khalil Drira - Management and initial specification.
  *     Yassine Banouar - Initial specification, conception, implementation, test
  *         and documentation.
+ *     Guillaume Garzone - Conception, implementation, test and documentation.
+ *     Francois Aissaoui - Conception, implementation, test and documentation.
  ******************************************************************************/
 package org.eclipse.om2m.core.controller;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.om2m.comm.service.RestClientService;
+import javax.persistence.EntityManager;
+
 import org.eclipse.om2m.commons.resource.APoCPath;
 import org.eclipse.om2m.commons.resource.Application;
 import org.eclipse.om2m.commons.resource.ErrorInfo;
+import org.eclipse.om2m.commons.resource.Refs;
 import org.eclipse.om2m.commons.resource.StatusCode;
 import org.eclipse.om2m.commons.rest.RequestIndication;
 import org.eclipse.om2m.commons.rest.ResponseConfirm;
-import org.eclipse.om2m.core.comm.RestClient;
 import org.eclipse.om2m.core.constants.Constants;
 import org.eclipse.om2m.core.dao.DAOFactory;
+import org.eclipse.om2m.core.dao.DBAccess;
 import org.eclipse.om2m.ipu.service.IpuService;
 
 /**
@@ -66,10 +70,13 @@ public class InterworkingProxyController extends Controller {
         String sclId = requestIndication.getTargetID().split("/")[0];
         String applicationId = requestIndication.getTargetID().split("/")[2];
         String path = requestIndication.getTargetID().split("/")[3];
-        String applicationUri = sclId+"/applications/"+applicationId;
-
+        String applicationUri = sclId+Refs.APPLICATIONS_REF+"/"+applicationId;
+        
+        EntityManager em = DBAccess.createEntityManager();
+        em.getTransaction().begin();
         // Check ApplicationResource Existence
-        Application application = DAOFactory.getApplicationDAO().find(applicationUri);
+        Application application = DAOFactory.getApplicationDAO().find(applicationUri, em);
+        em.close();
         if (application == null) {
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_NOT_FOUND,applicationUri+" does not exist")) ;
         }
@@ -109,39 +116,39 @@ public class InterworkingProxyController extends Controller {
         String sclId = requestIndication.getTargetID().split("/")[0];
         String applicationId = requestIndication.getTargetID().split("/")[2];
         String path = requestIndication.getTargetID().split("/")[3];
-        String applicationUri = sclId+"/applications/"+applicationId;
+        String applicationUri = sclId+Refs.APPLICATIONS_REF+"/"+applicationId;
 
-        
+        EntityManager em = DBAccess.createEntityManager();
+        em.getTransaction().begin();
         // Check ApplicationResource Existence
-            Application application= DAOFactory.getApplicationDAO().find(applicationUri);
-            if (application == null) {
-                	return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_NOT_FOUND,applicationUri+" does not exist")) ;
-            }
+        Application application= DAOFactory.getApplicationDAO().find(applicationUri, em);
+        em.close();
+        if (application == null) {
+            return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_NOT_FOUND,applicationUri+" does not exist")) ;
+        }
+        APoCPath aPoCPath = checkAPoCPathExistence(application, path);
 
-            APoCPath aPoCPath = checkAPoCPathExistence(application, path);
+        // Check aPoCPath Existence
+        if (aPoCPath == null) {
+            return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_NOT_FOUND,path+" does not exist")) ;
+        }
+        // Check accessRight
+        errorResponse = checkAccessRight(aPoCPath.getAccessRightID(), requestIndication.getRequestingEntity(), Constants.AR_READ);
+        if (errorResponse != null) {
+            return errorResponse;
+        }
 
-            // Check aPoCPath Existence
-            if (aPoCPath == null) {
-                	return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_NOT_FOUND,path+" does not exist")) ;
+        try{
+            // Forward the request
+            if (ipUnits.containsKey(aPoCPath.getPath())) {
+                return ipUnits.get(aPoCPath.getPath()).doRetrieve (requestIndication);
+            }else {
+                return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_NOT_FOUND,"No IPU found for path "+aPoCPath.getPath())) ;
             }
-            // Check accessRight
-            errorResponse = checkAccessRight(aPoCPath.getAccessRightID(), requestIndication.getRequestingEntity(), Constants.AR_READ);
-            if (errorResponse != null) {
-                	return errorResponse;
-            }
-            try{
-                	// Forward the request
-                	if (ipUnits.containsKey(aPoCPath.getPath())) {
-                			return ipUnits.get(aPoCPath.getPath()).doRetrieve (requestIndication);
-                	}else {
-                			return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_NOT_FOUND,"No IPU found for path "+aPoCPath.getPath())) ;
-                		}
-                	}catch (Exception e) {
-                		LOGGER.error("IPU Internal Exception", e);
-                		return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_INTERNAL_SERVER_ERROR,"IPU Internal Exception")) ;
-                	}
-       /** }
-        return new ResponseConfirm();*/
+        }catch (Exception e) {
+            LOGGER.error("IPU Internal Exception", e);
+            return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_INTERNAL_SERVER_ERROR,"IPU Internal Exception")) ;
+        }
     }
 
     /**
@@ -155,10 +162,14 @@ public class InterworkingProxyController extends Controller {
         String sclId = requestIndication.getTargetID().split("/")[0];
         String applicationId = requestIndication.getTargetID().split("/")[2];
         String path = requestIndication.getTargetID().split("/")[3];
-        String applicationUri = sclId+"/applications/"+applicationId;
-
+        String applicationUri = sclId+Refs.APPLICATIONS_REF+"/"+applicationId;
+        
+        EntityManager em = DBAccess.createEntityManager();
+        em.getTransaction().begin();
+        
         // Check ApplicationResource Existence
-        Application application= DAOFactory.getApplicationDAO().find(applicationUri);
+        Application application= DAOFactory.getApplicationDAO().find(applicationUri, em);
+        em.close();
         if (application == null) {
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_NOT_FOUND,applicationUri+" does not exist")) ;
         }
@@ -198,10 +209,14 @@ public class InterworkingProxyController extends Controller {
         String sclId = requestIndication.getTargetID().split("/")[0];
         String applicationId = requestIndication.getTargetID().split("/")[2];
         String path = requestIndication.getTargetID().split("/")[3];
-        String applicationUri = sclId+"/applications/"+applicationId;
+        String applicationUri = sclId+Refs.APPLICATIONS_REF+"/"+applicationId;
 
+        EntityManager em = DBAccess.createEntityManager();
+        em.getTransaction().begin();
+        
         // Check ApplicationResource Existence
-        Application application= DAOFactory.getApplicationDAO().find(applicationUri);
+        Application application= DAOFactory.getApplicationDAO().find(applicationUri, em);
+        em.close();
         if (application == null) {
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_NOT_FOUND,applicationUri+" does not exist")) ;
         }
@@ -241,10 +256,15 @@ public class InterworkingProxyController extends Controller {
         String sclId = requestIndication.getTargetID().split("/")[0];
         String applicationId = requestIndication.getTargetID().split("/")[2];
         String path = requestIndication.getTargetID().split("/")[3];
-        String applicationUri = sclId+"/applications/"+applicationId;
+        String applicationUri = sclId+Refs.APPLICATIONS_REF+"/"+applicationId;
 
+        EntityManager em = DBAccess.createEntityManager();
+        em.getTransaction().begin();
+        
         // Check ApplicationResource Existence
-        Application application= DAOFactory.getApplicationDAO().find(applicationUri);
+        Application application= DAOFactory.getApplicationDAO().find(applicationUri, em);
+        em.close();
+        
         if (application == null) {
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_NOT_FOUND,applicationUri+" does not exist")) ;
         }

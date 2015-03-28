@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013-2014 LAAS-CNRS (www.laas.fr)
+ * Copyright (c) 2013-2015 LAAS-CNRS (www.laas.fr)
  * 7 Colonel Roche 31077 Toulouse - France
  *
  * All rights reserved. This program and the accompanying materials
@@ -16,15 +16,19 @@
  *     Khalil Drira - Management and initial specification.
  *     Yassine Banouar - Initial specification, conception, implementation, test
  *         and documentation.
+ *     Guillaume Garzone - Conception, implementation, test and documentation.
+ *     Francois Aissaoui - Conception, implementation, test and documentation.
  ******************************************************************************/
 package org.eclipse.om2m.core.controller;
 
 import java.util.Date;
 
+import javax.persistence.EntityManager;
+
 import org.eclipse.om2m.commons.resource.AnnounceTo;
 import org.eclipse.om2m.commons.resource.ErrorInfo;
 import org.eclipse.om2m.commons.resource.Group;
-import org.eclipse.om2m.commons.resource.Groups;
+import org.eclipse.om2m.commons.resource.Refs;
 import org.eclipse.om2m.commons.resource.StatusCode;
 import org.eclipse.om2m.commons.rest.RequestIndication;
 import org.eclipse.om2m.commons.rest.ResponseConfirm;
@@ -33,6 +37,7 @@ import org.eclipse.om2m.commons.utils.XmlMapper;
 import org.eclipse.om2m.core.announcer.Announcer;
 import org.eclipse.om2m.core.constants.Constants;
 import org.eclipse.om2m.core.dao.DAOFactory;
+import org.eclipse.om2m.core.dao.DBAccess;
 import org.eclipse.om2m.core.notifier.Notifier;
 
 /**
@@ -69,30 +74,37 @@ public class GroupController extends Controller {
         // id:                      (createReq O)  (response M*)
 
         ResponseConfirm errorResponse = new ResponseConfirm();
-        Groups groups = DAOFactory.getGroupsDAO().lazyFind(requestIndication.getTargetID());
-
-        // Check Parent Existence
-        if (groups == null) {
-            return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_NOT_FOUND,requestIndication.getTargetID()+" does not exist")) ;
-        }
+        EntityManager em = DBAccess.createEntityManager();
+        em.getTransaction().begin();
+        String accessRightID = this.getAccessRightId(requestIndication.getTargetID(), em);
+        
         // Check AccessRight
-        errorResponse = checkAccessRight(groups.getAccessRightID(), requestIndication.getRequestingEntity(), Constants.AR_CREATE);
+        errorResponse = checkAccessRight(accessRightID, requestIndication.getRequestingEntity(), Constants.AR_CREATE);
         if (errorResponse != null) {
+        	em.close();
             return errorResponse;
         }
         // Check Resource Representation
         if (requestIndication.getRepresentation() == null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Resource Representation is EMPTY")) ;
         }
-        // Check XML Validity
-        errorResponse = checkMessageSyntax(requestIndication.getRepresentation(),"group.xsd");
-        if (errorResponse != null) {
-            return errorResponse;
-        }
         // Checks on attributes
-        Group group = (Group) XmlMapper.getInstance().xmlToObject(requestIndication.getRepresentation());
+        Group group = null ;  
+        try{
+        	group = (Group) XmlMapper.getInstance().xmlToObject(requestIndication.getRepresentation());
+        } catch (ClassCastException e){
+        	em.close();
+        	LOGGER.debug("ClassCastException : Incorrect resource type in JAXB unmarshalling.",e);
+            return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST, "Incorrect resource type"));
+        }
+        if (group == null){
+        	em.close();
+            return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST, "Incorrect resource representation syntax")) ;
+        }
         // Check the Id uniqueness
-        if (group.getId() != null && DAOFactory.getGroupDAO().find(requestIndication.getTargetID()+"/"+group.getId()) != null) {
+        if (group.getId() != null && DAOFactory.getGroupDAO().find(requestIndication.getTargetID()+"/"+group.getId(), em) != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_CONFLICT,"GroupId Conflit")) ;
         }
         if (group.getId() == null || group.getId().isEmpty()) {
@@ -100,39 +112,48 @@ public class GroupController extends Controller {
         }
         // memberType is Mandatory
         if (group.getMemberType() == null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST," MemberType is Mandatory")) ;
         }
         // Check ExpirationTime
         if (group.getExpirationTime() != null && !checkExpirationTime(group.getExpirationTime())) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Expiration Time CREATE is Out of Date")) ;
         }
         // CurrentNrOfMembers Reference Must be NP
         if (group.getCurrentNrOfMembers() != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST," CurrentNrOfMembers Reference is Not Permitted")) ;
         }
         // MembersContent Reference Must be NP
         if (group.getMembersContentReference() != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST," MembersContent Reference is Not Permitted")) ;
         }
         //SubscriptionsReference Must be NP
         if (group.getSubscriptionsReference() != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"SubscriptionsReference is Not Permitted")) ;
         }
         // CreationTime Must be NP
         if (group.getCreationTime() != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Creation Time is Not Permitted")) ;
         }
         // LastModifiedTime Must be NP
         if (group.getLastModifiedTime() != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Last Modified Time is Not Permitted")) ;
         }
         // AccessRightID Must be NP
         if (group.getAccessRightID() != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"AccessRightID is Not Permitted")) ;
         }
         // Verify currentNrOfInstance > MaxNrOfMembers
         if (group.getMaxNrOfMembers() != null && group.getMembers() != null) {
             if (group.getMaxNrOfMembers()>=0 && group.getMembers().getReference().size() > group.getMaxNrOfMembers()) {
+            	em.close();
                 return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"CurrentNrOfMembers is greater than MaxNrOfMembers")) ;
             }
         }
@@ -156,7 +177,7 @@ public class GroupController extends Controller {
             group.setExpirationTime(getNewExpirationTime(Constants.EXPIRATION_TIME));
         }
         // Set AccessRightID from the Parent if it's null or nonexistent
-            group.setAccessRightID(groups.getAccessRightID());
+            group.setAccessRightID(accessRightID);
         // Set searchString if it's null
         if (group.getSearchStrings() == null) {
             group.setSearchStrings(generateSearchStrings(group.getClass().getSimpleName(), group.getId()));
@@ -169,8 +190,8 @@ public class GroupController extends Controller {
             group.setAnnounceTo(announceTo);
         }
         // Set references
-        group.setMembersContentReference(group.getUri()+"/membersContent");
-        group.setSubscriptionsReference(group.getUri()+"/subscriptions");
+        group.setMembersContentReference(group.getUri()+Refs.MEMBERSCONTENT_REF);
+        group.setSubscriptionsReference(group.getUri()+Refs.SUBSCRIPTIONS_REF);
         // Set CreationTime
         group.setCreationTime(DateConverter.toXMLGregorianCalendar(new Date()).toString());
         // Set LastModifiedTime
@@ -185,7 +206,9 @@ public class GroupController extends Controller {
         Notifier.notify(StatusCode.STATUS_CREATED, group);
 
         // Store group
-        DAOFactory.getGroupDAO().create(group);
+        DAOFactory.getGroupDAO().create(group, em);
+        em.getTransaction().commit();
+        em.close();
         // Response
         return new ResponseConfirm(StatusCode.STATUS_CREATED, group);
 
@@ -213,8 +236,11 @@ public class GroupController extends Controller {
         // id:                      (response M*)
 
         ResponseConfirm errorResponse = new ResponseConfirm();
-        Group group = DAOFactory.getGroupDAO().find(requestIndication.getTargetID());
-
+        EntityManager em = DBAccess.createEntityManager();
+        em.getTransaction().begin();
+        Group group = DAOFactory.getGroupDAO().find(requestIndication.getTargetID(), em);
+        em.close();
+        
         // Check if the resource exists in DataBase or Not
         if (group == null) {
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_NOT_FOUND,requestIndication.getTargetID()+" does not exist in DataBase")) ;
@@ -224,6 +250,9 @@ public class GroupController extends Controller {
         if (errorResponse != null) {
             return errorResponse;
         }
+
+		group.setSubscriptionsReference(group.getUri()+Refs.SUBSCRIPTIONS_REF);
+		
         // Response
         return new ResponseConfirm(StatusCode.STATUS_OK, group);
     }
@@ -250,63 +279,83 @@ public class GroupController extends Controller {
         // id:                      (updateReq NP) (response M*)
 
         ResponseConfirm errorResponse = new ResponseConfirm();
-        Group group = DAOFactory.getGroupDAO().find(requestIndication.getTargetID());
+        EntityManager em = DBAccess.createEntityManager();
+        em.getTransaction().begin();
+        Group group = DAOFactory.getGroupDAO().find(requestIndication.getTargetID(), em);
 
         // Check Existence
         if (group == null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_NOT_FOUND,requestIndication.getTargetID()+" does not exist in DataBase")) ;
         }
         // Check AccessRight
         errorResponse = checkAccessRight(group.getAccessRightID(), requestIndication.getRequestingEntity(), Constants.AR_WRITE);
         if (errorResponse != null) {
+        	em.close();
             return errorResponse;
         }
         // Check Resource Representation
         if (requestIndication.getRepresentation() == null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Resource Representation is EMPTY")) ;
         }
-        // Check XML Validity
-        errorResponse = checkMessageSyntax(requestIndication.getRepresentation(),"group.xsd");
-        if (errorResponse != null) {
-            return errorResponse;
-        }
         // Checks on attributes
-        Group groupNew = (Group) XmlMapper.getInstance().xmlToObject(requestIndication.getRepresentation());
+        Group groupNew = null ;  
+        try{
+        	groupNew = (Group) XmlMapper.getInstance().xmlToObject(requestIndication.getRepresentation());
+        } catch (ClassCastException e){
+        	em.close();
+        	LOGGER.debug("ClassCastException : Incorrect resource type in JAXB unmarshalling.",e);
+            return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST, "Incorrect resource type"));
+        }
+        if (groupNew == null){
+        	em.close();
+            return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST, "Incorrect resource representation syntax")) ;
+        }
 
         //The Update of the Id is NP
         if (groupNew.getId() != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"GroupId UPDATE is Not Permitted")) ;
         }
         // Check ExpirationTime
         if (groupNew.getExpirationTime() != null && !checkExpirationTime(groupNew.getExpirationTime())) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Expiration Time UPDATE is Out of Date")) ;
         }
         // AccessRightID Must be NP
         if (groupNew.getAccessRightID() != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"AccessRightID UPDATE is Not Permitted")) ;
         }
         // MembersContent Reference Must be NP
         if (groupNew.getMembersContentReference() != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"MembersContent Reference UPDATE is Not Permitted")) ;
         }
         // SubscriptionsReference Must be NP
         if (groupNew.getSubscriptionsReference() != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"SubscriptionsReference UPDATE is Not Permitted")) ;
         }
         // CreationTime Must be NP
         if (groupNew.getCreationTime() != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Creation Time UPDATE is Not Permitted")) ;
         }
         // LastModifiedTime Must be NP
         if (groupNew.getLastModifiedTime() != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Last Modified Time UPDATE is Not Permitted")) ;
         }
         // MemberType Must be NP
         if (groupNew.getMemberType() != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"MemberType UPDATE is Not Permitted")) ;
         }
         // currentNrOfMembers Must be NP
         if (groupNew.getCurrentNrOfMembers() != null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"currentNrOfMembers UPDATE is Not Permitted")) ;
         }
         // Storage
@@ -322,6 +371,7 @@ public class GroupController extends Controller {
         // Verify currentNrOfInstance > MaxNrOfMembers
         if (group.getMaxNrOfMembers() != null && group.getMembers() != null) {
             if (group.getMaxNrOfMembers()>=0 && group.getMembers().getReference().size() > group.getMaxNrOfMembers()) {
+            	em.close();
                 return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"CurrentNrOfMembers is greater than MaxNrOfMembers")) ;
             }
         }
@@ -330,7 +380,7 @@ public class GroupController extends Controller {
             group.setExpirationTime(groupNew.getExpirationTime());
         }
         // Set accessRightID if it exists
-        if (DAOFactory.getAccessRightDAO().find(groupNew.getAccessRightID()) != null) {
+        if (DAOFactory.getAccessRightDAO().find(groupNew.getAccessRightID(), em) != null) {
             group.setAccessRightID(groupNew.getAccessRightID());
         }
         // Set SearchStrings
@@ -347,8 +397,15 @@ public class GroupController extends Controller {
         // Notify the subscribers
         Notifier.notify(StatusCode.STATUS_OK, group);
 
+		
         // Store updates
-        DAOFactory.getGroupDAO().update(group);
+        DAOFactory.getGroupDAO().update(group, em);
+        
+        em.getTransaction().commit();
+        em.close();
+        
+        group.setSubscriptionsReference(group.getUri()+Refs.SUBSCRIPTIONS_REF);
+        
         // Response
         return new ResponseConfirm(StatusCode.STATUS_OK, group);
 
@@ -362,15 +419,19 @@ public class GroupController extends Controller {
     public ResponseConfirm doDelete (RequestIndication requestIndication) {
 
         ResponseConfirm errorResponse = new ResponseConfirm();
-        Group group = DAOFactory.getGroupDAO().find(requestIndication.getTargetID());
+        EntityManager em = DBAccess.createEntityManager();
+        em.getTransaction().begin();
+        Group group = DAOFactory.getGroupDAO().find(requestIndication.getTargetID(), em);
 
         // Check Resource Existence
         if (group == null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_NOT_FOUND,requestIndication.getTargetID()+" does not exist")) ;
         }
         // Check AccessRight
         errorResponse = checkAccessRight(group.getAccessRightID(), requestIndication.getRequestingEntity(), Constants.AR_DELETE);
         if (errorResponse != null) {
+        	em.close();
             return errorResponse;
         }
 
@@ -383,7 +444,9 @@ public class GroupController extends Controller {
         Notifier.notify(StatusCode.STATUS_DELETED, group);
 
         // Delete
-        DAOFactory.getGroupDAO().delete(group);
+        DAOFactory.getGroupDAO().delete(group,em);
+        em.getTransaction().commit();
+        em.close();
         // Response
         return new ResponseConfirm(StatusCode.STATUS_OK);
     }

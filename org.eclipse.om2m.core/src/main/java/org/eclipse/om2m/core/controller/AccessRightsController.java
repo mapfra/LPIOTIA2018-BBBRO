@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013-2014 LAAS-CNRS (www.laas.fr) 
+ * Copyright (c) 2013-2015 LAAS-CNRS (www.laas.fr) 
  * 7 Colonel Roche 31077 Toulouse - France
  * 
  * All rights reserved. This program and the accompanying materials
@@ -16,21 +16,22 @@
  *     Khalil Drira - Management and initial specification.
  *     Yassine Banouar - Initial specification, conception, implementation, test 
  * 		and documentation.
+ *     Guillaume Garzone - Conception, implementation, test and documentation.
+ *     Francois Aissaoui - Conception, implementation, test and documentation.
  ******************************************************************************/
 package org.eclipse.om2m.core.controller;
 
-import java.util.Date;
+import javax.persistence.EntityManager;
 
 import org.eclipse.om2m.commons.resource.AccessRights;
 import org.eclipse.om2m.commons.resource.ErrorInfo;
 import org.eclipse.om2m.commons.resource.StatusCode;
+import org.eclipse.om2m.commons.resource.Refs;
 import org.eclipse.om2m.commons.rest.RequestIndication;
 import org.eclipse.om2m.commons.rest.ResponseConfirm;
-import org.eclipse.om2m.commons.utils.DateConverter;
-import org.eclipse.om2m.commons.utils.XmlMapper;
 import org.eclipse.om2m.core.constants.Constants;
 import org.eclipse.om2m.core.dao.DAOFactory;
-import org.eclipse.om2m.core.notifier.Notifier;
+import org.eclipse.om2m.core.dao.DBAccess;
 
 /**
  * Implements Create, Retrieve, Update, Delete and Execute methods to handle
@@ -78,17 +79,26 @@ public class AccessRightsController extends Controller {
         // lastModifiedTime:            (response M)
 
         ResponseConfirm errorResponse = new ResponseConfirm();
-        AccessRights accessRights = DAOFactory.getAccessRightsDAO().find(requestIndication.getTargetID());
-
+        EntityManager em = DBAccess.createEntityManager();
+        em.getTransaction().begin();
+        String accessRightID = getAccessRightId(requestIndication.getTargetID(), em);
+        
         // Check the resource existence
-        if (accessRights == null) {
+        if (accessRightID == null) {
+        	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_NOT_FOUND,requestIndication.getTargetID()+" does not exist")) ;
         }
         // Check AccessRight
-        errorResponse = checkAccessRight(accessRights.getAccessRightID(), requestIndication.getRequestingEntity(), Constants.AR_READ);
+        errorResponse = checkAccessRight(accessRightID, requestIndication.getRequestingEntity(), Constants.AR_READ);
         if (errorResponse != null) {
+        	em.close();
             return errorResponse;
         }
+        AccessRights accessRights = DAOFactory.getAccessRightsDAO().find(requestIndication.getTargetID(), em);
+        accessRights.setSubscriptionsReference(accessRights.getUri() + Refs.SUBSCRIPTIONS_REF);
+        accessRights.setAccessRightID(accessRightID);
+        em.close();
+        
         // Response
         return new ResponseConfirm(StatusCode.STATUS_OK, accessRights);
     }
@@ -107,64 +117,7 @@ public class AccessRightsController extends Controller {
         // creationTime:                (updateReq NP) (response M)
         // lastModifiedTime:            (updateReq NP) (response M)
 
-        ResponseConfirm errorResponse = new ResponseConfirm();
-        AccessRights accessRights = DAOFactory.getAccessRightsDAO().lazyFind(requestIndication.getTargetID());
-
-        // Check resource existence
-        if (accessRights == null) {
-            return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_NOT_FOUND,requestIndication.getTargetID()+" does not exist")) ;
-        }
-        // Check AccessRight
-        errorResponse = checkAccessRight(accessRights.getAccessRightID(), requestIndication.getRequestingEntity(), Constants.AR_WRITE);
-        if (errorResponse != null) {
-            return errorResponse;
-        }
-        // Check Resource Representation
-        if (requestIndication.getRepresentation() == null) {
-            return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Resource Representation is EMPTY")) ;
-        }
-        // Check XML Validity
-        errorResponse = checkMessageSyntax(requestIndication.getRepresentation(),"accessRights.xsd");
-        if (errorResponse != null) {
-            return errorResponse;
-        }
-        // Checks on attributes
-        AccessRights accessRightsNew = (AccessRights) XmlMapper.getInstance().xmlToObject(requestIndication.getRepresentation());
-        // accessRightCollection Must be NP
-        if (accessRightsNew.getAccessRightCollection() != null) {
-            return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"AccessRightCollection UPDATE is Not Permitted")) ;
-        }
-        // accessRightsAnncCollection Must be NP
-        if (accessRightsNew.getAccessRightAnncCollection() != null) {
-            return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"AccessRightAnncCollection UPDATE is Not Permitted")) ;
-        }
-        // subscriptionsReference Must be NP
-        if (accessRightsNew.getSubscriptionsReference() != null) {
-            return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"SubscriptionsReference UPDATE is Not Permitted")) ;
-        }
-        // CreationTime Must be NP
-        if (accessRightsNew.getCreationTime() != null) {
-            return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Creation Time UPDATE is Not Permitted")) ;
-        }
-        // LastModifiedTime Must be NP
-        if (accessRightsNew.getLastModifiedTime() != null) {
-            return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Last Modified Time UPDATE is Not Permitted")) ;
-        }
-        // Storage
-        // Set accessRightID if it exists
-        if (DAOFactory.getAccessRightDAO().find(accessRightsNew.getAccessRightID()) != null) {
-            accessRights.setAccessRightID(accessRightsNew.getAccessRightID());
-        }
-        // Set LastModifiedTime
-        accessRights.setLastModifiedTime(DateConverter.toXMLGregorianCalendar(new Date()).toString());
-
-        // Notify the subscribers
-        Notifier.notify(StatusCode.STATUS_OK, accessRights);
-
-        // Store accessRights
-        DAOFactory.getAccessRightsDAO().update(accessRights);
-        // Response
-        return new ResponseConfirm(StatusCode.STATUS_OK, accessRights);
+        return new ResponseConfirm(StatusCode.STATUS_NOT_IMPLEMENTED);
     }
 
     /**

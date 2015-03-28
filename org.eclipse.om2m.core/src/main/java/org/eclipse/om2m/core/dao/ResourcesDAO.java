@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013-2014 LAAS-CNRS (www.laas.fr) 
+ * Copyright (c) 2013-2015 LAAS-CNRS (www.laas.fr) 
  * 7 Colonel Roche 31077 Toulouse - France
  * 
  * All rights reserved. This program and the accompanying materials
@@ -16,17 +16,19 @@
  *     Khalil Drira - Management and initial specification.
  *     Yassine Banouar - Initial specification, conception, implementation, test 
  * 		and documentation.
+ *     Guillaume Garzone - Conception, implementation, test and documentation.
+ *     Francois Aissaoui - Conception, implementation, test and documentation.
  ******************************************************************************/
 package org.eclipse.om2m.core.dao;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+
+import org.eclipse.om2m.commons.resource.DBEntities;
 import org.eclipse.om2m.commons.resource.Resource;
 import org.eclipse.om2m.commons.resource.Resources;
-
-import com.db4o.ObjectContainer;
-import com.db4o.ObjectSet;
-import com.db4o.query.Query;
 
 /**
  * Implements CRUD Methods for {@link Resources} persistence.
@@ -40,7 +42,8 @@ import com.db4o.query.Query;
 public class ResourcesDAO extends DAO<Resources>{
 
     @Override
-    public void create(Resources resource) {
+    public void create(Resources resource, EntityManager em) {
+    	// NOT ALLOWED
     }
 
     /**
@@ -48,35 +51,29 @@ public class ResourcesDAO extends DAO<Resources>{
      * @param uri - uri of the {@link Resource} or beginning with
      * @return The requested {@link Resources} otherwise null
      */
-    public Resources find(String uri) {
-    	//ObjectContainer session = DB.ext().openSession();
-
-        // Create the query based on the uri constraint
-        Query query = SESSION.query();
-        query.constrain(Resource.class);
-        if(uri != null){
-            // Store all the founded resources
-            query.descend("uri").constrain(uri).startsWith(false);
-        }
-        ObjectSet<Resource> result = query.execute();
-        Resources resources = new Resources();
-        resources.setResources((List<Resource>)result);
+    public Resources find(String uri, EntityManager em) {
+    	Resources resources = new Resources();
+    	long begFindAll = System.currentTimeMillis();
+    	for (String entityName : DBEntities.ENTITY_LIST){
+    		String query = DBUtil.generateLikeRequest(entityName, uri);
+    		Query q = em.createQuery(query);
+    		@SuppressWarnings("unchecked")
+			List<Resource> result = q.getResultList() ;
+    		resources.getResources().addAll(result);
+    	}
+    	long endFindAll = System.currentTimeMillis();
+    	LOGGER.debug("***************** Time FindAll JPA: " + (endFindAll-begFindAll));
+    	
         return resources;
     }
 
-    public Resources lazyFind(String uri) {
-        return find(uri);
+    @Override
+    public void update(Resources resource, EntityManager em) {
+    	// NOT ALLOWED
     }
 
     @Override
-    public void update(Resources resource) {
-    }
-
-    @Override
-    public void delete(Resources resource) {
-    }
-
-    @Override
-    public void lazyDelete(Resources resource) {
+    public void delete(Resources resource, EntityManager em) {
+    	// NOT ALLOWED
     }
 }

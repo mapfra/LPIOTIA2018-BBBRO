@@ -21,12 +21,12 @@ package org.eclipse.om2m.ipu.sample;
 
 import java.util.List;
 
-import obix.Contract;
-import obix.Obj;
-import obix.Op;
-import obix.Str;
-import obix.Uri;
-import obix.io.ObixEncoder;
+import org.eclipse.om2m.commons.obix.Contract;
+import org.eclipse.om2m.commons.obix.Obj;
+import org.eclipse.om2m.commons.obix.Op;
+import org.eclipse.om2m.commons.obix.Str;
+import org.eclipse.om2m.commons.obix.Uri;
+import org.eclipse.om2m.commons.obix.io.ObixEncoder;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -145,6 +145,7 @@ public class Switchs {
      */
     public static void switchLamp(String appId, boolean newState) {
         SampleMonitor.SCL.doRequest(new RequestIndication("EXECUTE",SampleMonitor.SCLID+"/applications/"+appId+"/"+Lamp.APOCPATH+"/"+newState,SampleMonitor.REQENTITY, ""));
+    
     }
 
     /**

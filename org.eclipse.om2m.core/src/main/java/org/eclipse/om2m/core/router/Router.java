@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013-2014 LAAS-CNRS (www.laas.fr)
+ * Copyright (c) 2013-2015 LAAS-CNRS (www.laas.fr)
  * 7 Colonel Roche 31077 Toulouse - France
  *
  * All rights reserved. This program and the accompanying materials
@@ -16,13 +16,13 @@
  *     Khalil Drira - Management and initial specification.
  *     Yassine Banouar - Initial specification, conception, implementation, test
  *         and documentation.
+ *     Guillaume Garzone - Conception, implementation, test and documentation.
+ *     Francois Aissaoui - Conception, implementation, test and documentation.
  ******************************************************************************/
 package org.eclipse.om2m.core.router;
 
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -32,8 +32,8 @@ import org.eclipse.om2m.commons.resource.StatusCode;
 import org.eclipse.om2m.commons.rest.RequestIndication;
 import org.eclipse.om2m.commons.rest.ResponseConfirm;
 import org.eclipse.om2m.commons.utils.XmlMapper;
-
 import org.eclipse.om2m.core.constants.Constants;
+import org.eclipse.om2m.core.controller.APocController;
 import org.eclipse.om2m.core.controller.AccessRightAnncController;
 import org.eclipse.om2m.core.controller.AccessRightController;
 import org.eclipse.om2m.core.controller.AccessRightsController;
@@ -55,7 +55,6 @@ import org.eclipse.om2m.core.controller.ExecInstancesController;
 import org.eclipse.om2m.core.controller.GroupAnncController;
 import org.eclipse.om2m.core.controller.GroupController;
 import org.eclipse.om2m.core.controller.GroupsController;
-
 import org.eclipse.om2m.core.controller.LocationContainerAnncController;
 import org.eclipse.om2m.core.controller.LocationContainerController;
 import org.eclipse.om2m.core.controller.M2MPocController;
@@ -72,14 +71,8 @@ import org.eclipse.om2m.core.controller.SclController;
 import org.eclipse.om2m.core.controller.SclsController;
 import org.eclipse.om2m.core.controller.SubscriptionController;
 import org.eclipse.om2m.core.controller.SubscriptionsController;
-//<<<<<<< HEAD
-import org.eclipse.om2m.core.controller.APocController;
-import org.eclipse.om2m.core.notifier.Notifier;
-//=======
-//>>>>>>> refs/remotes/origin/master
 import org.eclipse.om2m.core.redirector.Redirector;
 import org.eclipse.om2m.core.service.SclService;
-
 /**
  * Routes a generic request to the appropriate resource controller to handle it based on the request method and URI.
  * @author <ul>
@@ -92,141 +85,8 @@ import org.eclipse.om2m.core.service.SclService;
 public class Router implements SclService {
     /** Logger */
     private static Log LOGGER = LogFactory.getLog(Router.class);
-    public static ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
-    /** Resource id pattern. */
-    private static String idPattern="(?!(sclBase|scls|scl|applications|application|applicationAnnc|containers|container|content|subscriptions|subscription|"
-            + "groups|group|accessRights|accessRight|discovery|mgmtObjs|mgmtObj|mgmtCmd|attahchedDevices|attachedDevice|notificationChannels|"
-            + "notificationChannel|execInstances|execInstance|parameters|parameter|m2mPocs|m2mPoc))\\b\\w+\\b";
-
-    /** Announced resource id pattern. */
-    private static String idAnncPattern = "\\w+";
-
-    /** SclBase resource uri pattern. */
-    private static Pattern sclBasePattern= Pattern.compile(Constants.SCL_ID+"/*");
-
-    /** Re-targeting uri pattern. */
-    private static Pattern retargetingPattern= Pattern.compile("(?!"+Constants.SCL_ID+")\\b\\w+\\b/*.*");
-
-    /** Scls resource uri pattern. */
-    private static Pattern  sclsPattern= Pattern.compile(sclBasePattern+"/+scls/*");
-
-    //private static Pattern ipuPattern2= Pattern.compile("("+Constants.SCL_ID+"/*"+"|"+Constants.SCL_ID+"/*"+"/+scls/*"+"/+"+idPattern+"/*"+")"+"/+applications/*"+"/+"+idPattern+"(?<!Annc)/*"+"/"+idPattern+"/*.*");
-
-    /** Scl resource uri pattern. */
-    private static Pattern sclPattern= Pattern.compile(sclsPattern+"/+"+idPattern+"/*");
-
-    /** Applications resource uri pattern. */
-    public static final Pattern applicationsPattern= Pattern.compile("("+sclBasePattern+"|"+sclPattern+")"+"/+applications/*");
-
-    /** Application resource uri pattern. */
-    private static Pattern applicationPattern= Pattern.compile(applicationsPattern+"/+"+idPattern+"(?<!Annc)/*");
-
-    /** Interworking proxy unit uri pattern. */
-    private static Pattern ipuPattern= Pattern.compile(applicationPattern+"/"+idPattern+"/*.*");
-
-    /** Coap Comm uri pattern. */
-    private static Pattern coapCommPattern= Pattern.compile("coap/"+applicationPattern+"/"+idPattern+"/*.*");
-
-    /** ApplicationAnnc resource uri pattern. */
-    private static Pattern applicationAnncPattern= Pattern.compile(applicationsPattern+"/+"+idAnncPattern+"Annc/*");
-
-    /** Containers resource uri pattern. */
-    private static Pattern containersPattern= Pattern.compile("("+sclBasePattern+"|"+sclPattern+"|"+applicationPattern+"|"+applicationAnncPattern+")"+"/+containers/*");
-
-    /** Container resource uri pattern. */
-    private static Pattern containerPattern= Pattern.compile(containersPattern+"/+"+idPattern+"(?<!Annc)(?<!Loc)(?<!LocAnnc)/*");
-
-    /** ContainerAnnc resource uri pattern. */
-    private static Pattern containerAnncPattern= Pattern.compile(containersPattern+"/+"+idAnncPattern+"(?<!Loc)(?<!LocAnnc)Annc/*");
-
-    /** LocationContainer resource uri pattern. */
-    private static Pattern locationContainerPattern= Pattern.compile(containersPattern+"/+"+idPattern+"Loc/*");
-
-    /** LocationContainerAnnc resource uri pattern. */
-    private static Pattern locationContainerAnncPattern= Pattern.compile(containersPattern+"/+"+idPattern+"LocAnnc/*");
-
-    /** ContentInstances resource uri pattern. */
-    private static Pattern contentInstancesPattern= Pattern.compile("("+containerPattern+"|"+locationContainerPattern+")"+"/+contentInstances/*");
-
-    /** ContentInstance resource uri pattern. */
-    private static Pattern contentInstancePattern= Pattern.compile(contentInstancesPattern+"/+"+idPattern+"/*");
-
-    /** Content resource uri pattern. */
-    private static Pattern contentPattern= Pattern.compile(contentInstancePattern+"/+content/*");
-
-    /** AccessRights resource uri pattern. */
-    private static Pattern accessRightsPattern= Pattern.compile("("+sclBasePattern+"|"+sclPattern+"|"+applicationPattern+"|"+applicationAnncPattern+")"+"/+accessRights/*");
-
-    /** AccessRight resource uri pattern. */
-    private static Pattern accessRightPattern= Pattern.compile(accessRightsPattern+"/+"+idPattern+"(?<!Annc)/*");
-
-    /** AccessRightAnnc resource uri pattern. */
-    private static Pattern accessRightAnncPattern= Pattern.compile(accessRightsPattern+"/+"+idAnncPattern+"Annc/*");
-
-    /** Groups resource uri pattern. */
-    private static Pattern groupsPattern= Pattern.compile("("+sclBasePattern+"|"+sclPattern+"|"+applicationPattern+"|"+applicationAnncPattern+")"+"/+groups/*");
-
-    /** Group resource uri pattern. */
-    private static Pattern groupPattern= Pattern.compile(groupsPattern+"/+"+idPattern+"(?<!Annc)/*");
-
-    /** MembersContent resource uri pattern. */
-    private static Pattern membersContentPattern= Pattern.compile(groupPattern+"/+"+idPattern+"/*");
-
-    /** GroupAnnc resource uri pattern. */
-    private static Pattern groupAnncPattern= Pattern.compile(groupsPattern+"/+"+idAnncPattern+"Annc/*");
-
-    /** Discovery resource uri pattern. */
-    private static Pattern discoveryPattern= Pattern.compile(sclBasePattern+"/+discovery/*.*");
-
-    /** AttachedDevices resource uri pattern. */
-    private static Pattern attachedDevicesPattern= Pattern.compile(sclPattern+"/+attachedDevices/*");
-
-    /** AttachedDevice resource uri pattern. */
-    private static Pattern attachedDevicePattern= Pattern.compile(attachedDevicesPattern+"/+"+idPattern+"/*");
-
-    /** MgmtObjs resource uri pattern. */
-    private static Pattern mgmtObjsPattern= Pattern.compile("("+sclsPattern+"|"+sclPattern+"|"+applicationsPattern+"|"+attachedDevicePattern+")"+"/+mgmtObjs/*");
-
-    /** MgmtObj resource uri pattern. */
-    private static Pattern mgmtObjPattern= Pattern.compile(mgmtObjsPattern+"/+"+idPattern+"Obj/*");
-
-    /** Parameters resource uri pattern. */
-    private static Pattern parametersPattern= Pattern.compile(mgmtObjPattern+"/+parameters/*");
-
-    /** Parameter resource uri pattern. */
-    private static Pattern parameterPattern= Pattern.compile(parametersPattern+"/+"+idPattern+"/*");
-
-    /** MgmtCmd resource uri pattern. */
-    private static Pattern mgmtCmdPattern= Pattern.compile(mgmtObjsPattern+"/+"+idPattern+"Cmd/*");
-
-    /** ExecInstances resource uri pattern. */
-    private static Pattern execInstancesPattern= Pattern.compile(mgmtCmdPattern+"/+execInstances/*");
-
-    /** ExecInstance resource uri pattern. */
-    private static Pattern execInstancePattern= Pattern.compile(execInstancesPattern+"/+"+idPattern+"/*");
-
-    /** NotificationChannels resource uri pattern. */
-    private static Pattern notificationChannelsPattern= Pattern.compile("("+sclPattern+"|"+applicationPattern+")"+"/+notificationChannels/*");
-
-    /** NotificationChannel resource uri pattern. */
-    private static Pattern notificationChannelPattern= Pattern.compile(notificationChannelsPattern+"/+"+idPattern+"/*");
-
-    /** M2mPocs resource uri pattern. */
-    private static Pattern m2mPocsPattern= Pattern.compile(sclPattern+"/+m2mPocs/*");
-
-    /** M2mPoc resource uri pattern. */
-    private static Pattern m2mPocPattern= Pattern.compile(m2mPocsPattern+"/+"+idPattern+"/*");
-
-    /** Subscriptions resource uri pattern. */
-    private static Pattern subscriptionsPattern= Pattern.compile("("+sclBasePattern+"|"+sclPattern+"|"+sclsPattern+"|"+applicationsPattern+"|"+applicationPattern+
-            "|"+containersPattern+"|"+containerPattern+"|"+contentInstancesPattern+"|"+accessRightsPattern+"|"+accessRightPattern+
-            "|"+groupsPattern+"|"+groupPattern+"|"+mgmtObjsPattern+"|"+mgmtObjPattern+"|"+mgmtCmdPattern+"|"+attachedDevicesPattern+
-            "|"+attachedDevicePattern+"|"+parametersPattern+"|"+parameterPattern+"|"+execInstancesPattern+"|"+execInstancePattern+
-            "|"+locationContainerPattern+")"+"/+subscriptions/*");
-
-    /** Subscription resource uri pattern. */
-    private static Pattern subscriptionPattern= Pattern.compile(subscriptionsPattern+"/+"+idPattern+"/*");
-
+    public static final ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
+    
     /**
      * Invokes the correct resource controller method.
      * @param method - Request method
@@ -253,76 +113,68 @@ public class Router implements SclService {
      * @param requestIndication - The generic request to handle
      * @return The generic returned response
      */
-
     public ResponseConfirm doRequest(RequestIndication requestIndication) {
-         LOGGER.info(requestIndication);
-         ResponseConfirm  responseConfirm = new ResponseConfirm();
+        LOGGER.info(requestIndication);
+        ResponseConfirm  responseConfirm = new ResponseConfirm();
 
-         // Check requesting entity not null.
-         if(requestIndication.getRequestingEntity()==null){
-             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_AUTHORIZATION_NOT_ADDED,"Requesting Entity should not be null"));
-         }
+        // Check requesting entity not null.
+        if(requestIndication.getRequestingEntity()==null){
+            return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_AUTHORIZATION_NOT_ADDED,"Requesting Entity should not be null"));
+        }
 
-         // Remove the first "/" from the request uri if exist.
-         if(requestIndication.getTargetID().startsWith("/")){
- requestIndication.setTargetID(requestIndication.getTargetID().substring(1));
-         }
-         // Remove the last "/" from the request uri if exist.
-         if(requestIndication.getTargetID().endsWith("/")){
- requestIndication.setTargetID(requestIndication.getTargetID().substring(0,requestIndication.getTargetID().length()-1));
-         }
+        // Remove the first "/" from the request uri if exist.
+        if(requestIndication.getTargetID().startsWith("/")){
+            requestIndication.setTargetID(requestIndication.getTargetID().substring(1));
+        }
+        // Remove the last "/" from the request uri if exist.
+        if(requestIndication.getTargetID().endsWith("/")){
+            requestIndication.setTargetID(requestIndication.getTargetID().substring(0,requestIndication.getTargetID().length()-1));
+        }
+    	readWriteLock.readLock().lock();
 
-         readWriteLock.readLock().lock();
+        // Retagreting case
+        if(Patterns.match(Patterns.RETARGETING_PATTERN,requestIndication.getTargetID())){
+        	responseConfirm  = new Redirector().retarget(requestIndication); 
+        }else{
+        	long begInitController = System.currentTimeMillis();
+	        // Determine the appropriate resource controller
+	        Controller controller = getResourceController(requestIndication.getTargetID(),requestIndication.getMethod(),requestIndication.getRepresentation());
+	        long endInitController = System.currentTimeMillis();
+	        LOGGER.debug("***************** Time init controller : " + (endInitController - begInitController));
+	        // Select the resource controller method and invoke it.
+	        if(controller!=null){
+	
+		            LOGGER.info("ResourceController ["+controller.getClass().getSimpleName()+"]");
+		            try{
+		            		long deb = System.currentTimeMillis();
+			                switch(requestIndication.getMethod()){
+			                case Constants.METHOD_RETREIVE: responseConfirm = controller.doRetrieve(requestIndication);
+			                break;
+			                case Constants.METHOD_CREATE: responseConfirm = controller.doCreate(requestIndication);
+			                break;
+			                case Constants.METHOD_UPDATE:  responseConfirm = controller.doUpdate(requestIndication);
+			                break;
+			                case Constants.METHOD_DELETE:  responseConfirm = controller.doDelete(requestIndication);
+			                break;
+			                case Constants.METHOD_EXECUTE: responseConfirm = controller.doExecute(requestIndication);
+			                break;
+			                default: responseConfirm = new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Bad Method"));
+			                break;
+		                }
+			                LOGGER.debug("***************** Time in controller :" + (System.currentTimeMillis() - deb)) ; 
+		            }catch(Exception e){
+		                LOGGER.error("Controller Internal Error",e);
+		                responseConfirm =  new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_INTERNAL_SERVER_ERROR,"Controller Internal Error"));
+		            }
+	        }else{
+	            responseConfirm = new  ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Bad TargetID"));
+	        }
+        }
+        readWriteLock.readLock().unlock();
 
-         // Retagreting case
- if(match(retargetingPattern,requestIndication.getTargetID())){
-             responseConfirm  = new Redirector().retarget(requestIndication);
-         }else{
-             // Determine the appropriate resource controller
-             Controller controller = getResourceController(requestIndication.getTargetID(),requestIndication.getMethod(),requestIndication.getRepresentation());
-
-             // Select the resource controller method and invoke it.
-             if(controller!=null){
-
-                     LOGGER.info("ResourceController ["+controller.getClass().getSimpleName()+"]");
-                     try{
-
-
-                             switch(requestIndication.getMethod()){
-                             case Constants.METHOD_RETREIVE:
-                                responseConfirm = controller.doRetrieve(requestIndication);
-
-                             break;
-                             case Constants.METHOD_CREATE:
-                                responseConfirm = controller.doCreate(requestIndication);
-
-                             break;
-                             case Constants.METHOD_UPDATE: responseConfirm = controller.doUpdate(requestIndication);
-                             break;
-                             case Constants.METHOD_DELETE: responseConfirm = controller.doDelete(requestIndication);
-                             break;
-                             case Constants.METHOD_EXECUTE: responseConfirm = controller.doExecute(requestIndication);
-                             break;
-                             default: responseConfirm = new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Bad Method"));
-                             break;
-                         }
-
-                     }catch(Exception e){
-                         LOGGER.error("Controller Internal Error",e);
-                         responseConfirm =  new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_INTERNAL_SERVER_ERROR,"Controller Internal Error"));
-                     }
-             }else{
-                 responseConfirm = new  ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Bad TargetID"));
-             }
-         }
-         readWriteLock.readLock().unlock();
-
-
-         LOGGER.info(responseConfirm);
-         return responseConfirm;
-     }
-
-
+        LOGGER.info(responseConfirm);
+        return responseConfirm;
+    }
 
     /**
      * Finds requried resource controller based on uri patterns.
@@ -334,140 +186,125 @@ public class Router implements SclService {
     public Controller getResourceController(String uri, String method, String representation){
 
         // Match the resource controller with an uri pattern and return it, otherwise return null*
-        if(match(sclBasePattern,uri)){
+        if(Patterns.match(Patterns.SCL_BASE_PATTERN,uri)){
             return new SclBaseController();
         }
 
-        if(match(sclsPattern,uri) && !method.equals(Constants.METHOD_CREATE)){
+        if(Patterns.match(Patterns.SCLS_PATTERN,uri) && !method.equals(Constants.METHOD_CREATE)){
             return new SclsController();
         }
-        if(match(sclPattern,uri) && !method.equals(Constants.METHOD_CREATE)|| (match(sclsPattern,uri) && method.equals(Constants.METHOD_CREATE))){
+        if(Patterns.match(Patterns.SCL_PATTERN,uri) && !method.equals(Constants.METHOD_CREATE)|| (Patterns.match(Patterns.SCLS_PATTERN,uri) && method.equals(Constants.METHOD_CREATE))){
             return new SclController();
         }
-        if(match(applicationsPattern,uri) && !method.equals(Constants.METHOD_CREATE)){
+        if(Patterns.match(Patterns.APPLICATIONS_PATTERN,uri) && !method.equals(Constants.METHOD_CREATE)){
             return new ApplicationsController();
         }
         // In some cases it is required to know the resource name to detemine the required resource controller.
         // This is the reason why resource representation is added as parameter for some methods.
-        if(match(applicationPattern,uri) && !method.equals(Constants.METHOD_CREATE) || (match(applicationsPattern,uri) && method.equals(Constants.METHOD_CREATE) && !representation.contains(":applicationAnnc"))){
+        if(Patterns.match(Patterns.APPLICATION_PATTERN,uri) && !method.equals(Constants.METHOD_CREATE) || (Patterns.match(Patterns.APPLICATIONS_PATTERN,uri) && method.equals(Constants.METHOD_CREATE) && !representation.contains(":applicationAnnc"))){
             return new ApplicationController();
         }
-        if(match(applicationAnncPattern,uri) && !method.equals(Constants.METHOD_CREATE) || (match(applicationsPattern,uri) && method.equals(Constants.METHOD_CREATE) && representation.contains(":applicationAnnc"))){
+        if(Patterns.match(Patterns.APPLICATION_ANNC_PATTERN,uri) && !method.equals(Constants.METHOD_CREATE) || (Patterns.match(Patterns.APPLICATIONS_PATTERN,uri) && method.equals(Constants.METHOD_CREATE) && representation.contains(":applicationAnnc"))){
             return new ApplicationAnncController();
         }
-        if(match(ipuPattern,uri)){
+        if(Patterns.match(Patterns.IPU_PATTERN,uri)){
             // will forward to a RestClientController or IPUController;
             return new APocController();
         }
-        if(match(containersPattern,uri) && !method.equals(Constants.METHOD_CREATE)){
+        if(Patterns.match(Patterns.CONTAINERS_PATTERN,uri) && !method.equals(Constants.METHOD_CREATE)){
             return new ContainersController();
         }
-        if(match(containerPattern,uri) && !method.equals(Constants.METHOD_CREATE)|| (match(containersPattern,uri) && method.equals(Constants.METHOD_CREATE) && !representation.contains(":containerAnnc"))){
+        if(Patterns.match(Patterns.CONTAINER_PATTERN,uri) && !method.equals(Constants.METHOD_CREATE)|| (Patterns.match(Patterns.CONTAINERS_PATTERN,uri) && method.equals(Constants.METHOD_CREATE) && !representation.contains(":containerAnnc"))){
             return new ContainerController();
         }
-        if(match(containerAnncPattern,uri)&& !method.equals(Constants.METHOD_CREATE) || (match(containersPattern,uri) && method.equals(Constants.METHOD_CREATE) && representation.contains(":containerAnnc"))){
+        if(Patterns.match(Patterns.CONTAINER_ANNC_PATTERN,uri)&& !method.equals(Constants.METHOD_CREATE) || (Patterns.match(Patterns.CONTAINERS_PATTERN,uri) && method.equals(Constants.METHOD_CREATE) && representation.contains(":containerAnnc"))){
             return new ContainerAnncController();
         }
-        if(match(locationContainerPattern,uri)){
+        if(Patterns.match(Patterns.LOCATION_CONTAINER_PATTERN,uri)){
             return new LocationContainerController();
         }
-        if(match(locationContainerAnncPattern,uri)){
+        if(Patterns.match(Patterns.LOCATION_CONTAINER_ANNC_PATTERN,uri)){
             return new LocationContainerAnncController();
         }
-        if(match(contentInstancesPattern,uri) && !method.equals(Constants.METHOD_CREATE)){
+        if(Patterns.match(Patterns.CONTENT_INSTANCES_PATTERN,uri) && !method.equals(Constants.METHOD_CREATE)){
             return new ContentInstancesController();
         }
-        if(match(contentInstancePattern,uri) && !method.equals(Constants.METHOD_CREATE)|| (match(contentInstancesPattern,uri) && method.equals(Constants.METHOD_CREATE))){
+        if(Patterns.match(Patterns.CONTENT_INSTANCE_PATTERN,uri) && !method.equals(Constants.METHOD_CREATE)|| (Patterns.match(Patterns.CONTENT_INSTANCES_PATTERN,uri) && method.equals(Constants.METHOD_CREATE))){
             return new ContentInstanceController();
         }
-        if(match(contentPattern,uri)){
+        if(Patterns.match(Patterns.CONTENT_PATTERN,uri)){
             return new ContentController();
         }
-        if(match(subscriptionsPattern,uri) && !method.equals(Constants.METHOD_CREATE)){
+        if(Patterns.match(Patterns.SUBSCRIPTIONS_PATTERN,uri) && !method.equals(Constants.METHOD_CREATE)){
             return new SubscriptionsController();
         }
-        if(match(subscriptionPattern,uri) && !method.equals(Constants.METHOD_CREATE)|| (match(subscriptionsPattern,uri) && method.equals(Constants.METHOD_CREATE))){
+        if(Patterns.match(Patterns.SUBSCRIPTION_PATTERN,uri) && !method.equals(Constants.METHOD_CREATE)|| (Patterns.match(Patterns.SUBSCRIPTIONS_PATTERN,uri) && method.equals(Constants.METHOD_CREATE))){
             return new SubscriptionController();
         }
-        if(match(accessRightsPattern,uri) && !method.equals(Constants.METHOD_CREATE)){
+        if(Patterns.match(Patterns.ACCESS_RIGHTS_PATTERN,uri) && !method.equals(Constants.METHOD_CREATE)){
             return new AccessRightsController();
         }
-        if(match(accessRightPattern,uri) && !method.equals(Constants.METHOD_CREATE) || (match(accessRightsPattern,uri) && method.equals(Constants.METHOD_CREATE) && !representation.contains(":accessRightAnnc"))){
+        if(Patterns.match(Patterns.ACCESS_RIGHT_PATTERN,uri) && !method.equals(Constants.METHOD_CREATE) || (Patterns.match(Patterns.ACCESS_RIGHTS_PATTERN,uri) && method.equals(Constants.METHOD_CREATE) && !representation.contains(":accessRightAnnc"))){
             return new AccessRightController();
         }
-        if(match(accessRightAnncPattern,uri) && !method.equals(Constants.METHOD_CREATE) || (match(accessRightsPattern,uri) && method.equals(Constants.METHOD_CREATE) && representation.contains(":accessRightAnnc"))){
+        if(Patterns.match(Patterns.ACCESS_RIGHT_ANNC_PATTERN,uri) && !method.equals(Constants.METHOD_CREATE) || (Patterns.match(Patterns.ACCESS_RIGHTS_PATTERN,uri) && method.equals(Constants.METHOD_CREATE) && representation.contains(":accessRightAnnc"))){
             return new AccessRightAnncController();
         }
-        if(match(groupsPattern,uri) && !method.equals(Constants.METHOD_CREATE)){
+        if(Patterns.match(Patterns.GROUPS_PATTERN,uri) && !method.equals(Constants.METHOD_CREATE)){
             return new GroupsController();
         }
-        if(match(groupPattern,uri)&& !method.equals(Constants.METHOD_CREATE) || (match(groupsPattern,uri) && method.equals(Constants.METHOD_CREATE) && !representation.contains(":groupAnnc"))){
+        if(Patterns.match(Patterns.GROUP_PATTERN,uri)&& !method.equals(Constants.METHOD_CREATE) || (Patterns.match(Patterns.GROUPS_PATTERN,uri) && method.equals(Constants.METHOD_CREATE) && !representation.contains(":groupAnnc"))){
             return new GroupController();
         }
-        if(match(groupAnncPattern,uri) && !method.equals(Constants.METHOD_CREATE) || (match(groupsPattern,uri) && method.equals(Constants.METHOD_CREATE) && representation.contains(":groupAnnc"))){
+        if(Patterns.match(Patterns.GROUP_ANNC_PATTERN,uri) && !method.equals(Constants.METHOD_CREATE) || (Patterns.match(Patterns.GROUPS_PATTERN,uri) && method.equals(Constants.METHOD_CREATE) && representation.contains(":groupAnnc"))){
             return new GroupAnncController();
         }
-        if(match(membersContentPattern,uri)){
+        if(Patterns.match(Patterns.MEMBERS_CONTENT_PATTERN,uri)){
             return new MembersContentController();
         }
-        if(match(discoveryPattern,uri)){
+        if(Patterns.match(Patterns.DISCOVERY_PATTERN,uri)){
             return new DiscoveryController();
         }
-        if(match(mgmtObjsPattern,uri)){
+        if(Patterns.match(Patterns.MGMT_OBJS_PATTERN,uri)){
             return new MgmtObjsController();
         }
-        if(match(mgmtObjPattern,uri)){
+        if(Patterns.match(Patterns.MGMT_OBJ_PATTERN,uri)){
             return new MgmtObjController();
         }
-        if(match(parametersPattern,uri)){
+        if(Patterns.match(Patterns.PARAMETERS_PATTERN,uri)){
             return new ParametersController();
         }
-        if(match(parameterPattern,uri)){
+        if(Patterns.match(Patterns.PARAMETER_PATTERN,uri)){
             return null;
         }
-        if(match(mgmtCmdPattern,uri)){
+        if(Patterns.match(Patterns.MGMT_CMD_PATTERN,uri)){
             return new MgmtCmdController();
         }
-        if(match(execInstancesPattern,uri)){
+        if(Patterns.match(Patterns.EXEC_INSTANCES_PATTERN,uri)){
             return new ExecInstancesController();
         }
-        if(match(execInstancePattern,uri)){
+        if(Patterns.match(Patterns.EXEC_INSTANCE_PATTERN,uri)){
             return new ExecInstanceController();
         }
-        if(match(attachedDevicesPattern,uri)){
+        if(Patterns.match(Patterns.ATTACHED_DEVICES_PATTERN,uri)){
             return new AttachedDevicesController();
         }
-        if(match(attachedDevicePattern,uri)){
+        if(Patterns.match(Patterns.ATTACHED_DEVICE_PATTERN,uri)){
             return new AttachedDeviceController();
         }
-        if(match(notificationChannelsPattern,uri)){
+        if(Patterns.match(Patterns.NOTIFICATION_CHANNELS_PATTERN,uri)){
             return new NotificationChannelsController();
         }
-        if(match(notificationChannelPattern,uri)){
+        if(Patterns.match(Patterns.NOTIFICATION_CHANNEL_PATTERN,uri)){
             return new NotificationChannelController();
         }
-        if(match(m2mPocsPattern,uri)){
+        if(Patterns.match(Patterns.M2M_POCS_PATTERN,uri)){
             return new M2MPocsController();
         }
-        if(match(m2mPocPattern,uri)){
+        if(Patterns.match(Patterns.M2M_POC_PATTERN,uri)){
             return new M2MPocController();
         }
 
         return null;
-    }
-
-    /**
-     * match uri with a pattern.
-     * @param pattern - pattern
-     * @param uri - resource uri
-     * @return true if matched, otherwise false.
-     */
-    public static boolean match(Pattern pattern, String uri) {
-        // Match uri with pattern
-        Matcher m = pattern.matcher(uri);
-        if (!m.matches()){
-            return false;
-        }
-        return true;
     }
 }

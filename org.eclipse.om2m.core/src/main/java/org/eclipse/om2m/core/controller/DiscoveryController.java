@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013-2014 LAAS-CNRS (www.laas.fr) 
+ * Copyright (c) 2013-2015 LAAS-CNRS (www.laas.fr) 
  * 7 Colonel Roche 31077 Toulouse - France
  * 
  * All rights reserved. This program and the accompanying materials
@@ -16,11 +16,15 @@
  *     Khalil Drira - Management and initial specification.
  *     Yassine Banouar - Initial specification, conception, implementation, test 
  * 		and documentation.
+ *     Guillaume Garzone - Conception, implementation, test and documentation.
+ *     Francois Aissaoui - Conception, implementation, test and documentation.
  ******************************************************************************/
 package org.eclipse.om2m.core.controller;
 
 import java.util.Collections;
 import java.util.List;
+
+import javax.persistence.EntityManager;
 
 import org.eclipse.om2m.commons.resource.Discovery;
 import org.eclipse.om2m.commons.resource.ErrorInfo;
@@ -33,6 +37,7 @@ import org.eclipse.om2m.commons.rest.RequestIndication;
 import org.eclipse.om2m.commons.rest.ResponseConfirm;
 import org.eclipse.om2m.core.constants.Constants;
 import org.eclipse.om2m.core.dao.DAOFactory;
+import org.eclipse.om2m.core.dao.DBAccess;
 
 /**
  * Implements discovery method to perform a discovery of resources.
@@ -70,7 +75,10 @@ public class DiscoveryController extends Controller {
         ResponseConfirm errorResponse = new ResponseConfirm();
 
         // Check AccessRight
-        SclBase sclBase = DAOFactory.getSclBaseDAO().find(Constants.SCL_ID);
+        EntityManager em = DBAccess.createEntityManager();
+        em.getTransaction().begin();
+        SclBase sclBase = DAOFactory.getSclBaseDAO().find(Constants.SCL_ID, em);
+        em.close();
         errorResponse = checkAccessRight(sclBase.getAccessRightID(), requestIndication.getRequestingEntity(), Constants.AR_DISCOVER);
         if (errorResponse != null) {
             return errorResponse;
@@ -149,8 +157,14 @@ public class DiscoveryController extends Controller {
      */
     public static Discovery discover (String searchPrefix, int maxSize, FilterCriteriaType filterCriteriaType) {
         Discovery discovery = new Discovery();
+        long begResourcesDAO = System.currentTimeMillis();
         // Retrieve all resources
-        Resources resourcesList = DAOFactory.getResourcesDAO().find(searchPrefix);
+        EntityManager em = DBAccess.createEntityManager();
+        em.getTransaction().begin();
+        Resources resourcesList = DAOFactory.getResourcesDAO().find(searchPrefix, em);
+        em.close();
+        long endDiscoverJPA = System.currentTimeMillis();
+        LOGGER.debug("***************** Time Resources.find : "+(endDiscoverJPA-begResourcesDAO));
         List<Resource> resources = resourcesList.getResources();
         // Research
         for (int i=0; i<resources.size(); i++) {

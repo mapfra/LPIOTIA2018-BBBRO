@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013-2014 LAAS-CNRS (www.laas.fr)
+ * Copyright (c) 2013-2015 LAAS-CNRS (www.laas.fr)
  * 7 Colonel Roche 31077 Toulouse - France
  *
  * All rights reserved. This program and the accompanying materials
@@ -16,14 +16,15 @@
  *     Khalil Drira - Management and initial specification.
  *     Yassine Banouar - Initial specification, conception, implementation, test
  *         and documentation.
+ *     Guillaume Garzone - Conception, implementation, test and documentation.
+ *     Francois Aissaoui - Conception, implementation, test and documentation.
  ******************************************************************************/
 package org.eclipse.om2m.core.dao;
 
+import javax.persistence.EntityManager;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.eclipse.om2m.core.router.Router;
-
-import com.db4o.ObjectContainer;
 
 /**
  * <p>
@@ -43,18 +44,20 @@ import com.db4o.ObjectContainer;
  */
 
 public abstract class DAO<T> {
-	private static Log LOGGER = LogFactory.getLog(DAO.class);
-	public static ObjectContainer DB = DBClientConnection.getInstance();
-	public static ObjectContainer SESSION = DB.ext().openSession();
-
+	protected static Log LOGGER = LogFactory.getLog(DAO.class);
 
 	/**
-	 * Abstract create resource method in database.
+	 * Generic create method: persists the resource in the database.
 	 * 
 	 * @param resource
 	 *            - The resource to create
+	 * @param em
+	 *            - EntityManager used for the transaction
 	 */
-	public abstract void create(T resource);
+	public void create(T resource, EntityManager em){
+		// for more complex operations, override this method
+		em.persist(resource);
+	}
 
 	/**
 	 * Abstract find resource method in database based on its uri. It returns
@@ -62,36 +65,24 @@ public abstract class DAO<T> {
 	 * 
 	 * @param uri
 	 *            - The uri of the resource to find
+	 * @param em
+	 *            - EntityManager used for the transaction
 	 * @return The resource if it is found otherwise null
 	 */
-	public abstract T find(String uri);
+	public abstract T find(String uri, EntityManager em);
 
 	/**
-	 * Abstract find resource method in database based on its uri. It returns
-	 * collections without sub-resources references.
-	 * 
-	 * @param uri
-	 *            - The uri of the resource to find
-	 * @return The resource if it is found otherwise null
-	 */
-	public abstract T lazyFind(String uri);
-
-	/**
-	 * Abstract update resource method in database.
+	 * Generic update method: Update the resource in database.
 	 * 
 	 * @param resource
 	 *            - The updated resource.
+	 * @param em
+	 *            - EntityManager used for the transaction
 	 */
-	public abstract void update(T resource);
-
-	/**
-	 * Abstract delete resource method from the DataBase with validating the
-	 * transaction.
-	 * 
-	 * @param resource
-	 *            - The resource to delete.
-	 */
-	public abstract void delete(T resource);
+	public void update(T resource, EntityManager em) {
+		// for more complex operations, override this method
+		em.flush();
+	}
 
 	/**
 	 * Abstract delete resource method from the DataBase without validating the
@@ -99,22 +90,9 @@ public abstract class DAO<T> {
 	 * 
 	 * @param resource
 	 *            - The resource to delete.
+	 * @param em
+	 *            - The entity manager to use
+	 * 
 	 */
-	public abstract void lazyDelete(T resource);
-
-	/**
-	 * Validates the transaction.
-	 */
-	public void commit() {
-		//new Thread() {
-			//public void run() {
-				//Router.readWriteLock.readLock().lock();
-				LOGGER.info("Commiting trasaction..");
-
-				DB.commit();
-				LOGGER.info("Commiting trasaction.. OK");
-				//Router.readWriteLock.readLock().unlock();
-			//}
-		//}.start();
-	}
+	public abstract void delete(T resource, EntityManager em);
 }
