@@ -56,19 +56,29 @@ public class Redirector {
     	EntityManager em = DBAccess.createEntityManager();
     	em.getTransaction().begin();
         Scls scls = DAOFactory.getSclsDAO().find(Constants.SCL_ID+Refs.SCLS_REF, em);
-        // Check scls existence
-        if (scls == null) {
-        	em.close();
-            return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_NOT_FOUND,"Impossible retargeting: Scls collection Not found")) ;
+        
+        boolean found = false;
+        String sclId= requestIndication.getTargetID().split("/")[0];
+        List<ReferenceToNamedResource> sclCollection = scls.getSclCollection().getNamedReference();
+        for (int i=0; i<sclCollection.size(); i++) {
+            if (sclCollection.get(i).getId().equalsIgnoreCase(sclId)) {
+                found = true;
+                break;
+            }
         }
-
-        if (!checkRemoteSclReferenceExistence(scls, requestIndication.getTargetID())) {
-        	em.close();
-            return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_NOT_FOUND,"Scl "+requestIndication.getTargetID().split("/")[0]+" does not exist in scls")) ;
+        String sclURI = null;
+        if (found) {
+        	sclURI = Constants.SCL_ID+Refs.SCLS_REF+"/"+sclId;
+        }else{
+        	if(!Constants.SCL_TYPE.equalsIgnoreCase("NSCL") && sclCollection.size()>0){
+        			sclURI = Constants.SCL_ID+Refs.SCLS_REF+"/"+sclCollection.get(0).getId();
+        	}else{
+        		em.close();
+        		return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_NOT_FOUND,"Scl "+sclId+" does not exist in scls")) ;
+        	}
         }
         // Found remote scl
-        String sclId = Constants.SCL_ID+Refs.SCLS_REF+"/"+requestIndication.getTargetID().split("/")[0];
-        Scl scl = DAOFactory.getSclDAO().find(sclId, em);
+        Scl scl = DAOFactory.getSclDAO().find(sclURI, em);
         em.close();
         String base = scl.getPocs().getReference().get(0)+"/";
         requestIndication.setBase(base);
@@ -77,22 +87,4 @@ public class Redirector {
         return new RestClient().sendRequest(requestIndication);
     }
 
-    /**
-     * Checks if the hosting SCL is registered in the SclCollection.
-     * @param scls
-     * @param hostingSclReference
-     * @return boolean (true if it exists, otherwise false)
-     */
-    public boolean checkRemoteSclReferenceExistence(Scls scls, String scl) {
-        boolean found = false;
-
-        List<ReferenceToNamedResource> sclCollection = scls.getSclCollection().getNamedReference();
-        for (int i=0; i<sclCollection.size(); i++) {
-            if (sclCollection.get(i).getId().equalsIgnoreCase(scl.split("/")[0])) {
-                found = true;
-                break;
-            }
-        }
-        return found;
-    }
 }
