@@ -74,7 +74,7 @@
       <property name="org.eclipse.om2m.dbDriver" value="org.h2.Driver" />
       <property name="org.eclipse.om2m.dbPassword" value="om2m" />
       <property name="org.eclipse.om2m.dbReset" value="true" />
-      <property name="org.eclipse.om2m.dbUrl" value="jdbc:h2:./database/db" />
+      <property name="org.eclipse.om2m.dbUrl" value="jdbc:h2:./database/nscldb" />
       <property name="org.eclipse.om2m.dbUser" value="om2m" />
       <property name="org.eclipse.om2m.globalContext" value="" />
       <property name="org.eclipse.om2m.guestRequestingEntity" value="guest:guest" />
