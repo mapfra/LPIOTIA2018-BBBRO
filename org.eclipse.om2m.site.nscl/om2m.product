@@ -7,10 +7,8 @@
    </configIni>
 
    <launcherArgs>
-      <programArgs>-console -noExit
-      </programArgs>
-      <vmArgs>-ea  -Declipse.ignoreApp=true -Dosgi.clean=true -Ddebug=true -Dosgi.console.enable.builtin=true
-      </vmArgs>
+      <programArgs>-console -noExit --launcher.secondThread</programArgs>
+      <vmArgs>-ea  -Declipse.ignoreApp=true -Dosgi.clean=true -Ddebug=true</vmArgs>
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts
       </vmArgsMac>
    </launcherArgs>
