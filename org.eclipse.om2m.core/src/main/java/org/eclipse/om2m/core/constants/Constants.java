@@ -116,6 +116,8 @@ public class Constants {
     public static final String SEARCH_STRING_RES_TYPE = "ResourceType/";
     /** Search String resource id prefix. */
     public static final String SEARCH_STRING_RES_ID = "ResourceID/";
-    
+   
+    /** Regular expression for ID of resources */
+    public static final String ID_REGEXPR = "^[A-Za-z0-9_-]*$" ;
 
 }

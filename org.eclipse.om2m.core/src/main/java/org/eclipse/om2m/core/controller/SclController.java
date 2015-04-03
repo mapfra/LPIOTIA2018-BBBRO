@@ -124,6 +124,9 @@ public class SclController extends Controller {
 		if (scl.getSclId() == null) {
 			em.close();
 			return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST," sclId is Mandatory")) ;
+		} else if (!scl.getSclId().matches(Constants.ID_REGEXPR)) { // Check Id conformity
+			em.close();
+			return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"sclId should match the following regexpr: " + Constants.ID_REGEXPR)) ;
 		}
 		// Check the Id uniqueness
 		if (DAOFactory.getSclDAO().find(requestIndication.getTargetID()+"/"+scl.getSclId(), em) != null) {

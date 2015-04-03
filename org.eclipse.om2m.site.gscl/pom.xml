@@ -32,22 +32,43 @@
 	<name>org.eclipse.om2m :: gscl product</name>
 	
 	<build>
- <plugins>
-  <plugin>
-   <groupId>org.eclipse.tycho</groupId>
-   <artifactId>tycho-p2-director-plugin</artifactId>
-   <version>${tycho.version}</version>
-   <executions>
-    <execution>
-     <id>materialize-products</id>
-     <goals>
-      <goal>materialize-products</goal>
-     </goals>
-     
-    </execution>
-   </executions>
-  </plugin>
- </plugins>
- </build>
+ 		<plugins>
+  			<plugin>
+   				<groupId>org.eclipse.tycho</groupId>
+   				<artifactId>tycho-p2-director-plugin</artifactId>
+   				<version>${tycho.version}</version>
+   				<executions>
+    				<execution>
+     					<id>materialize-products</id>
+     					<goals>
+      						<goal>materialize-products</goal>
+     					</goals>
+    				</execution>
+   				</executions>
+  			</plugin>
+  			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.7</version>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/target/products/gscl/${osgi.os}/${osgi.ws}/${osgi.arch}</outputDirectory>
+							<resources>
+								<resource>
+									<directory>scripts</directory>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+ 		</plugins>
+ 	</build>
  
 </project>

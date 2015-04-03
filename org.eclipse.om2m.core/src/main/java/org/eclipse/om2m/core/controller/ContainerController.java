@@ -146,6 +146,11 @@ public class ContainerController extends Controller {
 					"Last Modified Time is Not Permitted"));
 		}
 		// Storage
+		// Check ID Conformity
+		if (container.getId() != null && !container.getId().matches(Constants.ID_REGEXPR)){
+			em.close();
+        	return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Id should match the following regexpr: " + Constants.ID_REGEXPR));
+		}
 		// Check uniqueness and Set id if it's not available
 		if (container.getId() == null
 				|| container.getId().isEmpty()

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013-2014 LAAS-CNRS (www.laas.fr)
+ * Copyright (c) 2013-2015 LAAS-CNRS (www.laas.fr)
  * 7 Colonel Roche 31077 Toulouse - France
  *
  * All rights reserved. This program and the accompanying materials
@@ -112,17 +112,16 @@ public class CoapClient implements RestClientService {
 
 		switch (code) {
 		case GET:
-			request.newGet();
+			Request.newGet();
 			break;
 		case POST:
-			request.newPost();
-
+			Request.newPost();
 			break;
 		case PUT:
-			request.newPut();
+			Request.newPut();
 			break;
 		case DELETE:
-			request.newDelete();
+			Request.newDelete();
 			break;
 		default:
 			return new ResponseConfirm();
@@ -151,8 +150,7 @@ public class CoapClient implements RestClientService {
 		try {
 			response = request.waitForResponse();
 		} catch (InterruptedException e) {
-			 LOGGER.error("CoAP Client > Failed to receive response:" + e.getMessage());
-			System.err.println("Failed to receive response:" + e.getMessage());
+			LOGGER.error("CoAP Client > Failed to receive response: " + e.getMessage(), e);
 		}
 		if (response != null) {
 			if (response.getOptions().hasContentFormat(

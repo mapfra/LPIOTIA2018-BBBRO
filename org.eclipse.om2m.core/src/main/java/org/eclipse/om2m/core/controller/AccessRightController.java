@@ -107,6 +107,11 @@ public class AccessRightController extends Controller {
         }
         
         // Checks on Attributes
+        // Check ID Conformity
+        if (accessRight.getId() != null && !accessRight.getId().matches(Constants.ID_REGEXPR)){
+        	em.close();
+        	return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Id should match the following regexpr: " + Constants.ID_REGEXPR));
+        }
         // Check the Id uniqueness
         if (accessRight.getId() != null && DAOFactory.getAccessRightDAO().find(requestIndication.getTargetID()+"/"+accessRight.getId(), em) != null) {
         	em.close();

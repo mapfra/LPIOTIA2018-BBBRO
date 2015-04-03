@@ -102,6 +102,11 @@ public class GroupController extends Controller {
         	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST, "Incorrect resource representation syntax")) ;
         }
+        // Check ID conformity
+        if (group.getId() != null && !group.getId().matches(Constants.ID_REGEXPR)){
+        	em.close();
+        	return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Id should match the following regexpr: " + Constants.ID_REGEXPR));
+        }
         // Check the Id uniqueness
         if (group.getId() != null && DAOFactory.getGroupDAO().find(requestIndication.getTargetID()+"/"+group.getId(), em) != null) {
         	em.close();

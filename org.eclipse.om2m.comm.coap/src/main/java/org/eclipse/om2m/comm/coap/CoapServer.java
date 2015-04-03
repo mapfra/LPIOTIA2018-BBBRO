@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013-2014 LAAS-CNRS (www.laas.fr)
+ * Copyright (c) 2013-2015 LAAS-CNRS (www.laas.fr)
  * 7 Colonel Roche 31077 Toulouse - France
  *
  * All rights reserved. This program and the accompanying materials
@@ -83,10 +83,10 @@ class CoapMessageDeliverer implements MessageDeliverer {
            resp= service (req);
            LOGGER.info("the response= "+ resp);
        } catch (SocketException e) {
-           LOGGER.info("the service failed! ");
-           e.printStackTrace();
+           LOGGER.error("the service failed! ", e);
        } catch (IOException e) {
-           e.printStackTrace();}
+           LOGGER.error("IOexception", e);    
+       }
 
        LOGGER.info("request = " + req);
        exchange.sendResponse(resp);
@@ -120,8 +120,7 @@ class CoapMessageDeliverer implements MessageDeliverer {
        try {
     	   uri = new URI(request.getURI());
        } catch (URISyntaxException e) {
-    	   // TODO Auto-generated catch block
-    	   e.printStackTrace();
+    	   LOGGER.error("URI Syntax error", e);
        }
        String targetID = "";
        if( uri.getPath().split(context+"/")[1]!=null){;
@@ -231,6 +230,7 @@ class CoapMessageDeliverer implements MessageDeliverer {
     	   resCode= ResponseCode.UNAUTHORIZED;
     	   break;
        default: resCode= ResponseCode.SERVICE_UNAVAILABLE;
+       break;
 
        }
        LOGGER.info("the responseConfirm: "+ responseConfirm);
@@ -302,11 +302,13 @@ class CoapMessageDeliverer implements MessageDeliverer {
        LOGGER.info("The received code is "+statusCode);
        switch(statusCode){
        case STATUS_OK :
+    	   double result;
            if (isEmptyBody) {
-        	   return 2.04;
+        	   result = 2.04;
            }else{
-        	   return 2.00;
+        	   result = 2.00;
            }
+           return result;
        case STATUS_CREATED                : return 2.01;
        case STATUS_ACCEPTED               : return 2.02;
 

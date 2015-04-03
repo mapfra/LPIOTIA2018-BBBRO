@@ -133,11 +133,17 @@ public class SubscriptionController extends Controller {
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_CONFLICT,"Subscription ContactURI Conflict")) ;
         }
         // Storage
-        // Check the Id uniqueness
+        // Check the ID conformity
+        if (subscription.getId() != null && !subscription.getId().matches(Constants.ID_REGEXPR)) {
+        	em.close();
+        	return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"ID should match the following regexpr: " + Constants.ID_REGEXPR)) ;
+        }
+        // Check the ID uniqueness
         if (subscription.getId() != null && DAOFactory.getSubscriptionDAO().find(requestIndication.getTargetID()+"/"+subscription.getId(), em) != null) {
         	em.close();
             return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_CONFLICT,"SubscriptionId Conflit")) ;
         }
+        // Generates an ID if not set
         if (subscription.getId() == null || subscription.getId().isEmpty()) {
             subscription.setId(generateId("SUB_",""));
         }

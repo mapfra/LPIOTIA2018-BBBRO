@@ -134,6 +134,11 @@ public class ContentInstanceController extends Controller {
 			em.close();
 			return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST," Content CREATE is Mandatory")) ;
 		}
+		// Check ID Conformity
+		if (contentInstance.getId() != null && !contentInstance.getId().matches(Constants.ID_REGEXPR)){
+			em.close();
+			return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"Id should match the following regexpr: " + Constants.ID_REGEXPR));
+		}
 		// Check uniqueness and Set id if it is not available
 		if (contentInstance.getId() == null || contentInstance.getId().isEmpty()
 				|| DAOFactory.getContentInstanceDAO().find(requestIndication.getTargetID()+"/"+contentInstance.getId(), em) != null) {

@@ -113,6 +113,11 @@ public class ApplicationController extends Controller {
         	em.close();
         	return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST, "Incorrect resource representation syntax")) ;         	
         }
+        // Check ID Conformity
+        if (application.getAppId() != null && !application.getAppId().matches(Constants.ID_REGEXPR)){
+        	em.close();
+        	return new ResponseConfirm(new ErrorInfo(StatusCode.STATUS_BAD_REQUEST,"AppId should match the following regexpr: " + Constants.ID_REGEXPR));
+        }
         // Check the AppId uniqueness
         if (application.getAppId() != null && DAOFactory.getApplicationDAO().find(requestIndication.getTargetID()+"/"+application.getAppId(), em) != null) {
         	em.close();
@@ -120,7 +125,7 @@ public class ApplicationController extends Controller {
         }
         if (application.getAppId() == null || application.getAppId().isEmpty()) {
             application.setAppId(generateId("APP_",""));
-        }
+        } 
         // Check ExpirationTime
         if (application.getExpirationTime() != null && !checkExpirationTime(application.getExpirationTime())) {
         	em.close();
