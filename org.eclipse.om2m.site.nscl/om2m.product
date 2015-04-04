@@ -78,7 +78,7 @@
       <property name="org.eclipse.om2m.dbUser" value="om2m" />
       <property name="org.eclipse.om2m.globalContext" value="" />
       <property name="org.eclipse.om2m.guestRequestingEntity" value="guest:guest" />
-      <property name="org.eclipse.om2m.maxNrOfInstances" value="10" />
+      <property name="org.eclipse.om2m.maxNrOfInstances" value="1000" />
       <property name="org.eclipse.om2m.sclBaseAddress" value="127.0.0.1" />
       <property name="org.eclipse.om2m.sclBaseContext" value="/om2m" />
       <property name="org.eclipse.om2m.sclBaseId" value="nscl" />
