@@ -80,6 +80,7 @@
       <property name="org.eclipse.om2m.globalContext" value="" />
       <property name="org.eclipse.om2m.guestRequestingEntity" value="guest:guest" />
       <property name="org.eclipse.om2m.maxNrOfInstances" value="1000" />
+      <property name="org.eclipse.om2m.nsclAuthentication" value="true" />
       <property name="org.eclipse.om2m.remoteNsclAddress" value="127.0.0.1" />
       <property name="org.eclipse.om2m.remoteNsclContext" value="/om2m" />
       <property name="org.eclipse.om2m.remoteNsclId" value="nscl" />
@@ -88,7 +89,6 @@
       <property name="org.eclipse.om2m.sclBaseContext" value="/om2m" />
       <property name="org.eclipse.om2m.sclBaseId" value="gscl" />
       <property name="org.eclipse.om2m.sclBaseProtocol.default" value="http" />
-      <property name="org.eclipse.om2m.sclRemoteConnection" value="true" />
       <property name="org.eclipse.om2m.sclType" value="GSCL" />
       <property name="org.eclipse.om2m.webInterfaceContext" value="/" />
    </configurations>

@@ -181,8 +181,8 @@ public class Activator implements BundleActivator {
 		ObixMapper.getInstance();
 
 		// Manage registration in the case of a GSCL
-		if (Constants.REMOTE_CONNECTION) {
-			LOGGER.info("Connecting to remote SCl...");
+		if (Constants.NSCL_AUTHENTICATION) {
+			LOGGER.info("Authenticating to NSCl...");
 			registerScl();
 		}
 	}

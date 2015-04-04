@@ -36,7 +36,7 @@ public class Constants {
     /** SclBase id. */
     public static final String SCL_ID = System.getProperty("org.eclipse.om2m.sclBaseId","nscl");
     /** Connect to the remote SCL (if not NSCL) */
-    public static final boolean REMOTE_CONNECTION = Boolean.valueOf(System.getProperty("org.eclipse.om2m.sclRemoteConnection", "false"));
+    public static final boolean NSCL_AUTHENTICATION = Boolean.valueOf(System.getProperty("org.eclipse.om2m.nsclAuthentication", "true"));
     /** Default admin access right profile */
     public static final String ADMIN_PROFILE_ID = "AR_ADMIN";
     /** Default admin requesting entity. (username/password) */
