@@ -35,8 +35,7 @@ public class Constants {
     public static final String SCL_TYPE = System.getProperty("org.eclipse.om2m.sclType","NSCL");
     /** SclBase id. */
     public static final String SCL_ID = System.getProperty("org.eclipse.om2m.sclBaseId","nscl");
-    /** Connect to the remote SCL (if not NSCL) */
-    public static final boolean NSCL_AUTHENTICATION = Boolean.valueOf(System.getProperty("org.eclipse.om2m.nsclAuthentication", "true"));
+   
     /** Default admin access right profile */
     public static final String ADMIN_PROFILE_ID = "AR_ADMIN";
     /** Default admin requesting entity. (username/password) */
@@ -62,6 +61,8 @@ public class Constants {
     public static final String SCL_CONTEXT = System.getProperty("org.eclipse.om2m.sclBaseContext","/om2m");
 
     //The following properties are required only for GSCL to perform authentication on a remote NSCL
+    /** Connect to the remote SCL (if not NSCL) */
+    public static final boolean NSCL_AUTHENTICATION = Boolean.valueOf(System.getProperty("org.eclipse.om2m.nsclAuthentication", "true"));
     /** Remote Nscl Id. (Required only for GSCL)*/
     public static final String NSCL_ID = System.getProperty("org.eclipse.om2m.remoteNsclId","nscl");
     /** Remote Nscl ip address. (Required only for GSCL)*/

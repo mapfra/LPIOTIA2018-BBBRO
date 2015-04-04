@@ -83,7 +83,6 @@
       <property name="org.eclipse.om2m.sclBaseContext" value="/om2m" />
       <property name="org.eclipse.om2m.sclBaseId" value="nscl" />
       <property name="org.eclipse.om2m.sclBaseProtocol.default" value="http" />
-      <property name="org.eclipse.om2m.sclRemoteConnection" value="false" />
       <property name="org.eclipse.om2m.sclType" value="NSCL" />
       <property name="org.eclipse.om2m.webInterfaceContext" value="/" />
    </configurations>
