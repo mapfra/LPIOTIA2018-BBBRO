@@ -41,6 +41,8 @@ public class Enum extends Obj{
     protected String href;
     @XmlAttribute(name = "null")
     protected Boolean _null;
+    
+    public Enum(){}
 	/**
 	 * @return the val
 	 */

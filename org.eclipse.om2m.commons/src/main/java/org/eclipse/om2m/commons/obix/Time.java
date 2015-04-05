@@ -47,6 +47,7 @@ public class Time extends Obj{
     @XmlAttribute(name = "writable")
     protected Boolean writable;
     
+    public Time(){}
 	/**
 	 * @return the min
 	 */

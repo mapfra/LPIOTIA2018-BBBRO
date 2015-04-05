@@ -38,6 +38,8 @@ public class Ref extends Obj{
     @XmlAttribute(name = "null")
     protected Boolean _null;
     
+    public Ref(){}
+
 	/**
 	 * @return the displayName
 	 */

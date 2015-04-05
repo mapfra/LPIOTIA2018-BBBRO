@@ -43,6 +43,8 @@ public class Op extends Obj{
     @XmlAttribute(name = "writable")
     protected Boolean writable;
     
+    public Op(){}
+
     /**
 	 * @return the in
 	 */

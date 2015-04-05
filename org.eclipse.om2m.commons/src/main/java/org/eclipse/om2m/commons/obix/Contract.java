@@ -13,6 +13,11 @@ import java.util.StringTokenizer;
 public class Contract {
 	
 	/**
+	 * Default constructor.
+	 */
+	public Contract() {	}
+
+	/**
 	 * Construct from a space separated list.
 	 */
 	public Contract(String list) {

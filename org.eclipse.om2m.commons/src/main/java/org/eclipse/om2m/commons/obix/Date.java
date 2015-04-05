@@ -47,7 +47,7 @@ public class Date extends Obj{
     @XmlAttribute(name = "null")
     protected Boolean _null;
 
-    Date(){}
+    public Date(){}
 
 	/**
 	 * @return the min

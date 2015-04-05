@@ -50,6 +50,8 @@ public class Obj {
     @XmlAttribute(name = "null")
     protected Boolean _null;
 
+    public Obj(){}
+
     /**
      * Gets the value of the objGroup property.
      * 

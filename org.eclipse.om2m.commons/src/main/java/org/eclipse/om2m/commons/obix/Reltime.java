@@ -45,6 +45,8 @@ public class Reltime extends Obj{
     @XmlAttribute(name = "writable")
     protected Boolean writable;
     
+    public Reltime(){}
+
 	/**
 	 * @return the min
 	 */

@@ -42,9 +42,7 @@ public class Uri extends Obj{
     protected Boolean _null;
 
     
-    public Uri(){
-    	
-    }
+    public Uri(){}
     
     public Uri(String val){
     	this.val = val ;

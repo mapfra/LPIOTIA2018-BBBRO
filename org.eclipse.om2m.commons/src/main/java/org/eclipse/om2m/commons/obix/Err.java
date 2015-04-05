@@ -37,6 +37,8 @@ public class Err extends Obj{
     protected String unit;
     @XmlAttribute(name = "writable")
     protected Boolean writable;
+    
+    public Err(){}
 	/**
 	 * @return the name
 	 */

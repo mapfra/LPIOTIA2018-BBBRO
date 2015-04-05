@@ -69,6 +69,7 @@ public class List extends Obj{
     @XmlAttribute(name = "null")
     protected Boolean _null;
 
+    public List(){}
     /**
      * Gets the value of the objGroup property.
      * 
