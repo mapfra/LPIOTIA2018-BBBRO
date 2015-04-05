@@ -13,12 +13,13 @@ import org.apache.commons.logging.LogFactory;
  *
  */
 public class ObixMapper {
+	/** Logger */
+	private static final Log LOGGER = LogFactory.getLog(ObixMapper.class);
 	/** Current instance of the mapper */
 	private static ObixMapper obixMapper = new ObixMapper();
 	/** JAXB Context of oBIX objects */
 	private JAXBContext context;
-	/** Logger */
-	private static final Log LOG = LogFactory.getLog(ObixMapper.class);
+	
 	/** Package containing oBIX objects */
 	private static final String OBIX_PACKAGE = "org.eclipse.om2m.commons.obix";
 
@@ -26,7 +27,7 @@ public class ObixMapper {
 		try {
 			context = JAXBContext.newInstance(OBIX_PACKAGE);
 		} catch (JAXBException e) {
-			LOG.error("Error creating the JAXB context for Obix objects", e);
+			LOGGER.error("Error creating the JAXB context for Obix objects", e);
 		}
 	}
 
