@@ -26,7 +26,6 @@ import java.util.Date;
 import javax.persistence.EntityManager;
 
 import org.eclipse.om2m.commons.obix.io.ObixMapper;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.om2m.comm.service.RestClientService;
@@ -128,18 +127,18 @@ public class Activator implements BundleActivator {
 				RestClientService sclClient = (RestClientService) this.context.getService(reference);
 				LOGGER.info("Add RestClientService  [ protocol = " + sclClient.getProtocol() + " ]");
 				RestClient.getRestClients().put(sclClient.getProtocol(), sclClient);
-				
-				// Display to check on the discovered protocols
-                //Map <String, RestClientService> map=RestClient.getRestClients();
-                //for (Map.Entry< String,RestClientService > x: map.entrySet() )
-                //{ LOGGER.info("the key: "+ x.getKey()+ " the value: "+ x.getValue());}
-				
-				// Initialization of the HTTP client + router part
-				initHttpDiscover();
 				return sclClient;
 			}
 		};
 		restClientServiceTracker.open();
+		Thread.sleep(500);
+		// Discover local resources
+		discoverResources();
+		// Manage registration in the case of a GSCL
+				if ( !"NSCL".equals(Constants.SCL_TYPE) && Constants.NSCL_AUTHENTICATION) {
+					LOGGER.info("Authenticating to NSCl...");
+					registerScl();
+				}
 	}
 
 	public void stop(BundleContext bundleContext) throws Exception {
@@ -147,8 +146,8 @@ public class Activator implements BundleActivator {
 		DBAccess.getInstance().close();
 	}
 
-	private void initHttpDiscover() {
-		LOGGER.info("Initializing Http client...");
+	private static void discoverResources() {
+		LOGGER.info("Discover loacl resources");
 		String base = "http://" + "localhost" + ":" + Constants.SCL_PORT + Constants.SCL_CONTEXT + "/";
 		RequestIndication request = new RequestIndication(Constants.METHOD_RETREIVE, Constants.SCL_ID + Refs.DISCOVERY_REF, Constants.ADMIN_REQUESTING_ENTITY);
 		request.setBase(base);
@@ -179,12 +178,6 @@ public class Activator implements BundleActivator {
 		// Create JAXBContext instance for oBIX objects
 		LOGGER.info("Init ObixMapper");
 		ObixMapper.getInstance();
-
-		// Manage registration in the case of a GSCL
-		if (Constants.NSCL_AUTHENTICATION) {
-			LOGGER.info("Authenticating to NSCl...");
-			registerScl();
-		}
 	}
 
 	/**
@@ -244,11 +237,6 @@ public class Activator implements BundleActivator {
 				ResponseConfirm responseConfirm;
 				int sleepTime = 10000;
 				boolean registred = false;
-				try {
-					Thread.sleep(2000);
-				} catch (InterruptedException e1) {
-					LOGGER.error("Registration sleep error", e1);
-				}
 				// Loop until registration succeed or already registered
 				while (!registred) {
 					// Send GSCL registration to NSCL
