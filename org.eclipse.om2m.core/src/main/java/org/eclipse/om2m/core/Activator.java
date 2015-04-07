@@ -148,7 +148,7 @@ public class Activator implements BundleActivator {
 
     private static void discoverResources() {
         LOGGER.info("Discover local resources");
-        String base = "http://" + "localhost" + ":" + Constants.SCL_PORT + Constants.SCL_CONTEXT + "/";
+        String base = Constants.SCL_DEFAULT_PROTOCOL+"://" + Constants.SCL_IP + ":" + Constants.SCL_PORT + Constants.SCL_CONTEXT + "/";
         RequestIndication request = new RequestIndication(Constants.METHOD_RETREIVE, Constants.SCL_ID + Refs.DISCOVERY_REF, Constants.ADMIN_REQUESTING_ENTITY);
         request.setBase(base);
         new RestClient().sendRequest(request);
