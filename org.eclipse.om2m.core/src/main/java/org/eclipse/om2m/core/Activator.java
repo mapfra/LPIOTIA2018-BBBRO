@@ -136,7 +136,7 @@ public class Activator implements BundleActivator {
         discoverResources();
         // Manage registration in the case of a GSCL
                 if ( !"NSCL".equals(Constants.SCL_TYPE) && Constants.NSCL_AUTHENTICATION) {
-                    LOGGER.info("Authenticating to NSCl...");
+                    LOGGER.info("Authenticating to NSCl..");
                     registerScl();
                 }
     }
