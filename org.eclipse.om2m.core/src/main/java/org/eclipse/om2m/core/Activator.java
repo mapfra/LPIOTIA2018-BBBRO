@@ -135,10 +135,10 @@ public class Activator implements BundleActivator {
         // Discover local resources
         discoverResources();
         // Manage registration in the case of a GSCL
-                if ( !"NSCL".equals(Constants.SCL_TYPE) && Constants.NSCL_AUTHENTICATION) {
-                    LOGGER.info("Authenticating to NSCl..");
-                    registerScl();
-                }
+        if ( !"NSCL".equals(Constants.SCL_TYPE) && Constants.NSCL_AUTHENTICATION) {
+        	LOGGER.info("Authenticating to NSCl..");
+            registerScl();
+        }
     }
 
     public void stop(BundleContext bundleContext) throws Exception {
