@@ -214,7 +214,7 @@ public class Activator implements BundleActivator {
         Scl gscl = new Scl();
         gscl.setSclId(Constants.SCL_ID);
         AnyURIList pocs = new AnyURIList();
-        pocs.getReference().add("http://"+Constants.SCL_IP+":"+Constants.SCL_PORT+Constants.SCL_CONTEXT);
+        pocs.getReference().add(Constants.SCL_DEFAULT_PROTOCOL+"://"+Constants.SCL_IP+":"+Constants.SCL_PORT+Constants.SCL_CONTEXT);
         //pocs.getReference().add("coap://"+Constants.SCL_IP+":"+Constants.COAP_PORT/*+Constants.SCL_CONTEXT*/);
         gscl.setPocs(pocs);
         gscl.setLink(Constants.SCL_ID);
