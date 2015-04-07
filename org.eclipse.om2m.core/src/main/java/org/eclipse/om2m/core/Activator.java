@@ -221,6 +221,7 @@ public class Activator implements BundleActivator {
         gscl.setMgmtProtocolType(MgmtProtocolType.OMA_DM);
         String base = Constants.SCL_DEFAULT_PROTOCOL+"://"+Constants.NSCL_IP+":"+ Constants.NSCL_PORT+Constants.NSCL_CONTEXT+"/";
 
+        
         // Create RequestIndication
         final RequestIndication requestIndication = new RequestIndication();
         requestIndication.setMethod(Constants.METHOD_CREATE);
