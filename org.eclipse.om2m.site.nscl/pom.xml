@@ -57,9 +57,9 @@
 						</goals>
 						<configuration>
 							<tasks>
-								<echo>Copying scripts into ${om2m.productType} product</echo>
-								<copy file="${om2m.scriptsLocation}/start.sh" tofile="${om2m.pathToCopy}/start.sh"/>
-								<copy file="${om2m.scriptsLocation}/start.bat" tofile="${om2m.pathToCopy}/start.bat"/>
+								<echo>Copy starting files into NSCL product</echo>
+								<copy file="${basedir}/script" tofile="${basedir}/target/products/nscl/${osgi.os}/${osgi.ws}/${osgi.arch}/start.sh"/>
+								<copy file="${basedir}/script" tofile="${basedir}/target/products/nscl/${osgi.os}/${osgi.ws}/${osgi.arch}/start.bat"/>
 							</tasks>
 						</configuration>
 					</execution>
@@ -67,11 +67,4 @@
 			</plugin>
  		</plugins>
  	</build>
- 	
- 	<properties>
-		<om2m.pathToCopy>${basedir}/target/products/${om2m.productType}/${osgi.os}/${osgi.ws}/${osgi.arch}</om2m.pathToCopy>
-		<om2m.scriptsLocation>${basedir}/scripts</om2m.scriptsLocation>
-		<om2m.productType>nscl</om2m.productType>
-	</properties>
- 
 </project>
