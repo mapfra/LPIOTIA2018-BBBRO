@@ -169,16 +169,21 @@ public class ContentInstanceController extends Controller {
 		contentInstances.setCurrentByteSize(contentInstances.getCurrentByteSize() + contentInstance.getContentSize());
 		DAOFactory.getContentInstancesDAO().update(contentInstances, em);
 		// delete the oldest contentInstance if the CurrentNrOfInstances reaches MaxNrOfInstances
-		if (contentInstances.getCurrentNrOfInstances() > container.getMaxNrOfInstances()-1) {
-			final String oldestCI = requestIndication.getTargetID()+"/oldest";
+		if (contentInstances.getCurrentNrOfInstances() > container.getMaxNrOfInstances()) {
+			final String targetID = requestIndication.getTargetID();
+			
 			new Thread(){
 				public void run(){
 					Router.readWriteLock.readLock().lock();
 					EntityManager em = DBAccess.createEntityManager();
 					em.getTransaction().begin();
-					ContentInstance contentInstanceOldest = DAOFactory.getContentInstanceDAO().find(oldestCI, em);
+					ContentInstance contentInstanceOldest = DAOFactory.getContentInstanceDAO().find(targetID+"/oldest", em);
 					//Delete the oldest contentInstance
 					DAOFactory.getContentInstanceDAO().delete(contentInstanceOldest,em);
+					ContentInstances contentInstances = DAOFactory.getContentInstancesDAO().find(targetID, em);
+					contentInstances.setCurrentNrOfInstances(contentInstances.getCurrentNrOfInstances() - 1);
+					contentInstances.setCurrentByteSize(contentInstances.getCurrentByteSize() - contentInstanceOldest.getContentSize());
+					DAOFactory.getContentInstancesDAO().update(contentInstances, em);
 					em.getTransaction().commit();
 					em.close();
 					Router.readWriteLock.readLock().unlock();
