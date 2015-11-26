@@ -9,5 +9,6 @@ Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.om2m.commons
 Import-Package: org.apache.commons.logging,
  org.eclipse.om2m.datamapping.service,
+ org.eclipse.persistence.jaxb,
  org.osgi.framework,
  org.osgi.util.tracker
