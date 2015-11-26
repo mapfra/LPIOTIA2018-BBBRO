@@ -131,5 +131,6 @@ Contributors:
 		<module>org.eclipse.om2m.persistence.service</module>
 		<module>org.eclipse.om2m.core</module>
 		<module>org.eclipse.om2m.interworking.service</module>
+		<module>org.eclipse.om2m.ipe.sample</module>
 	</modules>
 </project>
