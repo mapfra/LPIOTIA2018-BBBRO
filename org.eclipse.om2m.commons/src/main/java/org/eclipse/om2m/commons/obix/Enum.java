@@ -35,8 +35,6 @@ public class Enum extends Obj{
     protected String unit;
     @XmlAttribute(name = "writable")
     protected Boolean writable;
-    @XmlAttribute(name = "name")
-    protected String name;
     @XmlAttribute(name = "href")
     protected String href;
     @XmlAttribute(name = "null")

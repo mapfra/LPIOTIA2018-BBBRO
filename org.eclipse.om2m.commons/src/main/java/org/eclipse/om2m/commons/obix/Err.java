@@ -16,8 +16,6 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement
 public class Err extends Obj{
 
-    @XmlAttribute(name = "name")
-    protected String name;
     @XmlAttribute(name = "href")
     protected String href;
     @XmlAttribute(name = "null")

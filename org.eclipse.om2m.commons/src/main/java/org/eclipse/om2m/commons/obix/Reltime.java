@@ -23,8 +23,6 @@ public class Reltime extends Obj{
     @XmlAttribute(name = "max")
     @XmlSchemaType(name = "time")
     protected XMLGregorianCalendar max;
-    @XmlAttribute(name = "name")
-    protected String name;
     @XmlAttribute(name = "href")
     protected String href;
     @XmlAttribute(name = "null")

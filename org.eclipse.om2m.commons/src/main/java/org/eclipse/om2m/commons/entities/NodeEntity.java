@@ -1,0 +1,143 @@
+package org.eclipse.om2m.commons.entities;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
+import org.eclipse.om2m.commons.constants.DBEntities;
+import org.eclipse.om2m.commons.constants.ShortName;
+
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Entity(name = DBEntities.NODE_ENTITY)
+public class NodeEntity extends AnnounceableSubordinateEntity {
+
+	// linked ACP
+	@ManyToMany(fetch=FetchType.LAZY)
+	@JoinTable(
+			name = DBEntities.ACPNOD_JOIN,
+			joinColumns = { @JoinColumn(name = DBEntities.NOD_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
+			inverseJoinColumns = { @JoinColumn(name = DBEntities.ACP_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
+			)
+	protected List<AccessControlPolicyEntity> linkedAcps;
+
+	// node id
+	@Column(name = ShortName.NODE_ID)
+	protected String nodeID;
+	// hosted CSE LINK
+	@Column(name = ShortName.HOSTED_CSE_LINK)
+	protected String hostedCSELink;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinTable(
+			name = DBEntities.CSBNOD_CH_JOIN,
+			joinColumns = { @JoinColumn(name = DBEntities.NOD_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
+			inverseJoinColumns = { @JoinColumn(name = DBEntities.CSEB_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
+			)
+	protected CSEBaseEntity parentCsb;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinTable(
+			name = DBEntities.CSRNOD_CH_JOIN,
+			joinColumns = { @JoinColumn(name = DBEntities.NOD_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
+			inverseJoinColumns = { @JoinColumn(name = DBEntities.CSR_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
+			)
+	protected CSEBaseEntity parentCsr;
+	
+	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+	@JoinTable(
+			name = DBEntities.NODSUB_JOIN,
+			joinColumns = { @JoinColumn(name = DBEntities.NOD_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
+			inverseJoinColumns = { @JoinColumn(name = DBEntities.SUB_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
+			)
+	protected List<SubscriptionEntity> childSubscriptions;
+
+
+	/**
+	 * @return the accessControlPolicies
+	 */
+	public List<AccessControlPolicyEntity> getAccessControlPolicies() {
+		if (this.linkedAcps == null) {
+			this.linkedAcps = new ArrayList<>();
+		}
+		return linkedAcps;
+	}
+	/**
+	 * @param accessControlPolicies the accessControlPolicies to set
+	 */
+	public void setAccessControlPolicies(
+			List<AccessControlPolicyEntity> accessControlPolicies) {
+		this.linkedAcps = accessControlPolicies;
+	}
+	/**
+	 * @return the nodeID
+	 */
+	public String getNodeID() {
+		return nodeID;
+	}
+	/**
+	 * @param nodeID the nodeID to set
+	 */
+	public void setNodeID(String nodeID) {
+		this.nodeID = nodeID;
+	}
+	/**
+	 * @return the hostedCSELink
+	 */
+	public String getHostedCSELink() {
+		return hostedCSELink;
+	}
+	/**
+	 * @param hostedCSELink the hostedCSELink to set
+	 */
+	public void setHostedCSELink(String hostedCSELink) {
+		this.hostedCSELink = hostedCSELink;
+	}
+	/**
+	 * @return the parentCsb
+	 */
+	public CSEBaseEntity getParentCsb() {
+		return parentCsb;
+	}
+	/**
+	 * @param parentCsb the parentCsb to set
+	 */
+	public void setParentCsb(CSEBaseEntity parentCsb) {
+		this.parentCsb = parentCsb;
+	}
+	/**
+	 * @return the parentCsr
+	 */
+	public CSEBaseEntity getParentCsr() {
+		return parentCsr;
+	}
+	/**
+	 * @param parentCsr the parentCsr to set
+	 */
+	public void setParentCsr(CSEBaseEntity parentCsr) {
+		this.parentCsr = parentCsr;
+	}
+	/**
+	 * @return the childSubscriptions
+	 */
+	public List<SubscriptionEntity> getChildSubscriptions() {
+		return childSubscriptions;
+	}
+	/**
+	 * @param childSubscriptions the childSubscriptions to set
+	 */
+	public void setChildSubscriptions(List<SubscriptionEntity> childSubscriptions) {
+		this.childSubscriptions = childSubscriptions;
+	}
+	
+}

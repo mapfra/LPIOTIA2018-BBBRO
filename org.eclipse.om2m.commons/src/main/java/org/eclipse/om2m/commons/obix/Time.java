@@ -25,8 +25,6 @@ public class Time extends Obj{
     protected XMLGregorianCalendar max;
     @XmlAttribute(name = "tz")
     protected String tz;
-    @XmlAttribute(name = "name")
-    protected String name;
     @XmlAttribute(name = "href")
     protected String href;
     @XmlAttribute(name = "null")

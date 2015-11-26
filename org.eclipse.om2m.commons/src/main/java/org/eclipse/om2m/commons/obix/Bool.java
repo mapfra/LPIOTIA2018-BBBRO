@@ -18,8 +18,6 @@ public class Bool extends Obj{
 
     @XmlAttribute(name = "val")
     protected Boolean val;
-    @XmlAttribute(name = "name")
-    protected String name;
     @XmlAttribute(name = "href")
     protected String href;
     @XmlAttribute(name = "null")
@@ -59,20 +57,6 @@ public class Bool extends Obj{
 	 */
 	public void setVal(Boolean val) {
 		this.val = val;
-	}
-
-	/**
-	 * @return the name
-	 */
-	public String getName() {
-		return name;
-	}
-
-	/**
-	 * @param name the name to set
-	 */
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	/**

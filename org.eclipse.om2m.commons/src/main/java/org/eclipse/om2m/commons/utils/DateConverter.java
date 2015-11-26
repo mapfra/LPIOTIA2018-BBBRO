@@ -12,11 +12,12 @@
  *         conception and documentation.
  *     Mahdi Ben Alaya (Project co-founder) - Management and initial specification,
  *         conception, implementation, test and documentation.
- *     Christophe Chassot - Management and initial specification.
  *     Khalil Drira - Management and initial specification.
- *     Yassine Banouar - Initial specification, conception, implementation, test
+ *     Guillaume Garzone - Initial specification, conception, implementation, test
  *         and documentation.
- ******************************************************************************/
+ *     François Aïssaoui - Initial specification, conception, implementation, test
+ *         and documentation.
+ *******************************************************************************/
 package org.eclipse.om2m.commons.utils;
 
 import java.util.Date;

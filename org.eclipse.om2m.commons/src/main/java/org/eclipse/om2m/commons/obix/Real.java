@@ -17,8 +17,6 @@ public class Real extends Obj{
 
     @XmlAttribute(name = "val")
     protected Double val;
-    @XmlAttribute(name = "name")
-    protected String name;
     @XmlAttribute(name = "href")
     protected String href;
     @XmlAttribute(name = "null")

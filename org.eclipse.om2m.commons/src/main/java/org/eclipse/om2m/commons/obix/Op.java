@@ -21,8 +21,6 @@ public class Op extends Obj{
     protected Contract in;
 	@XmlTransient
     protected Contract out;
-    @XmlAttribute(name = "name")
-    protected String name;
     @XmlAttribute(name = "href")
     protected String href;
     @XmlAttribute(name = "null")
