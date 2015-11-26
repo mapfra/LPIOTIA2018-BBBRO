@@ -1,0 +1,45 @@
+/*******************************************************************************
+ * Copyright (c) 2013-2015 LAAS-CNRS (www.laas.fr)
+ * 7 Colonel Roche 31077 Toulouse - France
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     Thierry Monteil (Project co-founder) - Management and initial specification,
+ *         conception and documentation.
+ *     Mahdi Ben Alaya (Project co-founder) - Management and initial specification,
+ *         conception, implementation, test and documentation.
+ *     Khalil Drira - Management and initial specification.
+ *     Guillaume Garzone - Initial specification, conception, implementation, test
+ *         and documentation.
+ *     François Aïssaoui - Initial specification, conception, implementation, test
+ *         and documentation.
+ *******************************************************************************/
+package org.eclipse.om2m.persistence.service;
+
+/**
+ * Describes a DataBase transaction with different operations
+ * 
+ * @author <ul>
+ *         <li>Francois Aissaoui < aissaoui@laas.fr ></li>
+ *         <li>Guillaume Garzone < garzone@laas.fr ></li>
+ *         </ul>
+ */
+public interface DBTransaction {
+
+	/** open the transaction */
+	public abstract void open();
+
+	/** commit the transaction */
+	public abstract void commit();
+
+	/** close the transaction */
+	public abstract void close();
+
+	/** clear the transaction */
+	public abstract void clear();
+
+}
