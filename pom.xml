@@ -124,5 +124,7 @@ Contributors:
 		<module>org.eclipse.om2m.binding.http</module>
 		<module>org.eclipse.om2m.binding.service</module>
 		<module>org.eclipse.om2m.core.service</module>
+		<module>org.eclipse.om2m.datamapping.jaxb</module>
+		<module>org.eclipse.om2m.datamapping.service</module>
 	</modules>
 </project>
