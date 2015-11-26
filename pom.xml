@@ -126,5 +126,6 @@ Contributors:
 		<module>org.eclipse.om2m.core.service</module>
 		<module>org.eclipse.om2m.datamapping.jaxb</module>
 		<module>org.eclipse.om2m.datamapping.service</module>
+		<module>org.eclipse.om2m.webapp.resourcesbrowser.xml</module>
 	</modules>
 </project>
