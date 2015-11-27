@@ -50,7 +50,6 @@
       <plugin id="org.eclipse.jetty.server"/>
       <plugin id="org.eclipse.jetty.servlet"/>
       <plugin id="org.eclipse.jetty.util"/>
-      <plugin id="org.eclipse.om2m.binding.coap"/>
       <plugin id="org.eclipse.om2m.binding.http"/>
       <plugin id="org.eclipse.om2m.binding.service"/>
       <plugin id="org.eclipse.om2m.commons"/>
@@ -72,7 +71,6 @@
       <plugin id="org.apache.felix.gogo.shell" autoStart="true" startLevel="0" />
       <plugin id="org.eclipse.equinox.console" autoStart="true" startLevel="0" />
       <plugin id="org.eclipse.equinox.http.jetty" autoStart="true" startLevel="1" />
-      <plugin id="org.eclipse.om2m.binding.coap" autoStart="true" startLevel="2" />
       <plugin id="org.eclipse.om2m.binding.http" autoStart="true" startLevel="2" />
       <plugin id="org.eclipse.om2m.core" autoStart="true" startLevel="4" />
       <plugin id="org.eclipse.om2m.datamapping.jaxb" autoStart="true" startLevel="1" />

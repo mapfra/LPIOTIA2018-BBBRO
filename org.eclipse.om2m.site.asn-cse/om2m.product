@@ -48,7 +48,6 @@
       <plugin id="org.eclipse.jetty.server"/>
       <plugin id="org.eclipse.jetty.servlet"/>
       <plugin id="org.eclipse.jetty.util"/>
-      <plugin id="org.eclipse.om2m.binding.coap"/>
       <plugin id="org.eclipse.om2m.binding.http"/>
       <plugin id="org.eclipse.om2m.binding.service"/>
       <plugin id="org.eclipse.om2m.commons"/>
