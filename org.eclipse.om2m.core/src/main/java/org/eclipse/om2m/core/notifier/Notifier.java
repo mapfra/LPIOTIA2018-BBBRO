@@ -53,6 +53,7 @@ import org.eclipse.om2m.commons.resource.Resource;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
 import org.eclipse.om2m.core.comm.RestClient;
 import org.eclipse.om2m.core.datamapper.DataMapperSelector;
+import org.eclipse.om2m.core.entitymapper.EntityMapper;
 import org.eclipse.om2m.core.entitymapper.EntityMapperFactory;
 import org.eclipse.om2m.core.persistence.PersistenceService;
 import org.eclipse.om2m.core.router.Patterns;
@@ -88,17 +89,17 @@ public class Notifier {
 
 	/**
 	 * Used in DELETE procedure when a resource is deleted. It notifies the subscribed resource
-	 * and the parent resource subscribed entities. 
+	 * and the parent resource subscribed entities.
 	 * @param listSubs
 	 * @param resourceDeleted
 	 */
 	public static void notifyDeletion(List<SubscriptionEntity> listSubs, ResourceEntity resourceDeleted){
 		List<SubscriptionEntity> parentSubscriptions = getParentSubscriptions(resourceDeleted);
 		if(parentSubscriptions != null){
-			notify(parentSubscriptions, resourceDeleted, ResourceStatus.CHILD_DELETED);			
+			notify(parentSubscriptions, resourceDeleted, ResourceStatus.CHILD_DELETED);
 		}
 		if(listSubs != null){
-			notify(listSubs, resourceDeleted, ResourceStatus.DELETED);			
+			notify(listSubs, resourceDeleted, ResourceStatus.DELETED);
 		}
 	}
 
@@ -134,7 +135,7 @@ public class Notifier {
 	public static ResponsePrimitive notify(RequestPrimitive request, String contact){
 		// Check whether the subscription contact is protocol-dependent or not.
 		LOGGER.info("Sending notify request to: " + contact);
-		if(contact.matches(".*://.*")){ 
+		if(contact.matches(".*://.*")){
 			// Contact = protocol-dependent -> direct notification using the rest client.
 			request.setTo(contact);
 			return RestClient.sendRequest(request);
@@ -147,7 +148,7 @@ public class Notifier {
 
 	/**
 	 * Used to retrieve the subscription list of the parent resource
-	 * @param resource 
+	 * @param resource
 	 * @return
 	 */
 	private static List<SubscriptionEntity> getParentSubscriptions(
@@ -257,8 +258,9 @@ public class Notifier {
 							mapEntityToResource(resource, ResultContent.ATTRIBUTES);
 					notification.getNotificationEvent().setRepresentation(serializableResource);
 					request.setRequestContentType(MimeMediaType.XML);
-				} 
-			} 
+				}
+			}
+
 			// Set the content
 			request.setContent(DataMapperSelector.getDataMapperList().get(MimeMediaType.XML).objToString(notification));
 			// For each notification URI: send the notify request
@@ -266,9 +268,10 @@ public class Notifier {
 				ExecutorService senderThreadPool = Executors.newFixedThreadPool(5);
 				senderThreadPool.execute(new Thread(){
 					public void run() {
-						Notifier.notify(request, uri);    					
+						Notifier.notify(request, uri);
 					};
 				});
+				senderThreadPool.shutdown();
 			}
 		}
 	}
