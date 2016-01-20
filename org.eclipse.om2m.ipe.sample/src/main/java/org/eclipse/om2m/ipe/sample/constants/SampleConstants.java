@@ -17,4 +17,5 @@ public class SampleConstants {
 	public static final boolean GUI = Boolean.valueOf(System.getProperty("org.eclipse.om2m.ipe.sample.gui", "true"));
 	
 	public static String CSE_ID = "/" + Constants.CSE_ID;
+	public static String CSE_PREFIX = CSE_ID + "/" + Constants.CSE_NAME;
 }

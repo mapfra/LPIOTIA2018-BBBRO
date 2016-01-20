@@ -18,21 +18,21 @@ public class ObixUtil {
 	/**
 	 * Returns an obix XML representation describing the lamp.
 	 * @param cseId - SclBase id
-	 * @param cntId - Application Id
+	 * @param appId - Application Id
 	 * @param stateCont - the STATE container id
 	 * @return Obix XML representation
 	 */
-	public static String getDescriptorRep(String cseId, String cntId, String stateCont) {
-		String prefix = cseId+"/"+ Constants.CSE_NAME +"/"+SampleConstants.AE_NAME;
+	public static String getDescriptorRep(String cseId, String appId, String stateCont) {
+		String prefix = cseId+"/"+ Constants.CSE_NAME + "/" + appId;
 		// oBIX
 		Obj obj = new Obj();
 		obj.add(new Str("type",Lamp.TYPE));
 		obj.add(new Str("location",Lamp.LOCATION));
-		obj.add(new Str("appId",cntId));
+		obj.add(new Str("appId",appId));
 		// OP GetState from SCL DataBase
 		Op opState = new Op();
 		opState.setName("getState");
-		opState.setHref(new Uri(prefix  +"/"+cntId+"/"+stateCont+"/"+ ShortName.LATEST));
+		opState.setHref(new Uri(prefix  +"/"+stateCont+"/"+ ShortName.LATEST));
 		opState.setIs(new Contract("retrieve"));
 		opState.setIn(new Contract("obix:Nil"));
 		opState.setOut(new Contract("obix:Nil"));
@@ -40,7 +40,7 @@ public class ObixUtil {
 		// OP GetState from SCL IPU
 		Op opStateDirect = new Op();
 		opStateDirect.setName("getState(Direct)");
-		opStateDirect.setHref(new Uri(prefix + "?op="+ Operations.GET_STATE_DIRECT+"&lampid=" + cntId));
+		opStateDirect.setHref(new Uri(prefix + "?op="+ Operations.GET_STATE_DIRECT+"&lampid=" + appId));
 		opStateDirect.setIs(new Contract("execute"));
 		opStateDirect.setIn(new Contract("obix:Nil"));
 		opStateDirect.setOut(new Contract("obix:Nil"));
@@ -48,7 +48,7 @@ public class ObixUtil {
 		// OP SwitchON
 		Op opON = new Op();
 		opON.setName("switchON");
-		opON.setHref(new Uri(prefix + "?op="+ Operations.SET_ON +"&lampid=" + cntId));
+		opON.setHref(new Uri(prefix + "?op="+ Operations.SET_ON +"&lampid=" + appId));
 		opON.setIs(new Contract("execute"));
 		opON.setIn(new Contract("obix:Nil"));
 		opON.setOut(new Contract("obix:Nil"));
@@ -56,7 +56,7 @@ public class ObixUtil {
 		// OP SwitchOFF
 		Op opOFF = new Op();
 		opOFF.setName("switchOFF");
-		opOFF.setHref(new Uri(prefix  + "?op=" + Operations.SET_OFF + "&lampid=" + cntId));
+		opOFF.setHref(new Uri(prefix  + "?op=" + Operations.SET_OFF + "&lampid=" + appId));
 		opOFF.setIs(new Contract("execute"));
 		opOFF.setIn(new Contract("obix:Nil"));
 		opOFF.setOut(new Contract("obix:Nil"));
@@ -64,7 +64,7 @@ public class ObixUtil {
 		// OP Toggle
 		Op opToggle = new Op();
 		opToggle.setName("toggle");
-		opToggle.setHref(new Uri(prefix + "?op="+ Operations.TOGGLE +"&lampid=" + cntId));
+		opToggle.setHref(new Uri(prefix + "?op="+ Operations.TOGGLE +"&lampid=" + appId));
 		opToggle.setIs(new Contract("execute"));
 		opToggle.setIn(new Contract("obix:Nil"));
 		opToggle.setOut(new Contract("obix:Nil"));
@@ -90,7 +90,7 @@ public class ObixUtil {
 	}
 
 	public static String createLampAllDescriptor(){
-		String prefix = SampleConstants.CSE_ID +"/"+ Constants.CSE_NAME + "/" + SampleConstants.AE_NAME;
+		String prefix = SampleConstants.CSE_ID +"/"+ Constants.CSE_NAME + "/" + "LAMP_ALL";
 		Obj descriptor = new Obj();
 		Op opSwitchOn = new Op();
 		opSwitchOn.setName(Operations.SET_ON.toString());

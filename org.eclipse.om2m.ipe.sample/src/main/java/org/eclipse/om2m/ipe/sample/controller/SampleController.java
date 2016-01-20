@@ -1,6 +1,5 @@
 package org.eclipse.om2m.ipe.sample.controller;
 
-import org.eclipse.om2m.commons.constants.Constants;
 import org.eclipse.om2m.commons.constants.MimeMediaType;
 import org.eclipse.om2m.commons.resource.ContentInstance;
 import org.eclipse.om2m.core.service.CseService;
@@ -18,7 +17,7 @@ public class SampleController {
 		// Set the value in the "real world" model
 		SampleModel.setLampState(lampId, value);
 		// Send the information to the CSE
-		String targetID = SampleConstants.CSE_ID+"/"+Constants.CSE_NAME + "/" +SampleConstants.AE_NAME+"/"+lampId +"/" + SampleConstants.DATA;
+		String targetID = SampleConstants.CSE_PREFIX + "/" + lampId + "/" + SampleConstants.DATA;
 		ContentInstance cin = new ContentInstance();
 		cin.setContent(ObixUtil.getStateRep(lampId, value));
 		cin.setContentInfo(MimeMediaType.OBIX + ":" + MimeMediaType.ENCOD_PLAIN);

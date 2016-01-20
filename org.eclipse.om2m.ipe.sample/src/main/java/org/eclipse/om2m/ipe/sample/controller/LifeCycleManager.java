@@ -6,12 +6,8 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.eclipse.om2m.commons.constants.Constants;
 import org.eclipse.om2m.commons.constants.MimeMediaType;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
-import org.eclipse.om2m.commons.obix.Bool;
-import org.eclipse.om2m.commons.obix.Obj;
-import org.eclipse.om2m.commons.obix.io.ObixDecoder;
 import org.eclipse.om2m.commons.resource.AE;
 import org.eclipse.om2m.commons.resource.Container;
 import org.eclipse.om2m.commons.resource.ContentInstance;
@@ -38,48 +34,18 @@ public class LifeCycleManager {
 		}
 		SampleModel.setModel(lamps);
 
-		// register the IPE
-		if(registerAE()){
-			// Case when the AE has just been created
-			// Create initial resources for the 2 lamps
-			for(int i=0; i<2; i++) {
-				String lampId = Lamp.TYPE+"_"+i;
-				createLampResources(lampId, false, SampleConstants.POA);
-			}
-			createLampAll(SampleConstants.POA);			
-		} else {
-			// AE and other resources already created
-			ResponsePrimitive response = RequestSender.getRequest("/" + Constants.CSE_ID + "/" +Constants.CSE_NAME + "/" + SampleConstants.AE_NAME + "/"+ SampleConstants.LAMP_0 +"/DATA/la");
-			if(response.getResponseStatusCode().equals(ResponseStatusCode.OK) && response.getContent() instanceof ContentInstance){
-				ContentInstance lamp0Value = (ContentInstance) response.getContent();
-				Obj lamp0 = ObixDecoder.fromString(lamp0Value.getContent());
-				for(Object obj : lamp0.getObjGroup()){
-					if(obj instanceof Bool 
-							&& ((Bool) obj).getName().equals("state")){
-						SampleModel.setLampState(SampleConstants.LAMP_0, ((Bool) obj).getVal());
-						break;
-					}
-				}
-			}
-			response = RequestSender.getRequest("/" + Constants.CSE_ID + "/" +Constants.CSE_NAME + "/" + SampleConstants.AE_NAME + "/"+ SampleConstants.LAMP_1 +"/DATA/la");
-			if(response.getResponseStatusCode().equals(ResponseStatusCode.OK) && response.getContent() instanceof ContentInstance){
-				ContentInstance lamp1Value = (ContentInstance) response.getContent();
-				Obj lamp1 = ObixDecoder.fromString(lamp1Value.getContent());
-				for(Object obj : lamp1.getObjGroup()){
-					if(obj instanceof Bool 
-							&& ((Bool) obj).getName().equals("state")){
-						SampleModel.setLampState(SampleConstants.LAMP_1, ((Bool) obj).getVal());
-						break;
-					}
-				}
-			}
+		// Create initial resources for the 2 lamps
+		for(int i=0; i<2; i++) {
+			String lampId = Lamp.TYPE+"_"+i;
+			createLampResources(lampId, false, SampleConstants.POA);
 		}
-		
+		createLampAll(SampleConstants.POA);			
+
 		// Start the GUI
 		if(SampleConstants.GUI){
 			GUI.init();
 		}
-		
+
 	}
 
 	/**
@@ -92,43 +58,23 @@ public class LifeCycleManager {
 	}
 
 	/**
-	 * Register the IPE as an AE in the platform
-	 * @return 
-	 * if the registration has been performed, otherwise, there is an error or it's already created
-	 */
-	private static boolean registerAE(){
-		AE ae = new AE();
-		ae.setRequestReachability(true);
-		ae.getPointOfAccess().add(SampleConstants.POA);
-		ae.setAppID("IPE_" + SampleConstants.POA.toUpperCase());
-		//		ResponsePrimitive response = SampleController.CSE.doRequest(request);
-		ResponsePrimitive response = RequestSender.createAE(ae, SampleConstants.AE_NAME);
-		LOGGER.info("Response for IPE registration : " + response);
-		if(response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)
-				&& response.getContent() instanceof AE){
-			AE createdAe = (AE) response.getContent();
-			SampleController.AE_ID = createdAe.getAEID();
-			LOGGER.info("AEID of the createed AE: " + SampleController.AE_ID);
-			return true;
-		}
-		return false;
-	}
-
-	/**
 	 * Creates all required resources.
-	 * @param cntId - Application ID
+	 * @param appId - Application ID
 	 * @param initValue - initial lamp value
-	 * @param aPoCPath - lamp aPocPath
+	 * @param poa - lamp Point of Access
 	 */
-	private static void createLampResources(String cntId, boolean initValue, String aPoCPath) {
+	private static void createLampResources(String appId, boolean initValue, String poa) {
 		// Create the Application resource
 		Container container = new Container();
 		container.getLabels().add("lamp");
 		container.setMaxNrOfInstances(BigInteger.valueOf(0));
 
-		ResponsePrimitive response = RequestSender.
-				createContainer("/" + Constants.CSE_ID + "/" +Constants.CSE_NAME + "/" + SampleConstants.AE_NAME, cntId, container);
+		AE ae = new AE();
+		ae.setRequestReachability(true);
+		ae.getPointOfAccess().add(poa);
+		ae.setAppID(appId);
 
+		ResponsePrimitive response = RequestSender.createAE(ae, appId);
 		// Create Application sub-resources only if application not yet created
 		if(response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {
 			container = new Container();
@@ -140,41 +86,46 @@ public class LifeCycleManager {
 
 			String content;
 			// Create DESCRIPTION contentInstance on the DESCRIPTOR container resource
-			content = ObixUtil.getDescriptorRep(SampleConstants.CSE_ID, cntId, SampleConstants.DATA);
+			content = ObixUtil.getDescriptorRep(SampleConstants.CSE_ID, appId, SampleConstants.DATA);
 			ContentInstance contentInstance = new ContentInstance();
 			contentInstance.setContent(content);
 			contentInstance.setContentInfo(MimeMediaType.OBIX);
 			RequestSender.createContentInstance(
-					SampleConstants.CSE_ID + "/" +Constants.CSE_NAME + "/" + SampleConstants.AE_NAME + "/" + cntId + "/" + SampleConstants.DESC, null, contentInstance);
+					SampleConstants.CSE_PREFIX + "/" + appId + "/" + SampleConstants.DESC, null, contentInstance);
 
 			// Create initial contentInstance on the STATE container resource
-			content = ObixUtil.getStateRep(cntId, initValue);
+			content = ObixUtil.getStateRep(appId, initValue);
 			contentInstance.setContent(content);
 			RequestSender.createContentInstance(
-					SampleConstants.CSE_ID + "/" +Constants.CSE_NAME + "/" + SampleConstants.AE_NAME + "/" + cntId + "/" + SampleConstants.DATA, null, contentInstance);
+					SampleConstants.CSE_PREFIX + "/" + appId + "/" + SampleConstants.DATA, null, contentInstance);
 		}
 	}
 
 	/**
 	 * Create the LAMP_ALL container
-	 * @param apocpath2
+	 * @param poa
 	 */
-	private static void createLampAll(String apocpath2) {
+	private static void createLampAll(String poa) {
 		// Creation of the LAMP_ALL container
-		Container cnt = new Container();
-		cnt.getLabels().add("lamp");
-		String targetId = SampleConstants.CSE_ID + "/" +Constants.CSE_NAME + "/" + SampleConstants.AE_NAME;
-		RequestSender.createContainer(targetId, "LAMP_ALL",	cnt);
+		AE ae = new AE();
+		ae.setRequestReachability(true);
+		ae.getPointOfAccess().add(poa);
+		ae.setAppID("LAMP_ALL");
+		ResponsePrimitive response = RequestSender.createAE(ae, "LAMP_ALL");
 
-		// Creation of the DESCRIPTOR container
-		cnt.setMaxNrOfInstances(BigInteger.valueOf(10));
-		RequestSender.createContainer(targetId + "/" + "LAMP_ALL", SampleConstants.DESC, cnt);
-		
-		// Create the description
-		ContentInstance cin = new ContentInstance();
-		cin.setContent(ObixUtil.createLampAllDescriptor());
-		cin.setContentInfo(MimeMediaType.OBIX);
-		RequestSender.createContentInstance(targetId + "/" + "LAMP_ALL" + "/" + SampleConstants.DESC, null, cin);
+		// Create descriptor container if not yet created
+		if(response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)){
+			// Creation of the DESCRIPTOR container
+			Container cnt = new Container();
+			cnt.setMaxNrOfInstances(BigInteger.valueOf(10));
+			RequestSender.createContainer(SampleConstants.CSE_PREFIX + "/" + "LAMP_ALL", SampleConstants.DESC, cnt);
+
+			// Create the description
+			ContentInstance cin = new ContentInstance();
+			cin.setContent(ObixUtil.createLampAllDescriptor());
+			cin.setContentInfo(MimeMediaType.OBIX);
+			RequestSender.createContentInstance(SampleConstants.CSE_PREFIX + "/" + "LAMP_ALL" + "/" + SampleConstants.DESC, null, cin);
+		}
 	}
 
 }

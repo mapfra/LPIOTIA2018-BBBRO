@@ -17,7 +17,7 @@ import org.eclipse.om2m.ipe.sample.controller.SampleController;
 public class RequestSender {
 	
 	/**
-	 * Private constructor to avoir creation of this object
+	 * Private constructor to avoid creation of this object
 	 */
 	private RequestSender(){}
 	
