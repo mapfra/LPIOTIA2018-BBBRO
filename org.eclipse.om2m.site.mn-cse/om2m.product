@@ -15,6 +15,7 @@
       </vmArgsMac>
    </launcherArgs>
 
+
    <launcher>
       <solaris/>
       <win useIco="false">
@@ -82,8 +83,8 @@
       <property name="org.eclipse.om2m.cseBaseAddress" value="127.0.0.1" />
       <property name="org.eclipse.om2m.cseBaseContext" value="/" />
       <property name="org.eclipse.om2m.cseBaseId" value="mn-cse" />
+      <property name="org.eclipse.om2m.cseBaseName" value="mn-name" />
       <property name="org.eclipse.om2m.cseBaseProtocol.default" value="http" />
-      <property name="org.eclipse.om2m.cseName" value="mn-name" />
       <property name="org.eclipse.om2m.cseType" value="MN" />
       <property name="org.eclipse.om2m.dbDriver" value="org.h2.Driver" />
       <property name="org.eclipse.om2m.dbPassword" value="om2m" />

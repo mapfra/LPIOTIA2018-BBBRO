@@ -84,8 +84,8 @@
       <property name="org.eclipse.om2m.cseBaseAddress" value="127.0.0.1" />
       <property name="org.eclipse.om2m.cseBaseContext" value="/" />
       <property name="org.eclipse.om2m.cseBaseId" value="asn-cse" />
+      <property name="org.eclipse.om2m.cseBaseName" value="asn-name" />
       <property name="org.eclipse.om2m.cseBaseProtocol.default" value="http" />
-      <property name="org.eclipse.om2m.cseName" value="asn-name" />
       <property name="org.eclipse.om2m.cseType" value="ASN" />
       <property name="org.eclipse.om2m.dbDriver" value="org.h2.Driver" />
       <property name="org.eclipse.om2m.dbPassword" value="om2m" />

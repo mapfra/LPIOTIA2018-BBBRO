@@ -3,6 +3,7 @@
 
 <product uid="in-cse" version="1.0.0" useFeatures="false" includeLaunchers="false">
 
+
    <configIni use="default">
    </configIni>
 
@@ -17,6 +18,7 @@
 
    <windowImages/>
 
+
    <launcher name="in-cse">
       <solaris/>
       <win useIco="false">
@@ -24,10 +26,12 @@
       </win>
    </launcher>
 
+
    <vm>
       <linux include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7</linux>
       <windows include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7</windows>
    </vm>
+
 
    <plugins>
       <plugin id="javax.servlet"/>
@@ -84,8 +88,8 @@
       <property name="org.eclipse.om2m.cseBaseAddress" value="127.0.0.1" />
       <property name="org.eclipse.om2m.cseBaseContext" value="/" />
       <property name="org.eclipse.om2m.cseBaseId" value="in-cse" />
+      <property name="org.eclipse.om2m.cseBaseName" value="in-name" />
       <property name="org.eclipse.om2m.cseBaseProtocol.default" value="http" />
-      <property name="org.eclipse.om2m.cseName" value="in-name" />
       <property name="org.eclipse.om2m.cseType" value="IN-CSE" />
       <property name="org.eclipse.om2m.dbDriver" value="org.h2.Driver" />
       <property name="org.eclipse.om2m.dbPassword" value="om2m" />
@@ -98,5 +102,12 @@
       <property name="org.eclipse.om2m.resource.idseparator" value="-" />
       <property name="org.eclipse.om2m.webInterfaceContext" value="/webpage" />
    </configurations>
+
+   <preferencesInfo>
+      <targetfile overwrite="false"/>
+   </preferencesInfo>
+
+   <cssInfo>
+   </cssInfo>
 
 </product>

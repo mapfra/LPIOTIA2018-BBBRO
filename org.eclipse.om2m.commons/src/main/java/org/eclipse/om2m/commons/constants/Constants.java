@@ -29,7 +29,7 @@ public class Constants {
     /** CseBase id. */
     public static final String CSE_ID = System.getProperty("org.eclipse.om2m.cseBaseId","in-cse");
     /** CseBase name. */
-    public static final String CSE_NAME = System.getProperty("org.eclipse.om2m.cseName", "in-name");
+    public static final String CSE_NAME = System.getProperty("org.eclipse.om2m.cseBaseName", "in-name");
    
     /** Default admin access right profile */
     public static final String ADMIN_PROFILE_ID = "acp_admin";
