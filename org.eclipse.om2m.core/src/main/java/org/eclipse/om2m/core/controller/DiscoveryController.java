@@ -118,27 +118,38 @@ public class DiscoveryController extends Controller {
 
 		List<UriMapperEntity> childUris = new ArrayList<>();
 		if(!filter.getLabels().isEmpty()){
-			for(String label : filter.getLabels()){
+			int limit = (filter.getLimit() != null ? filter.getLimit().intValue() : -1);
+			for(int indexLabel = 0; indexLabel < filter.getLabels().size() ; indexLabel++){
+				String label = filter.getLabels().get(indexLabel);
 				LabelEntity labelEntity = dbs.getDAOFactory().getLabelDAO().find(transaction, label);
+				List<UriMapperEntity> auxList = new ArrayList<>();
 				if(labelEntity != null){
-					LOGGER.info("Label found: " + label);
 					List<ResourceEntity> allFoundResources = stackLabelResources(labelEntity, filter);
-					LOGGER.info("after stack, number of resources: " + allFoundResources.size());
-
-					int size = allFoundResources.size();
-					if(filter.getLimit() != null && filter.getLimit().intValue() < size){
-						size = filter.getLimit().intValue();
-					}
-					for(int i = 0 ; i < size ; i++){
-						ResourceEntity resEntity = allFoundResources.get(i);
+					// In the case its the first label
+					for(ResourceEntity resEntity : allFoundResources){
 						if (resEntity.getHierarchicalURI().matches(resourceEntity.getHierarchicalURI() + "/?.*")) {
 							UriMapperEntity uriEntity = new UriMapperEntity();
 							uriEntity.setHierarchicalUri(resEntity.getHierarchicalURI());
 							uriEntity.setNonHierarchicalUri(resEntity.getResourceID());
 							uriEntity.setResourceType(resEntity.getResourceType());
-							childUris.add(uriEntity);
+							// In the case of multiple label, you have to make the intersection of resource
+							if(indexLabel == 0){
+								childUris.add(uriEntity);
+							} else if (childUris.contains(uriEntity)){
+								auxList.add(uriEntity);
+								if(indexLabel == filter.getLabels().size() - 1 && limit != -1 && auxList.size() == limit){
+									break;
+								}
+							}
 						}
 					}
+					if(indexLabel != 0){
+						childUris = auxList;
+					}
+				} else{
+					// If a label is null, the intersection with other labels is null
+					childUris = new ArrayList<UriMapperEntity>();
+					break;
 				}
 			}
 		} else {
@@ -150,6 +161,10 @@ public class DiscoveryController extends Controller {
 		// Create the result object that will be serialized
 		DiscoveryResult result = new DiscoveryResult();
 		for (UriMapperEntity uriEntity : childUris){
+			if(filter.getLimit() != null && result.getReferences().size() == filter.getLimit().intValue()){
+				System.out.println("Limit reached");
+				break;
+			}
 			ResourceRef ref = new ResourceRef();
 			ref.setResourceType(uriEntity.getResourceType());
 			if(request.getDiscoveryResultType().equals(DiscoveryResultType.HIERARCHICAL)){
@@ -157,7 +172,9 @@ public class DiscoveryController extends Controller {
 			} else {
 				ref.setUri(uriEntity.getNonHierarchicalUri());
 			}
-			result.getReferences().add(ref);
+			if(!result.getReferences().contains(ref)){
+				result.getReferences().add(ref);
+			}
 		}
 
 		response.setContent(result);

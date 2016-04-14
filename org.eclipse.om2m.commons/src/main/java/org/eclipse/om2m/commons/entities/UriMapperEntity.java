@@ -90,5 +90,43 @@ public class UriMapperEntity {
 	public void setResourceType(BigInteger resourceType){
 		this.resourceType = resourceType.intValue();
 	}
-	
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((hierarchicalUri == null) ? 0 : hierarchicalUri.hashCode());
+		result = prime
+				* result
+				+ ((nonHierarchicalUri == null) ? 0 : nonHierarchicalUri
+						.hashCode());
+		result = prime * result + resourceType;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		UriMapperEntity other = (UriMapperEntity) obj;
+		if (hierarchicalUri == null) {
+			if (other.hierarchicalUri != null)
+				return false;
+		} else if (!hierarchicalUri.equals(other.hierarchicalUri))
+			return false;
+		if (nonHierarchicalUri == null) {
+			if (other.nonHierarchicalUri != null)
+				return false;
+		} else if (!nonHierarchicalUri.equals(other.nonHierarchicalUri))
+			return false;
+		if (resourceType != other.resourceType)
+			return false;
+		return true;
+	}
+
 }
