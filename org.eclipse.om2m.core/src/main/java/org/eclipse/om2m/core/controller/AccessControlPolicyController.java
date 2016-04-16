@@ -168,6 +168,12 @@ public class AccessControlPolicyController extends Controller {
 		
 		String generatedId = generateId();
 		// Creating the corresponding entity
+		if (acp.getName() != null){
+			if (!Patterns.checkResourceName(acp.getName())){
+				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
+			}
+			acpEntity.setName(acp.getName());
+		} else 
 		if (request.getName() != null){
 			if (!Patterns.checkResourceName(request.getName())){
 				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);

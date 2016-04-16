@@ -277,6 +277,12 @@ public class AEController extends Controller {
 
 		aeEntity.setParentID(parentEntity.getResourceID());
 		aeEntity.setResourceType(BigInteger.valueOf(ResourceType.AE));
+		if (ae.getName() != null){
+			if (!Patterns.checkResourceName(ae.getName())){
+				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
+			}
+			aeEntity.setName(ae.getName());
+		} else
 		if (request.getName() != null){
 			if (!Patterns.checkResourceName(request.getName())){
 				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);

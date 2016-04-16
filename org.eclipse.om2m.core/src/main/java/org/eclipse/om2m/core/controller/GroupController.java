@@ -243,6 +243,13 @@ public class GroupController extends Controller {
 		groupEntity.setLastModifiedTime(DateUtil.now());
 		groupEntity.setParentID(parentEntity.getResourceID());
 		groupEntity.setResourceType(ResourceType.GROUP);
+		
+		if (group.getName() != null){
+			if (!Patterns.checkResourceName(group.getName())){
+				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
+			}
+			groupEntity.setName(group.getName());
+		} else 
 		if(request.getName() != null){
 			if (!Patterns.checkResourceName(request.getName())){
 				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);

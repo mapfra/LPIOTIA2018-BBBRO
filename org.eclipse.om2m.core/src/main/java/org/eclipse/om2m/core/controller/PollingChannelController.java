@@ -150,6 +150,12 @@ public class PollingChannelController extends Controller {
 		
 		String generatedId = generateId();
 		pollingChannelEntity.setResourceID("/" + Constants.CSE_ID + "/" + ShortName.PCH + Constants.PREFIX_SEPERATOR + generatedId);
+		if (pollingChannel.getName() != null){
+			if (!Patterns.checkResourceName(pollingChannel.getName())){
+				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
+			}
+			pollingChannelEntity.setName(pollingChannel.getName());
+		} else 
 		if(request.getName() != null){
 			if(!Patterns.checkResourceName(request.getName())){
 				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);

@@ -257,6 +257,13 @@ public class SubscriptionController extends Controller{
 		subscriptionEntity.setLastModifiedTime(DateUtil.now());
 		subscriptionEntity.setParentID(parentEntity.getResourceID());
 		subscriptionEntity.setResourceType(ResourceType.SUBSCRIPTION);
+
+		if (subscription.getName() != null){
+			if (!Patterns.checkResourceName(subscription.getName())){
+				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
+			}
+			subscriptionEntity.setName(subscription.getName());
+		} else 
 		if(request.getName() != null){
 			if(!Patterns.checkResourceName(request.getName())){
 				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);

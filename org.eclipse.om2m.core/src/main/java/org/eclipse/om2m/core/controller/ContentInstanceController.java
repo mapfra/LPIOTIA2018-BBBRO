@@ -171,6 +171,12 @@ public class ContentInstanceController extends Controller {
 		String generatedId = generateId("", "");
 		cinEntity.setResourceID("/" + Constants.CSE_ID + "/" + ShortName.CIN + Constants.PREFIX_SEPERATOR + generatedId);
 		// check & set resource name if present
+		if (cin.getName() != null){
+			if (!Patterns.checkResourceName(cin.getName())){
+				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
+			}
+			cinEntity.setName(cin.getName());
+		} else 
 		if (request.getName() != null){
 			if (!Patterns.checkResourceName(request.getName())){
 				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);

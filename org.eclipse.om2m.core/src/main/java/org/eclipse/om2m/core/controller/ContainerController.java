@@ -194,6 +194,12 @@ public class ContainerController extends Controller {
 
 		String generatedId = generateId("", "");
 		// set name if present and without any conflict
+		if (container.getName() != null){
+			if (!Patterns.checkResourceName(container.getName())){
+				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
+			}
+			containerEntity.setName(container.getName());
+		} else 
 		if (request.getName() != null) {
 			if(!Patterns.checkResourceName(request.getName())){
 				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);

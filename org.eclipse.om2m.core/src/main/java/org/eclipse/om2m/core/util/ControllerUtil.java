@@ -86,9 +86,9 @@ public class ControllerUtil {
 		
 		public static void fillEntityFromGenericResource(Resource resource, ResourceEntity entity) 
 				throws NotPermittedAttrException{
-			if(resource.getName() != null){
+			/*if(resource.getName() != null){
 				throw new NotPermittedAttrException("Name is Not Permitted");
-			}
+			}*/
 			if(resource.getResourceType() != null){
 				throw new NotPermittedAttrException("ResourceType is Not Permitted");
 			}

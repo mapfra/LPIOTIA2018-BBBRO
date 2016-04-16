@@ -240,6 +240,12 @@ public class RemoteCSEController extends Controller {
 		String generatedId = generateId("", "");
 		remoteCseEntity.setResourceID("/" + Constants.CSE_ID + "/" + ShortName.REMOTE_CSE + Constants.PREFIX_SEPERATOR + generatedId);
 		// set name if present and without any conflict
+		if (remoteCse.getName() != null){
+			if (!Patterns.checkResourceName(remoteCse.getName())){
+				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
+			}
+			remoteCseEntity.setName(remoteCse.getName());
+		} else 
 		if (request.getName() != null){
 			if (!Patterns.checkResourceName(request.getName())){
 				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
