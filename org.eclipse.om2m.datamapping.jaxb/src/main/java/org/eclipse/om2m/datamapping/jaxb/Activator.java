@@ -49,6 +49,9 @@ public class Activator implements BundleActivator {
 		LOGGER.info("Registering XML Mapper Service..");
 		context.registerService(DataMapperService.class.getName(), new Mapper(MimeMediaType.XML), null);
 		LOGGER.info("XML Mapper service registered.");
+		LOGGER.info("Registering JSON Mapper Service..");
+		context.registerService(DataMapperService.class.getName(), new Mapper(MimeMediaType.JSON), null);
+		LOGGER.info("JSON Mapper service registered.");
 	}
 
 	/*
@@ -60,3 +63,4 @@ public class Activator implements BundleActivator {
 	}
 
 }
+

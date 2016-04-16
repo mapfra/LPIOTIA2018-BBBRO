@@ -127,6 +127,7 @@
 		<module>org.eclipse.om2m.datamapping.jaxb</module>
 		<module>org.eclipse.om2m.datamapping.service</module>
 		<module>org.eclipse.om2m.webapp.resourcesbrowser.xml</module>
+		<module>org.eclipse.om2m.webapp.resourcesbrowser.json</module>
 		<module>org.eclipse.om2m.persistence.eclipselink</module>
 		<module>org.eclipse.om2m.persistence.service</module>
 		<module>org.eclipse.om2m.core</module>

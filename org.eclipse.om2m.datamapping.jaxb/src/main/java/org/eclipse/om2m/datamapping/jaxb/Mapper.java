@@ -30,9 +30,14 @@ import javax.xml.bind.Unmarshaller;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.eclipse.om2m.commons.resource.AE;
+import org.eclipse.om2m.commons.resource.Container;
 import org.eclipse.om2m.datamapping.service.DataMapperService;
+import org.eclipse.persistence.jaxb.MarshallerProperties;
+import org.eclipse.persistence.jaxb.UnmarshallerProperties;
 /**
  * 
+ * @author Francois
  *
  */
 public class Mapper implements DataMapperService {
@@ -72,6 +77,8 @@ public class Mapper implements DataMapperService {
 			Marshaller marshaller = context.createMarshaller();
 			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 			OutputStream outputStream = new ByteArrayOutputStream();
+			marshaller.setProperty(MarshallerProperties.MEDIA_TYPE,mediaType);
+			marshaller.setProperty(MarshallerProperties.JSON_INCLUDE_ROOT, true);
 			marshaller.marshal(obj, outputStream);
 			return outputStream.toString();
 		} catch (JAXBException e) {
@@ -92,6 +99,9 @@ public class Mapper implements DataMapperService {
 		StringReader stringReader = new StringReader(representation);
 		try {
 			Unmarshaller unmarshaller = context.createUnmarshaller();
+			unmarshaller.setProperty(UnmarshallerProperties.MEDIA_TYPE, mediaType);
+			unmarshaller.setProperty(UnmarshallerProperties.JSON_INCLUDE_ROOT, true);
+
 			return unmarshaller.unmarshal(stringReader);
 		} catch (JAXBException e) {
 			LOGGER.error("JAXB unmarshalling error!", e);
@@ -105,3 +115,4 @@ public class Mapper implements DataMapperService {
 	}
 
 }
+
