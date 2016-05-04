@@ -187,6 +187,8 @@ public abstract class Controller {
 						operationAllowed = true; 
 					} else if (operation.equals(Operation.DISCOVERY) && rule.isDiscovery()){
 						operationAllowed = true;
+					}else if(operation.equals(Operation.NOTIFY) && rule.isNotify()){
+						operationAllowed = true;
 					}
 				}
 				if (originatorFound && operationAllowed){

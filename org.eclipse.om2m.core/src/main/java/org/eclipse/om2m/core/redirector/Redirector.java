@@ -149,6 +149,9 @@ public class Redirector {
 			dbt.close();
 			throw new ResourceNotFoundException("AE resource " + request.getTargetId() + " not found.");
 		}
+
+		new AEController().checkACP(ae.getAccessControlPolicies(), request.getFrom(), Operation.NOTIFY);
+
 		// Get point of access
 		if(ae.getPointOfAccess().isEmpty() || !(ae.isRequestReachable())){
 			response.setResponseStatusCode(ResponseStatusCode.TARGET_NOT_REACHABLE);
