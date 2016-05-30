@@ -29,7 +29,7 @@ public class AccessDeniedException extends Om2mException {
 	private static final long serialVersionUID = -2488820054507430948L;
 
 	public AccessDeniedException(){
-		super(ResponseStatusCode.ACCESS_DENIED);
+		super("Unknown or unauthorized originator", ResponseStatusCode.ACCESS_DENIED);
 	}
 
 	public AccessDeniedException(String message){

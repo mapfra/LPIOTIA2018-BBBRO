@@ -109,7 +109,7 @@ public class ShortName {
 	/** Short name for AreaNwkInfo resource */
 	public static final String ANI = "ani";
 	/** Short name for AreaNwkDeviceInfo resource */
-	public static final String ANIDI = "anidi";
+	public static final String ANDI = "andi";
 	/** Short name for DeviceInfo resource */
 	public static final String DVI = "dvi";
 	/** Short name for DeviceCapability resource */
@@ -397,11 +397,15 @@ public class ShortName {
 	public static final String NODE_ID = "ni";
 	public static final String HOSTED_CSE_LINK = "hcl";
 	
+	// Short names for mgmt objects generic attributes
+	public static final String DESCRIPTION = "des";
+	public static final String MGMT_DEF = "mgd";
+	public static final String OBJ_IDS = "obis";
+	public static final String OBJ_PATHS = "obps";
+	
 	// Short names for mgmt objects specialization
 	public static final String MEMORY = "mem";
 	public static final String BATTERY = "bat";
-	public static final String AREA_NWK_INFO = "ani";
-	public static final String AREA_NWK_DEVICE_INFO = "andi";
 	public static final String FIRMWARE = "fwr";
 	public static final String SOFTWARE = "swr";
 	public static final String DEVICE_INFO = "dvi";
@@ -410,4 +414,20 @@ public class ShortName {
 	public static final String EVENT_LOG = "evl";
 	public static final String CMDH_POLICY = "cmp";
 	public static final String ACTIVE_CMDH_POLICY = "acmp";
+	
+	// short names for area nwk info
+	public static final String AREA_NWK_TYPE = "ant";
+	public static final String LIST_DEVICES = "ldv";
+	
+	// short names for area nwk device info
+	public static final String STATUS = "ss";
+	public static final String DEV_ID = "dvd";
+	public static final String DEV_TYPE = "dvt";
+	public static final String AREA_NWK_ID = "awi";
+	public static final String SLEEP_INTERVAL = "sli";
+	public static final String SLEEP_DURATION = "sld";
+	public static final String LIST_OF_NEIGHBORS = "lnh";
+	
+	// short name for URI List
+	public static final String URI_LIST = "uril";
 }

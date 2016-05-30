@@ -36,6 +36,8 @@ import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.eclipse.om2m.commons.constants.ShortName;
+
 /**
  * <p>
  * Java class for anonymous complex type.
@@ -64,18 +66,18 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "areaNwkType", "listOfDevices",
-		"childResource", "subscription" })
-@XmlRootElement(name = "areaNwkInfo")
+@XmlType(name = "")
+@XmlRootElement(name = ShortName.ANI)
 public class AreaNwkInfo extends MgmtResource {
 
-	@XmlElement(required = true)
+	@XmlElement(name = ShortName.AREA_NWK_TYPE, required = true)
 	protected String areaNwkType;
 	@XmlList
-	@XmlElement(required = true)
+	@XmlElement(name = ShortName.LIST_DEVICES, required = true)
 	protected List<String> listOfDevices;
+	@XmlElement(name = ShortName.CHILD_RESOURCE)
 	protected List<ChildResourceRef> childResource;
-	@XmlElement(namespace = "http://www.onem2m.org/xml/protocols")
+	@XmlElement(name = ShortName.SUB, namespace = "http://www.onem2m.org/xml/protocols")
 	protected List<Subscription> subscription;
 
 	/**

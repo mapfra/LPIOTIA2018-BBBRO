@@ -94,7 +94,21 @@ public class ResponsePrimitive {
 	@XmlTransient
 	protected String location;
 	@XmlTransient
-	protected String errorMessage;
+	protected String contentType;
+
+	/**
+	 * @return the contentType
+	 */
+	public String getContentType() {
+		return contentType;
+	}
+
+	/**
+	 * @param contentType the contentType to set
+	 */
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
+	}
 
 	public ResponsePrimitive() {
 		this.from = "/" + Constants.CSE_ID;
@@ -288,20 +302,6 @@ public class ResponsePrimitive {
 		this.location = location;
 	}
 
-	/**
-	 * @return the errorMessage
-	 */
-	public String getErrorMessage() {
-		return errorMessage;
-	}
-
-	/**
-	 * @param errorMessage the errorMessage to set
-	 */
-	public void setErrorMessage(String errorMessage) {
-		this.errorMessage = errorMessage;
-	}
-
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -323,7 +323,7 @@ public class ResponsePrimitive {
 				+ (eventCategory != null ? "eventCategory=" + eventCategory
 						+ ",\n " : "")
 				+ (location != null ? "location=" + location + ",\n " : "")
-				+ (errorMessage != null ? "errorMessage=" + errorMessage : "")
+				+ (contentType != null ? "contentType=" + contentType + ",\n" : "")
 				+ "]";
 	}
 

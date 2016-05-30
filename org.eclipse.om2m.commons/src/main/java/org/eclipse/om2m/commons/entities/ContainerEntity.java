@@ -130,7 +130,7 @@ public class ContainerEntity extends AnnounceableSubordinateEntity{
 			inverseJoinColumns={@JoinColumn(name=DBEntities.CSR_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)},
 			joinColumns={@JoinColumn(name=DBEntities.CNT_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)}
 			)
-	protected CSEBaseEntity parentCSR;
+	protected RemoteCSEEntity parentCSR;
 	
 	/**
 	 * @return the parentContainer
@@ -328,14 +328,14 @@ public class ContainerEntity extends AnnounceableSubordinateEntity{
 	/**
 	 * @return the parentCSR
 	 */
-	public CSEBaseEntity getParentCSR() {
+	public RemoteCSEEntity getParentCSR() {
 		return parentCSR;
 	}
 
 	/**
 	 * @param parentCSR the parentCSR to set
 	 */
-	public void setParentCSR(CSEBaseEntity parentCSR) {
+	public void setParentCSR(RemoteCSEEntity parentCSR) {
 		this.parentCSR = parentCSR;
 	}
 

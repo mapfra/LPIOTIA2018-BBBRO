@@ -19,6 +19,8 @@
  *******************************************************************************/
 package org.eclipse.om2m.commons.constants;
 
+import java.math.BigInteger;
+
 /**
  * Initializes platform properties
  */
@@ -41,8 +43,6 @@ public class Constants {
     public static final String GUEST_REQUESTING_ENTITY = System.getProperty("org.eclipse.om2m.guestRequestingEntity","guest:guest");
     /** Default resources expiration time. */
     public static final long EXPIRATION_TIME = 999999999;
-    /** Default ContentInstances collection maximum number of instance. */
-    public static final Long MAX_NBR_OF_INSTANCES = Long.valueOf(System.getProperty("org.eclipse.om2m.maxNrOfInstances","10"));
     //CseBase communication properties
     /** CseBase default communication protocol. */
     public static final String CSE_DEFAULT_PROTOCOL = System.getProperty("org.eclipse.om2m.cseBaseProtocol.default","http");
@@ -51,8 +51,9 @@ public class Constants {
     /** CseBase listening port. */
     public static final int CSE_PORT = Integer.parseInt(System.getProperty("org.eclipse.equinox.http.jetty.http.port","8080"));
     /** CseBase coap port. */
-    public static final int COAP_PORT = Integer.parseInt(System.getProperty("org.eclipse.om2m.coapPort","5684"));
-    /** listening context. */
+    public static final int COAP_PORT = Integer.parseInt(System.getProperty("org.eclipse.om2m.coap.port","5684"));
+    /** listening context. Not oneM2M compliant */
+    @Deprecated
     public static final String CSE_CONTEXT = System.getProperty("org.eclipse.om2m.cseBaseContext","/api");
     /** M2M Service Provider identifier */
     public static final String M2M_SP_ID = System.getProperty("org.eclipse.om2m.m2mSpId", "om2m.org");
@@ -72,37 +73,13 @@ public class Constants {
     public static final String REMOTE_CSE_CONTEXT = System.getProperty("org.eclipse.om2m.remoteCseContext","/api");
     /** Remote Cse Name */
     public static final String REMOTE_CSE_NAME = System.getProperty("org.eclipse.om2m.remoteCseName", "in-name");
-
-    //Rest Method names
-    /** Retrieve method name. */
-    public static final String METHOD_RETREIVE = "RETRIEVE";
-    /** Create method name. */
-    public static final String METHOD_CREATE = "CREATE";
-    /** Update method name. */
-    public static final String METHOD_UPDATE = "UPDATE";
-    /** Delete method name. */
-    public static final String METHOD_DELETE = "DELETE";
-    /** Execute method name. */
-    public static final String METHOD_EXECUTE = "EXECUTE";
-
-    //Access Control Policy Method names
-    /** Create Access Control Policy method name. */
-    public static final String ACP_CREATE = "CREATE";
-    /** Read Access Control Policy method name. */
-    public static final String ACP_READ = "READ";
-    /** Write Access Control Policy method name. */
-    public static final String ACP_WRITE = "WRITE";
-    /** Delete Access Control Policy method name. */
-    public static final String ACP_DELETE = "DELETE";
-    /** Discover Access Control Policy method name. */
-    public static final String ACP_DISCOVER = "DISCOVER";
-
-    //SearchStrings prefixes
-    /** Search String resource type prefix. */
-    public static final String SEARCH_STRING_RES_TYPE = "ResourceType/";
-    /** Search String resource id prefix. */
-    public static final String SEARCH_STRING_RES_ID = "ResourceID/";
-   
+    
+    // Default values for container creation
+    /** Default ContentInstances collection maximum number of instance. */
+    public static final BigInteger MAX_NBR_OF_INSTANCES = new BigInteger(System.getProperty("org.eclipse.om2m.maxNrOfInstances","10"));
+    /** Default max byte size for a container */
+    public static final BigInteger MAX_BYTE_SIZE = new BigInteger(System.getProperty("org.eclipse.om2m.maxByteSize", "10000"));
+    
     // Regular expressions
     /** Regular expression for ID of resources */
     public static final String ID_REGEXPR = "^[A-Za-z0-9_-]*$" ;
@@ -114,5 +91,7 @@ public class Constants {
 
 	public static final String SP_RELATIVE_URI_SEPARATOR = "~";
 	public static final String ABSOLUTE_URI_SEPARATOR = "_";
+	
+	public static final Integer MAX_THREAD_POOL_SIZE = Integer.valueOf(System.getProperty("org.eclipse.om2m.maxThreadPoolSize", "50"));
 	
 }

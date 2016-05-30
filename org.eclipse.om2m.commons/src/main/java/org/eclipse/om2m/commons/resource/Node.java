@@ -96,8 +96,8 @@ public class Node extends AnnounceableResource {
 	@XmlElements({
 			@XmlElement(name = ShortName.MEMORY, namespace = "http://www.onem2m.org/xml/protocols", type = Memory.class),
 			@XmlElement(name = ShortName.BATTERY, namespace = "http://www.onem2m.org/xml/protocols", type = Battery.class),
-			@XmlElement(name = ShortName.AREA_NWK_INFO, namespace = "http://www.onem2m.org/xml/protocols", type = AreaNwkInfo.class),
-			@XmlElement(name = ShortName.AREA_NWK_DEVICE_INFO, namespace = "http://www.onem2m.org/xml/protocols", type = AreaNwkDeviceInfo.class),
+			@XmlElement(name = ShortName.ANI, namespace = "http://www.onem2m.org/xml/protocols", type = AreaNwkInfo.class),
+			@XmlElement(name = ShortName.ANDI, namespace = "http://www.onem2m.org/xml/protocols", type = AreaNwkDeviceInfo.class),
 			@XmlElement(name = ShortName.FIRMWARE, namespace = "http://www.onem2m.org/xml/protocols", type = Firmware.class),
 			@XmlElement(name = ShortName.SOFTWARE, namespace = "http://www.onem2m.org/xml/protocols", type = Software.class),
 			@XmlElement(name = ShortName.DEVICE_INFO, namespace = "http://www.onem2m.org/xml/protocols", type = DeviceInfo.class),

@@ -38,6 +38,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 
+import org.eclipse.om2m.commons.constants.ShortName;
+
 /**
  * <p>
  * Java class for anonymous complex type.
@@ -71,29 +73,31 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "devID", "devType", "areaNwkId",
-		"sleepInterval", "sleepDuration", "status", "listOfNeighbors",
-		"childResource", "subscription" })
-@XmlRootElement(name = "areaNwkDeviceInfo")
+@XmlType(name = "")
+@XmlRootElement(name = ShortName.ANDI)
 public class AreaNwkDeviceInfo extends MgmtResource {
 
-	@XmlElement(required = true)
+	@XmlElement(required = true, name = ShortName.DEV_ID)
 	protected String devID;
-	@XmlElement(required = true)
+	@XmlElement(required = true, name = ShortName.DEV_TYPE)
 	protected String devType;
-	@XmlElement(required = true)
+	@XmlElement(required = true, name = ShortName.AREA_NWK_ID)
 	@XmlSchemaType(name = "anyURI")
 	protected String areaNwkId;
 	@XmlSchemaType(name = "nonNegativeInteger")
+	@XmlElement(name = ShortName.SLEEP_INTERVAL)
 	protected BigInteger sleepInterval;
 	@XmlSchemaType(name = "nonNegativeInteger")
+	@XmlElement(name = ShortName.SLEEP_DURATION)
 	protected BigInteger sleepDuration;
+	@XmlElement(name = ShortName.STATUS)
 	protected String status;
 	@XmlList
-	@XmlElement(required = true)
+	@XmlElement(required = true, name = ShortName.LIST_OF_NEIGHBORS)
 	protected List<String> listOfNeighbors;
+	@XmlElement(name = ShortName.CHILD_RESOURCE)
 	protected List<ChildResourceRef> childResource;
-	@XmlElement(namespace = "http://www.onem2m.org/xml/protocols")
+	@XmlElement(namespace = "http://www.onem2m.org/xml/protocols", name = ShortName.SUB)
 	protected List<Subscription> subscription;
 
 	/**

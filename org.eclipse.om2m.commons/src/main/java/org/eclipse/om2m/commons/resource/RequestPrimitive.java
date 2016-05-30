@@ -130,8 +130,6 @@ public class RequestPrimitive {
 	@XmlElement(name = ShortName.DISCOVERY_RESULT_TYPE)
 	protected BigInteger discoveryResultType;
 	@XmlTransient
-	protected String targetId;
-	@XmlTransient
 	protected String returnContentType;
 	@XmlTransient
 	protected String requestContentType;
@@ -560,7 +558,7 @@ public class RequestPrimitive {
 	 * @return the targetId
 	 */
 	public String getTargetId() {
-		return targetId;
+		return this.getTo();
 	}
 
 	/**
@@ -568,7 +566,7 @@ public class RequestPrimitive {
 	 *            the targetId to set
 	 */
 	public void setTargetId(String targetId) {
-		this.targetId = targetId;
+		this.setTo(targetId);
 	}
 
 	/**
@@ -640,11 +638,10 @@ public class RequestPrimitive {
 						+ ",\n " : "")
 				+ (discoveryResultType != null ? "discoveryResultType="
 						+ discoveryResultType + ",\n " : "")
-				+ (targetId != null ? "targetId=" + targetId + ",\n " : "")
 				+ (returnContentType != null ? "returnContentType="
 						+ returnContentType + ",\n " : "")
 				+ (requestContentType != null ? "requestContentType="
-				+ requestContentType : "") 
+				+ requestContentType + ",\n ": "") 
 				+ (queryStrings != null ? "queryStrings=" + queryStrings : "")
 				+ "]";
 	}
@@ -675,11 +672,8 @@ public class RequestPrimitive {
 		result.resultExpirationTimestamp = this.resultExpirationTimestamp;
 		result.resultPersistence = this.resultPersistence;
 		result.returnContentType = this.returnContentType;
-		result.targetId = this.targetId;
 		result.to = this.to;
 		return result;
 	}
-	
-	
 	
 }

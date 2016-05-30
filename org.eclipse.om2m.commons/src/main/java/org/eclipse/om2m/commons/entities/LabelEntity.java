@@ -66,7 +66,16 @@ public class LabelEntity {
 
 	@ManyToMany(targetEntity = PollingChannelEntity.class, mappedBy = "labelsEntities")
 	protected List<PollingChannelEntity> linkedPch;
-
+	
+	@ManyToMany(targetEntity = NodeEntity.class, mappedBy = "labelsEntities")
+	protected List<NodeEntity> linkedNodes;
+	
+	@ManyToMany(targetEntity = AreaNwkInfoEntity.class, mappedBy = "labelsEntities")
+	protected List<AreaNwkInfoEntity> linkedAni;
+	
+	@ManyToMany(targetEntity = AreaNwkDeviceInfoEntity.class, mappedBy = "labelsEntities")
+	protected List<AreaNwkDeviceInfoEntity> linkedAndi;
+	
 	/**
 	 * @return the linkedSub
 	 */
@@ -228,6 +237,60 @@ public class LabelEntity {
 	 */
 	public void setLinkedPch(List<PollingChannelEntity> linkedPch) {
 		this.linkedPch = linkedPch;
+	}
+	
+	
+	
+
+	/**
+	 * @return the linkedNode
+	 */
+	public List<NodeEntity> getLinkedNodes() {
+		if (this.linkedNodes == null) {
+			this.linkedNodes = new ArrayList<>();
+		}
+		return linkedNodes;
+	}
+
+	/**
+	 * @param linkedNode the linkedNode to set
+	 */
+	public void setLinkedNodes(List<NodeEntity> linkedNode) {
+		this.linkedNodes = linkedNode;
+	}
+
+	/**
+	 * @return the linkedAni
+	 */
+	public List<AreaNwkInfoEntity> getLinkedAni() {
+		if (this.linkedAni == null) {
+			this.linkedAni = new ArrayList<>();
+		}
+		return linkedAni;
+	}
+
+	/**
+	 * @param linkedAni the linkedAni to set
+	 */
+	public void setLinkedAni(List<AreaNwkInfoEntity> linkedAni) {
+		this.linkedAni = linkedAni;
+	}
+
+	/**
+	 * @return the linkedAndi
+	 */
+	public List<AreaNwkDeviceInfoEntity> getLinkedAndi() {
+		if (this.linkedAndi == null) {
+			this.linkedAndi = new ArrayList<>();
+		}
+		return linkedAndi;
+	}
+
+	/**
+	 * @param linkedAndi the linkedAndi to set
+	 */
+	public void setLinkedAndi(List<AreaNwkDeviceInfoEntity> linkedAndi) {
+		this.linkedAndi = linkedAndi;
 	}
 
 	@Override

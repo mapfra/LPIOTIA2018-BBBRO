@@ -35,7 +35,7 @@ public class ObixMapper {
 	/** Logger */
 	private static final Log LOGGER = LogFactory.getLog(ObixMapper.class);
 	/** Current instance of the mapper */
-	private static ObixMapper obixMapper = new ObixMapper();
+	private static ObixMapper obixMapper;
 	/** JAXB Context of oBIX objects */
 	private JAXBContext context;
 	
@@ -60,6 +60,9 @@ public class ObixMapper {
 	 * @return current instance of ObixMapper
 	 */
 	public static ObixMapper getInstance() {
+		if(obixMapper == null){
+			obixMapper = new ObixMapper();
+		}
 		return obixMapper;
 	}
 

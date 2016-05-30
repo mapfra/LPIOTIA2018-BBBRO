@@ -37,6 +37,8 @@ import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 
+import org.eclipse.om2m.commons.constants.ShortName;
+
 /**
  * <p>
  * Java class for mgmtResource complex type.
@@ -63,8 +65,7 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "mgmtResource", propOrder = { "mgmtDefinition", "objectIDs",
-		"objectPaths", "description" })
+@XmlType(name = "mgmtResource")
 @XmlSeeAlso({ CmdhLimits.class, CmdhEcDefParamValues.class, EventLog.class,
 		Reboot.class, DeviceCapability.class, DeviceInfo.class,
 		AreaNwkDeviceInfo.class, Battery.class, Memory.class,
@@ -74,12 +75,15 @@ import javax.xml.bind.annotation.XmlType;
 		CmdhNetworkAccessRules.class })
 public class MgmtResource extends AnnounceableResource {
 
-	@XmlElement(required = true)
+	@XmlElement(name = ShortName.MGMT_DEF, required = true)
 	protected BigInteger mgmtDefinition;
 	@XmlList
+	@XmlElement(name = ShortName.OBJ_IDS)
 	protected List<String> objectIDs;
 	@XmlList
+	@XmlElement(name = ShortName.OBJ_PATHS)
 	protected List<String> objectPaths;
+	@XmlElement(name = ShortName.DESCRIPTION)
 	protected String description;
 
 	/**

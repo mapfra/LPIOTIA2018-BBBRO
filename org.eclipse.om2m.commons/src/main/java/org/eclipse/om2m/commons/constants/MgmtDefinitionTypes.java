@@ -20,20 +20,14 @@
 package org.eclipse.om2m.commons.constants;
 
 import java.math.BigInteger;
+
 /**
- * Constants for notification content type
+ * Class for management definition types constants
  *
  */
-public class NotificationContentType {
-	
-	// private constructor
-	private NotificationContentType(){}
-	
-	/** Big integer constant for WHOLE_RESOURCE */
-	public static final BigInteger WHOLE_RESOURCE = BigInteger.valueOf(1);
-	/** Big integer constant for MODIFIED_ATTRIBUTES */
-	public static final BigInteger MODIFIED_ATTRIBUTES = BigInteger.valueOf(2);
-	/** Big integer constant for REFERENCE_ONLY */
-	public static final BigInteger REFERENCE_ONLY = BigInteger.valueOf(3);
+public class MgmtDefinitionTypes {
 
+	public static final BigInteger AREA_NWK_INFO = BigInteger.valueOf(1004);
+	public static final BigInteger AREA_NWK_DEVICE_INFO = BigInteger.valueOf(1005);
+	
 }

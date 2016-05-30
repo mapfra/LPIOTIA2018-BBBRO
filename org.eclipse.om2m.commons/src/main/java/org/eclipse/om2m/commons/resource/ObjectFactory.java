@@ -33,8 +33,6 @@ import javax.xml.bind.annotation.XmlElementDecl;
 import javax.xml.bind.annotation.XmlRegistry;
 import javax.xml.namespace.QName;
 
-import org.eclipse.om2m.commons.resource.DiscoveryResult.ResourceRef;
-
 /**
  * This object contains factory methods for each Java content interface and Java
  * element interface generated in the org.eclipse.om2m.commons.resource package.
@@ -958,12 +956,8 @@ public class ObjectFactory {
 		return new MetaInformation.EventCategory();
 	}
 	
-	public DiscoveryResult createDiscoveryResult(){
-		return new DiscoveryResult();
-	}
-
-	public ResourceRef createResourceRef(){
-		return new ResourceRef();
+	public URIList createURIList(){
+		return new URIList();
 	}
 	
 	/**

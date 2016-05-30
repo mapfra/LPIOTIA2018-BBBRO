@@ -233,5 +233,15 @@ public class DBEntities {
 	public static final String CSRNOD_CH_JOIN = "CSR_NOD_CH_JOIN";
 	public static final String NODSUB_JOIN = "NOD_SUB_JOIN";
 	
+	// MGMT OBJ
+	public static final String ANISUB_JOIN = "ANI_SUB_JOIN";
+	public static final String ANIACP_JOIN = "ANI_ACP_JOIN";
+	public static final String ANI_JOIN_ID = "ANI_JOIN_ID";
+	public static final String ANINOD_JOIN = "ANI_NOD_JOIN";
+	public static final String ANDISUB_JOIN = "ANDI_SUB_JOIN";
+	public static final String ANDI_JOIN_ID = "ANDI_JOIN_ID";
+	public static final String ANDINOD_JOIN = "ANDI_NOD_JOIN";
+	public static final String ANDIACP_JOIN = "ANDI_ACP_JOIN";
+	
 }
 

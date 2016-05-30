@@ -33,6 +33,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import org.eclipse.om2m.commons.constants.DBEntities;
@@ -147,6 +148,24 @@ public class SubscriptionEntity extends ResourceEntity {
 			joinColumns = { @JoinColumn(name = DBEntities.SUB_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
 			)
 	protected ScheduleEntity parentNode;
+	
+	
+	// Database link to Subscriptions
+	@ManyToOne(fetch = FetchType.LAZY, targetEntity = AreaNwkInfoEntity.class)
+	@JoinTable(
+			name = DBEntities.ANISUB_JOIN,
+			inverseJoinColumns = { @JoinColumn(name = DBEntities.ANI_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
+			joinColumns = { @JoinColumn(name = DBEntities.SUB_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
+			)
+	protected AreaNwkInfoEntity parentAni;
+	
+	@ManyToOne(fetch = FetchType.LAZY, targetEntity = AreaNwkDeviceInfoEntity.class)
+	@JoinTable(
+			name = DBEntities.ANDISUB_JOIN,
+			inverseJoinColumns = { @JoinColumn(name = DBEntities.ANDI_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
+			joinColumns = { @JoinColumn(name = DBEntities.SUB_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
+			)
+	protected AreaNwkDeviceInfoEntity parentAndi;
 	
 	// link to schedule entity
 	@OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, targetEntity = ScheduleEntity.class)
@@ -454,7 +473,34 @@ public class SubscriptionEntity extends ResourceEntity {
 		this.parentSch = parentSch;
 	}
 	
+	/**
+	 * @return the parentAni
+	 */
+	public AreaNwkInfoEntity getParentAni() {
+		return parentAni;
+	}
+
+	/**
+	 * @param parentAni the parentAni to set
+	 */
+	public void setParentAni(AreaNwkInfoEntity parentAni) {
+		this.parentAni = parentAni;
+	}
 	
+	/**
+	 * @return the parentAndi
+	 */
+	public AreaNwkDeviceInfoEntity getParentAndi() {
+		return parentAndi;
+	}
+
+	/**
+	 * @param parentAndi the parentAndi to set
+	 */
+	public void setParentAndi(AreaNwkDeviceInfoEntity parentAndi) {
+		this.parentAndi = parentAndi;
+	}
+
 	/**
 	 * @return the linkedSchedule
 	 */

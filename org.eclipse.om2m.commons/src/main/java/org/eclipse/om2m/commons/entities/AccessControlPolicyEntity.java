@@ -150,6 +150,24 @@ public class AccessControlPolicyEntity extends AnnounceableSubordinateEntity {
 			)
 	protected List<PollingChannelEntity> linkedNod;
 	
+	// Database link to ACP
+	@ManyToMany(fetch = FetchType.LAZY, targetEntity = AreaNwkInfoEntity.class)
+	@JoinTable(
+			name = DBEntities.ANIACP_JOIN,
+			inverseJoinColumns = { @JoinColumn(name = DBEntities.ANI_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
+			joinColumns = { @JoinColumn(name = DBEntities.ACP_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
+			)
+	protected List<AreaNwkInfoEntity> areaNwkInfoEntities;
+	
+	@ManyToMany(fetch = FetchType.LAZY, targetEntity = AreaNwkDeviceInfoEntity.class)
+	@JoinTable(
+			name = DBEntities.ANDIACP_JOIN,
+			inverseJoinColumns = { @JoinColumn(name = DBEntities.ANDI_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
+			joinColumns = { @JoinColumn(name = DBEntities.ACP_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
+			)
+	protected List<AreaNwkDeviceInfoEntity> areaNwkDeviceInfoEntities;
+	
+	
 	/**
 	 * @return the privileges
 	 */
@@ -345,8 +363,40 @@ public class AccessControlPolicyEntity extends AnnounceableSubordinateEntity {
 		this.linkedNod = linkedNod;
 	}
 
-	
-	
+	/**
+	 * @return the areaNwkInfoEntities
+	 */
+	public List<AreaNwkInfoEntity> getAreaNwkInfoEntities() {
+		if (this.areaNwkInfoEntities == null) {
+			this.areaNwkInfoEntities = new ArrayList<>();
+		}
+		return areaNwkInfoEntities;
+	}
+
+	/**
+	 * @param areaNwkInfoEntities the areaNwkInfoEntities to set
+	 */
+	public void setAreaNwkInfoEntities(List<AreaNwkInfoEntity> areaNwkInfoEntities) {
+		this.areaNwkInfoEntities = areaNwkInfoEntities;
+	}
+
+	/**
+	 * @return the areaNwkDeviceInfoEntities
+	 */
+	public List<AreaNwkDeviceInfoEntity> getAreaNwkDeviceInfoEntities() {
+		if (this.areaNwkDeviceInfoEntities == null) {
+			this.areaNwkDeviceInfoEntities = new ArrayList<>();
+		}
+		return areaNwkDeviceInfoEntities;
+	}
+
+	/**
+	 * @param areaNwkDeviceInfoEntities the areaNwkDeviceInfoEntities to set
+	 */
+	public void setAreaNwkDeviceInfoEntities(
+			List<AreaNwkDeviceInfoEntity> areaNwkDeviceInfoEntities) {
+		this.areaNwkDeviceInfoEntities = areaNwkDeviceInfoEntities;
+	}
 	
 
 }

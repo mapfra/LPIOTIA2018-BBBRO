@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013-2016 LAAS-CNRS (www.laas.fr)
+ac * Copyright (c) 2013-2016 LAAS-CNRS (www.laas.fr)
  * 7 Colonel Roche 31077 Toulouse - France
  *
  * All rights reserved. This program and the accompanying materials
@@ -30,7 +30,7 @@ import org.eclipse.om2m.commons.entities.AccessControlRuleEntity;
  */
 public class AccessControl {
 	/** Originator authorizing any originator to use the privileges */
-	public static final String ORIGINATOR_ALL = "all";
+	public static final String ORIGINATOR_ALL = "*";
 	
 	/** Private constructor */
 	private AccessControl(){}
@@ -43,10 +43,10 @@ public class AccessControl {
 	public static final BigInteger UPDATE = BigInteger.valueOf(4);
 	/** Big integer constant for DELETE operation */
 	public static final BigInteger DELETE = BigInteger.valueOf(8);
-	/** Big integer constant for DISCOVERY operation */
-	public static final BigInteger DISCOVERY = BigInteger.valueOf(16);
 	/** Big integer constant for NOTIFY operation */
-	public static final BigInteger NOTIFY = BigInteger.valueOf(32);
+	public static final BigInteger NOTIFY = BigInteger.valueOf(16);
+	/** Big integer constant for DISCOVERY operation */
+	public static final BigInteger DISCOVERY = BigInteger.valueOf(32);
 	/** Big integer constant for ALL operations */
 	public static final BigInteger ALL = BigInteger.valueOf(63) ;
 	

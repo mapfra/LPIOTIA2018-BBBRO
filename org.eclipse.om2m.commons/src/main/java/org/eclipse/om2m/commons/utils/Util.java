@@ -19,13 +19,15 @@
  *******************************************************************************/
 package org.eclipse.om2m.commons.utils;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
-import java.util.Scanner;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -66,7 +68,7 @@ public class Util {
 	     * @param expirationTime - expiration time present in the request representation
 	     * @return false if the expirationTime attribute is out of date otherwise true
 	     */
-	    public boolean checkExpirationTime(String expirationTime) {
+	    public static boolean checkExpirationTime(String expirationTime) {
 	        DateFormat df=new SimpleDateFormat(dateFormat);
 	        Date expDate;
 	        try {
@@ -87,7 +89,7 @@ public class Util {
 	     * @param addedSeconds - seconds to add to the current time
 	     * @return New expirationTime value of the resource
 	     */
-	    public String getNewExpirationTime(long addedSeconds) {
+	    public static String getNewExpirationTime(long addedSeconds) {
 	        long addedMilSeconds = addedSeconds * 1000;
 	        Date newDate = new Date((new Date()).getTime() + addedMilSeconds);
 	        return DateConverter.toXMLGregorianCalendar(newDate).toString();
@@ -98,10 +100,21 @@ public class Util {
 	     * @param addedSeconds - seconds to add to the current time
 	     * @return New delayTolerance of the resource
 	     */
-	    public String getNewDelayTolerance(long addedSeconds) {
+	    public static String getNewDelayTolerance(long addedSeconds) {
 	        long addedMilSeconds = addedSeconds * 1000;
 	        Date newDate = new Date((new Date()).getTime() + addedMilSeconds);
 	        return DateConverter.toXMLGregorianCalendar(newDate).toString();
+	    }
+	    
+	    /**
+	     * Get the date in 1 year for default expiration time
+	     * @return
+	     */
+	    public static String getDefaultExpirationTime(){
+	    	Calendar cal = Calendar.getInstance();
+	    	cal.setTime(new Date());
+	    	cal.add(Calendar.YEAR, 1);
+	    	return new SimpleDateFormat(dateFormat).format(cal.getTime());
 	    }
 	}
 	
@@ -111,24 +124,27 @@ public class Util {
 	 * @return the converted string
 	 */
 	public static String convertStreamToString(InputStream is) {
+		BufferedReader br = null;
+		StringBuilder sb = new StringBuilder();
+		String line;
 		try {
-			if(is.available() > 0){
-				Scanner scanner = new Scanner(is);
-				scanner.useDelimiter("\\A");
-				String result = null;
-				if (scanner.hasNext()){
-					result = scanner.next();
-				} else {
-					result = "";
-				}
-				scanner.close();
-				return result ;			
+			br = new BufferedReader(new InputStreamReader(is));
+			while ((line = br.readLine()) != null) {
+				sb.append(line);
+				sb.append("\n");
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 		}
-		return null;
+		return sb.toString();
 	}
 
 }

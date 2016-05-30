@@ -64,7 +64,7 @@ public class NodeEntity extends AnnounceableSubordinateEntity {
 			inverseJoinColumns = { @JoinColumn(name = DBEntities.CSEB_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
 			)
 	protected CSEBaseEntity parentCsb;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinTable(
 			name = DBEntities.CSRNOD_CH_JOIN,
@@ -72,7 +72,7 @@ public class NodeEntity extends AnnounceableSubordinateEntity {
 			inverseJoinColumns = { @JoinColumn(name = DBEntities.CSR_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
 			)
 	protected CSEBaseEntity parentCsr;
-	
+
 	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
 	@JoinTable(
 			name = DBEntities.NODSUB_JOIN,
@@ -81,6 +81,23 @@ public class NodeEntity extends AnnounceableSubordinateEntity {
 			)
 	protected List<SubscriptionEntity> childSubscriptions;
 
+	// Database link to AreaNwkInfo Entity
+	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+	@JoinTable(
+			name = DBEntities.ANINOD_JOIN,
+			inverseJoinColumns = { @JoinColumn(name = DBEntities.ANI_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
+			joinColumns = { @JoinColumn(name = DBEntities.NOD_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
+			)
+	protected List<AreaNwkInfoEntity> childAreaNwkInfoEntities;
+	
+	// Database link to AreaNwkDeviceInfo entity
+	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+	@JoinTable(
+			name = DBEntities.ANDINOD_JOIN,
+			inverseJoinColumns = { @JoinColumn(name = DBEntities.ANDI_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
+			joinColumns = { @JoinColumn(name = DBEntities.NOD_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
+			)
+	protected List<AreaNwkDeviceInfoEntity> childAreaNwkDeviceInfoEntities;
 
 	/**
 	 * @return the accessControlPolicies
@@ -158,5 +175,34 @@ public class NodeEntity extends AnnounceableSubordinateEntity {
 	public void setChildSubscriptions(List<SubscriptionEntity> childSubscriptions) {
 		this.childSubscriptions = childSubscriptions;
 	}
-	
+	/**
+	 * @return the childAreaNwkInfoEntities
+	 */
+	public List<AreaNwkInfoEntity> getChildAreaNwkInfoEntities() {
+		if (this.childAreaNwkInfoEntities == null) {
+			this.childAreaNwkInfoEntities = new ArrayList<>();
+		}
+		return childAreaNwkInfoEntities;
+	}
+	/**
+	 * @param childAreaNwkInfoEntities the childAreaNwkInfoEntities to set
+	 */
+	public void setChildAreaNwkInfoEntities(
+			List<AreaNwkInfoEntity> childAreaNwkInfoEntities) {
+		this.childAreaNwkInfoEntities = childAreaNwkInfoEntities;
+	}
+	/**
+	 * @return the childAreaNwkDeviceInfoEntities
+	 */
+	public List<AreaNwkDeviceInfoEntity> getChildAreaNwkDeviceInfoEntities() {
+		return childAreaNwkDeviceInfoEntities;
+	}
+	/**
+	 * @param childAreaNwkDeviceInfoEntities the childAreaNwkDeviceInfoEntities to set
+	 */
+	public void setChildAreaNwkDeviceInfoEntities(
+			List<AreaNwkDeviceInfoEntity> childAreaNwkDeviceInfoEntities) {
+		this.childAreaNwkDeviceInfoEntities = childAreaNwkDeviceInfoEntities;
+	}
+
 }

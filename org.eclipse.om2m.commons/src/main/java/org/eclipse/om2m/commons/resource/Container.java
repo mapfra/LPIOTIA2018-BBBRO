@@ -118,7 +118,10 @@ public class Container extends AnnounceableResource {
 			@XmlElement(name = ShortName.CNT, namespace = "http://www.onem2m.org/xml/protocols", type = Container.class),
 			@XmlElement(name = ShortName.SUB, namespace = "http://www.onem2m.org/xml/protocols", type = Subscription.class) })
 	protected List<Resource> contentInstanceOrContainerOrSubscription;
-
+	@XmlElement(name = ShortName.OLDEST)
+	protected String oldest;
+	@XmlElement(name = ShortName.LATEST)
+	protected String latest;
 	/**
 	 * Gets the value of the stateTag property.
 	 * 
@@ -370,4 +373,32 @@ public class Container extends AnnounceableResource {
 		return this.contentInstanceOrContainerOrSubscription;
 	}
 
+	/**
+	 * @return the oldest
+	 */
+	public String getOldest() {
+		return oldest;
+	}
+
+	/**
+	 * @param oldest the oldest to set
+	 */
+	public void setOldest(String oldest) {
+		this.oldest = oldest;
+	}
+
+	/**
+	 * @return the latest
+	 */
+	public String getLatest() {
+		return latest;
+	}
+
+	/**
+	 * @param latest the latest to set
+	 */
+	public void setLatest(String latest) {
+		this.latest = latest;
+	}
+	
 }
