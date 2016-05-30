@@ -23,6 +23,7 @@ package org.eclipse.om2m.binding.coap;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.net.SocketException;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.xml.datatype.DatatypeConfigurationException;
@@ -31,6 +32,7 @@ import javax.xml.datatype.Duration;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.eclipse.om2m.commons.constants.Constants;
 import org.eclipse.om2m.commons.constants.MimeMediaType;
 import org.eclipse.om2m.commons.constants.Operation;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
@@ -53,15 +55,14 @@ import ch.ethz.inf.vs.californium.server.MessageDeliverer;
 import ch.ethz.inf.vs.californium.server.Server;
 
 /**
- * Server side for COAP binding
+ * Server side for CoAP binding
  *
  */
 public class CoapServer {
 
 	private Server server;
 	private CoapMessageDeliverer msgDeliverer;
-	private static int port = Integer.parseInt(System.getProperty(
-			"org.eclipse.om2m.coap.port", "5683"));
+	private static int port = Constants.COAP_PORT;
 
 	/**
 	 * Start the COAP server
@@ -71,8 +72,16 @@ public class CoapServer {
 		server = new Server(port);
 		msgDeliverer = new CoapMessageDeliverer();
 		server.setMessageDeliverer(msgDeliverer);
-
 		server.start();
+	}
+	
+	/**
+	 * Stop the CoAP server
+	 */
+	public void stopServer(){
+		if(server != null){
+			server.stop();
+		}
 	}
 }
 
@@ -81,25 +90,20 @@ class CoapMessageDeliverer implements MessageDeliverer {
 	private static Log LOGGER = LogFactory.getLog(CoapMessageDeliverer.class);
 
 	private static CseService cse;
-	private static String context = System.getProperty(
-			"org.eclipse.om2m.cseBaseContext", "/");
-	Request req;
-	Response resp;
-
+	
 	@Override
 	public void deliverRequest(Exchange exchange) {
 
-		req = exchange.getRequest();
+		Request req = exchange.getRequest();
+		Response resp = null;
 		try {
 			resp = service(req);
-			LOGGER.info("the response= " + resp);
+			LOGGER.info("Response to sent: " + resp);
 		} catch (SocketException e) {
 			LOGGER.error("the service failed! ", e);
 		} catch (IOException e) {
 			LOGGER.error("IOexception", e);
 		}
-
-		LOGGER.info("request = " + req);
 		exchange.sendResponse(resp);
 	}
 
@@ -124,67 +128,64 @@ class CoapMessageDeliverer implements MessageDeliverer {
 		RequestPrimitive requestPrimitive = new RequestPrimitive();
 		ResponsePrimitive responsePrimitive = new ResponsePrimitive();
 		OptionSet options = request.getOptions();
+		LOGGER.info("Coap incoming URI: /" + request.getOptions().getURIPathString());
 		LOGGER.info(options.toString());
-		LOGGER.info("Coap incoming URI: " + request.getURI());
 
-		String targetId = "";
-		for (String s : request.getOptions().getURIPaths()) {
-			targetId += s + "/";
-		}
+		String targetId = options.getURIPathString();
 		if (targetId.endsWith("/")) {
 			targetId = targetId.substring(0, targetId.length() - 1);
 		}
 
-		if (context.length() > 1) {
-			String localContext = context.substring(1);
-			targetId = targetId.substring(localContext.length());
-		}
-		if (targetId.startsWith("/~") || targetId.startsWith("/_")) {
-			targetId = targetId.substring(1);
+		if(targetId.startsWith("~/")){
+			targetId = targetId.replaceFirst("~/", "/");
+		} else if(targetId.startsWith("_/")) {
+			targetId = targetId.replaceFirst("_/", "//");
 		}
 
 		requestPrimitive.setTo(request.getURI());
 		requestPrimitive.setTargetId(targetId);
 		requestPrimitive.setContent(request.getPayloadString());
 
+		// Parse CoAP options
 		List<Option> optionsList = options.asSortedList();
 		for (int i = 0; i < optionsList.size(); i++) {
 			switch (optionsList.get(i).getNumber()) {
-			case 256:
+			case CoapOptions.ONEM2M_FR:
 				requestPrimitive.setFrom(optionsList.get(i).getStringValue());
 				break;
-			case 257:
+			case CoapOptions.ONEM2M_RQI:
 				requestPrimitive.setRequestIdentifier(optionsList.get(i)
 						.getStringValue());
 				break;
-			case 258:
-				requestPrimitive.setName(optionsList.get(i).getStringValue());
-				break;
-			case 259:
+			case CoapOptions.ONEM2M_OT:
 				requestPrimitive.setOriginatingTimestamp(optionsList.get(i)
 						.getStringValue());
 				break;
-			case 260:
+			case CoapOptions.ONEM2M_RQET:
 				requestPrimitive.setRequestExpirationTimestamp(optionsList.get(
 						i).getStringValue());
 				break;
-			case 261:
+			case CoapOptions.ONEM2M_RSET:
 				requestPrimitive.setResultExpirationTimestamp(optionsList
 						.get(i).getStringValue());
 				break;
-			case 262:
+			case CoapOptions.ONEM2M_OET:
 				requestPrimitive.setOperationExecutionTime(optionsList.get(i)
 						.getStringValue());
 				break;
-			case 264:
-				requestPrimitive.setEventCategory(optionsList.get(i)
-						.getStringValue());
+			case CoapOptions.ONEM2M_RTURI:
+				String[] uri = optionsList.get(i).getStringValue().split("&");
+				if(requestPrimitive.getResponseTypeInfo() == null){
+					requestPrimitive.setResponseTypeInfo(new ResponseTypeInfo());
+				}
+				requestPrimitive.getResponseTypeInfo()
+					.getNotificationURI().addAll(Arrays.asList(uri));
 				break;
-			case 266:
+			case CoapOptions.ONEM2M_GID:
 				requestPrimitive.setGroupRequestIdentifier(optionsList.get(i)
 						.getStringValue());
 				break;
-			case 267:
+			case CoapOptions.ONEM2M_TY:
 				requestPrimitive.setResourceType(new BigInteger(optionsList
 						.get(i).getValue()));
 				break;
@@ -210,22 +211,18 @@ class CoapMessageDeliverer implements MessageDeliverer {
 			requestPrimitive.setReturnContentType(MimeMediaType.JSON);
 		}
 
-		// requestPrimitive.setTargetId(requestPrimitive.getTargetId().split("\\?")[0]);
-
 		if (cse != null) {
-			LOGGER.info("check point: Execute requestPrimitive..");
+			LOGGER.info("Execute requestPrimitive on the router");
 			responsePrimitive = cse.doRequest(requestPrimitive);
-			LOGGER.info("check point: Execute requestPrimitive.. OK");
-
 		} else {
 			responsePrimitive
 					.setResponseStatusCode(ResponseStatusCode.SERVICE_UNAVAILABLE);
-			responsePrimitive.setErrorMessage("CSE service is not available.");
+			responsePrimitive.setContent("CSE service is not available.");
+			responsePrimitive.setContentType(MimeMediaType.TEXT_PLAIN);
 		}
 
 		ResponseCode statusCode = getCoapStatusCode(responsePrimitive
 				.getResponseStatusCode());
-		LOGGER.info("check point : The code is " + statusCode);
 
 		Response response = new Response(statusCode);
 		response.setMID(mid);
@@ -235,28 +232,40 @@ class CoapMessageDeliverer implements MessageDeliverer {
 		}
 		if (responsePrimitive.getResponseStatusCode() != null) {
 			response.getOptions().addOption(
-					new Option(265, responsePrimitive.getResponseStatusCode().intValue()));
+					new Option(CoapOptions.ONEM2M_RSC, 
+							responsePrimitive.getResponseStatusCode().intValue()));
 		}
 		if (responsePrimitive.getRequestIdentifier() != null) {
 			response.getOptions().addOption(
-					new Option(257, responsePrimitive.getRequestIdentifier()));
+					new Option(CoapOptions.ONEM2M_RQI, 
+							responsePrimitive.getRequestIdentifier()));
 		}
 		if (responsePrimitive.getContent() != null) {
 			response.setPayload(responsePrimitive.getContent().toString());
 		}
 		if (responsePrimitive.getLocation() != null) {
 			response.getOptions().addOption(
-					new Option(8, "~" + responsePrimitive.getLocation()));
+					new Option(8, responsePrimitive.getLocation()));
 		}
-		if (requestPrimitive.getOperation() == Operation.RETRIEVE) {
-			if (requestPrimitive.getReturnContentType().equals(
+		if(responsePrimitive.getContentType() != null){
+			if (responsePrimitive.getContentType().equals(
 					MimeMediaType.XML)) {
-				response.getOptions().addOption(new Option(12, 41));
-			} else if (requestPrimitive.getReturnContentType().equals(
-					MimeMediaType.JSON)) {
-				response.getOptions().addOption(new Option(12, 50));
+				response.getOptions().setContentFormat(CoapContentType.APP_XML);
 			}
+			else if (responsePrimitive.getContentType().equals(MimeMediaType.XML_RESOURCE)){
+				response.getOptions().setContentFormat(CoapContentType.RES_XML);
+			}
+			else if(responsePrimitive.getContent().equals(MimeMediaType.JSON_RESOURCE)){
+				response.getOptions().setContentFormat(CoapContentType.RES_JSON);
+			}
+			else if (responsePrimitive.getContentType().equals(
+					MimeMediaType.JSON)) {
+				response.getOptions().setContentFormat(CoapContentType.APP_JSON);
+			} else if(responsePrimitive.getContentType().equals(MimeMediaType.TEXT_PLAIN)){
+				response.getOptions().setContentFormat(CoapContentType.PLAIN_TEXT);
+			}	
 		}
+
 		return response;
 	}
 
@@ -282,12 +291,14 @@ class CoapMessageDeliverer implements MessageDeliverer {
 			return ResponseCode.CHANGED;
 		} else if (statusCode.equals(ResponseStatusCode.BAD_REQUEST)
 				|| statusCode.equals(ResponseStatusCode.CONTENTS_UNACCEPTABLE)
+				|| statusCode.equals(ResponseStatusCode.GROUP_REQUEST_IDENTIFIER_EXISTS)
 				|| statusCode
-						.equals(ResponseStatusCode.MAX_NUMBER_OF_MEMBER_EXCEEDED)
+						.equals(ResponseStatusCode.ALREADY_EXISTS)
+				|| statusCode.equals(ResponseStatusCode.MAX_NUMBER_OF_MEMBER_EXCEEDED)
 				|| statusCode
 						.equals(ResponseStatusCode.MEMBER_TYPE_INCONSISTENT)
 				|| statusCode.equals(ResponseStatusCode.INVALID_CMDTYPE)
-				|| statusCode.equals(ResponseStatusCode.INSUFFICIENT_ARGUMENTS)
+				|| statusCode.equals(ResponseStatusCode.INVALID_ARGUMENTS)
 				|| statusCode.equals(ResponseStatusCode.ALREADY_COMPLETED)
 				|| statusCode
 						.equals(ResponseStatusCode.COMMAND_NOT_CANCELLABLE)) {
@@ -297,12 +308,14 @@ class CoapMessageDeliverer implements MessageDeliverer {
 						.equals(ResponseStatusCode.SUBSCRIPTION_CREATOR_HAS_NO_PRIVILEGE)
 				|| statusCode.equals(ResponseStatusCode.NO_PRIVILEGE)
 				|| statusCode.equals(ResponseStatusCode.ALREADY_EXISTS)
+				|| statusCode.equals(ResponseStatusCode.CONFLICT)
 				|| statusCode
 						.equals(ResponseStatusCode.TARGET_NOT_SUBSCRIBABLE)
 				|| statusCode
 						.equals(ResponseStatusCode.SUBSCRIPTION_HOST_HAS_NO_PRIVILEGE)) {
 			return ResponseCode.FORBIDDEN;
 		} else if (statusCode.equals(ResponseStatusCode.NOT_FOUND)
+				|| statusCode.equals(ResponseStatusCode.REQUEST_TIMEOUT)
 				|| statusCode.equals(ResponseStatusCode.TARGET_NOT_REACHABLE)
 				|| statusCode
 						.equals(ResponseStatusCode.EXTERNAL_OBJECT_NOT_FOUND)
@@ -409,9 +422,6 @@ class CoapMessageDeliverer implements MessageDeliverer {
 				}
 				if (name.equals(CoapParameters.RESOURCE_TYPE)) {
 					filterCriteria.setResourceType(new BigInteger(value));
-				}
-				if (name.equals("ty")) {
-					primitive.setResourceType(new BigInteger(value));
 				}
 			}
 		}

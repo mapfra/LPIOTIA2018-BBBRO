@@ -19,28 +19,28 @@
  *******************************************************************************/
 package org.eclipse.om2m.binding.coap;
 
-public class CoapOptions {
+public class CoapContentType {
+	
+	/**
+	 * Prevent this class from being created
+	 */
+	private CoapContentType(){}
 
-	/** Private constructor */
-	private CoapOptions(){
-	}
+	// Standards content formats
+	public static final int PLAIN_TEXT = 0;
+	public static final int APP_XML = 	41;
+	public static final int APP_JSON = 	50;
 	
-	// Standard CoAP Options
-	public static final int LOCATION = 8;
-	public static final int CONTENT_FORMAT = 12;
-	public static final int ACCEPT = 17;
-	
-	// oneM2M Specific Options
-	public static final int ONEM2M_FR = 256;
-	public static final int ONEM2M_RQI = 257;
-	public static final int ONEM2M_OT = 259;
-	public static final int ONEM2M_RQET = 260;
-	public static final int ONEM2M_RSET = 261;
-	public static final int ONEM2M_OET = 262;
-	public static final int ONEM2M_RTURI = 263;
-	public static final int ONEM2M_EC = 264;
-	public static final int ONEM2M_RSC = 265;
-	public static final int ONEM2M_GID = 266;
-	public static final int ONEM2M_TY = 267;
+	// oneM2M specific content formats
+	public static final int RES_XML = 	10000;
+	public static final int RES_JSON = 	10001;
+	public static final int NTFY_XML = 	10002;
+	public static final int NTFY_JSON = 10003;
+	public static final int ATTRS_XML = 10004;
+	public static final int ATTRS_JSON=	10005;
+	public static final int PREQ_XML =	10006;
+	public static final int PREQ_JSON =	10007;
+	public static final int PRSQ_XML =	10008;
+	public static final int PRSQ_JSON =	10009;
 	
 }

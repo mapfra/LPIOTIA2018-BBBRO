@@ -27,7 +27,7 @@ public class CoapParameters {
 
 	public static final String RESPONSE_TYPE = "rt";
 	public static final String RESULT_PERSISTENCE = "rp";
-	public static final String RESULT_CONTENT = "rc";
+	public static final String RESULT_CONTENT = "rcn";
 	public static final String DELIVERY_AGGREGATION = "da";
 	public static final String CREATED_BEFORE = "crb";
 	public static final String CREATED_AFTER = "cra";

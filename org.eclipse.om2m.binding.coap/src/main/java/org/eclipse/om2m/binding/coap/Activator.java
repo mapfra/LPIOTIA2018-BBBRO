@@ -43,10 +43,10 @@ public class Activator  implements BundleActivator{
 	    	// Register the Rest CoAP Client 
 	        LOGGER.info("Register CoAP RestClientService..");
 	        bundleContext.registerService(RestClientService.class.getName(), new CoapClient(), null);
-	        LOGGER.info("CoAP RestClientService is registered.");	    
 	        
 	    	// Start the CoAP server 
-	        server= new CoapServer();	  	       
+	        LOGGER.info("Starting CoAP server");
+	        server= new CoapServer();
 	        server.startServer();
 
 	        // Track the SCL service
@@ -74,10 +74,9 @@ public class Activator  implements BundleActivator{
 	        
 	        // Open service trackers 
 	        cseServiceTracker.open();
-	        LOGGER.info("CseService opened");
-	        
-         
+	        LOGGER.info("CseService opened");  
 	    }
+	   
 	    @Override
 	    public void stop(BundleContext bundleContext) throws Exception {
 	    }
