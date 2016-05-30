@@ -41,5 +41,5 @@ public class HttpHeaders {
 	public static final String OPERATION_EXECUTION_TIME = "X-M2M-OET";
 	public static final String EVENT_CATEGORY = "X-M2M-EC";
 	public static final String RESPONSE_STATUS_CODE = "X-M2M-RSC";
-	public static final String LOCATION = "Content-Location";
+	
 }

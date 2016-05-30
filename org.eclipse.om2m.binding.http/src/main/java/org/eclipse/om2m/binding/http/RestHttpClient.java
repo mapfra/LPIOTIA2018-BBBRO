@@ -36,12 +36,14 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.conn.HttpHostConnectException;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.eclipse.om2m.binding.http.constants.HttpHeaders;
 import org.eclipse.om2m.binding.http.constants.HttpParameters;
 import org.eclipse.om2m.binding.service.RestClientService;
+import org.eclipse.om2m.commons.constants.MimeMediaType;
 import org.eclipse.om2m.commons.constants.Operation;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.resource.Attribute;
@@ -141,10 +143,8 @@ public class RestHttpClient implements RestClientService {
 			}
 			
 			// Set the return content type
-			
 			method.addHeader(HttpHeaders.ACCEPT, requestPrimitive.getReturnContentType());
-		
-			
+
 			// Set the request content type
 			String contentTypeHeader = requestPrimitive.getRequestContentType(); 
 			
@@ -167,6 +167,16 @@ public class RestHttpClient implements RestClientService {
 			}
 			method.addHeader(HttpHeaders.CONTENT_TYPE, contentTypeHeader);
 			
+			// Add the notification URI in the case of non-blocking request
+			if(requestPrimitive.getResponseTypeInfo() != null){
+				String uris = "";
+				for(String notifUri : requestPrimitive.getResponseTypeInfo().getNotificationURI()){
+					uris += "&" + notifUri;
+				}
+				uris = uris.replaceFirst("&", "");
+				method.addHeader(HttpHeaders.RESPONSE_TYPE, uris);
+			}
+			
 			if (requestPrimitive.getName() != null){
 				method.addHeader(HttpHeaders.NAME, requestPrimitive.getName());
 			}
@@ -180,12 +190,18 @@ public class RestHttpClient implements RestClientService {
 			
 			HttpResponse httpResponse = httpClient.execute(method);
 			int statusCode = httpResponse.getStatusLine().getStatusCode();
-			responsePrimitive.setResponseStatusCode(getResponseStatusCode(httpResponse, statusCode));
-
+			if(httpResponse.getFirstHeader(HttpHeaders.RESPONSE_STATUS_CODE) != null){
+				responsePrimitive.setResponseStatusCode(new BigInteger(httpResponse.getFirstHeader(HttpHeaders.RESPONSE_STATUS_CODE).getValue()));
+			} else {
+				responsePrimitive.setResponseStatusCode(getResponseStatusCode(httpResponse, statusCode));				
+			}
 			if (statusCode != 204){
 				if (httpResponse.getEntity() != null){
 					responsePrimitive.setContent(Util.convertStreamToString
 							(httpResponse.getEntity().getContent()));
+					if(httpResponse.getFirstHeader(HttpHeaders.CONTENT_TYPE) != null){
+						responsePrimitive.setContentType(httpResponse.getFirstHeader(HttpHeaders.CONTENT_TYPE).getValue());
+					}
 				}
 			}
 			if (statusCode == 201){
@@ -197,10 +213,15 @@ public class RestHttpClient implements RestClientService {
 			}
 			LOGGER.info("Http Client response: " + responsePrimitive);
 			httpClient.close();
+		} catch(HttpHostConnectException e){
+			LOGGER.info("Target is not reachable: " + requestPrimitive.getTo());
+			responsePrimitive.setResponseStatusCode(ResponseStatusCode.TARGET_NOT_REACHABLE);
+			responsePrimitive.setContent("Target is not reachable: " + requestPrimitive.getTo());
+			responsePrimitive.setContentType(MimeMediaType.TEXT_PLAIN);
 		} catch (IOException e){
 			LOGGER.error(url + " not found", e);
 			responsePrimitive.setResponseStatusCode(ResponseStatusCode.TARGET_NOT_REACHABLE);
-		}
+		} 
 		return responsePrimitive;
 	}
 

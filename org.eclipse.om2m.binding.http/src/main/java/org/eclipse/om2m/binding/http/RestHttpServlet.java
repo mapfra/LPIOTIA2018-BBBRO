@@ -82,9 +82,16 @@ public class RestHttpServlet extends HttpServlet {
 		if (Activator.CSE_BASE_CONTEXT.length() > 1 && uri.length() > Activator.CSE_BASE_CONTEXT.length()){
 			targetID = uri.substring(Activator.CSE_BASE_CONTEXT.length());
 		}
-		// Remove the '/' from the HTTP protocol
-		targetID = targetID.substring(1);
-		request.setTargetId(targetID);
+		
+		if(targetID.startsWith("/~")){
+			targetID = targetID.replaceFirst("/~/", "/");
+		} else if(targetID.startsWith("/_")){
+			targetID = targetID.replaceFirst("/_/", "//");
+		} else if(targetID.startsWith("/")){
+			targetID = targetID.replaceFirst("/", "");
+		}
+		
+		// Set the To parameter of the primitive request
 		request.setTo(targetID);
 		// Get the body of the request
 		String content = null;
@@ -124,12 +131,13 @@ public class RestHttpServlet extends HttpServlet {
 		} else {
 			response = new ResponsePrimitive();
 			response.setResponseStatusCode(ResponseStatusCode.SERVICE_UNAVAILABLE);
-			response.setErrorMessage("CSE service is not available.");
+			response.setContent("CSE service is not available.");
+			response.setContentType(MimeMediaType.TEXT_PLAIN);
 		}
 
 		// Set location header
 		if (response.getLocation() != null){
-			httpServletResponse.setHeader(HttpHeaders.LOCATION, response.getLocation());
+			httpServletResponse.setHeader(HttpHeaders.CONTENT_LOCATION, response.getLocation());
 		}
 		// Set the request identifier header
 		if (response.getRequestIdentifier() != null){
@@ -146,31 +154,11 @@ public class RestHttpServlet extends HttpServlet {
 		httpServletResponse.setHeader(
 				HttpHeaders.RESPONSE_STATUS_CODE, response.getResponseStatusCode().toString());
 
-		// Check if there is any error message.
-		String errorMessage = null;
-		if (response.getErrorMessage() != null){
-			httpServletResponse.setContentType("text/plain");
-
-			errorMessage = (String) response.getErrorMessage(); 
-			PrintWriter out = null;
-			try {
-				out = httpServletResponse.getWriter();
-			} catch (IOException e) {
-				LOGGER.error("Error reading httpServletResponse Writer",e);
-			}
-			out.println(errorMessage);
-			out.close();
-		}
-
 		// Set the message body
 		if (response.getContent() != null){
 			// Set the Content-Type header
-			if(request.getReturnContentType().equals(MimeMediaType.XML)){
-				httpServletResponse.setContentType(MimeMediaType.XML_RESOURCE);
-			} else if(request.getReturnContentType().equals(MimeMediaType.JSON)){
-				httpServletResponse.setContentType(MimeMediaType.JSON_RESOURCE);
-			}
-
+			httpServletResponse.setContentType(response.getContentType());
+			
 			String body = (String) response.getContent(); 
 			PrintWriter out = null;
 			try {
@@ -181,15 +169,6 @@ public class RestHttpServlet extends HttpServlet {
 			out.println(body);
 			out.close();
 		}
-
-		Log httpLog = LogFactory.getLog("httplogger");
-		String horrizontalBar = "\n----------------------------------------------------------------------------------------------\n";
-		httpLog.trace(horrizontalBar + 
-				httpRequestToString(httpServletRequest, content) + "\n\n" + 
-				httpResponseToString(httpServletResponse.getStatus(), errorMessage)+ 
-				horrizontalBar);
-
-		LOGGER.info("----------------------------------------------------------------------------------------------");
 	}
 
 	/**

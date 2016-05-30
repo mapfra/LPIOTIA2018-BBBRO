@@ -27,7 +27,7 @@ public class HttpParameters {
 
 	public static final String RESPONSE_TYPE = "rt";
 	public static final String RESULT_PERSISTENCE = "rp";
-	public static final String RESULT_CONTENT = "rc";
+	public static final String RESULT_CONTENT = "rcn";
 	public static final String DELIVERY_AGGREGATION = "da";
 	public static final String CREATED_BEFORE = "crb";
 	public static final String CREATED_AFTER = "cra";
@@ -38,7 +38,7 @@ public class HttpParameters {
 	public static final String EXPIRE_BEFORE = "exb";
 	public static final String EXPIRE_AFTER = "exa";
 	public static final String LABELS = "lbl";
-	public static final String RESOURCE_TYPE = "rty";
+	public static final String RESOURCE_TYPE = "ty";
 	public static final String SIZE_ABOVE = "sza";
 	public static final String SIZE_BELOW = "szb";
 	public static final String CONTENT_TYPE = "cty";
