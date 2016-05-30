@@ -1,22 +1,29 @@
 /*******************************************************************************
-* Copyright (c) 2013-2016 LAAS-CNRS (www.laas.fr)
-* 7 Colonel Roche 31077 Toulouse - France
-* 
-* All rights reserved. This program and the accompanying materials
-* are made available under the terms of the Eclipse Public License v1.0
-* which accompanies this distribution, and is available at
-* http://www.eclipse.org/legal/epl-v10.html
-* 
-* Initial Contributors:
-* 	Thierry Monteil : Project manager, technical co-manager
-* 	Mahdi Ben Alaya : Technical co-manager
-* 	Samir Medjiah : Technical co-manager
-* 	Khalil Drira : Strategy expert
-* 	Guillaume Garzone : Developer
-* 	Fran�ois A�ssaoui : Developer
-* 
-* New contributors :
-*******************************************************************************/
+ * Copyright (c) 2013-2016 LAAS-CNRS (www.laas.fr)
+ * 7 Colonel Roche 31077 Toulouse - France
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Initial Contributors:
+ *     Thierry Monteil : Project manager, technical co-manager
+ *     Mahdi Ben Alaya : Technical co-manager
+ *     Samir Medjiah : Technical co-manager
+ *     Khalil Drira : Strategy expert
+ *     Guillaume Garzone : Developer
+ *     François Aïssaoui : Developer
+ *
+ * New contributors :
+ *******************************************************************************/
+
+/**
+* Authors:
+* Mahdi Ben Alaya <ben.alaya@laas.fr> <benalaya.mahdi@gmail.com>
+* Marouane El kiasse <melkiasse@laas.fr> <kiasmarouane@gmail.com>
+* Yassine Banouar <ybanouar@laas.fr> <yassine.banouar@gmail.com>
+*/
 
 
 var cseBase= getUrlVar("cseId");
@@ -60,7 +67,7 @@ function get(targetId){
         type: "GET",
         beforeSend: function(){},
         dataType: "json",
-        url: context + targetId + "?rc=5",
+        url: context + targetId + "?rcn=5",
         headers : {"X-M2M-Origin" : make_base_auth(username, password), "Accept":"application/json"},
         success: function(response){
             $("#login").hide();
@@ -216,20 +223,7 @@ function execute(url){
       else  $('#response').append('<h4>Post request failed: '+xhr.status+' '+error+'</h4>'); },
     dataType: 'xml',
     success: function(response) {
-        $('#response').append('<h4>Successful request.</h4>');
-        if(response != null){
-            var content = response.firstChild;
-            $('#response').append('<table class="bordered" id="contentTable1" ><thead><tr><th >Name</th><th >Value</th></thead></table>');
-            if (content.firstChild.localName == "obj") {
-                $(content).find('obj').children().each(function() {
-                    $('#contentTable1').append('<tr"><td>' + $(this).attr('name') + '</td><td>' + $(this).attr('val') + '</td></tr>');
-                });
-            } else {
-                $(content).children().each(function() {
-                    $('#contentTable1').append('<tr"><td>' + $(this).attr('name') + '</td><td>' + $(this).attr('val') + '</td></tr>');
-                });
-            }
-        }
+      $('#response').append('<h4>Successful POST request.</h4>');
     }
   });
 }
@@ -247,7 +241,7 @@ function retrieve(url){
     dataType: 'xml',
     success: function(response) {
 
-      $('#response').append('<h4>Successful Request:</h4>');
+      $('#response').append('<h4>Successful GET Request:</h4>');
       $('#response').append('<table class="bordered" id="contentTable1" ><thead><tr><th >Name</th><th >Value</th></thead></table>');
 
       if(response.firstChild.localName=="obj"){

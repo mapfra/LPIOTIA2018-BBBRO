@@ -62,7 +62,7 @@ function get(targetId) {
         type: "GET",
         beforeSend: function() {},
         dataType: "xml",
-        url: context + targetId + "?rc=5",
+        url: context + targetId + "?rcn=5",
         headers: {
             "X-M2M-Origin": make_base_auth(username, password),
             "Accept": "application/xml"
@@ -131,6 +131,14 @@ function get(targetId) {
                         var acpiList = attribute.textContent.split(" ");
                         for (var index in acpiList) {
                             table += "<tr><td>" + acpiList[index] + "</td></tr>";
+                        }
+                        table += "</tbody></table>";
+                        value = table;
+                    } else if (attribute.localName =="ldv"){
+                        var table = "<table class='bordered'><thead><th>ListOfDevices</th></thdead><tbody>";
+                        var devices = attribute.textContent.split(" ");
+                        for(var index in devices){
+                            table += "<tr><td>" + devices[index] + "</td></tr>";
                         }
                         table += "</tbody></table>";
                         value = table;
