@@ -31,7 +31,6 @@ package org.eclipse.om2m.persistence.service;
  * 
  * @param <T>
  *            Type of the resource
- * 
  */
 public interface DAO<T> {
 	/** Create a resource using the database transaction */

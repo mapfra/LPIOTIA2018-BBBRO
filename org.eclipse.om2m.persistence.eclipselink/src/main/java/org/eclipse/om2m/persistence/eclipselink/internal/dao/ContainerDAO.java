@@ -19,10 +19,13 @@
  *******************************************************************************/
 package org.eclipse.om2m.persistence.eclipselink.internal.dao;
 
+import java.util.List;
+
 import org.eclipse.om2m.commons.entities.AeAnncEntity;
 import org.eclipse.om2m.commons.entities.AeEntity;
 import org.eclipse.om2m.commons.entities.CSEBaseEntity;
 import org.eclipse.om2m.commons.entities.ContainerEntity;
+import org.eclipse.om2m.commons.entities.LabelEntity;
 import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
 import org.eclipse.om2m.commons.entities.RemoteCseAnncEntity;
 import org.eclipse.om2m.persistence.eclipselink.internal.DBTransactionJPAImpl;
@@ -48,4 +51,12 @@ public class ContainerDAO extends AbstractDAO<ContainerEntity>{
 		transaction.getEm().getEntityManagerFactory().getCache().evict(AeAnncEntity.class);
 	}
 
+	@Override
+	public void update(DBTransaction dbTransaction, ContainerEntity resource) {
+		DBTransactionJPAImpl transaction = (DBTransactionJPAImpl) dbTransaction;
+		List<LabelEntity> lbls = processLabels(dbTransaction, resource.getLabelsEntities());
+		resource.setLabelsEntities(lbls);
+		transaction.getEm().merge(resource);
+	}
+	
 }

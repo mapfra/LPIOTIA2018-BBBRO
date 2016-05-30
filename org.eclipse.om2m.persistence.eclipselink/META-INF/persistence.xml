@@ -33,6 +33,8 @@
 		<class>org.eclipse.om2m.commons.entities.AccessControlRuleEntity</class>
 		<class>org.eclipse.om2m.commons.entities.AeEntity</class>
 		<class>org.eclipse.om2m.commons.entities.AeAnncEntity</class>
+		<class>org.eclipse.om2m.commons.entities.AreaNwkDeviceInfoEntity</class>
+		<class>org.eclipse.om2m.commons.entities.AreaNwkInfoEntity</class>
 		<class>org.eclipse.om2m.commons.entities.CSEBaseEntity</class>
 		<class>org.eclipse.om2m.commons.entities.ContainerEntity</class>
 		<class>org.eclipse.om2m.commons.entities.ContainerAnncEntity</class>
@@ -47,7 +49,6 @@
 		<class>org.eclipse.om2m.commons.entities.ScheduleEntity</class>
 		<class>org.eclipse.om2m.commons.entities.SubscriptionEntity</class>
 		<class>org.eclipse.om2m.commons.entities.UriMapperEntity</class>
-
 
 		<properties>
 			<!-- Actions performed at the start of the platform -->

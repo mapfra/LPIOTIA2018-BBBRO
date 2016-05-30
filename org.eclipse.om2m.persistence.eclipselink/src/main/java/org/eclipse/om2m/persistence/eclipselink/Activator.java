@@ -43,12 +43,19 @@ public class Activator implements BundleActivator {
 	public void start(BundleContext bundleContext) throws Exception {
 		try {
 			Activator.context = bundleContext;
-			LOGGER.info("Starting Persistence JPA plugin...");
-			DBServiceJPAImpl.getInstance().init();
-
-			LOGGER.info("Registering Database (JPA-EL) Service");
-			context.registerService(DBService.class.getName(),
-					DBServiceJPAImpl.getInstance(), null);
+			new Thread(){
+				
+				@Override
+				public void run() {
+					LOGGER.info("Starting Persistence JPA plugin...");
+					DBServiceJPAImpl.getInstance().init();
+					
+					LOGGER.info("Registering Database (JPA-EL) Service");
+					context.registerService(DBService.class.getName(),
+							DBServiceJPAImpl.getInstance(), null);
+				}
+				
+			}.start();
 		} catch (Exception e) {
 			LOGGER.error("Error in activator", e);
 		}

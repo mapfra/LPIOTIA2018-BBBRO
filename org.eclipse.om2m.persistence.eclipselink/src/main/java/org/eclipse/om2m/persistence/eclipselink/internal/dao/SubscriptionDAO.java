@@ -19,7 +19,6 @@
  *******************************************************************************/
 package org.eclipse.om2m.persistence.eclipselink.internal.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.om2m.commons.entities.LabelEntity;
@@ -44,15 +43,7 @@ public class SubscriptionDAO extends AbstractDAO<SubscriptionEntity> {
 	
 	@Override
 	public void update(DBTransaction dbTransaction, SubscriptionEntity resource) {
-		DBTransactionJPAImpl transaction = (DBTransactionJPAImpl) dbTransaction;
-		List<LabelEntity> lbls = new ArrayList<>();
-		for (LabelEntity lbl : resource.getLabelsEntities()){
-			LabelEntity lblDb = transaction.getEm().find(LabelEntity.class, lbl.getLabel());
-			if (lblDb == null) {
-				lblDb = new LabelEntity(lbl.getLabel());
-			}
-			lbls.add(lblDb);
-		}
+		List<LabelEntity> lbls = processLabels(dbTransaction, resource.getLabelsEntities());
 		resource.setLabelsEntities(lbls);
 		super.update(dbTransaction, resource);
 	}

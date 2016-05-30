@@ -84,7 +84,13 @@ public class DBServiceJPAImpl implements DBService {
 			properties.put(PersistenceUnitProperties.JDBC_PASSWORD,
 					DBConstants.DB_PASSWORD);
 			properties.put(PersistenceUnitProperties.CACHE_SHARED_DEFAULT, DBConstants.DB_CACHE);
-
+			
+			if(DBConstants.DB_VERBOSE){
+				properties.put(PersistenceUnitProperties.LOGGING_LEVEL, "FINE");
+			} else {
+				properties.put(PersistenceUnitProperties.LOGGING_LEVEL, "SEVERE");				
+			}
+			
 			if (DBConstants.DB_RESET) {
 				properties.put(PersistenceUnitProperties.DDL_GENERATION,
 						PersistenceUnitProperties.DROP_AND_CREATE);
@@ -124,7 +130,6 @@ public class DBServiceJPAImpl implements DBService {
 	 */
 	public static EntityManager createEntityManager() {
 		return getInstance().emf.createEntityManager();
-//		return null;
 	}
 
 	@Override

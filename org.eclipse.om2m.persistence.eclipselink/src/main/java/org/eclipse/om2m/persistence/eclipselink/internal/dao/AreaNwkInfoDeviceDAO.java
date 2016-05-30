@@ -19,30 +19,31 @@
  *******************************************************************************/
 package org.eclipse.om2m.persistence.eclipselink.internal.dao;
 
-import org.eclipse.om2m.commons.entities.CSEBaseEntity;
-import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
+import org.eclipse.om2m.commons.entities.AreaNwkDeviceInfoEntity;
+import org.eclipse.om2m.commons.entities.NodeEntity;
 import org.eclipse.om2m.persistence.eclipselink.internal.DBTransactionJPAImpl;
 import org.eclipse.om2m.persistence.service.DBTransaction;
 
-public class RemoteCSEDAO extends AbstractDAO<RemoteCSEEntity> {
+/**
+ * DAO for the Area Network Device Info Management Object
+ *
+ */
+public class AreaNwkInfoDeviceDAO extends AbstractDAO<AreaNwkDeviceInfoEntity> {
 
 	@Override
-	public RemoteCSEEntity find(DBTransaction dbTransaction, Object id) {
+	public AreaNwkDeviceInfoEntity find(DBTransaction dbTransaction, Object id) {
 		DBTransactionJPAImpl transaction = (DBTransactionJPAImpl) dbTransaction;
-		return transaction.getEm().find(RemoteCSEEntity.class, id);
+		return transaction.getEm().find(AreaNwkDeviceInfoEntity.class, id);
 	}
 
 	@Override
-	public void delete(DBTransaction dbTransaction, RemoteCSEEntity resource) {
+	public void delete(DBTransaction dbTransaction,
+			AreaNwkDeviceInfoEntity resource) {
 		DBTransactionJPAImpl transaction = (DBTransactionJPAImpl) dbTransaction;
 		transaction.getEm().remove(resource);
-		transaction.getEm().getEntityManagerFactory().getCache().evict(CSEBaseEntity.class);
+		// clean the cache
+		transaction.getEm().getEntityManagerFactory().getCache().evict(NodeEntity.class);
 	}
-	
-	@Override
-	public void update(DBTransaction dbTransaction, RemoteCSEEntity resource) {
-		resource.setLabelsEntities(processLabels(dbTransaction, resource.getLabelsEntities()));
-		super.update(dbTransaction, resource);
-	}
+
 
 }

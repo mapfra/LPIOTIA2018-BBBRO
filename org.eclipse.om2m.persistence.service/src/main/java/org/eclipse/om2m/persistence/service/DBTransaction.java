@@ -21,7 +21,6 @@ package org.eclipse.om2m.persistence.service;
 
 /**
  * Describes a DataBase transaction with different operations
- * 
  */
 public interface DBTransaction {
 

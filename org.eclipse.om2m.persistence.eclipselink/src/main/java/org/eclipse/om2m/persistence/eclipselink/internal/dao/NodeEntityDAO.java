@@ -19,7 +19,10 @@
  *******************************************************************************/
 package org.eclipse.om2m.persistence.eclipselink.internal.dao;
 
+import java.util.List;
+
 import org.eclipse.om2m.commons.entities.CSEBaseEntity;
+import org.eclipse.om2m.commons.entities.LabelEntity;
 import org.eclipse.om2m.commons.entities.NodeEntity;
 import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
 import org.eclipse.om2m.persistence.eclipselink.internal.DBTransactionJPAImpl;
@@ -39,6 +42,13 @@ public class NodeEntityDAO extends AbstractDAO<NodeEntity>{
 		transaction.getEm().remove(resource);
 		transaction.getEm().getEntityManagerFactory().getCache().evict(CSEBaseEntity.class);
 		transaction.getEm().getEntityManagerFactory().getCache().evict(RemoteCSEEntity.class);
+	}
+	
+	@Override
+	public void update(DBTransaction dbTransaction, NodeEntity resource) {
+		List<LabelEntity> lbls = processLabels(dbTransaction, resource.getLabelsEntities());
+		resource.setLabelsEntities(lbls);
+		super.update(dbTransaction, resource);
 	}
 
 }

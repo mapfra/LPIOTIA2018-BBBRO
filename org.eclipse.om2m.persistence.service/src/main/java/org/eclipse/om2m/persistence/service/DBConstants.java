@@ -44,6 +44,9 @@ public class DBConstants {
 	/** cache parameter for the database */
 	public static final String DB_CACHE = System.getProperty(
 			"org.eclipse.om2m.dbCache", "true");
-	
+
+	/** Set the logging to a verbose mode */
+	public static final boolean DB_VERBOSE = Boolean.valueOf(System
+			.getProperty("org.eclipse.om2m.dbVerbose", "false"));
 
 }
