@@ -25,7 +25,8 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.om2m.binding.service.RestClientService;
-import org.eclipse.om2m.commons.constants.ResponseStatusCode;
+import org.eclipse.om2m.commons.exceptions.InternalServerErrorException;
+import org.eclipse.om2m.commons.exceptions.NotImplementedException;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
 
@@ -63,17 +64,14 @@ public class RestClient{
 				}
 			}catch(Exception e){
 				LOGGER.error("RestClient error",e);
-				response.setResponseStatusCode(ResponseStatusCode.INTERNAL_SERVER_ERROR);
-				response.setErrorMessage("RestClient error");
+				throw new InternalServerErrorException("RestClient Error", e);
 			}
 		}else{
-			response.setResponseStatusCode(ResponseStatusCode.NOT_IMPLEMENTED);
-			response.setErrorMessage("No RestClient service found for protocol: " + protocol);
+			throw new NotImplementedException("No RestClient service found for protocol: " + protocol);
 		}
 
 		LOGGER.info(response);
 		return response;
-		
 	}
 
 	/**

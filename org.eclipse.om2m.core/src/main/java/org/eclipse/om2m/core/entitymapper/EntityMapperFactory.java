@@ -22,10 +22,13 @@ package org.eclipse.om2m.core.entitymapper;
 import org.eclipse.om2m.commons.constants.ResourceType;
 import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
 import org.eclipse.om2m.commons.entities.AeEntity;
+import org.eclipse.om2m.commons.entities.AreaNwkDeviceInfoEntity;
+import org.eclipse.om2m.commons.entities.AreaNwkInfoEntity;
 import org.eclipse.om2m.commons.entities.CSEBaseEntity;
 import org.eclipse.om2m.commons.entities.ContainerEntity;
 import org.eclipse.om2m.commons.entities.ContentInstanceEntity;
 import org.eclipse.om2m.commons.entities.GroupEntity;
+import org.eclipse.om2m.commons.entities.MgmtObjEntity;
 import org.eclipse.om2m.commons.entities.NodeEntity;
 import org.eclipse.om2m.commons.entities.PollingChannelEntity;
 import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
@@ -33,6 +36,8 @@ import org.eclipse.om2m.commons.entities.RequestEntity;
 import org.eclipse.om2m.commons.entities.SubscriptionEntity;
 import org.eclipse.om2m.commons.resource.AE;
 import org.eclipse.om2m.commons.resource.AccessControlPolicy;
+import org.eclipse.om2m.commons.resource.AreaNwkDeviceInfo;
+import org.eclipse.om2m.commons.resource.AreaNwkInfo;
 import org.eclipse.om2m.commons.resource.CSEBase;
 import org.eclipse.om2m.commons.resource.Container;
 import org.eclipse.om2m.commons.resource.ContentInstance;
@@ -95,6 +100,16 @@ public class EntityMapperFactory {
 		return new RequestMapper();
 	}
 
+	/** Get the Area Nwk info mapper */
+	public static EntityMapper<AreaNwkInfoEntity, AreaNwkInfo> getAreaNwkInfoMapper(){
+		return new AreaNwkInfoMapper();
+	}
+
+	/** Get the Area Nwk device info mapper */
+	public static EntityMapper<AreaNwkDeviceInfoEntity, AreaNwkDeviceInfo> getAreaNwkDeviceInfoMapper(){
+		return new AreaNwkDeviceInfoMapper();
+	}
+	
 	/**
 	 * Get entity mapper from resource type
 	 * @param resourceType (integer)
@@ -126,9 +141,27 @@ public class EntityMapperFactory {
 			return new PollingChannelMapper();
 		case ResourceType.REQUEST:
 			return new RequestMapper();
+		case ResourceType.MGMT_OBJ:
+			throw new IllegalArgumentException("Cannot get Mapper for MGMT OBJ");
 		default:
 			return null;
 		}
+	}
+	
+	/**
+	 * Get the entity mapper for specific mgmtObj entity
+	 * @param mgmtObj
+	 * @return entity mapper
+	 */
+	@SuppressWarnings("rawtypes")
+	public static EntityMapper getMapperForMgmtObj(MgmtObjEntity mgmtObj) {
+		if (mgmtObj instanceof AreaNwkInfoEntity) {
+			return new AreaNwkInfoMapper();
+		}
+		if (mgmtObj instanceof AreaNwkDeviceInfoEntity) {
+			return new AreaNwkDeviceInfoMapper();
+		}
+		return null;
 	}
 
 }

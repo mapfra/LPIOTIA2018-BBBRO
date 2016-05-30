@@ -23,6 +23,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.om2m.commons.constants.CSEType;
 import org.eclipse.om2m.commons.constants.Constants;
+import org.eclipse.om2m.commons.constants.MimeMediaType;
 import org.eclipse.om2m.commons.constants.Operation;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.entities.AeEntity;
@@ -76,68 +77,78 @@ public class Redirector {
 		DAO<RemoteCSEEntity> dao = dbs.getDAOFactory().getRemoteCSEbyCseIdDAO();
 		RemoteCSEEntity csrEntity = dao.find(transaction, remoteCseId);
 		if (csrEntity != null) {
-			// test if remote cse is reachable
-			if (!csrEntity.isRequestReachability()) {
-				throw new Om2mException("Remote Cse is not request reachable", 
-						ResponseStatusCode.TARGET_NOT_REACHABLE);
-			}
-			// get Point of Access
-			String url = "";
-			if (!csrEntity.getPointOfAccess().isEmpty()) {
-				boolean done = false;
-				int i = 0;
-				// iterating on points of access while target are not reachable
-				while (!done & i < csrEntity.getPointOfAccess().size()) {
-					url = csrEntity.getPointOfAccess().get(i);
-					if(!url.endsWith("/")){
-						url += "/";
-					}
-					String cseId = (csrEntity.getRemoteCseId().startsWith("/")? 
-							csrEntity.getRemoteCseId().replace("/", ""):
-								csrEntity.getRemoteCseId());
-					if (request.getTargetId().startsWith("/" + cseId)){
-						url += "~" + request.getTargetId();
-					} else {
-						url += request.getTargetId();
-					}
-					request.setTo(url);
-					response = RestClient.sendRequest(request);
-					if(!(response.getResponseStatusCode()
-							.equals(ResponseStatusCode.TARGET_NOT_REACHABLE))){
-						done = true;
-						if(i > 0){
-							String poa = csrEntity.getPointOfAccess().get(i);
-							csrEntity.getPointOfAccess().remove(i);
-							csrEntity.getPointOfAccess().add(0, poa);
-							dbs.getDAOFactory().getRemoteCSEDAO().update(transaction, csrEntity);
-							transaction.commit();
-						}
-					}
-					i++;
-				}
-			} else {
-				// TODO to improve w/ polling channel policy
-				throw new Om2mException("The point of access parameter is missing", ResponseStatusCode.TARGET_NOT_REACHABLE);
-			}
+			LOGGER.info("RemoteCSE found: " + csrEntity.getRemoteCseId());
+			response = sendRedirectorRequest(request, csrEntity, transaction);
 		} else {
 			if (!Constants.CSE_TYPE.equalsIgnoreCase(CSEType.IN)) {
-				String url = "http://" + Constants.REMOTE_CSE_IP + ":"
-						+ Constants.REMOTE_CSE_PORT
-						+ Constants.REMOTE_CSE_CONTEXT;
-				if (Constants.REMOTE_CSE_CONTEXT.length() > 1) {
-					url += "/";
-				}
-				url += request.getTargetId();
-				request.setTo(url);
+				LOGGER.info("Unknow CSE, sending request to registrar CSE: " + Constants.REMOTE_CSE_ID);
+				csrEntity = dao.find(transaction, "/" + Constants.REMOTE_CSE_ID);
 				// transfer the request and get the response
-				response = RestClient.sendRequest(request);
+				response =sendRedirectorRequest(request, csrEntity, transaction);
 			} else {
 				// case nothing found
-				response.setResponseStatusCode(ResponseStatusCode.NOT_FOUND);
+				throw new ResourceNotFoundException("RemoteCse with cseId " + remoteCseId + " has not been found");
 			}
 		}
 		transaction.close();
 		return response;
+	}
+	
+	private static ResponsePrimitive sendRedirectorRequest(RequestPrimitive request, RemoteCSEEntity csrEntity, DBTransaction transaction){
+		// test if the remoteCse is reachable
+		if (!csrEntity.isRequestReachability()) {
+			throw new Om2mException("Remote Cse is not request reachable", 
+					ResponseStatusCode.TARGET_NOT_REACHABLE);
+		}
+		DBService dbs = PersistenceService.getInstance().getDbService();
+		// get Point of Access
+		String url = "";
+		if (!csrEntity.getPointOfAccess().isEmpty()) {
+			boolean done = false;
+			int i = 0;
+			// iterating on points of access while target are not reachable
+			while (!done & i < csrEntity.getPointOfAccess().size()) {
+				url = csrEntity.getPointOfAccess().get(i);
+				// Remove a potential / added at the end of the poa
+				if(url.endsWith("/")){
+					LOGGER.debug("Removing / at the end of poa: " + url);
+					url = url.substring(0, url.length() - 1);
+				}
+				
+				if(request.getTo().startsWith("//")){
+					url += request.getTo().replaceFirst("//", "/_/");
+				} else if(request.getTo().startsWith("/")){
+					url += request.getTo().replaceFirst("/", "/~/");
+				} else {
+					url+= "/" + request.getTo();
+				}
+				
+				request.setTo(url);
+				ResponsePrimitive response = RestClient.sendRequest(request);
+				if(!(response.getResponseStatusCode()
+						.equals(ResponseStatusCode.TARGET_NOT_REACHABLE))){
+					done = true;
+					if(i > 0){
+						String poa = csrEntity.getPointOfAccess().get(i);
+						csrEntity.getPointOfAccess().remove(i);
+						csrEntity.getPointOfAccess().add(0, poa);
+						dbs.getDAOFactory().getRemoteCSEDAO().update(transaction, csrEntity);
+						transaction.commit();
+					}
+					return response;
+				}
+				i++;
+			}
+			// if we reach this point, there is no poa working
+			ResponsePrimitive response = new ResponsePrimitive(request);
+			response.setResponseStatusCode(ResponseStatusCode.TARGET_NOT_REACHABLE);
+			response.setContent("Target is not reachable");
+			response.setContentType(MimeMediaType.TEXT_PLAIN);
+			return response;
+		} else {
+			// TODO to improve w/ polling channel policy
+			throw new Om2mException("The point of access parameter is missing", ResponseStatusCode.TARGET_NOT_REACHABLE);
+		}
 	}
 
 	public static ResponsePrimitive retargetNotify(RequestPrimitive request){
@@ -151,13 +162,15 @@ public class Redirector {
 			dbt.close();
 			throw new ResourceNotFoundException("AE resource " + request.getTargetId() + " not found.");
 		}
-
-		new AEController().checkACP(ae.getAccessControlPolicies(), request.getFrom(), Operation.NOTIFY);
-
+	
+		// FIXME use the correct originator when a notification is generated
+		if(!request.getFrom().equals("/" + Constants.CSE_ID)){
+			new AEController().checkACP(ae.getAccessControlPolicies(), request.getFrom(), Operation.NOTIFY);			
+		}
+		
 		// Get point of access
 		if(ae.getPointOfAccess().isEmpty() || !(ae.isRequestReachable())){
-			response.setResponseStatusCode(ResponseStatusCode.TARGET_NOT_REACHABLE);
-			response.setErrorMessage("AE has no Point of Access");
+			throw new Om2mException("AE has no point of access", ResponseStatusCode.TARGET_NOT_REACHABLE);
 		} else {
 			boolean done = false ;
 			int i = 0;
@@ -173,7 +186,7 @@ public class Redirector {
 						LOGGER.info("Om2m exception caught in Redirector: " + om2mE.getMessage() );
 						throw om2mE;
 					} catch (Exception e){
-						LOGGER.error("Exception caught in IPE execution");
+						LOGGER.error("Exception caught in IPE execution",e);
 						throw new Om2mException("IPE Internal Error", e, ResponseStatusCode.INTERNAL_SERVER_ERROR);
 					}
 					done = true;

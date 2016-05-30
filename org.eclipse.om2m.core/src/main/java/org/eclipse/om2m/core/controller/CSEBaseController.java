@@ -24,6 +24,7 @@ import java.util.List;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
 import org.eclipse.om2m.commons.entities.CSEBaseEntity;
+import org.eclipse.om2m.commons.exceptions.OperationNotAllowed;
 import org.eclipse.om2m.commons.exceptions.ResourceNotFoundException;
 import org.eclipse.om2m.commons.resource.CSEBase;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
@@ -39,9 +40,7 @@ public class CSEBaseController extends Controller {
 	// OPERATION_NOT_ALLOWED
 	@Override
 	public ResponsePrimitive doCreate(RequestPrimitive requestIndication) {
-		ResponsePrimitive response = new ResponsePrimitive(requestIndication);
-		response.setResponseStatusCode(ResponseStatusCode.OPERATION_NOT_ALLOWED);
-		return response;
+		throw new OperationNotAllowed("Create of CSEBase is not allowed");
 	}
 
 	// Generic  retrieve operation
@@ -69,17 +68,13 @@ public class CSEBaseController extends Controller {
 	// OPERATION_NOT_ALLOWED
 	@Override
 	public ResponsePrimitive doUpdate(RequestPrimitive requestIndication) {
-		ResponsePrimitive response = new ResponsePrimitive(requestIndication);
-		response.setResponseStatusCode(ResponseStatusCode.OPERATION_NOT_ALLOWED);
-		return response;
+		throw new OperationNotAllowed("Update of CSEBase is not allowed");
 	}
 
 	// OPERATION_NOT_ALLOWED
 	@Override
 	public ResponsePrimitive doDelete(RequestPrimitive requestIndication) {
-		ResponsePrimitive response = new ResponsePrimitive(requestIndication);
-		response.setResponseStatusCode(ResponseStatusCode.OPERATION_NOT_ALLOWED);
-		return response;
+		throw new OperationNotAllowed("Delete of CSEBase is not allowed");
 	}
 
 }

@@ -19,42 +19,35 @@
  *******************************************************************************/
 package org.eclipse.om2m.core.controller;
 
-import org.eclipse.om2m.commons.constants.ResponseStatusCode;
+import org.eclipse.om2m.commons.exceptions.NotImplementedException;
+import org.eclipse.om2m.commons.exceptions.OperationNotAllowed;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
 
 /**
- * Controller for polling channel uri
+ * Controller for polling channel URI
  *
  */
 public class PollingChannelUriController extends Controller {
 
 	@Override
 	public ResponsePrimitive doCreate(RequestPrimitive request) {
-		ResponsePrimitive response = new ResponsePrimitive(request);
-		response.setResponseStatusCode(ResponseStatusCode.OPERATION_NOT_ALLOWED);
-		return response;
+		throw new OperationNotAllowed("Create on PollingChannelUri is not allowed");
 	}
 
 	@Override
 	public ResponsePrimitive doRetrieve(RequestPrimitive request) {
-		ResponsePrimitive response = new ResponsePrimitive(request);
-		response.setResponseStatusCode(ResponseStatusCode.NOT_IMPLEMENTED);
-		return response;
+		throw new NotImplementedException("Retrieve operation on PollingChannelURI is not implemented");
 	}
 
 	@Override
 	public ResponsePrimitive doUpdate(RequestPrimitive request) {
-		ResponsePrimitive response = new ResponsePrimitive(request);
-		response.setResponseStatusCode(ResponseStatusCode.OPERATION_NOT_ALLOWED);
-		return response;
+		throw new OperationNotAllowed("Update on PollingChannelUri is not allowed");
 	}
 
 	@Override
 	public ResponsePrimitive doDelete(RequestPrimitive request) {
-		ResponsePrimitive response = new ResponsePrimitive(request);
-		response.setResponseStatusCode(ResponseStatusCode.OPERATION_NOT_ALLOWED);
-		return response;
+		throw new OperationNotAllowed("Delete on PollingChannelUri is not allowed");
 	}
 
 }

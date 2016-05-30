@@ -26,6 +26,7 @@ import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
 import org.eclipse.om2m.commons.entities.AnnounceableSubordinateEntity;
 import org.eclipse.om2m.commons.entities.ResourceEntity;
+import org.eclipse.om2m.commons.exceptions.BadRequestException;
 import org.eclipse.om2m.commons.exceptions.NotPermittedAttrException;
 import org.eclipse.om2m.commons.exceptions.Om2mException;
 import org.eclipse.om2m.commons.exceptions.ResourceNotFoundException;
@@ -86,9 +87,6 @@ public class ControllerUtil {
 		
 		public static void fillEntityFromGenericResource(Resource resource, ResourceEntity entity) 
 				throws NotPermittedAttrException{
-			/*if(resource.getName() != null){
-				throw new NotPermittedAttrException("Name is Not Permitted");
-			}*/
 			if(resource.getResourceType() != null){
 				throw new NotPermittedAttrException("ResourceType is Not Permitted");
 			}
@@ -122,8 +120,37 @@ public class ControllerUtil {
 			}
 			if(resource.getExpirationTime() != null){
 				entity.setExpirationTime(resource.getExpirationTime());
+			} else {
+				entity.setExpirationTime(DateUtil.getDefaultExpirationTime());
 			}
 		}
+	}
+	
+	public static class UpdateUtil{
+		
+		private UpdateUtil(){}
+		
+		public static void checkNotPermittedParameters(Resource resource){
+			if(resource.getName() != null){
+				throw new BadRequestException("ResourceName is NP");
+			}
+			if(resource.getResourceType() != null){
+				throw new BadRequestException("ResourceType is NP");
+			}
+			if(resource.getResourceID() != null){
+				throw new BadRequestException("ResourceID is NP");
+			}
+			if(resource.getParentID() != null){
+				throw new BadRequestException("ParentID is NP");
+			}
+			if(resource.getCreationTime() != null){
+				throw new BadRequestException("CreationTime is NP");
+			}
+			if(resource.getLastModifiedTime() != null){
+				throw new BadRequestException("LastModifiedTime is NP");
+			}
+		}
+		
 	}
 
 

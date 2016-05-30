@@ -22,8 +22,6 @@ package org.eclipse.om2m.core.notifier;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -40,6 +38,7 @@ import org.eclipse.om2m.commons.entities.AeEntity;
 import org.eclipse.om2m.commons.entities.CSEBaseEntity;
 import org.eclipse.om2m.commons.entities.ContainerEntity;
 import org.eclipse.om2m.commons.entities.GroupEntity;
+import org.eclipse.om2m.commons.entities.MgmtObjEntity;
 import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
 import org.eclipse.om2m.commons.entities.ResourceEntity;
 import org.eclipse.om2m.commons.entities.ScheduleEntity;
@@ -57,6 +56,7 @@ import org.eclipse.om2m.core.entitymapper.EntityMapperFactory;
 import org.eclipse.om2m.core.persistence.PersistenceService;
 import org.eclipse.om2m.core.router.Patterns;
 import org.eclipse.om2m.core.router.Router;
+import org.eclipse.om2m.core.thread.CoreExecutor;
 import org.eclipse.om2m.core.urimapper.UriMapper;
 import org.eclipse.om2m.persistence.service.DAO;
 import org.eclipse.om2m.persistence.service.DBService;
@@ -69,9 +69,6 @@ public class Notifier {
 	/** Logger */
 	private static Log LOGGER = LogFactory.getLog(Notifier.class);
 
-	private static final int NOTIFICATION_NTHREADS = Integer.parseInt(System.getProperty("org.eclipse.om2m.notification.nthreads", "20"));
-	private static final ExecutorService threadPool = Executors.newFixedThreadPool(NOTIFICATION_NTHREADS);
-
 	/**
 	 * Finds all resource subscribers and notifies them.
 	 * @param statusCode - Notification status code
@@ -81,24 +78,24 @@ public class Notifier {
 		if (listSubscription != null){
 			for(SubscriptionEntity sub : listSubscription){
 				NotificationWorker worker = new NotificationWorker(sub, resourceStatus, resource);
-				threadPool.execute(worker);
+				CoreExecutor.postThread(worker);
 			}
 		}
 	}
 
 	/**
 	 * Used in DELETE procedure when a resource is deleted. It notifies the subscribed resource
-	 * and the parent resource subscribed entities.
+	 * and the parent resource subscribed entities. 
 	 * @param listSubs
 	 * @param resourceDeleted
 	 */
 	public static void notifyDeletion(List<SubscriptionEntity> listSubs, ResourceEntity resourceDeleted){
 		List<SubscriptionEntity> parentSubscriptions = getParentSubscriptions(resourceDeleted);
 		if(parentSubscriptions != null){
-			notify(parentSubscriptions, resourceDeleted, ResourceStatus.CHILD_DELETED);
+			notify(parentSubscriptions, resourceDeleted, ResourceStatus.CHILD_DELETED);			
 		}
 		if(listSubs != null){
-			notify(listSubs, resourceDeleted, ResourceStatus.DELETED);
+			notify(listSubs, resourceDeleted, ResourceStatus.DELETED);			
 		}
 	}
 
@@ -134,7 +131,7 @@ public class Notifier {
 	public static ResponsePrimitive notify(RequestPrimitive request, String contact){
 		// Check whether the subscription contact is protocol-dependent or not.
 		LOGGER.info("Sending notify request to: " + contact);
-		if(contact.matches(".*://.*")){
+		if(contact.matches(".*://.*")){ 
 			// Contact = protocol-dependent -> direct notification using the rest client.
 			request.setTo(contact);
 			return RestClient.sendRequest(request);
@@ -147,7 +144,7 @@ public class Notifier {
 
 	/**
 	 * Used to retrieve the subscription list of the parent resource
-	 * @param resource
+	 * @param resource 
 	 * @return
 	 */
 	private static List<SubscriptionEntity> getParentSubscriptions(
@@ -205,7 +202,7 @@ public class Notifier {
 	 * Worker that perform the notification task for a subscription
 	 *
 	 */
-	static class NotificationWorker extends Thread {
+	static class NotificationWorker implements Runnable {
 		/** resource status of the notification */
 		private int resourceStatus;
 		/** the subscription to handle */
@@ -244,33 +241,34 @@ public class Notifier {
 			notification.setSubscriptionReference(sub.getHierarchicalURI());
 
 			// Get the representation of the content
+			Resource serializableResource;
+			EntityMapper mapper ;
 			if (sub.getNotificationContentType() != null){
+				if (resource.getResourceType().equals(ResourceType.MGMT_OBJ)) {
+					mapper = EntityMapperFactory.getMapperForMgmtObj((MgmtObjEntity) resource);
+				} else {
+					mapper = EntityMapperFactory.
+							getMapperFromResourceType(resource.getResourceType().intValue());
+				}
 				if(sub.getNotificationContentType().equals(NotificationContentType.MODIFIED_ATTRIBUTES)){
-					Resource serializableResource = (Resource) EntityMapperFactory.
-							getMapperFromResourceType(resource.getResourceType().intValue()).
-							mapEntityToResource(resource, ResultContent.ATTRIBUTES);
+					serializableResource = (Resource)mapper.mapEntityToResource(resource, ResultContent.ATTRIBUTES);
 					notification.getNotificationEvent().setRepresentation(serializableResource);
 					request.setRequestContentType(MimeMediaType.XML);
 				} else if(sub.getNotificationContentType().equals(NotificationContentType.WHOLE_RESOURCE)){
-					Resource serializableResource = (Resource) EntityMapperFactory.
-							getMapperFromResourceType(resource.getResourceType().intValue()).
-							mapEntityToResource(resource, ResultContent.ATTRIBUTES);
+					serializableResource = (Resource) mapper.mapEntityToResource(resource, ResultContent.ATTRIBUTES);
 					notification.getNotificationEvent().setRepresentation(serializableResource);
 					request.setRequestContentType(MimeMediaType.XML);
-				}
-			}
-
+				} 
+			} 
 			// Set the content
 			request.setContent(DataMapperSelector.getDataMapperList().get(MimeMediaType.XML).objToString(notification));
 			// For each notification URI: send the notify request
 			for(final String uri : sub.getNotificationURI()){
-				ExecutorService senderThreadPool = Executors.newFixedThreadPool(5);
-				senderThreadPool.execute(new Thread(){
+				CoreExecutor.postThread(new Runnable(){
 					public void run() {
-						Notifier.notify(request, uri);
+						Notifier.notify(request, uri);    					
 					};
 				});
-				senderThreadPool.shutdown();
 			}
 		}
 	}

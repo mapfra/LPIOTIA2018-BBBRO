@@ -30,9 +30,9 @@ import org.eclipse.om2m.core.interworking.IpeSelector;
 import org.eclipse.om2m.core.persistence.PersistenceService;
 import org.eclipse.om2m.core.router.Router;
 import org.eclipse.om2m.core.service.CseService;
+import org.eclipse.om2m.core.thread.CoreExecutor;
 import org.eclipse.om2m.datamapping.service.DataMapperService;
 import org.eclipse.om2m.interworking.service.InterworkingService;
-import org.eclipse.om2m.persistence.service.DBConstants;
 import org.eclipse.om2m.persistence.service.DBService;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -64,9 +64,8 @@ public class Activator implements BundleActivator {
 
 			@Override
 			public Object addingService(ServiceReference<Object> reference) {
-				LOGGER.info("DataMapper Service discovered");
 				DataMapperService dataMapper = (DataMapperService) this.context.getService(reference);
-				LOGGER.info("Add Data Mapper Service: " + dataMapper.getServiceDataType());
+				LOGGER.info("Added Data Mapper Service: " + dataMapper.getServiceDataType());
 				DataMapperSelector.getDataMapperList().put(dataMapper.getServiceDataType(), dataMapper);
 				return dataMapper;
 			}
@@ -74,9 +73,8 @@ public class Activator implements BundleActivator {
 			@Override
 			public void removedService(ServiceReference<Object> reference,
 					Object service) {
-				LOGGER.info("DataMapper Service removed");
 				DataMapperService dataMapper = (DataMapperService) service;
-				LOGGER.info("Remove Data Mapper Service: " + dataMapper.getServiceDataType());
+				LOGGER.info("Removed Data Mapper Service: " + dataMapper.getServiceDataType());
 				DataMapperSelector.getDataMapperList().remove(dataMapper.getServiceDataType());
 			}
 
@@ -91,7 +89,22 @@ public class Activator implements BundleActivator {
 				LOGGER.info("DataBase persistence service discovered");
 				DBService dbService = (DBService) this.context.getService(reference);
 				PersistenceService.getInstance().setDbService(dbService);
-				PersistenceService.getInstance().getDbReady().release();
+
+				// Post the start routine in the CoreExecutor
+				CoreExecutor.postThread(new Runnable() {
+					@Override
+					public void run() {
+						try {
+							CSEInitializer.init();
+						} catch (InterruptedException e) {
+							LOGGER.error("Error in CSEInitializer", e);
+						}
+						LOGGER.info("Registering CseService...");
+						context.registerService(CseService.class.getName(), new Router(), null);		
+						LOGGER.info("CSE Started");		
+					}
+				});
+				
 				return dbService;
 			}
 
@@ -100,7 +113,6 @@ public class Activator implements BundleActivator {
 					Object service) {
 				LOGGER.info("Database persistence service removed.");
 				PersistenceService.getInstance().setDbService(null);
-				PersistenceService.getInstance().resetSemaphoreDb();
 			}
 
 		};
@@ -110,9 +122,9 @@ public class Activator implements BundleActivator {
 		restClientServiceTracker = new ServiceTracker<Object,Object>(bundleContext, RestClientService.class.getName(), null){
 
 			public Object addingService(org.osgi.framework.ServiceReference<Object> reference) {
-				LOGGER.info("Rest client service discovered");
 				RestClientService service = (RestClientService) this.context.getService(reference);
 				RestClient.getRestClients().put(service.getProtocol(), service);
+				LOGGER.info("Rest client service discovered. Protocol: " + service.getProtocol());
 				return service;
 			};
 
@@ -145,15 +157,7 @@ public class Activator implements BundleActivator {
 			
 		};
 		ipeServiceTracker.open();
-		
-		if (DBConstants.DB_RESET) {
-			CSEInitializer.init();
-		}
 
-		LOGGER.info("Registering CseService...");
-		bundleContext.registerService(CseService.class.getName(), new Router(), null);
-
-		LOGGER.info("CSE Started");
 	}
 
 	public void stop(BundleContext bundleContext) throws Exception {

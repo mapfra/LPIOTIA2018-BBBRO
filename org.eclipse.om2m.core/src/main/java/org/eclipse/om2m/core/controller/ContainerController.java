@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.eclipse.om2m.core.controller;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import org.eclipse.om2m.commons.constants.Constants;
@@ -49,6 +50,7 @@ import org.eclipse.om2m.core.notifier.Notifier;
 import org.eclipse.om2m.core.router.Patterns;
 import org.eclipse.om2m.core.urimapper.UriMapper;
 import org.eclipse.om2m.core.util.ControllerUtil;
+import org.eclipse.om2m.core.util.ControllerUtil.UpdateUtil;
 import org.eclipse.om2m.persistence.service.DAO;
 
 /**
@@ -232,19 +234,28 @@ public class ContainerController extends Controller {
 		// maxNrOfInstances			O
 		if (container.getMaxNrOfInstances() != null) {
 			containerEntity.setMaxNrOfInstances(container.getMaxNrOfInstances());
+		} else {
+			containerEntity.setMaxNrOfInstances(Constants.MAX_NBR_OF_INSTANCES);
 		}
 		// maxByteSize				O
 		if (container.getMaxByteSize() != null) {
 			containerEntity.setMaxByteSize(container.getMaxByteSize());
+		} else {
+			containerEntity.setMaxByteSize(Constants.MAX_BYTE_SIZE);
 		}
 		// maxInstanceAge			O
 		if (container.getMaxInstanceAge() != null) {
 			containerEntity.setMaxInstanceAge(container.getMaxInstanceAge());
+		} else {
+			containerEntity.setMaxInstanceAge(BigInteger.valueOf(0));
 		}
 		// locationID				O
 		if (container.getLocationID() != null) {
 			containerEntity.setLocationID(container.getLocationID());
 		}
+		
+		// stateTag init
+		containerEntity.setStateTag(BigInteger.valueOf(0));
 
 		// create the container in the DB
 		dbs.getDAOFactory().getContainerDAO().create(transaction, containerEntity);
@@ -370,13 +381,22 @@ public class ContainerController extends Controller {
 		// creationTime					NP
 		// creator						NP
 		// lastModifiedTime				NP
+		UpdateUtil.checkNotPermittedParameters(container);
 		// currentNrOfInstances			NP
+		if(container.getCurrentNrOfInstances() != null){
+			throw new BadRequestException("CurrentNrOfInstances is NP");
+		}
 		// currentByteSize				NP
-
+		if(container.getCurrentByteSize() != null){
+			throw new BadRequestException("CurrentByteSize is NP");
+		}
+		
 		Container modifiedAttributes = new Container();
-		// labels						O
 		// accessControlPolicyIDs		O
 		if(!container.getAccessControlPolicyIDs().isEmpty()){
+			for(AccessControlPolicyEntity acpe : containerEntity.getAccessControlPolicies()){
+				checkSelfACP(acpe, request.getFrom(), Operation.UPDATE);
+			}
 			containerEntity.getAccessControlPolicies().clear();
 			containerEntity.setAccessControlPolicies(ControllerUtil.
 					buildAcpEntityList(container.getAccessControlPolicyIDs(), transaction));
@@ -430,7 +450,13 @@ public class ContainerController extends Controller {
 			containerEntity.setOntologyRef(container.getOntologyRef());
 			modifiedAttributes.setOntologyRef(container.getOntologyRef());
 		}
-
+		
+		// Update state tag
+		if(containerEntity.getStateTag() != null){
+			containerEntity.setStateTag(BigInteger.valueOf(containerEntity.getStateTag().intValue() + 1));
+			modifiedAttributes.setStateTag(containerEntity.getStateTag());			
+		}
+		
 		containerEntity.setLastModifiedTime(DateUtil.now());
 		modifiedAttributes.setLastModifiedTime(containerEntity.getLastModifiedTime());
 		response.setContent(modifiedAttributes);

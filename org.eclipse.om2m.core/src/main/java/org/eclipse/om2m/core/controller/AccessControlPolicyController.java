@@ -50,6 +50,7 @@ import org.eclipse.om2m.core.persistence.PersistenceService;
 import org.eclipse.om2m.core.router.Patterns;
 import org.eclipse.om2m.core.urimapper.UriMapper;
 import org.eclipse.om2m.core.util.ControllerUtil;
+import org.eclipse.om2m.core.util.ControllerUtil.UpdateUtil;
 import org.eclipse.om2m.persistence.service.DAO;
 import org.eclipse.om2m.persistence.service.DBService;
 import org.eclipse.om2m.persistence.service.DBTransaction;
@@ -311,14 +312,14 @@ public class AccessControlPolicyController extends Controller {
 		
 		AccessControlPolicy modifiedAttributes = new AccessControlPolicy();
 
-		// NP attributes are ignored
+		// NP attributes 
 		// @resourceName 		NP 
 		// resourceType 		NP 
 		// resourceID 			NP 
 		// parentID 			NP
 		// creationTime 		NP 
 		// lastModifiedTime 	NP 
-
+		UpdateUtil.checkNotPermittedParameters(acp);
 		// expirationTime 		O
 		if(acp.getExpirationTime() != null){
 			acpEntity.setExpirationTime(acp.getExpirationTime());
@@ -388,6 +389,14 @@ public class AccessControlPolicyController extends Controller {
 		if (acpEntity == null){
 			throw new ResourceNotFoundException("Resource not found");
 		}
+		
+		// Check this acp is not a generated acp for an AE to avoid inconsistency
+		for(AeEntity ae : acpEntity.getLinkedAes()){
+			if(ae.getGeneratedAcp().getResourceID().equals(acpEntity.getResourceID())){
+				throw new BadRequestException("Delete the linked ae(s) to avoid acp inconsistency.");
+			}
+		}
+		
 		// Check self access control policy
 		checkSelfACP(acpEntity, request.getFrom(), Operation.DELETE);
 

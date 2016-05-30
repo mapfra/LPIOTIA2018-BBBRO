@@ -52,6 +52,7 @@ import org.eclipse.om2m.core.router.Patterns;
 import org.eclipse.om2m.core.urimapper.UriMapper;
 import org.eclipse.om2m.core.util.ControllerUtil;
 import org.eclipse.om2m.core.util.ControllerUtil.CreateUtil;
+import org.eclipse.om2m.core.util.ControllerUtil.UpdateUtil;
 import org.eclipse.om2m.persistence.service.DAO;
 import org.eclipse.om2m.persistence.service.DBService;
 import org.eclipse.om2m.persistence.service.DBTransaction;
@@ -120,7 +121,7 @@ public class SubscriptionController extends Controller{
 			acpsToCheck = csr.getAccessControlPolicies();
 		}
 
-		if(acpsToCheck.isEmpty()){
+		if(acpsToCheck == null){
 			throw new NotImplementedException("Subscription is not yet supported on this resource");
 		}
 
@@ -358,22 +359,37 @@ public class SubscriptionController extends Controller{
 		// parentID NP
 		// creationTime NP
 		// lastTimeModified NP
+		UpdateUtil.checkNotPermittedParameters(subscription);
 		// preSubscriptionNotify NP
+		if(subscription.getPreSubscriptionNotify() != null){
+			throw new BadRequestException("PreSubscriptionNotify is NP");
+		}
 		// subscriberURI NP
+		if(subscription.getSubscriberURI() != null){
+			throw new BadRequestException("SubscripberURI is NP");
+		}
+		
+		Subscription modifiedAttributes = new Subscription();
 
 		// ACPIDs O
 		if(!subscription.getAccessControlPolicyIDs().isEmpty()){
+			for(AccessControlPolicyEntity acpe : subscriptionEntity.getAcpList()){
+				checkSelfACP(acpe, request.getFrom(), Operation.UPDATE);
+			}
 			subscriptionEntity.getAcpList().clear();
 			subscriptionEntity.setAcpList(ControllerUtil.buildAcpEntityList(subscription.getAccessControlPolicyIDs(), transaction));
+			modifiedAttributes.getAccessControlPolicyIDs().addAll(subscription.getAccessControlPolicyIDs());
 		}
 		// expirationTime O
 		if(subscription.getExpirationTime() != null){
 			subscriptionEntity.setExpirationTime(subscription.getExpirationTime());
+			modifiedAttributes.setExpirationTime(subscription.getExpirationTime());
 		}
 		// labels O
 		if(!subscription.getLabels().isEmpty()){
 			subscriptionEntity.getLabelsEntities().clear();
 			subscriptionEntity.setLabelsEntitiesFromSring(subscription.getLabels());
+			modifiedAttributes.getLabels().addAll(subscription.getLabels());
 		}
 		// eventNotificationCriteria O
 		if(subscription.getEventNotificationCriteria() != null){
@@ -382,19 +398,23 @@ public class SubscriptionController extends Controller{
 		// expirationCounter O
 		if(subscription.getExpirationCounter() != null){
 			subscriptionEntity.setExpirationCounter(subscription.getExpirationCounter());
+			modifiedAttributes.setExpirationCounter(subscription.getExpirationCounter());
 		}
 		// notificationUri O
 		if(!subscription.getNotificationURI().isEmpty()){
 			subscriptionEntity.getNotificationURI().clear();
 			subscriptionEntity.getNotificationURI().addAll(subscription.getNotificationURI());
+			modifiedAttributes.getNotificationURI().addAll(subscription.getNotificationURI());
 		}
 		// groupID O
 		if(subscription.getGroupID() != null){
 			subscriptionEntity.setGroupID(subscription.getGroupID());
+			modifiedAttributes.setGroupID(subscription.getGroupID());
 		}
 		// notificationForwardingUri O
 		if(subscription.getNotificationForwardingURI() != null){
 			subscriptionEntity.setNotificationForwardingURI(subscription.getNotificationForwardingURI());
+			modifiedAttributes.setNotificationForwardingURI(subscription.getNotificationForwardingURI());
 		}
 		// batchNotify O
 		if(subscription.getBatchNotify() != null){
@@ -407,31 +427,39 @@ public class SubscriptionController extends Controller{
 		// pendingNotification O
 		if(subscription.getPendingNotification() != null){
 			subscriptionEntity.setPendingNotification(subscription.getPendingNotification());
+			modifiedAttributes.setPendingNotification(subscription.getPendingNotification());
 		}
 		// notificationStorePriority O 
 		if(subscription.getNotificationStoragePriority() != null){
 			subscriptionEntity.setNotificationStoragePriority(subscription.getNotificationStoragePriority());
+			modifiedAttributes.setNotificationStoragePriority(subscription.getNotificationStoragePriority());
 		}
 		// latestNotify O
 		if(subscription.isLatestNotify() != null){
 			subscriptionEntity.setLatestNotify(subscription.isLatestNotify());
+			modifiedAttributes.setLatestNotify(subscription.isLatestNotify());
 		}
 		// notificationContentType O
 		if(subscription.getNotificationContentType() != null){
 			subscriptionEntity.setNotificationContentType(subscription.getNotificationContentType());
+			modifiedAttributes.setNotificationContentType(subscription.getNotificationContentType());
 		}
 		// notificationEventCat O
 		if(subscription.getNotificationEventCat() != null){
 			subscriptionEntity.setNotificationEventCat(subscription.getNotificationEventCat());
+			modifiedAttributes.setNotificationEventCat(subscription.getNotificationEventCat());
 		}
 		// creator O
 		if(subscription.getCreator() != null){
 			subscriptionEntity.setCreator(subscription.getCreator());
+			modifiedAttributes.setCreator(subscription.getCreator());
 		}
 
 		// Update last time modified
 		subscriptionEntity.setLastModifiedTime(DateUtil.now());
-
+		modifiedAttributes.setLastModifiedTime(subscriptionEntity.getLastModifiedTime());
+		response.setContent(modifiedAttributes);
+		
 		dbs.getDAOFactory().getSubsciptionDAO().update(transaction, subscriptionEntity);
 		transaction.commit();
 

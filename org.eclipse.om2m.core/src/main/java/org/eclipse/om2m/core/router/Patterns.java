@@ -38,7 +38,7 @@ public class Patterns {
 	private static final String ALL_SHORT_NAMES = ShortName.ACP+"|"+ShortName.AE+"|"+ShortName.CNT+
 			"|"+ShortName.CIN + "|" + ShortName.REMOTE_CSE + "|" + ShortName.LATEST + "|" + ShortName.OLDEST +
 			"|" + ShortName.GROUP + "|" + ShortName.FANOUTPOINT + "|" + ShortName.SUB + "|" + ShortName.PCH + 
-			"|" + ShortName.POLLING_CHANNEL_URI + "|" + ShortName.REQ + "|" + ShortName.NODE;
+			"|" + ShortName.POLLING_CHANNEL_URI + "|" + ShortName.REQ + "|" + ShortName.NODE + "|" + ShortName.ANI + "|" + ShortName.ANDI;
 	
 	private static final String NON_HIERARCHICAL_ID = "(" + Constants.PREFIX_SEPERATOR +"(\\b\\w+\\b)?)" ;
 	
@@ -59,15 +59,10 @@ public class Patterns {
     /** CseBase resource uri pattern. */
     public static final Pattern CSE_BASE_PATTERN= Pattern.compile("/" + Constants.CSE_ID);
     
-    /** Non-hierarchical URI pattern */
-    public static final Pattern NON_HIERARCHICAL_PATTERN = Pattern.compile(
-    		"(" + CSE_BASE_PATTERN + "/(" + ALL_SHORT_NAMES + ")" + Constants.PREFIX_SEPERATOR + ID_STRING + ")|(" + CSE_BASE_PATTERN+ ")"
-    		); 
-    
     /** AccessControlPolicy uri pattern MAY BE NOT COMPLETE */
     public static final Pattern ACP_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.ACP + Constants.PREFIX_SEPERATOR + ID_STRING );
     
-    public static final Pattern AE_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.AE + Constants.PREFIX_SEPERATOR + ID_STRING);
+    public static final Pattern AE_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + "(C|S)" + ID_STRING);
     
     public static final Pattern CONTAINER_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.CNT + Constants.PREFIX_SEPERATOR + ID_STRING);
 
@@ -91,6 +86,20 @@ public class Patterns {
     
     public static final Pattern NODE_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.NODE + Constants.PREFIX_SEPERATOR + ID_STRING);
 
+    public static final Pattern AREA_NW_INFO_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.ANI + Constants.PREFIX_SEPERATOR + ID_STRING);
+
+	public static final Pattern AREA_NWK_DEVICE_INFO_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.ANDI + Constants.PREFIX_SEPERATOR + ID_STRING);
+
+    /** Non-hierarchical URI pattern */
+    public static final Pattern NON_HIERARCHICAL_PATTERN = Pattern.compile(
+    		"(" + CSE_BASE_PATTERN + "/(" + ALL_SHORT_NAMES + ")" + Constants.PREFIX_SEPERATOR + ID_STRING + ")|(" + CSE_BASE_PATTERN+ ")|" +
+    		AE_PATTERN.pattern()); 
+    
+    /** Hierarchical URI Pattern */
+    public static final Pattern HIERARCHICAL_PATTERN = Pattern.compile(
+    		CSE_BASE_PATTERN + "(/" + Constants.CSE_NAME + "(/"+ ID_PATTERN +")*)?"
+    		);
+    
 	/**
 	 * match uri with a pattern.
 	 * @param pattern - pattern
@@ -143,6 +152,9 @@ public class Patterns {
 		if(match(REQUEST_PATTERN, uri)){
 			return db.getDAOFactory().getRequestEntityDAO();
 		}
+		if (match(NODE_PATTERN, uri)) {
+			return db.getDAOFactory().getNodeEntityDAO();
+		}
 		return null;
 	}
 	
@@ -152,6 +164,6 @@ public class Patterns {
 	 * @return
 	 */
 	public static boolean checkResourceName(String resourceName){
-		return (!match(UNAUTHORIZED_NAMES, resourceName) && match(ID_PATTERN, resourceName));
+		return match(ID_PATTERN, resourceName);
 	}
 }

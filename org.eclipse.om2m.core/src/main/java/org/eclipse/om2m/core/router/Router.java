@@ -20,6 +20,10 @@
 package org.eclipse.om2m.core.router;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -32,6 +36,7 @@ import org.eclipse.om2m.commons.constants.ResponseType;
 import org.eclipse.om2m.commons.constants.ResultContent;
 import org.eclipse.om2m.commons.constants.ShortName;
 import org.eclipse.om2m.commons.exceptions.BadRequestException;
+import org.eclipse.om2m.commons.exceptions.NotImplementedException;
 import org.eclipse.om2m.commons.exceptions.Om2mException;
 import org.eclipse.om2m.commons.exceptions.ResourceNotFoundException;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
@@ -74,9 +79,9 @@ public class Router implements CseService {
 	public ResponsePrimitive doRequest(RequestPrimitive request) {
 		LOGGER.info("Received request in Router: " + request.toString());
 		ResponsePrimitive response = new ResponsePrimitive(request);
-		
+
 		try{
-			
+
 			// Non blocking request handling
 			if (request.getResponseTypeInfo() != null 
 					&& request.getResponseTypeInfo().getResponseType() != null){
@@ -86,8 +91,9 @@ public class Router implements CseService {
 						return NonBlockingHandler.handle(request);					
 					} else {
 						response.setResponseStatusCode(ResponseStatusCode.NON_BLOCKING_REQUEST_NOT_SUPPORTED);
-						response.setErrorMessage("Non blocking request is not supported");
-						return response;					
+						response.setContent("Non blocking request is not supported");
+						response.setContentType(MimeMediaType.TEXT_PLAIN);
+						return response;
 					}
 				}
 			}
@@ -95,37 +101,35 @@ public class Router implements CseService {
 			// Check if the data type has been set
 			if (request.getRequestContentType() == null){
 				request.setRequestContentType(MimeMediaType.XML);
+				LOGGER.info("No Content-Type parameter set, setting to default: " + request.getRequestContentType());
 			}
 			if (request.getReturnContentType() == null){
 				request.setReturnContentType(MimeMediaType.XML);
+				LOGGER.info("No Accept parameter set, setting to default: " + request.getReturnContentType());
 			}
 
 			// Check if the data type requested is supported
 			if (request.getRequestContentType() != MimeMediaType.OBJ && request.getRequestContentType()!=null){
 				if (!DataMapperSelector.getDataMapperList().containsKey(request.getRequestContentType())){
-					response.setResponseStatusCode(ResponseStatusCode.NOT_IMPLEMENTED);
-					response.setErrorMessage(request.getRequestContentType()+" is not supported.");
-					return response;
+					throw new NotImplementedException(request.getRequestContentType()+" is not supported.");
 				}
 			}
 			if (request.getReturnContentType() != MimeMediaType.OBJ && request.getReturnContentType()!=null){
 				if (!DataMapperSelector.getDataMapperList().containsKey(request.getReturnContentType())){
-					response.setResponseStatusCode(ResponseStatusCode.NOT_IMPLEMENTED);
-					response.setErrorMessage(request.getReturnContentType()+" is not supported.");
-					return response;
+					throw new NotImplementedException(request.getReturnContentType()+" is not supported.");
 				}
 			}
-			
+
 			// Check if the operation has been provided
 			if(request.getOperation() == null){
 				throw new BadRequestException("No Operation provided");
 			}
-			
+
 			// URI Handling
 			if(request.getTargetId() == null){
 				request.setTargetId(request.getTo());
 			}
-			
+
 			if(request.getTargetId().startsWith("~")){
 				request.setTargetId(request.getTargetId().substring(1));
 			} 
@@ -135,7 +139,7 @@ public class Router implements CseService {
 				String uri = request.getTargetId().substring(2);
 				String spId = uri.split("/")[0];
 				if (!spId.equals(Constants.M2M_SP_ID)){
-					throw new ResourceNotFoundException("Not the current SP Domain.");
+					throw new ResourceNotFoundException("Not the current SP Domain (" + spId + ")");
 				} else {
 					request.setTargetId(uri.replace(spId, ""));
 				}
@@ -148,14 +152,34 @@ public class Router implements CseService {
 				request.setTargetId(request.getTargetId().substring(0,request.getTargetId().length()-1));
 			}
 
+			getQueryStringFromTargetId(request);
+
 			// Redirection case
 			if (!Patterns.match(Patterns.NON_RETARGETING_PATTERN, request.getTargetId())){
+				LOGGER.info("Request targeting another CSE, forwarding to Redirector: " + request.getTo());
 				return Redirector.retarget(request);
 			}
+			LOGGER.info("Request handling in the current CSE: " + request.getTo());
 
 			Controller controller = null ; 
 			// Case of hierarchical URI, retrieve the non-hierarchical URI of the resource
-			if (!Patterns.match(Patterns.NON_HIERARCHICAL_PATTERN, request.getTargetId())){
+			if (Patterns.match(Patterns.HIERARCHICAL_PATTERN, request.getTargetId())){
+				if(request.getTargetId().contains(Patterns.FANOUT_POINT_MATCH + "/")){
+					int foptIndex = request.getTargetId().indexOf(Patterns.FANOUT_POINT_MATCH);
+					String uri = request.getTargetId().substring(0, foptIndex);
+					String suffix = request.getTargetId()
+							.substring(
+									foptIndex + Patterns.FANOUT_POINT_MATCH.length(), 
+									request.getTargetId().length()
+									);
+					controller = new FanOutPointController(suffix);
+					request.setTargetId(uri);
+					LOGGER.info("Fan Out request received: [grp uri: " + uri + ", suffix: " + suffix + "]");
+				} if (request.getTargetId().endsWith(Patterns.FANOUT_POINT_MATCH)) {
+					controller = new FanOutPointController();
+					request.setTargetId(request.getTargetId().replaceAll(Patterns.FANOUT_POINT_MATCH, ""));
+					LOGGER.info("Fan Out request received: [grp uri: " + request.getTargetId()+ "]");
+				} 
 				if(request.getTargetId().endsWith("/" + ShortName.LATEST)){
 					controller = new LatestOldestController(SortingPolicy.LATEST);
 					request.setTargetId(request.getTargetId() + "/");
@@ -166,15 +190,12 @@ public class Router implements CseService {
 					request.setTargetId(request.getTargetId() + "/");
 					request.setTargetId(request.getTargetId().replace("/"+ShortName.OLDEST+"/", ""));
 				}
-				if (request.getTargetId().endsWith(Patterns.FANOUT_POINT_MATCH)) {
-					controller = new FanOutPointController();
-					request.setTargetId(request.getTargetId().replaceAll(Patterns.FANOUT_POINT_MATCH, ""));
-				}
 				String nonHierarchicalUri = UriMapper.getNonHierarchicalUri(request.getTargetId());
 				if (nonHierarchicalUri == null){
 					throw new ResourceNotFoundException("Resource not found");
 				}
 				request.setTargetId(nonHierarchicalUri);
+				LOGGER.debug("Changing to unstructured uri for routing to: " + request.getTargetId());
 			}
 
 			// Notify case
@@ -198,7 +219,7 @@ public class Router implements CseService {
 			}
 
 			if (controller!=null){
-				LOGGER.info("ResourceController ["+ controller.getClass().getSimpleName()+"]");
+				LOGGER.info("ResourceController to be used ["+ controller.getClass().getSimpleName()+"]");
 				// Perform the request in the specific controller
 				response = controller.doRequest(request);
 				if(request.getResultContent() != null && request.getResultContent().equals(ResultContent.NOTHING)){
@@ -209,20 +230,23 @@ public class Router implements CseService {
 						String representation = DataMapperSelector.getDataMapperList().
 								get(request.getReturnContentType()).objToString(response.getContent());
 						response.setContent(representation);
+						response.setContentType(request.getReturnContentType());
 					}
 				}
 			} else {
-				response.setResponseStatusCode(ResponseStatusCode.BAD_REQUEST);
-				response.setErrorMessage("Malformed URI");
+				throw new BadRequestException("Malformed URI");
 			}
 		} catch (Om2mException om2mException){
 			response.setResponseStatusCode(om2mException.getErrorStatusCode());
-			response.setErrorMessage(om2mException.getMessage());
-			LOGGER.debug("Om2m exception catched in Controller", om2mException);
+			response.setContent(om2mException.getMessage());
+			response.setContentType(MimeMediaType.TEXT_PLAIN);
+			LOGGER.info("OM2M exception caught in Router: " + om2mException.getMessage());
+			LOGGER.debug("OM2M exception caught in Router", om2mException);
 		} catch(Exception e){
-			response.setResponseStatusCode(ResponseStatusCode.INTERNAL_SERVER_ERROR);
-			response.setErrorMessage("Router internal error");
 			LOGGER.error("Router internal error", e);
+			response.setResponseStatusCode(ResponseStatusCode.INTERNAL_SERVER_ERROR);
+			response.setContent("Router internal error");
+			response.setContentType(MimeMediaType.TEXT_PLAIN);
 		}
 
 		LOGGER.info("Response in Router= " + response);
@@ -286,7 +310,7 @@ public class Router implements CseService {
 	protected Controller getResourceControllerFromRT(BigInteger resourceType){
 		// test in case resourceType is null
 		if (resourceType == null) {
-			throw new BadRequestException("Resource type is missing");
+			throw new BadRequestException("Resource type is missing for creation request");
 		}
 		// switch case
 		switch(resourceType.intValue()){
@@ -311,7 +335,43 @@ public class Router implements CseService {
 		case ResourceType.POLLING_CHANNEL:
 			return new PollingChannelController();
 		default : 
-			return null;
+			throw new NotImplementedException("ResourceType: " + resourceType + " is not implemented");
 		}
 	}
+
+	private static void getQueryStringFromTargetId(RequestPrimitive request){
+		if(request.getTargetId().contains("?")){
+			String query = request.getTargetId().split("\\?")[1];
+			Map<String, List<String>> parameters = new HashMap<String, List<String>>();
+			if (query != null) {
+				String[] pairs = query.split("[&]");
+				for (String pair : pairs) {
+					String[] param = pair.split("[=]");
+
+					String key = null;
+					String value = null;
+					if (param.length > 0) {
+						key = param[0];
+					}
+					if (param.length > 1) {
+						value = param[1];
+					}
+					if (parameters.containsKey(key)) {
+						parameters.get(key).add(value);
+					} else {
+						List<String> values = new ArrayList<String>();
+						values.add(value);
+						parameters.put(key,values);
+					}
+				}
+			}
+			request.getQueryStrings().putAll(parameters);
+			if(request.getTo() == null){
+				request.setTo(request.getTargetId().split("\\?")[0]);
+				request.setTargetId(request.getTo());
+			}
+		}
+
+	}
+
 }

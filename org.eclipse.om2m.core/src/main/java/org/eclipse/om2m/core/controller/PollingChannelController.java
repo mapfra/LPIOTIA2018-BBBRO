@@ -34,7 +34,6 @@ import org.eclipse.om2m.commons.entities.PollingChannelEntity;
 import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
 import org.eclipse.om2m.commons.entities.ResourceEntity;
 import org.eclipse.om2m.commons.entities.SubscriptionEntity;
-import org.eclipse.om2m.commons.exceptions.AccessDeniedException;
 import org.eclipse.om2m.commons.exceptions.BadRequestException;
 import org.eclipse.om2m.commons.exceptions.ConflictException;
 import org.eclipse.om2m.commons.exceptions.ResourceNotFoundException;
@@ -48,6 +47,7 @@ import org.eclipse.om2m.core.notifier.Notifier;
 import org.eclipse.om2m.core.router.Patterns;
 import org.eclipse.om2m.core.urimapper.UriMapper;
 import org.eclipse.om2m.core.util.ControllerUtil;
+import org.eclipse.om2m.core.util.ControllerUtil.UpdateUtil;
 import org.eclipse.om2m.persistence.service.DAO;
 
 /**
@@ -99,10 +99,8 @@ public class PollingChannelController extends Controller {
 			return response;
 		}
 		
-		if(!request.getFrom().equals(originatorToCheck)){
-			throw new AccessDeniedException("Only the creator of the parent resource can create a polling channel.");
-		}
-
+		checkACP(acpsToCheck, request.getFrom(), Operation.CREATE);
+		
 		// Check if content is present
 		if (request.getContent() == null){
 			throw new BadRequestException("A content is requiered for PollingChannel creation");
@@ -250,8 +248,9 @@ public class PollingChannelController extends Controller {
 			throw new BadRequestException("Error in provided content");
 		}
 		
-		PollingChannel modifiedAttributes = new PollingChannel();
+		UpdateUtil.checkNotPermittedParameters(pollingChannel);
 		
+		PollingChannel modifiedAttributes = new PollingChannel();
 		// expirationTime O
 		if(pollingChannel.getExpirationTime() != null){
 			pollingChannelEntity.setExpirationTime(pollingChannel.getExpirationTime());

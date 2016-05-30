@@ -21,6 +21,9 @@ package org.eclipse.om2m.core.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 import org.eclipse.om2m.commons.constants.MimeMediaType;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
@@ -31,12 +34,23 @@ import org.eclipse.om2m.commons.resource.PrimitiveContent;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
 import org.eclipse.om2m.core.router.Router;
+import org.eclipse.om2m.core.thread.CoreExecutor;
 
 /**
  * Controller for fan out point handling (virtual resource)
  *
  */
 public class FanOutPointController extends Controller {
+	
+	private String foptSuffix;
+	
+	public FanOutPointController(){
+		super();
+	}
+	
+	public FanOutPointController(String foptSuffix){
+		this.foptSuffix = foptSuffix;
+	}
 
 	/**
 	 * Fan out the request verifying access rights etc
@@ -46,9 +60,10 @@ public class FanOutPointController extends Controller {
 	protected ResponsePrimitive fanOutRequest(RequestPrimitive request) {
 		String targetGroup = request.getTargetId();
 		AggregatedResponse aggResp = new AggregatedResponse();
-		ArrayList<RequestPrimitive> requests = new ArrayList<>();
+//		ArrayList<RequestPrimitive> requests = new ArrayList<>();
 		ResponsePrimitive resp = new ResponsePrimitive(request);
-
+		List<Future<ResponsePrimitive>> listOfResponse = new ArrayList<Future<ResponsePrimitive>>();
+		
 		// retrieve the parent group
 		GroupEntity group = dbs.getDAOFactory().getGroupDAO().find(transaction, targetGroup);
 		// check authorization of the originator 
@@ -57,29 +72,34 @@ public class FanOutPointController extends Controller {
 		
 		// TODO validate member types if not retrieve
 
-		ArrayList<FanOutSender> threads = new ArrayList<>();
+//		ArrayList<FanOutSender> threads = new ArrayList<>();
 		// fanout request to each member
 		for (String to : group.getMemberIDs()){
 			RequestPrimitive fanRequest = request.cloneParameters();
-			fanRequest.setTo(to);
-			fanRequest.setTargetId(to);
+			// if a suffix is provided add it to the request uri
+			LOGGER.info("Suffix in FanOutController " + this.foptSuffix);
+			if(this.foptSuffix != null){
+				fanRequest.setTo(to + foptSuffix);				
+			} else {
+				fanRequest.setTo(to);
+			}
+			LOGGER.info(fanRequest.getTo());
 			fanRequest.setReturnContentType(MimeMediaType.OBJ);
-			requests.add(fanRequest);
-			FanOutSender t = new FanOutSender(fanRequest);
-			threads.add(t);
-			t.start();
+			listOfResponse.add(CoreExecutor.submit(new FanOutWorker(fanRequest)));
 		}
 
-		// aggregate responses
-		for (FanOutSender t : threads) {
+		for(Future<ResponsePrimitive> response : listOfResponse){
 			try {
-				t.join();
-				aggResp.getResponsePrimitive().add(t.getResp());
-			} catch (InterruptedException e) {
-				LOGGER.debug("Fan out thread interrupted", e);
+				aggResp.getResponsePrimitive().add(response.get());
+			} catch (InterruptedException | ExecutionException e) {
+				LOGGER.error("FanOutCallable exception", e);
+				ResponsePrimitive responsePrimitive = new ResponsePrimitive();
+				PrimitiveContent content = new PrimitiveContent();
+				content.getAny().add(e.getMessage());
+				responsePrimitive.setContent(content);
+				responsePrimitive.setResponseStatusCode(ResponseStatusCode.INTERNAL_SERVER_ERROR);
 			}
 		}
-
 		// sub group creation?
 
 		resp.setResponseStatusCode(ResponseStatusCode.OK);
@@ -110,64 +130,38 @@ public class FanOutPointController extends Controller {
 		// fan out the request
 		return fanOutRequest(request);
 	}
-
-
+	
 	/**
-	 * Thread to fan out request
+	 * This inner class defines the Callable that will return the 
+	 * response of a request for the FanOutPoint broadcast.
 	 *
 	 */
-	class FanOutSender extends Thread {
-		/** Request to fan out */
-		private RequestPrimitive reqToFanOut;
-		/** Response primitive returned by the router */
-		private ResponsePrimitive resp ;
+	private static class FanOutWorker implements Callable<ResponsePrimitive>{
+		
+		/** The request that will be fan out to the router. */
+		private RequestPrimitive request;
+		
 		/**
-		 * Constructor
-		 * @param req to fan out
+		 * Main constructor with the request to be fan out.
+		 * @param request request to fan out
 		 */
-		public FanOutSender(RequestPrimitive req) {
-			this.reqToFanOut = req;
+		public FanOutWorker(RequestPrimitive request){
+			this.request = request;
 		}
-
+		
 		/**
-		 * Send the request
+		 * Implementation of the call() method from Callable<T>. 
+		 * It sends the request to the router and retrieve the result
+		 * that will be send to the caller of the class.
 		 */
 		@Override
-		public void run() {
-			resp = new Router().doRequest(reqToFanOut);
+		public ResponsePrimitive call() throws Exception {
+			ResponsePrimitive resp = new Router().doRequest(request);
 			resp.setPrimitiveContent(new PrimitiveContent());
 			resp.getPritimitiveContent().getAny().add(resp.getContent());
-		}
-
-		/**
-		 * @return the reqToFanOut
-		 */
-		public RequestPrimitive getReqToFanOut() {
-			return reqToFanOut;
-		}
-
-		/**
-		 * @param reqToFanOut the reqToFanOut to set
-		 */
-		public void setReqToFanOut(RequestPrimitive reqToFanOut) {
-			this.reqToFanOut = reqToFanOut;
-		}
-
-		/**
-		 * @return the resp
-		 */
-		public ResponsePrimitive getResp() {
 			return resp;
 		}
-
-		/**
-		 * @param resp the resp to set
-		 */
-		public void setResp(ResponsePrimitive resp) {
-			this.resp = resp;
-		}
-
-
+		
 	}
 
 }

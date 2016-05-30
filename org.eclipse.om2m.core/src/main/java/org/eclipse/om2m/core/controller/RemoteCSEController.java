@@ -51,6 +51,7 @@ import org.eclipse.om2m.core.persistence.PersistenceService;
 import org.eclipse.om2m.core.router.Patterns;
 import org.eclipse.om2m.core.urimapper.UriMapper;
 import org.eclipse.om2m.core.util.ControllerUtil;
+import org.eclipse.om2m.core.util.ControllerUtil.UpdateUtil;
 import org.eclipse.om2m.persistence.service.DAO;
 import org.eclipse.om2m.persistence.service.DBService;
 import org.eclipse.om2m.persistence.service.DBTransaction;
@@ -428,16 +429,36 @@ public class RemoteCSEController extends Controller {
 		// parentID					NP
 		// creationTime				NP
 		// lastModifiedTime			NP
-		// labels					NP
+		UpdateUtil.checkNotPermittedParameters(csr);
 		// cseType					NP
+		if(csr.getCseType() != null){
+			throw new BadRequestException("CseType is NP");
+		}
 		// CseBase					NP
+		if(csr.getCSEBase() != null){
+			throw new BadRequestException("CseBase is NP");
+		}
 		// CSE-ID					NP
+		if(csr.getCSEID() != null){
+			throw new BadRequestException("CseID is NP");
+		}
 		// nodeLink					NP
+		if(csr.getNodeLink() != null){
+			throw new BadRequestException("NodeLink is NP");
+		}
 
 		RemoteCSE modifiedAttributes = new RemoteCSE();
-
+		// labels					O
+		if(!csr.getLabels().isEmpty()){
+			csrEntity.setLabelsEntitiesFromSring(csr.getLabels());
+			modifiedAttributes.getLabels().addAll(csr.getLabels());
+		}
+		
 		// accessControlPolicyIDs		O
 		if (!csr.getAccessControlPolicyIDs().isEmpty()){		
+			for(AccessControlPolicyEntity acpe : csrEntity.getAccessControlPolicies()){
+				checkSelfACP(acpe, request.getFrom(), Operation.UPDATE);
+			}
 			csrEntity.setAccessControlPolicies(
 					ControllerUtil.buildAcpEntityList(csr.getAccessControlPolicyIDs(), transaction));
 			modifiedAttributes.getAccessControlPolicyIDs().addAll(csr.getAccessControlPolicyIDs());

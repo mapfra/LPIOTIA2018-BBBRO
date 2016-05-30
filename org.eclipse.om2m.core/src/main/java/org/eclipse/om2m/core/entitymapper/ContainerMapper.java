@@ -23,6 +23,7 @@ import java.math.BigInteger;
 
 import org.eclipse.om2m.commons.constants.ResourceType;
 import org.eclipse.om2m.commons.constants.ResultContent;
+import org.eclipse.om2m.commons.constants.ShortName;
 import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
 import org.eclipse.om2m.commons.entities.ContainerEntity;
 import org.eclipse.om2m.commons.entities.ContentInstanceEntity;
@@ -61,6 +62,8 @@ public class ContainerMapper extends EntityMapper<ContainerEntity, Container>{
 		for (AccessControlPolicyEntity acp : entity.getAccessControlPolicies()) {
 			resource.getAccessControlPolicyIDs().add(acp.getResourceID());
 		}
+		resource.setOldest(entity.getHierarchicalURI() + "/" + ShortName.OLDEST);
+		resource.setLatest(entity.getHierarchicalURI() + "/" + ShortName.LATEST);
 	}
 
 	@Override

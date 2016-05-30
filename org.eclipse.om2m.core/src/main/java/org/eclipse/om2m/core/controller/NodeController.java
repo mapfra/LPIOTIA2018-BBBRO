@@ -47,6 +47,7 @@ import org.eclipse.om2m.core.notifier.Notifier;
 import org.eclipse.om2m.core.router.Patterns;
 import org.eclipse.om2m.core.urimapper.UriMapper;
 import org.eclipse.om2m.core.util.ControllerUtil;
+import org.eclipse.om2m.core.util.ControllerUtil.UpdateUtil;
 import org.eclipse.om2m.persistence.service.DAO;
 
 
@@ -271,14 +272,23 @@ public class NodeController extends Controller {
 		// creationTime					NP
 		// creator						NP
 		// lastModifiedTime				NP
-		// currentNrOfInstances			NP
-		// currentByteSize				NP
-		// labels						NP
+		UpdateUtil.checkNotPermittedParameters(node);
+		// hostedCseLink				NP
+		if(node.getHostedCSELink() != null){
+			throw new BadRequestException("HostedCSELink is NP");
+		}
 
 		Node modifiedAttributes = new Node();
-		
+		// labels						O
+		if(!node.getLabels().isEmpty()){
+			nodeEntity.setLabelsEntitiesFromSring(node.getLabels());
+			modifiedAttributes.getLabels().addAll(node.getLabels());
+		}
 		// accessControlPolicyIDs		O
 		if(!node.getAccessControlPolicyIDs().isEmpty()){
+			for(AccessControlPolicyEntity acpe : nodeEntity.getAccessControlPolicies()){
+				checkSelfACP(acpe, request.getFrom(), Operation.UPDATE);
+			}
 			nodeEntity.getAccessControlPolicies().clear();
 			nodeEntity.setAccessControlPolicies(ControllerUtil.buildAcpEntityList(node.getAccessControlPolicyIDs(), transaction));
 			modifiedAttributes.getAccessControlPolicyIDs().addAll(node.getAccessControlPolicyIDs());
@@ -306,10 +316,6 @@ public class NodeController extends Controller {
 		if (node.getNodeID() != null) {
 			nodeEntity.setNodeID(node.getNodeID());
 			modifiedAttributes.setNodeID(node.getNodeID());
-		}
-		// hostedCSELink			NP
-		if (node.getHostedCSELink() != null) {
-			response.setErrorMessage("WARNING: update of hosted CSE link is not permitted and has not been updated");
 		}
 		
 		nodeEntity.setLastModifiedTime(DateUtil.now());

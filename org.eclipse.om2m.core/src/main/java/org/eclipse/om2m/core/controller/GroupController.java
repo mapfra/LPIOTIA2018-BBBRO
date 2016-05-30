@@ -23,6 +23,7 @@ import java.util.List;
 
 import org.eclipse.om2m.commons.constants.ConsistencyStrategy;
 import org.eclipse.om2m.commons.constants.Constants;
+import org.eclipse.om2m.commons.constants.MemberType;
 import org.eclipse.om2m.commons.constants.MimeMediaType;
 import org.eclipse.om2m.commons.constants.Operation;
 import org.eclipse.om2m.commons.constants.ResourceStatus;
@@ -53,6 +54,7 @@ import org.eclipse.om2m.core.persistence.PersistenceService;
 import org.eclipse.om2m.core.router.Patterns;
 import org.eclipse.om2m.core.urimapper.UriMapper;
 import org.eclipse.om2m.core.util.ControllerUtil;
+import org.eclipse.om2m.core.util.ControllerUtil.UpdateUtil;
 import org.eclipse.om2m.core.util.GroupUtil;
 import org.eclipse.om2m.persistence.service.DAO;
 import org.eclipse.om2m.persistence.service.DBService;
@@ -194,11 +196,12 @@ public class GroupController extends Controller {
 		}
 		groupEntity.setMaxNrOfMembers(group.getMaxNrOfMembers());
 
-		// memberType				M
+		// memberType				O
 		if(group.getMemberType() == null){
-			throw new BadRequestException("MemberType is Mandatory");
+			groupEntity.setMemberType(MemberType.MIXED);
+		} else {
+			groupEntity.setMemberType(group.getMemberType());			
 		}
-		groupEntity.setMemberType(group.getMemberType());
 		// memberID					M
 		if (group.getMemberIDs().isEmpty()){
 			throw new BadRequestException("MemberIDs is Mandatory");
@@ -381,10 +384,23 @@ public class GroupController extends Controller {
 		// accessControlPolicyIDs	NP
 		// creationTime				NP
 		// lastModifiedTime			NP
+		UpdateUtil.checkNotPermittedParameters(group);
 		// creator					NP
+		if(group.getCreator() != null){
+			throw new BadRequestException("Creator is NP");
+		}
 		// currentNrOdMembers		NP
+		if(group.getCurrentNrOfMembers() != null){
+			throw new BadRequestException("CurrentNrOfMembers is NP");
+		}
 		// memberTypeValidated		NP
+		if(group.getMemberTypeValidated() != null){
+			throw new BadRequestException("MemberTypeValidated is NP");
+		}
 		// consistencyStrategy		NP
+		if(group.getConsistencyStrategy() != null){
+			throw new BadRequestException("ConsistencyStrategy is NP");
+		}
 
 		Group modifiedAttributes = new Group();
 		
@@ -430,6 +446,9 @@ public class GroupController extends Controller {
 		}
 		// membersACPIDs			O
 		if(!group.getMembersAccessControlPolicyIDs().isEmpty()){
+			for(AccessControlPolicyEntity acpe : groupEntity.getAccessControlPolicies()){
+				checkSelfACP(acpe, request.getFrom(), Operation.UPDATE);
+			}
 			groupEntity.getMemberAcpIds().clear();
 			groupEntity.getMemberAcpIds().addAll(group.getMembersAccessControlPolicyIDs());
 			modifiedAttributes.getMembersAccessControlPolicyIDs().addAll(group.getMembersAccessControlPolicyIDs());

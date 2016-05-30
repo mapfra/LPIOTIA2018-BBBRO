@@ -27,7 +27,6 @@ import org.eclipse.om2m.commons.entities.LabelEntity;
 import org.eclipse.om2m.commons.entities.ResourceEntity;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.Resource;
-import org.eclipse.om2m.commons.utils.UriUtil;
 
 /**
  * Generic entity mapper
@@ -47,7 +46,7 @@ public abstract class EntityMapper<E extends ResourceEntity, R extends Resource>
 		resource.setLastModifiedTime(entity.getLastModifiedTime());
 		resource.setName(entity.getName());
 		resource.setParentID(entity.getParentID());
-		resource.setResourceID(UriUtil.toCseRelativeUri(entity.getResourceID()));
+		resource.setResourceID(entity.getResourceID());
 		resource.setResourceType(entity.getResourceType());
 		for (LabelEntity lbl : entity.getLabelsEntities()){
 			resource.getLabels().add(lbl.getLabel());

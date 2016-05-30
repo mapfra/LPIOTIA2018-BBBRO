@@ -26,7 +26,6 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.eclipse.om2m.commons.constants.AccessControl;
 import org.eclipse.om2m.commons.constants.MimeMediaType;
 import org.eclipse.om2m.commons.constants.Operation;
 import org.eclipse.om2m.commons.constants.ResultContent;
@@ -42,6 +41,7 @@ import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.Resource;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
 import org.eclipse.om2m.core.datamapper.DataMapperSelector;
+import org.eclipse.om2m.core.entitymapper.EntityMapper;
 import org.eclipse.om2m.core.entitymapper.EntityMapperFactory;
 import org.eclipse.om2m.core.persistence.PersistenceService;
 import org.eclipse.om2m.persistence.service.DBService;
@@ -155,13 +155,10 @@ public abstract class Controller {
 	public void checkACP(List<AccessControlPolicyEntity> acpList, String originator, BigInteger operation)
 			throws AccessDeniedException{
 		if(originator == null){
-			throw new AccessDeniedException("No originator privded");
+			throw new AccessDeniedException();
 		}
 		if (acpList == null || acpList.isEmpty()) {
 			throw new ResourceNotFoundException("Current resource does not have any ACP attached");
-		}
-		if (!originatorExists(originator)) {
-			throw new AccessDeniedException("Provided originator not found");
 		}
 		// Check Resource accessRight existence not found
 		boolean originatorFound = false;
@@ -171,7 +168,7 @@ public abstract class Controller {
 				originatorFound = false ; 
 				operationAllowed = false;
 				for (AccessControlOriginatorEntity originatorEntity : rule.getAccessControlOriginators()){
-					if (originatorEntity.getOriginatorID().equalsIgnoreCase(AccessControl.ORIGINATOR_ALL) || originatorEntity.getOriginatorID().equalsIgnoreCase(originator)){
+					if (originator.matches(originatorEntity.getOriginatorID().replace("*", ".*"))){
 						originatorFound = true;
 						break;
 					}
@@ -187,7 +184,7 @@ public abstract class Controller {
 						operationAllowed = true; 
 					} else if (operation.equals(Operation.DISCOVERY) && rule.isDiscovery()){
 						operationAllowed = true;
-					}else if(operation.equals(Operation.NOTIFY) && rule.isNotify()){
+					} else if (operation.equals(Operation.NOTIFY) && rule.isNotify()){
 						operationAllowed = true;
 					}
 				}
@@ -201,7 +198,7 @@ public abstract class Controller {
 		}
 
 		if (!originatorFound){
-			throw new AccessDeniedException("Given originator is not found");
+			throw new AccessDeniedException();
 		}
 		if (!operationAllowed){
 			throw new AccessDeniedException();
@@ -224,7 +221,7 @@ public abstract class Controller {
 			originatorFound = false ; 
 			operationAllowed = false ;
 			for (AccessControlOriginatorEntity originatorEntity : rule.getAccessControlOriginators()){
-				if (originatorEntity.getOriginatorID().equalsIgnoreCase(AccessControl.ORIGINATOR_ALL) || originatorEntity.getOriginatorID().equalsIgnoreCase(originator)){
+				if (originator.matches(originatorEntity.getOriginatorID().replace("*", ".*"))){
 					originatorFound = true;
 					break;
 				}
@@ -253,7 +250,7 @@ public abstract class Controller {
 			}
 		}
 		if (!originatorFound){
-			throw new AccessDeniedException("Given originator is not found");
+			throw new AccessDeniedException();
 		}
 		if (!operationAllowed){
 			throw new AccessDeniedException();
@@ -280,9 +277,15 @@ public abstract class Controller {
 		return generateId("", "");
 	}
 
-	@SuppressWarnings("unchecked")
 	protected void setLocationAndCreationContent(RequestPrimitive request, 
 			ResponsePrimitive response, ResourceEntity entity){
+		setLocationAndCreationContent(request, response, entity, EntityMapperFactory.
+						getMapperFromResourceType(entity.getResourceType().intValue()));
+	}
+
+	@SuppressWarnings("unchecked")
+	protected void setLocationAndCreationContent(RequestPrimitive request, 
+			ResponsePrimitive response, ResourceEntity entity, @SuppressWarnings("rawtypes") EntityMapper mapper){
 		if(request.getResultContent()!= null){
 			if (request.getResultContent().equals(ResultContent.HIERARCHICAL_ADRESS)
 					|| request.getResultContent().equals(ResultContent.HIERARCHICAL_AND_ATTRIBUTES)){
@@ -292,9 +295,7 @@ public abstract class Controller {
 			}
 			if(request.getResultContent().equals(ResultContent.HIERARCHICAL_AND_ATTRIBUTES)
 					|| request.getResultContent().equals(ResultContent.ATTRIBUTES)){
-				Resource res = EntityMapperFactory.
-						getMapperFromResourceType(entity.getResourceType().intValue()).
-						mapEntityToResource(entity, ResultContent.ATTRIBUTES);
+				Resource res = mapper.mapEntityToResource(entity, ResultContent.ATTRIBUTES);
 				if(request.getReturnContentType().equals(MimeMediaType.OBJ)){
 					response.setContent(res);
 				} else {
@@ -304,13 +305,12 @@ public abstract class Controller {
 				}
 			}
 		} else {
-			response.setContent(EntityMapperFactory.
-					getMapperFromResourceType(entity.getResourceType().intValue()).
-					mapEntityToResource(entity, ResultContent.ATTRIBUTES));
+			response.setContent(mapper.mapEntityToResource(entity, ResultContent.ATTRIBUTES));
 			response.setLocation(entity.getResourceID());			
 		}
 	}
-
+	
+	
 	/**
 	 * Allows to know if the provided originator exists in the system
 	 * @param originator

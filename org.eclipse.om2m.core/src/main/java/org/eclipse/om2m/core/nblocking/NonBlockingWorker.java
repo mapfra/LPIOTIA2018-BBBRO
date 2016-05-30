@@ -96,7 +96,13 @@ public class NonBlockingWorker extends Thread {
 			if(request.getReturnContentType().equals(MimeMediaType.OBJ)){
 				managedRequest.setOperationResultContent(DataMapperSelector.
 						getDataMapperList().get(MimeMediaType.JSON).objToString(response.getContent()));
-			} else {
+			} else if(request.getReturnContentType().equals(MimeMediaType.XML)){
+				Object objReseult = DataMapperSelector.getDataMapperList().
+						get(MimeMediaType.XML).stringToObj((String)response.getContent());
+				String jsonResult = DataMapperSelector.getDataMapperList().get(MimeMediaType.JSON).objToString(objReseult);
+				managedRequest.setOperationResultContent(jsonResult);
+			}
+			else {
 				managedRequest.setOperationResultContent((String) response.getContent());				
 			}
 		}

@@ -31,23 +31,26 @@ import org.eclipse.om2m.commons.constants.ResourceType;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
 import org.eclipse.om2m.commons.entities.AeEntity;
+import org.eclipse.om2m.commons.entities.AreaNwkDeviceInfoEntity;
+import org.eclipse.om2m.commons.entities.AreaNwkInfoEntity;
 import org.eclipse.om2m.commons.entities.CSEBaseEntity;
 import org.eclipse.om2m.commons.entities.ContainerEntity;
 import org.eclipse.om2m.commons.entities.ContentInstanceEntity;
 import org.eclipse.om2m.commons.entities.GroupEntity;
 import org.eclipse.om2m.commons.entities.LabelEntity;
+import org.eclipse.om2m.commons.entities.NodeEntity;
 import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
 import org.eclipse.om2m.commons.entities.ResourceEntity;
 import org.eclipse.om2m.commons.entities.SubscriptionEntity;
 import org.eclipse.om2m.commons.entities.UriMapperEntity;
 import org.eclipse.om2m.commons.exceptions.BadRequestException;
 import org.eclipse.om2m.commons.exceptions.NotImplementedException;
+import org.eclipse.om2m.commons.exceptions.OperationNotAllowed;
 import org.eclipse.om2m.commons.exceptions.ResourceNotFoundException;
-import org.eclipse.om2m.commons.resource.DiscoveryResult;
-import org.eclipse.om2m.commons.resource.DiscoveryResult.ResourceRef;
 import org.eclipse.om2m.commons.resource.FilterCriteria;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
+import org.eclipse.om2m.commons.resource.URIList;
 import org.eclipse.om2m.core.persistence.PersistenceService;
 import org.eclipse.om2m.core.router.Patterns;
 import org.eclipse.om2m.persistence.service.DAO;
@@ -62,9 +65,7 @@ public class DiscoveryController extends Controller {
 
 	@Override
 	public ResponsePrimitive doCreate(RequestPrimitive request) {
-		ResponsePrimitive response = new ResponsePrimitive(request);
-		response.setResponseStatusCode(ResponseStatusCode.OPERATION_NOT_ALLOWED);
-		return response;
+		throw new OperationNotAllowed("Delete of Discovery is not allowed");
 	}
 
 	@Override
@@ -157,43 +158,36 @@ public class DiscoveryController extends Controller {
 			childUris = dbs.getDBUtilManager().getComplexFindUtil().
 					getChildUrisDis(request.getTargetId(), filter);
 		}
-
-		// Create the result object that will be serialized
-		DiscoveryResult result = new DiscoveryResult();
-		for (UriMapperEntity uriEntity : childUris){
-			if(filter.getLimit() != null && result.getReferences().size() == filter.getLimit().intValue()){
-				System.out.println("Limit reached");
+		
+		URIList uriList = new URIList();
+		for(UriMapperEntity uriEntity : childUris){
+			if(filter.getLimit() != null && uriList.getListOfUri().size() == filter.getLimit().intValue()){
 				break;
 			}
-			ResourceRef ref = new ResourceRef();
-			ref.setResourceType(uriEntity.getResourceType());
 			if(request.getDiscoveryResultType().equals(DiscoveryResultType.HIERARCHICAL)){
-				ref.setUri(uriEntity.getHierarchicalUri());
+				if(!uriList.getListOfUri().contains(uriEntity.getHierarchicalUri())){
+					uriList.getListOfUri().add(uriEntity.getHierarchicalUri());
+				}
 			} else {
-				ref.setUri(uriEntity.getNonHierarchicalUri());
-			}
-			if(!result.getReferences().contains(ref)){
-				result.getReferences().add(ref);
+				if(!uriList.getListOfUri().contains(uriEntity.getNonHierarchicalUri())){
+					uriList.getListOfUri().add(uriEntity.getNonHierarchicalUri());
+				}
 			}
 		}
 
-		response.setContent(result);
+		response.setContent(uriList);
 		response.setResponseStatusCode(ResponseStatusCode.OK);
 		return response;
 	}
 
 	@Override
 	public ResponsePrimitive doUpdate(RequestPrimitive request) {
-		ResponsePrimitive response = new ResponsePrimitive(request);
-		response.setResponseStatusCode(ResponseStatusCode.OPERATION_NOT_ALLOWED);
-		return response;
+		throw new OperationNotAllowed("Update of Discovery is not allowed");
 	}
 
 	@Override
 	public ResponsePrimitive doDelete(RequestPrimitive request) {
-		ResponsePrimitive response = new ResponsePrimitive(request);
-		response.setResponseStatusCode(ResponseStatusCode.OPERATION_NOT_ALLOWED);
-		return response;
+		throw new OperationNotAllowed("Delete of Discovery is not allowed");
 	}
 
 	private List<AccessControlPolicyEntity> getAcpsFromEntity(
@@ -216,6 +210,16 @@ public class DiscoveryController extends Controller {
 			return ((CSEBaseEntity) resourceEntity).getAccessControlPolicies();
 		case ResourceType.SUBSCRIPTION:
 			return ((SubscriptionEntity) resourceEntity).getAcpList();
+		case ResourceType.NODE:
+			return ((NodeEntity) resourceEntity).getAccessControlPolicies();
+		case ResourceType.MGMT_OBJ:
+			if (resourceEntity instanceof AreaNwkInfoEntity) {
+				return ((AreaNwkInfoEntity) resourceEntity).getAcps();
+			}
+			if (resourceEntity instanceof AreaNwkDeviceInfoEntity) {
+				return ((AreaNwkDeviceInfoEntity) resourceEntity).getAcps();
+			}
+			return null;
 		default:
 			// TODO On implementing resource, add the reference here
 			return null;
@@ -245,6 +249,14 @@ public class DiscoveryController extends Controller {
 			case(ResourceType.CSE_BASE):
 				result.addAll(labelEntity.getLinkedCsb());
 			break;
+			case(ResourceType.NODE): {
+				result.addAll(labelEntity.getLinkedNodes());
+			}
+			break;
+			case(ResourceType.MGMT_OBJ): {
+				result.addAll(labelEntity.getLinkedAni());
+				result.addAll(labelEntity.getLinkedAndi());
+			}
 			default:
 				break;
 			}
@@ -255,6 +267,9 @@ public class DiscoveryController extends Controller {
 			result.addAll(labelEntity.getLinkedGroup());
 			result.addAll(labelEntity.getLinkedCsr());
 			result.addAll(labelEntity.getLinkedCsb());
+			result.addAll(labelEntity.getLinkedNodes());
+			result.addAll(labelEntity.getLinkedAni());
+			result.addAll(labelEntity.getLinkedAndi());
 		}
 		return result;
 	}

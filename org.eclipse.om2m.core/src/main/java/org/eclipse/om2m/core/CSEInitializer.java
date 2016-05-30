@@ -70,29 +70,36 @@ public class CSEInitializer {
 	 * Initialize the current launching CSE.
 	 */
 	public static void init() throws InterruptedException{
-		LOGGER.info("Waiting for the database service");
-		PersistenceService.getInstance().getDbReady().acquire();
+		LOGGER.info("Initializating the cseBase");
+		// Check the existence of the cseBase in the database
+		DBService dbs = PersistenceService.getInstance().getDbService();
+		DBTransaction transaction = dbs.getDbTransaction();
+		transaction.open();
+		CSEBaseEntity cseBase = dbs.getDAOFactory().getCSEBaseDAO().find(transaction, "/" + Constants.CSE_ID);
+		// if the cseBase is not initialized, then create the base resources
+		if(cseBase == null){
+			// Create AccessRight resource
+			LOGGER.info("Create AccessControlPolicy resource");
+			initACP();
+			
+			// Create CSEBase resource
+			LOGGER.info("Create CSEBase resource");
+			initCSEBase();			
 
-		// Create AccessRight resource
-		LOGGER.info("Create AccessControlPolicy resource");
-		initACP();
-
-		// Create CSEBase resource
-		LOGGER.info("Create CSEBase resource");
-		initCSEBase();
-
-		if(!Constants.CSE_TYPE.equalsIgnoreCase(CSEType.IN) && Constants.CSE_AUTHENTICATION){
-			LOGGER.info("Register CSE to another CSE.");
-			new Thread(new Runnable() {
-
-				@Override
-				public void run() {
-					registerCSE();					
-				}
-			}).start();
+			if(!Constants.CSE_TYPE.equalsIgnoreCase(CSEType.IN) && Constants.CSE_AUTHENTICATION){
+				LOGGER.info("Register CSE to another CSE.");
+				new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+						registerCSE();
+					}
+				}).start();
+			}
+		} else {
+			LOGGER.info("cseBase already initialized");
 		}
 
-		PersistenceService.getInstance().getDbReady().release();
 	}
 
 	/**
@@ -170,7 +177,8 @@ public class CSEInitializer {
 		remoteCSE.setCSEID("/" + Constants.CSE_ID);
 		remoteCSE.setCSEBase("//" + Constants.M2M_SP_ID + remoteCSE.getCSEID());
 		remoteCSE.setRequestReachability(new Boolean(true));
-
+		remoteCSE.setName(Constants.CSE_ID);
+		
 		String representation = DataMapperSelector.getDataMapperList().get(contentFormat).objToString(remoteCSE);
 
 		RequestPrimitive request = new RequestPrimitive();
@@ -182,7 +190,6 @@ public class CSEInitializer {
 		remotePoa += Constants.REMOTE_CSE_ID;
 		request.setTo(remotePoa);
 		request.setContent(representation);
-		request.setName(Constants.CSE_ID);
 		request.setOperation(Operation.CREATE);
 		request.setResourceType(BigInteger.valueOf(ResourceType.REMOTE_CSE));
 		request.setRequestContentType(contentFormat);
@@ -278,6 +285,7 @@ public class CSEInitializer {
 		ruleEntity.setNotify(true);
 		ruleEntity.setDiscovery(true);
 		ruleEntity.getAccessControlOriginators().add(new AccessControlOriginatorEntity(Constants.ADMIN_REQUESTING_ENTITY));
+		ruleEntity.getAccessControlOriginators().add(new AccessControlOriginatorEntity("/" + Constants.CSE_ID));
 		acp.getPrivileges().add(ruleEntity);
 		
 		// privileges for ALL originators (read + discovery)

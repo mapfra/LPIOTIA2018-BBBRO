@@ -36,6 +36,7 @@ import org.eclipse.om2m.commons.entities.SubscriptionEntity;
 import org.eclipse.om2m.commons.exceptions.BadRequestException;
 import org.eclipse.om2m.commons.exceptions.ConflictException;
 import org.eclipse.om2m.commons.exceptions.NotImplementedException;
+import org.eclipse.om2m.commons.exceptions.OperationNotAllowed;
 import org.eclipse.om2m.commons.exceptions.ResourceNotFoundException;
 import org.eclipse.om2m.commons.resource.ContentInstance;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
@@ -222,6 +223,10 @@ public class ContentInstanceController extends Controller {
 				dbs.getDAOFactory().getContentInstanceDAO().delete(transaction, container.getChildContentInstances().get(0));
 			}
 			cinEntity.setParentContainer(container);
+			if(container.getStateTag() != null){
+				container.setStateTag(BigInteger.valueOf(container.getStateTag().intValue() + 1));
+				dbs.getDAOFactory().getContainerDAO().update(transaction, container);
+			}
 		}
 		// case parent is ContainerAnnc
 		if (parentEntity.getResourceType().intValue() == (ResourceType.CONTAINER_ANNC)) {
@@ -280,10 +285,7 @@ public class ContentInstanceController extends Controller {
 	@Override
 	public ResponsePrimitive doUpdate(RequestPrimitive request) {
 		// this operation is not allowed for content instance resource
-		// create the response primitive
-		ResponsePrimitive response = new ResponsePrimitive(request);
-		response.setResponseStatusCode(ResponseStatusCode.OPERATION_NOT_ALLOWED);
-		return response;
+		throw new OperationNotAllowed("Update on ContentInstance is not Allowed");
 	}
 
 	/**

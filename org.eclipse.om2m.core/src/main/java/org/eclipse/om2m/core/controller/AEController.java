@@ -52,6 +52,7 @@ import org.eclipse.om2m.core.notifier.Notifier;
 import org.eclipse.om2m.core.router.Patterns;
 import org.eclipse.om2m.core.urimapper.UriMapper;
 import org.eclipse.om2m.core.util.ControllerUtil;
+import org.eclipse.om2m.core.util.ControllerUtil.UpdateUtil;
 import org.eclipse.om2m.persistence.service.DAO;
 
 /**
@@ -129,17 +130,14 @@ public class AEController extends Controller {
 
 		if (request.getFrom() != null){
 			if (request.getFrom().startsWith("S")) {
-				response.setResponseStatusCode(ResponseStatusCode.NOT_IMPLEMENTED);
-				response.setErrorMessage("originator starting with S not implemented yet");
-				transaction.close();
-				return response;
+				throw new NotImplementedException("originator starting with S not implemented yet");
 			} else if (request.getFrom().startsWith("C")) {
 				assignAeiC = false;
-			} else {
+			} else if(!request.getFrom().equals("")){
 				// Check access control policy of the originator
 				checkACP(acpsToCheck, request.getFrom(), Operation.CREATE);
 			}
-		} 
+		}
 
 		// Check if content is present
 		if (request.getContent() == null){
@@ -183,7 +181,7 @@ public class AEController extends Controller {
 		}
 		// nodeLink					NP
 		if (ae.getNodeLink() != null){
-			throw new NotPermittedAttrException("NodeLink is Not Permitted");
+			aeEntity.setNodeLink(ae.getNodeLink());
 		}
 
 		// app-ID					M
@@ -208,59 +206,61 @@ public class AEController extends Controller {
 			aeEntity.setAeid(request.getFrom());
 		}
 		// Set other parameters
-		aeEntity.setResourceID("/" + Constants.CSE_ID + "/" + ShortName.AE + Constants.PREFIX_SEPERATOR + aeEntity.getAeid());
+		aeEntity.setResourceID("/" + Constants.CSE_ID + "/" + aeEntity.getAeid());
 		if (dbs.getDAOFactory().getAeDAO().find(transaction, aeEntity.getResourceID()) != null) {
-			transaction.close();
-			response.setResponseStatusCode(ResponseStatusCode.CONFLICT);
-			response.setErrorMessage("Already registered");
-			return response;
+			throw new ConflictException("Already registered");
 		}
 
 		// accessControlPolicyIDs	O
 		if (!ae.getAccessControlPolicyIDs().isEmpty()){
 			aeEntity.setAccessControlPolicies(
 					ControllerUtil.buildAcpEntityList(ae.getAccessControlPolicyIDs(), transaction));
-		} else {
-			AccessControlPolicyEntity acpEntity = new AccessControlPolicyEntity();
-			acpEntity.setCreationTime(DateUtil.now());
-			acpEntity.setLastModifiedTime(DateUtil.now());
-			acpEntity.setParentID("/" + Constants.CSE_ID);
-			acpEntity.setResourceID("/" + Constants.CSE_ID + "/" + ShortName.ACP + Constants.PREFIX_SEPERATOR + generateId());
-			acpEntity.setName(ShortName.ACP + ShortName.AE + Constants.PREFIX_SEPERATOR + generatedId);
-			AccessControlRuleEntity ruleEntity = new AccessControlRuleEntity();
-			AccessControlOriginatorEntity originatorEntity = new AccessControlOriginatorEntity(Constants.ADMIN_REQUESTING_ENTITY);
-			ruleEntity.getAccessControlOriginators().add(originatorEntity);
-			ruleEntity.setCreate(true);
-			ruleEntity.setRetrieve(true);
-			ruleEntity.setUpdate(true);
-			ruleEntity.setDelete(true);
-			ruleEntity.setNotify(true);
-			ruleEntity.setDiscovery(true);
-			acpEntity.getSelfPrivileges().add(ruleEntity);
-			// Privileges
-			ruleEntity = new AccessControlRuleEntity();
-			ruleEntity.setCreate(true);
-			ruleEntity.setRetrieve(true);
-			ruleEntity.setUpdate(true);
-			ruleEntity.setDelete(true);
-			ruleEntity.setNotify(true);
-			ruleEntity.setDiscovery(true);
-			ruleEntity.getAccessControlOriginators().add(new AccessControlOriginatorEntity(aeEntity.getAeid()));
-			ruleEntity.getAccessControlOriginators().add(new AccessControlOriginatorEntity(Constants.ADMIN_REQUESTING_ENTITY));
-			acpEntity.getPrivileges().add(ruleEntity);
-			acpEntity.setHierarchicalURI("/" + Constants.CSE_ID + "/" + acpEntity.getName());
-			UriMapper.addNewUri(acpEntity.getHierarchicalURI(), acpEntity.getResourceID(), ResourceType.ACCESS_CONTROL_POLICY);
-			dbs.getDAOFactory().getAccessControlPolicyDAO().create(transaction, acpEntity);
-
-			AccessControlPolicyEntity acpDB = dbs.getDAOFactory().getAccessControlPolicyDAO().find(transaction, acpEntity.getResourceID());
-			CSEBaseEntity cseBase = dbs.getDAOFactory().getCSEBaseDAO().find(transaction, "/" + Constants.CSE_ID);
-			cseBase.getChildAccessControlPolicies().add(acpDB);
-			dbs.getDAOFactory().getCSEBaseDAO().update(transaction, cseBase);
-			// adding new acp to the acp list
-			aeEntity.getAccessControlPolicies().add(acpDB);
-			// direct link to the generated acp
-			aeEntity.setGeneratedAcp(acpDB);
 		}
+
+		// FIXME [0001] Creation of AE with an acpi provided
+		//		} else {
+		// Create the acp corresponding to the AE_ID 
+		AccessControlPolicyEntity acpEntity = new AccessControlPolicyEntity();
+		acpEntity.setCreationTime(DateUtil.now());
+		acpEntity.setLastModifiedTime(DateUtil.now());
+		acpEntity.setParentID("/" + Constants.CSE_ID);
+		acpEntity.setResourceID("/" + Constants.CSE_ID + "/" + ShortName.ACP + Constants.PREFIX_SEPERATOR + generateId());
+		acpEntity.setName(ShortName.ACP + ShortName.AE + Constants.PREFIX_SEPERATOR + generatedId);
+		AccessControlRuleEntity ruleEntity = new AccessControlRuleEntity();
+		AccessControlOriginatorEntity originatorEntity = new AccessControlOriginatorEntity(Constants.ADMIN_REQUESTING_ENTITY);
+		ruleEntity.getAccessControlOriginators().add(originatorEntity);
+		ruleEntity.setCreate(true);
+		ruleEntity.setRetrieve(true);
+		ruleEntity.setUpdate(true);
+		ruleEntity.setDelete(true);
+		ruleEntity.setNotify(true);
+		ruleEntity.setDiscovery(true);
+		acpEntity.getSelfPrivileges().add(ruleEntity);
+		// Privileges
+		ruleEntity = new AccessControlRuleEntity();
+		ruleEntity.setCreate(true);
+		ruleEntity.setRetrieve(true);
+		ruleEntity.setUpdate(true);
+		ruleEntity.setDelete(true);
+		ruleEntity.setNotify(true);
+		ruleEntity.setDiscovery(true);
+		ruleEntity.getAccessControlOriginators().add(new AccessControlOriginatorEntity(aeEntity.getAeid()));
+		ruleEntity.getAccessControlOriginators().add(new AccessControlOriginatorEntity(Constants.ADMIN_REQUESTING_ENTITY));
+		acpEntity.getPrivileges().add(ruleEntity);
+		acpEntity.setHierarchicalURI("/" + Constants.CSE_ID + "/" + Constants.CSE_NAME + "/" + acpEntity.getName());
+		// Add the acp in the UriMapper table
+		UriMapper.addNewUri(acpEntity.getHierarchicalURI(), acpEntity.getResourceID(), ResourceType.ACCESS_CONTROL_POLICY);
+		dbs.getDAOFactory().getAccessControlPolicyDAO().create(transaction, acpEntity);
+		// Retrieve the acp in the database to make the link with the CSEBase resource
+		AccessControlPolicyEntity acpDB = dbs.getDAOFactory().getAccessControlPolicyDAO().find(transaction, acpEntity.getResourceID());
+		CSEBaseEntity cseBase = dbs.getDAOFactory().getCSEBaseDAO().find(transaction, "/" + Constants.CSE_ID);
+		cseBase.getChildAccessControlPolicies().add(acpDB);
+		dbs.getDAOFactory().getCSEBaseDAO().update(transaction, cseBase);
+		// adding new acp to the acp list
+		aeEntity.getAccessControlPolicies().add(acpDB);
+		// direct link to the generated acp
+		aeEntity.setGeneratedAcp(acpDB);
+		//		}
 
 		// appName					O
 		if (ae.getAppName() != null){
@@ -283,14 +283,14 @@ public class AEController extends Controller {
 			}
 			aeEntity.setName(ae.getName());
 		} else
-		if (request.getName() != null){
-			if (!Patterns.checkResourceName(request.getName())){
-				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
+			if (request.getName() != null){
+				if (!Patterns.checkResourceName(request.getName())){
+					throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
+				}
+				aeEntity.setName(request.getName());
+			} else {
+				aeEntity.setName(ShortName.AE + "_" + generatedId);
 			}
-			aeEntity.setName(request.getName());
-		} else {
-			aeEntity.setName(ShortName.AE + "_" + generatedId);
-		}
 		aeEntity.setHierarchicalURI(parentEntity.getHierarchicalURI() + "/" + aeEntity.getName());
 		if (!UriMapper.addNewUri(aeEntity.getHierarchicalURI(), aeEntity.getResourceID(), ResourceType.AE)){
 			throw new ConflictException("Name already present in the parent collection.");
@@ -411,14 +411,31 @@ public class AEController extends Controller {
 		// parentID					NP
 		// creationTime				NP
 		// lastModifiedTime			NP
-		// labels					NP
+		UpdateUtil.checkNotPermittedParameters(ae);
 		// app-ID					NP
+		if(ae.getAppID() != null){
+			throw new BadRequestException("AppID is NP");
+		}
 		// ae-ID					NP
+		if(ae.getAEID() != null){
+			throw new BadRequestException("AE ID is NP");
+		}
 		// nodeLink					NP
+		if(ae.getNodeLink() != null){
+			throw new BadRequestException("NodeLink is NP");
+		}
 
 		AE modifiedAttributes = new AE();
+		// labels					O
+		if(!ae.getLabels().isEmpty()){
+			aeEntity.setLabelsEntitiesFromSring(ae.getLabels());
+			modifiedAttributes.getLabels().addAll(ae.getLabels());
+		}
 		// accessControlPolicyIDs	O
 		if(!ae.getAccessControlPolicyIDs().isEmpty()){
+			for(AccessControlPolicyEntity acpe : aeEntity.getAccessControlPolicies()){
+				checkSelfACP(acpe, request.getFrom(), Operation.UPDATE);
+			}
 			aeEntity.getAccessControlPolicies().clear();
 			aeEntity.setAccessControlPolicies(ControllerUtil.buildAcpEntityList(ae.getAccessControlPolicyIDs(), transaction));
 			modifiedAttributes.getAccessControlPolicyIDs().addAll(ae.getAccessControlPolicyIDs());
@@ -462,7 +479,7 @@ public class AEController extends Controller {
 			aeEntity.setRequestReachability(ae.getRequestReachability());
 			modifiedAttributes.setRequestReachability(ae.getRequestReachability());
 		}
-		
+
 		// Last Time Modified update
 		aeEntity.setLastModifiedTime(DateUtil.now());
 		modifiedAttributes.setLastModifiedTime(aeEntity.getLastModifiedTime());
@@ -496,7 +513,11 @@ public class AEController extends Controller {
 				Operation.DELETE);
 
 		UriMapper.deleteUri(aeEntity.getHierarchicalURI());
-
+		
+		if(aeEntity.getGeneratedAcp() != null){
+			UriMapper.deleteUri(aeEntity.getGeneratedAcp().getHierarchicalURI());
+		}
+		
 		Notifier.notifyDeletion(aeEntity.getSubscriptions(), aeEntity);
 
 		// Delete the resource

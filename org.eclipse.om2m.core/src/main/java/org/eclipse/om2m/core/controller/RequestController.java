@@ -23,6 +23,7 @@ import org.eclipse.om2m.commons.constants.Constants;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.entities.RequestEntity;
 import org.eclipse.om2m.commons.exceptions.AccessDeniedException;
+import org.eclipse.om2m.commons.exceptions.OperationNotAllowed;
 import org.eclipse.om2m.commons.exceptions.ResourceNotFoundException;
 import org.eclipse.om2m.commons.resource.Request;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
@@ -34,9 +35,7 @@ public class RequestController extends Controller {
 
 	@Override
 	public ResponsePrimitive doCreate(RequestPrimitive request) {
-		ResponsePrimitive response = new ResponsePrimitive(request);
-		response.setResponseStatusCode(ResponseStatusCode.OPERATION_NOT_ALLOWED);
-		return response;
+		throw new OperationNotAllowed("Create on Request is not allowed");
 	}
 
 	@Override
@@ -64,9 +63,7 @@ public class RequestController extends Controller {
 
 	@Override
 	public ResponsePrimitive doUpdate(RequestPrimitive request) {
-		ResponsePrimitive response = new ResponsePrimitive(request);
-		response.setResponseStatusCode(ResponseStatusCode.OPERATION_NOT_ALLOWED);
-		return response;
+		throw new OperationNotAllowed("Update on Request is not allowed");
 	}
 
 	@Override

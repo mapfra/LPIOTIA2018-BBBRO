@@ -19,8 +19,6 @@
  *******************************************************************************/
 package org.eclipse.om2m.core.persistence;
 
-import java.util.concurrent.Semaphore;
-
 import org.eclipse.om2m.persistence.service.DBService;
 
 /**
@@ -30,7 +28,6 @@ import org.eclipse.om2m.persistence.service.DBService;
 public class PersistenceService {
 	
 	private DBService dbService ;
-	private Semaphore dbReady = new Semaphore(0);
 	
 	private static PersistenceService service = new PersistenceService();
 	
@@ -47,17 +44,6 @@ public class PersistenceService {
 
 	public void setDbService(DBService dbService) {
 		this.dbService = dbService;
-	}
-
-	/**
-	 * @return the dbReady
-	 */
-	public Semaphore getDbReady() {
-		return dbReady;
-	}
-	
-	public void resetSemaphoreDb(){
-		dbReady = new Semaphore(0);
 	}
 
 }

@@ -25,6 +25,7 @@ import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
 import org.eclipse.om2m.commons.entities.ContainerEntity;
 import org.eclipse.om2m.commons.entities.ContentInstanceEntity;
+import org.eclipse.om2m.commons.exceptions.OperationNotAllowed;
 import org.eclipse.om2m.commons.exceptions.ResourceNotFoundException;
 import org.eclipse.om2m.commons.resource.ContentInstance;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
@@ -52,9 +53,7 @@ public class LatestOldestController extends Controller{
 
 	@Override
 	public ResponsePrimitive doCreate(RequestPrimitive request) {
-		ResponsePrimitive response = new ResponsePrimitive(request);
-		response.setResponseStatusCode(ResponseStatusCode.OPERATION_NOT_ALLOWED);
-		return response;
+		throw new OperationNotAllowed("Create on " + policy.toString() +" is not allowed");
 	}
 
 	@Override
@@ -98,9 +97,7 @@ public class LatestOldestController extends Controller{
 
 	@Override
 	public ResponsePrimitive doUpdate(RequestPrimitive request) {
-		ResponsePrimitive response = new ResponsePrimitive(request);
-		response.setResponseStatusCode(ResponseStatusCode.OPERATION_NOT_ALLOWED);
-		return response;
+		throw new OperationNotAllowed("Update on " + policy + " is not allowed");
 	}
 
 	@Override

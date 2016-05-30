@@ -71,18 +71,22 @@ public class NonBlockingHandler {
 				if(request.getRequestContentType().equals(MimeMediaType.OBJ)){
 					requestEntity.setContent(DataMapperSelector.getDataMapperList().get(MimeMediaType.JSON).objToString(request.getContent()));
 					requestEntity.setRequestContentType(MimeMediaType.JSON);
-				} else if(!request.getRequestContentType().equals(MimeMediaType.JSON)){
-					Object resource = DataMapperSelector.getDataMapperList().
-							get(request.getReturnContentType()).stringToObj((String)request.getContent());
-					requestEntity.setContent(DataMapperSelector.getDataMapperList().get(MimeMediaType.JSON).objToString(resource));
-					requestEntity.setRequestContentType(request.getRequestContentType());
 				} else {
-					requestEntity.setContent((String) request.getContent());
-					requestEntity.setRequestContentType(request.getRequestContentType());
+					if(request.getContent() instanceof String && !((String)request.getContent()).isEmpty()){
+						if(!request.getRequestContentType().equals(MimeMediaType.JSON)){
+							Object resource = DataMapperSelector.getDataMapperList().
+									get(request.getReturnContentType()).stringToObj((String)request.getContent());
+							requestEntity.setContent(DataMapperSelector.getDataMapperList().get(MimeMediaType.JSON).objToString(resource));
+							requestEntity.setRequestContentType(request.getRequestContentType());
+						} else {
+							requestEntity.setContent((String) request.getContent());
+							requestEntity.setRequestContentType(request.getRequestContentType());
+						}						
+					}
 				}
 			}
 		} catch (Exception e){
-			throw new BadRequestException("Error in provided content");
+			throw new BadRequestException("Error in provided content", e);
 		}
 		requestEntity.setCreationTime(DateUtil.now());
 		
@@ -129,6 +133,7 @@ public class NonBlockingHandler {
 		
 		Request requestResource = EntityMapperFactory.getRequestMapper().mapEntityToResource(requestEntity, ResultContent.ATTRIBUTES);
 		response.setContent(requestResource.getResourceID());
+		response.setContentType(MimeMediaType.TEXT_PLAIN);
 		
 		response.setResponseStatusCode(ResponseStatusCode.ACCEPTED);
 		response.setLocation(requestDb.getResourceID());
