@@ -3,7 +3,6 @@
 
 <product uid="in-cse" version="1.0.0" useFeatures="false" includeLaunchers="false">
 
-
    <configIni use="default">
    </configIni>
 
@@ -18,7 +17,6 @@
 
    <windowImages/>
 
-
    <launcher name="in-cse">
       <solaris/>
       <win useIco="false">
@@ -26,12 +24,10 @@
       </win>
    </launcher>
 
-
    <vm>
       <linux include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7</linux>
       <windows include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7</windows>
    </vm>
-
 
    <plugins>
       <plugin id="javax.servlet"/>
@@ -54,8 +50,8 @@
       <plugin id="org.eclipse.jetty.server"/>
       <plugin id="org.eclipse.jetty.servlet"/>
       <plugin id="org.eclipse.jetty.util"/>
-      <plugin id="org.eclipse.om2m.binding.http"/>
       <plugin id="org.eclipse.om2m.binding.coap"/>
+      <plugin id="org.eclipse.om2m.binding.http"/>
       <plugin id="org.eclipse.om2m.binding.service"/>
       <plugin id="org.eclipse.om2m.commons"/>
       <plugin id="org.eclipse.om2m.commons.logging" fragment="true"/>
@@ -76,8 +72,8 @@
       <plugin id="org.apache.felix.gogo.shell" autoStart="true" startLevel="0" />
       <plugin id="org.eclipse.equinox.console" autoStart="true" startLevel="0" />
       <plugin id="org.eclipse.equinox.http.jetty" autoStart="true" startLevel="1" />
-      <plugin id="org.eclipse.om2m.binding.http" autoStart="true" startLevel="2" />
       <plugin id="org.eclipse.om2m.binding.coap" autoStart="true" startLevel="2" />
+      <plugin id="org.eclipse.om2m.binding.http" autoStart="true" startLevel="2" />
       <plugin id="org.eclipse.om2m.core" autoStart="true" startLevel="4" />
       <plugin id="org.eclipse.om2m.datamapping.jaxb" autoStart="true" startLevel="1" />
       <plugin id="org.eclipse.om2m.persistence.eclipselink" autoStart="true" startLevel="2" />
@@ -95,7 +91,7 @@
       <property name="org.eclipse.om2m.cseType" value="IN-CSE" />
       <property name="org.eclipse.om2m.dbDriver" value="org.h2.Driver" />
       <property name="org.eclipse.om2m.dbPassword" value="om2m" />
-      <property name="org.eclipse.om2m.dbReset" value="true" />
+      <property name="org.eclipse.om2m.dbReset" value="false" />
       <property name="org.eclipse.om2m.dbUrl" value="jdbc:h2:./database/indb" />
       <property name="org.eclipse.om2m.dbUser" value="om2m" />
       <property name="org.eclipse.om2m.globalContext" value="" />
@@ -104,12 +100,5 @@
       <property name="org.eclipse.om2m.resource.idseparator" value="-" />
       <property name="org.eclipse.om2m.webInterfaceContext" value="/webpage" />
    </configurations>
-
-   <preferencesInfo>
-      <targetfile overwrite="false"/>
-   </preferencesInfo>
-
-   <cssInfo>
-   </cssInfo>
 
 </product>
