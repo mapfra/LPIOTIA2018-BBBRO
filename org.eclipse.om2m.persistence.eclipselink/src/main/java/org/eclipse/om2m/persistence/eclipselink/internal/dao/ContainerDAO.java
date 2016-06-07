@@ -57,6 +57,7 @@ public class ContainerDAO extends AbstractDAO<ContainerEntity>{
 		List<LabelEntity> lbls = processLabels(dbTransaction, resource.getLabelsEntities());
 		resource.setLabelsEntities(lbls);
 		transaction.getEm().merge(resource);
+		super.update(dbTransaction, resource);
 	}
 	
 }
