@@ -35,7 +35,11 @@ public class UriMapperDAO extends AbstractDAO<UriMapperEntity>{
 	@Override
 	public void delete(DBTransaction dbTransaction, UriMapperEntity resource) {
 		DBTransactionJPAImpl transaction = (DBTransactionJPAImpl) dbTransaction;
-		String req = "DELETE FROM "+DBEntities.URI_MAPPER_ENTITY+" U WHERE U.hierarchicalUri LIKE '"+resource.getHierarchicalUri()+"%'";
+		// Delete the entry of the current entity
+		String req = "DELETE FROM "+DBEntities.URI_MAPPER_ENTITY+" U WHERE U.hierarchicalUri LIKE '"+resource.getHierarchicalUri()+"'";
+		// Delete all children of the current entity
+		transaction.getEm().createQuery(req).executeUpdate();
+		req = "DELETE FROM "+DBEntities.URI_MAPPER_ENTITY+" U WHERE U.hierarchicalUri LIKE '"+resource.getHierarchicalUri()+"/%'";
 		transaction.getEm().createQuery(req).executeUpdate();
 	}
 	
