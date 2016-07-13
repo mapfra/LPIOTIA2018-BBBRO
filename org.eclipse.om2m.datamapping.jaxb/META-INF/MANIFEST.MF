@@ -8,6 +8,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: org.eclipse.om2m.commons
 Import-Package: org.apache.commons.logging,
  org.eclipse.om2m.datamapping.service,
+ org.eclipse.persistence.internal.jaxb,
  org.eclipse.persistence.jaxb,
  org.osgi.framework,
  org.osgi.util.tracker
