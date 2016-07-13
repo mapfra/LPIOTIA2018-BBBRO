@@ -91,6 +91,8 @@ public abstract class Controller {
 			LOGGER.error("Controller internal error", e);
 			throw e;
 		} finally {
+			LOGGER.info("Clear and close transaction");
+			transaction.clear();
 			transaction.close();
 		}
 		return response;
