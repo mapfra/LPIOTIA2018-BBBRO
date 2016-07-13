@@ -140,5 +140,6 @@
 		<module>org.eclipse.om2m.site.mn-cse</module>
 		<module>org.onem2m</module>
 		<module>org.eclipse.om2m.ipe.sdt</module>
+		<module>org.eclipse.om2m.ipe.sdt.testsuite</module>
 	</modules>
 </project>

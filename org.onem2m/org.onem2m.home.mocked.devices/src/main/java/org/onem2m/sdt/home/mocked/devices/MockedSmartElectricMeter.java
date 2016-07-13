@@ -68,7 +68,7 @@ public class MockedSmartElectricMeter extends SmartElectricMeter implements Mock
 			Boolean status = Boolean.FALSE;
 			@Override
 			public void doSetValue(Boolean value) throws DataPointException {
-				status = value;
+				throw new DataPointException("Not Writable");
 			}
 			@Override
 			public Boolean doGetValue() throws DataPointException {
