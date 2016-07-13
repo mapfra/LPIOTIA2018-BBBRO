@@ -1,0 +1,11 @@
+package org.onem2m.sdt.datapoints;
+
+import org.onem2m.sdt.types.DataType;
+
+public abstract class BooleanDataPoint extends ValuedDataPoint<Boolean> {
+
+	public BooleanDataPoint(String name) {
+		super(name, DataType.Boolean);
+	}
+
+}

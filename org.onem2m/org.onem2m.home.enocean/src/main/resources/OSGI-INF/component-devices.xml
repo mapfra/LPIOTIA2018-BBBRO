@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.2.0"
+	name="EnOceanActivator" immediate="true">
+	
+	<implementation class="org.onem2m.home.enocean.Activator" />
+	<service>
+		<provide interface="org.osgi.service.event.EventHandler" />
+	</service>
+	<property name="event.topics" value="org/osgi/service/enocean/EnOceanEvent/MESSAGE_RECEIVED" />
+	
+    <reference name="log" cardinality="1..1" interface="org.osgi.service.log.LogService" 
+        bind="setLog" unbind="unsetLog" />
+		
+	<reference name="enOceanDevice" interface="org.osgi.service.enocean.EnOceanDevice"
+	    cardinality="0..n" policy="dynamic"
+	    bind="setEnOceanDevice" unbind="unsetEnOceanDevice" />
+		
+</scr:component>
