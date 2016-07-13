@@ -76,9 +76,20 @@ public class Notifier {
 	 * @param resource - Notification resource
 	 */
 	public static void notify(List<SubscriptionEntity> listSubscription, ResourceEntity resource, int resourceStatus) {
+		notify(listSubscription, resource, null, resourceStatus);
+	}
+	
+	/**
+	 * Find all resource subscrivers and notifies them.
+	 * @param listSubscription
+	 * @param resource
+	 * @param modifiedOnlyResource
+	 * @param resourceStatus
+	 */
+	public static void notify(List<SubscriptionEntity> listSubscription, ResourceEntity resource, Resource modifiedOnlyResource, int resourceStatus) {
 		if (listSubscription != null){
 			for(SubscriptionEntity sub : listSubscription){
-				NotificationWorker worker = new NotificationWorker(sub, resourceStatus, resource);
+				NotificationWorker worker = new NotificationWorker(sub, resourceStatus, resource, modifiedOnlyResource);
 				CoreExecutor.postThread(worker);
 			}
 		}
@@ -210,11 +221,14 @@ public class Notifier {
 		private SubscriptionEntity sub;
 		/** the resource to be sent */
 		private ResourceEntity resource;
+		/** the resource to be sent - modified attribute */
+		private Resource modifiedOnlyResource;
 
-		public NotificationWorker(SubscriptionEntity sub, int resourceStatus, ResourceEntity resource) {
+		public NotificationWorker(SubscriptionEntity sub, int resourceStatus, ResourceEntity resource, Resource modifiedOnlyResource) {
 			this.resourceStatus = resourceStatus;
 			this.sub = sub;
 			this.resource = resource;
+			this.modifiedOnlyResource = modifiedOnlyResource;
 		}
 
 		@SuppressWarnings("unchecked")
@@ -252,9 +266,19 @@ public class Notifier {
 							getMapperFromResourceType(resource.getResourceType().intValue());
 				}
 				if(sub.getNotificationContentType().equals(NotificationContentType.MODIFIED_ATTRIBUTES)){
-					serializableResource = (Resource)mapper.mapEntityToResource(resource, ResultContent.ATTRIBUTES);
 					Representation representation = new Representation();
-					representation.setResource(serializableResource);
+					if (modifiedOnlyResource != null) {
+						// Gregory BONNARDEL - 26 Avril 2016
+						// as all Controllers have not been modified
+						// for modified controllers, use the resource provided by the controller
+						representation.setResource(modifiedOnlyResource);
+					} else {
+						// for non modified controllers, send the ResourceEntity 
+						// but it is not compliant with the specs
+						serializableResource  = (Resource) mapper
+								.mapEntityToResource(resource, ResultContent.ATTRIBUTES);
+						representation.setResource(serializableResource);
+					}
 					notification.getNotificationEvent().setRepresentation(representation);
 					request.setRequestContentType(MimeMediaType.XML);
 				} else if(sub.getNotificationContentType().equals(NotificationContentType.WHOLE_RESOURCE)){
