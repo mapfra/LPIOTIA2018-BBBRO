@@ -69,14 +69,14 @@ public class NonBlockingHandler {
 		try {
 			if(request.getContent() != null){
 				if(request.getRequestContentType().equals(MimeMediaType.OBJ)){
-					requestEntity.setContent(DataMapperSelector.getDataMapperList().get(MimeMediaType.JSON).objToString(request.getContent()));
-					requestEntity.setRequestContentType(MimeMediaType.JSON);
+					requestEntity.setContent(DataMapperSelector.getDataMapperList().get(MimeMediaType.XML).objToString(request.getContent()));
+					requestEntity.setRequestContentType(MimeMediaType.XML);
 				} else {
 					if(request.getContent() instanceof String && !((String)request.getContent()).isEmpty()){
-						if(!request.getRequestContentType().equals(MimeMediaType.JSON)){
+						if(!request.getRequestContentType().equals(MimeMediaType.XML)){
 							Object resource = DataMapperSelector.getDataMapperList().
 									get(request.getReturnContentType()).stringToObj((String)request.getContent());
-							requestEntity.setContent(DataMapperSelector.getDataMapperList().get(MimeMediaType.JSON).objToString(resource));
+							requestEntity.setContent(DataMapperSelector.getDataMapperList().get(MimeMediaType.XML).objToString(resource));
 							requestEntity.setRequestContentType(request.getRequestContentType());
 						} else {
 							requestEntity.setContent((String) request.getContent());

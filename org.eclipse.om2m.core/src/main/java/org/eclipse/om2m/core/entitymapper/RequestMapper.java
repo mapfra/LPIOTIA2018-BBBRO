@@ -19,6 +19,8 @@
  *******************************************************************************/
 package org.eclipse.om2m.core.entitymapper;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.eclipse.om2m.commons.constants.MimeMediaType;
 import org.eclipse.om2m.commons.entities.RequestEntity;
 import org.eclipse.om2m.commons.resource.MetaInformation;
@@ -32,13 +34,16 @@ import org.eclipse.om2m.core.datamapper.DataMapperSelector;
  *
  */
 public class RequestMapper extends EntityMapper<RequestEntity, Request> {
+	
+	/** Logger */
+	private static Log LOGGER = LogFactory.getLog(RequestMapper.class);
 
 	@Override
 	protected void mapAttributes(RequestEntity entity, Request resource) {
 		if(entity.getContent() != null){
 			PrimitiveContent pc = new PrimitiveContent();
 			pc.getAny().add(DataMapperSelector.
-					getDataMapperList().get(MimeMediaType.JSON).
+					getDataMapperList().get(MimeMediaType.XML).
 					stringToObj(entity.getContent()));
 			resource.setContent(pc);
 		}
@@ -99,7 +104,10 @@ public class RequestMapper extends EntityMapper<RequestEntity, Request> {
 	 */
 	private OperationResult mapOperationResult(RequestEntity entity) {
 		OperationResult result = new OperationResult();
+		LOGGER.info("mapOperationResult");
 		if(entity.getOperationResultContent() != null){
+			LOGGER.info("mapOperationResult - operationResultContent is not null");
+			LOGGER.info("operatonResultContent=" + entity.getOperationResultContent());
 			PrimitiveContent pc = new PrimitiveContent();
 			pc.getAny().add(DataMapperSelector.
 					getDataMapperList().get(MimeMediaType.JSON).
