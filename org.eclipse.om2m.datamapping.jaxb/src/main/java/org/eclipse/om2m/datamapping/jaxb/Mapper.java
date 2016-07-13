@@ -59,13 +59,13 @@ public class Mapper implements DataMapperService {
 		try {
 			if(context==null){
 				if(mediaType.equals(MimeMediaType.JSON)){
-					ClassLoader classLoader = Thread.currentThread().getContextClassLoader(); 
+					ClassLoader classLoader = Mapper.class.getClassLoader(); 
 					InputStream iStream = classLoader.getResourceAsStream("json-binding.xml"); 
 					Map<String, Object> properties = new HashMap<String, Object>(); 
 					properties.put(JAXBContextProperties.OXM_METADATA_SOURCE, iStream);
 					context = JAXBContext.newInstance(resourcePackage, classLoader , properties);
 				} else {
-					context = JAXBContext.newInstance(resourcePackage);
+					context = JAXBContext.newInstance(resourcePackage, Mapper.class.getClassLoader());
 				}
 			}
 		} catch (JAXBException e) { 
