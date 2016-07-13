@@ -36,6 +36,7 @@ import org.eclipse.om2m.commons.entities.AreaNwkInfoEntity;
 import org.eclipse.om2m.commons.entities.CSEBaseEntity;
 import org.eclipse.om2m.commons.entities.ContainerEntity;
 import org.eclipse.om2m.commons.entities.ContentInstanceEntity;
+import org.eclipse.om2m.commons.entities.FlexContainerEntity;
 import org.eclipse.om2m.commons.entities.GroupEntity;
 import org.eclipse.om2m.commons.entities.LabelEntity;
 import org.eclipse.om2m.commons.entities.NodeEntity;
@@ -43,6 +44,7 @@ import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
 import org.eclipse.om2m.commons.entities.ResourceEntity;
 import org.eclipse.om2m.commons.entities.SubscriptionEntity;
 import org.eclipse.om2m.commons.entities.UriMapperEntity;
+import org.eclipse.om2m.commons.exceptions.AccessDeniedException;
 import org.eclipse.om2m.commons.exceptions.BadRequestException;
 import org.eclipse.om2m.commons.exceptions.NotImplementedException;
 import org.eclipse.om2m.commons.exceptions.OperationNotAllowed;
@@ -210,6 +212,8 @@ public class DiscoveryController extends Controller {
 			return ((CSEBaseEntity) resourceEntity).getAccessControlPolicies();
 		case ResourceType.SUBSCRIPTION:
 			return ((SubscriptionEntity) resourceEntity).getAcpList();
+		case ResourceType.FLEXCONTAINER:
+			return ((FlexContainerEntity) resourceEntity).getAccessControlPolicies();
 		case ResourceType.NODE:
 			return ((NodeEntity) resourceEntity).getAccessControlPolicies();
 		case ResourceType.MGMT_OBJ:
@@ -249,6 +253,12 @@ public class DiscoveryController extends Controller {
 			case(ResourceType.CSE_BASE):
 				result.addAll(labelEntity.getLinkedCsb());
 			break;
+			case (ResourceType.FLEXCONTAINER):
+				result.addAll(labelEntity.getLinkedFcnt());
+			break;
+			case (ResourceType.ACCESS_CONTROL_POLICY):
+				result.addAll(labelEntity.getLinkedACP());
+			break;
 			case(ResourceType.NODE): {
 				result.addAll(labelEntity.getLinkedNodes());
 			}
@@ -267,6 +277,8 @@ public class DiscoveryController extends Controller {
 			result.addAll(labelEntity.getLinkedGroup());
 			result.addAll(labelEntity.getLinkedCsr());
 			result.addAll(labelEntity.getLinkedCsb());
+			result.addAll(labelEntity.getLinkedFcnt());
+			result.addAll(labelEntity.getLinkedACP());
 			result.addAll(labelEntity.getLinkedNodes());
 			result.addAll(labelEntity.getLinkedAni());
 			result.addAll(labelEntity.getLinkedAndi());

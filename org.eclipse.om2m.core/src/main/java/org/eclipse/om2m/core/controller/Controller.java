@@ -255,6 +255,10 @@ public abstract class Controller {
 					if (rule.isDelete()){
 						operationAllowed = true; 
 					}
+				} else if (operation.equals(Operation.DISCOVERY)) {
+					if (rule.isDiscovery()) {
+						operationAllowed = true;
+					}
 				}
 			}
 			if (originatorFound && operationAllowed){

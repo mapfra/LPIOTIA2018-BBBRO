@@ -201,6 +201,14 @@ public class ObjectFactory {
 	public Container createContainer() {
 		return new Container();
 	}
+	
+	/**
+	 * Create an instance of {@link FlexContainer}
+	 * 
+	 */
+	public FlexContainer createFlexContainer() {
+		return new FlexContainer();
+	}
 
 	/**
 	 * Create an instance of {@link AnnounceableResource }

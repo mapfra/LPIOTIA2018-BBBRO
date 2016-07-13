@@ -26,6 +26,8 @@ import org.eclipse.om2m.commons.entities.AeEntity;
 import org.eclipse.om2m.commons.entities.CSEBaseEntity;
 import org.eclipse.om2m.commons.entities.ContainerEntity;
 import org.eclipse.om2m.commons.entities.ContentInstanceEntity;
+import org.eclipse.om2m.commons.entities.CustomAttributeEntity;
+import org.eclipse.om2m.commons.entities.FlexContainerEntity;
 import org.eclipse.om2m.commons.entities.LabelEntity;
 import org.eclipse.om2m.commons.entities.PollingChannelEntity;
 import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
@@ -70,6 +72,9 @@ public class DBEntities {
 	/** Name used for the persisted {@link ContainerEntity} entity */
 	public static final String CONTAINER_ENTITY = "CNT";
 
+	/** Name used to the persisted {@link FlexContainerEntity} entity */
+	public static final String FLEXCONTAINER_ENTITY = "FCNT";
+
 	/** Name used for the persisted {@link ContentInstanceEntity} entity */
 	public static final String CONTENTINSTANCE_ENTITY = "CIN";
 
@@ -91,6 +96,9 @@ public class DBEntities {
 	public static final String REQUEST_ENTITY = "REQ";
 	
 	public static final String NODE_ENTITY = "NODE";
+	
+	/** Name used for the persisted (@link {@link CustomAttributeEntity} entity */
+	public static final String CUSTOM_ATTRIBUTE_ENTITY = "CA";
 	
 	
 	/** Name of the GROUP entity */
@@ -145,9 +153,30 @@ public class DBEntities {
 	/** Name of the Child Container ID */
 	public static final String CNTCH_JOIN_ID = "CNTCH_ID";
 
+	// CNT - FCNT 
+	/** Name of the join table between ContainerEntity and its child FlexContainerEntities */
+	public static final String CNT_FCNTCHILD_JOIN = "CNT_FCNTCHILD_JOIN";
+	
+	// FCNT- FCNT
+	/** Name of the join table between FlexContainerEntity and its child FlexContainerEntities */
+	public static final String FCNT_FCNTCHILD_JOIN = "FCNT_CHFCNT";
+	/** Name of the FlexContainer ID */
+	public static final String FCNT_ID = "FCNT_ID";
+	/** Name of the Child FlexContainer ID */
+	public static final String FCNTCH_JOIN_ID = "CFCNT_ID";
+	
+	// FCNT - CNT
+	/** Name of the join table between FlexContainerEntity and its child ContainerEntities */
+	public static final String FCNT_CNTCHILD_JOIN = "FCNT_CHCNT";
+	
+
 	// AE - CNT
 	/** Name of the join table between ApplicationEntities and its child ContainerEntities */
 	public static final String AECNTCHILD_JOIN = "AE_CNT_JOIN";
+
+	// AE -FCNT
+	/** Name of the join table between Application Entities and its child FlexContainers */
+	public static final String AE_FCNTCHILD_JOIN = "AE_FCNT_JOIN";
 
 	// CSEB - CNT
 	/** Name of the join table between CSEBaseEntity and its child ContainerEntities */
@@ -158,6 +187,16 @@ public class DBEntities {
 	public static final String CNTCINCHILD_JOIN = "CNT_CIN_JOIN";
 	/** ID of CIN in the join table */
 	public static final String CINCH_JOIN_ID = "CINCH_ID";
+
+	// CSEB - FCNT
+	/** Name of the join table between CSEBaseEntity and its child FlexContainerEntities */
+	public static final String CSEB_FCNT_JOIN = "CSEB_FCNT_JOIN";
+	/** Name of the join table between FCNT and ACP */
+	public static final String FCNT_ACP_JOIN = "FCNT_ACP_JOIN";
+	/** Name of the join table between FCNT and Container */
+	public static final String FCNT_CNT_JOIN = "FCNT_CNT_JOIN";
+	/** Name of the FlexContainer ID */
+	public static final String FCNT_JOIN_ID = "FCNT_ID";
 
 	// SUB - ACP
 	/** Name of the join table between Subscription entity and its AccessControl policies */
@@ -189,6 +228,8 @@ public class DBEntities {
 	public static final String CSRAECHILD_JOIN = "CSR_CHAE_JOIN";
 	/** Name of the join table between CSR & ch CNT */
 	public static final String CSRCNTCHILD_JOIN = "CSR_CHCNT_JOIN";
+	/** Name of the join table between CSR & ch FCNT */
+	public static final String CSR_FCNTCHILD_JOIN = "CSR_CHFCNT_JOIN";
 	/** Name of the join table between CSR & ch GRP */
 	public static final String CSRGRPCHILD_JOIN = "CSR_CHGRP_JOIN";
 	/** Name of the join table between CSR & ch ACP */
@@ -199,6 +240,8 @@ public class DBEntities {
 	public static final String AESUB_JOIN = "AE_SUB_JOIN";
 	/** Name of the join table between CNT & SUB */
 	public static final String CNTSUB_JOIN = "CNT_SUB_JOIN";
+	/** Name of the join table between FCNT & SUB */
+	public static final String FCNTSUB_JOIN = "FCNT_SUB_JOIN";
 	/** Name of the join table between CSR & SUB */
 	public static final String CSRSUB_JOIN = "CSR_SUB_JOIN";
 	/** Name of the join table between CSB & SUB */
@@ -232,6 +275,10 @@ public class DBEntities {
 	public static final String CSBNOD_CH_JOIN = "CSB_NOD_CH_JOIN";
 	public static final String CSRNOD_CH_JOIN = "CSR_NOD_CH_JOIN";
 	public static final String NODSUB_JOIN = "NOD_SUB_JOIN";
+	
+	// FCNT - CUSTOM_ATTRIBUTE
+	public static final String FCNT_CA_JOIN = "FCNT_CA_JOIN";
+	public static final String CA_JOIN_ID = "CA_ID";
 	
 	// MGMT OBJ
 	public static final String ANISUB_JOIN = "ANI_SUB_JOIN";

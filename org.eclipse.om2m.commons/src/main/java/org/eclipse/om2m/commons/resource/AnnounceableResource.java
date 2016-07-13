@@ -68,7 +68,7 @@ import org.eclipse.om2m.commons.constants.ShortName;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "announceableResource")
 @XmlSeeAlso({ LocationPolicy.class, RemoteCSE.class, Node.class, AE.class,
-		NodeAnnc.class, MgmtResource.class, Group.class, Container.class })
+		NodeAnnc.class, MgmtResource.class, Group.class, Container.class, FlexContainer.class })
 public class AnnounceableResource extends RegularResource {
 
 	@XmlList

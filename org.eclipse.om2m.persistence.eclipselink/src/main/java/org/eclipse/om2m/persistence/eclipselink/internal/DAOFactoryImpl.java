@@ -25,6 +25,7 @@ import org.eclipse.om2m.commons.entities.AeEntity;
 import org.eclipse.om2m.commons.entities.CSEBaseEntity;
 import org.eclipse.om2m.commons.entities.ContainerEntity;
 import org.eclipse.om2m.commons.entities.ContentInstanceEntity;
+import org.eclipse.om2m.commons.entities.FlexContainerEntity;
 import org.eclipse.om2m.commons.entities.GroupEntity;
 import org.eclipse.om2m.commons.entities.LabelEntity;
 import org.eclipse.om2m.commons.entities.NodeEntity;
@@ -39,6 +40,7 @@ import org.eclipse.om2m.persistence.eclipselink.internal.dao.AeDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.CSEBaseDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.ContainerDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.ContentInstanceDAO;
+import org.eclipse.om2m.persistence.eclipselink.internal.dao.FlexContainerDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.GroupDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.LabelDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.NodeEntityDAO;
@@ -71,6 +73,11 @@ public class DAOFactoryImpl implements DAOFactory {
 	@Override
 	public DAO<ContainerEntity> getContainerDAO() {
 		return new ContainerDAO();
+	}
+	
+	@Override
+	public DAO<FlexContainerEntity> getFlexContainerDAO() {
+		return new FlexContainerDAO();
 	}
 
 	@Override

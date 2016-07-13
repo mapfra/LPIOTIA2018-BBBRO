@@ -49,6 +49,7 @@ import org.eclipse.om2m.core.controller.ContentInstanceController;
 import org.eclipse.om2m.core.controller.Controller;
 import org.eclipse.om2m.core.controller.DiscoveryController;
 import org.eclipse.om2m.core.controller.FanOutPointController;
+import org.eclipse.om2m.core.controller.FlexContainerController;
 import org.eclipse.om2m.core.controller.GroupController;
 import org.eclipse.om2m.core.controller.LatestOldestController;
 import org.eclipse.om2m.core.controller.LatestOldestController.SortingPolicy;
@@ -274,6 +275,10 @@ public class Router implements CseService {
 		if (Patterns.match(Patterns.CONTAINER_PATTERN, uri)){
 			return new ContainerController();
 		}
+		if(Patterns.match(Patterns.FLEXCONTAINER_PATTERN, uri)) {
+			return new FlexContainerController();
+		}
+		
 		if (Patterns.match(Patterns.CONTENTINSTANCE_PATTERN, uri)) {
 			return new ContentInstanceController();
 		}
@@ -334,6 +339,8 @@ public class Router implements CseService {
 			return new SubscriptionController();
 		case ResourceType.POLLING_CHANNEL:
 			return new PollingChannelController();
+		case ResourceType.FLEXCONTAINER:
+			return new FlexContainerController(); 
 		default : 
 			throw new NotImplementedException("ResourceType: " + resourceType + " is not implemented");
 		}

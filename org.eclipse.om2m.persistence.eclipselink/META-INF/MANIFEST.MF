@@ -10,9 +10,8 @@ Bundle-ClassPath: libs/eclipselink.jar,
  libs/h2-1.4.186.jar,
  libs/javax.persistence.jar,
  .
-Export-Package: org.eclipse.om2m.persistence.eclipselink,
- org.eclipse.persistence.internal.jaxb,
- org.eclipse.persistence.jaxb
+Export-Package: org.eclipse.om2m.persistence.eclipselink,org.eclipse.p
+ ersistence.internal.jaxb,org.eclipse.persistence.jaxb
 Import-Package: org.apache.commons.logging,
  org.eclipse.om2m.persistence.service,
  org.eclipse.om2m.persistence.service.util,

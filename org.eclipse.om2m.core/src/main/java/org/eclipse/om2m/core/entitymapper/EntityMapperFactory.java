@@ -27,6 +27,7 @@ import org.eclipse.om2m.commons.entities.AreaNwkInfoEntity;
 import org.eclipse.om2m.commons.entities.CSEBaseEntity;
 import org.eclipse.om2m.commons.entities.ContainerEntity;
 import org.eclipse.om2m.commons.entities.ContentInstanceEntity;
+import org.eclipse.om2m.commons.entities.FlexContainerEntity;
 import org.eclipse.om2m.commons.entities.GroupEntity;
 import org.eclipse.om2m.commons.entities.MgmtObjEntity;
 import org.eclipse.om2m.commons.entities.NodeEntity;
@@ -41,6 +42,7 @@ import org.eclipse.om2m.commons.resource.AreaNwkInfo;
 import org.eclipse.om2m.commons.resource.CSEBase;
 import org.eclipse.om2m.commons.resource.Container;
 import org.eclipse.om2m.commons.resource.ContentInstance;
+import org.eclipse.om2m.commons.resource.FlexContainer;
 import org.eclipse.om2m.commons.resource.Group;
 import org.eclipse.om2m.commons.resource.Node;
 import org.eclipse.om2m.commons.resource.PollingChannel;
@@ -69,6 +71,10 @@ public class EntityMapperFactory {
 	/** Get the Container mapper */
 	public static EntityMapper<ContainerEntity, Container> getContainerMapper(){
 		return new ContainerMapper();
+	}
+	/** Get the FlexContainer mapper */
+	public static EntityMapper<FlexContainerEntity, FlexContainer> getFlexContainerMapper(){
+		return new FlexContainerMapper();
 	}
 	/** Get the Content instance mapper */
 	public static EntityMapper<ContentInstanceEntity, ContentInstance> getContentInstanceMapper(){
@@ -127,6 +133,8 @@ public class EntityMapperFactory {
 			return new AcpMapper();
 		case ResourceType.CONTAINER:
 			return new ContainerMapper();
+		case ResourceType.FLEXCONTAINER:
+			return new FlexContainerMapper();
 		case ResourceType.CONTENT_INSTANCE:
 			return new ContentInstanceMapper();
 		case ResourceType.GROUP:

@@ -32,6 +32,7 @@ import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
 import org.eclipse.om2m.commons.entities.AeEntity;
 import org.eclipse.om2m.commons.entities.CSEBaseEntity;
 import org.eclipse.om2m.commons.entities.ContainerEntity;
+import org.eclipse.om2m.commons.entities.FlexContainerEntity;
 import org.eclipse.om2m.commons.entities.GroupEntity;
 import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
 import org.eclipse.om2m.commons.entities.ResourceEntity;
@@ -108,6 +109,11 @@ public class SubscriptionController extends Controller{
 		if(parentEntity.getResourceType().intValue() == (ResourceType.CONTAINER)){
 			ContainerEntity container = (ContainerEntity) parentEntity;
 			acpsToCheck = container.getAccessControlPolicies();
+		}
+		
+		if (parentEntity.getResourceType().intValue() == (ResourceType.FLEXCONTAINER)) {
+			FlexContainerEntity flexContainer = (FlexContainerEntity) parentEntity;
+			acpsToCheck = flexContainer.getAccessControlPolicies();
 		}
 
 		if(parentEntity.getResourceType().intValue() == (ResourceType.ACCESS_CONTROL_POLICY)){

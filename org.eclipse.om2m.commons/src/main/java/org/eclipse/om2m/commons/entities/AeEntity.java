@@ -90,6 +90,15 @@ public class AeEntity extends AnnounceableSubordinateEntity {
 			)
 	protected List<ContainerEntity> childContainers;
 	
+	@OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.ALL})
+	@JoinTable(
+			name = DBEntities.AE_FCNTCHILD_JOIN,
+			joinColumns = {@JoinColumn(name = DBEntities.AE_JOINID, referencedColumnName=ShortName.RESOURCE_ID)},
+			inverseJoinColumns = {@JoinColumn(name=DBEntities.FCNT_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)}
+			)
+	protected List<FlexContainerEntity> childFlexContainers;
+	
+	
 	/** list of groups */
 	@OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.ALL})
 	@JoinTable(
@@ -280,6 +289,23 @@ public class AeEntity extends AnnounceableSubordinateEntity {
 	 */
 	public void setChildContainers(List<ContainerEntity> childContainers) {
 		this.childContainers = childContainers;
+	}
+	
+	/**
+	 * @return the childFlexContainers
+	 */
+	public List<FlexContainerEntity> getChildFlexContainers() {
+		if (childFlexContainers == null) {
+			childFlexContainers = new ArrayList<>();
+		}
+		return childFlexContainers;
+	}
+
+	/**
+	 * @param childFlexContainers the childFlexContainers to set
+	 */
+	public void setChildFlexContainers(List<FlexContainerEntity> childFlexContainers) {
+		this.childFlexContainers = childFlexContainers;
 	}
 
 	/**

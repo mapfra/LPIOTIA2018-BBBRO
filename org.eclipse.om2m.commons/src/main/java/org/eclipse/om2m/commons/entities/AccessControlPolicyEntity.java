@@ -124,6 +124,16 @@ public class AccessControlPolicyEntity extends AnnounceableSubordinateEntity {
 			)
 	protected List<ContainerEntity> linkedCnts;
 	
+	// Database link to FlexContaienr
+	@ManyToMany
+	@JoinTable(
+			name=DBEntities.FCNT_ACP_JOIN,
+			inverseJoinColumns={@JoinColumn(name=DBEntities.FCNT_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)},
+			joinColumns={@JoinColumn(name=DBEntities.ACP_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)}
+			)
+	protected List<FlexContainerEntity> linkedFlexCnts;
+	
+	
 	// database link to subscription
 	@ManyToMany(fetch=FetchType.LAZY, cascade={CascadeType.ALL}, targetEntity = SubscriptionEntity.class)
 	@JoinTable(
@@ -277,6 +287,24 @@ public class AccessControlPolicyEntity extends AnnounceableSubordinateEntity {
 	public void setLinkedContainer(List<ContainerEntity> linkedContainer) {
 		this.linkedCnts = linkedContainer;
 	}
+	
+	/**
+	 * @return the linkedFlexContainer
+	 */
+	public List<FlexContainerEntity> getLinkedFlexContainers() {
+		if (this.linkedFlexCnts == null) {
+			this.linkedFlexCnts = new ArrayList<>();
+		}
+		return linkedFlexCnts;
+	}
+
+	/**
+	 * @param linkedFlexContainer the linkedFlexContainer to set
+	 */
+	public void setLinkedFlexContainer(List<FlexContainerEntity> linkedFlexContainer) {
+		this.linkedFlexCnts = linkedFlexContainer;
+	}
+
 
 	/**
 	 * @return the linkedSubscription

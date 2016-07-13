@@ -102,6 +102,14 @@ public class RemoteCSEEntity extends AnnounceableSubordinateEntity {
 			inverseJoinColumns = { @JoinColumn(name = DBEntities.CNT_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
 			)
 	protected List<ContainerEntity> childCnt;
+	
+	@OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinTable(
+			name = DBEntities.CSR_FCNTCHILD_JOIN,
+			joinColumns = { @JoinColumn(name = DBEntities.CSR_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) },
+			inverseJoinColumns = { @JoinColumn(name = DBEntities.FCNT_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID)}
+			)
+	protected List<FlexContainerEntity> childFcnt;
 
 	// list of child GROUP
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -335,6 +343,23 @@ public class RemoteCSEEntity extends AnnounceableSubordinateEntity {
 	 */
 	public void setChildCnt(List<ContainerEntity> childCnt) {
 		this.childCnt = childCnt;
+	}
+	
+	/**
+	 * @return the childFlexCnt
+	 */
+	public List<FlexContainerEntity> getChildFcnt() {
+		if (this.childFcnt == null) {
+			this.childFcnt = new ArrayList<>();
+		}
+		return childFcnt;
+	}
+
+	/**
+	 * @param childCnt the childCnt to set
+	 */
+	public void setChildFcnt(List<FlexContainerEntity> childFcnt) {
+		this.childFcnt = childFcnt;
 	}
 
 	/**

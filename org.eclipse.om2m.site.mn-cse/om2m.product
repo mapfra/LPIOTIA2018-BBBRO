@@ -54,11 +54,13 @@
       <plugin id="org.eclipse.om2m.core.service"/>
       <plugin id="org.eclipse.om2m.datamapping.jaxb"/>
       <plugin id="org.eclipse.om2m.datamapping.service"/>
+      <plugin id="org.eclipse.om2m.interworking.service"/>
       <plugin id="org.eclipse.om2m.ipe.sample"/>
       <plugin id="org.eclipse.om2m.persistence.eclipselink"/>
       <plugin id="org.eclipse.om2m.persistence.service"/>
       <plugin id="org.eclipse.om2m.webapp.resourcesbrowser.xml"/>
       <plugin id="org.eclipse.osgi"/>
+      <plugin id="org.eclipse.osgi.compatibility.state" fragment="true"/>
       <plugin id="org.eclipse.osgi.services"/>
    </plugins>
 

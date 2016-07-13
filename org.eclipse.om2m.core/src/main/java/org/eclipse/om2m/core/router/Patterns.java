@@ -38,7 +38,8 @@ public class Patterns {
 	private static final String ALL_SHORT_NAMES = ShortName.ACP+"|"+ShortName.AE+"|"+ShortName.CNT+
 			"|"+ShortName.CIN + "|" + ShortName.REMOTE_CSE + "|" + ShortName.LATEST + "|" + ShortName.OLDEST +
 			"|" + ShortName.GROUP + "|" + ShortName.FANOUTPOINT + "|" + ShortName.SUB + "|" + ShortName.PCH + 
-			"|" + ShortName.POLLING_CHANNEL_URI + "|" + ShortName.REQ + "|" + ShortName.NODE + "|" + ShortName.ANI + "|" + ShortName.ANDI;
+			"|" + ShortName.POLLING_CHANNEL_URI + "|" + ShortName.REQ + "|" + ShortName.NODE +
+			"|" + ShortName.ANI + "|" + ShortName.ANDI + "|" + ShortName.FCNT;
 	
 	private static final String NON_HIERARCHICAL_ID = "(" + Constants.PREFIX_SEPERATOR +"(\\b\\w+\\b)?)" ;
 	
@@ -65,6 +66,8 @@ public class Patterns {
     public static final Pattern AE_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + "(C|S)" + ID_STRING);
     
     public static final Pattern CONTAINER_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.CNT + Constants.PREFIX_SEPERATOR + ID_STRING);
+
+    public static final Pattern FLEXCONTAINER_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.FCNT + Constants.PREFIX_SEPERATOR + ID_STRING);
 
     public static final Pattern CONTENTINSTANCE_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.CIN + Constants.PREFIX_SEPERATOR + ID_STRING);
     
@@ -133,6 +136,9 @@ public class Patterns {
 		}
 		if(match(CONTAINER_PATTERN, uri)){
 			return db.getDAOFactory().getContainerDAO();
+		}
+		if (match(FLEXCONTAINER_PATTERN, uri)) {
+			return db.getDAOFactory().getFlexContainerDAO();
 		}
 		if(match(CONTENTINSTANCE_PATTERN, uri)) {
 			return db.getDAOFactory().getContentInstanceDAO();

@@ -100,6 +100,14 @@ public class SubscriptionEntity extends ResourceEntity {
 			joinColumns = { @JoinColumn(name = DBEntities.SUB_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
 			)
 	protected ContainerEntity parentCnt;
+	
+	@ManyToOne(targetEntity=FlexContainerEntity.class, fetch=FetchType.LAZY)
+	@JoinTable(
+			name=DBEntities.FCNTSUB_JOIN,
+			inverseJoinColumns={@JoinColumn(name=DBEntities.FCNT_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)},
+			joinColumns={ @JoinColumn(name=DBEntities.SUB_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
+			)
+	protected FlexContainerEntity parentFlexCnt;
 
 	@ManyToOne(targetEntity = CSEBaseEntity.class, fetch = FetchType.LAZY)
 	@JoinTable(
@@ -402,6 +410,20 @@ public class SubscriptionEntity extends ResourceEntity {
 	public void setParentCnt(ContainerEntity parentCnt) {
 		this.parentCnt = parentCnt;
 	}
+	
+	/**
+	 * @return the parentFleCnt
+	 */
+	public FlexContainerEntity getParentFlexCnt() {
+		return parentFlexCnt;
+	}
+
+	/**
+	 * @param parentFlexCnt the parentFlexCnt to set
+	 */
+	public void setParentFlexCnt(FlexContainerEntity parentFlexCnt) {
+		this.parentFlexCnt = parentFlexCnt;
+	}
 
 	/**
 	 * @return the parentCsb
@@ -527,6 +549,9 @@ public class SubscriptionEntity extends ResourceEntity {
 			break;
 		case ResourceType.CONTAINER:
 			this.parentCnt = (ContainerEntity) parentEntity;
+			break;
+		case ResourceType.FLEXCONTAINER:
+			this.parentFlexCnt = (FlexContainerEntity) parentEntity;
 			break;
 		case ResourceType.CSE_BASE:
 			this.parentCsb = (CSEBaseEntity) parentEntity;

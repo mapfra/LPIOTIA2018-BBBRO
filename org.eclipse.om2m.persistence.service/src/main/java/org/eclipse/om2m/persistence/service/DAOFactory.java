@@ -25,6 +25,7 @@ import org.eclipse.om2m.commons.entities.AeEntity;
 import org.eclipse.om2m.commons.entities.CSEBaseEntity;
 import org.eclipse.om2m.commons.entities.ContainerEntity;
 import org.eclipse.om2m.commons.entities.ContentInstanceEntity;
+import org.eclipse.om2m.commons.entities.FlexContainerEntity;
 import org.eclipse.om2m.commons.entities.GroupEntity;
 import org.eclipse.om2m.commons.entities.LabelEntity;
 import org.eclipse.om2m.commons.entities.NodeEntity;
@@ -44,6 +45,8 @@ public interface DAOFactory {
 	public abstract DAO<AeEntity> getAeDAO();
 	
 	public abstract DAO<ContainerEntity> getContainerDAO();
+	
+	public abstract DAO<FlexContainerEntity> getFlexContainerDAO();
 
 	public abstract DAO<ContentInstanceEntity> getContentInstanceDAO();
 

@@ -27,10 +27,12 @@ import org.eclipse.om2m.commons.constants.ShortName;
 import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
 import org.eclipse.om2m.commons.entities.ContainerEntity;
 import org.eclipse.om2m.commons.entities.ContentInstanceEntity;
+import org.eclipse.om2m.commons.entities.FlexContainerEntity;
 import org.eclipse.om2m.commons.entities.SubscriptionEntity;
 import org.eclipse.om2m.commons.resource.ChildResourceRef;
 import org.eclipse.om2m.commons.resource.Container;
 import org.eclipse.om2m.commons.resource.ContentInstance;
+import org.eclipse.om2m.commons.resource.FlexContainer;
 import org.eclipse.om2m.commons.resource.Subscription;
 
 public class ContainerMapper extends EntityMapper<ContainerEntity, Container>{
@@ -97,6 +99,16 @@ public class ContainerMapper extends EntityMapper<ContainerEntity, Container>{
 			child.setValue(childCont.getResourceID());
 			resource.getChildResource().add(child);
 		}
+		
+		// add child ref FlexContainers
+		for(FlexContainerEntity childFlexCont : entity.getChildFlexContainers()) {
+			ChildResourceRef child = new ChildResourceRef();
+			child.setResourceName(childFlexCont.getName());
+			child.setType(ResourceType.FLEXCONTAINER);
+			child.setValue(childFlexCont.getResourceID());
+			resource.getChildResource().add(child);
+		}
+		
 	}
 
 	@Override
@@ -118,6 +130,12 @@ public class ContainerMapper extends EntityMapper<ContainerEntity, Container>{
 		for (ContainerEntity childCont : entity.getChildContainers()) {
 			Container cnt = new ContainerMapper().mapEntityToResource(childCont, ResultContent.ATTRIBUTES);
 			resource.getContentInstanceOrContainerOrSubscription().add(cnt);
+		}
+		
+		// add child ref flexContainers
+		for(FlexContainerEntity childFlexCont : entity.getChildFlexContainers()) {
+			FlexContainer fcnt = new FlexContainerMapper().mapEntityToResource(childFlexCont, ResultContent.ATTRIBUTES);
+			resource.getContentInstanceOrContainerOrSubscription().add(fcnt);
 		}
 	}
 

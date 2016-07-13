@@ -24,6 +24,7 @@ import org.eclipse.om2m.commons.constants.ResultContent;
 import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
 import org.eclipse.om2m.commons.entities.AeEntity;
 import org.eclipse.om2m.commons.entities.ContainerEntity;
+import org.eclipse.om2m.commons.entities.FlexContainerEntity;
 import org.eclipse.om2m.commons.entities.GroupEntity;
 import org.eclipse.om2m.commons.entities.PollingChannelEntity;
 import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
@@ -33,6 +34,7 @@ import org.eclipse.om2m.commons.resource.AE;
 import org.eclipse.om2m.commons.resource.AccessControlPolicy;
 import org.eclipse.om2m.commons.resource.ChildResourceRef;
 import org.eclipse.om2m.commons.resource.Container;
+import org.eclipse.om2m.commons.resource.FlexContainer;
 import org.eclipse.om2m.commons.resource.Group;
 import org.eclipse.om2m.commons.resource.PollingChannel;
 import org.eclipse.om2m.commons.resource.RemoteCSE;
@@ -106,6 +108,14 @@ public class RemoteCSEMapper extends EntityMapper<RemoteCSEEntity, RemoteCSE>{
 			child.setValue(container.getResourceID());
 			csr.getChildResource().add(child);
 		}
+		// adding fcnt ref
+		for (FlexContainerEntity flexContainer : csrEntity.getChildFcnt()){
+			ChildResourceRef child = new ChildResourceRef();
+			child.setResourceName(flexContainer.getName());
+			child.setType(ResourceType.FLEXCONTAINER);
+			child.setValue(flexContainer.getResourceID());
+			csr.getChildResource().add(child);
+		}
 		// adding group ref
 		for (GroupEntity group : csrEntity.getChildGrps()){
 			ChildResourceRef child = new ChildResourceRef();
@@ -155,6 +165,11 @@ public class RemoteCSEMapper extends EntityMapper<RemoteCSEEntity, RemoteCSE>{
 		for (ContainerEntity container : csrEntity.getChildCnt()){
 			Container chCnt = new ContainerMapper().mapEntityToResource(container, ResultContent.ATTRIBUTES);
 			csr.getAEOrContainerOrGroup().add(chCnt);
+		}
+		// adding fcnt ref
+		for(FlexContainerEntity flexContainer : csrEntity.getChildFcnt()) {
+			FlexContainer chFcnt = new FlexContainerMapper().mapEntityToResource(flexContainer, ResultContent.ATTRIBUTES);
+			csr.getAEOrContainerOrGroup().add(chFcnt);
 		}
 		// adding group ref
 		for (GroupEntity grp : csrEntity.getChildGrps()){

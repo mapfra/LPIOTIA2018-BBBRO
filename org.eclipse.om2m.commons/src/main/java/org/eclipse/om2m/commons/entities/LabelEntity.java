@@ -51,6 +51,9 @@ public class LabelEntity {
 
 	@ManyToMany(targetEntity = ContainerEntity.class, mappedBy = "labelsEntities")
 	protected List<ContainerEntity> linkedCnt;
+	
+	@ManyToMany(targetEntity = FlexContainerEntity.class, mappedBy = "labelsEntities")
+	protected List<FlexContainerEntity> linkedFcnt;
 
 	@ManyToMany(targetEntity = ContentInstanceEntity.class, mappedBy = "labelsEntities")
 	protected List<ContentInstanceEntity> linkedCin;
@@ -186,6 +189,23 @@ public class LabelEntity {
 	 */
 	public void setLinkedCnt(List<ContainerEntity> linkedCnt) {
 		this.linkedCnt = linkedCnt;
+	}
+	
+	/**
+	 * @return the linkedFcnt
+	 */
+	public List<FlexContainerEntity> getLinkedFcnt() {
+		if (this.linkedFcnt == null) {
+			this.linkedFcnt = new ArrayList<>();
+		}
+		return linkedFcnt;
+	}
+
+	/**
+	 * @param linkedFcnt the linkedFcnt to set
+	 */
+	public void setLinkedFcnt(List<FlexContainerEntity> linkedFcnt) {
+		this.linkedFcnt = linkedFcnt;
 	}
 
 	/**

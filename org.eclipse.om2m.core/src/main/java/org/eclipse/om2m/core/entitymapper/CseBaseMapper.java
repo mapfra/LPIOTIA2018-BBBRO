@@ -27,6 +27,7 @@ import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
 import org.eclipse.om2m.commons.entities.AeEntity;
 import org.eclipse.om2m.commons.entities.CSEBaseEntity;
 import org.eclipse.om2m.commons.entities.ContainerEntity;
+import org.eclipse.om2m.commons.entities.FlexContainerEntity;
 import org.eclipse.om2m.commons.entities.GroupEntity;
 import org.eclipse.om2m.commons.entities.LabelEntity;
 import org.eclipse.om2m.commons.entities.NodeEntity;
@@ -38,6 +39,7 @@ import org.eclipse.om2m.commons.resource.AccessControlPolicy;
 import org.eclipse.om2m.commons.resource.CSEBase;
 import org.eclipse.om2m.commons.resource.ChildResourceRef;
 import org.eclipse.om2m.commons.resource.Container;
+import org.eclipse.om2m.commons.resource.FlexContainer;
 import org.eclipse.om2m.commons.resource.Group;
 import org.eclipse.om2m.commons.resource.RemoteCSE;
 import org.eclipse.om2m.commons.resource.Request;
@@ -102,6 +104,15 @@ public class CseBaseMapper extends EntityMapper<CSEBaseEntity, CSEBase> {
 			child.setValue(cnt.getResourceID());
 			cseBaseResource.getChildResource().add(child);
 		}
+		// adding flexcontainer refs
+		for(FlexContainerEntity fcnt : cseBaseEntity.getChildFlexContainers()) {
+			ChildResourceRef child = new ChildResourceRef();
+			child.setResourceName(fcnt.getName());
+			child.setType(ResourceType.FLEXCONTAINER);
+			child.setValue(fcnt.getResourceID());
+			cseBaseResource.getChildResource().add(child);
+		}
+		
 		// adding remoteCSE refs
 		for (RemoteCSEEntity csr : cseBaseEntity.getRemoteCses()) {
 			ChildResourceRef child = new ChildResourceRef();
@@ -161,6 +172,11 @@ public class CseBaseMapper extends EntityMapper<CSEBaseEntity, CSEBase> {
 		for (ContainerEntity cnt : entity.getChildContainers()) {
 			Container cntRes = new ContainerMapper().mapEntityToResource(cnt, ResultContent.ATTRIBUTES);
 			resource.getRemoteCSEOrNodeOrAE().add(cntRes);
+		}
+		// adding flexcontainer refs
+		for(FlexContainerEntity fcnt : entity.getChildFlexContainers()) {
+			FlexContainer fcntRes = new FlexContainerMapper().mapEntityToResource(fcnt, ResultContent.ATTRIBUTES);
+			resource.getRemoteCSEOrNodeOrAE().add(fcntRes);
 		}
 		// adding remoteCSE refs
 		for (RemoteCSEEntity csr : entity.getRemoteCses()) {

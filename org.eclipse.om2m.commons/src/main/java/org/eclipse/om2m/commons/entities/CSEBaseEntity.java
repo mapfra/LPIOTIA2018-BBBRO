@@ -129,8 +129,18 @@ public class CSEBaseEntity extends ResourceEntity {
 			inverseJoinColumns={@JoinColumn(name=DBEntities.CNT_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)}
 			)
 	protected List<ContainerEntity> childContainers;
+	
+	
+	/** List of FlexContainerEntites */
+	@OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.ALL})
+	@JoinTable(
+			name=DBEntities.CSEB_FCNT_JOIN,
+			joinColumns={@JoinColumn(name=DBEntities.CSEB_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)},
+			inverseJoinColumns={@JoinColumn(name=DBEntities.FCNT_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)}
+			)
+	protected List<FlexContainerEntity> childFlexContainers;
 
-	/** List of ContainerEntities */
+	/** List of GroupEntities */
 	@OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.ALL})
 	@JoinTable(
 			name=DBEntities.CSEB_GRP_JOIN,
@@ -303,6 +313,23 @@ public class CSEBaseEntity extends ResourceEntity {
 	 */
 	public void setContainers(List<ContainerEntity> containers) {
 		this.childContainers = containers;
+	}
+	
+	/**
+	 * @return the flexContainers
+	 */
+	public List<FlexContainerEntity> getChildFlexContainers() {
+		if (childFlexContainers == null) {
+			childFlexContainers = new ArrayList<>();
+		}
+		return childFlexContainers;
+	}
+
+	/**
+	 * @param flexContainers the flexContainers to set
+	 */
+	public void setFlexContainers(List<FlexContainerEntity> flexContainers) {
+		this.childFlexContainers = flexContainers;
 	}
 
 	/**

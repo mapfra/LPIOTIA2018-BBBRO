@@ -42,6 +42,10 @@ public class ShortName {
 	public static final String CNT = "cnt";
 	/** Short name for ContainerAnnc resource */
 	public static final String CNTA = "cntA";
+	/** Short name for FlexContainer resource*/
+	public static final String FCNT = "fcnt";
+	/** Short name for FlexContainerAnnc resource */
+	public static final String FCNTA = "fcnta";
 	/** Short name for Content Instance resource */
 	public static final String CIN = "cin";
 	/** Short name for ContentInstanceAnnc resource */
@@ -238,6 +242,11 @@ public class ShortName {
 	public static final String CURRENT_NUMBER_OF_INSTANCES = "cni";
 	
 	
+	// Attributes for FlexContainerEntity
+	/** Short name for ContainerDefinition attribute */
+	public static final String CONTAINER_DEFINITION = "cntDef";
+	
+	
 	// Attributes for Content Instance
 	/** Short name for ContentSize attribute */
 	public static final String CONTENT_SIZE = "cs";
@@ -414,6 +423,11 @@ public class ShortName {
 	public static final String EVENT_LOG = "evl";
 	public static final String CMDH_POLICY = "cmp";
 	public static final String ACTIVE_CMDH_POLICY = "acmp";
+	
+	// Short names for Custom Attributes
+	public static final String CUSTOM_ATTRIBUTE_NAME = "can";
+	public static final String CUSTOM_ATTRIBUTE_TYPE = "cat";
+	public static final String CUSTOM_ATTRIBUTE_VALUE = "cav";
 	
 	// short names for area nwk info
 	public static final String AREA_NWK_TYPE = "ant";

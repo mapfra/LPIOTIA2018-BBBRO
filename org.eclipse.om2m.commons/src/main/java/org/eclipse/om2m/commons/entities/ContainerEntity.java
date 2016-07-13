@@ -95,6 +95,15 @@ public class ContainerEntity extends AnnounceableSubordinateEntity{
 			)
 	@OrderBy("creationTime")
 	protected List<ContentInstanceEntity> childContentInstances;
+	
+	/** List of child FlexContainer entities */
+	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	@JoinTable(
+			name=DBEntities.CNT_FCNTCHILD_JOIN,
+			joinColumns={@JoinColumn(name=DBEntities.CNT_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)},
+			inverseJoinColumns={@JoinColumn(name=DBEntities.FCNT_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)}
+			)
+	protected List<FlexContainerEntity> childFlexContainers;
 
 	// Database link to the possible parent Container
 	@ManyToOne(fetch=FetchType.LAZY, targetEntity=ContainerEntity.class)
@@ -104,6 +113,14 @@ public class ContainerEntity extends AnnounceableSubordinateEntity{
 			joinColumns={@JoinColumn(name=DBEntities.CNTCH_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)}
 			)
 	protected ContainerEntity parentContainer;
+	
+	@ManyToOne(fetch=FetchType.LAZY, targetEntity=FlexContainerEntity.class)
+	@JoinTable(
+			name=DBEntities.FCNT_CNTCHILD_JOIN,
+			inverseJoinColumns={@JoinColumn(name=DBEntities.FCNT_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)},
+			joinColumns={@JoinColumn(name=DBEntities.CNT_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)}
+			)
+	protected FlexContainerEntity parentFlexContainer;
 	
 	// Database link to the possible parent Application Entity
 	@ManyToOne(fetch=FetchType.LAZY, targetEntity=AeEntity.class)
@@ -287,6 +304,23 @@ public class ContainerEntity extends AnnounceableSubordinateEntity{
 	 */
 	public void setChildContainers(List<ContainerEntity> childContainers) {
 		this.childContainers = childContainers;
+	}
+	
+	/**
+	 * @return the childFlexContainers
+	 */
+	public List<FlexContainerEntity> getChildFlexContainers() {
+		if (this.childFlexContainers == null) {
+			this.childFlexContainers = new ArrayList<>();
+		}
+		return childFlexContainers;
+	}
+
+	/**
+	 * @param childFlexContainers the childFlexContainers to set
+	 */
+	public void setChildFlexContainers(List<FlexContainerEntity> childFlexContainers) {
+		this.childFlexContainers = childFlexContainers;
 	}
 
 	/**

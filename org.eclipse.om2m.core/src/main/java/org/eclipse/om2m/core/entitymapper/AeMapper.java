@@ -26,6 +26,7 @@ import org.eclipse.om2m.commons.constants.ResultContent;
 import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
 import org.eclipse.om2m.commons.entities.AeEntity;
 import org.eclipse.om2m.commons.entities.ContainerEntity;
+import org.eclipse.om2m.commons.entities.FlexContainerEntity;
 import org.eclipse.om2m.commons.entities.GroupEntity;
 import org.eclipse.om2m.commons.entities.PollingChannelEntity;
 import org.eclipse.om2m.commons.entities.SubscriptionEntity;
@@ -33,6 +34,7 @@ import org.eclipse.om2m.commons.resource.AE;
 import org.eclipse.om2m.commons.resource.AccessControlPolicy;
 import org.eclipse.om2m.commons.resource.ChildResourceRef;
 import org.eclipse.om2m.commons.resource.Container;
+import org.eclipse.om2m.commons.resource.FlexContainer;
 import org.eclipse.om2m.commons.resource.Group;
 import org.eclipse.om2m.commons.resource.PollingChannel;
 import org.eclipse.om2m.commons.resource.Subscription;
@@ -86,6 +88,14 @@ public class AeMapper extends EntityMapper<AeEntity, AE> {
 			child.setValue(containerEntity.getResourceID());
 			resource.getChildResource().add(child);
 		}
+		// ChildResourceRef FlexContainer
+		for(FlexContainerEntity flexContainerEntity : entity.getChildFlexContainers()) {
+			ChildResourceRef child = new ChildResourceRef();
+			child.setResourceName(flexContainerEntity.getName());
+			child.setType(flexContainerEntity.getResourceType());
+			child.setValue(flexContainerEntity.getResourceID());
+			resource.getChildResource().add(child);
+		}
 		// ChildResourceRef Subscription
 		for (SubscriptionEntity sub : entity.getSubscriptions()){
 			ChildResourceRef child = new ChildResourceRef();
@@ -123,6 +133,11 @@ public class AeMapper extends EntityMapper<AeEntity, AE> {
 		for (ContainerEntity containerEntity : entity.getChildContainers()){
 			Container cnt = new ContainerMapper().mapEntityToResource(containerEntity, ResultContent.ATTRIBUTES);
 			resource.getContainerOrGroupOrAccessControlPolicy().add(cnt);
+		}
+		// ChildResourceRef FlexContainer
+		for(FlexContainerEntity flexContainerEntity : entity.getChildFlexContainers()) {
+			FlexContainer fcnt = new FlexContainerMapper().mapEntityToResource(flexContainerEntity, ResultContent.ATTRIBUTES);
+			resource.getContainerOrGroupOrAccessControlPolicy().add(fcnt);
 		}
 		// ChildResourceRef Subscription
 		for (SubscriptionEntity sub : entity.getSubscriptions()){

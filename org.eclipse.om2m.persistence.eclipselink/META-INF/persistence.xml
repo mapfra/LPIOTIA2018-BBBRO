@@ -37,6 +37,8 @@
 		<class>org.eclipse.om2m.commons.entities.AreaNwkInfoEntity</class>
 		<class>org.eclipse.om2m.commons.entities.CSEBaseEntity</class>
 		<class>org.eclipse.om2m.commons.entities.ContainerEntity</class>
+		<class>org.eclipse.om2m.commons.entities.FlexContainerEntity</class>
+		<class>org.eclipse.om2m.commons.entities.CustomAttributeEntity</class>
 		<class>org.eclipse.om2m.commons.entities.ContainerAnncEntity</class>
 		<class>org.eclipse.om2m.commons.entities.ContentInstanceEntity</class>
 		<class>org.eclipse.om2m.commons.entities.GroupEntity</class>
