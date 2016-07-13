@@ -5,7 +5,6 @@ Bundle-SymbolicName: org.eclipse.om2m.persistence.eclipselink
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.eclipse.om2m.persistence.eclipselink.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.om2m.commons
 Bundle-ClassPath: libs/eclipselink.jar,
  libs/h2-1.4.186.jar,

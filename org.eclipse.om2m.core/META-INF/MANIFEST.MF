@@ -7,7 +7,6 @@ Bundle-Activator: org.eclipse.om2m.core.Activator
 Require-Bundle: org.eclipse.om2m.commons
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ClassPath: .
-Bundle-ActivationPolicy: lazy
 Import-Package: org.apache.commons.logging,
  org.eclipse.om2m.binding.service,
  org.eclipse.om2m.core.service,
