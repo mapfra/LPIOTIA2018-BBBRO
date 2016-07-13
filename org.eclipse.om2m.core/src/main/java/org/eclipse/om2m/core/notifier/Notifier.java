@@ -46,6 +46,7 @@ import org.eclipse.om2m.commons.entities.SubscriptionEntity;
 import org.eclipse.om2m.commons.exceptions.Om2mException;
 import org.eclipse.om2m.commons.resource.Notification;
 import org.eclipse.om2m.commons.resource.Notification.NotificationEvent;
+import org.eclipse.om2m.commons.resource.Notification.NotificationEvent.Representation;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.Resource;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
@@ -252,11 +253,15 @@ public class Notifier {
 				}
 				if(sub.getNotificationContentType().equals(NotificationContentType.MODIFIED_ATTRIBUTES)){
 					serializableResource = (Resource)mapper.mapEntityToResource(resource, ResultContent.ATTRIBUTES);
-					notification.getNotificationEvent().setRepresentation(serializableResource);
+					Representation representation = new Representation();
+					representation.setResource(serializableResource);
+					notification.getNotificationEvent().setRepresentation(representation);
 					request.setRequestContentType(MimeMediaType.XML);
 				} else if(sub.getNotificationContentType().equals(NotificationContentType.WHOLE_RESOURCE)){
 					serializableResource = (Resource) mapper.mapEntityToResource(resource, ResultContent.ATTRIBUTES);
-					notification.getNotificationEvent().setRepresentation(serializableResource);
+					Representation representation = new Representation();
+					representation.setResource(serializableResource);
+					notification.getNotificationEvent().setRepresentation(representation);
 					request.setRequestContentType(MimeMediaType.XML);
 				} 
 			} 
