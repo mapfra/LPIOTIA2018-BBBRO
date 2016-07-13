@@ -44,4 +44,7 @@ public class Operation {
 	/** Big integer constant for DISCOVERY operation (non oneM2M) */
 	public static final BigInteger DISCOVERY = BigInteger.valueOf(6);
 	
+	/** Big integer constant for INTERNAL_NOTIFY operation */
+	public static final BigInteger INTERNAL_NOTIFY = BigInteger.valueOf(99);
+	
 }

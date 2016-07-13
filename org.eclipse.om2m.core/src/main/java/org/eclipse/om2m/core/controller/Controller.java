@@ -80,6 +80,8 @@ public abstract class Controller {
 				response = doUpdate(request);
 			} else if(request.getOperation().equals(Operation.DELETE)){
 				response = doDelete(request);
+			} else if (request.getOperation().equals(Operation.INTERNAL_NOTIFY)) {
+				response = doInternalNotify(request);
 			} else {
 				throw new BadRequestException("Incorrect Operation value (op): " + request.getOperation());
 			}
@@ -121,6 +123,16 @@ public abstract class Controller {
 	 * @return The generic returned response.
 	 */
 	public abstract ResponsePrimitive doDelete (RequestPrimitive request);
+	
+	/**
+	 * Handle internal notify operation.
+	 * This kind of operation is only handle by FlexContainer.
+	 * @param request
+	 * @return response
+	 */
+	public ResponsePrimitive doInternalNotify(RequestPrimitive request) {
+		return null;
+	}
 
 	/**
 	 * Check the access right based on acpId
