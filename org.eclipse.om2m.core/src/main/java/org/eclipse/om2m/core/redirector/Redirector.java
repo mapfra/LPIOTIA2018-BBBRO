@@ -35,6 +35,7 @@ import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
 import org.eclipse.om2m.core.comm.RestClient;
 import org.eclipse.om2m.core.controller.AEController;
+import org.eclipse.om2m.core.datamapper.DataMapperSelector;
 import org.eclipse.om2m.core.interworking.IpeSelector;
 import org.eclipse.om2m.core.persistence.PersistenceService;
 import org.eclipse.om2m.persistence.service.DAO;
@@ -124,6 +125,23 @@ public class Redirector {
 				}
 				
 				request.setTo(url);
+					
+				// modify the request if content type is OBJ.
+				String initialRequestContentType = request.getRequestContentType();
+				String initialReturnContentType = request.getReturnContentType();
+				if ((MimeMediaType.OBJ.equals(initialRequestContentType))) {
+					
+					request.setRequestContentType(MimeMediaType.XML);
+					request.setReturnContentType(MimeMediaType.XML);
+					
+					if ((Operation.CREATE.equals(request.getOperation())) || (Operation.UPDATE.equals(request.getOperation()))) {
+						// convert content type as XML payload
+						String xmlPayload = DataMapperSelector.getDataMapperList().get(MimeMediaType.XML).objToString(request.getContent());
+						request.setContent(xmlPayload);
+					}
+						
+				}
+					
 				ResponsePrimitive response = RestClient.sendRequest(request);
 				if(!(response.getResponseStatusCode()
 						.equals(ResponseStatusCode.TARGET_NOT_REACHABLE))){
@@ -134,6 +152,11 @@ public class Redirector {
 						csrEntity.getPointOfAccess().add(0, poa);
 						dbs.getDAOFactory().getRemoteCSEDAO().update(transaction, csrEntity);
 						transaction.commit();
+					}
+					// convert response as expected
+					if (MimeMediaType.OBJ.equals(initialReturnContentType)) {
+						Object resource = DataMapperSelector.getDataMapperList().get(MimeMediaType.XML).stringToObj((String) response.getContent());
+						response.setContent(resource);
 					}
 					return response;
 				}
