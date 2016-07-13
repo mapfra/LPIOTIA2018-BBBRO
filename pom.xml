@@ -134,6 +134,7 @@
 		<module>org.eclipse.om2m.core</module>
 		<module>org.eclipse.om2m.interworking.service</module>
 		<module>org.eclipse.om2m.ipe.sample</module>
+		<module>org.eclipse.om2m.testsuite.flexcontainer</module>
 		<module>org.eclipse.om2m.site.asn-cse</module>
 		<module>org.eclipse.om2m.site.in-cse</module>
 		<module>org.eclipse.om2m.site.mn-cse</module>
