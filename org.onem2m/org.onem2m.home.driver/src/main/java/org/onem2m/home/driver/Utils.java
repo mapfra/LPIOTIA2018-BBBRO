@@ -22,6 +22,9 @@ import org.onem2m.sdt.Property;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
+import org.osgi.service.cm.Configuration;
+import org.osgi.service.cm.ConfigurationAdmin;
+import org.osgi.service.cm.ManagedService;
 
 public class Utils {
 
@@ -43,19 +46,46 @@ public class Utils {
 	static private final String DEVICE = "Device";
 	static private final String MODULE = "Module";
 
+	static private ConfigurationAdmin cfgAdmin;
+
 	static public List<ServiceRegistration> register(GenericDevice device, 
 			BundleContext context) {
+		String protocol = device.getProtocol();
+		Logger log = new Logger(protocol);
 		List<ServiceRegistration> regs = new ArrayList<ServiceRegistration>();
 		regs.add(context.registerService(getSDTNames(device),
-				device, getProperties(device, device.getProtocol())));
-		for (Module mod : device.getModules()) {
-			regs.add(context.registerService(getSDTNames(mod),
-					mod, getProperties(mod, device.getProtocol())));
+				device, getProperties(device, protocol, log)));
+		for (Module module : device.getModules()) {
+			regs.add(context.registerService(getSDTNames(module),
+					module, getProperties(module, protocol, log)));
+		}
+		try {
+			PersistedDevice pDev = new PersistedDevice(device);
+			Configuration cfg = getConfigurationAdmin(context)
+					.getConfiguration(device.getPid());
+			Dictionary props = cfg.getProperties();
+			if (props != null) {
+				log.info("Already persisted device: " + props);
+				pDev.updateDevice(props);
+			} else {
+				log.info("Unpersisted device: " + device);
+				props = new Hashtable();
+				for (Property prop : device.getProperties()) {
+					if (prop.getValue() != null)
+						props.put(prop.getName(), prop.getValue());
+				}
+				log.info("persist: " + props);
+				pDev.setRegistration(context.registerService(ManagedService.class.getName(),
+					pDev, props));
+				cfg.update(props);
+			}
+		} catch(Exception e) {
+			log.warning("", e);
 		}
 		return regs;
 	}
 	
-	static public void setProperties(ServiceReference ref, GenericDevice gen) {
+	static public void setProperties(ServiceReference ref, GenericDevice device) {
 		for (String prop : ref.getPropertyKeys()) {
 			if (prop.equalsIgnoreCase(Utils.SERVICE_PID)
 					|| prop.equalsIgnoreCase(Utils.SERVICE_ID)
@@ -68,26 +98,31 @@ public class Utils {
 				continue;
 			}
 			if (prop.equals(Utils.DEVICE_DESCRIPTION))
-				gen.setDeviceAliasName(val.toString());
+				device.setDeviceAliasName(val.toString());
 			else if (prop.equals(Utils.DEVICE_MANUFACTURER))
-				gen.setDeviceManufacturer(val.toString());
+				device.setDeviceManufacturer(val.toString());
 			else if (prop.equals(Utils.DEVICE_PRODUCT_CLASS))
-				gen.setDeviceModelName(val.toString());
+				device.setDeviceModelName(val.toString());
 			else if (prop.equals(Utils.DEVICE_FRIENDLY_NAME))
-				gen.setDeviceName(val.toString());
-			else gen.addProperty(new Property(prop, val.toString()));
+				device.setDeviceName(val.toString());
+			else device.setProperty(prop, val.toString());
 		}
-		if (gen.getDeviceManufacturer() == null)
-			gen.setDeviceManufacturer("Unknown");
-		if (gen.getDeviceName() == null)
-			gen.setDeviceModelName(gen.getSerialNumber());
+		if (device.getDeviceManufacturer() == null)
+			device.setDeviceManufacturer("Unknown");
+		if (device.getDeviceName() == null)
+			device.setDeviceModelName(device.getSerialNumber());
+	}
+	
+	static public final boolean equals(final String s1, final String s2) {
+		return (s1 == null) ? (s2 == null) : s1.equals(s2);
 	}
 	
 	static private final String[] getSDTNames(final Device elt) {
 		Class<?> clazz = elt.getClass();
 		while (! clazz.getPackage().getName().equals(HOME_DEVS_PKG)) {
 			clazz = clazz.getSuperclass();
-			if (clazz == null) return new String[] { Device.class.getName() };
+			if (clazz == null) 
+				return new String[] { Device.class.getName() };
 		}
 		return new String[] { clazz.getName(), Device.class.getName() };
 	}
@@ -96,37 +131,46 @@ public class Utils {
 		Class<?> clazz = elt.getClass();
 		while (! clazz.getPackage().getName().equals(HOME_MODS_PKG)) {
 			clazz = clazz.getSuperclass();
-			if (clazz == null) return new String[] { Module.class.getName() };
+			if (clazz == null) 
+				return new String[] { Module.class.getName() };
 		}
 		return new String[] { clazz.getName(), Module.class.getName() };
 	}
 
-	static private Dictionary<String, Object> getProperties(Element elt, String protocol) {
+	static private Dictionary<String, Object> getProperties(Element elt, String protocol, Logger log) {
 		Dictionary<String, Object> props = new Hashtable<String, Object>();
 		List<String> categories = new ArrayList<String>();
 		categories.add(SDT);
 		categories.add((elt instanceof Device) ? DEVICE : MODULE);
 		if ((protocol != null) && ! protocol.isEmpty())
 			categories.add(protocol);
-		String[] cats = categories.toArray(new String[] {});
+		props.put(DEVICE_CATEGORY, categories.toArray(new String[] {}));
 		Collection<Property> sdtProps = null;
 		if (elt instanceof Device) {
-			props.put(DEVICE_CATEGORY, cats);
 			props.put(SDT_ID, elt.getName());
 			props.put(SERVICE_PID, ((Device)elt).getPid());
 			sdtProps = ((Device)elt).getProperties();
 		} else if (elt instanceof Module) {
-			props.put(DEVICE_CATEGORY, cats);
 			props.put(SERVICE_PID, ((Module)elt).getPid());
 			sdtProps = ((Module)elt).getProperties();
-		} else {
-			return props;
 		}
 		for (Property prop : sdtProps) {
 			if (prop.getValue() != null)
 				props.put(prop.getName(), prop.getValue());
 		}
+		log.info("Properties: " + props);
 		return props;
+	}
+
+	static private final ConfigurationAdmin getConfigurationAdmin(final BundleContext bc) {
+		if (cfgAdmin == null) {
+			
+			ServiceReference configAdminServiceReference = bc.getServiceReference(ConfigurationAdmin.class.getName());
+			if (configAdminServiceReference != null) {
+				cfgAdmin = (ConfigurationAdmin) bc.getService(configAdminServiceReference);
+			}
+		}
+		return cfgAdmin;
 	}
 
 }
