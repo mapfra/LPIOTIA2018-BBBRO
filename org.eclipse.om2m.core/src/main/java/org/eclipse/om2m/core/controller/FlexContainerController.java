@@ -7,17 +7,7 @@
  *******************************************************************************/
 package org.eclipse.om2m.core.controller;
 
-import java.io.IOException;
-import java.io.StringReader;
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
-
-import javax.xml.XMLConstants;
-import javax.xml.transform.stream.StreamSource;
-import javax.xml.validation.Schema;
-import javax.xml.validation.SchemaFactory;
-import javax.xml.validation.Validator;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -45,18 +35,17 @@ import org.eclipse.om2m.commons.resource.CustomAttribute;
 import org.eclipse.om2m.commons.resource.FlexContainer;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
-import org.eclipse.om2m.commons.utils.UriUtil;
 import org.eclipse.om2m.commons.utils.Util.DateUtil;
 import org.eclipse.om2m.core.datamapper.DataMapperSelector;
 import org.eclipse.om2m.core.entitymapper.EntityMapperFactory;
 import org.eclipse.om2m.core.flexcontainer.FlexContainerSelector;
+import org.eclipse.om2m.core.flexcontainer.FlexContainerXMLValidator;
 import org.eclipse.om2m.core.notifier.Notifier;
 import org.eclipse.om2m.core.router.Patterns;
 import org.eclipse.om2m.core.urimapper.UriMapper;
 import org.eclipse.om2m.core.util.ControllerUtil;
 import org.eclipse.om2m.flexcontainer.service.FlexContainerService;
 import org.eclipse.om2m.persistence.service.DAO;
-import org.xml.sax.SAXException;
 
 /**
  * Controller for the Container Resource
@@ -162,13 +151,17 @@ public class FlexContainerController extends Controller {
 			} else {
 				flexContainer = (FlexContainer) DataMapperSelector.getDataMapperList()
 						.get(request.getRequestContentType()).stringToObj((String) request.getContent());
-
-				xmlPayload = (String) request.getContent();
+				
+				if (request.getRequestContentType().equals(MimeMediaType.XML)) {
+					xmlPayload = (String) request.getContent();
+				} else {
+					// need to create the XML payload in order to validate it
+					xmlPayload = DataMapperSelector.getDataMapperList().get(MimeMediaType.XML).objToString(flexContainer);
+				}
 			}
 
 			// validate XML payload
-			validateXMLPayload(xmlPayload, flexContainer.getContainerDefinition());
-
+			FlexContainerXMLValidator.validateXMLPayload(xmlPayload, flexContainer.getContainerDefinition());
 		} catch (ClassCastException e) {
 			e.printStackTrace();
 			LOGGER.debug("ClassCastException: Incorrect resource type in object conversion.", e);
@@ -275,47 +268,6 @@ public class FlexContainerController extends Controller {
 		return response;
 	}
 
-	/**
-	 * Validate XML payload based on the ContainerDefinition value. This method
-	 * loads the XSD file related to the ContainerDefinition value and validates
-	 * the XML payload using this XSD file.
-	 * 
-	 * @param request
-	 *            request contains the XML payload
-	 * @param flexContainer
-	 *            unmarshalled flexContainer object
-	 * @throws BadRequestException
-	 *             in case of the validation failed.
-	 */
-	private void validateXMLPayload(String xmlPayload, String containerDefinition) throws BadRequestException {
-		// validate the XML payload
-		// need to perform a post validation due to the fact we need
-		// to know the value of the containerDefinition.
-		SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-		URL url = FlexContainer.class.getClassLoader().getResource("xsd/" + containerDefinition.toLowerCase() + ".xsd");
-
-		if (url != null) {
-			// XSD schema found!
-			try {
-				Schema schema = schemaFactory.newSchema(url);
-				Validator validator = schema.newValidator();
-				StreamSource ss = new StreamSource(new StringReader(xmlPayload));
-				validator.validate(ss);
-			} catch (SAXException e) {
-				throw new BadRequestException("Unable to validate XML payload: " + e.getMessage());
-			} catch (IOException e) {
-				throw new BadRequestException("Unable to validate XML payload: " + e.getMessage());
-			} catch (IllegalArgumentException e) {
-				throw new BadRequestException("Unable to validate XML payload: " + e.getMessage());
-			} catch (NullPointerException e) {
-				throw new BadRequestException("Unable to validate XML payload: " + e.getMessage());
-			}
-
-		} else {
-			// XSD not found
-			throw new BadRequestException("No XSD schema found for " + containerDefinition);
-		}
-	}
 
 	/**
 	 * Return the container resource with the normalized representation
@@ -422,11 +374,18 @@ public class FlexContainerController extends Controller {
 				} else {
 					flexContainer = (FlexContainer) DataMapperSelector.getDataMapperList()
 							.get(request.getRequestContentType()).stringToObj((String) request.getContent());
-					xmlPayload = (String) request.getContent();
+					
+					if (request.getRequestContentType().equals(MimeMediaType.XML)) {
+						xmlPayload = (String) request.getContent();
+					} else {
+						// need to create the XML payload in order to validate it
+						xmlPayload = DataMapperSelector.getDataMapperList().get(MimeMediaType.XML)
+								.objToString(flexContainer);
+					}
 				}
 
 				// validate XML payload
-				validateXMLPayload(xmlPayload, flexContainerEntity.getContainerDefinition());
+				FlexContainerXMLValidator.validateXMLPayload(xmlPayload, flexContainer.getContainerDefinition());
 
 			} catch (ClassCastException e) {
 				throw new BadRequestException("Incorrect resource representation in content", e);
