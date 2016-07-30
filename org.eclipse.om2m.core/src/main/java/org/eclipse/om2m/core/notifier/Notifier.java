@@ -230,7 +230,8 @@ public class Notifier {
 
 			// Set request parameters
 			request.setOperation(Operation.NOTIFY);
-			request.setFrom("/" + Constants.CSE_ID);
+			//request.setFrom("/" + Constants.CSE_ID);
+			request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 
 			if(resourceStatus == ResourceStatus.DELETED){
 				notification.setSubscriptionDeletion(true);
