@@ -10,6 +10,6 @@ Export-Package: org.eclipse.om2m.commons.constants,org.eclipse.om2m.co
  .resource,org.eclipse.om2m.commons.utils
 Bundle-ClassPath: .,
  libs/javax.persistence.jar
-Import-Package: org.apache.commons.logging,
- org.eclipse.persistence.internal.jaxb,
- org.eclipse.persistence.jaxb
+Import-Package: org.apache.commons.logging
+
+
