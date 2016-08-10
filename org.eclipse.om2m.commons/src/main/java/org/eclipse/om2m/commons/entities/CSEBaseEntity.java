@@ -418,6 +418,9 @@ public class CSEBaseEntity extends ResourceEntity {
 	 * @return the childNodes
 	 */
 	public List<NodeEntity> getChildNodes() {
+		if (childNodes == null) {
+			childNodes = new ArrayList<NodeEntity>();
+		}
 		return childNodes;
 	}
 

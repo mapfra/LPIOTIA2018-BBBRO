@@ -19,10 +19,14 @@
  *******************************************************************************/
 package org.eclipse.om2m.commons.entities;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import org.eclipse.om2m.commons.constants.DBEntities;
+import org.eclipse.om2m.commons.constants.ShortName;
 
 /**
  * Access Control Originator JPA Entity
@@ -32,6 +36,10 @@ import org.eclipse.om2m.commons.constants.DBEntities;
 public class AccessControlOriginatorEntity {
 	
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private long id;
+	
+	@Column(name= ShortName.ORIGINATOR)
 	protected String originatorID;
 
 	public AccessControlOriginatorEntity() {	

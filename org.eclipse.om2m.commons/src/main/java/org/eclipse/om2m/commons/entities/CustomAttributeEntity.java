@@ -19,9 +19,9 @@ import org.eclipse.om2m.commons.constants.ShortName;
 public class CustomAttributeEntity {
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.TABLE, generator=DBEntities.CUSTOM_ATTRIBUTE_ENTITY)
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name=ShortName.RESOURCE_ID)
-	protected String resourceID;
+	protected long resourceID;
 
 	@Column(name= ShortName.CUSTOM_ATTRIBUTE_NAME)
 	protected String customAttributeName;
@@ -70,11 +70,11 @@ public class CustomAttributeEntity {
 		this.parentFlexContainer = parentFlexContainer;
 	}
 
-	public String getResourceID() {
+	public long getResourceID() {
 		return resourceID;
 	}
 
-	public void setResourceID(String resourceID) {
+	public void setResourceID(long resourceID) {
 		this.resourceID = resourceID;
 	}
 	

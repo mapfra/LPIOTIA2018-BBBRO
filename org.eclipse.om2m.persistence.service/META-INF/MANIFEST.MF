@@ -4,6 +4,7 @@ Bundle-Name: Service
 Bundle-SymbolicName: org.eclipse.om2m.persistence.service
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Require-Bundle: org.eclipse.om2m.commons
 Export-Package: org.eclipse.om2m.persistence.service,org.eclipse.om2m.
  persistence.service.util
+Import-Package: javax.persistence;version="1.0.0.SNAPSHOT"
+Require-Bundle: org.eclipse.om2m.commons;bundle-version="1.0.0"
