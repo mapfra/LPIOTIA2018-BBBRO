@@ -347,6 +347,11 @@ public class Router implements CseService {
 	}
 
 	private static void getQueryStringFromTargetId(RequestPrimitive request){
+		
+		if (request.getTo().contains("#")) {
+			System.out.println("getQueryStringFromTargetId add # in query string");
+			request.getQueryStrings().put("#", null);
+		}
 		if(request.getTargetId().contains("?")){
 			String query = request.getTargetId().split("\\?")[1];
 			Map<String, List<String>> parameters = new HashMap<String, List<String>>();
@@ -373,6 +378,7 @@ public class Router implements CseService {
 				}
 			}
 			request.getQueryStrings().putAll(parameters);
+			
 			if(request.getTo() == null){
 				request.setTo(request.getTargetId().split("\\?")[0]);
 				request.setTargetId(request.getTo());

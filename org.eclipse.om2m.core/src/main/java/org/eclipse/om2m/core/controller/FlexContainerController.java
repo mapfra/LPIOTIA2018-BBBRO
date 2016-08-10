@@ -297,12 +297,15 @@ public class FlexContainerController extends Controller {
 		FlexContainer flexContainerResource = EntityMapperFactory.getFlexContainerMapper()
 				.mapEntityToResource(flexContainerEntity, request);
 
-		// check if a FlexContainer service exist
-		FlexContainerService fcs = FlexContainerSelector.getFlexContainerService(flexContainerResource.getResourceID());
-		if (fcs != null) {
-			// retrieve the last values of custom attribute
-			for (CustomAttribute ca : flexContainerResource.getCustomAttributes()) {
-				ca.setCustomAttributeValue(fcs.getCustomAttributeValue(ca.getCustomAttributeName()));
+		if (!request.getQueryStrings().containsKey("#")) {
+			// ACK 
+			// check if a FlexContainer service exist
+			FlexContainerService fcs = FlexContainerSelector.getFlexContainerService(flexContainerResource.getResourceID());
+			if (fcs != null) {
+				// retrieve the last values of custom attribute
+				for (CustomAttribute ca : flexContainerResource.getCustomAttributes()) {
+					ca.setCustomAttributeValue(fcs.getCustomAttributeValue(ca.getCustomAttributeName()));
+				}
 			}
 		}
 

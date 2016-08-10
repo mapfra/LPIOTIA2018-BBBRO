@@ -52,7 +52,7 @@ public class Patterns {
 					"?|" + ShortName.REQ + "?|" + ShortName.NODE + "?");
 	
 	/** Main id string */
-	public static final String ID_STRING = "([A-Za-z0-9_\\-~]|\\.)+";
+	public static final String ID_STRING = "([A-Za-z0-9_\\-~#]|\\.)+";
 	
 	/** Main id pattern */
 	public static final Pattern ID_PATTERN = Pattern.compile(ID_STRING);
