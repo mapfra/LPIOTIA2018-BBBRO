@@ -33,12 +33,14 @@ public class MockedSmokeDetector extends SmokeDetector implements MockedDevice {
 		// set property
 		setLocation(deviceLocation);
 		
-		smokeSensor = new SmokeSensor("smokeSensor_" + id, domain, new BooleanDataPoint("alarm") {
-			@Override
-			public Boolean doGetValue() throws DataPointException {
-				return smokeAlarm;
-			}
-		});
+		smokeSensor = new SmokeSensor("smokeSensor_" + id, domain, 
+			new BooleanDataPoint("alarm") {
+				@Override
+				public Boolean doGetValue() throws DataPointException {
+					return smokeAlarm;
+				}
+			});
+		
 		smokeSensor.setDetectedTime(new IntegerDataPoint("detectedTime") {
 			@Override
 			protected Integer doGetValue() throws DataPointException {
@@ -50,16 +52,8 @@ public class MockedSmokeDetector extends SmokeDetector implements MockedDevice {
 			}
 		});
 		addModule(smokeSensor);
-				
-		addModule(new MockedFaultDetection("faultDetection_" + id, domain, new BooleanDataPoint("status") {
-			
-			Boolean status = Boolean.FALSE;
-			
-			@Override
-			public Boolean doGetValue() throws DataPointException {
-				return status;
-			}
-		}));
+		
+		addModule(new MockedFaultDetection("faultDetection_" + id, domain));
 	}
 
 	public void registerDevice() {
@@ -75,8 +69,8 @@ public class MockedSmokeDetector extends SmokeDetector implements MockedDevice {
 			public void run() {
 				while (running) {
 					try {
-						Thread.sleep((int) (10000 + 5000 * Math.random()));
-						Activator.logger.info("Generating Alarm event");
+						Thread.sleep((int) (30000 + 5000 * Math.random()));
+						Activator.logger.info("Generating Smoke Alarm event");
 						Event evt = new Event("ALARM");
 						smokeAlarm = ! smokeAlarm;
 						evt.addDataPoint(smokeSensor.getDataPoint("alarm"));

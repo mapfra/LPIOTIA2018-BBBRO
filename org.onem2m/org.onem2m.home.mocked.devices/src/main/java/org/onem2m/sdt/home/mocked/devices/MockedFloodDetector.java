@@ -32,23 +32,17 @@ public class MockedFloodDetector extends FloodDetector implements MockedDevice {
 		// set property
 		setLocation(deviceLocation);
 		
-		waterSensor = new WaterSensor("waterSensor_" + id, domain, new BooleanDataPoint("alarm") {
-			@Override
-			public Boolean doGetValue() throws DataPointException {
-				return waterAlarm;
+		waterSensor = new WaterSensor("waterSensor_" + id, domain, 
+			new BooleanDataPoint("alarm") {
+				@Override
+				public Boolean doGetValue() throws DataPointException {
+					return waterAlarm;
+				}
 			}
-		});
+		);
 		addModule(waterSensor);
 				
-		addModule(new MockedFaultDetection("faultDetection_" + id, domain, new BooleanDataPoint("status") {
-			
-			Boolean status = Boolean.FALSE;
-			
-			@Override
-			public Boolean doGetValue() throws DataPointException {
-				return status;
-			}
-		}));
+		addModule(new MockedFaultDetection("faultDetection_" + id, domain));
 	}
 
 	public void registerDevice() {
@@ -64,8 +58,8 @@ public class MockedFloodDetector extends FloodDetector implements MockedDevice {
 			public void run() {
 				while (running) {
 					try {
-						Thread.sleep((int) (10000 + 5000 * Math.random()));
-						Activator.logger.info("Generating Alarm event");
+						Thread.sleep((int) (30000 + 10000 * Math.random()));
+						Activator.logger.info("Generating Flood Alarm event");
 						Event evt = new Event("ALARM");
 						waterAlarm = ! waterAlarm;
 						evt.addDataPoint(waterSensor.getDataPoint("alarm"));

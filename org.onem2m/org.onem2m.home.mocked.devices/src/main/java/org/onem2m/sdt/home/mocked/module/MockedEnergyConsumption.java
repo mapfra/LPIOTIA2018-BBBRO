@@ -20,80 +20,49 @@ public class MockedEnergyConsumption extends EnergyConsumption {
 		
 		// absolute energy consumption data
 		setAbsoluteEnergyConsumption(new FloatDataPoint("absoluteEnergyConsumption") {
-			
-			Float dataPointValue = (float) 0;
-			
-			@Override
-			public void doSetValue(Float value) throws DataPointException {
-				dataPointValue = value;
-			}
-			
 			@Override
 			public Float doGetValue() throws DataPointException {
-				return dataPointValue;
+				return new Float(Math.random() * 1000);
 			}
 		});
 		
 		// rounding energy consumption data
 		setRoundingEnergyConsumption(new IntegerDataPoint("roundingEnergyConsumption") {
-			
-			Integer dataPointValue = 0;
-			
-			@Override
-			public void doSetValue(Integer value) throws DataPointException {
-				dataPointValue = value;
-			}
-			
 			@Override
 			public Integer doGetValue() throws DataPointException {
-				return dataPointValue;
+				return new Integer((int)(Math.random() * 1000));
 			}
 		});
 		
 		// significant figures
 		setSignificantDigits(new IntegerDataPoint("significantDigits") {
-			
-			Integer dataPointValue = 0;
-			
+			private Integer dataPointValue = 1;
 			@Override
 			public void doSetValue(Integer value) throws DataPointException {
 				dataPointValue = value;
 			}
-			
 			@Override
 			public Integer doGetValue() throws DataPointException {
 				return dataPointValue;
 			}
 		});
-		
 		
 		// multiplying factors
 		setMultiplyingFactors(new IntegerDataPoint("multiplyingFactors") {
-			
-			Integer dataPointValue = 0;
-			
+			private Integer dataPointValue = 2;
 			@Override
 			public void doSetValue(Integer value) throws DataPointException {
 				dataPointValue = value;
 			}
-			
 			@Override
 			public Integer doGetValue() throws DataPointException {
 				return dataPointValue;
 			}
 		});
 		
-		
 		// voltage
 		setVoltage(new FloatDataPoint("voltage") {
-			
-			Float dataPointValue = (float) 0;
-			
-			@Override
-			public void doSetValue(Float value) throws DataPointException {
-				dataPointValue = value;
-			}
-			
+			private Float dataPointValue = (float) 220;
 			@Override
 			public Float doGetValue() throws DataPointException {
 				return dataPointValue;
@@ -102,14 +71,7 @@ public class MockedEnergyConsumption extends EnergyConsumption {
 		
 		// current
 		setCurrent(new FloatDataPoint("current") {
-			
-			Float dataPointValue = (float) 0;
-			
-			@Override
-			public void doSetValue(Float value) throws DataPointException {
-				dataPointValue = value;
-			}
-			
+			private Float dataPointValue = (float) 0;
 			@Override
 			public Float doGetValue() throws DataPointException {
 				return dataPointValue;
@@ -118,14 +80,7 @@ public class MockedEnergyConsumption extends EnergyConsumption {
 		
 		// frequency
 		setFrequency(new FloatDataPoint("frequency") {
-			
-			Float dataPointValue = (float) 0;
-			
-			@Override
-			public void doSetValue(Float value) throws DataPointException {
-				dataPointValue = value;
-			}
-			
+			private Float dataPointValue = (float) 50;
 			@Override
 			public Float doGetValue() throws DataPointException {
 				return dataPointValue;

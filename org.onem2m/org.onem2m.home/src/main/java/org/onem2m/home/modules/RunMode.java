@@ -41,10 +41,19 @@ public class RunMode extends Module {
 	}
 
 	public void setOperationMode(List<String> v) throws DataPointException, AccessException {
+		List<String> modes = getSupportedModes();
+		for (String s : v) {
+			if (! modes.contains(s)) {
+				throw new DataPointException("value " + s + " is not permitted");
+			}
+		}
 		this.operationMode.setValue(v);
 	}
 
 	public void setOperationMode(String v) throws DataPointException, AccessException {
+		if (! getSupportedModes().contains(v)) {
+			throw new DataPointException("value " + v + " is not permitted");
+		}
 		this.operationMode.setValue(Arrays.asList(v));
 	}
 

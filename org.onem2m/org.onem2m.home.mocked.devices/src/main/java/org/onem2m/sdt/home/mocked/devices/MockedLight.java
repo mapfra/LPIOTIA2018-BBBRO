@@ -11,16 +11,13 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.onem2m.home.devices.Light;
-import org.onem2m.home.modules.Colour;
 import org.onem2m.home.modules.ColourSaturation;
 import org.onem2m.sdt.Domain;
-import org.onem2m.sdt.datapoints.ArrayDataPoint;
-import org.onem2m.sdt.datapoints.BooleanDataPoint;
 import org.onem2m.sdt.datapoints.IntegerDataPoint;
 import org.onem2m.sdt.home.mocked.module.MockedBinarySwitch;
+import org.onem2m.sdt.home.mocked.module.MockedColour;
 import org.onem2m.sdt.home.mocked.module.MockedFaultDetection;
 import org.onem2m.sdt.home.mocked.module.MockedRunMode;
-import org.onem2m.sdt.impl.AccessException;
 import org.onem2m.sdt.impl.DataPointException;
 import org.osgi.framework.ServiceRegistration;
 
@@ -35,141 +32,30 @@ public class MockedLight extends Light implements MockedDevice {
 		setLocation(location);
 
 		// Module FaultDetection
-		addModule(new MockedFaultDetection("faultDetection_" + id, domain, 
-				new BooleanDataPoint("status") {
-
-			Boolean status = Boolean.FALSE;
-
-			@Override
-			public void doSetValue(Boolean value) throws DataPointException {
-				status = value;
-			}
-
-			@Override
-			public Boolean doGetValue() throws DataPointException {
-				return status;
-			}
-		}));
+		addModule(new MockedFaultDetection("faultDetection_" + id, domain));
 
 		// Module BinarySwitch
-		addModule(new MockedBinarySwitch("binarySwitch_" + id, domain, 
-				new BooleanDataPoint("powerState") {
-
-			Boolean powerState = Boolean.FALSE;
-
-			@Override
-			public void doSetValue(Boolean value) throws DataPointException {
-				powerState = value;
-			}
-
-			@Override
-			public Boolean doGetValue() throws DataPointException {
-				return powerState;
-			}
-		}));
+		addModule(new MockedBinarySwitch("binarySwitch_" + id, domain));
 
 		// Module RunMode
-		addModule(new MockedRunMode("runMode_" + id, domain, 
-				new ArrayDataPoint<String>("operationMode") {
-
-			List<String> values = Arrays.asList("mode1");
-
-			@Override
-			public void doSetValue(List<String> value) throws DataPointException {
-				try {
-					List<String> possibleValues = getRunMode().getSupportedModes();
-					for (String v : value) {
-						if (! possibleValues.contains(v)) {
-							throw new DataPointException("value " + v + " is not permitted");
-						}
-					}
-					values = value;
-				} catch (AccessException e) {
-					throw new DataPointException(e);	
-				}
-			}
-
-			@Override
-			public List<String> doGetValue() throws DataPointException {
-				return values;
-			}
-		}, 
-		new ArrayDataPoint<String>("supportedModes") {
-
-			List<String> values = Arrays.asList("mode1", "mode2", "mode3");
-
-			@Override
-			public void doSetValue(List<String> value) throws DataPointException {
-				values = value;
-			}
-
-			@Override
-			public List<String> doGetValue() throws DataPointException {
-				return values;
-			}
-		}));
+		addModule(new MockedRunMode("runMode_" + id, domain));
 
 		// Module Colour
-		addModule(new Colour("colour", domain, 
-				new IntegerDataPoint("red") {
+		addModule(new MockedColour("colour_" + id, domain));
 
-			Integer v = new Integer(0);
-
-			@Override
-			public void doSetValue(Integer value) throws DataPointException {
-				v = value;
-			}
-
-			@Override
-			public Integer doGetValue() throws DataPointException {
-				return v;
-			}
-		}, 
-		new IntegerDataPoint("green") {
-
-			Integer v = new Integer(0);
-
-
-			@Override
-			public void doSetValue(Integer value) throws DataPointException {
-				v = value;
-			}
-
-			@Override
-			public Integer doGetValue() throws DataPointException {
-				return v;
-			}
-		}, 
-		new IntegerDataPoint("blue") {
-
-			Integer v = new Integer(0);
-
-			@Override
-			public void doSetValue(Integer value) throws DataPointException {
-				v = value;
-			}
-
-			@Override
-			public Integer doGetValue() throws DataPointException {
-				return v;
-			}
-		}));
-
-		addModule(new ColourSaturation("colourSaturation", domain, 
-				new IntegerDataPoint("colourSaturation") {
-
-			Integer v = new Integer(0);
-
-			@Override
-			public void doSetValue(Integer value) throws DataPointException {
-				v = value;
-			}
-
-			@Override
-			public Integer doGetValue() throws DataPointException {
-				return v;
-			}
-		}));
+		addModule(new ColourSaturation("colourSaturation_" + id, domain, 
+			new IntegerDataPoint("colourSaturation") {
+				private Integer v = new Integer((int)(Math.random() * 100));
+				@Override
+				public void doSetValue(Integer value) throws DataPointException {
+					v = value;
+				}
+				@Override
+				public Integer doGetValue() throws DataPointException {
+					return v;
+				}
+			})
+		);
 	}
 
 	public void registerDevice() {
@@ -177,6 +63,12 @@ public class MockedLight extends Light implements MockedDevice {
 			return;
 		}
 		serviceRegistrations = Activator.register(this);
+		try {
+			getRunMode().setSupportedModes(Arrays.asList("mode1", "mode2", "mode3"));
+			getRunMode().setOperationMode(Arrays.asList("mode1", "mode3"));
+		} catch (Exception e) {
+			Activator.logger.warning("", e);
+		}
 	}
 
 	public void unregisterDevice() {

@@ -10,11 +10,10 @@ package org.onem2m.sdt.home.mocked.devices;
 import java.util.List;
 
 import org.onem2m.home.devices.WaterValve;
+import org.onem2m.home.modules.WaterLevel;
 import org.onem2m.home.types.LiquidLevel;
 import org.onem2m.sdt.Domain;
-import org.onem2m.sdt.datapoints.BooleanDataPoint;
 import org.onem2m.sdt.home.mocked.module.MockedFaultDetection;
-import org.onem2m.sdt.home.mocked.module.MockedWaterLevel;
 import org.onem2m.sdt.impl.DataPointException;
 import org.osgi.framework.ServiceRegistration;
 
@@ -30,36 +29,21 @@ public class MockedWaterValve extends WaterValve implements MockedDevice {
 		setLocation(deviceLocation);
 
 		// Datapoints
-		addModule(new MockedWaterLevel("waterLevel_" + id, domain, new LiquidLevel("liquidLevel") {
-			
-			Integer openLevel = LiquidLevel.zero;
-			
-			@Override
-			public void doSetValue(Integer value) throws DataPointException {
-				openLevel = value;
-				System.out.println("openLevel set " + value);
-			}
-			
-			@Override
-			public Integer doGetValue() throws DataPointException {
-				return openLevel;
-			}
-		}));
+		addModule(new WaterLevel("waterLevel_" + id, domain, 
+			new LiquidLevel("liquidLevel") {
+				private Integer openLevel = LiquidLevel.zero;
+				@Override
+				public void doSetValue(Integer value) throws DataPointException {
+					openLevel = value;
+					Activator.logger.info("openLevel set " + value);
+				}
+				@Override
+				public Integer doGetValue() throws DataPointException {
+					return openLevel;
+				}
+			}));
 		
-		addModule(new MockedFaultDetection("faultDetection_" + id, domain, new BooleanDataPoint("status") {
-			
-			Boolean status = Boolean.FALSE;
-			
-			@Override
-			public void doSetValue(Boolean value) throws DataPointException {
-				status = value;
-			}
-			
-			@Override
-			protected Boolean doGetValue() throws DataPointException {
-				return status;
-			}
-		}));
+		addModule(new MockedFaultDetection("faultDetection_" + id, domain));
 	}
 
 	public void registerDevice() {

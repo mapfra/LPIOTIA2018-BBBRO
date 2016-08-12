@@ -8,7 +8,6 @@
 package org.onem2m.sdt.home.mocked.devices;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import org.onem2m.home.devices.SmartElectricMeter;
@@ -16,18 +15,13 @@ import org.onem2m.home.modules.EnergyConsumption;
 import org.onem2m.sdt.DataPoint;
 import org.onem2m.sdt.Domain;
 import org.onem2m.sdt.Event;
-import org.onem2m.sdt.datapoints.ArrayDataPoint;
-import org.onem2m.sdt.datapoints.BooleanDataPoint;
-import org.onem2m.sdt.datapoints.DateDataPoint;
 import org.onem2m.sdt.datapoints.FloatDataPoint;
-import org.onem2m.sdt.datapoints.TimeDataPoint;
 import org.onem2m.sdt.home.mocked.module.MockedBinarySwitch;
 import org.onem2m.sdt.home.mocked.module.MockedClock;
 import org.onem2m.sdt.home.mocked.module.MockedEnergyConsumption;
 import org.onem2m.sdt.home.mocked.module.MockedEnergyGeneration;
 import org.onem2m.sdt.home.mocked.module.MockedFaultDetection;
 import org.onem2m.sdt.home.mocked.module.MockedRunMode;
-import org.onem2m.sdt.impl.AccessException;
 import org.onem2m.sdt.impl.DataPointException;
 import org.osgi.framework.ServiceRegistration;
 
@@ -46,106 +40,29 @@ public class MockedSmartElectricMeter extends SmartElectricMeter implements Mock
 		setLocation(deviceLocation);
 
 		// Binary Switch
-		addModule(new MockedBinarySwitch("binarySwitch_" + id, domain, 
-				new BooleanDataPoint("powerState") {
-			Boolean powerState = Boolean.FALSE;
-			@Override
-			public void doSetValue(Boolean value) throws DataPointException {
-				powerState = value;
-			}
-			@Override
-			public Boolean doGetValue() throws DataPointException {
-				return powerState;
-			}
-		}));
+		addModule(new MockedBinarySwitch("binarySwitch_" + id, domain));
 
 		// EnergyConsumption
 		energyConsumption = new MockedEnergyConsumption("energyConsumption_" + id, domain, 
-				new FloatDataPoint("power") {
-			@Override
-			public Float doGetValue() throws DataPointException {
-				return power;
-			}
-		});
+			new FloatDataPoint("power") {
+				@Override
+				public Float doGetValue() throws DataPointException {
+					return power;
+				}
+			});
 		addModule(energyConsumption);
 		
 		// FaultDetection
-		addModule(new MockedFaultDetection("faultDetection_" + id, domain, 
-				new BooleanDataPoint("status") {
-			Boolean status = Boolean.FALSE;
-			@Override
-			public void doSetValue(Boolean value) throws DataPointException {
-				throw new DataPointException("Not Writable");
-			}
-			@Override
-			public Boolean doGetValue() throws DataPointException {
-				return status;
-			}
-		}));
+		addModule(new MockedFaultDetection("faultDetection_" + id, domain));
 		
 		// clock
-		addModule(new MockedClock("clock", domain, 
-				new TimeDataPoint("currentTime") {
-			Date d = new Date();
-			@Override
-			public void doSetValue(Date value) throws DataPointException {
-				d = value;
-			}
-			@Override
-			public Date doGetValue() throws DataPointException {
-				return d;
-			}
-		}, 
-		new DateDataPoint("currentDate") {
-			Date d = new Date();
-			@Override
-			public void doSetValue(Date value) throws DataPointException {
-				d = value;
-			}
-			@Override
-			public Date doGetValue() throws DataPointException {
-				return d;
-			}
-		}));
+		addModule(new MockedClock("clock_" + id, domain));
 		
 		// runMode
-		addModule(new MockedRunMode("runMode", domain, 
-				new ArrayDataPoint<String>("operationMode") {
-			List<String> operationMode = Arrays.asList("mode1");
-			@Override
-			public List<String> doGetValue() throws DataPointException {
-				return operationMode;
-			}
-			@Override
-			public void doSetValue(List<String> value) throws DataPointException {
-				try {
-					List<String> possibleValues = getRunMode().getSupportedModes();
-					for (String v : value) {
-						if (! possibleValues.contains(v)) {
-							throw new DataPointException("value " + v + " is not permitted");
-						}
-					}
-					operationMode = value;
-				} catch (AccessException e) {
-					throw new DataPointException(e);	
-				}
-				
-			}
-		}, 
-		new ArrayDataPoint<String>("supportedModes") {
-			List<String> supportedModes = Arrays.asList("mode1", "mode2");
-			@Override
-			public List<String> doGetValue() throws DataPointException {
-				return supportedModes;
-			}
-			@Override
-			public void doSetValue(List<String> value) throws DataPointException {
-				supportedModes = value;
-			}
-		}));
+		addModule(new MockedRunMode("runMode_" + id, domain));
 		
 		// energyGeneration
-		addModule(new MockedEnergyGeneration("energyGeneration", domain));
+		addModule(new MockedEnergyGeneration("energyGeneration_" + id, domain));
 	}
 
 	public void registerDevice() {
@@ -155,14 +72,20 @@ public class MockedSmartElectricMeter extends SmartElectricMeter implements Mock
 			return;
 		}
 		serviceRegistrations = Activator.register(this);
+		try {
+			getRunMode().setSupportedModes(Arrays.asList("mode1", "mode2", "mode3", "mode4"));
+			getRunMode().setOperationMode(Arrays.asList("mode2", "mode3"));
+		} catch (Exception e) {
+			Activator.logger.warning("", e);
+		}
 
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
 				while (running) {
 					try {
-						Thread.sleep((long)(10000 * (1 + Math.random())));
-						Activator.logger.info("Generating event");
+						Thread.sleep((long)(30000 * (1 + Math.random())));
+						Activator.logger.info("Generating Power event");
 						power = (float) (100 * Math.random());
 						DataPoint dp = energyConsumption.getDataPoint("power");
 						Event evt = new Event("power change");

@@ -19,34 +19,25 @@ public class MockedEnergyGeneration extends EnergyGeneration {
 		super(name, domain);
 
 		addDataPoint(new FloatDataPoint("powerGenerationData") {
-			
-			Float power = new Float(0);
-			
 			@Override
 			public Float doGetValue() throws DataPointException {
-				return power;
+				return new Float(Math.random() * 1000);
 			}
 		});
 		
 		addDataPoint(new IntegerDataPoint("roundingEnergyGeneration") {
-			
-			Integer roundingEneryGeneration = new Integer(0);
-		
 			@Override
 			public Integer doGetValue() throws DataPointException {
-				return roundingEneryGeneration;
+				return new Integer((int)(Math.random() * 1000));
 			}
 		});
 		
 		addDataPoint(new IntegerDataPoint("significantDigits") {
-			
-			Integer significantDigits = new Integer(1);
-			
+			private Integer significantDigits = new Integer(1);
 			@Override
 			public void doSetValue(Integer value) throws DataPointException {
 				significantDigits = value;
 			}
-			
 			@Override
 			public Integer doGetValue() throws DataPointException {
 				return significantDigits;
@@ -54,14 +45,11 @@ public class MockedEnergyGeneration extends EnergyGeneration {
 		});
 		
 		addDataPoint(new IntegerDataPoint("multiplyingFactors") {
-			
 			Integer multiplyingFactors = new Integer(2);
-			
 			@Override
 			public void doSetValue(Integer value) throws DataPointException {
 				multiplyingFactors = value;
 			}
-			
 			@Override
 			public Integer doGetValue() throws DataPointException {
 				return multiplyingFactors;

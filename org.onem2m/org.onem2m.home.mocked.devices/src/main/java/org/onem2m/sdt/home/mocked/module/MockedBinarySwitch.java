@@ -18,8 +18,20 @@ import org.onem2m.sdt.impl.DataPointException;
 
 public class MockedBinarySwitch extends BinarySwitch {
 
-	public MockedBinarySwitch(String name, Domain domain, BooleanDataPoint powerState) {
-		super(name, domain, powerState);
+	public MockedBinarySwitch(String name, Domain domain) {
+		super(name, domain,
+			new BooleanDataPoint("powerState") {
+				private Boolean powerState = Boolean.TRUE;
+				@Override
+				public void doSetValue(Boolean value) throws DataPointException {
+					powerState = value;
+				}
+				@Override
+				public Boolean doGetValue() throws DataPointException {
+					return powerState;
+				}
+			}
+		);
 		
 		setToggle(new Toggle("toggle") {
 			@Override

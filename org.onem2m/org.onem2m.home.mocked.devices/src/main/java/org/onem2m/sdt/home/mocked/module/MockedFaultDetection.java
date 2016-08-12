@@ -10,11 +10,19 @@ package org.onem2m.sdt.home.mocked.module;
 import org.onem2m.home.modules.FaultDetection;
 import org.onem2m.sdt.Domain;
 import org.onem2m.sdt.datapoints.BooleanDataPoint;
+import org.onem2m.sdt.impl.DataPointException;
 
 public class MockedFaultDetection extends FaultDetection {
 
-	public MockedFaultDetection(String name, Domain domain, BooleanDataPoint status) {
-		super(name, domain, status);
+	public MockedFaultDetection(String name, Domain domain) {
+		super(name, domain, 
+			new BooleanDataPoint("status") {
+				@Override
+				public Boolean doGetValue() throws DataPointException {
+					return (Math.random() * 100) == 1;
+				}
+			}
+		);
 	}
 
 }
