@@ -177,7 +177,7 @@ public class CSEInitializer {
 		remoteCSE.setCSEID("/" + Constants.CSE_ID);
 		remoteCSE.setCSEBase("//" + Constants.M2M_SP_ID + remoteCSE.getCSEID());
 		remoteCSE.setRequestReachability(new Boolean(true));
-		remoteCSE.setName(Constants.CSE_ID);
+		remoteCSE.setName(Constants.CSE_NAME);
 		
 		String representation = DataMapperSelector.getDataMapperList().get(contentFormat).objToString(remoteCSE);
 
@@ -226,7 +226,7 @@ public class CSEInitializer {
 						transaction, acpAdminId));
 		remoteCseEntity.setResourceType(BigInteger.valueOf(ResourceType.REMOTE_CSE));
 		remoteCseEntity.setHierarchicalURI(
-				"/" + Constants.CSE_ID + "/" + Constants.CSE_NAME + "/" + Constants.REMOTE_CSE_ID);
+				"/" + Constants.CSE_ID + "/" + Constants.CSE_NAME + "/" + Constants.REMOTE_CSE_NAME);
 		String generatedId = Controller.generateId("", "");
 		remoteCseEntity.setResourceID(
 				"/" + Constants.CSE_ID + "/" + ShortName.REMOTE_CSE + 
