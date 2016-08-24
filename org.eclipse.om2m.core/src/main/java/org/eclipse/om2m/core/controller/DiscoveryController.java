@@ -30,12 +30,14 @@ import org.eclipse.om2m.commons.constants.Operation;
 import org.eclipse.om2m.commons.constants.ResourceType;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
+import org.eclipse.om2m.commons.entities.AeAnncEntity;
 import org.eclipse.om2m.commons.entities.AeEntity;
 import org.eclipse.om2m.commons.entities.AreaNwkDeviceInfoEntity;
 import org.eclipse.om2m.commons.entities.AreaNwkInfoEntity;
 import org.eclipse.om2m.commons.entities.CSEBaseEntity;
 import org.eclipse.om2m.commons.entities.ContainerEntity;
 import org.eclipse.om2m.commons.entities.ContentInstanceEntity;
+import org.eclipse.om2m.commons.entities.FlexContainerAnncEntity;
 import org.eclipse.om2m.commons.entities.FlexContainerEntity;
 import org.eclipse.om2m.commons.entities.GroupEntity;
 import org.eclipse.om2m.commons.entities.LabelEntity;
@@ -88,14 +90,14 @@ public class DiscoveryController extends Controller {
 
 		ResourceEntity resourceEntity = (ResourceEntity) dao.find(transaction, request.getTargetId());
 
-		List<AccessControlPolicyEntity> acpsToCheck = getAcpsFromEntity(resourceEntity);
-
-		// Check access control policy of the originator
-		if (resourceEntity.getResourceType().intValue() == (ResourceType.ACCESS_CONTROL_POLICY)){
-			checkSelfACP(acpsToCheck.get(0), request.getFrom(), Operation.DISCOVERY);
-		} else {
-			checkACP(acpsToCheck, request.getFrom(), Operation.DISCOVERY);			
-		}
+//		List<AccessControlPolicyEntity> acpsToCheck = getAcpsFromEntity(resourceEntity);
+//
+//		// Check access control policy of the originator
+//		if (resourceEntity.getResourceType().intValue() == (ResourceType.ACCESS_CONTROL_POLICY)){
+//			checkSelfACP(acpsToCheck.get(0), request.getFrom(), Operation.DISCOVERY);
+//		} else {
+//			checkACP(acpsToCheck, request.getFrom(), Operation.DISCOVERY);			
+//		}
 		response = new ResponsePrimitive(request);
 
 		// Get the filter criteria object from request primitive
@@ -166,14 +168,28 @@ public class DiscoveryController extends Controller {
 			if(filter.getLimit() != null && uriList.getListOfUri().size() == filter.getLimit().intValue()){
 				break;
 			}
-			if(request.getDiscoveryResultType().equals(DiscoveryResultType.HIERARCHICAL)){
-				if(!uriList.getListOfUri().contains(uriEntity.getHierarchicalUri())){
-					uriList.getListOfUri().add(uriEntity.getHierarchicalUri());
+			
+			// check acp
+			DAO<?> currentDao = (DAO<?>) Patterns.getDAO(uriEntity.getNonHierarchicalUri(), dbs);
+			ResourceEntity currentResourceEntity = (ResourceEntity) currentDao.find(transaction, uriEntity.getNonHierarchicalUri());
+			if (currentResourceEntity != null) {
+				List<AccessControlPolicyEntity> acps = getAcpsFromEntity(currentResourceEntity);
+				try {
+					checkACP(acps, request.getFrom(), Operation.DISCOVERY);
+					if(request.getDiscoveryResultType().equals(DiscoveryResultType.HIERARCHICAL)){
+						if(!uriList.getListOfUri().contains(uriEntity.getHierarchicalUri())){
+							uriList.getListOfUri().add(uriEntity.getHierarchicalUri());
+						}
+					} else {
+						if(!uriList.getListOfUri().contains(uriEntity.getNonHierarchicalUri())){
+							uriList.getListOfUri().add(uriEntity.getNonHierarchicalUri());
+						}
+					}
+				} catch (AccessDeniedException e) {
+					// nothing to do
 				}
-			} else {
-				if(!uriList.getListOfUri().contains(uriEntity.getNonHierarchicalUri())){
-					uriList.getListOfUri().add(uriEntity.getNonHierarchicalUri());
-				}
+					
+				
 			}
 		}
 
@@ -200,6 +216,8 @@ public class DiscoveryController extends Controller {
 			return Arrays.asList((AccessControlPolicyEntity) resourceEntity);
 		case ResourceType.AE:
 			return ((AeEntity) resourceEntity).getAccessControlPolicies();
+		case ResourceType.AE_ANNC:
+			return ((AeAnncEntity) resourceEntity).getAccessControlPolicies();
 		case ResourceType.CONTAINER:
 			return ((ContainerEntity) resourceEntity).getAccessControlPolicies();		
 		case ResourceType.CONTENT_INSTANCE:
@@ -214,6 +232,8 @@ public class DiscoveryController extends Controller {
 			return ((SubscriptionEntity) resourceEntity).getAcpList();
 		case ResourceType.FLEXCONTAINER:
 			return ((FlexContainerEntity) resourceEntity).getAccessControlPolicies();
+		case ResourceType.FLEXCONTAINER_ANNC:
+			return ((FlexContainerAnncEntity) resourceEntity).getAccessControlPolicies();
 		case ResourceType.NODE:
 			return ((NodeEntity) resourceEntity).getAccessControlPolicies();
 		case ResourceType.MGMT_OBJ:
@@ -238,46 +258,53 @@ public class DiscoveryController extends Controller {
 			case ResourceType.AE:
 				result.addAll(labelEntity.getLinkedAe());
 				break;
+			case ResourceType.AE_ANNC:
+				result.addAll(labelEntity.getLinkedAeA());
+				break;
 			case(ResourceType.CONTENT_INSTANCE):
 				result.addAll(labelEntity.getLinkedCin());	
-			break;
+				break;
 			case(ResourceType.CONTAINER):
 				result.addAll(labelEntity.getLinkedCnt());	
-			break;
+				break;
 			case(ResourceType.GROUP):
 				result.addAll(labelEntity.getLinkedGroup());
-			break;
+				break;
 			case(ResourceType.REMOTE_CSE):
 				result.addAll(labelEntity.getLinkedCsr());
-			break;
+				break;
 			case(ResourceType.CSE_BASE):
 				result.addAll(labelEntity.getLinkedCsb());
-			break;
+				break;
 			case (ResourceType.FLEXCONTAINER):
 				result.addAll(labelEntity.getLinkedFcnt());
-			break;
+				break;
+			case (ResourceType.FLEXCONTAINER_ANNC):
+				result.addAll(labelEntity.getLinkedFcntA());
+				break;
 			case (ResourceType.ACCESS_CONTROL_POLICY):
 				result.addAll(labelEntity.getLinkedACP());
-			break;
-			case(ResourceType.NODE): {
+				break;
+			case(ResourceType.NODE): 
 				result.addAll(labelEntity.getLinkedNodes());
-			}
-			break;
-			case(ResourceType.MGMT_OBJ): {
+				break;
+			case(ResourceType.MGMT_OBJ): 
 				result.addAll(labelEntity.getLinkedAni());
 				result.addAll(labelEntity.getLinkedAndi());
-			}
+				break;
 			default:
 				break;
 			}
 		} else {
-			result.addAll(labelEntity.getLinkedAe());			
+			result.addAll(labelEntity.getLinkedAe());	
+			result.addAll(labelEntity.getLinkedAeA());	
 			result.addAll(labelEntity.getLinkedCin());			
 			result.addAll(labelEntity.getLinkedCnt());
 			result.addAll(labelEntity.getLinkedGroup());
 			result.addAll(labelEntity.getLinkedCsr());
 			result.addAll(labelEntity.getLinkedCsb());
 			result.addAll(labelEntity.getLinkedFcnt());
+			result.addAll(labelEntity.getLinkedFcntA());
 			result.addAll(labelEntity.getLinkedACP());
 			result.addAll(labelEntity.getLinkedNodes());
 			result.addAll(labelEntity.getLinkedAni());
