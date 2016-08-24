@@ -392,8 +392,10 @@ public class AccessControlPolicyController extends Controller {
 		
 		// Check this acp is not a generated acp for an AE to avoid inconsistency
 		for(AeEntity ae : acpEntity.getLinkedAes()){
-			if(ae.getGeneratedAcp().getResourceID().equals(acpEntity.getResourceID())){
-				throw new BadRequestException("Delete the linked ae(s) to avoid acp inconsistency.");
+			if (ae.getGeneratedAcp() != null) {
+				if(ae.getGeneratedAcp().getResourceID().equals(acpEntity.getResourceID())){
+					throw new BadRequestException("Delete the linked ae(s) to avoid acp inconsistency.");
+				}
 			}
 		}
 		
