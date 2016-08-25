@@ -27,11 +27,8 @@ public class MockedSmokeDetector extends SmokeDetector implements MockedDevice {
 	private SmokeSensor smokeSensor;
 	private int detectedTime;
 
-	public MockedSmokeDetector(String id, String serial, Domain domain, String deviceLocation) {
+	public MockedSmokeDetector(String id, String serial, Domain domain) {
 		super(id, serial, domain);
-	
-		// set property
-		setLocation(deviceLocation);
 		
 		smokeSensor = new SmokeSensor("smokeSensor_" + id, domain, 
 			new BooleanDataPoint("alarm") {

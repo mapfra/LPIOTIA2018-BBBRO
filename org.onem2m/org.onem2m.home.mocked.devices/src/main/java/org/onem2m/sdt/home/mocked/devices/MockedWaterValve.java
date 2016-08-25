@@ -21,12 +21,8 @@ public class MockedWaterValve extends WaterValve implements MockedDevice {
 
 	private List<ServiceRegistration> serviceRegistrations;
 
-	public MockedWaterValve(String id, String serial, Domain domain,
-			String deviceLocation) {
+	public MockedWaterValve(String id, String serial, Domain domain) {
 		super(id, serial, domain);
-
-		// set property
-		setLocation(deviceLocation);
 
 		// Datapoints
 		addModule(new WaterLevel("waterLevel_" + id, domain, 

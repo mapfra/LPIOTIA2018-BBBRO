@@ -26,11 +26,8 @@ public class MockedFloodDetector extends FloodDetector implements MockedDevice {
 	private boolean running = false;
 	private WaterSensor waterSensor;
 
-	public MockedFloodDetector(String id, String serial, Domain domain, String deviceLocation) {
+	public MockedFloodDetector(String id, String serial, Domain domain) {
 		super(id, serial, domain);
-
-		// set property
-		setLocation(deviceLocation);
 		
 		waterSensor = new WaterSensor("waterSensor_" + id, domain, 
 			new BooleanDataPoint("alarm") {

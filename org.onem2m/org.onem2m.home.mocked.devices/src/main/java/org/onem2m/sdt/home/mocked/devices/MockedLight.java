@@ -24,12 +24,13 @@ import org.osgi.framework.ServiceRegistration;
 public class MockedLight extends Light implements MockedDevice {
 
 	private List<ServiceRegistration> serviceRegistrations;
+	
+	int counter;
 
-	public MockedLight(String id, String serial, Domain domain, String location) {
-		super(id, serial, domain);
-
-		// set property
-		setLocation(location);
+	public MockedLight(int counter, Domain domain) {
+		super("mocked_" + counter, "serial_mocked_" + counter, domain);
+		String id = "mocked_" + counter;
+		this.counter = counter;
 
 		// Module FaultDetection
 		addModule(new MockedFaultDetection("faultDetection_" + id, domain));

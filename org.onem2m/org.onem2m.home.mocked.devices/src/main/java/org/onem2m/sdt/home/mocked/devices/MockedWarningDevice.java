@@ -19,11 +19,8 @@ public class MockedWarningDevice extends WarningDevice implements MockedDevice {
 
 	private List<ServiceRegistration> serviceRegistrations;
 
-	public MockedWarningDevice(String id, String serial, Domain domain, String location) {
+	public MockedWarningDevice(String id, String serial, Domain domain) {
 		super(id, serial, domain);
-
-		// set property
-		setLocation(location);
 		
 		// Alarm Speaker
 		addModule(new MockedAlarmSpeaker("alarmSpeaker_" + id, domain));

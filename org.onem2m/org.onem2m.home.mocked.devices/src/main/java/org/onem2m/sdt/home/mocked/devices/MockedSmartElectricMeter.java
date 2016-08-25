@@ -32,12 +32,8 @@ public class MockedSmartElectricMeter extends SmartElectricMeter implements Mock
 	private List<ServiceRegistration> serviceRegistrations;
 	private EnergyConsumption energyConsumption;
 
-	public MockedSmartElectricMeter(final String id, String serial, Domain domain,
-			String deviceLocation) {
+	public MockedSmartElectricMeter(final String id, String serial, Domain domain) {
 		super(id, serial, domain);
-
-		// set property
-		setLocation(deviceLocation);
 
 		// Binary Switch
 		addModule(new MockedBinarySwitch("binarySwitch_" + id, domain));

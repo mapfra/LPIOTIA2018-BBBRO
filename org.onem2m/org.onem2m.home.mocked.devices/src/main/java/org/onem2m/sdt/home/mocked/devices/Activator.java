@@ -51,11 +51,11 @@ public class Activator implements BundleActivator {
 			running = true;
 			devices = new ArrayList<GenericDevice>();
 			
-			devices.add(new MockedSmartElectricMeter("mocked_1", "serial_mocked_1", domain, "Kitchen"));
-			devices.add(new MockedWaterValve("mocked_2", "serial_mocked_2", domain, "Garage"));
-			devices.add(new MockedSmokeDetector("mocked_3", "serial_mocked_3", domain, "Bathroom"));
-			devices.add(new MockedWarningDevice("mocked_4", "serial_mocked_4", domain, "Outdoor"));
-			devices.add(new MockedFloodDetector("mocked_5", "serial_mocked_5", domain, "Bathroom"));
+			devices.add(new MockedSmartElectricMeter("mocked_1", "serial_mocked_1", domain));
+			devices.add(new MockedWaterValve("mocked_2", "serial_mocked_2", domain));
+			devices.add(new MockedSmokeDetector("mocked_3", "serial_mocked_3", domain));
+			devices.add(new MockedWarningDevice("mocked_4", "serial_mocked_4", domain));
+			devices.add(new MockedFloodDetector("mocked_5", "serial_mocked_5", domain));
 			
 			for (GenericDevice dev : devices) {
 				install(dev);
@@ -66,9 +66,7 @@ public class Activator implements BundleActivator {
 				@Override
 				public void run() {
 					while (running) {
-						String name = "mocked_" + counter++;
-						GenericDevice light = new MockedLight(name, "serial_"
-								+ name, domain, "Living Room");
+						GenericDevice light = new MockedLight(counter++, domain);
 						devices.add(light);
 						logger.info("\n*************************************************");
 						logger.info("start new light " + light);
@@ -88,7 +86,11 @@ public class Activator implements BundleActivator {
 	}
 
 	private void install(GenericDevice dev) {
-		dev.setDeviceName(dev.getClass().getSimpleName());
+		if (dev instanceof MockedLight) {
+			dev.setDeviceName("Mocked Light " + ((MockedLight)dev).counter);
+		} else {
+			dev.setDeviceName(dev.getClass().getSimpleName());
+		}
 		dev.setDeviceAliasName("Simulated device for " 
 				+ dev.getClass().getSuperclass().getSimpleName());
 		dev.setProtocol(PROTOCOL);
