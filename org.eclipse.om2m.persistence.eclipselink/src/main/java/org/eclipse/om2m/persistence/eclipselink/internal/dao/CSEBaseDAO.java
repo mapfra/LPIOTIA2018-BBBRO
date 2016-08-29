@@ -37,5 +37,11 @@ public class CSEBaseDAO extends AbstractDAO<CSEBaseEntity>{
 		DBTransactionJPAImpl transaction = (DBTransactionJPAImpl) dbTransaction;
 		transaction.getEm().remove(resource);
 	}
+	
+	@Override
+	public void update(DBTransaction dbTransaction, CSEBaseEntity resource) {
+		DBTransactionJPAImpl transaction = (DBTransactionJPAImpl) dbTransaction;
+		transaction.getEm().merge(resource);
+	}
 
 }

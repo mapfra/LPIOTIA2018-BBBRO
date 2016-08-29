@@ -102,7 +102,7 @@ public class CSEBaseEntity extends ResourceEntity {
 
 
 	/** List of ApplicationEntities */
-	@OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.ALL})
+	@OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.ALL}, mappedBy="parentCse")
 	@JoinTable(
 			name=DBEntities.CSEBAE_JOIN,
 			joinColumns={@JoinColumn(name=DBEntities.CSEB_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)},
