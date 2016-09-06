@@ -269,8 +269,6 @@ public class FlexContainerController extends Controller {
 			String hierachicalURI = flexContainerFromDB.getHierarchicalURI();
 			String remoteLocation = hierachicalURI
 					.substring(("/" + Constants.CSE_ID + "/" + Constants.CSE_NAME + "/").length());
-			System.out.println("hierarchicalUri= " + hierachicalURI + ", remoteLocation" + remoteLocation);
-			System.out.println();
 			Announcer.announce(flexContainer.getAnnounceTo(), flexContainer.getAnnouncedAttribute(), flexContainer,
 					request.getFrom(), remoteLocation);
 		}

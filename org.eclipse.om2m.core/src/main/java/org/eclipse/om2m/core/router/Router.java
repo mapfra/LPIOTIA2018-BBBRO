@@ -360,7 +360,6 @@ public class Router implements CseService {
 	private static void getQueryStringFromTargetId(RequestPrimitive request){
 		
 		if (request.getTo().contains("#")) {
-			System.out.println("getQueryStringFromTargetId add # in query string");
 			request.getQueryStrings().put("#", new ArrayList());
 		}
 		if(request.getTargetId().contains("?")){

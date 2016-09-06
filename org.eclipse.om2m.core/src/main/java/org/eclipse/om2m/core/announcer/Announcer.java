@@ -115,8 +115,6 @@ public class Announcer {
 						+ remoteDestination);
 			}
 			
-			System.out.println("targetId=" + request.getTargetId());
-
 			request.setOperation(Operation.CREATE);
 			switch (toBeAnnounced.getResourceType().intValue()) {
 			case ResourceType.AE:
