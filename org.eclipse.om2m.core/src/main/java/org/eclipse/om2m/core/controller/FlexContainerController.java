@@ -221,6 +221,15 @@ public class FlexContainerController extends Controller {
 		flexContainerEntity.setHierarchicalURI(parentEntity.getHierarchicalURI() + "/" + flexContainerEntity.getName());
 		flexContainerEntity.setParentID(parentEntity.getResourceID());
 		flexContainerEntity.setResourceType(ResourceType.FLEXCONTAINER);
+		switch(parentEntity.getResourceType().intValue()) {
+		case ResourceType.AE:
+			flexContainerEntity.setParentAE((AeEntity) parentEntity);
+			break;
+		case ResourceType.FLEXCONTAINER:
+			flexContainerEntity.setParentFlexContainer((FlexContainerEntity) parentEntity);
+			break;
+		}
+		
 
 		// accessControlPolicyIDs O
 		if (!flexContainer.getAccessControlPolicyIDs().isEmpty()) {

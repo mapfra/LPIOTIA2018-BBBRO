@@ -90,7 +90,7 @@ public class AeEntity extends AnnounceableSubordinateEntity {
 			)
 	protected List<ContainerEntity> childContainers;
 	
-	@OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.ALL})
+	@OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.ALL}, mappedBy="parentAE")
 	@JoinTable(
 			name = DBEntities.AE_FCNTCHILD_JOIN,
 			joinColumns = {@JoinColumn(name = DBEntities.AE_JOINID, referencedColumnName=ShortName.RESOURCE_ID)},
