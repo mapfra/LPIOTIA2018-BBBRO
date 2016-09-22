@@ -104,6 +104,8 @@ public class DBServiceJPAImpl implements DBService {
 				properties.put(PersistenceUnitProperties.DDL_GENERATION,
 						PersistenceUnitProperties.CREATE_OR_EXTEND);
 			}
+			
+			properties.put("javax.persistence.lock.timeout", "5000");
 
 			LOGGER.info("Creating new EntityManagerFactory...");
 			emf = Persistence.createEntityManagerFactory("om2mdb", properties);

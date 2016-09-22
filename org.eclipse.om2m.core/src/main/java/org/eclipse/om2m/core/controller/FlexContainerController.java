@@ -88,6 +88,9 @@ public class FlexContainerController extends Controller {
 			throw new ResourceNotFoundException("Cannot find parent resource");
 		}
 
+		// lock parent
+		transaction.lock(parentEntity);
+		
 		// get lists to change in the method corresponding to specific object
 		List<AccessControlPolicyEntity> acpsToCheck = null;
 		List<FlexContainerEntity> childFlexContainers = null;
@@ -267,7 +270,8 @@ public class FlexContainerController extends Controller {
 		// add the container to the parentEntity child list
 		childFlexContainers.add(flexContainerFromDB);
 		dao.update(transaction, parentEntity);
-		// commit the transaction
+		
+		// commit the transaction & release lock
 		transaction.commit();
 
 		if ((flexContainer.getAnnounceTo() != null) && (!flexContainer.getAnnounceTo().isEmpty())) {
@@ -377,6 +381,10 @@ public class FlexContainerController extends Controller {
 		// retrieve the resource from database
 		FlexContainerEntity flexContainerEntity = dbs.getDAOFactory().getFlexContainerDAO().find(transaction,
 				request.getTargetId());
+		
+		// lock current object
+		transaction.lock(flexContainerEntity);
+		
 		if (flexContainerEntity == null) {
 			throw new ResourceNotFoundException("Resource not found");
 		}
@@ -515,8 +523,10 @@ public class FlexContainerController extends Controller {
 		response.setContent(modifiedAttributes);
 		// update the resource in the database
 		dbs.getDAOFactory().getFlexContainerDAO().update(transaction, flexContainerEntity);
+		
+		// commit and release lock
 		transaction.commit();
-
+		
 		Notifier.notify(flexContainerEntity.getSubscriptions(), flexContainerEntity, modifiedAttributes,
 				ResourceStatus.UPDATED);
 

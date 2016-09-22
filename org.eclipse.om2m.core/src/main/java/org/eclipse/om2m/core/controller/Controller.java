@@ -92,6 +92,11 @@ public abstract class Controller {
 			throw e;
 		} finally {
 			LOGGER.info("Clear and close transaction");
+			try {
+				transaction.commit();
+			} catch (Exception e) {
+				// do not log this exception
+			}
 			transaction.clear();
 			transaction.close();
 		}

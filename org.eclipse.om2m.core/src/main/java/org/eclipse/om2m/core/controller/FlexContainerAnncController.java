@@ -74,6 +74,9 @@ public class FlexContainerAnncController extends Controller {
 		if (parentEntity == null) {
 			throw new ResourceNotFoundException("Cannot find parent resource");
 		}
+		
+		// lock parent entity
+		transaction.lock(parentEntity);
 
 		// get lists to change in the method corresponding to specific object
 		List<AccessControlPolicyEntity> acpsToCheck = null;
@@ -231,7 +234,8 @@ public class FlexContainerAnncController extends Controller {
 		// add the container to the parentEntity child list
 		childFlexContainerAnncs.add(flexContainerFromDB);
 		dao.update(transaction, parentEntity);
-		// commit the transaction
+		
+		// commit the transaction & unlock parent entity
 		transaction.commit();
 
 		Notifier.notify(subscriptions, flexContainerFromDB, ResourceStatus.CHILD_CREATED);
@@ -288,6 +292,9 @@ public class FlexContainerAnncController extends Controller {
 		if (flexContainerAnncEntity == null) {
 			throw new ResourceNotFoundException("Resource not found");
 		}
+		
+		// lock current entity
+		transaction.lock(flexContainerAnncEntity);
 
 		// if resource exists, check authorization
 		// retrieve
@@ -295,6 +302,9 @@ public class FlexContainerAnncController extends Controller {
 		checkACP(acpList, request.getFrom(), request.getOperation());
 
 		if (ResultContent.ORIGINAL_RES.equals(request.getResultContent())) {
+			// commit transaction ==> release lock
+			transaction.commit();
+			
 			RequestPrimitive originalResourceRequest = new RequestPrimitive();
 			originalResourceRequest.setOperation(Operation.UPDATE);
 			originalResourceRequest.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
@@ -386,6 +396,8 @@ public class FlexContainerAnncController extends Controller {
 			response.setContent(modifiedAttributes);
 			// update the resource in the database
 			dbs.getDAOFactory().getFlexContainerAnncDAO().update(transaction, flexContainerAnncEntity);
+			
+			// commit transaction & unlock current entity
 			transaction.commit();
 
 			Notifier.notify(flexContainerAnncEntity.getSubscriptions(), flexContainerAnncEntity, modifiedAttributes,

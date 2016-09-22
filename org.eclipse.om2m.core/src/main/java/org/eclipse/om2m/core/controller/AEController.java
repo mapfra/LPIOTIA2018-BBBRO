@@ -100,6 +100,10 @@ public class AEController extends Controller {
 		if (parentEntity == null){
 			throw new ResourceNotFoundException("Cannot find parent resource");
 		}
+		
+		// lock parent database entity
+		transaction.lock(parentEntity);
+		
 
 		// Get lists to change in the method corresponding to specific object
 		List<AccessControlPolicyEntity> acpsToCheck = null;
@@ -318,7 +322,7 @@ public class AEController extends Controller {
 		childAes.add(aeDB);
 		dao.update(transaction, parentEntity);
 
-		// Commit the DB transaction
+		// Commit the DB transaction & release lock
 		transaction.commit();
 		
 		if ((ae.getAnnounceTo() != null) && (!ae.getAnnounceTo().isEmpty())) {
@@ -396,6 +400,9 @@ public class AEController extends Controller {
 			throw new ResourceNotFoundException("Resource not found");
 		}
 
+		// lock current entity
+		transaction.lock(aeEntity);
+		
 		checkACP(aeEntity.getAccessControlPolicies(), request.getFrom(), 
 				Operation.UPDATE);
 
@@ -506,8 +513,9 @@ public class AEController extends Controller {
 		// Update the resource in database
 		dbs.getDAOFactory().getAeDAO().update(transaction, aeEntity);
 
+		// commit and release lock
 		transaction.commit();
-
+		
 		Notifier.notify(aeEntity.getSubscriptions(), aeEntity, ResourceStatus.UPDATED);
 
 		response.setResponseStatusCode(ResponseStatusCode.UPDATED);
