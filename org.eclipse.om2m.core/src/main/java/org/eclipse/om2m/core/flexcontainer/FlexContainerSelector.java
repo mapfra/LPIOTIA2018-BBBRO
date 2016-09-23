@@ -27,6 +27,11 @@ public class FlexContainerSelector {
 	public static FlexContainerService getFlexContainerService(String flexContainerLocation) {
 		Logger.getLogger(FlexContainerSelector.class.getName()).log(Level.INFO,
 				"getFlexContainerService(flexContainerLocation=" + flexContainerLocation + ")");
+		
+		if (flexContainerLocation == null) {
+			return null;
+		}
+		
 		String location;
 		if (flexContainerLocation.startsWith("~")) {
 			location = flexContainerLocation.substring(1);

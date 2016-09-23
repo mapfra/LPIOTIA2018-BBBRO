@@ -83,7 +83,8 @@ public abstract class EntityMapper<E extends ResourceEntity, R extends Resource>
 				|| resultContent.equals(ResultContent.ATTRIBUTES_AND_CHILD_REF)
 				|| resultContent.equals(ResultContent.ATTRIBUTES_AND_CHILD_RES)
 				|| resultContent.equals(ResultContent.HIERARCHICAL_ADRESS)
-				|| resultContent.equals(ResultContent.HIERARCHICAL_AND_ATTRIBUTES)){
+				|| resultContent.equals(ResultContent.HIERARCHICAL_AND_ATTRIBUTES)
+				|| resultContent.equals(ResultContent.ORIGINAL_RES)){
 			mapGenericAttributes(entity, result);
 			mapAttributes(entity, result);
 		}
