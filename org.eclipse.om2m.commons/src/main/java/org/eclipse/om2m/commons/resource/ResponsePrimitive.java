@@ -331,7 +331,7 @@ public class ResponsePrimitive {
 		this.content = content;
 	}
 	
-	public PrimitiveContent getPritimitiveContent(){
+	public PrimitiveContent getPrimitiveContent(){
 		return content;
 	}
 	
