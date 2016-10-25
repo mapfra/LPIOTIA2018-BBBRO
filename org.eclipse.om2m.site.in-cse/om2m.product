@@ -72,6 +72,7 @@
       <plugin id="org.eclipse.om2m.sdt.home.driver"/>
       <plugin id="org.eclipse.om2m.sdt.home.mocked.devices"/>
       <plugin id="org.eclipse.om2m.sdt.home.monitoring"/>
+      <plugin id="org.eclipse.om2m.sdt.comparator.xml"/>
       <!--plugin id="org.eclipse.om2m.testsuite.flexcontainer"/-->
       <plugin id="org.eclipse.om2m.webapp.resourcesbrowser.json"/>
       <plugin id="org.eclipse.om2m.webapp.resourcesbrowser.xml"/>
@@ -102,6 +103,7 @@
       <plugin id="org.eclipse.om2m.sdt.home.driver" autoStart="true" startLevel="5" />
       <plugin id="org.eclipse.om2m.sdt.home.mocked.devices" autoStart="false" startLevel="5" />
       <plugin id="org.eclipse.om2m.sdt.home.monitoring" autoStart="false" startLevel="5" />
+      <plugin id="org.eclipse.om2m.sdt.comparator.xml" autoStart="false" startLevel="5"/>
       <!--plugin id="org.eclipse.om2m.testsuite.flexcontainer" autoStart="false" startLevel="6" /-->
       <plugin id="org.eclipse.om2m.webapp.resourcesbrowser.json" autoStart="true" startLevel="4" />
       <plugin id="org.eclipse.om2m.webapp.resourcesbrowser.xml" autoStart="false" startLevel="4" />
