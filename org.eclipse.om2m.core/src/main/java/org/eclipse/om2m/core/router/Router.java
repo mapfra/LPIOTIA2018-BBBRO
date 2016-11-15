@@ -126,6 +126,10 @@ public class Router implements CseService {
 			}
 
 			// URI Handling
+			if(request.getTo() == null && request.getTargetId() == null){
+				throw new BadRequestException("No To parameter provided provided");
+			}
+			
 			if(request.getTargetId() == null){
 				request.setTargetId(request.getTo());
 			}

@@ -22,6 +22,8 @@ package org.eclipse.om2m.core.notifier;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -133,6 +135,25 @@ public class Notifier {
 		LOGGER.info("Sending notify request to: " + contact);
 		if(contact.matches(".*://.*")){ 
 			// Contact = protocol-dependent -> direct notification using the rest client.
+			// In case of MQTT, the URI of the broker and the Topic has to be handled separatly
+			if(contact.startsWith("mqtt://")){
+				Pattern mqttUriPattern = Pattern.compile("(mqtt://[^:/]*(:[0-9]{1,5})?)(/.*)");
+				Matcher matcher = mqttUriPattern.matcher(contact);
+				if(matcher.matches()){
+					String uri = matcher.group(1);
+					String topic = matcher.group(3) == null ? "" : matcher.group(3).substring(1);
+					request.setMqttTopic(topic);
+					request.setMqttUri(uri);
+					// We do not want to wait for a response on AE topic
+					request.setMqttResponseExpected(false);
+				} else {
+					ResponsePrimitive resp = new ResponsePrimitive(request);
+					resp.setResponseStatusCode(ResponseStatusCode.BAD_REQUEST);
+					resp.setContent("Error in mqtt URI");
+					resp.setContentType(MimeMediaType.TEXT_PLAIN);
+					return resp;
+				}
+			}
 			request.setTo(contact);
 			return RestClient.sendRequest(request);
 		}else{
@@ -267,7 +288,7 @@ public class Notifier {
 			for(final String uri : sub.getNotificationURI()){
 				CoreExecutor.postThread(new Runnable(){
 					public void run() {
-						Notifier.notify(request, uri);    					
+						Notifier.notify(request, uri);			
 					};
 				});
 			}
