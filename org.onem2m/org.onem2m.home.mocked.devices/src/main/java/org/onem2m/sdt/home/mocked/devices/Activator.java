@@ -57,6 +57,8 @@ public class Activator implements BundleActivator {
 			devices.add(new MockedSmokeDetector(getName(), getSerial(), domain));
 			devices.add(new MockedWarningDevice(getName(), getSerial(), domain));
 			devices.add(new MockedFloodDetector(getName(), getSerial(), domain));
+			devices.add(new MockedDoor(getName(), getSerial(), domain));
+			devices.add(new MockedCamera(getName(), getSerial(), domain));
 			
 			for (GenericDevice dev : devices) {
 				install(dev);
