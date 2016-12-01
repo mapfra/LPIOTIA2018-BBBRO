@@ -39,7 +39,7 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.conn.HttpHostConnectException;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
 import org.eclipse.om2m.binding.http.constants.HttpHeaders;
 import org.eclipse.om2m.binding.http.constants.HttpParameters;
 import org.eclipse.om2m.binding.service.RestClientService;
@@ -79,11 +79,10 @@ public class RestHttpClient implements RestClientService {
 	 */
 	public ResponsePrimitive sendRequest(RequestPrimitive requestPrimitive) {
 		LOGGER.info("Sending request: " + requestPrimitive);
-		CloseableHttpClient httpClient = HttpClientBuilder.create()
-				.disableAutomaticRetries()
-				.build();
+		CloseableHttpClient httpClient = HttpClients.createDefault();
 		ResponsePrimitive responsePrimitive = new ResponsePrimitive(requestPrimitive);    	
 		HttpUriRequest method = null;
+		
 		
 		// Retrieve the url
 		String url = requestPrimitive.getTo();
@@ -213,6 +212,7 @@ public class RestHttpClient implements RestClientService {
 				responsePrimitive.setLocation(contentHeader);
 			}
 			LOGGER.info("Http Client response: " + responsePrimitive);
+			httpClient.close();
 		} catch(HttpHostConnectException e){
 			LOGGER.info("Target is not reachable: " + requestPrimitive.getTo());
 			responsePrimitive.setResponseStatusCode(ResponseStatusCode.TARGET_NOT_REACHABLE);
@@ -221,14 +221,7 @@ public class RestHttpClient implements RestClientService {
 		} catch (IOException e){
 			LOGGER.error(url + " not found", e);
 			responsePrimitive.setResponseStatusCode(ResponseStatusCode.TARGET_NOT_REACHABLE);
-		} finally {
-			try {
-				httpClient.close();
-			} catch (IOException e) {
-				// Silently fail
-				LOGGER.trace("Fail closing the http client", e);
-			}
-		}
+		} 
 		return responsePrimitive;
 	}
 

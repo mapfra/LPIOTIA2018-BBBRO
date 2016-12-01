@@ -117,6 +117,7 @@ public class Notifier {
 				notifRequest.setOperation(Operation.NOTIFY);
 				notifRequest.setRequestContentType(Constants.NOTIFICATION_MMT);
 				notifRequest.setReturnContentType(Constants.NOTIFICATION_MMT);
+				
 				ResponsePrimitive resp = notify(notifRequest, uri);
 				if(resp.getResponseStatusCode().equals(ResponseStatusCode.TARGET_NOT_REACHABLE)){
 					throw new Om2mException("Error during the verification request", 
