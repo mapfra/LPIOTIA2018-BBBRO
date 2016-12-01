@@ -111,12 +111,12 @@ public class Notifier {
 				notification.setSubscriptionReference(subscriptionEntity.getHierarchicalURI());
 				notification.setSubscriptionDeletion(false);
 				RequestPrimitive notifRequest = new RequestPrimitive();
-				notifRequest.setContent(DataMapperSelector.getDataMapperList().get(MimeMediaType.JSON).objToString(notification));
+				notifRequest.setContent(DataMapperSelector.getDataMapperList().get(Constants.NOTIFICATION_MMT).objToString(notification));
 				notifRequest.setFrom("/" + Constants.CSE_ID);
 				notifRequest.setTo(uri);
 				notifRequest.setOperation(Operation.NOTIFY);
-				notifRequest.setRequestContentType(MimeMediaType.JSON);
-				notifRequest.setReturnContentType(MimeMediaType.JSON);
+				notifRequest.setRequestContentType(Constants.NOTIFICATION_MMT);
+				notifRequest.setReturnContentType(Constants.NOTIFICATION_MMT);
 				ResponsePrimitive resp = notify(notifRequest, uri);
 				if(resp.getResponseStatusCode().equals(ResponseStatusCode.TARGET_NOT_REACHABLE)){
 					throw new Om2mException("Error during the verification request", 
@@ -275,15 +275,15 @@ public class Notifier {
 				if(sub.getNotificationContentType().equals(NotificationContentType.MODIFIED_ATTRIBUTES)){
 					serializableResource = (Resource)mapper.mapEntityToResource(resource, ResultContent.ATTRIBUTES);
 					notification.getNotificationEvent().setRepresentation(serializableResource);
-					request.setRequestContentType(MimeMediaType.JSON);
+					request.setRequestContentType(Constants.NOTIFICATION_MMT);
 				} else if(sub.getNotificationContentType().equals(NotificationContentType.WHOLE_RESOURCE)){
 					serializableResource = (Resource) mapper.mapEntityToResource(resource, ResultContent.ATTRIBUTES);
 					notification.getNotificationEvent().setRepresentation(serializableResource);
-					request.setRequestContentType(MimeMediaType.JSON);
+					request.setRequestContentType(Constants.NOTIFICATION_MMT);
 				} 
 			} 
 			// Set the content
-			request.setContent(DataMapperSelector.getDataMapperList().get(MimeMediaType.JSON).objToString(notification));
+			request.setContent(DataMapperSelector.getDataMapperList().get(Constants.NOTIFICATION_MMT).objToString(notification));
 			// For each notification URI: send the notify request
 			for(final String uri : sub.getNotificationURI()){
 				CoreExecutor.postThread(new Runnable(){

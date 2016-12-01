@@ -93,5 +93,8 @@ public class Constants {
 	public static final String ABSOLUTE_URI_SEPARATOR = "_";
 	
 	public static final Integer MAX_THREAD_POOL_SIZE = Integer.valueOf(System.getProperty("org.eclipse.om2m.maxThreadPoolSize", "50"));
+
+	// The MimeMediaType to use to serialize a notification
+	public static final String NOTIFICATION_MMT = System.getProperty("org.eclipse.om2m.notification.mmt", MimeMediaType.XML);
 	
 }
