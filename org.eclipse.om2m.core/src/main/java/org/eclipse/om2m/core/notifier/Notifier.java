@@ -158,6 +158,7 @@ public class Notifier {
 			request.setTo(contact);
 			return RestClient.sendRequest(request);
 		}else{
+			request.setTo(contact);
 			request.setTargetId(contact);
 			LOGGER.info("Sending notify request...");
 			return new Router().doRequest(request);
