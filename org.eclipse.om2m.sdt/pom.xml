@@ -46,6 +46,7 @@
 		<module>org.eclipse.om2m.sdt.home.netatmo</module> 
 		<module>org.eclipse.om2m.sdt.home.smartercoffee</module>
 		<module>org.eclipse.om2m.sdt.home.mocked.devices</module> 
+		<module>org.eclipse.om2m.sdt.home.utils</module> 
 	</modules>
 
 </project>
