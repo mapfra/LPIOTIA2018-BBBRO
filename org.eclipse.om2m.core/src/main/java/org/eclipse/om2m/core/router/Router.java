@@ -43,12 +43,14 @@ import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
 import org.eclipse.om2m.core.controller.AEController;
 import org.eclipse.om2m.core.controller.AccessControlPolicyController;
+import org.eclipse.om2m.core.controller.AEAnncController;
 import org.eclipse.om2m.core.controller.CSEBaseController;
 import org.eclipse.om2m.core.controller.ContainerController;
 import org.eclipse.om2m.core.controller.ContentInstanceController;
 import org.eclipse.om2m.core.controller.Controller;
 import org.eclipse.om2m.core.controller.DiscoveryController;
 import org.eclipse.om2m.core.controller.FanOutPointController;
+import org.eclipse.om2m.core.controller.FlexContainerAnncController;
 import org.eclipse.om2m.core.controller.FlexContainerController;
 import org.eclipse.om2m.core.controller.GroupController;
 import org.eclipse.om2m.core.controller.LatestOldestController;
@@ -269,6 +271,9 @@ public class Router implements CseService {
 		if (Patterns.match(Patterns.AE_PATTERN, uri)){
 			return new AEController();
 		}
+		if (Patterns.match(Patterns.AEANNC_PATTERN, uri)){
+			return new AEAnncController();
+		}
 		if (Patterns.match(Patterns.ACP_PATTERN, uri)){
 			return new AccessControlPolicyController();
 		}
@@ -278,7 +283,9 @@ public class Router implements CseService {
 		if(Patterns.match(Patterns.FLEXCONTAINER_PATTERN, uri)) {
 			return new FlexContainerController();
 		}
-		
+		if(Patterns.match(Patterns.FLEXCONTAINER_ANNC_PATTERN, uri)) {
+			return new FlexContainerAnncController();
+		}
 		if (Patterns.match(Patterns.CONTENTINSTANCE_PATTERN, uri)) {
 			return new ContentInstanceController();
 		}
@@ -341,6 +348,10 @@ public class Router implements CseService {
 			return new PollingChannelController();
 		case ResourceType.FLEXCONTAINER:
 			return new FlexContainerController(); 
+		case ResourceType.AE_ANNC:
+			return new AEAnncController();
+		case ResourceType.FLEXCONTAINER_ANNC:
+			return new FlexContainerAnncController();
 		default : 
 			throw new NotImplementedException("ResourceType: " + resourceType + " is not implemented");
 		}
@@ -350,7 +361,7 @@ public class Router implements CseService {
 		
 		if (request.getTo().contains("#")) {
 			System.out.println("getQueryStringFromTargetId add # in query string");
-			request.getQueryStrings().put("#", null);
+			request.getQueryStrings().put("#", new ArrayList());
 		}
 		if(request.getTargetId().contains("?")){
 			String query = request.getTargetId().split("\\?")[1];

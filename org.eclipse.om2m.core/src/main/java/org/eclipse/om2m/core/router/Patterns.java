@@ -65,9 +65,13 @@ public class Patterns {
     
     public static final Pattern AE_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + "(C|S)" + ID_STRING);
     
+    public static final Pattern AEANNC_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.AE_ANNC + ID_STRING);
+    
     public static final Pattern CONTAINER_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.CNT + Constants.PREFIX_SEPERATOR + ID_STRING);
 
     public static final Pattern FLEXCONTAINER_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.FCNT + Constants.PREFIX_SEPERATOR + ID_STRING);
+    
+    public static final Pattern FLEXCONTAINER_ANNC_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.FCNTA + Constants.PREFIX_SEPERATOR + ID_STRING);
 
     public static final Pattern CONTENTINSTANCE_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.CIN + Constants.PREFIX_SEPERATOR + ID_STRING);
     
@@ -134,11 +138,17 @@ public class Patterns {
 		if (match(AE_PATTERN,uri)){
 			return db.getDAOFactory().getAeDAO();
 		}
+		if (match(AEANNC_PATTERN, uri)) {
+			return db.getDAOFactory().getAeAnncDAO();
+		}
 		if(match(CONTAINER_PATTERN, uri)){
 			return db.getDAOFactory().getContainerDAO();
 		}
 		if (match(FLEXCONTAINER_PATTERN, uri)) {
 			return db.getDAOFactory().getFlexContainerDAO();
+		}
+		if (match(FLEXCONTAINER_ANNC_PATTERN, uri)) {
+			return db.getDAOFactory().getFlexContainerAnncDAO();
 		}
 		if(match(CONTENTINSTANCE_PATTERN, uri)) {
 			return db.getDAOFactory().getContentInstanceDAO();

@@ -324,7 +324,7 @@ public class ShortName {
 	public static final String SCHEDULE_ENTRY = "sce";
 	
 	// attributes for announced resource
-	public static final String LINK = "LINK"; // TODO to update when available
+	public static final String LINK = "lnk"; 
 	public static final String AE_ANNC = ShortName.AE + "A";
 	public static final String CNT_ANNC = ShortName.CNT + "A";
 

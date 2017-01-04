@@ -21,12 +21,14 @@ package org.eclipse.om2m.core.entitymapper;
 
 import org.eclipse.om2m.commons.constants.ResourceType;
 import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
+import org.eclipse.om2m.commons.entities.AeAnncEntity;
 import org.eclipse.om2m.commons.entities.AeEntity;
 import org.eclipse.om2m.commons.entities.AreaNwkDeviceInfoEntity;
 import org.eclipse.om2m.commons.entities.AreaNwkInfoEntity;
 import org.eclipse.om2m.commons.entities.CSEBaseEntity;
 import org.eclipse.om2m.commons.entities.ContainerEntity;
 import org.eclipse.om2m.commons.entities.ContentInstanceEntity;
+import org.eclipse.om2m.commons.entities.FlexContainerAnncEntity;
 import org.eclipse.om2m.commons.entities.FlexContainerEntity;
 import org.eclipse.om2m.commons.entities.GroupEntity;
 import org.eclipse.om2m.commons.entities.MgmtObjEntity;
@@ -36,6 +38,7 @@ import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
 import org.eclipse.om2m.commons.entities.RequestEntity;
 import org.eclipse.om2m.commons.entities.SubscriptionEntity;
 import org.eclipse.om2m.commons.resource.AE;
+import org.eclipse.om2m.commons.resource.AEAnnc;
 import org.eclipse.om2m.commons.resource.AccessControlPolicy;
 import org.eclipse.om2m.commons.resource.AreaNwkDeviceInfo;
 import org.eclipse.om2m.commons.resource.AreaNwkInfo;
@@ -43,6 +46,7 @@ import org.eclipse.om2m.commons.resource.CSEBase;
 import org.eclipse.om2m.commons.resource.Container;
 import org.eclipse.om2m.commons.resource.ContentInstance;
 import org.eclipse.om2m.commons.resource.FlexContainer;
+import org.eclipse.om2m.commons.resource.FlexContainerAnnc;
 import org.eclipse.om2m.commons.resource.Group;
 import org.eclipse.om2m.commons.resource.Node;
 import org.eclipse.om2m.commons.resource.PollingChannel;
@@ -64,6 +68,10 @@ public class EntityMapperFactory {
 	public static EntityMapper<AeEntity, AE> getAEMapper(){
 		return new AeMapper();
 	}
+	public static EntityMapper<AeAnncEntity, AEAnnc> getAEAnncMapper() {
+		return new AeAnncMapper();
+	}
+	
 	/** Get the ACP mapper */
 	public static EntityMapper<AccessControlPolicyEntity,AccessControlPolicy> getAcpMapper(){
 		return new AcpMapper();
@@ -76,6 +84,11 @@ public class EntityMapperFactory {
 	public static EntityMapper<FlexContainerEntity, FlexContainer> getFlexContainerMapper(){
 		return new FlexContainerMapper();
 	}
+	/** Get the FlexContainerAnnc mapper */
+	public static EntityMapper<FlexContainerAnncEntity, FlexContainerAnnc> getFlexContainerAnncMapper(){
+		return new FlexContainerAnncMapper();
+	}
+	
 	/** Get the Content instance mapper */
 	public static EntityMapper<ContentInstanceEntity, ContentInstance> getContentInstanceMapper(){
 		return new ContentInstanceMapper();
@@ -129,12 +142,16 @@ public class EntityMapperFactory {
 			return new CseBaseMapper();
 		case ResourceType.AE:
 			return new AeMapper();
+		case ResourceType.AE_ANNC:
+			return new AeAnncMapper();
 		case ResourceType.ACCESS_CONTROL_POLICY:
 			return new AcpMapper();
 		case ResourceType.CONTAINER:
 			return new ContainerMapper();
 		case ResourceType.FLEXCONTAINER:
 			return new FlexContainerMapper();
+		case ResourceType.FLEXCONTAINER_ANNC:
+			return new FlexContainerAnncMapper();
 		case ResourceType.CONTENT_INSTANCE:
 			return new ContentInstanceMapper();
 		case ResourceType.GROUP:

@@ -22,6 +22,7 @@ package org.eclipse.om2m.core.entitymapper;
 import org.eclipse.om2m.commons.constants.ResourceType;
 import org.eclipse.om2m.commons.constants.ResultContent;
 import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
+import org.eclipse.om2m.commons.entities.AeAnncEntity;
 import org.eclipse.om2m.commons.entities.AeEntity;
 import org.eclipse.om2m.commons.entities.ContainerEntity;
 import org.eclipse.om2m.commons.entities.FlexContainerEntity;
@@ -31,6 +32,7 @@ import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
 import org.eclipse.om2m.commons.entities.ScheduleEntity;
 import org.eclipse.om2m.commons.entities.SubscriptionEntity;
 import org.eclipse.om2m.commons.resource.AE;
+import org.eclipse.om2m.commons.resource.AEAnnc;
 import org.eclipse.om2m.commons.resource.AccessControlPolicy;
 import org.eclipse.om2m.commons.resource.ChildResourceRef;
 import org.eclipse.om2m.commons.resource.Container;
@@ -90,6 +92,14 @@ public class RemoteCSEMapper extends EntityMapper<RemoteCSEEntity, RemoteCSE>{
 			child.setResourceName(ae.getName());
 			child.setType(ResourceType.AE);
 			child.setValue(ae.getResourceID());
+			csr.getChildResource().add(child);
+		}
+		// adding aeA ref
+		for(AeAnncEntity aeAnnc : csrEntity.getChildAeAnncs()){
+			ChildResourceRef child = new ChildResourceRef();
+			child.setResourceName(aeAnnc.getName());
+			child.setType(ResourceType.AE_ANNC);
+			child.setValue(aeAnnc.getResourceID());
 			csr.getChildResource().add(child);
 		}
 		// adding acp ref
@@ -156,6 +166,12 @@ public class RemoteCSEMapper extends EntityMapper<RemoteCSEEntity, RemoteCSE>{
 			AE chAe = new AeMapper().mapEntityToResource(ae, ResultContent.ATTRIBUTES);
 			csr.getAEOrContainerOrGroup().add(chAe);
 		}
+		// adding aeAnnc ref
+		for(AeAnncEntity aeAnnc : csrEntity.getChildAeAnncs()){
+			AEAnnc chAeAnnc = new AeAnncMapper().mapEntityToResource(aeAnnc, ResultContent.ATTRIBUTES);
+			csr.getAEOrContainerOrGroup().add(chAeAnnc);
+		}
+		
 		// adding acp ref
 		for (AccessControlPolicyEntity acp : csrEntity.getChildAcps()){
 			AccessControlPolicy chAcp = new AcpMapper().mapEntityToResource(acp, ResultContent.ATTRIBUTES);

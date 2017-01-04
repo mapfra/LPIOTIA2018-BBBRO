@@ -22,7 +22,9 @@ package org.eclipse.om2m.commons.constants;
 import org.eclipse.om2m.commons.entities.AccessControlContextEntity;
 import org.eclipse.om2m.commons.entities.AccessControlOriginatorEntity;
 import org.eclipse.om2m.commons.entities.AccessControlRuleEntity;
+import org.eclipse.om2m.commons.entities.AeAnncEntity;
 import org.eclipse.om2m.commons.entities.AeEntity;
+import org.eclipse.om2m.commons.entities.CreatedAnnouncedResourceEntity;
 import org.eclipse.om2m.commons.entities.CSEBaseEntity;
 import org.eclipse.om2m.commons.entities.ContainerEntity;
 import org.eclipse.om2m.commons.entities.ContentInstanceEntity;
@@ -68,12 +70,18 @@ public class DBEntities {
 	
 	/** Name used for the persisted {@link AeEntity} entity */
 	public static final String AE_ENTITY = "AE";
+	
+	/** Name used for the persisted {@link AeAnncEntity} entity */
+	public static final String AE_ANNC_ENTITY = "AEA";
 			
 	/** Name used for the persisted {@link ContainerEntity} entity */
 	public static final String CONTAINER_ENTITY = "CNT";
 
 	/** Name used to the persisted {@link FlexContainerEntity} entity */
 	public static final String FLEXCONTAINER_ENTITY = "FCNT";
+	
+	/** Name used to the persisted {@link FlexContainerAnncEntity} entity */
+	public static final String FLEXCONTAINER_ANNC_ENTITY = "FCNTA";
 
 	/** Name used for the persisted {@link ContentInstanceEntity} entity */
 	public static final String CONTENTINSTANCE_ENTITY = "CIN";
@@ -99,6 +107,9 @@ public class DBEntities {
 	
 	/** Name used for the persisted (@link {@link CustomAttributeEntity} entity */
 	public static final String CUSTOM_ATTRIBUTE_ENTITY = "CA";
+	
+	/** Name used for the persisted {@link CreatedAnnouncedResourceEntity} entity */
+	public static final String ANNOUNCED_RESOURCE_ENTITY = "ANNC_RESOURCES";
 	
 	
 	/** Name of the GROUP entity */
@@ -138,8 +149,13 @@ public class DBEntities {
 	// AE - ACP
 	/** Name of the join table between AE and its AccessControlPolicies */
 	public static final String AEACP_JOIN = "AE_ACP";
+	/** Name of the join table between AEANNC and its AccessControlPolicies */
+	public static final String AEANNCACP_JOIN = "AEANNC_ACP";
+	
 	/** Id of AE in join table */
 	public static final String AE_JOINID = "AE_ID";
+	/** Id of AEANNC in join table */
+	public static final String AEANNC_JOINID = "AEANNC_ID";
 	
 	// AE - ch ACP
 	/** Name of the join table between AE and child ACP */
@@ -177,6 +193,9 @@ public class DBEntities {
 	// AE -FCNT
 	/** Name of the join table between Application Entities and its child FlexContainers */
 	public static final String AE_FCNTCHILD_JOIN = "AE_FCNT_JOIN";
+	
+	// AEANNC - FCNTA
+	public static final String AEANNC_FCNT_JOIN = "AEANNC_FCNTA_JOIN";
 
 	// CSEB - CNT
 	/** Name of the join table between CSEBaseEntity and its child ContainerEntities */
@@ -197,6 +216,14 @@ public class DBEntities {
 	public static final String FCNT_CNT_JOIN = "FCNT_CNT_JOIN";
 	/** Name of the FlexContainer ID */
 	public static final String FCNT_JOIN_ID = "FCNT_ID";
+	
+	// FCNTA
+	public static final String FCNTA_JOIN_ID = "FCNTA_ID";
+	public static final String FCNTA_ACP_JOIN = "FCNTA_ACP_JOIN";
+	public static final String FCNTASUB_JOIN_ID = "FCNTASUB_JOIN_ID";
+	public static final String FCNTA_FCNTACHILD_JOIN = "FCNTA_FCNTACHILD_JOIN";
+	/** Name of the Child FlexContainerAnnc ID */
+	public static final String FCNTACH_JOIN_ID = "CFCNTA_ID";
 
 	// SUB - ACP
 	/** Name of the join table between Subscription entity and its AccessControl policies */
@@ -234,6 +261,8 @@ public class DBEntities {
 	public static final String CSRGRPCHILD_JOIN = "CSR_CHGRP_JOIN";
 	/** Name of the join table between CSR & ch ACP */
 	public static final String CSRACPCHILD_JOIN = "CSR_ACPCH_JOIN";
+	/** Name of the join table between CSR & ch AEANNC */
+	public static final String CSRAEANNCCHILD_JOIN = "CSR_AEANNCH_JOIN";
 
 	// SUB - AE
 	/** Name of the join table between AE & SUB */
@@ -252,6 +281,10 @@ public class DBEntities {
 	public static final String ACPSUB_JOIN = "ACP_SUB_JOIN";
 	/** Name of the join table between SCH & SUB */
 	public static final String SCHSUB_JOIN = "SCH_SUB_JOIN";
+	/** ID of AEANNCSUB in join table */
+	public static final String AEANNCSUB_JOIN_ID = "AEANNCSUB_JOIN_ID";
+	
+	
 	/** Name of the join table between AE & PCH */
 	public static final String AEPCH_JOIN = "AE_PCH_JOIN";
 	/** Name of the join table between CSR & PCH */
@@ -262,6 +295,8 @@ public class DBEntities {
 	public static final String SCH_JOIN_ID = "SCH_JOIN_ID";
 	/** ID of PCH in join table */
 	public static final String PCH_JOIN_ID = "PCH_JOIN_ID";
+	
+	
 	
 	// CSEB - REQ
 	/** Name of the join table between CSEB & REQ*/
@@ -289,6 +324,12 @@ public class DBEntities {
 	public static final String ANDI_JOIN_ID = "ANDI_JOIN_ID";
 	public static final String ANDINOD_JOIN = "ANDI_NOD_JOIN";
 	public static final String ANDIACP_JOIN = "ANDI_ACP_JOIN";
+	
+	
+	// ANNOUNCED RESOURCE
+	public static final String REMOTE_RESOURCE_ID = "REMOTE_RESOURCE_ID";
+	public static final String LOCAL_RESOURCE_ID = "LOCAL_RESOURCE_ID";
+	public static final String ANNOUNCE_CSE_ID = "ANNOUNCE_CSE_ID"; 
 	
 }
 

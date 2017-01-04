@@ -46,6 +46,7 @@ import org.eclipse.om2m.commons.resource.AE;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
 import org.eclipse.om2m.commons.utils.Util.DateUtil;
+import org.eclipse.om2m.core.announcer.Announcer;
 import org.eclipse.om2m.core.datamapper.DataMapperSelector;
 import org.eclipse.om2m.core.entitymapper.EntityMapperFactory;
 import org.eclipse.om2m.core.notifier.Notifier;
@@ -215,51 +216,53 @@ public class AEController extends Controller {
 		if (!ae.getAccessControlPolicyIDs().isEmpty()){
 			aeEntity.setAccessControlPolicies(
 					ControllerUtil.buildAcpEntityList(ae.getAccessControlPolicyIDs(), transaction));
+		} else {
+			aeEntity.getAccessControlPolicies().addAll(acpsToCheck);
 		}
 
 		// FIXME [0001] Creation of AE with an acpi provided
 		//		} else {
 		// Create the acp corresponding to the AE_ID 
-		AccessControlPolicyEntity acpEntity = new AccessControlPolicyEntity();
-		acpEntity.setCreationTime(DateUtil.now());
-		acpEntity.setLastModifiedTime(DateUtil.now());
-		acpEntity.setParentID("/" + Constants.CSE_ID);
-		acpEntity.setResourceID("/" + Constants.CSE_ID + "/" + ShortName.ACP + Constants.PREFIX_SEPERATOR + generateId());
-		acpEntity.setName(ShortName.ACP + ShortName.AE + Constants.PREFIX_SEPERATOR + generatedId);
-		AccessControlRuleEntity ruleEntity = new AccessControlRuleEntity();
-		AccessControlOriginatorEntity originatorEntity = new AccessControlOriginatorEntity(Constants.ADMIN_REQUESTING_ENTITY);
-		ruleEntity.getAccessControlOriginators().add(originatorEntity);
-		ruleEntity.setCreate(true);
-		ruleEntity.setRetrieve(true);
-		ruleEntity.setUpdate(true);
-		ruleEntity.setDelete(true);
-		ruleEntity.setNotify(true);
-		ruleEntity.setDiscovery(true);
-		acpEntity.getSelfPrivileges().add(ruleEntity);
+//		AccessControlPolicyEntity acpEntity = new AccessControlPolicyEntity();
+//		acpEntity.setCreationTime(DateUtil.now());
+//		acpEntity.setLastModifiedTime(DateUtil.now());
+//		acpEntity.setParentID("/" + Constants.CSE_ID);
+//		acpEntity.setResourceID("/" + Constants.CSE_ID + "/" + ShortName.ACP + Constants.PREFIX_SEPERATOR + generateId());
+//		acpEntity.setName(ShortName.ACP + ShortName.AE + Constants.PREFIX_SEPERATOR + generatedId);
+//		AccessControlRuleEntity ruleEntity = new AccessControlRuleEntity();
+//		AccessControlOriginatorEntity originatorEntity = new AccessControlOriginatorEntity(Constants.ADMIN_REQUESTING_ENTITY);
+//		ruleEntity.getAccessControlOriginators().add(originatorEntity);
+//		ruleEntity.setCreate(true);
+//		ruleEntity.setRetrieve(true);
+//		ruleEntity.setUpdate(true);
+//		ruleEntity.setDelete(true);
+//		ruleEntity.setNotify(true);
+//		ruleEntity.setDiscovery(true);
+//		acpEntity.getSelfPrivileges().add(ruleEntity);
 		// Privileges
-		ruleEntity = new AccessControlRuleEntity();
-		ruleEntity.setCreate(true);
-		ruleEntity.setRetrieve(true);
-		ruleEntity.setUpdate(true);
-		ruleEntity.setDelete(true);
-		ruleEntity.setNotify(true);
-		ruleEntity.setDiscovery(true);
-		ruleEntity.getAccessControlOriginators().add(new AccessControlOriginatorEntity(aeEntity.getAeid()));
-		ruleEntity.getAccessControlOriginators().add(new AccessControlOriginatorEntity(Constants.ADMIN_REQUESTING_ENTITY));
-		acpEntity.getPrivileges().add(ruleEntity);
-		acpEntity.setHierarchicalURI("/" + Constants.CSE_ID + "/" + Constants.CSE_NAME + "/" + acpEntity.getName());
-		// Add the acp in the UriMapper table
-		UriMapper.addNewUri(acpEntity.getHierarchicalURI(), acpEntity.getResourceID(), ResourceType.ACCESS_CONTROL_POLICY);
-		dbs.getDAOFactory().getAccessControlPolicyDAO().create(transaction, acpEntity);
-		// Retrieve the acp in the database to make the link with the CSEBase resource
-		AccessControlPolicyEntity acpDB = dbs.getDAOFactory().getAccessControlPolicyDAO().find(transaction, acpEntity.getResourceID());
-		CSEBaseEntity cseBase = dbs.getDAOFactory().getCSEBaseDAO().find(transaction, "/" + Constants.CSE_ID);
-		cseBase.getChildAccessControlPolicies().add(acpDB);
-		dbs.getDAOFactory().getCSEBaseDAO().update(transaction, cseBase);
-		// adding new acp to the acp list
-		aeEntity.getAccessControlPolicies().add(acpDB);
-		// direct link to the generated acp
-		aeEntity.setGeneratedAcp(acpDB);
+//		ruleEntity = new AccessControlRuleEntity();
+//		ruleEntity.setCreate(true);
+//		ruleEntity.setRetrieve(true);
+//		ruleEntity.setUpdate(true);
+//		ruleEntity.setDelete(true);
+//		ruleEntity.setNotify(true);
+//		ruleEntity.setDiscovery(true);
+//		ruleEntity.getAccessControlOriginators().add(new AccessControlOriginatorEntity(aeEntity.getAeid()));
+//		ruleEntity.getAccessControlOriginators().add(new AccessControlOriginatorEntity(Constants.ADMIN_REQUESTING_ENTITY));
+//		acpEntity.getPrivileges().add(ruleEntity);
+//		acpEntity.setHierarchicalURI("/" + Constants.CSE_ID + "/" + Constants.CSE_NAME + "/" + acpEntity.getName());
+//		// Add the acp in the UriMapper table
+//		UriMapper.addNewUri(acpEntity.getHierarchicalURI(), acpEntity.getResourceID(), ResourceType.ACCESS_CONTROL_POLICY);
+//		dbs.getDAOFactory().getAccessControlPolicyDAO().create(transaction, acpEntity);
+//		// Retrieve the acp in the database to make the link with the CSEBase resource
+//		AccessControlPolicyEntity acpDB = dbs.getDAOFactory().getAccessControlPolicyDAO().find(transaction, acpEntity.getResourceID());
+//		CSEBaseEntity cseBase = dbs.getDAOFactory().getCSEBaseDAO().find(transaction, "/" + Constants.CSE_ID);
+//		cseBase.getChildAccessControlPolicies().add(acpDB);
+//		dbs.getDAOFactory().getCSEBaseDAO().update(transaction, cseBase);
+//		// adding new acp to the acp list
+//		aeEntity.getAccessControlPolicies().add(acpDB);
+//		// direct link to the generated acp
+//		aeEntity.setGeneratedAcp(acpDB);
 		//		}
 
 		// appName					O
@@ -276,6 +279,15 @@ public class AEController extends Controller {
 		}
 
 		aeEntity.setParentID(parentEntity.getResourceID());
+		switch(parentEntity.getResourceType().intValue()) {
+		case ResourceType.REMOTE_CSE:
+			aeEntity.setParentCsr((RemoteCSEEntity) parentEntity);
+			break;
+		case ResourceType.CSE_BASE:
+			aeEntity.setParentCse((CSEBaseEntity) parentEntity);
+			break;
+		}
+		
 		aeEntity.setResourceType(BigInteger.valueOf(ResourceType.AE));
 		if (ae.getName() != null){
 			if (!Patterns.checkResourceName(ae.getName())){
@@ -295,7 +307,7 @@ public class AEController extends Controller {
 		if (!UriMapper.addNewUri(aeEntity.getHierarchicalURI(), aeEntity.getResourceID(), ResourceType.AE)){
 			throw new ConflictException("Name already present in the parent collection.");
 		}
-
+		
 		// Create AE in database
 		dbs.getDAOFactory().getAeDAO().create(transaction, aeEntity);
 
@@ -308,6 +320,13 @@ public class AEController extends Controller {
 
 		// Commit the DB transaction
 		transaction.commit();
+		
+		if ((ae.getAnnounceTo() != null) && (!ae.getAnnounceTo().isEmpty())) {
+			ae.setName(request.getName());
+			ae.setResourceID(aeDB.getResourceID());
+			ae.setResourceType(ResourceType.AE);
+			Announcer.announce(ae.getAnnounceTo(), ae.getAnnouncedAttribute(), ae, request.getFrom(), "");
+		}
 
 		// Create the response
 		response.setResponseStatusCode(ResponseStatusCode.CREATED);
@@ -525,6 +544,10 @@ public class AEController extends Controller {
 
 		// Commit the transaction
 		transaction.commit();
+		
+		// deannounce
+		
+		Announcer.deAnnounce(aeEntity.getAnnounceTo(), aeEntity, Constants.ADMIN_REQUESTING_ENTITY);
 
 		// Return rsc
 		response.setResponseStatusCode(ResponseStatusCode.DELETED);

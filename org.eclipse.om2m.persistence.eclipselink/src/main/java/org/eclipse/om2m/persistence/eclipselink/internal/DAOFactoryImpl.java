@@ -21,7 +21,9 @@ package org.eclipse.om2m.persistence.eclipselink.internal;
 
 import org.eclipse.om2m.commons.entities.AccessControlOriginatorEntity;
 import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
+import org.eclipse.om2m.commons.entities.AeAnncEntity;
 import org.eclipse.om2m.commons.entities.AeEntity;
+import org.eclipse.om2m.commons.entities.CreatedAnnouncedResourceEntity;
 import org.eclipse.om2m.commons.entities.CSEBaseEntity;
 import org.eclipse.om2m.commons.entities.ContainerEntity;
 import org.eclipse.om2m.commons.entities.ContentInstanceEntity;
@@ -36,10 +38,13 @@ import org.eclipse.om2m.commons.entities.SubscriptionEntity;
 import org.eclipse.om2m.commons.entities.UriMapperEntity;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.AccessControlOriginatorDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.AccessControlPolicyDAO;
+import org.eclipse.om2m.persistence.eclipselink.internal.dao.AeAnncDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.AeDAO;
+import org.eclipse.om2m.persistence.eclipselink.internal.dao.CreatedAnnouncedResourceDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.CSEBaseDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.ContainerDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.ContentInstanceDAO;
+import org.eclipse.om2m.persistence.eclipselink.internal.dao.FlexContainerAnncDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.FlexContainerDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.GroupDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.LabelDAO;
@@ -133,6 +138,21 @@ public class DAOFactoryImpl implements DAOFactory {
 	@Override
 	public DAO<AccessControlOriginatorEntity> getAccessControlOriginatorDAO() {
 		return new AccessControlOriginatorDAO();
+	}
+	
+	@Override
+	public DAO<AeAnncEntity> getAeAnncDAO() {
+		return new AeAnncDAO();
+	}
+	
+	@Override
+	public DAO<CreatedAnnouncedResourceEntity> getAnnouncedResourceDAO() {
+		return new CreatedAnnouncedResourceDAO();
+	}
+
+	@Override
+	public DAO<org.eclipse.om2m.commons.entities.FlexContainerAnncEntity> getFlexContainerAnncDAO() {
+		return new FlexContainerAnncDAO();
 	}
 	
 }

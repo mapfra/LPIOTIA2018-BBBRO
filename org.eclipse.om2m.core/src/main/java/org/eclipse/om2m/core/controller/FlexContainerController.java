@@ -36,6 +36,7 @@ import org.eclipse.om2m.commons.resource.FlexContainer;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
 import org.eclipse.om2m.commons.utils.Util.DateUtil;
+import org.eclipse.om2m.core.announcer.Announcer;
 import org.eclipse.om2m.core.datamapper.DataMapperSelector;
 import org.eclipse.om2m.core.entitymapper.EntityMapperFactory;
 import org.eclipse.om2m.core.flexcontainer.FlexContainerSelector;
@@ -151,12 +152,13 @@ public class FlexContainerController extends Controller {
 			} else {
 				flexContainer = (FlexContainer) DataMapperSelector.getDataMapperList()
 						.get(request.getRequestContentType()).stringToObj((String) request.getContent());
-				
+
 				if (request.getRequestContentType().equals(MimeMediaType.XML)) {
 					xmlPayload = (String) request.getContent();
 				} else {
 					// need to create the XML payload in order to validate it
-					xmlPayload = DataMapperSelector.getDataMapperList().get(MimeMediaType.XML).objToString(flexContainer);
+					xmlPayload = DataMapperSelector.getDataMapperList().get(MimeMediaType.XML)
+							.objToString(flexContainer);
 				}
 			}
 
@@ -259,6 +261,20 @@ public class FlexContainerController extends Controller {
 		// commit the transaction
 		transaction.commit();
 
+		if ((flexContainer.getAnnounceTo() != null) && (!flexContainer.getAnnounceTo().isEmpty())) {
+			flexContainer.setName(request.getName());
+			flexContainer.setResourceID(flexContainerFromDB.getResourceID());
+			flexContainer.setResourceType(ResourceType.FLEXCONTAINER);
+			flexContainer.setParentID(flexContainerFromDB.getParentID());
+			String hierachicalURI = flexContainerFromDB.getHierarchicalURI();
+			String remoteLocation = hierachicalURI
+					.substring(("/" + Constants.CSE_ID + "/" + Constants.CSE_NAME + "/").length());
+			System.out.println("hierarchicalUri= " + hierachicalURI + ", remoteLocation" + remoteLocation);
+			System.out.println();
+			Announcer.announce(flexContainer.getAnnounceTo(), flexContainer.getAnnouncedAttribute(), flexContainer,
+					request.getFrom(), remoteLocation);
+		}
+
 		Notifier.notify(subscriptions, flexContainerFromDB, ResourceStatus.CHILD_CREATED);
 
 		// create the response
@@ -267,7 +283,6 @@ public class FlexContainerController extends Controller {
 		setLocationAndCreationContent(request, response, flexContainerFromDB);
 		return response;
 	}
-
 
 	/**
 	 * Return the container resource with the normalized representation
@@ -298,9 +313,10 @@ public class FlexContainerController extends Controller {
 				.mapEntityToResource(flexContainerEntity, request);
 
 		if (!request.getQueryStrings().containsKey("#")) {
-			// ACK 
+			// ACK
 			// check if a FlexContainer service exist
-			FlexContainerService fcs = FlexContainerSelector.getFlexContainerService(flexContainerResource.getResourceID());
+			FlexContainerService fcs = FlexContainerSelector
+					.getFlexContainerService(flexContainerResource.getResourceID());
 			if (fcs != null) {
 				// retrieve the last values of custom attribute
 				for (CustomAttribute ca : flexContainerResource.getCustomAttributes()) {
@@ -377,11 +393,12 @@ public class FlexContainerController extends Controller {
 				} else {
 					flexContainer = (FlexContainer) DataMapperSelector.getDataMapperList()
 							.get(request.getRequestContentType()).stringToObj((String) request.getContent());
-					
+
 					if (request.getRequestContentType().equals(MimeMediaType.XML)) {
 						xmlPayload = (String) request.getContent();
 					} else {
-						// need to create the XML payload in order to validate it
+						// need to create the XML payload in order to validate
+						// it
 						xmlPayload = DataMapperSelector.getDataMapperList().get(MimeMediaType.XML)
 								.objToString(flexContainer);
 					}
@@ -408,7 +425,6 @@ public class FlexContainerController extends Controller {
 			// currentNrOfInstances NP
 			// currentByteSize NP
 
-			
 			// labels O
 			// accessControlPolicyIDs O
 			if (!flexContainer.getAccessControlPolicyIDs().isEmpty()) {
@@ -460,11 +476,9 @@ public class FlexContainerController extends Controller {
 				}
 				modifiedAttributes.setCustomAttributes(flexContainer.getCustomAttributes());
 			}
-			
-			
 
 		} else {
-			// 	content might be null for FlexContainer representing a SDT action
+			// content might be null for FlexContainer representing a SDT action
 		}
 
 		flexContainerEntity.setLastModifiedTime(DateUtil.now());
@@ -475,12 +489,13 @@ public class FlexContainerController extends Controller {
 			LOGGER.info("flexContainer.getResourceID=" + flexContainerEntity.getResourceID());
 			// check if a FlexContainerService exist
 			FlexContainerService fcs = FlexContainerSelector.getFlexContainerService(
-					/* request.getTo() */ /*UriUtil.toCseRelativeUri(*/flexContainerEntity.getResourceID()/*)*/);
+					/* request.getTo() */ /* UriUtil.toCseRelativeUri( */flexContainerEntity.getResourceID()/* ) */);
 			if (fcs != null) {
 				try {
 					fcs.setCustomAttributeValues(modifiedAttributes.getCustomAttributes(), request);
-					// at this modifiedAttributes.getCustomAttributes() list contains the new values of CustomAttribute
-					
+					// at this modifiedAttributes.getCustomAttributes() list
+					// contains the new values of CustomAttribute
+
 				} catch (Om2mException e) {
 					throw e;
 				}
@@ -528,6 +543,10 @@ public class FlexContainerController extends Controller {
 		dbs.getDAOFactory().getFlexContainerDAO().delete(transaction, flexContainerEntity);
 		// commit the transaction
 		transaction.commit();
+
+		// deannounce
+		Announcer.deAnnounce(flexContainerEntity.getAnnounceTo(), flexContainerEntity, Constants.ADMIN_REQUESTING_ENTITY);
+
 		// return the response
 		response.setResponseStatusCode(ResponseStatusCode.DELETED);
 		return response;

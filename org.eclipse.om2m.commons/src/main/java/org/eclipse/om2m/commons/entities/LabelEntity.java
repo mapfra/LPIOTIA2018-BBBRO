@@ -48,12 +48,18 @@ public class LabelEntity {
 
 	@ManyToMany(targetEntity = AeEntity.class, mappedBy = "labelsEntities")
 	protected List<AeEntity> linkedAe;
+	
+	@ManyToMany(targetEntity = AeAnncEntity.class, mappedBy = "labelsEntities")
+	protected List<AeAnncEntity> linkedAeA;
 
 	@ManyToMany(targetEntity = ContainerEntity.class, mappedBy = "labelsEntities")
 	protected List<ContainerEntity> linkedCnt;
 	
 	@ManyToMany(targetEntity = FlexContainerEntity.class, mappedBy = "labelsEntities")
 	protected List<FlexContainerEntity> linkedFcnt;
+	
+	@ManyToMany(targetEntity = FlexContainerAnncEntity.class, mappedBy = "labelsEntities")
+	protected List<FlexContainerAnncEntity> linkedFcntA;
 
 	@ManyToMany(targetEntity = ContentInstanceEntity.class, mappedBy = "labelsEntities")
 	protected List<ContentInstanceEntity> linkedCin;
@@ -146,15 +152,6 @@ public class LabelEntity {
 		this.linkedCsb = linkedCsb;
 	}
 
-	/**
-	 * @return the linkedAe
-	 */
-	public List<AeEntity> getLinkedAe() {
-		if (this.linkedAe == null) {
-			this.linkedAe = new ArrayList<>();
-		}
-		return linkedAe;
-	}
 
 	public void setLinkedACP(List<AccessControlPolicyEntity> pLinkedACPs) {
 		this.linkedACP = pLinkedACPs;
@@ -165,6 +162,33 @@ public class LabelEntity {
 			this.linkedACP = new ArrayList<>();
 		}
 		return this.linkedACP;
+	}
+	
+	/**
+	 * @return the linkedAeA
+	 */
+	public List<AeAnncEntity> getLinkedAeA() {
+		if (this.linkedAeA == null) {
+			this.linkedAeA = new ArrayList<>();
+		}
+		return linkedAeA;
+	}
+
+	/**
+	 * @param linkedAeA the linkedAeA to set
+	 */
+	public void setLinkedAeA(List<AeAnncEntity> linkedAeA) {
+		this.linkedAeA = linkedAeA;
+	}
+	
+	/**
+	 * @return the linkedAe
+	 */
+	public List<AeEntity> getLinkedAe() {
+		if (this.linkedAe == null) {
+			this.linkedAe = new ArrayList<>();
+		}
+		return linkedAe;
 	}
 
 	/**
@@ -206,6 +230,23 @@ public class LabelEntity {
 	 */
 	public void setLinkedFcnt(List<FlexContainerEntity> linkedFcnt) {
 		this.linkedFcnt = linkedFcnt;
+	}
+	
+	/**
+	 * @return the linkedFcntA
+	 */
+	public List<FlexContainerAnncEntity> getLinkedFcntA() {
+		if (this.linkedFcntA == null) {
+			this.linkedFcntA = new ArrayList<>();
+		}
+		return linkedFcntA;
+	}
+
+	/**
+	 * @param linkedFcntA the linkedFcnt to set
+	 */
+	public void setLinkedFcntA(List<FlexContainerAnncEntity> linkedFcntA) {
+		this.linkedFcntA = linkedFcntA;
 	}
 
 	/**

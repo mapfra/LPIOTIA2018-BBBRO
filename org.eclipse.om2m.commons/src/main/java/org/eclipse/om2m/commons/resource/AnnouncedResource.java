@@ -37,6 +37,8 @@ import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 
+import org.eclipse.om2m.commons.constants.ShortName;
+
 /**
  * <p>
  * Java class for announcedResource complex type.
@@ -66,15 +68,15 @@ import javax.xml.bind.annotation.XmlType;
 		"expirationTime", "link" })
 @XmlSeeAlso({ LocationPolicyAnnc.class, RemoteCSEAnnc.class,
 		AnnouncedMgmtResource.class, GroupAnnc.class, ContainerAnnc.class,
-		AEAnnc.class })
+		AEAnnc.class, FlexContainerAnnc.class })
 public class AnnouncedResource extends Resource {
 
 	@XmlList
-	@XmlElement(required = true)
+	@XmlElement(name=ShortName.ACP_IDS, required = true)
 	protected List<String> accessControlPolicyIDs;
-	@XmlElement(required = true)
+	@XmlElement(name=ShortName.EXPIRATION_TIME, required = true)
 	protected String expirationTime;
-	@XmlElement(required = true)
+	@XmlElement(name=ShortName.LINK, required = true)
 	@XmlSchemaType(name = "anyURI")
 	protected String link;
 

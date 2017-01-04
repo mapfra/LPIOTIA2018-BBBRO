@@ -129,6 +129,16 @@ public class RemoteCSEEntity extends AnnounceableSubordinateEntity {
 			inverseJoinColumns = { @JoinColumn(name = DBEntities.ACP_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
 			)
 	protected List<AccessControlPolicyEntity> childAcps;
+	
+	// database link with the CHILD acp entities
+	/** List of child AccessControlPolicies */
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinTable(
+			name = DBEntities.CSRAEANNCCHILD_JOIN,
+			joinColumns = { @JoinColumn(name = DBEntities.CSR_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
+			inverseJoinColumns = { @JoinColumn(name = DBEntities.AEANNC_JOINID, referencedColumnName = ShortName.RESOURCE_ID) }
+			)
+	protected List<AeAnncEntity> childAeAnncs;
 
 	//list of subscription
 	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
@@ -326,6 +336,23 @@ public class RemoteCSEEntity extends AnnounceableSubordinateEntity {
 	 */
 	public void setChildAes(List<AeEntity> childAes) {
 		this.childAes = childAes;
+	}
+	
+	/**
+	 * @return the childAeAnncs
+	 */
+	public List<AeAnncEntity> getChildAeAnncs() {
+		if (this.childAeAnncs == null) {
+			this.childAeAnncs = new ArrayList<>();
+		}
+		return childAeAnncs;
+	}
+
+	/**
+	 * @param childAeAnncs the childAeAnncs to set
+	 */
+	public void setChildAeAnncs(List<AeAnncEntity> childAeAnncs) {
+		this.childAeAnncs = childAeAnncs;
 	}
 
 	/**

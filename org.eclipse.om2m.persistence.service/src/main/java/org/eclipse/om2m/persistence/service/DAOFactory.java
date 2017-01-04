@@ -21,7 +21,10 @@ package org.eclipse.om2m.persistence.service;
 
 import org.eclipse.om2m.commons.entities.AccessControlOriginatorEntity;
 import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
+import org.eclipse.om2m.commons.entities.AeAnncEntity;
 import org.eclipse.om2m.commons.entities.AeEntity;
+import org.eclipse.om2m.commons.entities.CreatedAnnouncedResourceEntity;
+import org.eclipse.om2m.commons.entities.FlexContainerAnncEntity;
 import org.eclipse.om2m.commons.entities.CSEBaseEntity;
 import org.eclipse.om2m.commons.entities.ContainerEntity;
 import org.eclipse.om2m.commons.entities.ContentInstanceEntity;
@@ -72,4 +75,9 @@ public interface DAOFactory {
 
 	public abstract DAO<AccessControlOriginatorEntity> getAccessControlOriginatorDAO();
 	
+	public abstract DAO<AeAnncEntity> getAeAnncDAO();
+	
+	public abstract DAO<CreatedAnnouncedResourceEntity> getAnnouncedResourceDAO();
+	
+	public abstract DAO<FlexContainerAnncEntity> getFlexContainerAnncDAO();
 }
