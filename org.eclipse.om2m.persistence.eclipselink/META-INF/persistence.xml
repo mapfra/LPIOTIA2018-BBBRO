@@ -65,7 +65,7 @@
 
 			<!-- configure the database on startup to avoid costing first operation -->
 			<property name="eclipselink.deploy-on-startup" value="true" />
-			<property name="eclipselink.logging.level" value="WARNING" />
+			<property name="eclipselink.logging.level" value="INFO" />
 <!-- 			<property name="eclipselink.cache.shared.default" value="false"/> -->
 		</properties>
 	</persistence-unit>
