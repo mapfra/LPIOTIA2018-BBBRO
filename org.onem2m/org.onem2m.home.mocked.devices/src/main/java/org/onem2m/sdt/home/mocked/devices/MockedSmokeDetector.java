@@ -66,7 +66,7 @@ public class MockedSmokeDetector extends SmokeDetector implements MockedDevice {
 			public void run() {
 				while (running) {
 					try {
-						Thread.sleep((int) (30000 + 5000 * Math.random()));
+						Thread.sleep((int) (180000 + 5000 * Math.random()));
 						Activator.logger.info("Generating Smoke Alarm event");
 						Event evt = new Event("ALARM");
 						smokeAlarm = ! smokeAlarm;

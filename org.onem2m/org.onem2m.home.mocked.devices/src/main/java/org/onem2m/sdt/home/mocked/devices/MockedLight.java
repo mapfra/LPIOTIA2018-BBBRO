@@ -24,13 +24,9 @@ import org.osgi.framework.ServiceRegistration;
 public class MockedLight extends Light implements MockedDevice {
 
 	private List<ServiceRegistration> serviceRegistrations;
-	
-	int counter;
 
-	public MockedLight(int counter, Domain domain) {
-		super("mocked_" + counter, "serial_mocked_" + counter, domain);
-		String id = "mocked_" + counter;
-		this.counter = counter;
+	public MockedLight(String id, String serial, Domain domain) {
+		super(id, serial, domain);
 
 		// Module FaultDetection
 		addModule(new MockedFaultDetection("faultDetection_" + id, domain));
@@ -63,13 +59,13 @@ public class MockedLight extends Light implements MockedDevice {
 		if (! ((serviceRegistrations == null) || serviceRegistrations.isEmpty())) {
 			return;
 		}
-		serviceRegistrations = Activator.register(this);
 		try {
 			getRunMode().setSupportedModes(Arrays.asList("mode1", "mode2", "mode3"));
 			getRunMode().setOperationMode(Arrays.asList("mode1", "mode3"));
 		} catch (Exception e) {
 			Activator.logger.warning("", e);
 		}
+		serviceRegistrations = Activator.register(this);
 	}
 
 	public void unregisterDevice() {

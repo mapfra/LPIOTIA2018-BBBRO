@@ -8,6 +8,8 @@
 package org.onem2m.home.tester;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -26,15 +28,20 @@ import org.onem2m.sdt.Action;
 import org.onem2m.sdt.DataPoint;
 import org.onem2m.sdt.Device;
 import org.onem2m.sdt.Module;
+import org.onem2m.sdt.datapoints.AbstractDateDataPoint;
+import org.onem2m.sdt.datapoints.ArrayDataPoint;
+import org.onem2m.sdt.datapoints.EnumDataPoint;
 import org.onem2m.sdt.datapoints.ValuedDataPoint;
 import org.onem2m.sdt.events.SDTEventListener;
 import org.onem2m.sdt.events.SDTNotification;
+import org.onem2m.sdt.impl.Command;
+import org.onem2m.sdt.types.Array;
+import org.onem2m.sdt.types.DataType.TypeChoice;
+import org.onem2m.sdt.types.SimpleType;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.ComponentContext;
 import org.osgi.service.log.LogService;
-import org.osgi.util.tracker.ServiceTracker;
 
 public class Activator implements SDTEventListener {
 
@@ -83,10 +90,14 @@ public class Activator implements SDTEventListener {
 				while (activated) {
 					try {
 						Thread.sleep(10000);
-						Logger.info("check devices " + devices);
 						Logger.info("check lights " + lights);
 						testLights();
-						Thread.sleep(2000);
+					} catch (Exception e) {
+						Logger.warning("Error", e);
+					}
+					try {
+						Thread.sleep(10000);
+						Logger.info("check devices " + devices);
 						testDevices();
 					} catch (Exception e) {
 						Logger.warning("Error", e);
@@ -112,9 +123,15 @@ public class Activator implements SDTEventListener {
 
 	private void testLights() throws Exception {
 		for (Light light : lights) {
+			Logger.info("test light " + light);//.prettyPrint());
 			Logger.info("fault status: " + light.getFaultDetection().getStatus());
 			Logger.info("powered: " + light.getBinarySwitch().getPowerState());
-			light.getBinarySwitch().toggle();
+//			light.getBinarySwitch().toggle();
+			try {
+				((Command)light.getBinarySwitch().getAction("org.onem2m.home.actions.toggle__toggle")).invoke(null);
+			} catch (Exception e) {
+				Logger.warning("Error", e);
+			}
 			boolean power = light.getBinarySwitch().getPowerState();
 			Logger.info("powered: " + power);
 			if (power) {
@@ -155,32 +172,94 @@ public class Activator implements SDTEventListener {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private void testDevices() throws Exception {
 		for (Device dev : devices) {
+			Logger.info("test device " + dev);//.prettyPrint());
 			if (dev instanceof WaterValve) {
 				testValve((WaterValve) dev);
 			}
 			for (Module mod : dev.getModules()) {
-				Logger.info("test module " + mod + " on device " + dev);
-				Logger.info("module properties: " + mod.getProperties());
-				for (DataPoint dp : mod.getDataPoints()) {
-					if (dp.isReadable()) {
-						Logger.info("read " + dp.getName());
-						try {
-							Logger.info("-> " + ((ValuedDataPoint<?>) dp).getValue());
-						} catch (Exception e) {
-							Logger.warning("", e);
+				try {
+					Logger.info("test module " + mod + " on device " + dev);
+					Logger.info("module properties: " + mod.getProperties());
+					for (DataPoint dp : mod.getDataPoints()) {
+						if (dp.isReadable()) {
+							Logger.info("read " + dp.getName());
+							try {
+								Logger.info("-> " + ((ValuedDataPoint<?>) dp).getValue());
+							} catch (Exception e) {
+								Logger.warning("", e);
+							}
+						}
+						if (dp.isWritable()) {
+							Logger.info("writable " + dp.getName());
+							try {
+								TypeChoice tc = dp.getDataType().getTypeChoice();
+								Logger.info("writable " + dp.getName() + " " + tc);
+								if (tc instanceof SimpleType) {
+									Class<?> clazz = ((SimpleType) tc).getType().getClazz();
+									if (clazz.equals(Integer.class)) {
+										int val = (int) (Math.random() * 100);
+										if (dp instanceof EnumDataPoint<?>) {
+											List<Integer> values = ((EnumDataPoint<Integer>)dp).getValidValues();
+											Logger.info("possible values " + values);
+											val = values.get((int) (Math.random() * values.size()));
+										}
+										Logger.info("write int value " + val);
+										((ValuedDataPoint<Integer>) dp).setValue(val);
+									}
+									else if (clazz.equals(Boolean.class)) {
+										boolean val = Math.random() < 0.5;
+										Logger.info("write bool value " + val);
+										((ValuedDataPoint<Boolean>) dp).setValue(val);
+									}
+									else if (clazz.equals(String.class)) {
+										String val = "test " + (int) (Math.random() * 100);
+										if (dp instanceof EnumDataPoint<?>) {
+											List<String> values = ((EnumDataPoint<String>)dp).getValidValues();
+											Logger.info("possible values " + values);
+											val = values.get((int) (Math.random() * values.size()));
+										}
+										Logger.info("write string value " + val);
+										((ValuedDataPoint<String>) dp).setValue(val);
+									}
+									else if (clazz.equals(Date.class)) {
+										Date val = new Date();
+										Logger.info("write date value " + val);
+										((AbstractDateDataPoint) dp).setValue(val);
+									}
+									else if (clazz.equals(Byte.class)) {
+										byte val = (byte) (Math.random() * 100);
+										Logger.info("write byte value " + val);
+										((ValuedDataPoint<Byte>) dp).setValue(val);
+									}
+									else if (clazz.equals(Float.class)) {
+										float val = (float) (Math.random() * 100);
+										Logger.info("write float value " + val);
+										((ValuedDataPoint<Float>) dp).setValue(val);
+									} else {
+										Logger.info("Untested " + clazz);
+									}
+								} else if (tc instanceof Array<?>) {
+									((ArrayDataPoint<String>)dp).setValue(Arrays.asList("test1", "test2", "test3"));
+								} else if (tc instanceof Array<?>) {
+									((ArrayDataPoint<String>)dp).setValue(Arrays.asList("test1", "test2", "test3"));
+								}
+								
+							} catch (Exception e) {
+								Logger.warning("", e);
+							}
 						}
 					}
-					if (dp.isWritable()) {
-						Logger.info("writable " + dp.getName());
+					for (Action act : mod.getActions()) {
+						Logger.info("action " + act);
 					}
-				}
-				for (Action act : mod.getActions()) {
-					Logger.info("action " + act);
-				}
-				if (mod instanceof AlarmSpeaker) {
-					testSiren((AlarmSpeaker) mod);
+					if (mod instanceof AlarmSpeaker) {
+						testSiren((AlarmSpeaker) mod);
+					}
+				} catch (Exception e) {
+					Logger.warning("Error test " + mod + " of " + dev, e);
 				}
 			}
 		}
@@ -241,37 +320,37 @@ public class Activator implements SDTEventListener {
 		valveTests -= 1;
 	}
 
-	private void initDevicesTracker() {
-		ServiceTracker st = new ServiceTracker(this.context, Device.class.getName(), null) {
-			public Object addingService(ServiceReference ref) {
-				Logger.info("add Device ref " + ref);
-				Device device = (Device) this.context.getService(ref);
-				setDevice(device);
-				return device;
-			}
-
-			public void removedService(ServiceReference ref, Object service) {
-				unsetDevice((Device) this.context.getService(ref));
-			}
-		};
-		st.open();
-	}
-
-	private void initModulesTracker() {
-		ServiceTracker st = new ServiceTracker(this.context, Module.class.getName(), null) {
-			public Object addingService(ServiceReference ref) {
-				Logger.info("add Module ref " + ref);
-				Module mod = (Module) this.context.getService(ref);
-				setModule(mod);
-				return mod;
-			}
-
-			public void removedService(ServiceReference ref, Object service) {
-				unsetModule((Module) this.context.getService(ref));
-			}
-		};
-		st.open();
-	}
+//	private void initDevicesTracker() {
+//		ServiceTracker st = new ServiceTracker(this.context, Device.class.getName(), null) {
+//			public Object addingService(ServiceReference ref) {
+//				Logger.info("add Device ref " + ref);
+//				Device device = (Device) this.context.getService(ref);
+//				setDevice(device);
+//				return device;
+//			}
+//
+//			public void removedService(ServiceReference ref, Object service) {
+//				unsetDevice((Device) this.context.getService(ref));
+//			}
+//		};
+//		st.open();
+//	}
+//
+//	private void initModulesTracker() {
+//		ServiceTracker st = new ServiceTracker(this.context, Module.class.getName(), null) {
+//			public Object addingService(ServiceReference ref) {
+//				Logger.info("add Module ref " + ref);
+//				Module mod = (Module) this.context.getService(ref);
+//				setModule(mod);
+//				return mod;
+//			}
+//
+//			public void removedService(ServiceReference ref, Object service) {
+//				unsetModule((Module) this.context.getService(ref));
+//			}
+//		};
+//		st.open();
+//	}
 
 	public void setDevice(Device device) {
 		try {
@@ -319,7 +398,7 @@ public class Activator implements SDTEventListener {
 			modules.add(mod);
 		}
 		Logger.info("Added SDT module " + mod);
-		mod.prettyPrint();
+//		mod.prettyPrint();
 	}
 
 	public void unsetModule(Module mod) {

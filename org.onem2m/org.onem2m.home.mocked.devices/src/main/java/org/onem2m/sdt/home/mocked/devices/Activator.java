@@ -37,6 +37,7 @@ public class Activator implements BundleActivator {
 	private List<GenericDevice> devices;
 	private Domain domain = new Domain("home");
 	private boolean running;
+	private int counter = 1;
 
 	@Override
 	public void start(BundleContext ctxt) throws Exception {
@@ -51,27 +52,27 @@ public class Activator implements BundleActivator {
 			running = true;
 			devices = new ArrayList<GenericDevice>();
 			
-			devices.add(new MockedSmartElectricMeter("mocked_1", "serial_mocked_1", domain));
-			devices.add(new MockedWaterValve("mocked_2", "serial_mocked_2", domain));
-			devices.add(new MockedSmokeDetector("mocked_3", "serial_mocked_3", domain));
-			devices.add(new MockedWarningDevice("mocked_4", "serial_mocked_4", domain));
-			devices.add(new MockedFloodDetector("mocked_5", "serial_mocked_5", domain));
+			devices.add(new MockedSmartElectricMeter(getName(), getSerial(), domain));
+			devices.add(new MockedWaterValve(getName(), getSerial(), domain));
+			devices.add(new MockedSmokeDetector(getName(), getSerial(), domain));
+			devices.add(new MockedWarningDevice(getName(), getSerial(), domain));
+			devices.add(new MockedFloodDetector(getName(), getSerial(), domain));
 			
 			for (GenericDevice dev : devices) {
 				install(dev);
 			}
 
 			new Thread(new Runnable() {
-				private int counter = 6;
 				@Override
 				public void run() {
 					while (running) {
-						GenericDevice light = new MockedLight(counter++, domain);
+						GenericDevice light = new MockedLight(getName(), getSerial(), domain);
 						devices.add(light);
 						logger.info("\n*************************************************");
 						logger.info("start new light " + light);
 						logger.info("\n*************************************************");
 						install(light);
+						running = false;
 						try {
 							Thread.sleep(180000);
 						} catch (Exception ignored) {
@@ -86,13 +87,11 @@ public class Activator implements BundleActivator {
 	}
 
 	private void install(GenericDevice dev) {
-		if (dev instanceof MockedLight) {
-			dev.setDeviceName("Mocked Light " + ((MockedLight)dev).counter);
-		} else {
-			dev.setDeviceName(dev.getClass().getSimpleName());
-		}
-		dev.setDeviceAliasName("Simulated device for " 
-				+ dev.getClass().getSuperclass().getSimpleName());
+		String name = dev.getClass().getSimpleName();
+		if (dev instanceof MockedLight)
+			name += " " + (counter-1);
+		dev.setDeviceName(name);
+		dev.setDeviceAliasName("Simulated device for " + name);
 		dev.setProtocol(PROTOCOL);
 		dev.setDeviceManufacturer("MockedManufacturer");
 		logger.info("register " + dev);
@@ -118,6 +117,14 @@ public class Activator implements BundleActivator {
 	 */
 	public static List<ServiceRegistration> register(GenericDevice device) {
 		return Utils.register(device, context);
+	}
+	
+	private final String getName() {
+		return "mocked_" + counter;
+	}
+	
+	private final String getSerial() {
+		return "serial_mocked_" + counter++;
 	}
 
 }
