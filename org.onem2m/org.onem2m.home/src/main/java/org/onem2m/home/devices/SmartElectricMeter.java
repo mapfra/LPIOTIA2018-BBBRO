@@ -15,6 +15,7 @@ import org.onem2m.home.modules.FaultDetection;
 import org.onem2m.home.modules.RunMode;
 import org.onem2m.home.types.DeviceType;
 import org.onem2m.sdt.Domain;
+import org.onem2m.sdt.Module;
 import org.onem2m.sdt.Property;
 import org.onem2m.sdt.types.SimpleType;
 
@@ -37,6 +38,23 @@ public class SmartElectricMeter extends GenericDevice {
 		measuringScope.setOptional(true);
 		measuringScope.setDoc("Measuring scope of the meter (ex. Whole house, room, or device)");
 		addProperty(measuringScope);
+	}
+	
+	public void addModule(Module module) {
+		if (module instanceof FaultDetection)
+			addModule((FaultDetection)module);
+		else if (module instanceof EnergyConsumption)
+			addModule((EnergyConsumption)module);
+		else if (module instanceof BinarySwitch)
+			addModule((BinarySwitch)module);
+		else if (module instanceof RunMode)
+			addModule((RunMode)module);
+		else if (module instanceof Clock)
+			addModule((Clock)module);
+		else if (module instanceof EnergyGeneration)
+			addModule((EnergyGeneration)module);
+		else 
+			super.addModule(module);
 	}
 
 	public void addModule(BinarySwitch binarySwitch) {

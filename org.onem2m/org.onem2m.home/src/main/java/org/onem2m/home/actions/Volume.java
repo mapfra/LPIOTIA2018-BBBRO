@@ -7,8 +7,6 @@
  *******************************************************************************/
 package org.onem2m.home.actions;
 
-import java.util.Map;
-
 import org.onem2m.sdt.args.BooleanArg;
 import org.onem2m.sdt.impl.AccessException;
 import org.onem2m.sdt.impl.ActionException;
@@ -27,17 +25,14 @@ public abstract class Volume extends Command {
 
 	public final void upOrDown(final boolean up) throws ActionException, AccessException {
 		upArg.setValue(up);
-		check();
-		doUpOrDown(upArg.getValue());
+		invoke();
 	}
 	
 	abstract protected void doUpOrDown(final boolean up) throws ActionException;
 	
 	@Override
-	public Object invoke(Map<String, Object> arguments) throws ActionException, AccessException {
-		
-		upOrDown((boolean) arguments.get("up"));
-
+	protected Object doInvoke() throws ActionException {
+		doUpOrDown(upArg.getValue());
 		return null;
 	}
 

@@ -7,7 +7,10 @@
  *******************************************************************************/
 package org.onem2m.home.modules;
 
+import java.util.Map;
+
 import org.onem2m.home.types.ModuleType;
+import org.onem2m.sdt.DataPoint;
 import org.onem2m.sdt.Domain;
 import org.onem2m.sdt.Module;
 import org.onem2m.sdt.datapoints.FloatDataPoint;
@@ -28,7 +31,14 @@ public class RelativeHumidity extends Module {
 		this.relativeHumidity.setDoc("The measurement of the relative humidity value; the common unit is percentage.");
 		addDataPoint(relativeHumidity);
 	}
-	
+
+	public RelativeHumidity(final String name, final Domain domain, Map<String, DataPoint> dps) {
+		this(name, domain, (FloatDataPoint) dps.get("relativeHumidity"));
+		IntegerDataPoint desiredHumidity = (IntegerDataPoint) dps.get("desiredHumidity");
+		if (desiredHumidity != null)
+			setDesiredHumidity(desiredHumidity);
+	}
+
 	public float getRelativeHumidity() throws DataPointException, AccessException {
 		return relativeHumidity.getValue();
 	}

@@ -7,7 +7,10 @@
  *******************************************************************************/
 package org.onem2m.home.modules;
 
+import java.util.Map;
+
 import org.onem2m.home.types.ModuleType;
+import org.onem2m.sdt.DataPoint;
 import org.onem2m.sdt.Domain;
 import org.onem2m.sdt.datapoints.BooleanDataPoint;
 import org.onem2m.sdt.datapoints.IntegerDataPoint;
@@ -22,6 +25,10 @@ public class TemperatureAlarm extends AbstractAlarmSensor {
 	public TemperatureAlarm(final String name, final Domain domain, BooleanDataPoint alarm) {
 		super(name, domain, alarm, ModuleType.temperatureAlarm,
 				"The detection of abnormal temperature.");
+	}
+
+	public TemperatureAlarm(final String name, final Domain domain, Map<String, DataPoint> dps) {
+		this(name, domain, (BooleanDataPoint) dps.get("alarm"));
 	}
 
 	public void setTemperature(IntegerDataPoint dp) {

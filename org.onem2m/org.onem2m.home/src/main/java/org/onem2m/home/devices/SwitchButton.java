@@ -10,6 +10,7 @@ package org.onem2m.home.devices;
 import org.onem2m.home.modules.PushButton;
 import org.onem2m.home.types.DeviceType;
 import org.onem2m.sdt.Domain;
+import org.onem2m.sdt.Module;
 
 public class SwitchButton extends GenericDevice {
 	
@@ -18,6 +19,13 @@ public class SwitchButton extends GenericDevice {
 	
 	public SwitchButton(final String id, final String serial, final Domain domain) {
 		super(id, serial, DeviceType.deviceSwitchButton, domain);
+	}
+	
+	public void addModule(Module module) {
+		if (module instanceof PushButton)
+			addModule((PushButton)module);
+		else 
+			super.addModule(module);
 	}
 
 	public void addModule(PushButton buttonSwitch) {

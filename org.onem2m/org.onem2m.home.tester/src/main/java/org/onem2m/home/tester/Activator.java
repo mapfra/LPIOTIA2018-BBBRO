@@ -21,7 +21,7 @@ import org.onem2m.home.devices.SmartElectricMeter;
 import org.onem2m.home.devices.WaterValve;
 import org.onem2m.home.modules.AlarmSpeaker;
 import org.onem2m.home.modules.AudioVolume;
-import org.onem2m.home.types.LiquidLevel;
+import org.onem2m.home.types.LevelType;
 import org.onem2m.sdt.Action;
 import org.onem2m.sdt.DataPoint;
 import org.onem2m.sdt.Device;
@@ -224,16 +224,16 @@ public class Activator implements SDTEventListener {
 		if (valveTests == 0)
 			return;
 		try {
-			int on = LiquidLevel.zero;
+			int on = LevelType.zero;
 			try {
-				on = valve.getWaterLevel().getLiquidLevel();
+				on = valve.getWaterLevel().getQuantity();
 				Logger.info("test valve: " + on);
 			} catch (Exception e) {
 				Logger.warning("", e);
 			}
-			on = (on == LiquidLevel.zero) ? LiquidLevel.maximum
-					: LiquidLevel.zero;
-			valve.getWaterLevel().setLiquidLevel(on);
+			on = (on == LevelType.zero) ? LevelType.maximum
+					: LevelType.zero;
+			valve.getWaterLevel().setQuantity(on);
 			Logger.info("test valve: OK");
 		} catch (Exception e) {
 			Logger.warning("", e);

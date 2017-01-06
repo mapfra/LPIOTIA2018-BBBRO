@@ -36,7 +36,7 @@ public abstract class SupportedMode extends EnumDataPoint<Integer> {
 	static public final int docking 		= 23;
 	
 	public SupportedMode(String name) {
-		super(name);
+		super(name, HomeDataType.SupportedMode);
 		setValidValues(new Integer[] { antifreeze, manual, eco, program, off, ready, running, 
 			paused, aborted, cancelled, completed, washing, spinning, drying, rinsing, 
 			warming_up, cooking, cooling, dehumidifying, energy_saving, charging, homing, docking });

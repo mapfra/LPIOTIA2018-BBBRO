@@ -7,8 +7,12 @@
  *******************************************************************************/
 package org.onem2m.home.modules;
 
+import java.util.Map;
+
 import org.onem2m.home.actions.Toggle;
 import org.onem2m.home.types.ModuleType;
+import org.onem2m.sdt.Action;
+import org.onem2m.sdt.DataPoint;
 import org.onem2m.sdt.Domain;
 import org.onem2m.sdt.Module;
 import org.onem2m.sdt.datapoints.BooleanDataPoint;
@@ -30,6 +34,17 @@ public class BinarySwitch extends Module {
 		this.powerState.setDoc("The current status of the BinarySwitch. \"True\" indicates turned-on, and \"False\" indicates turned-off.");
 		addDataPoint(this.powerState);
 	}
+	
+	public BinarySwitch(final String name, final Domain domain, Map<String, DataPoint> dps) {
+		this(name, domain, (BooleanDataPoint) dps.get("powerState"));
+	}
+	
+	public void addAction(Action action) {
+		if (action instanceof Toggle)
+			setToggle((Toggle)action);
+		else
+			super.addAction(action);
+	}
 
 	public boolean getPowerState() throws DataPointException, AccessException {
 		return powerState.getValue();
@@ -46,7 +61,7 @@ public class BinarySwitch extends Module {
 	public void setToggle(Toggle toggle) {
 		this.toggle = toggle;
 		this.toggle.setDoc("Toggle the switch");
-		addAction(toggle);
+		super.addAction(toggle);
 	}
 	
 	public void toggle() throws ActionException, AccessException {

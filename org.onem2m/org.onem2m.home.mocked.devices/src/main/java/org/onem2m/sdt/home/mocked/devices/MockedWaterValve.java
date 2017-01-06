@@ -10,8 +10,8 @@ package org.onem2m.sdt.home.mocked.devices;
 import java.util.List;
 
 import org.onem2m.home.devices.WaterValve;
-import org.onem2m.home.modules.WaterLevel;
-import org.onem2m.home.types.LiquidLevel;
+import org.onem2m.home.modules.Level;
+import org.onem2m.home.types.LevelType;
 import org.onem2m.sdt.Domain;
 import org.onem2m.sdt.home.mocked.module.MockedFaultDetection;
 import org.onem2m.sdt.impl.DataPointException;
@@ -25,14 +25,21 @@ public class MockedWaterValve extends WaterValve implements MockedDevice {
 		super(id, serial, domain);
 
 		// Datapoints
-		addModule(new WaterLevel("waterLevel_" + id, domain, 
-			new LiquidLevel("liquidLevel") {
-				private Integer openLevel = LiquidLevel.zero;
+		addModule(new Level("waterLevel_" + id, domain, 
+			new LevelType("quantity") {
+				private Integer openLevel = LevelType.zero;
 				@Override
 				public void doSetValue(Integer value) throws DataPointException {
 					openLevel = value;
 					Activator.logger.info("openLevel set " + value);
 				}
+				@Override
+				public Integer doGetValue() throws DataPointException {
+					return openLevel;
+				}
+			},
+			new LevelType("status") {
+				private Integer openLevel = LevelType.zero;
 				@Override
 				public Integer doGetValue() throws DataPointException {
 					return openLevel;

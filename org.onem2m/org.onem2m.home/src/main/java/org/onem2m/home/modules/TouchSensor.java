@@ -7,7 +7,10 @@
  *******************************************************************************/
 package org.onem2m.home.modules;
 
+import java.util.Map;
+
 import org.onem2m.home.types.ModuleType;
+import org.onem2m.sdt.DataPoint;
 import org.onem2m.sdt.Domain;
 import org.onem2m.sdt.datapoints.BooleanDataPoint;
 
@@ -16,6 +19,10 @@ public class TouchSensor extends AbstractAlarmSensor {
 	public TouchSensor(String name, Domain domain,
 			BooleanDataPoint alarm) {
 		super(name, domain, alarm, ModuleType.touchSensor);
+	}
+
+	public TouchSensor(final String name, final Domain domain, Map<String, DataPoint> dps) {
+		this(name, domain, (BooleanDataPoint) dps.get("alarm"));
 	}
 
 }

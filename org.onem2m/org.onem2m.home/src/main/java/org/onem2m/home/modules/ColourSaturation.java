@@ -7,7 +7,10 @@
  *******************************************************************************/
 package org.onem2m.home.modules;
 
+import java.util.Map;
+
 import org.onem2m.home.types.ModuleType;
+import org.onem2m.sdt.DataPoint;
 import org.onem2m.sdt.Domain;
 import org.onem2m.sdt.Module;
 import org.onem2m.sdt.datapoints.IntegerDataPoint;
@@ -24,7 +27,11 @@ public class ColourSaturation extends Module {
 		this.colourSaturation = colourSaturation;
 		addDataPoint(this.colourSaturation);
 	}
-	
+
+	public ColourSaturation(final String name, final Domain domain, Map<String, DataPoint> dps) {
+		this(name, domain, (IntegerDataPoint) dps.get("colourSaturation"));
+	}
+
 	public int getColourSaturation() throws DataPointException, AccessException {
 		return colourSaturation.getValue();
 	}

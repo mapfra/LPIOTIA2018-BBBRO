@@ -8,8 +8,10 @@
 package org.onem2m.home.modules;
 
 import java.util.Date;
+import java.util.Map;
 
 import org.onem2m.home.types.ModuleType;
+import org.onem2m.sdt.DataPoint;
 import org.onem2m.sdt.Domain;
 import org.onem2m.sdt.Module;
 import org.onem2m.sdt.datapoints.DateDataPoint;
@@ -22,7 +24,8 @@ public class Clock extends Module {
 	private TimeDataPoint currentTime;
 	private DateDataPoint currentDate;
 
-	public Clock(final String name, final Domain domain, TimeDataPoint currentTime, DateDataPoint currentDate) {
+	public Clock(final String name, final Domain domain, TimeDataPoint currentTime,
+			DateDataPoint currentDate) {
 		super(name, domain, ModuleType.clock.getDefinition());
 		
 		this.currentDate = currentDate;
@@ -32,6 +35,12 @@ public class Clock extends Module {
 		this.currentTime = currentTime;
 		currentTime.setDoc("Information of the current time");
 		addDataPoint(currentTime);
+	}
+
+	public Clock(final String name, final Domain domain, Map<String, DataPoint> dps) {
+		this(name, domain, 
+				(TimeDataPoint) dps.get("currentTime"), 
+				(DateDataPoint) dps.get("currentDate"));
 	}
 
 	public Date getCurrentTime() throws DataPointException, AccessException {

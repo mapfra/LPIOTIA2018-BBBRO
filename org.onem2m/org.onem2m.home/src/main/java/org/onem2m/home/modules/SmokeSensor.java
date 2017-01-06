@@ -7,7 +7,10 @@
  *******************************************************************************/
 package org.onem2m.home.modules;
 
+import java.util.Map;
+
 import org.onem2m.home.types.ModuleType;
+import org.onem2m.sdt.DataPoint;
 import org.onem2m.sdt.Domain;
 import org.onem2m.sdt.datapoints.BooleanDataPoint;
 import org.onem2m.sdt.datapoints.IntegerDataPoint;
@@ -21,6 +24,13 @@ public class SmokeSensor extends AbstractAlarmSensor {
 	public SmokeSensor(final String name, final Domain domain, BooleanDataPoint alarm) {
 		super(name, domain, alarm, ModuleType.smokeSensor,
 				"The detection of smoke.");
+	}
+	
+	public SmokeSensor(final String name, final Domain domain, Map<String, DataPoint> dps) {
+		this(name, domain, (BooleanDataPoint) dps.get("alarm"));
+		IntegerDataPoint detectedTime = (IntegerDataPoint) dps.get("detectedTime");
+		if (detectedTime != null)
+			setDetectedTime(detectedTime);
 	}
 
 	public void setDetectedTime(IntegerDataPoint dp) {

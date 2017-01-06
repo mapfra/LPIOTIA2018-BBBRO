@@ -12,6 +12,7 @@ import org.onem2m.home.modules.FaultDetection;
 import org.onem2m.home.modules.Lock;
 import org.onem2m.home.types.DeviceType;
 import org.onem2m.sdt.Domain;
+import org.onem2m.sdt.Module;
 
 public class Door extends GenericDevice {
 	
@@ -24,6 +25,17 @@ public class Door extends GenericDevice {
 	
 	public Door(final String id, final String serial, final Domain domain) {
 		super(id, serial, DeviceType.deviceDoor, domain);
+	}
+	
+	public void addModule(Module module) {
+		if (module instanceof FaultDetection)
+			addModule((FaultDetection)module);
+		else if (module instanceof DoorStatus)
+			addModule((DoorStatus)module);
+		else if (module instanceof Lock)
+			addModule((Lock)module);
+		else 
+			super.addModule(module);
 	}
 
 	public void addModule(FaultDetection faultDetection) {

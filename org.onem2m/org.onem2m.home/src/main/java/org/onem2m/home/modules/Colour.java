@@ -7,7 +7,10 @@
  *******************************************************************************/
 package org.onem2m.home.modules;
 
+import java.util.Map;
+
 import org.onem2m.home.types.ModuleType;
+import org.onem2m.sdt.DataPoint;
 import org.onem2m.sdt.Domain;
 import org.onem2m.sdt.Module;
 import org.onem2m.sdt.datapoints.IntegerDataPoint;
@@ -35,7 +38,14 @@ public class Colour extends Module {
 		this.blue.setDoc("The B value of RGB; the range is [0,255]");
 		addDataPoint(this.blue);
 	}
-	
+
+	public Colour(final String name, final Domain domain, Map<String, DataPoint> dps) {
+		this(name, domain, 
+			(IntegerDataPoint) dps.get("red"),
+			(IntegerDataPoint) dps.get("green"),
+			(IntegerDataPoint) dps.get("blue"));
+	}
+
 	public int getRed() throws DataPointException, AccessException {
 		return red.getValue();
 	}

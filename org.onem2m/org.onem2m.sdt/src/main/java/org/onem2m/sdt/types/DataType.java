@@ -17,6 +17,7 @@ import org.onem2m.sdt.Element;
 public class DataType extends Element {
 	
 	public interface TypeChoice {
+		public String getOneM2MType();
 	}
 	
 	static public final DataType Boolean = new DataType("boolean", SimpleType.Boolean);
@@ -30,8 +31,6 @@ public class DataType extends Element {
 	static public final DataType Datetime = new DataType("datetime", SimpleType.Datetime);
 	static public final DataType Blob = new DataType("blob", SimpleType.Blob);
 	static public final DataType Uri = new DataType("uri", SimpleType.Uri);
-	static public final DataType Tone = new DataType("tone", SimpleType.Tone);
-	static public final DataType LiquidLevel = new DataType("liquidLevel", SimpleType.LiquidLevel);
 	
 	private String unitOfMeasure;
 	

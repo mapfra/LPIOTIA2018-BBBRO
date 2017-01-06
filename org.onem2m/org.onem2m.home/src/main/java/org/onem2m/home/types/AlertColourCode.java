@@ -15,7 +15,7 @@ public abstract class AlertColourCode extends EnumDataPoint<Integer> {
 	static public final int Green = 2;
 	
 	public AlertColourCode(String name) {
-		super(name);
+		super(name, HomeDataType.AlertColourCode);
 		setValidValues(new Integer[] { Red, Green });
 	}
 

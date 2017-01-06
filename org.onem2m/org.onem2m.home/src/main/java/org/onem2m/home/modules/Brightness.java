@@ -7,7 +7,10 @@
  *******************************************************************************/
 package org.onem2m.home.modules;
 
+import java.util.Map;
+
 import org.onem2m.home.types.ModuleType;
+import org.onem2m.sdt.DataPoint;
 import org.onem2m.sdt.Domain;
 import org.onem2m.sdt.Module;
 import org.onem2m.sdt.datapoints.IntegerDataPoint;
@@ -24,6 +27,10 @@ public class Brightness extends Module {
 		this.brightness = brightness;
 		this.brightness.setDoc("Current sensed or set value for Brightness");
 		addDataPoint(this.brightness);
+	}
+
+	public Brightness(final String name, final Domain domain, Map<String, DataPoint> dps) {
+		this(name, domain, (IntegerDataPoint) dps.get("brightness"));
 	}
 
 	public int getBrightness() throws DataPointException, AccessException {

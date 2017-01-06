@@ -7,7 +7,10 @@
  *******************************************************************************/
 package org.onem2m.home.modules;
 
+import java.util.Map;
+
 import org.onem2m.home.types.ModuleType;
+import org.onem2m.sdt.DataPoint;
 import org.onem2m.sdt.Domain;
 import org.onem2m.sdt.Module;
 import org.onem2m.sdt.datapoints.BooleanDataPoint;
@@ -26,6 +29,13 @@ public class HotWaterSupply extends Module {
 		this.status.setWritable(false);
 		this.status.setDoc("The status of watering operation");
 		addDataPoint(this.status);
+	}
+
+	public HotWaterSupply(final String name, final Domain domain, Map<String, DataPoint> dps) {
+		this(name, domain, (BooleanDataPoint) dps.get("status"));
+		BooleanDataPoint bath = (BooleanDataPoint) dps.get("bath");
+		if (bath != null)
+			setBath(bath);
 	}
 
 	public boolean getStatus() throws DataPointException, AccessException {

@@ -11,6 +11,7 @@ import org.onem2m.home.modules.BinarySwitch;
 import org.onem2m.home.modules.FaultDetection;
 import org.onem2m.home.types.DeviceType;
 import org.onem2m.sdt.Domain;
+import org.onem2m.sdt.Module;
 
 public class GenericActuator extends GenericDevice {
 	
@@ -22,6 +23,15 @@ public class GenericActuator extends GenericDevice {
 		super(id, serial, type, domain);
 	}
 	
+	public void addModule(Module module) {
+		if (module instanceof FaultDetection)
+			addModule((FaultDetection)module);
+		else if (module instanceof BinarySwitch)
+			addModule((BinarySwitch)module);
+		else 
+			super.addModule(module);
+	}
+
 	public void addModule(BinarySwitch binarySwitch) {
 		this.binarySwitch = binarySwitch;
 		super.addModule(binarySwitch);

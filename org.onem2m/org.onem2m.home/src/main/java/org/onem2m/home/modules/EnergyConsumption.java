@@ -7,7 +7,10 @@
  *******************************************************************************/
 package org.onem2m.home.modules;
 
+import java.util.Map;
+
 import org.onem2m.home.types.ModuleType;
+import org.onem2m.sdt.DataPoint;
 import org.onem2m.sdt.Domain;
 import org.onem2m.sdt.Module;
 import org.onem2m.sdt.datapoints.FloatDataPoint;
@@ -37,6 +40,32 @@ public class EnergyConsumption extends Module {
 		this.power.setWritable(false);
 		this.power.setDoc("The power of the device; The common unit is Watt (W).");
 		addDataPoint(this.power);
+	}
+	
+	public EnergyConsumption(final String name, final Domain domain, Map<String, DataPoint> dps) {
+		this(name, domain, (FloatDataPoint) dps.get("power"));
+		
+		IntegerDataPoint roundingEnergyConsumption = (IntegerDataPoint) dps.get("roundingEnergyConsumption");
+		if (roundingEnergyConsumption != null)
+			setRoundingEnergyConsumption(roundingEnergyConsumption);
+		IntegerDataPoint significantDigits = (IntegerDataPoint) dps.get("significantDigits");
+		if (significantDigits != null)
+			setSignificantDigits(significantDigits);
+		IntegerDataPoint multiplyingFactors = (IntegerDataPoint) dps.get("multiplyingFactors");
+		if (multiplyingFactors != null)
+			setMultiplyingFactors(multiplyingFactors);
+		FloatDataPoint absoluteEnergyConsumption = (FloatDataPoint) dps.get("absoluteEnergyConsumption");
+		if (absoluteEnergyConsumption != null)
+			setAbsoluteEnergyConsumption(absoluteEnergyConsumption);
+		FloatDataPoint voltage = (FloatDataPoint) dps.get("voltage");
+		if (voltage != null)
+			setVoltage(voltage);
+		FloatDataPoint current = (FloatDataPoint) dps.get("current");
+		if (current != null)
+			setCurrent(current);
+		FloatDataPoint frequency = (FloatDataPoint) dps.get("frequency");
+		if (frequency != null)
+			setFrequency(frequency);
 	}
 
 	public float getPower() throws DataPointException, AccessException {

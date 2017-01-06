@@ -15,7 +15,7 @@ import org.eclipse.om2m.core.service.CseService;
 import org.eclipse.om2m.ipe.sdt.testsuite.CSEUtil;
 import org.eclipse.om2m.ipe.sdt.testsuite.TestReport;
 import org.eclipse.om2m.ipe.sdt.testsuite.TestReport.State;
-import org.onem2m.home.types.LiquidLevel;
+import org.onem2m.home.types.LevelType;
 import org.onem2m.sdt.Module;
 import org.onem2m.sdt.impl.AccessException;
 import org.onem2m.sdt.impl.DataPointException;
@@ -54,7 +54,7 @@ public class WaterLevelModuleTest extends AbstractModuleTest {
 		}
 
 		// retrieve liquidLevel datapoint
-		LiquidLevel liquidLevelDP = (LiquidLevel) getModule().getDataPoint("liquidLevel");
+		LevelType liquidLevelDP = (LevelType) getModule().getDataPoint("liquidLevel");
 		
 		// retrieve liquidLevel value from datapoint
 		Integer liquidLevelValueFromDP = null;
@@ -94,7 +94,7 @@ public class WaterLevelModuleTest extends AbstractModuleTest {
 		}
 		
 		// retrieve liquidLevel datapoint
-		LiquidLevel liquidLevelDP = (LiquidLevel) getModule().getDataPoint("liquidLevel");
+		LevelType liquidLevelDP = (LevelType) getModule().getDataPoint("liquidLevel");
 		Integer liquidLevelFromDP = null;
 		try {
 			liquidLevelFromDP = liquidLevelDP.getValue();

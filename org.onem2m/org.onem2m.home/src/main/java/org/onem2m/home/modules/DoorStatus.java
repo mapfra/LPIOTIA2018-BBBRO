@@ -7,8 +7,11 @@
  *******************************************************************************/
 package org.onem2m.home.modules;
 
+import java.util.Map;
+
 import org.onem2m.home.types.DoorState;
 import org.onem2m.home.types.ModuleType;
+import org.onem2m.sdt.DataPoint;
 import org.onem2m.sdt.Domain;
 import org.onem2m.sdt.Module;
 import org.onem2m.sdt.datapoints.BooleanDataPoint;
@@ -32,6 +35,16 @@ public class DoorStatus extends Module {
 		this.doorState.setWritable(false);
 		this.doorState.setDoc("\"True\" indicates that door is closed, \"False\"indicates the door is open.");
 		addDataPoint(this.doorState);
+	}
+	
+	public DoorStatus(final String name, final Domain domain, Map<String, DataPoint> dps) {
+		this(name, domain, (DoorState) dps.get("doorState"));
+		StringDataPoint openDuration = (StringDataPoint) dps.get("openDuration");
+		if (openDuration != null)
+			setOpenDuration(openDuration);
+		BooleanDataPoint openAlarm = (BooleanDataPoint) dps.get("openAlarm");
+		if (openAlarm != null)
+			setOpenAlarm(openAlarm);
 	}
 
 	public int getDoorState() throws DataPointException, AccessException {

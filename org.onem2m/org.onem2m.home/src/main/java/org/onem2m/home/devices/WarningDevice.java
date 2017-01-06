@@ -11,6 +11,7 @@ import org.onem2m.home.modules.AlarmSpeaker;
 import org.onem2m.home.modules.FaultDetection;
 import org.onem2m.home.types.DeviceType;
 import org.onem2m.sdt.Domain;
+import org.onem2m.sdt.Module;
 
 public class WarningDevice extends GenericDevice {
 	
@@ -19,6 +20,15 @@ public class WarningDevice extends GenericDevice {
 	
 	public WarningDevice(final String id, final String serial, final Domain domain) {
 		super(id, serial, DeviceType.deviceWarningDevice, domain);
+	}
+	
+	public void addModule(Module module) {
+		if (module instanceof AlarmSpeaker)
+			addModule((AlarmSpeaker)module);
+		else if (module instanceof FaultDetection)
+			addModule((FaultDetection)module);
+		else 
+			super.addModule(module);
 	}
 
 	public void addModule(AlarmSpeaker alarmSpeaker) {

@@ -7,7 +7,10 @@
  *******************************************************************************/
 package org.onem2m.home.modules;
 
+import java.util.Map;
+
 import org.onem2m.home.types.ModuleType;
+import org.onem2m.sdt.DataPoint;
 import org.onem2m.sdt.Domain;
 import org.onem2m.sdt.datapoints.BooleanDataPoint;
 import org.onem2m.sdt.datapoints.IntegerDataPoint;
@@ -22,6 +25,16 @@ public class MotionSensor extends AbstractAlarmSensor {
 	public MotionSensor(final String name, final Domain domain, BooleanDataPoint alarm) {
 		super(name, domain, alarm, ModuleType.motionSensor,
 				"The detection of the motion occurrence.");
+	}
+
+	public MotionSensor(final String name, final Domain domain, Map<String, DataPoint> dps) {
+		this(name, domain, (BooleanDataPoint) dps.get("alarm"));
+		IntegerDataPoint silentTime = (IntegerDataPoint) dps.get("silentTime");
+		if (silentTime != null)
+			setSilentTime(silentTime);
+		IntegerDataPoint sensitivity = (IntegerDataPoint) dps.get("sensitivity");
+		if (sensitivity != null)
+			setSensitivity(sensitivity);
 	}
 
 	public void setSilentTime(IntegerDataPoint dp) {

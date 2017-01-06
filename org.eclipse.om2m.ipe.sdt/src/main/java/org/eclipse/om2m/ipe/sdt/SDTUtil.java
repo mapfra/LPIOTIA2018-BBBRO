@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.onem2m.sdt.types.SimpleType;
+import org.onem2m.home.types.HomeSimpleType;
 import org.onem2m.sdt.types.Array;
 import org.onem2m.sdt.types.BasicType;
 import org.onem2m.sdt.types.DataType.TypeChoice;
@@ -22,10 +23,10 @@ public class SDTUtil {
 	private static final String TYPE_PREFIX = "xs:";
 	
 	public static String simpleTypeToOneM2MType(SimpleType simpleType) {
-		if (SimpleType.Tone.equals(simpleType)) {
+		if (HomeSimpleType.Tone.equals(simpleType)) {
 			return "hd:tone";
 		}
-		if (SimpleType.LiquidLevel.equals(simpleType)) {
+		if (HomeSimpleType.Level.equals(simpleType)) {
 			return "hd:liquidLevel";
 		}
 		return TYPE_PREFIX + simpleType.getType().getValue();

@@ -26,7 +26,7 @@ public class AbstractAlarmSensor extends Module {
 			BooleanDataPoint alarm, ModuleType type) {
 		this(name, domain, alarm, type, "True = Sensed, False = Not Sensed");
 	}
-	
+
 	public AbstractAlarmSensor(final String name, final Domain domain, 
 			BooleanDataPoint alarm, ModuleType type, String doc) {
 		super(name, domain, type.getDefinition());

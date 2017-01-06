@@ -54,6 +54,7 @@
 						<Bundle-Author>Cyrille Bareau</Bundle-Author>
 						<Bundle-Description>${project.description}</Bundle-Description>
 						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+						<Bundle-Activator>org.onem2m.home.utils.Activator</Bundle-Activator>
 						<Import-Package>*</Import-Package>
 						<Export-Package>
 							org.onem2m.home,

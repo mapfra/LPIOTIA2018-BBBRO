@@ -7,9 +7,12 @@
  *******************************************************************************/
 package org.onem2m.home.modules;
 
+import java.util.Map;
+
 import org.onem2m.home.types.AlertColourCode;
 import org.onem2m.home.types.ModuleType;
 import org.onem2m.home.types.Tone;
+import org.onem2m.sdt.DataPoint;
 import org.onem2m.sdt.Domain;
 import org.onem2m.sdt.Module;
 import org.onem2m.sdt.datapoints.BooleanDataPoint;
@@ -28,6 +31,16 @@ public class AlarmSpeaker extends Module {
 		this.alarmStatus = alarmStatus;
 		this.alarmStatus.setDoc("\"True\" indicates the alarm start while \"False\" indicates the alarm stop");
 		addDataPoint(this.alarmStatus);
+	}
+
+	public AlarmSpeaker(final String name, final Domain domain, Map<String, DataPoint> dps) {
+		this(name, domain, (BooleanDataPoint) dps.get("alarmStatus"));
+		Tone tone = (Tone) dps.get("tone");
+		if (tone != null)
+			setTone(tone);
+		AlertColourCode light = (AlertColourCode) dps.get("light");
+		if (light != null)
+			setLight(light);
 	}
 
 	public boolean getAlarmStatus() throws DataPointException, AccessException {

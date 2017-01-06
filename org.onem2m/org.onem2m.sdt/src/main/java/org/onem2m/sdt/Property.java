@@ -20,6 +20,7 @@ public class Property extends Element {
 	public Property(final String name) {
 		super(name);
 		optional = false;
+		type = SimpleType.String;
 	}
 
 	public Property(final String name, final String value) {

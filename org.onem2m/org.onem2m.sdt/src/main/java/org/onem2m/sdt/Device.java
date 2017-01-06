@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.onem2m.sdt.types.SimpleType;
 import org.onem2m.sdt.utils.Logger;
 
 public class Device extends Element {
@@ -25,9 +26,9 @@ public class Device extends Element {
 
 	public Device(final String id, final Domain domain, final String definition) {
 		super(definition + "__" + id);
-		if (domain.getDevice(definition + "__" + id) != null)
+		if (domain.getDevice(getName()) != null)
 			throw new IllegalArgumentException("Already a device with name " 
-					+ definition + "/" + id + " in domain " + domain);
+					+ getName() + " in domain " + domain);
 		this.definition = definition;
 		modules = new HashMap<String, Module>();
 		properties = new HashMap<String, Property>();
@@ -59,10 +60,11 @@ public class Device extends Element {
 		return modules.get(name);
 	}
 
-	public void addModule(final Module module) {
+	public void addModule(Module module) {
 		if (modules.get(module.getName()) != null)
 			throw new IllegalArgumentException("Already a module with name " + module.getName() 
 					+ " on device " + getName());
+		Logger.info("SUPER add module " + module, getClass());
 		module.setOwner(this);
 		this.modules.put(module.getName(), module);
 	}
@@ -83,8 +85,22 @@ public class Device extends Element {
 		return properties.get(name);
 	}
 
-	public void addProperty(final Property property) {
+	public void addProperty(Property property) {
 		this.properties.put(property.getName(), property);
+	}
+
+	public void setProperty(String name, String value) {
+		setProperty(name, value, null);
+	}
+
+	public void setProperty(String name, String value, String type) {
+		Property prop = getProperty(name);
+		if (prop == null) {
+			prop = new Property(name);
+			if (type != null)
+				prop.setType(SimpleType.getSimpleType(type));
+		}
+		prop.setValue(value);
 	}
 
 	public void removeProperty(final String name) {
@@ -103,7 +119,7 @@ public class Device extends Element {
 		return devices.get(name);
 	}
 	
-	public void addSubDevice(final SubDevice device) {
+	public void addSubDevice(SubDevice device) {
 		if (devices.get(device.getName()) != null)
 			throw new IllegalArgumentException("Already a subdevice with name " + device.getName() 
 					+ " on device " + getName());

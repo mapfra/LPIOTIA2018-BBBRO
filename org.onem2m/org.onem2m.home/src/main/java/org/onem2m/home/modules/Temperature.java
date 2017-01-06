@@ -7,7 +7,10 @@
  *******************************************************************************/
 package org.onem2m.home.modules;
 
+import java.util.Map;
+
 import org.onem2m.home.types.ModuleType;
+import org.onem2m.sdt.DataPoint;
 import org.onem2m.sdt.Domain;
 import org.onem2m.sdt.Module;
 import org.onem2m.sdt.datapoints.FloatDataPoint;
@@ -32,7 +35,26 @@ public class Temperature extends Module {
 		currentTemperature.setDoc("The current currentTemperature");
 		addDataPoint(currentTemperature);
 	}
-	
+
+	public Temperature(final String name, final Domain domain, Map<String, DataPoint> dps) {
+		this(name, domain, (FloatDataPoint) dps.get("currentTemperature"));
+		FloatDataPoint targetTemperature = (FloatDataPoint) dps.get("targetTemperature");
+		if (targetTemperature != null)
+			setTargetTemperature(targetTemperature);
+		FloatDataPoint minValue = (FloatDataPoint) dps.get("minValue");
+		if (minValue != null)
+			setMinValue(minValue);
+		FloatDataPoint maxValue = (FloatDataPoint) dps.get("maxValue");
+		if (maxValue != null)
+			setMaxValue(maxValue);
+		FloatDataPoint stepValue = (FloatDataPoint) dps.get("stepValue");
+		if (stepValue != null)
+			setStepValue(stepValue);
+		StringDataPoint units = (StringDataPoint) dps.get("units");
+		if (units != null)
+			setUnits(units);
+	}
+
 	public float getCurrentTemperature() throws DataPointException, AccessException {
 		return currentTemperature.getValue();
 	}

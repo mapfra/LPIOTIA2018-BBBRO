@@ -9,30 +9,32 @@ package org.onem2m.sdt.types;
 
 import java.net.URI;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
-public enum BasicType {
+public class BasicType {
+    
+    static private Map<String, BasicType> values = new HashMap<String, BasicType>();
 
-    INTEGER("integer", Integer.class),
-    BOOLEAN("boolean", Boolean.class),
-    STRING("string", String.class),
-    BYTE("byte", Byte.class),
-    FLOAT("float", Float.class),
-    ENUM("enum", Enum.class),
-    DATE("date", Date.class),
-    TIME("time", String.class),
-    DATETIME("datetime", String.class),
-    BLOB("blob", byte[].class),
-    URI("uri", URI.class),
-	TONE("tone", Integer.class),
-	LIQUIDLEVEL("liquidLevel", Integer.class);
+	static public final BasicType INTEGER = new BasicType("integer", Integer.class);
+	static public final BasicType BOOLEAN = new BasicType("boolean", Boolean.class);
+	static public final BasicType STRING = new BasicType("string", String.class);
+	static public final BasicType BYTE = new BasicType("byte", Byte.class);
+	static public final BasicType FLOAT = new BasicType("float", Float.class);
+	static public final BasicType ENUM = new BasicType("enum", Enum.class);
+	static public final BasicType DATE = new BasicType("date", Date.class);
+	static public final BasicType TIME = new BasicType("time", Date.class);
+	static public final BasicType DATETIME = new BasicType("datetime", Date.class);
+	static public final BasicType BLOB = new BasicType("blob", byte[].class);
+	static public final BasicType URI = new BasicType("uri", URI.class);
 	
-
     private final String value;
     private final Class<?> clazz;
 
-    private BasicType(String v, Class<?> c) {
+    protected BasicType(String v, Class<?> c) {
         value = v;
         clazz = c;
+        values.put(v, this);
     }
 
     public String getValue() {
@@ -42,14 +44,9 @@ public enum BasicType {
     public Class<?> getClazz() {
     	return clazz;
     }
-
-    public static BasicType fromValue(String v) {
-        for (BasicType c : values()) {
-            if (c.value.equals(v)) {
-                return c;
-            }
-        }
-        throw new IllegalArgumentException(v);
+    
+    static public BasicType getBasicType(final String s) {
+    	return values.get(s);
     }
 	
 	@Override

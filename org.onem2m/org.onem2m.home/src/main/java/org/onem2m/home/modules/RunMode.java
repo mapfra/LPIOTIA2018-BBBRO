@@ -9,8 +9,10 @@ package org.onem2m.home.modules;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import org.onem2m.home.types.ModuleType;
+import org.onem2m.sdt.DataPoint;
 import org.onem2m.sdt.Domain;
 import org.onem2m.sdt.Module;
 import org.onem2m.sdt.datapoints.ArrayDataPoint;
@@ -34,6 +36,12 @@ public class RunMode extends Module {
 		this.supportedModes = supportedModes;
 		this.supportedModes.setDoc("Comma separated list of possible modes the device supports");
 		addDataPoint(this.supportedModes);
+	}
+	
+	public RunMode(final String name, final Domain domain, Map<String, DataPoint> dps) {
+		this(name, domain, 
+			(ArrayDataPoint<String>) dps.get("operationMode"),
+			(ArrayDataPoint<String>) dps.get("supportedModes"));
 	}
 
 	public List<String> getOperationMode() throws DataPointException, AccessException {

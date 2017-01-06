@@ -18,7 +18,7 @@ public abstract class DoorState extends EnumDataPoint<Integer> {
 	static public final int Stopped = 5;
 	
 	public DoorState(String name) {
-		super(name);
+		super(name, HomeDataType.DoorState);
 		setValidValues(new Integer[] { Closed, Open, Opening, Closing, Stopped });
 	}
 

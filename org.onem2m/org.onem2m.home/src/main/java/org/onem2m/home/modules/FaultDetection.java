@@ -7,7 +7,10 @@
  *******************************************************************************/
 package org.onem2m.home.modules;
 
+import java.util.Map;
+
 import org.onem2m.home.types.ModuleType;
+import org.onem2m.sdt.DataPoint;
 import org.onem2m.sdt.Domain;
 import org.onem2m.sdt.Module;
 import org.onem2m.sdt.datapoints.BooleanDataPoint;
@@ -31,6 +34,16 @@ public class FaultDetection extends Module {
 		addDataPoint(this.status);
 	}
 
+	public FaultDetection(final String name, final Domain domain, Map<String, DataPoint> dps) {
+		this(name, domain, (BooleanDataPoint) dps.get("status"));
+		IntegerDataPoint code = (IntegerDataPoint) dps.get("code");
+		if (code != null)
+			setCode(code);
+		StringDataPoint description = (StringDataPoint) dps.get("description");
+		if (description != null)
+			setDescription(description);
+	}
+
 	public boolean getStatus() throws DataPointException, AccessException{
 		return status.getValue();
 	}
@@ -41,7 +54,7 @@ public class FaultDetection extends Module {
 		return code.getValue();
 	}
 
-	public void setCode(IntegerDataPoint dp) throws DataPointException {
+	public void setCode(IntegerDataPoint dp) {
 		this.code = dp;
 		this.code.setOptional(true);
 		this.code.setWritable(false);

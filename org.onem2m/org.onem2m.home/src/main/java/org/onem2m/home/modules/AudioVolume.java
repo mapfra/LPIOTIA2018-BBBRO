@@ -7,8 +7,12 @@
  *******************************************************************************/
 package org.onem2m.home.modules;
 
+import java.util.Map;
+
 import org.onem2m.home.actions.Volume;
 import org.onem2m.home.types.ModuleType;
+import org.onem2m.sdt.Action;
+import org.onem2m.sdt.DataPoint;
 import org.onem2m.sdt.Domain;
 import org.onem2m.sdt.Module;
 import org.onem2m.sdt.datapoints.BooleanDataPoint;
@@ -38,6 +42,25 @@ public class AudioVolume extends Module {
 		this.volumePercentage.setDoc("The rounded percentage of the current volume in the range of [0, maxValue]. 0% shall mean no sound produced.");
 		addDataPoint(this.volumePercentage);
 	}
+	
+	public AudioVolume(final String name, final Domain domain, Map<String, DataPoint> dps) {
+		this(name, domain, 
+			(IntegerDataPoint) dps.get("volumePercentage"), 
+			(BooleanDataPoint) dps.get("muteEnabled"));
+		IntegerDataPoint stepValue = (IntegerDataPoint) dps.get("stepValue");
+		if (stepValue != null)
+			setStepValue(stepValue);
+		IntegerDataPoint maxValue = (IntegerDataPoint) dps.get("maxValue");
+		if (maxValue != null)
+			setMaxValue(maxValue);
+	}
+	
+	public void addAction(Action action) {
+		if (action instanceof Volume)
+			setVolume((Volume)action);
+		else
+			super.addAction(action);
+	}
 
 	public Volume getVolume() {
 		return volume;
@@ -45,7 +68,7 @@ public class AudioVolume extends Module {
 
 	public void setVolume(Volume volume) {
 		this.volume = volume;
-		addAction(volume);
+		super.addAction(volume);
 	}
 	
 	public void upOrDown(final boolean up) throws ActionException, AccessException {

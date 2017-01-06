@@ -8,7 +8,6 @@
 package org.onem2m.home.types;
 
 import org.onem2m.sdt.datapoints.EnumDataPoint;
-import org.onem2m.sdt.types.DataType;
 
 public abstract class Tone extends EnumDataPoint<Integer> {
 	
@@ -20,7 +19,7 @@ public abstract class Tone extends EnumDataPoint<Integer> {
 	static public final int Silent = 6;
 	
 	public Tone(String name) {
-		super(name, DataType.Tone);
+		super(name, HomeDataType.Tone);
 		setValidValues(new Integer[] { Fire, Theft, Emergency, Doorbell, DeviceFail, Silent });
 	}
 	

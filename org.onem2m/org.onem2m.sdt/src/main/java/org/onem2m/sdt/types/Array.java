@@ -13,5 +13,9 @@ public class Array<T> implements TypeChoice {
 	
 	public Array() {
 	}
+	
+	public String getOneM2MType() {
+		return "xs:enum";
+	}
 
 }

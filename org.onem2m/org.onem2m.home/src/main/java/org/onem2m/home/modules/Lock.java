@@ -7,8 +7,11 @@
  *******************************************************************************/
 package org.onem2m.home.modules;
 
+import java.util.Map;
+
 import org.onem2m.home.types.LockState;
 import org.onem2m.home.types.ModuleType;
+import org.onem2m.sdt.DataPoint;
 import org.onem2m.sdt.Domain;
 import org.onem2m.sdt.Module;
 import org.onem2m.sdt.impl.AccessException;
@@ -26,6 +29,10 @@ public class Lock extends Module {
 		addDataPoint(this.lockState);
 	}
 	
+	public Lock(final String name, final Domain domain, Map<String, DataPoint> dps) {
+		this(name, domain, (LockState) dps.get("lockState"));
+	}
+
 	public void setLockState(int c) throws DataPointException, AccessException {
 		lockState.setValue(c);
 	}

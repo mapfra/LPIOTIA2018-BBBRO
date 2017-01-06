@@ -7,9 +7,14 @@
  *******************************************************************************/
 package org.onem2m.sdt.types;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.onem2m.sdt.types.DataType.TypeChoice;
 
 public class SimpleType implements TypeChoice {
+    
+    static private Map<String, SimpleType> values = new HashMap<String, SimpleType>();
 	
 	static public final SimpleType Boolean = new SimpleType(BasicType.BOOLEAN);
 	static public final SimpleType Byte = new SimpleType(BasicType.BYTE);
@@ -22,22 +27,28 @@ public class SimpleType implements TypeChoice {
 	static public final SimpleType Datetime = new SimpleType(BasicType.DATETIME);
 	static public final SimpleType Blob = new SimpleType(BasicType.BLOB);
 	static public final SimpleType Uri = new SimpleType(BasicType.URI);
-	static public final SimpleType Tone = new SimpleType(BasicType.TONE);
-	static public final SimpleType LiquidLevel = new SimpleType(BasicType.LIQUIDLEVEL);
 
-	
 	private BasicType type;
 
-	private SimpleType(final BasicType type) {
+	protected SimpleType(final BasicType type) {
 		if (type == null)
 			throw new IllegalArgumentException();
 		this.type = type;
+        values.put(type.getValue(), this);
 	}
 
 	public BasicType getType() {
 		return type;
 	}
 	
+	public String getOneM2MType() {
+		return "xs:" + getType().getValue();
+	}
+    
+    static public SimpleType getSimpleType(final String s) {
+    	return values.get(s);
+    }
+
 	@Override
 	public String toString() {
 		return "<SimpleType type=\"" + type + "\"/>";

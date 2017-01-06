@@ -35,7 +35,7 @@ public enum ModuleType {
 	recorder(24, "recorder"),
 	refrigeration(25, "refrigeration"),
 	relativeHumidity(26, "relativeHumidity"),
-	rinseLevel(27, "rinseLevel"),
+	//rinseLevel(27, "rinseLevel"),
 	runMode(28, "runMode"),
 	signalStrength(29, "signalStrength"),
 	smokeSensor(30, "smokeSensor"),
@@ -46,10 +46,20 @@ public enum ModuleType {
 	timer(35, "timer"),
 	turbo(36, "turbo"),
 	waterFlow(37, "waterFlow"),
-	waterLevel(38, "waterLevel"),
+	//waterLevel(38, "waterLevel"), //COMMENTED by Maciek
+	level(38, "level"), // ADDED by Maciek
 	waterSensor(39, "waterSensor"),
 	weight(40, "weight"),
 	wind(41, "wind"),
+	
+	/****ADDED by Maciek****/
+	
+	grinder(42, "grinder"),
+	foaming(43, "foaming"),
+	brewing(44, "brewing"),
+	
+	
+	/***********************/
 
 	atmosphericPressureSensor(100, "atmosphericPressureSensor"),
 	carbonDioxideSensor(101, "carbonDioxideSensor"),
@@ -63,6 +73,11 @@ public enum ModuleType {
 	touchSensor(109, "touchSensor"),
 	lock(110, "lock"),
 
+	personSensor(150, "personSensor"),
+	streaming(151, "streaming"),
+	noise(152, "noise"),
+	extendedCarbonDioxideSensor(153, "extendedCarbonDioxideSensor"),
+	
 	abstractAlarmSensor(200, "abstractAlarmSensor");
 	
 	static private final String PATH = "org.onem2m.home.moduleclass.";

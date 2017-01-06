@@ -13,8 +13,8 @@ import org.onem2m.home.devices.WaterValve;
 import org.onem2m.home.driver.Utils;
 import org.onem2m.home.enocean.Activator.EnOceanSDTDevice;
 import org.onem2m.home.modules.FaultDetection;
-import org.onem2m.home.modules.WaterLevel;
-import org.onem2m.home.types.LiquidLevel;
+import org.onem2m.home.modules.Level;
+import org.onem2m.home.types.LevelType;
 import org.onem2m.sdt.Domain;
 import org.onem2m.sdt.Event;
 import org.onem2m.sdt.datapoints.BooleanDataPoint;
@@ -35,10 +35,10 @@ public class EOWaterValve extends WaterValve implements EnOceanSDTDevice {
 	private BundleContext context;
 
 	private FaultDetection faultDetection;
-	private WaterLevel waterLevel;
+	private Level waterLevel;
 	
-	private LiquidLevel liquidLevelDP;
-	private Integer liquidLevel = LiquidLevel.maximum;
+	private LevelType liquidLevelDP;
+	private Integer liquidLevel = LevelType.maximum;
 
 	public EOWaterValve(EnOceanDevice device, Domain domain,
 			String serial, BundleContext context) {
@@ -95,10 +95,10 @@ public class EOWaterValve extends WaterValve implements EnOceanSDTDevice {
 		String msg;
 		if (feedback == 1) {
 			msg = "Closed";
-			liquidLevel = LiquidLevel.zero;
+			liquidLevel = LevelType.zero;
 		} else if (feedback == 2) {
 			msg = "Opened";
-			liquidLevel = LiquidLevel.maximum;
+			liquidLevel = LevelType.maximum;
 		} else {
 			msg = "Not defined";
 			liquidLevel = null;
@@ -112,7 +112,7 @@ public class EOWaterValve extends WaterValve implements EnOceanSDTDevice {
 	}
 
 	private void addWaterLevel() {
-		liquidLevelDP = new LiquidLevel("liquidLevel") {
+		liquidLevelDP = new LevelType("liquidLevel") {
 			@Override
 			public void doSetValue(Integer value) throws DataPointException {
 				try {
@@ -130,9 +130,9 @@ public class EOWaterValve extends WaterValve implements EnOceanSDTDevice {
 				return liquidLevel;
 			}
 		};
-		waterLevel = new WaterLevel("WaterLevel_" + eoDevice.getChipId(), domain, liquidLevelDP);
+		waterLevel = new Level("Level_" + eoDevice.getChipId(), domain, null, liquidLevelDP);
 		
-		Activator.logger.info("add WaterLevel module: " + waterLevel);
+		Activator.logger.info("add Level module: " + waterLevel);
 		addModule(waterLevel);
 	}
 
@@ -150,10 +150,10 @@ public class EOWaterValve extends WaterValve implements EnOceanSDTDevice {
 	private void turn(int value) throws DataPointException {
 		final String command;
 		switch (value) {
-		case LiquidLevel.zero:
+		case LevelType.zero:
 			command = "HARDCODED_TURN_OFF";
 			break;
-		case LiquidLevel.maximum:
+		case LevelType.maximum:
 			command = "HARDCODED_APPAIR_TURN_ON";
 			break;
 		default:
@@ -189,7 +189,7 @@ public class EOWaterValve extends WaterValve implements EnOceanSDTDevice {
 		};
 
 		Activator.logger.info("Water pump available, " 
-				+ ((value == LiquidLevel.zero) ? "close it!" : "Open it!"),
+				+ ((value == LevelType.zero) ? "close it!" : "Open it!"),
 			EOWaterValve.class);
 		eoDevice.invoke(appairRPC, handlerTurnRPC);
 		Activator.logger.info("OK!", EOWaterValve.class);

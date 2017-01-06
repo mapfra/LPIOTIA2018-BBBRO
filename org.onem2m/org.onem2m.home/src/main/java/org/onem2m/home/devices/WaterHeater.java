@@ -15,6 +15,7 @@ import org.onem2m.home.modules.HotWaterSupply;
 import org.onem2m.home.modules.RunMode;
 import org.onem2m.home.types.DeviceType;
 import org.onem2m.sdt.Domain;
+import org.onem2m.sdt.Module;
 
 public class WaterHeater extends GenericDevice {
 
@@ -33,6 +34,23 @@ public class WaterHeater extends GenericDevice {
 	
 	public WaterHeater(final String id, final String serial, final Domain domain) {
 		super(id, serial, DeviceType.deviceWaterHeater, domain);
+	}
+	
+	public void addModule(Module module) {
+		if (module instanceof BinarySwitch)
+			addModule((BinarySwitch)module);
+		else if (module instanceof FaultDetection)
+			addModule((FaultDetection)module);
+		else if (module instanceof RunMode)
+			addModule((RunMode)module);
+		else if (module instanceof Clock)
+			addModule((Clock)module);
+		else if (module instanceof Boiler)
+			addModule((Boiler)module);
+		else if (module instanceof HotWaterSupply)
+			addModule((HotWaterSupply)module);
+		else 
+			super.addModule(module);
 	}
 
 	public void addModule(FaultDetection faultDetection) {

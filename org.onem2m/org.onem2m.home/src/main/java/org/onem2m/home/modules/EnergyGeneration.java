@@ -7,7 +7,10 @@
  *******************************************************************************/
 package org.onem2m.home.modules;
 
+import java.util.Map;
+
 import org.onem2m.home.types.ModuleType;
+import org.onem2m.sdt.DataPoint;
 import org.onem2m.sdt.Domain;
 import org.onem2m.sdt.Module;
 import org.onem2m.sdt.datapoints.FloatDataPoint;
@@ -25,6 +28,22 @@ public class EnergyGeneration extends Module {
 	
 	public EnergyGeneration(final String name, final Domain domain) {
 		super(name, domain, ModuleType.energyGeneration.getDefinition());
+	}
+	
+	public EnergyGeneration(final String name, final Domain domain, Map<String, DataPoint> dps) {
+		this(name, domain);
+		FloatDataPoint powerGenerationData = (FloatDataPoint) dps.get("powerGenerationData");
+		if (powerGenerationData != null)
+			setPowerGenerationData(powerGenerationData);
+		IntegerDataPoint roundingEnergyGeneration = (IntegerDataPoint) dps.get("roundingEnergyGeneration");
+		if (roundingEnergyGeneration != null)
+			setRoundingEnergyGeneration(roundingEnergyGeneration);
+		IntegerDataPoint significantDigits = (IntegerDataPoint) dps.get("significantDigits");
+		if (significantDigits != null)
+			setSignificantDigits(significantDigits);
+		IntegerDataPoint multiplyingFactors = (IntegerDataPoint) dps.get("multiplyingFactors");
+		if (multiplyingFactors != null)
+			setMultiplyingFactors(multiplyingFactors);
 	}
 
 	public float getPowerGenerationData() throws DataPointException, AccessException {

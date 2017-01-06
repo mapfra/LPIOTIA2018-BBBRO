@@ -8,12 +8,14 @@
 package org.onem2m.home.devices;
 
 import org.onem2m.home.modules.AbstractAlarmSensor;
+import org.onem2m.home.modules.ContactSensor;
 import org.onem2m.home.modules.FaultDetection;
 import org.onem2m.home.modules.MotionSensor;
 import org.onem2m.home.modules.SmokeSensor;
 import org.onem2m.home.modules.WaterSensor;
 import org.onem2m.home.types.DeviceType;
 import org.onem2m.sdt.Domain;
+import org.onem2m.sdt.Module;
 
 public class GenericSensor extends GenericDevice {
 	
@@ -29,6 +31,15 @@ public class GenericSensor extends GenericDevice {
 			final DeviceType type, final Domain domain) {
 		super(id, serial, type, domain);
 	}
+	
+	public void addModule(Module module) {
+		if (module instanceof FaultDetection)
+			addModule((FaultDetection)module);
+		else if (module instanceof AbstractAlarmSensor)
+			addModule((AbstractAlarmSensor)module);
+		else
+			super.addModule(module);
+	}
 
 	public void addModule(AbstractAlarmSensor sensor) {
 		this.sensor = sensor;
@@ -39,6 +50,8 @@ public class GenericSensor extends GenericDevice {
 			setDeviceType(DeviceType.deviceMotionDetector);
 		else if (sensor instanceof WaterSensor)
 			setDeviceType(DeviceType.deviceFloodDetector);
+		else if (sensor instanceof ContactSensor)
+			setDeviceType(DeviceType.deviceContactDetector);
 	}
 
 	public void addModule(FaultDetection faultDetection) {

@@ -7,7 +7,10 @@
  *******************************************************************************/
 package org.onem2m.home.modules;
 
+import java.util.Map;
+
 import org.onem2m.home.types.ModuleType;
+import org.onem2m.sdt.DataPoint;
 import org.onem2m.sdt.Domain;
 import org.onem2m.sdt.Module;
 import org.onem2m.sdt.datapoints.IntegerDataPoint;
@@ -30,6 +33,16 @@ public class Dimming extends Module {
 		this.dimmingSetting = value;
 		this.dimmingSetting.setDoc("Current dimming value.");
 		addDataPoint(this.dimmingSetting);
+	}
+
+	public Dimming(final String name, final Domain domain, Map<String, DataPoint> dps) {
+		this(name, domain, (IntegerDataPoint) dps.get("dimmingSetting"));
+		StringDataPoint range = (StringDataPoint) dps.get("range");
+		if (range != null)
+			setRange(range);
+		IntegerDataPoint step = (IntegerDataPoint) dps.get("step");
+		if (step != null)
+			setStep(step);
 	}
 
 	public int getDimmingSetting() throws DataPointException, AccessException {

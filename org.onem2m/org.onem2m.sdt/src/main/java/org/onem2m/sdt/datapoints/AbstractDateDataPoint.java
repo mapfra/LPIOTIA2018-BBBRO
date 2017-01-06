@@ -9,7 +9,6 @@ package org.onem2m.sdt.datapoints;
 
 import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.onem2m.sdt.impl.AccessException;
@@ -18,9 +17,9 @@ import org.onem2m.sdt.types.DataType;
 
 public abstract class AbstractDateDataPoint extends ValuedDataPoint<Date> {
 	
-	static final private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-	static final private DateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-	static final private DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+	static final private DateFormat dateTimeFormat = DateFormat.getDateTimeInstance();
+	static final private DateFormat dateFormat = DateFormat.getDateInstance();
+	static final private DateFormat timeFormat = DateFormat.getTimeInstance();
 	
 	private DateFormat df;
 

@@ -7,25 +7,33 @@
  *******************************************************************************/
 package org.onem2m.home.devices;
 
-import org.onem2m.home.modules.WaterLevel;
+import org.onem2m.home.modules.Level;
 import org.onem2m.home.types.DeviceType;
 import org.onem2m.sdt.Domain;
+import org.onem2m.sdt.Module;
 
 public class WaterValve extends GenericActuator {
 	
-	private WaterLevel waterLevel;
+	private Level waterLevel;
 
 	public WaterValve(final String id, final String serial, final Domain domain) {
 		super(id, serial, DeviceType.deviceWaterValve, domain);
 		setDeviceSubModelName("WATER");
 	}
 	
-	public void addModule(WaterLevel waterLevel) {
+	public void addModule(Module module) {
+		if (module instanceof Level)
+			addModule((Level)module);
+		else
+			super.addModule(module);
+	}
+
+	public void addModule(Level waterLevel) {
 		this.waterLevel = waterLevel;
 		super.addModule(waterLevel);
 	}
 
-	public WaterLevel getWaterLevel() {
+	public Level getWaterLevel() {
 		return waterLevel;
 	}
 

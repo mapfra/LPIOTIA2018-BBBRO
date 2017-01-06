@@ -32,5 +32,9 @@ public class Struct implements TypeChoice {
 	public void removeDataType(final DataType dataType) {
 		this.dataTypes.remove(dataType);
 	}
+	
+	public String getOneM2MType() {
+		return "xs:notDefined";
+	}
 
 }

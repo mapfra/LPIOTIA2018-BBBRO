@@ -17,7 +17,7 @@ public abstract class LockState extends EnumDataPoint<Integer> {
 	static public final int Unknown = 4;
 	
 	public LockState(String name) {
-		super(name);
+		super(name, HomeDataType.LockState);
 		setValidValues(new Integer[] { Locked, Unlocked, NotfullyLocked, Unknown });
 	}
 
