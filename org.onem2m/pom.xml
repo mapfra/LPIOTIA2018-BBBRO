@@ -60,6 +60,7 @@
 		<module>org.onem2m.home.mocked.devices</module>
 		<module>org.onem2m.home.lifx</module>
 		<module>org.onem2m.home.netatmo</module>
+		<module>org.onem2m.home.smartercoffee</module>
 	</modules>
 
 </project>

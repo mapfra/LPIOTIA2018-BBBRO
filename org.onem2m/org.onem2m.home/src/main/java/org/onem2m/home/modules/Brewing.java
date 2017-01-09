@@ -8,6 +8,7 @@ import org.onem2m.sdt.DataPoint;
 import org.onem2m.sdt.Domain;
 import org.onem2m.sdt.Module;
 import org.onem2m.sdt.datapoints.BooleanDataPoint;
+import org.onem2m.sdt.datapoints.EnumDataPoint;
 import org.onem2m.sdt.datapoints.IntegerDataPoint;
 import org.onem2m.sdt.impl.AccessException;
 import org.onem2m.sdt.impl.DataPointException;
@@ -69,7 +70,7 @@ public class Brewing extends Module{
 		return strength.getValue();
 	}
 
-	public void setStrengthy(int v) throws DataPointException, AccessException {
+	public void setStrength(int v) throws DataPointException, AccessException {
 		strength.setValue(v);
 	}
 	

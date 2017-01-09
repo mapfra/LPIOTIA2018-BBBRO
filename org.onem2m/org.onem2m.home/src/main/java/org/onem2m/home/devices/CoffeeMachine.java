@@ -1,6 +1,9 @@
 package org.onem2m.home.devices;
 
 
+import java.util.Collection;
+import java.util.Collections;
+
 import org.onem2m.home.modules.Brewing;
 import org.onem2m.home.modules.Clock;
 import org.onem2m.home.modules.FaultDetection;
@@ -49,14 +52,19 @@ public class CoffeeMachine extends GenericDevice{
 		else if (module instanceof Brewing)
 			addModule((Brewing)module);
 		else if (module instanceof Level){
-			if(module.getName().equals("waterStatus"))
+			Collection<String> col = module.getDataPointNames();
+			if(col.contains("waterStatus")){
 				addModuleWaterStatus((Level)module);
-			else if (module.getName().equals("milkStatus"))
+			}
+			if(col.contains("milkStatus")){
 				addModuleMilkStatus((Level)module);
-			else if (module.getName().equals("beansStatus"))
+			}
+			if(col.contains("beansStatus")){
 				addModuleBeansStatus((Level)module);
-			else if (module.getName().equals("milkQuantity"))
+			}
+			if(col.contains("milkQuantity")){
 				addModuleMilkQuantity((Level)module);
+			}
 		}
 		else if (module instanceof Grinder)
 			addModule((Grinder)module);
@@ -85,6 +93,17 @@ public class CoffeeMachine extends GenericDevice{
 		this.brewing = mod;
 		super.addModule(brewing);
 	}
+	
+	public void addModule(Grinder mod) {
+		this.grinder = mod;
+		super.addModule(grinder);
+	}
+	
+	public void addModule(Foaming mod) {
+		this.foamedMilk = mod;
+		super.addModule(foamedMilk);
+	}
+	
 	
 	public void addModuleWaterStatus(Level mod) {
 		this.waterStatus = mod;
