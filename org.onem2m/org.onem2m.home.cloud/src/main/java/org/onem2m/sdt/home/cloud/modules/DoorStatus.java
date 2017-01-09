@@ -1,0 +1,30 @@
+/*******************************************************************************
+ * Copyright (c) 2014, 2016 Orange.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *******************************************************************************/
+package org.onem2m.sdt.home.cloud.modules;
+
+import java.util.Map;
+
+import org.onem2m.home.types.DoorState;
+import org.onem2m.sdt.DataPoint;
+import org.onem2m.sdt.Domain;
+import org.onem2m.sdt.datapoints.BooleanDataPoint;
+import org.onem2m.sdt.datapoints.StringDataPoint;
+
+public class DoorStatus extends org.onem2m.home.modules.DoorStatus {
+	
+	public DoorStatus(final String name, final Domain domain, Map<String, DataPoint> dps) {
+		super(name, domain, (DoorState) dps.get("doorState"));
+		StringDataPoint openDuration = (StringDataPoint) dps.get("openDuration");
+		if (openDuration != null)
+			setOpenDuration(openDuration);
+		BooleanDataPoint openAlarm = (BooleanDataPoint) dps.get("openAlarm");
+		if (openAlarm != null)
+			setOpenAlarm(openAlarm);
+	}
+
+}

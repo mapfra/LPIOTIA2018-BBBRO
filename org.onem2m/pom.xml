@@ -56,6 +56,7 @@
 		<module>org.onem2m.home.tester</module>
 		<module>org.onem2m.home.driver</module>
 		<module>org.onem2m.home.enocean</module>
+		<module>org.onem2m.home.cloud</module>
 		<module>org.onem2m.home.mocked.devices</module>
 	</modules>
 
