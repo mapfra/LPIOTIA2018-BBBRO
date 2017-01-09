@@ -58,6 +58,7 @@
 		<module>org.onem2m.home.enocean</module>
 		<module>org.onem2m.home.cloud</module>
 		<module>org.onem2m.home.mocked.devices</module>
+		<module>org.onem2m.home.lifx</module>
 	</modules>
 
 </project>

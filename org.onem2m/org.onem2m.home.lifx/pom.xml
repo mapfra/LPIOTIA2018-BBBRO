@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ******************************************************************************* 
+	* Copyright (c) 2014, 2016 Orange. 
+	* All rights reserved. This program and the accompanying materials 
+	* are made available under the terms of the Eclipse	Public License v1.0 
+	* which accompanies this distribution, and is available	at 
+	* http://www.eclipse.org/legal/epl-v10.html 
+	* 
+	* Contributors: 
+	* Gregory Bonnardel, Carmen Beschiu, Cyrille Bareau. 
+	******************************************************************************* -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.onem2m</groupId>
+		<artifactId>org.onem2m</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>org.onem2m.home.lifx</artifactId>
+	
+
+	<packaging>bundle</packaging>
+	<name>${project.artifactId}</name>
+	<description>Orange OSGi LIFX Base Driver And SDT Refined Driver</description>
+
+	<prerequisites>
+		<maven>3.0</maven>
+	</prerequisites>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>org.osgi</groupId>
+			<artifactId>org.osgi.core</artifactId>
+			<version>4.2.0</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.osgi</groupId>
+			<artifactId>org.osgi.compendium</artifactId>
+			<version>4.2.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.onem2m</groupId>
+			<artifactId>org.onem2m.sdt.home</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+			<type>bundle</type>
+		</dependency>
+
+		<dependency>
+			<groupId>org.onem2m</groupId>
+			<artifactId>org.onem2m.sdt.home.driver</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+			<type>bundle</type>
+		</dependency>
+
+		<dependency>
+			<groupId>com.googlecode.json-simple</groupId>
+			<artifactId>json-simple</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+
+	</dependencies>
+
+	<!-- =============================================================== -->
+
+	<build>
+
+		<plugins>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<version>2.3.7</version>
+				<extensions>true</extensions>
+				<configuration>
+					<instructions>
+						<Bundle-Name>${project.groupId}.${project.artifactId}</Bundle-Name>
+						<Bundle-RequiredExecutionEnvironment>OSGi/Minimum-1.1</Bundle-RequiredExecutionEnvironment>
+						<Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
+						<Bundle-Vendor>Orange</Bundle-Vendor>
+						<Bundle-Author>Orange</Bundle-Author>
+						<Bundle-Description>${project.description}</Bundle-Description>
+						<Private-Package>com.orange.basedriver.lifx*, org.json.simple*</Private-Package>
+						<Bundle-Activator>com.orange.basedriver.lifx.impl.Activator</Bundle-Activator>
+						<Import-Package>*</Import-Package>
+						<Export-Package></Export-Package>
+					</instructions>
+				</configuration>
+			</plugin>
+
+		</plugins>
+
+	</build>
+
+	<!-- =============================================================== -->
+
+
+</project>
