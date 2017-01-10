@@ -22,7 +22,7 @@ import org.eclipse.om2m.ipe.sdt.testsuite.module.RunModeModuleTest;
 import org.eclipse.om2m.ipe.sdt.testsuite.module.SmokeSensorModuleTest;
 import org.eclipse.om2m.ipe.sdt.testsuite.module.WaterLevelModuleTest;
 import org.eclipse.om2m.ipe.sdt.testsuite.module.WaterSensorModuleTest;
-import org.onem2m.sdt.Module;
+import org.eclipse.om2m.sdt.Module;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import org.osgi.util.tracker.ServiceTracker;

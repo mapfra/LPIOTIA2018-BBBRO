@@ -23,7 +23,7 @@ import org.eclipse.om2m.ipe.sdt.testsuite.CSEUtil;
 import org.eclipse.om2m.ipe.sdt.testsuite.TestReport;
 import org.eclipse.om2m.ipe.sdt.testsuite.TestReport.State;
 import org.eclipse.om2m.ipe.sdt.testsuite.module.exception.FlexContainerNotFound;
-import org.onem2m.sdt.Module;
+import org.eclipse.om2m.sdt.Module;
 
 public abstract class AbstractModuleTest {
 

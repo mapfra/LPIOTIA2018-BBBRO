@@ -10,7 +10,7 @@ package org.eclipse.om2m.ipe.sdt.testsuite.subscription;
 import java.util.Date;
 
 import org.eclipse.om2m.commons.resource.FlexContainer;
-import org.onem2m.sdt.DataPoint;
+import org.eclipse.om2m.sdt.DataPoint;
 
 public class ReceivedNotification {
 	// all cases

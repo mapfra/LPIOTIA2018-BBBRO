@@ -15,9 +15,9 @@ import org.eclipse.om2m.commons.resource.CustomAttribute;
 import org.eclipse.om2m.commons.resource.FlexContainer;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
 import org.eclipse.om2m.core.service.CseService;
-import org.onem2m.sdt.Device;
-import org.onem2m.sdt.Module;
-import org.onem2m.sdt.Property;
+import org.eclipse.om2m.sdt.Device;
+import org.eclipse.om2m.sdt.Module;
+import org.eclipse.om2m.sdt.Property;
 
 public class SDTDeviceAdaptor {
 

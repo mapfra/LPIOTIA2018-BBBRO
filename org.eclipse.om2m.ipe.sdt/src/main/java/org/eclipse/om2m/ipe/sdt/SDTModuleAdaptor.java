@@ -17,15 +17,15 @@ import org.eclipse.om2m.commons.resource.FlexContainer;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
 import org.eclipse.om2m.core.service.CseService;
 import org.eclipse.om2m.ipe.sdt.flexcontainerservice.ModuleFlexContainerService;
-import org.onem2m.sdt.Action;
-import org.onem2m.sdt.DataPoint;
-import org.onem2m.sdt.Module;
-import org.onem2m.sdt.Property;
-import org.onem2m.sdt.datapoints.AbstractDateDataPoint;
-import org.onem2m.sdt.datapoints.ArrayDataPoint;
-import org.onem2m.sdt.datapoints.ValuedDataPoint;
-import org.onem2m.sdt.impl.AccessException;
-import org.onem2m.sdt.impl.DataPointException;
+import org.eclipse.om2m.sdt.Action;
+import org.eclipse.om2m.sdt.DataPoint;
+import org.eclipse.om2m.sdt.Module;
+import org.eclipse.om2m.sdt.Property;
+import org.eclipse.om2m.sdt.datapoints.AbstractDateDataPoint;
+import org.eclipse.om2m.sdt.datapoints.ArrayDataPoint;
+import org.eclipse.om2m.sdt.datapoints.ValuedDataPoint;
+import org.eclipse.om2m.sdt.impl.AccessException;
+import org.eclipse.om2m.sdt.impl.DataPointException;
 
 public class SDTModuleAdaptor {
 

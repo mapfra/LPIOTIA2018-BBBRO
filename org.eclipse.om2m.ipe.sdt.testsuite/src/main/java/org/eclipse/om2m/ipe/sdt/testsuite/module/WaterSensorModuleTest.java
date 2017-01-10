@@ -15,10 +15,10 @@ import org.eclipse.om2m.core.service.CseService;
 import org.eclipse.om2m.ipe.sdt.testsuite.CSEUtil;
 import org.eclipse.om2m.ipe.sdt.testsuite.TestReport;
 import org.eclipse.om2m.ipe.sdt.testsuite.TestReport.State;
-import org.onem2m.sdt.Module;
-import org.onem2m.sdt.datapoints.BooleanDataPoint;
-import org.onem2m.sdt.impl.AccessException;
-import org.onem2m.sdt.impl.DataPointException;
+import org.eclipse.om2m.sdt.Module;
+import org.eclipse.om2m.sdt.datapoints.BooleanDataPoint;
+import org.eclipse.om2m.sdt.impl.AccessException;
+import org.eclipse.om2m.sdt.impl.DataPointException;
 
 public class WaterSensorModuleTest extends AbstractModuleTest {
 

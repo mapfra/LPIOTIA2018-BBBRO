@@ -19,10 +19,10 @@ import org.eclipse.om2m.flexcontainer.service.FlexContainerService;
 import org.eclipse.om2m.ipe.sdt.Activator;
 import org.eclipse.om2m.ipe.sdt.Logger;
 import org.eclipse.om2m.ipe.sdt.SDTUtil;
-import org.onem2m.sdt.Action;
-import org.onem2m.sdt.impl.AccessException;
-import org.onem2m.sdt.impl.ActionException;
-import org.onem2m.sdt.impl.Command;
+import org.eclipse.om2m.sdt.Action;
+import org.eclipse.om2m.sdt.impl.AccessException;
+import org.eclipse.om2m.sdt.impl.ActionException;
+import org.eclipse.om2m.sdt.impl.Command;
 import org.osgi.framework.ServiceRegistration;
 
 public class ActionFlexContainerService implements FlexContainerService {

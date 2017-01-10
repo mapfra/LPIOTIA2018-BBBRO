@@ -13,9 +13,9 @@ import org.eclipse.om2m.commons.resource.FlexContainer;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
 import org.eclipse.om2m.core.service.CseService;
 import org.eclipse.om2m.ipe.sdt.flexcontainerservice.ActionFlexContainerService;
-import org.onem2m.sdt.Action;
-import org.onem2m.sdt.Arg;
-import org.onem2m.sdt.Module;
+import org.eclipse.om2m.sdt.Action;
+import org.eclipse.om2m.sdt.Arg;
+import org.eclipse.om2m.sdt.Module;
 
 public class SDTActionAdaptor {
 

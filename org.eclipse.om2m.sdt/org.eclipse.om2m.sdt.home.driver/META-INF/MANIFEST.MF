@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: org.eclipse.om2m.sdt.home.driver
+Bundle-SymbolicName: org.eclipse.om2m.sdt.home.driver
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ClassPath: .
+Import-Package: org.eclipse.om2m.sdt,
+ org.eclipse.om2m.sdt.home.devices,
+ org.eclipse.om2m.sdt.home.modules,
+ org.osgi.framework,
+ org.osgi.service.cm,
+ org.osgi.service.device,
+ org.osgi.service.log
+Export-Package: org.eclipse.om2m.sdt.home.driver

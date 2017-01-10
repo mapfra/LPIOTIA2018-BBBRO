@@ -15,9 +15,9 @@ import org.eclipse.om2m.commons.resource.CustomAttribute;
 import org.eclipse.om2m.commons.resource.FlexContainer;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
 import org.eclipse.om2m.core.service.CseService;
-import org.onem2m.sdt.Module;
-import org.onem2m.sdt.events.SDTEventListener;
-import org.onem2m.sdt.events.SDTNotification;
+import org.eclipse.om2m.sdt.Module;
+import org.eclipse.om2m.sdt.events.SDTEventListener;
+import org.eclipse.om2m.sdt.events.SDTNotification;
 import org.osgi.framework.ServiceRegistration;
 
 /**

@@ -8,7 +8,7 @@
 package org.eclipse.om2m.ipe.sdt.testsuite;
 
 import org.eclipse.om2m.commons.resource.FlexContainer;
-import org.onem2m.sdt.Device;
+import org.eclipse.om2m.sdt.Device;
 
 public class DeviceChecker {
 	

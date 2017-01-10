@@ -17,13 +17,13 @@ import org.eclipse.om2m.flexcontainer.service.FlexContainerService;
 import org.eclipse.om2m.ipe.sdt.Activator;
 import org.eclipse.om2m.ipe.sdt.Logger;
 import org.eclipse.om2m.ipe.sdt.SDTUtil;
-import org.onem2m.sdt.DataPoint;
-import org.onem2m.sdt.Module;
-import org.onem2m.sdt.Property;
-import org.onem2m.sdt.datapoints.AbstractDateDataPoint;
-import org.onem2m.sdt.datapoints.ValuedDataPoint;
-import org.onem2m.sdt.impl.AccessException;
-import org.onem2m.sdt.impl.DataPointException;
+import org.eclipse.om2m.sdt.DataPoint;
+import org.eclipse.om2m.sdt.Module;
+import org.eclipse.om2m.sdt.Property;
+import org.eclipse.om2m.sdt.datapoints.AbstractDateDataPoint;
+import org.eclipse.om2m.sdt.datapoints.ValuedDataPoint;
+import org.eclipse.om2m.sdt.impl.AccessException;
+import org.eclipse.om2m.sdt.impl.DataPointException;
 import org.osgi.framework.ServiceRegistration;
 
 public class ModuleFlexContainerService implements FlexContainerService {

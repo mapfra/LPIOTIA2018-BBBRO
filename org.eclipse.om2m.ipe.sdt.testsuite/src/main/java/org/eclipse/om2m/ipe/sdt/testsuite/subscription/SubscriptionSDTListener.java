@@ -11,10 +11,10 @@ import java.util.Date;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
-import org.onem2m.sdt.DataPoint;
-import org.onem2m.sdt.Module;
-import org.onem2m.sdt.events.SDTEventListener;
-import org.onem2m.sdt.events.SDTNotification;
+import org.eclipse.om2m.sdt.DataPoint;
+import org.eclipse.om2m.sdt.Module;
+import org.eclipse.om2m.sdt.events.SDTEventListener;
+import org.eclipse.om2m.sdt.events.SDTNotification;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 
