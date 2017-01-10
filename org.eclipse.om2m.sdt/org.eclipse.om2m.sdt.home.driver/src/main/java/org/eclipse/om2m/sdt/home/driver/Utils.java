@@ -7,6 +7,7 @@
  *******************************************************************************/
 package org.eclipse.om2m.sdt.home.driver;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Dictionary;
@@ -61,23 +62,26 @@ public class Utils {
 		}
 		try {
 			PersistedDevice pDev = new PersistedDevice(device);
-			Configuration cfg = getConfigurationAdmin(context)
-					.getConfiguration(device.getPid());
-			Dictionary props = cfg.getProperties();
-			if (props != null) {
-				log.info("Already persisted device: " + props);
-				pDev.updateDevice(props);
-			} else {
-				log.info("Unpersisted device: " + device);
-				props = new Hashtable();
-				for (Property prop : device.getProperties()) {
-					if (prop.getValue() != null)
-						props.put(prop.getName(), prop.getValue());
+			Configuration cfg = getConfiguration(context, device.getPid());
+			if (cfg != null) {
+				Dictionary props = cfg.getProperties();
+				if (props != null) {
+					log.info("Already persisted device: " + props);
+					pDev.updateDevice(props);
+				} else {
+					log.info("Unpersisted device: " + device);
+					props = new Hashtable();
+					for (Property prop : device.getProperties()) {
+						if (prop.getValue() != null)
+							props.put(prop.getName(), prop.getValue());
+					}
+					log.info("persist: " + props);
+					pDev.setRegistration(context.registerService(ManagedService.class.getName(),
+						pDev, props));
+					cfg.update(props);
 				}
-				log.info("persist: " + props);
-				pDev.setRegistration(context.registerService(ManagedService.class.getName(),
-					pDev, props));
-				cfg.update(props);
+			} else {
+				log.warning("no configAdmin service found !!!!");
 			}
 		} catch(Exception e) {
 			log.warning("", e);
@@ -171,6 +175,17 @@ public class Utils {
 			}
 		}
 		return cfgAdmin;
+	}
+	
+	static private final Configuration getConfiguration(BundleContext bc , String pid) throws IOException {
+		Configuration config = null;
+		
+		ConfigurationAdmin configAdmin = getConfigurationAdmin(bc);
+		if (configAdmin != null) {
+			config = configAdmin.getConfiguration(pid);
+		}
+		
+		return config;
 	}
 
 }
