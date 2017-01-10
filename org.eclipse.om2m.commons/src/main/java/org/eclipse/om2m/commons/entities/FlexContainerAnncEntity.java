@@ -46,7 +46,7 @@ public class FlexContainerAnncEntity extends AnnouncedResourceEntity {
 					@JoinColumn(name = DBEntities.ACP_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) })
 	protected List<AccessControlPolicyEntity> accessControlPolicies;
 	
-	@OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.ALL})
+	@OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.ALL}, mappedBy="parentFlexContainerAnnc")
 	@JoinTable(
 			name=DBEntities.FCNTA_FCNTACHILD_JOIN,
 			joinColumns={@JoinColumn(name=DBEntities.FCNTA_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)},

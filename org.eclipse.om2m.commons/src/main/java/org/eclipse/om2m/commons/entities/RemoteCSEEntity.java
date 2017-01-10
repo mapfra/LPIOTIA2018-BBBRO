@@ -86,7 +86,7 @@ public class RemoteCSEEntity extends AnnounceableSubordinateEntity {
 	//TODO list of nodelink
 	// list of AE
 	/** List of AE */
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="parentCsr")
 	@JoinTable(
 			name = DBEntities.CSRAECHILD_JOIN,
 			joinColumns = { @JoinColumn(name = DBEntities.CSR_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 

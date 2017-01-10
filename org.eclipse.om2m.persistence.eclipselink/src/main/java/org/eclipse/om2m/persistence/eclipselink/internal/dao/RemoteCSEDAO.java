@@ -42,7 +42,8 @@ public class RemoteCSEDAO extends AbstractDAO<RemoteCSEEntity> {
 	@Override
 	public void update(DBTransaction dbTransaction, RemoteCSEEntity resource) {
 		resource.setLabelsEntities(processLabels(dbTransaction, resource.getLabelsEntities()));
-		super.update(dbTransaction, resource);
+		DBTransactionJPAImpl transaction = (DBTransactionJPAImpl) dbTransaction;
+		transaction.getEm().merge(resource);
 	}
 
 }

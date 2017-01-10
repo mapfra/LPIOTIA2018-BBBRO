@@ -79,7 +79,7 @@ public class AeAnncEntity extends AnnouncedResourceEntity {
 					@JoinColumn(name = DBEntities.AEANNC_JOINID, referencedColumnName = ShortName.RESOURCE_ID) })
 	protected RemoteCSEEntity parentCsr;
 	
-	@OneToMany(fetch=FetchType.LAZY, targetEntity=FlexContainerAnncEntity.class)
+	@OneToMany(fetch=FetchType.LAZY, targetEntity=FlexContainerAnncEntity.class, mappedBy="parentAeAnnc")
 	@JoinTable(
 			name=DBEntities.AEANNC_FCNT_JOIN,
 			joinColumns={@JoinColumn(name=DBEntities.AEANNC_JOINID, referencedColumnName=ShortName.RESOURCE_ID)},

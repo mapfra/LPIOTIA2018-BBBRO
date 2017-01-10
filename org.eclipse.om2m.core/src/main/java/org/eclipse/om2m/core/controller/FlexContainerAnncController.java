@@ -184,6 +184,14 @@ public class FlexContainerAnncController extends Controller {
 				.setHierarchicalURI(parentEntity.getHierarchicalURI() + "/" + flexContainerAnncEntity.getName());
 		flexContainerAnncEntity.setParentID(parentEntity.getResourceID());
 		flexContainerAnncEntity.setResourceType(ResourceType.FLEXCONTAINER_ANNC);
+		switch(parentEntity.getResourceType().intValue()) {
+		case ResourceType.AE_ANNC:
+			flexContainerAnncEntity.setParentAeAnnc((AeAnncEntity) parentEntity);
+			break;
+		case ResourceType.FLEXCONTAINER_ANNC:
+			flexContainerAnncEntity.setParentFlexContainerAnnc((FlexContainerAnncEntity) parentEntity);
+			break;
+		}
 
 		// accessControlPolicyIDs O
 		if (!flexContainer.getAccessControlPolicyIDs().isEmpty()) {
