@@ -7,92 +7,61 @@
  *******************************************************************************/
 package org.eclipse.om2m.ipe.sdt;
 
+import java.net.URI;
+import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
-import org.onem2m.sdt.types.SimpleType;
-import org.onem2m.home.types.HomeSimpleType;
-import org.onem2m.sdt.types.Array;
-import org.onem2m.sdt.types.BasicType;
-import org.onem2m.sdt.types.DataType.TypeChoice;
+import org.eclipse.om2m.commons.resource.CustomAttribute;
 
 public class SDTUtil {
+	
+	static final private DateFormat dateTimeFormat = DateFormat.getDateTimeInstance();
+	static final private DateFormat dateFormat = DateFormat.getDateInstance();
+	static final private DateFormat timeFormat = DateFormat.getTimeInstance();
 
-	private static final String TYPE_PREFIX = "xs:";
-	
-	public static String simpleTypeToOneM2MType(SimpleType simpleType) {
-		if (HomeSimpleType.Tone.equals(simpleType)) {
-			return "hd:tone";
-		}
-		if (HomeSimpleType.Level.equals(simpleType)) {
-			return "hd:liquidLevel";
-		}
-		return TYPE_PREFIX + simpleType.getType().getValue();
+	public static Object getValue(CustomAttribute attr) throws Exception {
+		return getValue(attr.getCustomAttributeValue(), attr.getCustomAttributeType());
 	}
-	
-	public static String simpleTypeToOneM2MType(TypeChoice typeChoice) {
-		if (typeChoice instanceof Array) {
-			return TYPE_PREFIX + "enum";
-		}
-		if (typeChoice instanceof SimpleType) {
-			return simpleTypeToOneM2MType((SimpleType) typeChoice);
-		}
-		return TYPE_PREFIX + "notDefined";
-	}
-	
-	public static Object stringToObject(String value, String type) {
-		Logger.getInstance().logDebug(SDTUtil.class, "stringToObject(value=" + value + ", type=" + type +")");
-		Object o = null;
-		
+
+	public static Object getValue(String value, String type) throws Exception {
+		if (value == null)
+			return null;
 		switch (type) {
-		case "xs:string":
-			o = value;
-			break;
-		case "xs:integer":
-			o = Integer.parseInt(value);
-			break;
-		case "xs:float":
-			o = Float.parseFloat(value);
-			break;
-		case "xs:boolean":
-			o = Boolean.parseBoolean(value);
-			break;
-		case "xs:date":
-			o = Date.parse(value);
-			break;
-		case "xs:dateTime":
-			o = value;
-			break;
-		case "xs:byte":
-			o = Byte.parseByte(value);
-			break;
-		case "xs:time":
-			o = value;
-			break;
+		case "xs:string": return value;
+		case "xs:integer": 
+		case "hd:alertColourCode":
+		case "hd:doorState":
+		case "hd:level":
+		case "hd:lockState":
+		case "hd:supportedMode":
 		case "hd:tone":
-			o = Integer.parseInt(value);
-			break;
-		case "hd:liquidLevel":
-			o = Integer.parseInt(value);
-			break;
+		case "hd:foamStrength":
+		case "hd:tasteStrength":
+			return Integer.parseInt(value);
+		case "xs:float": return Float.parseFloat(value);
+		case "xs:boolean": return Boolean.parseBoolean(value);
+		case "xs:datetime": return dateTimeFormat.parse(value);
+		case "xs:time": return timeFormat.parse(value);
+		case "xs:date": return dateFormat.parse(value);
+		case "xs:byte": return Byte.parseByte(value);
 		case "xs:enum":
-			// split value using coma character
-			String[] array = value.split(",");
-			for(int i = 0; i < array.length; i++) {
-				array[i] = array[i].trim();
+			List<String> ret = new ArrayList<String>();
+			value = value.trim();
+			if (value.charAt(0) == '[')
+				value = value.substring(1);
+			int last = value.length() - 1;
+			if (value.charAt(last) == ']')
+				value = value.substring(0, last);
+			for (String val : value.split(",")) {
+				ret.add(val.trim());
 			}
-			List<String> list = Arrays.asList(array);
-			o = list;
-			break;
+			return ret;
+		case "xs:uri": return new URI(value);
+		case "xs:blob": return value;
 		default:
-			break;
+			return value;
 		}
-		
-		Logger.getInstance().logDebug(SDTUtil.class, "stringToObject(value=" + value + ", type=" + type +") -o=" + o + ",o.getClass=" + o.getClass());
-		
-		return o;
-		
 	}
+	
 }

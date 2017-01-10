@@ -17,6 +17,8 @@ import org.eclipse.om2m.commons.resource.CustomAttribute;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.flexcontainer.service.FlexContainerService;
 import org.eclipse.om2m.ipe.sdt.Activator;
+import org.eclipse.om2m.ipe.sdt.Logger;
+import org.eclipse.om2m.ipe.sdt.SDTUtil;
 import org.onem2m.sdt.Action;
 import org.onem2m.sdt.impl.AccessException;
 import org.onem2m.sdt.impl.ActionException;
@@ -55,10 +57,12 @@ public class ActionFlexContainerService implements FlexContainerService {
 	}
 
 	@Override
-	public void setCustomAttributeValues(List<CustomAttribute> customAttributes, RequestPrimitive requestPrimitive)
-			throws Om2mException {
+	public void setCustomAttributeValues(List<CustomAttribute> customAttributes, 
+			RequestPrimitive requestPrimitive) throws Om2mException {
+		Logger.getInstance().logDebug(ActionFlexContainerService.class, 
+				"setCustomAttributeValues(" + customAttributes + ")");
 
-		boolean actionToBeInvoked = false;
+//		boolean actionToBeInvoked = false;
 		Map<String, Object> args = null;
 		
 		// two possibles cases to invoke action
@@ -68,23 +72,27 @@ public class ActionFlexContainerService implements FlexContainerService {
 			if (customAttributes.size() != 0) {
 				 args = new HashMap<>();
 				// retrieve argument value from custom attribute
-				for(String argName : action.getArgNames()) {
-					CustomAttribute ca = getCustomAttribute(customAttributes, argName);
-					if (ca != null) {
-						args.put(argName, ca.getCustomAttributeValue());
+				try {
+					for (String argName : action.getArgNames()) {
+						CustomAttribute ca = getCustomAttribute(customAttributes, argName);
+						if (ca != null) {
+							args.put(argName, SDTUtil.getValue(ca));
+						}
 					}
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
-				
-				actionToBeInvoked = true;
+//				actionToBeInvoked = true;
 			} /* else nothing to do */
-		
-		} else {
-			actionToBeInvoked = true;
+//		} else {
+//			actionToBeInvoked = true;
 		}
-		
-		if (actionToBeInvoked) {
+
+//		if (actionToBeInvoked) {
 			// invoke action
 			try {
+				Logger.getInstance().logDebug(ActionFlexContainerService.class, 
+						"setCustomAttributeValues(" + customAttributes + ") - invoke action");
 				Object response = ((Command) action).invoke(args);
 				if (response != null) {
 					CustomAttribute output = new CustomAttribute();
@@ -93,14 +101,18 @@ public class ActionFlexContainerService implements FlexContainerService {
 					output.setCustomAttributeValue(response.toString());
 					customAttributes.add(output);
 				}
-				
 			} catch (ActionException e) {
+				Logger.getInstance().logDebug(ActionFlexContainerService.class, 
+						"setCustomAttributeValues(" + customAttributes 
+						+ ") - KO: " + e.getMessage());
 				throw new Om2mException("action execution failed:" + e.getMessage(), ResponseStatusCode.BAD_REQUEST);
 			} catch (AccessException e) {
+				Logger.getInstance().logDebug(ActionFlexContainerService.class, 
+						"setCustomAttributeValues(" + customAttributes 
+						+ ") - KO: " + e.getMessage());
 				throw new Om2mException("action execution failed:" + e.getMessage(), ResponseStatusCode.ACCESS_DENIED);
 			}
-		}
-		
+//		}
 	}
 
 	@Override

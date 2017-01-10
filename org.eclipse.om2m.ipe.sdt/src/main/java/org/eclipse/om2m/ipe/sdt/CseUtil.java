@@ -15,6 +15,7 @@ import org.eclipse.om2m.commons.constants.MimeMediaType;
 import org.eclipse.om2m.commons.constants.Operation;
 import org.eclipse.om2m.commons.constants.ResourceType;
 import org.eclipse.om2m.commons.resource.AE;
+import org.eclipse.om2m.commons.resource.AEAnnc;
 import org.eclipse.om2m.commons.resource.AccessControlPolicy;
 import org.eclipse.om2m.commons.resource.AccessControlRule;
 import org.eclipse.om2m.commons.resource.FlexContainer;
@@ -51,6 +52,33 @@ public class CseUtil {
 		request.setResourceType(ResourceType.AE);
 		request.setReturnContentType(MimeMediaType.OBJ);
 		request.setContent(ae);
+
+		return sendRequest(cseService, request);
+	}
+	
+	/**
+	 * Send a oM2M CREATE Application Entity request
+	 * 
+	 * @param cseService
+	 *            cseService
+	 * @param ae
+	 *            new application entity to create
+	 * @param resourceLocation
+	 *            location of the to be created application
+	 * @param resourceName
+	 *            name of the to be created application
+	 * @return ResponsePrimitive sent by the CSE
+	 */
+	public static ResponsePrimitive sendUpdateApplicationAnncEntityRequest(CseService cseService, AEAnnc aeAnnc,
+			String resourceLocation) {
+		RequestPrimitive request = new RequestPrimitive();
+
+		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
+		request.setTo(resourceLocation);
+		request.setOperation(Operation.UPDATE);
+		request.setRequestContentType(MimeMediaType.OBJ);
+		request.setReturnContentType(MimeMediaType.OBJ);
+		request.setContent(aeAnnc);
 
 		return sendRequest(cseService, request);
 	}
@@ -125,7 +153,7 @@ public class CseUtil {
 		// self priveleges
 		acp.setSelfPrivileges(new SetOfAcrs());
 		AccessControlRule acrSP = new AccessControlRule();
-		acrSP.setAccessControlOperations(Operation.RETRIEVE.or(Operation.CREATE).or(Operation.DELETE).or(Operation.UPDATE));
+		acrSP.setAccessControlOperations(AccessControl.ALL);
 		acrSP.getAccessControlOriginators().add(Constants.ADMIN_REQUESTING_ENTITY);
 		acp.getSelfPrivileges().getAccessControlRule().add(acrSP);
 		
@@ -165,6 +193,25 @@ public class CseUtil {
 		request.setResourceType(ResourceType.FLEXCONTAINER);
 		request.setReturnContentType(MimeMediaType.OBJ);
 		request.setContent(flexContainer);
+
+		return sendRequest(cseService, request);
+	}
+	
+	
+	/**
+	 * Retrieve a resource
+	 * @param cseService
+	 * @param uri
+	 * @return response
+	 */
+	public static ResponsePrimitive sendRetrieveRequest(CseService cseService, String uri) {
+		RequestPrimitive request = new RequestPrimitive();
+
+		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
+		request.setTo(uri);
+		request.setOperation(Operation.RETRIEVE);
+		request.setRequestContentType(MimeMediaType.OBJ);
+		request.setReturnContentType(MimeMediaType.OBJ);
 
 		return sendRequest(cseService, request);
 	}

@@ -18,7 +18,6 @@ import org.eclipse.om2m.core.service.CseService;
 import org.onem2m.sdt.Module;
 import org.onem2m.sdt.events.SDTEventListener;
 import org.onem2m.sdt.events.SDTNotification;
-import org.onem2m.sdt.types.SimpleType;
 import org.osgi.framework.ServiceRegistration;
 
 /**
@@ -80,14 +79,14 @@ public class ModuleSDTListener implements SDTEventListener {
 		CustomAttribute ca = new CustomAttribute();
 		ca.setCustomAttributeName(notif.getDataPoint().getName());
 		ca.setCustomAttributeType(
-				SDTUtil.simpleTypeToOneM2MType((SimpleType) notif.getDataPoint().getDataType().getTypeChoice()));
+				notif.getDataPoint().getDataType().getTypeChoice().getOneM2MType());
 		Object value = notif.getValue();
 		ca.setCustomAttributeValue((value != null ? value.toString() : null));
 		toBeUpdated.getCustomAttributes().add(ca);
 
-		ResponsePrimitive response = CseUtil.sendInternalNotifyFlexContainerRequest(cseService, toBeUpdated,
-				moduleFlexContainerLocation);
-		if (!ResponseStatusCode.UPDATED.equals(response.getResponseStatusCode())) {
+		ResponsePrimitive response = CseUtil.sendInternalNotifyFlexContainerRequest(cseService, 
+				toBeUpdated, moduleFlexContainerLocation);
+		if (! ResponseStatusCode.UPDATED.equals(response.getResponseStatusCode())) {
 			Logger.getInstance().logError(ModuleSDTListener.class,
 					"unable to send INTERNAL NOTIFY request to flexContainer " + moduleFlexContainerLocation + " : "
 							+ response.getContent(),
@@ -95,7 +94,6 @@ public class ModuleSDTListener implements SDTEventListener {
 		} else {
 			Logger.getInstance().logDebug(ModuleSDTListener.class, "INTERNAL NOTIFY request successfully performed");
 		}
-
 	}
 
 	@Override

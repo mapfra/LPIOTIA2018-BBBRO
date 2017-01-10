@@ -7,9 +7,8 @@
  *******************************************************************************/
 package org.eclipse.om2m.ipe.sdt;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
-import org.eclipse.om2m.ipe.sdt.SDTUtil;
 import org.junit.Test;
 import org.onem2m.sdt.types.SimpleType;
 
@@ -17,9 +16,9 @@ public class SDTUtilTest {
 
 	@Test
 	public void test() {
-		assertTrue(SDTUtil.simpleTypeToOneM2MType(SimpleType.Boolean).equals("xs:boolean"));
-		assertTrue(SDTUtil.simpleTypeToOneM2MType(SimpleType.Integer).equals("xs:integer"));
-		assertTrue(SDTUtil.simpleTypeToOneM2MType(SimpleType.String).equals("xs:string"));
+		assertTrue(SimpleType.Boolean.getOneM2MType().equals("xs:boolean"));
+		assertTrue(SimpleType.Integer.getOneM2MType().equals("xs:integer"));
+		assertTrue(SimpleType.String.getOneM2MType().equals("xs:string"));
 	}
 
 }

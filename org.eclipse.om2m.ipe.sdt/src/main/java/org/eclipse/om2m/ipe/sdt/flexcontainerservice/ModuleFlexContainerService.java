@@ -12,7 +12,6 @@ import java.util.List;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.exceptions.Om2mException;
 import org.eclipse.om2m.commons.resource.CustomAttribute;
-import org.eclipse.om2m.commons.resource.FlexContainer;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.flexcontainer.service.FlexContainerService;
 import org.eclipse.om2m.ipe.sdt.Activator;
@@ -20,11 +19,11 @@ import org.eclipse.om2m.ipe.sdt.Logger;
 import org.eclipse.om2m.ipe.sdt.SDTUtil;
 import org.onem2m.sdt.DataPoint;
 import org.onem2m.sdt.Module;
+import org.onem2m.sdt.Property;
 import org.onem2m.sdt.datapoints.AbstractDateDataPoint;
 import org.onem2m.sdt.datapoints.ValuedDataPoint;
 import org.onem2m.sdt.impl.AccessException;
 import org.onem2m.sdt.impl.DataPointException;
-import org.onem2m.sdt.types.SimpleType;
 import org.osgi.framework.ServiceRegistration;
 
 public class ModuleFlexContainerService implements FlexContainerService {
@@ -57,24 +56,32 @@ public class ModuleFlexContainerService implements FlexContainerService {
 	@Override
 	public String getCustomAttributeValue(String customAttributeName) throws Om2mException {
 		Logger.getInstance().logDebug(ModuleFlexContainerService.class,
-				"DataPointFlexContainerService - getCustomAttributeValue(customAttributeName=" + customAttributeName
-						+ ")");
-		String value = null;
+				"DataPointFlexContainerService - getCustomAttributeValue(customAttributeName=" 
+						+ customAttributeName + ")");
+		Property prop = module.getProperty(customAttributeName);
+		if (prop != null) {
+			Logger.getInstance().logDebug(ModuleFlexContainerService.class,
+					"CustomAttribute is a property, not a datapoint");
+			return prop.getValue();
+		}
 
-		// retrieve the DataPoint object based on customAttributeName input
-		// parameter
+		// retrieve the DataPoint object based on customAttributeName input parameter
 		DataPoint dataPoint = module.getDataPoint(customAttributeName);
 		if (dataPoint == null) {
-			throw new Om2mException("unknown custom attribute", ResponseStatusCode.INTERNAL_SERVER_ERROR);
+			throw new Om2mException("unknown custom attribute " + customAttributeName + " in " + module,
+					ResponseStatusCode.INTERNAL_SERVER_ERROR);
 		}
 
 		// at this point, we are sure the DataPoint exist.
+		String value = null;
 		try {
-			Object o = ((ValuedDataPoint<Object>) dataPoint).getValue();
-			if (dataPoint instanceof AbstractDateDataPoint) {
+			Object o = ((ValuedDataPoint<?>) dataPoint).getValue();
+			if (o == null) {
+				value = null;
+			} else if (dataPoint instanceof AbstractDateDataPoint) {
 				value = ((AbstractDateDataPoint) dataPoint).getStringValue();
 			} else {
-				value = (o != null ? o.toString() : null);
+				value = o.toString();
 			}
 		} catch (DataPointException e) {
 			e.printStackTrace();
@@ -89,7 +96,6 @@ public class ModuleFlexContainerService implements FlexContainerService {
 		Logger.getInstance().logDebug(ModuleFlexContainerService.class,
 				"DataPointFlexContainerService - getCustomAttributeValue(customAttributeName=" + customAttributeName
 						+ ") - value=" + value);
-
 		return value;
 	}
 
@@ -103,39 +109,42 @@ public class ModuleFlexContainerService implements FlexContainerService {
 			if (dataPoint != null) {
 				// the custom attribute is a dataPoint
 				ValuedDataPoint<Object> valuedDataPoint = (ValuedDataPoint<Object>) dataPoint;
+				String msg = "setCustomAttributeValue(dataPointName=" + dataPoint.getName() 
+						+ ", newValue=" + ca.getCustomAttributeValue() + ") - ";
 
 				// retrieve type of the DataPoint
-				String type = SDTUtil.simpleTypeToOneM2MType(dataPoint.getDataType().getTypeChoice());
-				
+				String type = dataPoint.getDataType().getTypeChoice().getOneM2MType();
+				Object value = null;
 				try {
-					valuedDataPoint
-							.setValue(SDTUtil.stringToObject(ca.getCustomAttributeValue(), type));
-					Logger.getInstance().logDebug(ModuleFlexContainerService.class, "setCustomAttributeValue(dataPointName=" + dataPoint.getName() +", newValue="
-							+ ca.getCustomAttributeValue() + ") - OK");
-				} catch (DataPointException e) {
-					Logger.getInstance().logDebug(ModuleFlexContainerService.class, "setCustomAttributeValue(dataPointName=" + dataPoint.getName() +", newValue="
-							+ ca.getCustomAttributeValue() + ") - KO: " + e.getMessage());
-					throw new Om2mException(e.getMessage(), e, ResponseStatusCode.INTERNAL_SERVER_ERROR);
+					value = SDTUtil.getValue(ca.getCustomAttributeValue(), type);
+				} catch (Exception e) {
+					Logger.getInstance().logInfo(ModuleFlexContainerService.class, 
+							msg + "KO: " + e.getMessage());
+					throw new Om2mException(e.getMessage(), e, ResponseStatusCode.CONTENTS_UNACCEPTABLE);
+				}
+				try {
+					valuedDataPoint.setValue(value);
+					Logger.getInstance().logDebug(ModuleFlexContainerService.class, msg + "OK");
 				} catch (AccessException e) {
-					Logger.getInstance().logDebug(ModuleFlexContainerService.class, "setCustomAttributeValue(dataPointName=" + dataPoint.getName() +", newValue="
-							+ ca.getCustomAttributeValue() + ") - KO: " + e.getMessage());
+					Logger.getInstance().logDebug(ModuleFlexContainerService.class, 
+							msg + "KO: " + e.getMessage());
+					throw new Om2mException(e.getMessage(), e, ResponseStatusCode.ACCESS_DENIED);
+				} catch (Exception e) {
+					Logger.getInstance().logDebug(ModuleFlexContainerService.class, 
+							msg + "KO: " + e.getMessage());
 					throw new Om2mException(e.getMessage(), e, ResponseStatusCode.INTERNAL_SERVER_ERROR);
 				}
-
 			} else {
 				// no datapoint for this attribute
 				// throw a Om2mException
 				throw new Om2mException(ResponseStatusCode.INVALID_ARGUMENTS);
 			}
 		}
-
 	}
 
 	@Override
 	public String getFlexContainerLocation() {
 		return flexContainerLocation;
 	}
-
-	
 
 }
