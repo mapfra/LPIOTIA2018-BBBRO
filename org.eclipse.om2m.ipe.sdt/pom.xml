@@ -21,58 +21,10 @@
 
 	<artifactId>org.eclipse.om2m.ipe.sdt</artifactId>
 	<description>SDT IPE</description>
-	<packaging>bundle</packaging>
+	<packaging>eclipse-plugin</packaging>
 	
 	<dependencies>
-		<dependency>
-			<groupId>org.onem2m</groupId>
-			<artifactId>org.onem2m.sdt</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>org.onem2m</groupId>
-			<artifactId>org.onem2m.sdt.home</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>org.osgi</groupId>
-			<artifactId>org.osgi.core</artifactId>
-			<version>4.2.0</version>
-		</dependency>
 		
-		<dependency>
-			<groupId>org.osgi</groupId>
-			<artifactId>org.osgi.compendium</artifactId>
-			<version>4.2.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.om2m</groupId>
-			<artifactId>org.eclipse.om2m.core.service</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-			<type>eclipse-plugin</type>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.eclipse.om2m</groupId>
-			<artifactId>
-				org.eclipse.om2m.interworking.service
-			</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.eclipse.om2m</groupId>
-			<artifactId>
-				org.eclipse.om2m.flexcontainer.service
-			</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.eclipse.om2m</groupId>
-			<artifactId>org.eclipse.om2m.commons</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
 		
 		<dependency>
 			<groupId>junit</groupId>
@@ -81,15 +33,6 @@
 			<scope>test</scope>
 		</dependency>
 		
-		<dependency>
-			<groupId>org.eclipse.om2m</groupId>
-			<artifactId>
-				org.eclipse.om2m.datamapping.service
-			</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-			<type>eclipse-plugin</type>
-		</dependency>
-
 	</dependencies>
 					
 	<build>
@@ -104,7 +47,7 @@
 				</configuration>
 			</plugin>
 
-			<plugin>
+			<!-- <plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
 				<version>2.3.7</version>
@@ -122,7 +65,7 @@
 						<Export-Package></Export-Package>
 					</instructions>
 				</configuration>
-			</plugin>
+			</plugin> -->
 			
 		</plugins>
 	</build>

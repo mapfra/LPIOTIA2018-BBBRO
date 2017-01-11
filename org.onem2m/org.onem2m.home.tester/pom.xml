@@ -18,23 +18,7 @@
 	</parent>
 
 	<artifactId>org.onem2m.sdt.home.tester</artifactId>
-	<packaging>bundle</packaging>
-	
-	<dependencies>
-
-		<dependency>
-			<groupId>org.onem2m</groupId>
-			<artifactId>org.onem2m.sdt</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.onem2m</groupId>
-			<artifactId>org.onem2m.sdt.home</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
-		
-	</dependencies>
+	<packaging>eclipse-plugin</packaging>
 	
 	<build>
 		<plugins>
@@ -48,7 +32,7 @@
 				</configuration>
 			</plugin>
 
-			<plugin>
+			<!-- <plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
 				<version> 2.3.7</version>
@@ -66,7 +50,7 @@
 						<No-otb-proxy>true</No-otb-proxy>
 					</instructions>
 				</configuration>
-			</plugin>
+			</plugin> -->
 			
 		</plugins>
 	</build>

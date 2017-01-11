@@ -18,7 +18,7 @@
 	</parent>
 
 	<artifactId>org.onem2m.sdt.home</artifactId>
-	<packaging>bundle</packaging>
+	<packaging>eclipse-plugin</packaging>
 	
 	<dependencies>
 
@@ -42,7 +42,7 @@
 				</configuration>
 			</plugin>
 
-			<plugin>
+			<!-- <plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
 				<version> 2.3.7</version>
@@ -65,7 +65,7 @@
 						</Export-Package>
 					</instructions>
 				</configuration>
-			</plugin>
+			</plugin> -->
 			
 		</plugins>
 	</build>

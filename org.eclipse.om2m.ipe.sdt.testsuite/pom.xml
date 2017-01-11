@@ -20,74 +20,15 @@
 
 	<artifactId>org.eclipse.om2m.ipe.sdt.testsuite</artifactId>
 	<description>SDT IPE Test Suite</description>
-	<packaging>bundle</packaging>
+	<packaging>eclipse-plugin</packaging>
 
 	<dependencies>
-		<dependency>
-			<groupId>org.onem2m</groupId>
-			<artifactId>org.onem2m.sdt</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>org.onem2m</groupId>
-			<artifactId>org.onem2m.sdt.home</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.osgi</groupId>
-			<artifactId>org.osgi.core</artifactId>
-			<version>4.2.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.osgi</groupId>
-			<artifactId>org.osgi.compendium</artifactId>
-			<version>4.2.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.om2m</groupId>
-			<artifactId>org.eclipse.om2m.core.service</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-			<type>eclipse-plugin</type>
-		</dependency>
-
-		<dependency>
-			<groupId>org.eclipse.om2m</groupId>
-			<artifactId>
-				org.eclipse.om2m.interworking.service
-			</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.eclipse.om2m</groupId>
-			<artifactId>
-				org.eclipse.om2m.datamapping.service
-			</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
-		
-
-		<dependency>
-			<groupId>org.eclipse.om2m</groupId>
-			<artifactId>org.eclipse.om2m.commons</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
-
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>2.5</version>
-		</dependency>
-
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.4</version>
 			<scope>test</scope>
 		</dependency>
-
 	</dependencies>
 
 	<build>

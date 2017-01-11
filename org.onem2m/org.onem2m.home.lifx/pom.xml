@@ -22,9 +22,9 @@
 	</parent>
 
 	<artifactId>org.onem2m.home.lifx</artifactId>
-	
 
-	<packaging>bundle</packaging>
+
+	<packaging>eclipse-plugin</packaging>
 	<name>${project.artifactId}</name>
 	<description>Orange OSGi LIFX Base Driver And SDT Refined Driver</description>
 
@@ -35,50 +35,19 @@
 	<dependencies>
 
 		<dependency>
-			<groupId>org.osgi</groupId>
-			<artifactId>org.osgi.core</artifactId>
-			<version>4.2.0</version>
-		</dependency>
-
-
-		<dependency>
-			<groupId>org.osgi</groupId>
-			<artifactId>org.osgi.compendium</artifactId>
-			<version>4.2.0</version>
-		</dependency>
-
-		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>3.8.2</version>
+			<scope>test</scope>
 		</dependency>
 
-		<dependency>
-			<groupId>org.onem2m</groupId>
-			<artifactId>org.onem2m.sdt.home</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-			<type>bundle</type>
-		</dependency>
-
-		<dependency>
-			<groupId>org.onem2m</groupId>
-			<artifactId>org.onem2m.sdt.home.driver</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-			<type>bundle</type>
-		</dependency>
-
-		<dependency>
-			<groupId>com.googlecode.json-simple</groupId>
-			<artifactId>json-simple</artifactId>
-			<version>1.1.1</version>
-		</dependency>
 
 	</dependencies>
 
 	<!-- =============================================================== -->
 
 	<build>
-
+		<testSourceDirectory>src/test/java</testSourceDirectory>
 		<plugins>
 
 			<plugin>
@@ -89,28 +58,46 @@
 					<source>1.7</source>
 					<target>1.7</target>
 				</configuration>
+				<executions>
+					<execution>
+						<id>compiletests</id>
+						<phase>test-compile</phase>
+						<goals>
+							<goal>testCompile</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 
 			<plugin>
-				<groupId>org.apache.felix</groupId>
-				<artifactId>maven-bundle-plugin</artifactId>
-				<version>2.3.7</version>
-				<extensions>true</extensions>
-				<configuration>
-					<instructions>
-						<Bundle-Name>${project.groupId}.${project.artifactId}</Bundle-Name>
-						<Bundle-RequiredExecutionEnvironment>OSGi/Minimum-1.1</Bundle-RequiredExecutionEnvironment>
-						<Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
-						<Bundle-Vendor>Orange</Bundle-Vendor>
-						<Bundle-Author>Orange</Bundle-Author>
-						<Bundle-Description>${project.description}</Bundle-Description>
-						<Private-Package>com.orange.basedriver.lifx*, org.json.simple*</Private-Package>
-						<Bundle-Activator>com.orange.basedriver.lifx.impl.Activator</Bundle-Activator>
-						<Import-Package>*</Import-Package>
-						<Export-Package></Export-Package>
-					</instructions>
-				</configuration>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.12.4</version>
+				<executions>
+					<execution>
+						<id>test</id>
+						<phase>test</phase>
+						<configuration>
+							<includes>
+								<include>**/*Test.java</include>
+							</includes>
+						</configuration>
+						<goals>
+							<goal>test</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
+
+			<!-- <plugin> <groupId>org.apache.felix</groupId> <artifactId>maven-bundle-plugin</artifactId> 
+				<version>2.3.7</version> <extensions>true</extensions> <configuration> <instructions> 
+				<Bundle-Name>${project.groupId}.${project.artifactId}</Bundle-Name> <Bundle-RequiredExecutionEnvironment>OSGi/Minimum-1.1</Bundle-RequiredExecutionEnvironment> 
+				<Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName> 
+				<Bundle-Vendor>Orange</Bundle-Vendor> <Bundle-Author>Orange</Bundle-Author> 
+				<Bundle-Description>${project.description}</Bundle-Description> <Private-Package>com.orange.basedriver.lifx*, 
+				org.json.simple*</Private-Package> <Bundle-Activator>com.orange.basedriver.lifx.impl.Activator</Bundle-Activator> 
+				<Import-Package>*</Import-Package> <Export-Package></Export-Package> </instructions> 
+				</configuration> </plugin> -->
 
 		</plugins>
 

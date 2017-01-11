@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: com.orange.impl.service.hue
+Bundle-SymbolicName: com.orange.impl.service.hue
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ClassPath: .,
+ lib/json-simple-1.1.jar
+Service-Component: OSGI-INF/component-devices.xml
+Import-Package: com.orange.service.hue,
+ com.orange.service.hue.types,
+ org.osgi.framework,
+ org.osgi.service.cm,
+ org.osgi.service.component,
+ org.osgi.service.device,
+ org.osgi.service.log,
+ org.osgi.service.upnp
