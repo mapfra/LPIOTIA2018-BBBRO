@@ -25,6 +25,7 @@ public class LIFXDeviceCloud extends LIFXDevice {
 
 	private final String uuid;
 	private boolean connected = false;
+	private final String authenticationToken;
 
 	/**
 	 * 
@@ -41,12 +42,17 @@ public class LIFXDeviceCloud extends LIFXDevice {
 	 *            value from 2500 to 9000
 	 * @param brightness
 	 *            value from 0 to 65535
+	 * @param authenticationToken
+	 *            authenticationToken
+	 * 
 	 */
 	public LIFXDeviceCloud(final String id, final String uuid, final String label, final boolean connected,
-			String power, final double hue, final double saturation, final long kelvin, final double brightness) {
+			String power, final double hue, final double saturation, final long kelvin, final double brightness,
+			final String authenticationToken) {
 		super(id);
 		this.uuid = uuid;
 		this.connected = connected;
+		this.authenticationToken = authenticationToken;
 		super.setPower("off".equals(power) ? 0 : 65535);
 		super.setLabel(label);
 		super.setHue(hue);
@@ -77,6 +83,10 @@ public class LIFXDeviceCloud extends LIFXDevice {
 
 	public String getUuid() {
 		return uuid;
+	}
+	
+	public String getAuthenticationToken() {
+		return authenticationToken;
 	}
 
 	@Override
@@ -137,8 +147,7 @@ public class LIFXDeviceCloud extends LIFXDevice {
 	public void setLightState(int newPower, double newHue, double newSaturation, long newKelvin, double newBrightness,
 			int duration) throws Exception {
 		DiscoveryCloud.setLightPower(this, (newPower == 0 ? "off" : "on"), newHue / 65535d * 360d,
-				newSaturation / 65535d, newKelvin, newBrightness / 65535d,
-				(double) duration);
+				newSaturation / 65535d, newKelvin, newBrightness / 65535d, (double) duration);
 		super.setPower(newPower);
 		super.setHue(newHue);
 		super.setSaturation(newSaturation);
@@ -146,7 +155,7 @@ public class LIFXDeviceCloud extends LIFXDevice {
 		super.setBrightness(newBrightness);
 	}
 
-	public static LIFXDeviceCloud fromJson(JSONObject json) {
+	public static LIFXDeviceCloud fromJson(JSONObject json, String pAuthenticationToken) {
 
 		String id = (String) json.get("id");
 		String uuid = (String) json.get(UUID);
@@ -168,7 +177,7 @@ public class LIFXDeviceCloud extends LIFXDevice {
 		saturation = saturation * 65535d;
 
 		LIFXDeviceCloud lifxDevice = new LIFXDeviceCloud(id, uuid, label, connected, power, hue, saturation, kelvin,
-				brightness);
+				brightness, pAuthenticationToken);
 
 		return lifxDevice;
 	}

@@ -7,7 +7,9 @@
  *******************************************************************************/
 package org.eclipse.om2m.sdt.home.lifx.sdt;
 
+import java.io.FileInputStream;
 import java.util.List;
+import java.util.Properties;
 
 import org.eclipse.om2m.sdt.home.HomeDomain;
 import org.eclipse.om2m.sdt.home.lifx.impl.cloud.DiscoveryCloud;
@@ -19,9 +21,12 @@ public class LIFXSDTDeviceTest extends TestCase {
 
 	public void testNewDevice() throws Exception {
 		
+		Properties properties =  new Properties();
+		properties.load(new FileInputStream("src/test/resources/lifx.basedriver.properties"));
+		
 		HomeDomain homeDomain = new HomeDomain("LIFXDomain");
 		
-		DiscoveryCloud discoveryCloud = new DiscoveryCloud();
+		DiscoveryCloud discoveryCloud = new DiscoveryCloud(properties.getProperty("token.cloud"));
 		discoveryCloud.startDiscoveryTask();
 		
 		Thread.sleep(2000);

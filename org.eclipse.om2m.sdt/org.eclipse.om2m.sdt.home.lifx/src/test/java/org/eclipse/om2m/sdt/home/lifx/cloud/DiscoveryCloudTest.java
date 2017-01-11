@@ -7,7 +7,9 @@
  *******************************************************************************/
 package org.eclipse.om2m.sdt.home.lifx.cloud;
 
+import java.io.FileInputStream;
 import java.util.List;
+import java.util.Properties;
 
 import org.eclipse.om2m.sdt.home.lifx.impl.cloud.DiscoveryCloud;
 import org.eclipse.om2m.sdt.home.lifx.impl.cloud.LIFXDeviceCloud;
@@ -17,7 +19,10 @@ import junit.framework.TestCase;
 public class DiscoveryCloudTest extends TestCase {
 
 	public void testDiscovery() throws Exception {
-		DiscoveryCloud discoveryCloud = new DiscoveryCloud();
+		Properties properties =  new Properties();
+		properties.load(new FileInputStream("src/test/resources/lifx.basedriver.properties"));
+		
+		DiscoveryCloud discoveryCloud = new DiscoveryCloud(properties.getProperty("cloud.token"));
 		
 		discoveryCloud.retrieveLIFXDevices();
 		

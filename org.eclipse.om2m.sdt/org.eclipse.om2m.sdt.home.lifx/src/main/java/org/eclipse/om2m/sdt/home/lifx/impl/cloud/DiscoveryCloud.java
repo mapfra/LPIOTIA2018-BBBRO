@@ -40,16 +40,15 @@ public class DiscoveryCloud extends Discovery {
 		}
 	}
 
-	private static final String TOKEN = "c9d25974b9b977052623d25de0deed93ea432b2ee11b4ce6debafa11ab5f4560";
-
-	private static String authenticationToken = TOKEN;
+	private final String authenticationToken;
 
 	private Map<String, LIFXDeviceCloud> devices = new HashMap<>();;
 
 	private Timer timer;
 	private TimerTask timerTask;
 
-	public DiscoveryCloud() {
+	public DiscoveryCloud(final String pAuthenticationToken) {
+		authenticationToken = pAuthenticationToken;
 		timerTask = new TimerTask() {
 
 			@Override
@@ -61,14 +60,14 @@ public class DiscoveryCloud extends Discovery {
 	}
 
 	public void retrieveLIFXDevices() {
-		JSONArray jsonArray = retrieveLIFXDevice(null);
+		JSONArray jsonArray = retrieveLIFXDevice(null, authenticationToken);
 
 		if (jsonArray != null) {
 
 			for (Iterator it = jsonArray.iterator(); it.hasNext();) {
 				JSONObject jsonLifxDevice = (JSONObject) it.next();
 
-				LIFXDeviceCloud lifxDeviceCloud = LIFXDeviceCloud.fromJson(jsonLifxDevice);
+				LIFXDeviceCloud lifxDeviceCloud = LIFXDeviceCloud.fromJson(jsonLifxDevice, this.authenticationToken);
 				addOrRemoveLIFXDevice(lifxDeviceCloud);
 			}
 		}
@@ -80,7 +79,7 @@ public class DiscoveryCloud extends Discovery {
 	 *            if null, retrieve all devices
 	 * @param lifxDevice
 	 */
-	public static JSONArray retrieveLIFXDevice(String url) {
+	public static JSONArray retrieveLIFXDevice(String url, String authenticationToken) {
 		try {
 			HttpURLConnection httpUrlConnection = null;
 			if (url != null) {
@@ -171,7 +170,7 @@ public class DiscoveryCloud extends Discovery {
 	}
 
 	public static void updateLightState(LIFXDeviceCloud lifxDevice) {
-		JSONArray jsonArray = retrieveLIFXDevice(LIGHT_URL + lifxDevice.getId());
+		JSONArray jsonArray = retrieveLIFXDevice(LIGHT_URL + lifxDevice.getId(), lifxDevice.getAuthenticationToken());
 		if (jsonArray != null) {
 			lifxDevice.updateLightState((JSONObject) jsonArray.get(0));
 		}
@@ -182,7 +181,7 @@ public class DiscoveryCloud extends Discovery {
 		HttpURLConnection httpUrlConnection = null;
 		httpUrlConnection = (HttpURLConnection) new URL(LIGHT_URL + lifxDevice.getId() + "/state").openConnection();
 		httpUrlConnection.setRequestMethod("PUT");
-		httpUrlConnection.setRequestProperty("Authorization", "Bearer " + authenticationToken);
+		httpUrlConnection.setRequestProperty("Authorization", "Bearer " + lifxDevice.getAuthenticationToken());
 
 		String data = "{";
 		if (power != null) {
