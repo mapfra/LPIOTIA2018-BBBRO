@@ -59,19 +59,13 @@
       <plugin id="org.eclipse.om2m.datamapping.service"/>
       <plugin id="org.eclipse.om2m.interworking.service"/>
       <plugin id="org.eclipse.om2m.ipe.sample"/>
+      <plugin id="org.eclipse.om2m.ipe.sample.sdt"/>
       <plugin id="org.eclipse.om2m.ipe.sdt"/>
-      <plugin id="org.eclipse.om2m.ipe.sdt.testsuite"/>
       <plugin id="org.eclipse.om2m.persistence.eclipselink"/>
       <plugin id="org.eclipse.om2m.persistence.service"/>
       <plugin id="org.eclipse.om2m.sdt.api"/>
       <plugin id="org.eclipse.om2m.sdt.home"/>
-      <plugin id="org.eclipse.om2m.sdt.home.cloud"/>
       <plugin id="org.eclipse.om2m.sdt.home.driver"/>
-      <plugin id="org.eclipse.om2m.sdt.home.lifx"/>
-      <plugin id="org.eclipse.om2m.sdt.home.mocked.devices"/>
-      <plugin id="org.eclipse.om2m.sdt.home.netatmo"/>
-      <plugin id="org.eclipse.om2m.sdt.home.smartercoffee"/>
-      <plugin id="org.eclipse.om2m.sdt.home.tester"/>
       <plugin id="org.eclipse.om2m.testsuite.flexcontainer"/>
       <plugin id="org.eclipse.om2m.webapp.resourcesbrowser.xml"/>
       <plugin id="org.eclipse.osgi"/>
@@ -89,14 +83,14 @@
       <plugin id="org.eclipse.om2m.binding.http" autoStart="true" startLevel="2" />
       <plugin id="org.eclipse.om2m.core" autoStart="true" startLevel="4" />
       <plugin id="org.eclipse.om2m.datamapping.jaxb" autoStart="true" startLevel="1" />
-      <plugin id="org.eclipse.om2m.ipe.sdt" autoStart="false" startLevel="6" />
+      <plugin id="org.eclipse.om2m.ipe.sdt" autoStart="true" startLevel="6" />
       <plugin id="org.eclipse.om2m.persistence.eclipselink" autoStart="true" startLevel="2" />
       <plugin id="org.eclipse.om2m.sdt.api" autoStart="true" startLevel="4" />
-      <plugin id="org.eclipse.om2m.sdt.home" autoStart="true" startLevel="4" />
+      <plugin id="org.eclipse.om2m.sdt.home" autoStart="false" startLevel="4" />
       <plugin id="org.eclipse.om2m.sdt.home.cloud" autoStart="false" startLevel="6" />
-      <plugin id="org.eclipse.om2m.sdt.home.driver" autoStart="true" startLevel="4" />
+      <plugin id="org.eclipse.om2m.sdt.home.driver" autoStart="false" startLevel="4" />
       <plugin id="org.eclipse.om2m.sdt.home.lifx" autoStart="false" startLevel="6" />
-      <plugin id="org.eclipse.om2m.sdt.home.mocked.devices" autoStart="true" startLevel="5" />
+      <plugin id="org.eclipse.om2m.sdt.home.mocked.devices" autoStart="false" startLevel="5" />
       <plugin id="org.eclipse.om2m.sdt.home.netatmo" autoStart="false" startLevel="6" />
       <plugin id="org.eclipse.om2m.sdt.home.smartercoffee" autoStart="false" startLevel="6" />
       <plugin id="org.eclipse.om2m.sdt.home.tester" autoStart="false" startLevel="5" />
