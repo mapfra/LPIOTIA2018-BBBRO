@@ -5,23 +5,23 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-package org.eclipse.om2m.sdt.impl;
+package org.eclipse.om2m.sdt.exceptions;
 
-public class AccessException extends Exception {
+public class DataPointException extends Exception {
 
-	public AccessException() {
+	public DataPointException() {
 		super();
 	}
 
-	public AccessException(String message) {
+	public DataPointException(String message) {
 		super(message);
 	}
 
-	public AccessException(Throwable cause) {
+	public DataPointException(Throwable cause) {
 		super(cause);
 	}
 
-	public AccessException(String message, Throwable cause) {
+	public DataPointException(String message, Throwable cause) {
 		super(message, cause);
 	}
 

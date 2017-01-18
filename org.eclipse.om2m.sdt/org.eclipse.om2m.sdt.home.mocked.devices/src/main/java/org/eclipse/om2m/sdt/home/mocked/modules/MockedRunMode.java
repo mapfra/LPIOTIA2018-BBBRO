@@ -11,8 +11,8 @@ import java.util.List;
 
 import org.eclipse.om2m.sdt.Domain;
 import org.eclipse.om2m.sdt.datapoints.ArrayDataPoint;
+import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.modules.RunMode;
-import org.eclipse.om2m.sdt.impl.DataPointException;
 
 public class MockedRunMode extends RunMode {
 	

@@ -7,8 +7,8 @@ import java.util.Date;
 import org.eclipse.om2m.sdt.Device;
 import org.eclipse.om2m.sdt.Domain;
 import org.eclipse.om2m.sdt.Property;
+import org.eclipse.om2m.sdt.exceptions.PropertyException;
 import org.eclipse.om2m.sdt.home.types.DeviceType;
-import org.eclipse.om2m.sdt.impl.PropertyException;
 import org.eclipse.om2m.sdt.types.SimpleType;
 
 public class GenericDevice extends Device {

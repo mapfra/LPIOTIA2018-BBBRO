@@ -7,9 +7,9 @@
  *******************************************************************************/
 package org.eclipse.om2m.sdt.home.actions;
 
-import org.eclipse.om2m.sdt.impl.AccessException;
-import org.eclipse.om2m.sdt.impl.ActionException;
-import org.eclipse.om2m.sdt.impl.Command;
+import org.eclipse.om2m.sdt.args.Command;
+import org.eclipse.om2m.sdt.exceptions.AccessException;
+import org.eclipse.om2m.sdt.exceptions.ActionException;
 
 public abstract class Toggle extends Command {
 

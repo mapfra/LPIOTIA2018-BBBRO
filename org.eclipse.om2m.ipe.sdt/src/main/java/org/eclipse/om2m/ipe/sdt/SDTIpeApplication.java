@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.eclipse.om2m.commons.constants.Constants;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.resource.AE;
@@ -21,6 +23,8 @@ import org.eclipse.om2m.core.service.CseService;
 import org.eclipse.om2m.sdt.Device;
 
 public class SDTIpeApplication {
+
+    private static Log logger = LogFactory.getLog(SDTIpeApplication.class);
 
 	private static final String SEP = "/";
 	private static final String APPLICATION_NAME = "SDT_IPE";
@@ -65,8 +69,7 @@ public class SDTIpeApplication {
 
 	// SDT Device Management
 	protected boolean addSDTDevice(Device device) {
-		Logger.getInstance().logInfo(SDTIpeApplication.class,
-				"add SDT Device (id:" + device.getId() + ", name=" + device.getName() 
+		logger.info("add SDT Device (id:" + device.getId() + ", name=" + device.getName() 
 				+ ") into oneM2M");
 
 		SDTDeviceAdaptor sdtDeviceAdaptor = new SDTDeviceAdaptor(sdtIpeApplicationLocation, device,
@@ -81,8 +84,7 @@ public class SDTIpeApplication {
 	}
 
 	protected void removeSDTDevice(Device device) {
-		Logger.getInstance().logInfo(SDTIpeApplication.class,
-				"remove SDT Device (id:" + device.getId() + ", name=" + device.getName() 
+		logger.info("remove SDT Device (id:" + device.getId() + ", name=" + device.getName() 
 				+ ") into oneM2M");
 		SDTDeviceAdaptor sdtDeviceAdaptor = null;
 		synchronized (devices) {
@@ -102,7 +104,7 @@ public class SDTIpeApplication {
 	 * @throws Exception
 	 */
 	public void publishSDTIPEApplication() throws Exception {
-		Logger.getInstance().logInfo(SDTIpeApplication.class, "create ipe application");
+		logger.info("create ipe application");
 
 		AE ae = new AE();
 		ae.setAppID(APPLICATION_NAME);
@@ -117,8 +119,7 @@ public class SDTIpeApplication {
 
 		if (! (resp.getResponseStatusCode().equals(ResponseStatusCode.CREATED)
 				|| resp.getResponseStatusCode().equals(ResponseStatusCode.CONFLICT))) {
-			Logger.getInstance().logError(SDTIpeApplication.class,
-					"Unable to create SDT IPE Application:" + resp.getContent(), null);
+			logger.error("Unable to create SDT IPE Application:" + resp.getContent(), null);
 			throw new Exception("unable to create SDT Application Entity");
 		}
 
@@ -148,13 +149,12 @@ public class SDTIpeApplication {
 	 * Send a DELETE oneM2M request to delete SDT IPE application entity
 	 */
 	protected void deleteIpeApplicationEntity() {
-		Logger.getInstance().logInfo(SDTIpeApplication.class, "delete ipe application");
+		logger.info("delete ipe application");
 		ResponsePrimitive response = CseUtil.sendDeleteRequest(cseService, sdtIpeApplicationLocation);
 		if (! response.getResponseStatusCode().equals(ResponseStatusCode.DELETED)) {
 			// log only
 			// no need to throw an exception
-			Logger.getInstance().logError(SDTIpeApplication.class,
-					"unable to delete SDT IPE Application entity:" + response.getContent(), null);
+			logger.error("unable to delete SDT IPE Application entity:" + response.getContent(), null);
 		}
 		
 		if (adminAccessControlPolicy != null) {

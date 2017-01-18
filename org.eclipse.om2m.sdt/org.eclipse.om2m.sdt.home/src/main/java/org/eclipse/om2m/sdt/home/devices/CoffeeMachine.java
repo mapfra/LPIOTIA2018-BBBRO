@@ -2,7 +2,6 @@ package org.eclipse.om2m.sdt.home.devices;
 
 
 import java.util.Collection;
-import java.util.Collections;
 
 import org.eclipse.om2m.sdt.Domain;
 import org.eclipse.om2m.sdt.Module;

@@ -13,6 +13,8 @@ import org.eclipse.om2m.sdt.Domain;
 import org.eclipse.om2m.sdt.datapoints.BooleanDataPoint;
 import org.eclipse.om2m.sdt.datapoints.IntegerDataPoint;
 import org.eclipse.om2m.sdt.datapoints.StringDataPoint;
+import org.eclipse.om2m.sdt.exceptions.AccessException;
+import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.devices.CoffeeMachine;
 import org.eclipse.om2m.sdt.home.driver.Utils;
 import org.eclipse.om2m.sdt.home.modules.Brewing;
@@ -23,8 +25,6 @@ import org.eclipse.om2m.sdt.home.smartercoffee.communication.SmarterCoffeeComman
 import org.eclipse.om2m.sdt.home.smartercoffee.communication.SmarterCoffeeCommunication;
 import org.eclipse.om2m.sdt.home.types.LevelType;
 import org.eclipse.om2m.sdt.home.types.TasteStrength;
-import org.eclipse.om2m.sdt.impl.AccessException;
-import org.eclipse.om2m.sdt.impl.DataPointException;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 

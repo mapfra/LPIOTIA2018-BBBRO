@@ -5,23 +5,23 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-package org.eclipse.om2m.sdt.impl;
+package org.eclipse.om2m.sdt.exceptions;
 
-public class ActionException extends Exception {
+public class PropertyException extends Exception {
 
-	public ActionException() {
+	public PropertyException() {
 		super();
 	}
 
-	public ActionException(String message) {
+	public PropertyException(String message) {
 		super(message);
 	}
 
-	public ActionException(Throwable cause) {
+	public PropertyException(Throwable cause) {
 		super(cause);
 	}
 
-	public ActionException(String message, Throwable cause) {
+	public PropertyException(String message, Throwable cause) {
 		super(message, cause);
 	}
 

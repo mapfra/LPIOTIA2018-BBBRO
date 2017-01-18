@@ -12,8 +12,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import org.eclipse.om2m.sdt.impl.AccessException;
-import org.eclipse.om2m.sdt.impl.DataPointException;
+import org.eclipse.om2m.sdt.exceptions.AccessException;
+import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.types.DataType;
 
 public abstract class EnumDataPoint<T> extends ValuedDataPoint<T> {

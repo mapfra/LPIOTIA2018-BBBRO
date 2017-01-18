@@ -12,8 +12,8 @@ import java.util.Date;
 import org.eclipse.om2m.sdt.Domain;
 import org.eclipse.om2m.sdt.datapoints.DateDataPoint;
 import org.eclipse.om2m.sdt.datapoints.TimeDataPoint;
+import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.modules.Clock;
-import org.eclipse.om2m.sdt.impl.DataPointException;
 
 public class MockedClock extends Clock {
 

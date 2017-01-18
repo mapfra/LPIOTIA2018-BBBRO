@@ -13,11 +13,11 @@ import org.eclipse.om2m.sdt.DataPoint;
 import org.eclipse.om2m.sdt.Domain;
 import org.eclipse.om2m.sdt.Module;
 import org.eclipse.om2m.sdt.datapoints.BooleanDataPoint;
+import org.eclipse.om2m.sdt.exceptions.AccessException;
+import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.types.AlertColourCode;
 import org.eclipse.om2m.sdt.home.types.ModuleType;
 import org.eclipse.om2m.sdt.home.types.Tone;
-import org.eclipse.om2m.sdt.impl.AccessException;
-import org.eclipse.om2m.sdt.impl.DataPointException;
 
 public class AlarmSpeaker extends Module {
 

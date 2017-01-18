@@ -9,12 +9,12 @@ package org.eclipse.om2m.sdt.home.mocked.modules;
 
 import org.eclipse.om2m.sdt.Domain;
 import org.eclipse.om2m.sdt.datapoints.BooleanDataPoint;
+import org.eclipse.om2m.sdt.exceptions.AccessException;
+import org.eclipse.om2m.sdt.exceptions.ActionException;
+import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.actions.Toggle;
 import org.eclipse.om2m.sdt.home.mocked.devices.Activator;
 import org.eclipse.om2m.sdt.home.modules.BinarySwitch;
-import org.eclipse.om2m.sdt.impl.AccessException;
-import org.eclipse.om2m.sdt.impl.ActionException;
-import org.eclipse.om2m.sdt.impl.DataPointException;
 
 public class MockedBinarySwitch extends BinarySwitch {
 

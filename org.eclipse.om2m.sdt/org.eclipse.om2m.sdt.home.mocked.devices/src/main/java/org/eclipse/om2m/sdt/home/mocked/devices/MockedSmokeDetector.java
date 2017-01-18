@@ -13,10 +13,10 @@ import org.eclipse.om2m.sdt.Domain;
 import org.eclipse.om2m.sdt.Event;
 import org.eclipse.om2m.sdt.datapoints.BooleanDataPoint;
 import org.eclipse.om2m.sdt.datapoints.IntegerDataPoint;
+import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.devices.SmokeDetector;
 import org.eclipse.om2m.sdt.home.mocked.modules.MockedFaultDetection;
 import org.eclipse.om2m.sdt.home.modules.SmokeSensor;
-import org.eclipse.om2m.sdt.impl.DataPointException;
 import org.osgi.framework.ServiceRegistration;
 
 public class MockedSmokeDetector extends SmokeDetector implements MockedDevice {

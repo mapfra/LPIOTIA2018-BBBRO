@@ -12,10 +12,10 @@ import java.util.List;
 
 import org.eclipse.om2m.sdt.Domain;
 import org.eclipse.om2m.sdt.datapoints.ArrayDataPoint;
+import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.devices.Camera;
 import org.eclipse.om2m.sdt.home.mocked.modules.MockedStreaming;
 import org.eclipse.om2m.sdt.home.modules.PersonSensor;
-import org.eclipse.om2m.sdt.impl.DataPointException;
 import org.osgi.framework.ServiceRegistration;
 
 public class MockedCamera extends Camera implements MockedDevice {

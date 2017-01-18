@@ -14,11 +14,11 @@ import org.eclipse.om2m.sdt.DataPoint;
 import org.eclipse.om2m.sdt.Domain;
 import org.eclipse.om2m.sdt.Module;
 import org.eclipse.om2m.sdt.datapoints.BooleanDataPoint;
+import org.eclipse.om2m.sdt.exceptions.AccessException;
+import org.eclipse.om2m.sdt.exceptions.ActionException;
+import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.actions.Toggle;
 import org.eclipse.om2m.sdt.home.types.ModuleType;
-import org.eclipse.om2m.sdt.impl.AccessException;
-import org.eclipse.om2m.sdt.impl.ActionException;
-import org.eclipse.om2m.sdt.impl.DataPointException;
 
 public class BinarySwitch extends Module {
 	

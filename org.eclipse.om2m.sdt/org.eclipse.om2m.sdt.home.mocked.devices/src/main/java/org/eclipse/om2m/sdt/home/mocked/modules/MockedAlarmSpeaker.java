@@ -9,10 +9,10 @@ package org.eclipse.om2m.sdt.home.mocked.modules;
 
 import org.eclipse.om2m.sdt.Domain;
 import org.eclipse.om2m.sdt.datapoints.BooleanDataPoint;
+import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.mocked.devices.Activator;
 import org.eclipse.om2m.sdt.home.modules.AlarmSpeaker;
 import org.eclipse.om2m.sdt.home.types.Tone;
-import org.eclipse.om2m.sdt.impl.DataPointException;
 
 public class MockedAlarmSpeaker extends AlarmSpeaker {
 	

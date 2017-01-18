@@ -8,8 +8,8 @@
 package org.eclipse.om2m.sdt.datapoints;
 
 import org.eclipse.om2m.sdt.DataPoint;
-import org.eclipse.om2m.sdt.impl.AccessException;
-import org.eclipse.om2m.sdt.impl.DataPointException;
+import org.eclipse.om2m.sdt.exceptions.AccessException;
+import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.types.DataType;
 import org.eclipse.om2m.sdt.utils.Activator;
 

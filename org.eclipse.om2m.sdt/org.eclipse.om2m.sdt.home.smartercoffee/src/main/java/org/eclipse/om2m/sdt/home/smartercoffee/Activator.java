@@ -11,11 +11,11 @@ import java.util.Dictionary;
 import java.util.Hashtable;
 
 import org.eclipse.om2m.sdt.Domain;
+import org.eclipse.om2m.sdt.exceptions.AccessException;
+import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.HomeDomain;
 import org.eclipse.om2m.sdt.home.driver.Logger;
 import org.eclipse.om2m.sdt.home.types.TasteStrength;
-import org.eclipse.om2m.sdt.impl.AccessException;
-import org.eclipse.om2m.sdt.impl.DataPointException;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;

@@ -15,9 +15,9 @@ import org.eclipse.om2m.sdt.Module;
 import org.eclipse.om2m.sdt.datapoints.BooleanDataPoint;
 import org.eclipse.om2m.sdt.datapoints.IntegerDataPoint;
 import org.eclipse.om2m.sdt.datapoints.StringDataPoint;
+import org.eclipse.om2m.sdt.exceptions.AccessException;
+import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.types.ModuleType;
-import org.eclipse.om2m.sdt.impl.AccessException;
-import org.eclipse.om2m.sdt.impl.DataPointException;
 
 public class FaultDetection extends Module {
 	

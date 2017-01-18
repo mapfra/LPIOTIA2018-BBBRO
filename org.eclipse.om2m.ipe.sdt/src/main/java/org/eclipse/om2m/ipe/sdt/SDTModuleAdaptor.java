@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.resource.CustomAttribute;
 import org.eclipse.om2m.commons.resource.FlexContainer;
@@ -24,10 +26,12 @@ import org.eclipse.om2m.sdt.Property;
 import org.eclipse.om2m.sdt.datapoints.AbstractDateDataPoint;
 import org.eclipse.om2m.sdt.datapoints.ArrayDataPoint;
 import org.eclipse.om2m.sdt.datapoints.ValuedDataPoint;
-import org.eclipse.om2m.sdt.impl.AccessException;
-import org.eclipse.om2m.sdt.impl.DataPointException;
+import org.eclipse.om2m.sdt.exceptions.AccessException;
+import org.eclipse.om2m.sdt.exceptions.DataPointException;
 
 public class SDTModuleAdaptor {
+
+    private static Log logger = LogFactory.getLog(SDTModuleAdaptor.class);
 
 	private static final String SEP = "/";
 	private static final String SDT_IPE_SUBSCRIPTION_NAME = "SDT_IPE_SUBSCRIPTION";
@@ -59,8 +63,7 @@ public class SDTModuleAdaptor {
 	 */
 	@SuppressWarnings("unchecked")
 	public boolean publishModuleIntoOM2MTree() {
-		Logger.getInstance().logInfo(SDTModuleAdaptor.class,
-				"publishModuleFromOM2MTree(name=" + this.module.getName() 
+		logger.info("publishModuleFromOM2MTree(name=" + this.module.getName() 
 				+ ", parentLocation=" + parentLocation + ")");
 
 		FlexContainer flexContainer = new FlexContainer();
@@ -110,22 +113,18 @@ public class SDTModuleAdaptor {
 				// how to handle this exception?
 				// should we stop module publishing step in oneM2M tree ?
 				// should we continue to publish module in oneM2M tree ?
-				Logger.getInstance().logInfo(SDTModuleAdaptor.class,
-						"Error reading datapoint " + dp + ": " + e.getMessage());
+				logger.info("Error reading datapoint " + dp + ": " + e.getMessage());
 			} catch (AccessException e) {
 				// how to handle this exception?
 				// should we stop module publishing step in oneM2M tree ?
 				// should we continue to publish module in oneM2M tree ?
-				Logger.getInstance().logInfo(SDTModuleAdaptor.class,
-						"Error accessing datapoint " + dp + ": " + e.getMessage());
+				logger.info("Error accessing datapoint " + dp + ": " + e.getMessage());
 			} catch (Exception e) {
-				Logger.getInstance().logError(SDTModuleAdaptor.class,
-						"Error in datapoint " + dp, e);
+				logger.error("Error in datapoint " + dp, e);
 			}
 			customAttribute.setCustomAttributeValue(value);
 
-			Logger.getInstance().logInfo(SDTModuleAdaptor.class,
-					"add DataPoint customAttribute(name=" + customAttribute.getCustomAttributeName() 
+			logger.info("add DataPoint customAttribute(name=" + customAttribute.getCustomAttributeName() 
 					+ ", type=" + customAttribute.getCustomAttributeType() 
 					+ ", value=" + customAttribute.getCustomAttributeValue() + ")");
 
@@ -140,8 +139,8 @@ public class SDTModuleAdaptor {
 				caForSdtProperty.setCustomAttributeValue(sdtProperty.getValue());
 				caForSdtProperty.setCustomAttributeType(sdtProperty.getType().getOneM2MType());
 
-				Logger.getInstance().logDebug(SDTDeviceAdaptor.class,
-						"create a new CustomAttribute (name=" + caForSdtProperty.getCustomAttributeName()
+				logger.debug("create a new CustomAttribute (name=" 
+						+ caForSdtProperty.getCustomAttributeName()
 						+ ", value=" + caForSdtProperty.getCustomAttributeValue() 
 						+ ", type=" + caForSdtProperty.getCustomAttributeType() + ")");
 				flexContainer.getCustomAttributes().add(caForSdtProperty);
@@ -151,9 +150,8 @@ public class SDTModuleAdaptor {
 		ResponsePrimitive resp = CseUtil.sendCreateFlexContainerRequest(cseService, flexContainer,
 				parentLocation, this.module.getName());
 		if (! resp.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {
-			Logger.getInstance().logError(SDTModuleAdaptor.class,
-					"publishModuleFromOM2MTree(name=" + this.module.getName() + ", parentLocation="
-							+ parentLocation + ") : failed to publish:" + resp.getContent(),
+			logger.error("publishModuleFromOM2MTree(name=" + this.module.getName() 
+					+ ", parentLocation=" + parentLocation + ") : failed to publish:" + resp.getContent(),
 					null);
 			return false;
 		}
@@ -182,8 +180,7 @@ public class SDTModuleAdaptor {
 	}
 
 	public void unpublishModuleFromOM2MTree() {
-		Logger.getInstance().logInfo(SDTModuleAdaptor.class,
-				"unpublishModuleFromOM2MTree(name=" + this.module.getName() 
+		logger.info("unpublishModuleFromOM2MTree(name=" + this.module.getName() 
 				+ ", location=" + resourceLocation + ")");
 
 		moduleSDTListener.unregister();

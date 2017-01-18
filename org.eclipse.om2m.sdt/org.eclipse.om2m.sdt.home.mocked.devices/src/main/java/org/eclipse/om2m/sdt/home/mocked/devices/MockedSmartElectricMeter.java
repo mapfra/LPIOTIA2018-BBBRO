@@ -14,6 +14,7 @@ import org.eclipse.om2m.sdt.DataPoint;
 import org.eclipse.om2m.sdt.Domain;
 import org.eclipse.om2m.sdt.Event;
 import org.eclipse.om2m.sdt.datapoints.FloatDataPoint;
+import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.devices.SmartElectricMeter;
 import org.eclipse.om2m.sdt.home.mocked.modules.MockedBinarySwitch;
 import org.eclipse.om2m.sdt.home.mocked.modules.MockedClock;
@@ -22,7 +23,6 @@ import org.eclipse.om2m.sdt.home.mocked.modules.MockedEnergyGeneration;
 import org.eclipse.om2m.sdt.home.mocked.modules.MockedFaultDetection;
 import org.eclipse.om2m.sdt.home.mocked.modules.MockedRunMode;
 import org.eclipse.om2m.sdt.home.modules.EnergyConsumption;
-import org.eclipse.om2m.sdt.impl.DataPointException;
 import org.osgi.framework.ServiceRegistration;
 
 public class MockedSmartElectricMeter extends SmartElectricMeter implements MockedDevice {

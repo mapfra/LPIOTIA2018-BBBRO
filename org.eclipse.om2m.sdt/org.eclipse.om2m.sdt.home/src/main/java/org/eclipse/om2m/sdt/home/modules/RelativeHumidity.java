@@ -14,9 +14,9 @@ import org.eclipse.om2m.sdt.Domain;
 import org.eclipse.om2m.sdt.Module;
 import org.eclipse.om2m.sdt.datapoints.FloatDataPoint;
 import org.eclipse.om2m.sdt.datapoints.IntegerDataPoint;
+import org.eclipse.om2m.sdt.exceptions.AccessException;
+import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.types.ModuleType;
-import org.eclipse.om2m.sdt.impl.AccessException;
-import org.eclipse.om2m.sdt.impl.DataPointException;
 
 public class RelativeHumidity extends Module {
 	

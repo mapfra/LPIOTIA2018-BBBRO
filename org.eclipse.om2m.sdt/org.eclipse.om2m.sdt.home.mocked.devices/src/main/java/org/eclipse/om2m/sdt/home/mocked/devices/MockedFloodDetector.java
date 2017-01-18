@@ -12,10 +12,10 @@ import java.util.List;
 import org.eclipse.om2m.sdt.Domain;
 import org.eclipse.om2m.sdt.Event;
 import org.eclipse.om2m.sdt.datapoints.BooleanDataPoint;
+import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.devices.FloodDetector;
 import org.eclipse.om2m.sdt.home.mocked.modules.MockedFaultDetection;
 import org.eclipse.om2m.sdt.home.modules.WaterSensor;
-import org.eclipse.om2m.sdt.impl.DataPointException;
 import org.osgi.framework.ServiceRegistration;
 
 public class MockedFloodDetector extends FloodDetector implements MockedDevice {

@@ -10,64 +10,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" 
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
+	
 	<modelVersion>4.0.0</modelVersion>
-
+  
+	<artifactId>org.eclipse.om2m.ipe.sdt</artifactId>
+	<packaging>eclipse-plugin</packaging>
+	<name>org.eclipse.om2m :: IPE SDT</name>
+	<description>org.eclipse.om2m :: IPE SDT</description>
+	
 	<parent>
 		<groupId>org.eclipse.om2m</groupId>
 		<artifactId>org.eclipse.om2m</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-
-	<artifactId>org.eclipse.om2m.ipe.sdt</artifactId>
-	<description>SDT IPE</description>
-	<packaging>eclipse-plugin</packaging>
-	
-	<dependencies>
-		
-		
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.4</version>
-			<scope>test</scope>
-		</dependency>
-		
-	</dependencies>
-					
-	<build>
-		<plugins>
-		
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.3.2</version>
-				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
-				</configuration>
-			</plugin>
-
-			<!-- <plugin>
-				<groupId>org.apache.felix</groupId>
-				<artifactId>maven-bundle-plugin</artifactId>
-				<version>2.3.7</version>
-				<extensions>true</extensions>
-				<configuration>
-					<instructions>
-						<Bundle-Name>${project.artifactId}</Bundle-Name>
-						<Bundle-Vendor>Thales pour Orange</Bundle-Vendor>
-						<Bundle-Author>Gregory BONNARDEL</Bundle-Author>
-						<Bundle-Description>${project.description}</Bundle-Description>
-						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
-						<Bundle-Activator>org.eclipse.om2m.ipe.sdt.Activator</Bundle-Activator>
-						<Import-Package>*</Import-Package>
-						
-						<Export-Package></Export-Package>
-					</instructions>
-				</configuration>
-			</plugin> -->
-			
-		</plugins>
-	</build>
 
 </project>

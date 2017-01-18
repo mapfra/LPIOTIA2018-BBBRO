@@ -10,6 +10,8 @@ package org.eclipse.om2m.ipe.sdt;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.resource.CustomAttribute;
 import org.eclipse.om2m.commons.resource.FlexContainer;
@@ -20,6 +22,8 @@ import org.eclipse.om2m.sdt.Module;
 import org.eclipse.om2m.sdt.Property;
 
 public class SDTDeviceAdaptor {
+
+    private static Log logger = LogFactory.getLog(SDTDeviceAdaptor.class);
 
 	private static final String SEP = "/";
 	private static final String DEVICE_PREFIX = "DEVICE_";
@@ -59,8 +63,7 @@ public class SDTDeviceAdaptor {
 	 * Publish the SDT Device as a FlexContainer entity into the oneM2M tree
 	 */
 	public boolean publishIntoOM2MTree() {
-		Logger.getInstance().logInfo(SDTDeviceAdaptor.class,
-				"publishIntoOM2MTree(flexContainerName=" + resourceName 
+		logger.info("publishIntoOM2MTree(flexContainerName=" + resourceName 
 				+ ", parentLocation:" + parentLocation);
 		
 		FlexContainer flexContainer = new FlexContainer();
@@ -85,8 +88,8 @@ public class SDTDeviceAdaptor {
 
 		// SDT properties are customAttribute of the device FlexContainer
 		for (Property sdtProperty : device.getProperties()) {
-			Logger.getInstance().logDebug(SDTDeviceAdaptor.class, "handle SDT Property (name=" + sdtProperty.getName()
-					+ ", value=" + sdtProperty.getValue() + ", type=" + sdtProperty.getType() + ")");
+			logger.debug("handle SDT Property (name=" + sdtProperty.getName()
+				+ ", value=" + sdtProperty.getValue() + ", type=" + sdtProperty.getType() + ")");
 
 			if (sdtProperty.getType() != null) {
 				CustomAttribute customAttributeForSdtProperty = new CustomAttribute();
@@ -95,10 +98,10 @@ public class SDTDeviceAdaptor {
 				customAttributeForSdtProperty.setCustomAttributeType(
 						sdtProperty.getType().getOneM2MType());
 
-				Logger.getInstance().logDebug(SDTDeviceAdaptor.class,
-						"create a new CustomAttribute (name=" + customAttributeForSdtProperty.getCustomAttributeName()
-								+ ", value=" + customAttributeForSdtProperty.getCustomAttributeValue() + ", type="
-								+ customAttributeForSdtProperty.getCustomAttributeType() + ")");
+				logger.debug("create a new CustomAttribute (name=" 
+						+ customAttributeForSdtProperty.getCustomAttributeName()
+						+ ", value=" + customAttributeForSdtProperty.getCustomAttributeValue() 
+						+ ", type=" + customAttributeForSdtProperty.getCustomAttributeType() + ")");
 				flexContainer.getCustomAttributes().add(customAttributeForSdtProperty);
 			}
 		}
@@ -106,7 +109,7 @@ public class SDTDeviceAdaptor {
 		ResponsePrimitive response = CseUtil.sendCreateFlexContainerRequest(cseService, 
 				flexContainer, parentLocation, resourceName);
 		if (! response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {
-			Logger.getInstance().logError(SDTDeviceAdaptor.class, "unable to create a FlexContainer for SDT Device "
+			logger.error("unable to create a FlexContainer for SDT Device "
 					+ resourceName + " : " + response.getContent(), null);
 			return false;
 		}
@@ -118,7 +121,7 @@ public class SDTDeviceAdaptor {
 			if (sdtModuleAdaptor.publishModuleIntoOM2MTree()) {
 				modules.put(module, sdtModuleAdaptor);
 			} else {
-				Logger.getInstance().logError(SDTDeviceAdaptor.class, "unable to publish module " + module.getName(), null);
+				logger.error("unable to publish module " + module.getName(), null);
 				
 				// unpublish all resources related to this SDT Device
 				unpublishIntoOM2MTree();
@@ -132,13 +135,10 @@ public class SDTDeviceAdaptor {
 	 * Unpublish oneM2M resource representing the SDT Device.
 	 */
 	public void unpublishIntoOM2MTree() {
-		Logger.getInstance().logInfo(SDTDeviceAdaptor.class,
-				"unpublish SDT Device (flexContainerLocation=" + resourceLocation + ")");
-
+		logger.info("unpublish SDT Device (flexContainerLocation=" + resourceLocation + ")");
 		for (SDTModuleAdaptor module : modules.values()) {
 			module.unpublishModuleFromOM2MTree();
 		}
-
 		// send DELETE request for Device FlexContainer
 		CseUtil.sendDeleteRequest(cseService, resourceLocation);
 	}

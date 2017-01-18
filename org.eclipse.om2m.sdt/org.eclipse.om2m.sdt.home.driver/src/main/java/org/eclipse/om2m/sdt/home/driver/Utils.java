@@ -60,10 +60,10 @@ public class Utils {
 			regs.add(context.registerService(getSDTNames(module),
 					module, getProperties(module, protocol, log)));
 		}
-		try {
-			PersistedDevice pDev = new PersistedDevice(device);
-			Configuration cfg = getConfiguration(context, device.getPid());
-			if (cfg != null) {
+		if (getConfigurationAdmin(context) != null) {
+			try {
+				PersistedDevice pDev = new PersistedDevice(device);
+				Configuration cfg = cfgAdmin.getConfiguration(device.getPid());
 				Dictionary props = cfg.getProperties();
 				if (props != null) {
 					log.info("Already persisted device: " + props);
@@ -77,14 +77,12 @@ public class Utils {
 					}
 					log.info("persist: " + props);
 					pDev.setRegistration(context.registerService(ManagedService.class.getName(),
-						pDev, props));
+							pDev, props));
 					cfg.update(props);
 				}
-			} else {
-				log.warning("no configAdmin service found !!!!");
+			} catch(Exception e) {
+				log.warning("", e);
 			}
-		} catch(Exception e) {
-			log.warning("", e);
 		}
 		return regs;
 	}
@@ -168,7 +166,6 @@ public class Utils {
 
 	static private final ConfigurationAdmin getConfigurationAdmin(final BundleContext bc) {
 		if (cfgAdmin == null) {
-			
 			ServiceReference configAdminServiceReference = bc.getServiceReference(ConfigurationAdmin.class.getName());
 			if (configAdminServiceReference != null) {
 				cfgAdmin = (ConfigurationAdmin) bc.getService(configAdminServiceReference);

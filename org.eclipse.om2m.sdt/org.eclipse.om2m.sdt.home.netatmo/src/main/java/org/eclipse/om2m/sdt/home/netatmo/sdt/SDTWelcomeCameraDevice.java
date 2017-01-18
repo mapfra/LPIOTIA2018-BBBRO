@@ -18,6 +18,7 @@ import java.util.Map;
 import org.eclipse.om2m.sdt.Property;
 import org.eclipse.om2m.sdt.datapoints.ArrayDataPoint;
 import org.eclipse.om2m.sdt.datapoints.StringDataPoint;
+import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.devices.Camera;
 import org.eclipse.om2m.sdt.home.driver.Logger;
 import org.eclipse.om2m.sdt.home.driver.Utils;
@@ -26,7 +27,6 @@ import org.eclipse.om2m.sdt.home.modules.Streaming;
 import org.eclipse.om2m.sdt.home.netatmo.impl.Activator;
 import org.eclipse.om2m.sdt.home.netatmo.model.DetectedPerson;
 import org.eclipse.om2m.sdt.home.netatmo.model.WelcomeCamera;
-import org.eclipse.om2m.sdt.impl.DataPointException;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 

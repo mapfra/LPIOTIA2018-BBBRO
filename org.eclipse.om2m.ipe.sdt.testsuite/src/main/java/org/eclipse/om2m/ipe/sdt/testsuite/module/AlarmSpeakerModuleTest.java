@@ -19,8 +19,8 @@ import org.eclipse.om2m.sdt.Module;
 import org.eclipse.om2m.sdt.datapoints.BooleanDataPoint;
 import org.eclipse.om2m.sdt.datapoints.EnumDataPoint;
 import org.eclipse.om2m.sdt.home.types.AlertColourCode;
-import org.eclipse.om2m.sdt.impl.AccessException;
-import org.eclipse.om2m.sdt.impl.DataPointException;
+import org.eclipse.om2m.sdt.exceptions.AccessException;
+import org.eclipse.om2m.sdt.exceptions.DataPointException;
 
 public class AlarmSpeakerModuleTest extends AbstractModuleTest {
 

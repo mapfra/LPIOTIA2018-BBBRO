@@ -9,8 +9,8 @@ package org.eclipse.om2m.sdt.home.mocked.modules;
 
 import org.eclipse.om2m.sdt.Domain;
 import org.eclipse.om2m.sdt.datapoints.StringDataPoint;
+import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.modules.Streaming;
-import org.eclipse.om2m.sdt.impl.DataPointException;
 
 public class MockedStreaming extends Streaming {
 

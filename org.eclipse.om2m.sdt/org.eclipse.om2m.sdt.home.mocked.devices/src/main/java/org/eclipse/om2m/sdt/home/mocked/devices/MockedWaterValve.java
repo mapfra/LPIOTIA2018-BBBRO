@@ -10,11 +10,11 @@ package org.eclipse.om2m.sdt.home.mocked.devices;
 import java.util.List;
 
 import org.eclipse.om2m.sdt.Domain;
+import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.devices.WaterValve;
 import org.eclipse.om2m.sdt.home.mocked.modules.MockedFaultDetection;
 import org.eclipse.om2m.sdt.home.modules.Level;
 import org.eclipse.om2m.sdt.home.types.LevelType;
-import org.eclipse.om2m.sdt.impl.DataPointException;
 import org.osgi.framework.ServiceRegistration;
 
 public class MockedWaterValve extends WaterValve implements MockedDevice {

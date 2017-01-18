@@ -10,6 +10,8 @@ package org.eclipse.om2m.ipe.sdt;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.resource.CustomAttribute;
 import org.eclipse.om2m.commons.resource.FlexContainer;
@@ -29,11 +31,13 @@ import org.osgi.framework.ServiceRegistration;
  */
 public class ModuleSDTListener implements SDTEventListener {
 
+    private static Log logger = LogFactory.getLog(ModuleSDTListener.class);
+
 	private final CseService cseService;
 	private final Module module;
 	private final String moduleFlexContainerLocation;
 
-	private ServiceRegistration serviceRegistration;
+	private ServiceRegistration<?> serviceRegistration;
 
 	public ModuleSDTListener(final Module pModule, final CseService pCseService,
 			final String pModuleFlexContainerLocation) {
@@ -42,8 +46,9 @@ public class ModuleSDTListener implements SDTEventListener {
 		this.moduleFlexContainerLocation = pModuleFlexContainerLocation;
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void register() {
-		Logger.getInstance().logDebug(ModuleSDTListener.class, "registering as a SDTListener");
+		logger.info("registering as a SDTListener");
 		if (serviceRegistration == null) {
 			Dictionary properties = new Hashtable<>();
 			properties.put(SDTEventListener.DOMAINS, "*");
@@ -55,15 +60,14 @@ public class ModuleSDTListener implements SDTEventListener {
 
 			serviceRegistration = Activator.registerSDTListener(this, properties);
 
-			Logger.getInstance().logDebug(ModuleSDTListener.class, "register as a SDTListener - DONE");
+			logger.info("register as a SDTListener - DONE");
 		} else {
-			Logger.getInstance().logError(ModuleSDTListener.class,
-					"ModuleSDTListener has been previously registered!!!", null);
+			logger.error("ModuleSDTListener has been previously registered!!!", null);
 		}
 	}
 
 	public void unregister() {
-		Logger.getInstance().logDebug(ModuleSDTListener.class, "unregistering as a SDTListener");
+		logger.info("unregistering as a SDTListener");
 		if (serviceRegistration != null) {
 			serviceRegistration.unregister();
 			serviceRegistration = null;
@@ -72,8 +76,8 @@ public class ModuleSDTListener implements SDTEventListener {
 
 	@Override
 	public void handleNotification(SDTNotification notif) {
-		Logger.getInstance().logDebug(ModuleSDTListener.class,
-				"receive a notification for " + notif.getDataPoint().getName() + ", value=" + notif.getValue());
+		logger.info("receive a notification for " + notif.getDataPoint().getName() 
+				+ ", value=" + notif.getValue());
 
 		FlexContainer toBeUpdated = new FlexContainer();
 		CustomAttribute ca = new CustomAttribute();
@@ -87,12 +91,11 @@ public class ModuleSDTListener implements SDTEventListener {
 		ResponsePrimitive response = CseUtil.sendInternalNotifyFlexContainerRequest(cseService, 
 				toBeUpdated, moduleFlexContainerLocation);
 		if (! ResponseStatusCode.UPDATED.equals(response.getResponseStatusCode())) {
-			Logger.getInstance().logError(ModuleSDTListener.class,
-					"unable to send INTERNAL NOTIFY request to flexContainer " + moduleFlexContainerLocation + " : "
-							+ response.getContent(),
+			logger.info("unable to send INTERNAL NOTIFY request to flexContainer " 
+					+ moduleFlexContainerLocation + " : " + response.getContent(),
 					null);
 		} else {
-			Logger.getInstance().logDebug(ModuleSDTListener.class, "INTERNAL NOTIFY request successfully performed");
+			logger.debug("INTERNAL NOTIFY request successfully performed");
 		}
 	}
 

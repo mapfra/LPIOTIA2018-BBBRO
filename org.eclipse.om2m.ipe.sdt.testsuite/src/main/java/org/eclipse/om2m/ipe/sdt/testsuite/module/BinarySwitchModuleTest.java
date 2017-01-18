@@ -18,8 +18,8 @@ import org.eclipse.om2m.ipe.sdt.testsuite.TestReport.State;
 import org.eclipse.om2m.ipe.sdt.testsuite.module.exception.FlexContainerNotFound;
 import org.eclipse.om2m.sdt.Module;
 import org.eclipse.om2m.sdt.datapoints.BooleanDataPoint;
-import org.eclipse.om2m.sdt.impl.AccessException;
-import org.eclipse.om2m.sdt.impl.DataPointException;
+import org.eclipse.om2m.sdt.exceptions.AccessException;
+import org.eclipse.om2m.sdt.exceptions.DataPointException;
 
 public class BinarySwitchModuleTest extends AbstractModuleTest {
 

@@ -10,11 +10,11 @@ package org.eclipse.om2m.sdt.home.lifx.sdt;
 import org.eclipse.om2m.sdt.Domain;
 import org.eclipse.om2m.sdt.datapoints.BooleanDataPoint;
 import org.eclipse.om2m.sdt.datapoints.IntegerDataPoint;
+import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.devices.Light;
 import org.eclipse.om2m.sdt.home.lifx.LIFXDevice;
 import org.eclipse.om2m.sdt.home.modules.BinarySwitch;
 import org.eclipse.om2m.sdt.home.modules.Colour;
-import org.eclipse.om2m.sdt.impl.DataPointException;
 
 public class LIFXSDTDevice extends Light {
 	

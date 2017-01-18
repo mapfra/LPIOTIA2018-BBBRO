@@ -10,8 +10,8 @@ package org.eclipse.om2m.sdt.home.mocked.modules;
 import org.eclipse.om2m.sdt.Domain;
 import org.eclipse.om2m.sdt.datapoints.FloatDataPoint;
 import org.eclipse.om2m.sdt.datapoints.IntegerDataPoint;
+import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.modules.EnergyConsumption;
-import org.eclipse.om2m.sdt.impl.DataPointException;
 
 public class MockedEnergyConsumption extends EnergyConsumption {
 

@@ -15,6 +15,7 @@ import org.eclipse.om2m.sdt.datapoints.BooleanDataPoint;
 import org.eclipse.om2m.sdt.datapoints.FloatDataPoint;
 import org.eclipse.om2m.sdt.datapoints.IntegerDataPoint;
 import org.eclipse.om2m.sdt.datapoints.StringDataPoint;
+import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.devices.WeatherStation;
 import org.eclipse.om2m.sdt.home.driver.Utils;
 import org.eclipse.om2m.sdt.home.modules.AtmosphericPressureSensor;
@@ -24,7 +25,6 @@ import org.eclipse.om2m.sdt.home.modules.RelativeHumidity;
 import org.eclipse.om2m.sdt.home.modules.Temperature;
 import org.eclipse.om2m.sdt.home.netatmo.impl.Activator;
 import org.eclipse.om2m.sdt.home.netatmo.model.WeatherStationModule;
-import org.eclipse.om2m.sdt.impl.DataPointException;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 

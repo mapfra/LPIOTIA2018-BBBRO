@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-package org.eclipse.om2m.sdt.impl;
+package org.eclipse.om2m.sdt.args;
 
 import java.util.Collection;
 import java.util.Map;
@@ -13,7 +13,8 @@ import java.util.Map.Entry;
 
 import org.eclipse.om2m.sdt.Action;
 import org.eclipse.om2m.sdt.Arg;
-import org.eclipse.om2m.sdt.args.ValuedArg;
+import org.eclipse.om2m.sdt.exceptions.AccessException;
+import org.eclipse.om2m.sdt.exceptions.ActionException;
 import org.eclipse.om2m.sdt.utils.Activator;
 
 public abstract class Command extends Action {

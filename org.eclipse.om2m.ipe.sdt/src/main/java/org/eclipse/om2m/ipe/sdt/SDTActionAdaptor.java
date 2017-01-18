@@ -7,6 +7,8 @@
  *******************************************************************************/
 package org.eclipse.om2m.ipe.sdt;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.resource.CustomAttribute;
 import org.eclipse.om2m.commons.resource.FlexContainer;
@@ -18,6 +20,8 @@ import org.eclipse.om2m.sdt.Arg;
 import org.eclipse.om2m.sdt.Module;
 
 public class SDTActionAdaptor {
+
+    private static Log logger = LogFactory.getLog(SDTActionAdaptor.class);
 
 	private static final String SEP = "/";
 
@@ -43,8 +47,7 @@ public class SDTActionAdaptor {
 	}
 
 	public boolean publishActionIntoOM2MTree() {
-		Logger.getInstance().logInfo(SDTActionAdaptor.class,
-				"publishActionFromOM2MTree(name=" + this.action.getName() 
+		logger.info("publishActionFromOM2MTree(name=" + this.action.getName() 
 				+ ", location=" + resourceLocation + ")");
 
 		FlexContainer actionFlexContainer = new FlexContainer();
@@ -67,22 +70,23 @@ public class SDTActionAdaptor {
 		ResponsePrimitive response = CseUtil.sendCreateFlexContainerRequest(cseService, 
 				actionFlexContainer, parentLocation, resourceName);
 		if (! response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {
-			Logger.getInstance().logError(SDTModuleAdaptor.class,
-					"unable to create a FlexContainer for action " + this.action.getName() + ":" + response.getContent(), null);
+			logger.error("unable to create a FlexContainer for action " + action.getName() 
+					+ ":" + response.getContent(), null);
 			return false;
 		}
 		FlexContainer createdFlexContainer = (FlexContainer) response.getContent(); 
-		actionFlexContainerService = new ActionFlexContainerService(action, createdFlexContainer.getResourceID());
+		actionFlexContainerService = new ActionFlexContainerService(action, 
+				createdFlexContainer.getResourceID());
 		actionFlexContainerService.register();
 
-		Logger.getInstance().logDebug(SDTActionAdaptor.class, "publishActionFromOM2MTree(name=" + this.action.getName()
+		logger.debug("publishActionFromOM2MTree(name=" + this.action.getName()
 				+ ", location=" + resourceLocation + ") - OK");
 		return true;
 	}
 
 	public void unpublishActionFromOM2MTree() {
-		Logger.getInstance().logInfo(SDTActionAdaptor.class,
-				"unpublishActionFromOM2MTree(name=" + this.action.getName() + ", location=" + resourceLocation + ")");
+		logger.info("unpublishActionFromOM2MTree(name=" + this.action.getName() 
+				+ ", location=" + resourceLocation + ")");
 		CseUtil.sendDeleteRequest(cseService, resourceLocation);
 	}
 

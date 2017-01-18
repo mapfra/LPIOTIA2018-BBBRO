@@ -22,9 +22,7 @@ public enum DeviceType {
 	deviceTelevision(11, "deviceTelevision"),
 	deviceThermostat(12, "deviceThermostat"),
 	deviceWaterHeater(13, "deviceWaterHeater"),
-	
 	deviceCoffeeMachine(14, "deviceCoffeeMachine"), 
-	
 	
 	deviceDoor(100, "deviceDoor"),
 	deviceSmokeExtractor(101, "deviceSmokeExtractor"),

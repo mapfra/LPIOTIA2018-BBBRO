@@ -13,7 +13,7 @@ Export-Package: org.eclipse.om2m.sdt,
  org.eclipse.om2m.sdt.args,
  org.eclipse.om2m.sdt.datapoints,
  org.eclipse.om2m.sdt.events,
- org.eclipse.om2m.sdt.impl,
+ org.eclipse.om2m.sdt.exceptions,
  org.eclipse.om2m.sdt.rights,
  org.eclipse.om2m.sdt.types,
  org.eclipse.om2m.sdt.utils

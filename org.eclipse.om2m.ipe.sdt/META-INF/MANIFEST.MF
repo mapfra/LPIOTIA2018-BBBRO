@@ -7,18 +7,19 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 No-otb-proxy: true
 Bundle-ClassPath: .
 Bundle-Activator: org.eclipse.om2m.ipe.sdt.Activator
-Import-Package: org.eclipse.om2m.commons.constants,
+Import-Package: org.apache.commons.logging,
+ org.eclipse.om2m.commons.constants,
  org.eclipse.om2m.commons.exceptions,
  org.eclipse.om2m.commons.resource,
  org.eclipse.om2m.core.service,
  org.eclipse.om2m.datamapping.service,
  org.eclipse.om2m.flexcontainer.service,
  org.eclipse.om2m.sdt,
+ org.eclipse.om2m.sdt.args,
  org.eclipse.om2m.sdt.datapoints,
  org.eclipse.om2m.sdt.events,
- org.eclipse.om2m.sdt.impl,
+ org.eclipse.om2m.sdt.exceptions,
  org.eclipse.om2m.sdt.types,
  org.osgi.framework,
  org.osgi.service.cm,
- org.osgi.service.log,
  org.osgi.util.tracker

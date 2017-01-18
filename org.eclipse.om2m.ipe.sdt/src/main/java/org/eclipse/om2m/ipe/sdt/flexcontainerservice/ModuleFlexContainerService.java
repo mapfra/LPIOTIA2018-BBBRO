@@ -9,24 +9,27 @@ package org.eclipse.om2m.ipe.sdt.flexcontainerservice;
 
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.exceptions.Om2mException;
 import org.eclipse.om2m.commons.resource.CustomAttribute;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.flexcontainer.service.FlexContainerService;
 import org.eclipse.om2m.ipe.sdt.Activator;
-import org.eclipse.om2m.ipe.sdt.Logger;
 import org.eclipse.om2m.ipe.sdt.SDTUtil;
 import org.eclipse.om2m.sdt.DataPoint;
 import org.eclipse.om2m.sdt.Module;
 import org.eclipse.om2m.sdt.Property;
 import org.eclipse.om2m.sdt.datapoints.AbstractDateDataPoint;
 import org.eclipse.om2m.sdt.datapoints.ValuedDataPoint;
-import org.eclipse.om2m.sdt.impl.AccessException;
-import org.eclipse.om2m.sdt.impl.DataPointException;
+import org.eclipse.om2m.sdt.exceptions.AccessException;
+import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.osgi.framework.ServiceRegistration;
 
 public class ModuleFlexContainerService implements FlexContainerService {
+
+    private static Log logger = LogFactory.getLog(ModuleFlexContainerService.class);
 
 	private final Module module;
 
@@ -55,13 +58,11 @@ public class ModuleFlexContainerService implements FlexContainerService {
 
 	@Override
 	public String getCustomAttributeValue(String customAttributeName) throws Om2mException {
-		Logger.getInstance().logDebug(ModuleFlexContainerService.class,
-				"DataPointFlexContainerService - getCustomAttributeValue(customAttributeName=" 
+		logger.debug("DataPointFlexContainerService - getCustomAttributeValue(customAttributeName=" 
 						+ customAttributeName + ")");
 		Property prop = module.getProperty(customAttributeName);
 		if (prop != null) {
-			Logger.getInstance().logDebug(ModuleFlexContainerService.class,
-					"CustomAttribute is a property, not a datapoint");
+			logger.debug("CustomAttribute is a property, not a datapoint");
 			return prop.getValue();
 		}
 
@@ -93,8 +94,7 @@ public class ModuleFlexContainerService implements FlexContainerService {
 					ResponseStatusCode.ACCESS_DENIED);
 		}
 
-		Logger.getInstance().logDebug(ModuleFlexContainerService.class,
-				"DataPointFlexContainerService - getCustomAttributeValue(customAttributeName=" + customAttributeName
+		logger.debug("DataPointFlexContainerService - getCustomAttributeValue(customAttributeName=" + customAttributeName
 						+ ") - value=" + value);
 		return value;
 	}
@@ -102,7 +102,7 @@ public class ModuleFlexContainerService implements FlexContainerService {
 	@Override
 	public void setCustomAttributeValues(List<CustomAttribute> customAttributes, RequestPrimitive requestPrimitive)
 			throws Om2mException {
-		Logger.getInstance().logDebug(ModuleFlexContainerService.class, "setCustomAttributeValue()");
+		logger.debug("setCustomAttributeValue()");
 
 		for (CustomAttribute ca : customAttributes) {
 			DataPoint dataPoint = module.getDataPoint(ca.getCustomAttributeName());
@@ -118,20 +118,17 @@ public class ModuleFlexContainerService implements FlexContainerService {
 				try {
 					value = SDTUtil.getValue(ca.getCustomAttributeValue(), type);
 				} catch (Exception e) {
-					Logger.getInstance().logInfo(ModuleFlexContainerService.class, 
-							msg + "KO: " + e.getMessage());
+					logger.info(msg + "KO: " + e.getMessage());
 					throw new Om2mException(e.getMessage(), e, ResponseStatusCode.CONTENTS_UNACCEPTABLE);
 				}
 				try {
 					valuedDataPoint.setValue(value);
-					Logger.getInstance().logDebug(ModuleFlexContainerService.class, msg + "OK");
+					logger.debug(msg + "OK");
 				} catch (AccessException e) {
-					Logger.getInstance().logDebug(ModuleFlexContainerService.class, 
-							msg + "KO: " + e.getMessage());
+					logger.debug(msg + "KO: " + e.getMessage());
 					throw new Om2mException(e.getMessage(), e, ResponseStatusCode.ACCESS_DENIED);
 				} catch (Exception e) {
-					Logger.getInstance().logDebug(ModuleFlexContainerService.class, 
-							msg + "KO: " + e.getMessage());
+					logger.debug(msg + "KO: " + e.getMessage());
 					throw new Om2mException(e.getMessage(), e, ResponseStatusCode.INTERNAL_SERVER_ERROR);
 				}
 			} else {

@@ -12,13 +12,13 @@ import java.util.List;
 
 import org.eclipse.om2m.sdt.Domain;
 import org.eclipse.om2m.sdt.datapoints.IntegerDataPoint;
+import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.devices.Light;
 import org.eclipse.om2m.sdt.home.mocked.modules.MockedBinarySwitch;
 import org.eclipse.om2m.sdt.home.mocked.modules.MockedColour;
 import org.eclipse.om2m.sdt.home.mocked.modules.MockedFaultDetection;
 import org.eclipse.om2m.sdt.home.mocked.modules.MockedRunMode;
 import org.eclipse.om2m.sdt.home.modules.ColourSaturation;
-import org.eclipse.om2m.sdt.impl.DataPointException;
 import org.osgi.framework.ServiceRegistration;
 
 public class MockedLight extends Light implements MockedDevice {

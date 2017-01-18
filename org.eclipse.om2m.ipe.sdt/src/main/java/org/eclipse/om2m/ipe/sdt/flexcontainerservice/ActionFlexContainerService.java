@@ -11,21 +11,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.exceptions.Om2mException;
 import org.eclipse.om2m.commons.resource.CustomAttribute;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.flexcontainer.service.FlexContainerService;
 import org.eclipse.om2m.ipe.sdt.Activator;
-import org.eclipse.om2m.ipe.sdt.Logger;
 import org.eclipse.om2m.ipe.sdt.SDTUtil;
 import org.eclipse.om2m.sdt.Action;
-import org.eclipse.om2m.sdt.impl.AccessException;
-import org.eclipse.om2m.sdt.impl.ActionException;
-import org.eclipse.om2m.sdt.impl.Command;
+import org.eclipse.om2m.sdt.args.Command;
+import org.eclipse.om2m.sdt.exceptions.AccessException;
+import org.eclipse.om2m.sdt.exceptions.ActionException;
 import org.osgi.framework.ServiceRegistration;
 
 public class ActionFlexContainerService implements FlexContainerService {
+
+    private static Log logger = LogFactory.getLog(ActionFlexContainerService.class);
 
 	private final Action action;
 	private final String resourceId;
@@ -59,8 +62,7 @@ public class ActionFlexContainerService implements FlexContainerService {
 	@Override
 	public void setCustomAttributeValues(List<CustomAttribute> customAttributes, 
 			RequestPrimitive requestPrimitive) throws Om2mException {
-		Logger.getInstance().logDebug(ActionFlexContainerService.class, 
-				"setCustomAttributeValues(" + customAttributes + ")");
+		logger.debug("setCustomAttributeValues(" + customAttributes + ")");
 
 //		boolean actionToBeInvoked = false;
 		Map<String, Object> args = null;
@@ -91,8 +93,7 @@ public class ActionFlexContainerService implements FlexContainerService {
 //		if (actionToBeInvoked) {
 			// invoke action
 			try {
-				Logger.getInstance().logDebug(ActionFlexContainerService.class, 
-						"setCustomAttributeValues(" + customAttributes + ") - invoke action");
+				logger.debug("setCustomAttributeValues(" + customAttributes + ") - invoke action");
 				Object response = ((Command) action).invoke(args);
 				if (response != null) {
 					CustomAttribute output = new CustomAttribute();
@@ -102,13 +103,11 @@ public class ActionFlexContainerService implements FlexContainerService {
 					customAttributes.add(output);
 				}
 			} catch (ActionException e) {
-				Logger.getInstance().logDebug(ActionFlexContainerService.class, 
-						"setCustomAttributeValues(" + customAttributes 
+				logger.debug("setCustomAttributeValues(" + customAttributes 
 						+ ") - KO: " + e.getMessage());
 				throw new Om2mException("action execution failed:" + e.getMessage(), ResponseStatusCode.BAD_REQUEST);
 			} catch (AccessException e) {
-				Logger.getInstance().logDebug(ActionFlexContainerService.class, 
-						"setCustomAttributeValues(" + customAttributes 
+				logger.debug("setCustomAttributeValues(" + customAttributes 
 						+ ") - KO: " + e.getMessage());
 				throw new Om2mException("action execution failed:" + e.getMessage(), ResponseStatusCode.ACCESS_DENIED);
 			}
