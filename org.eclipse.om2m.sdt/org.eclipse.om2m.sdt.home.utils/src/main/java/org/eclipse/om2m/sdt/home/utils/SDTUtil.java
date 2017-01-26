@@ -56,7 +56,10 @@ public class SDTUtil {
 			if (value.charAt(last) == ']')
 				value = value.substring(0, last);
 			for (String val : value.split(",")) {
-				ret.add(val.trim());
+					String valueToAdd = val.trim();
+					if (valueToAdd.length() > 0) {
+						ret.add(valueToAdd);
+					}
 			}
 			return ret;
 		case "xs:uri": return new URI(value);
