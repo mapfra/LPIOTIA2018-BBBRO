@@ -54,5 +54,9 @@ public class Streaming extends Module {
 	public String getPasswordValue() throws DataPointException, AccessException {
 		return password.getValue();
 	}
+	
+	public String getFormatValue()  throws DataPointException, AccessException {
+		return format.getValue();
+	}
 
 }
