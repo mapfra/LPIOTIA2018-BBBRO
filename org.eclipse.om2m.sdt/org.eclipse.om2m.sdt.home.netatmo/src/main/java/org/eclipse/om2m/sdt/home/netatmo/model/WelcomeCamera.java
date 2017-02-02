@@ -26,11 +26,20 @@ public class WelcomeCamera {
 	private Boolean isOn;
 	private Boolean sdOk;
 	private Boolean alimOk;
+	private Boolean useLocalUrl;
 
 	public WelcomeCamera(final String pId, final String pType, final String pName) {
 		id = pId;
 		name = pName;
 		type = pType;
+	}
+
+	public void setUseLocalUrl(Boolean useLocalUrl) {
+		this.useLocalUrl = useLocalUrl;
+	}
+
+	public Boolean getUseLocalUrl() {
+		return useLocalUrl;
 	}
 
 	public String getVpnUrl() {

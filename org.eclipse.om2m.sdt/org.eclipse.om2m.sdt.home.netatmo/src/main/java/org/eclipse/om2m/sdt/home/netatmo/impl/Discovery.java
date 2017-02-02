@@ -32,6 +32,7 @@ public class Discovery {
 	public static final String CONFIG_WELCOME_CAMERA_SAMPLING = "welcome.camera.sampling";
 	public static final String CONFIG_WEATHER_STATION_SAMPLING = "weather.station.sampling";
 	public static final String CONFIG_CAMERA_DETECTION_THRESHOLD = "camera.detection.threshold";
+	public static final String CONFIG_CAMERA_USE_LOCAL_URL = "camera.use.local.url";
 
 	private static final int WELCOME_CAMERA_SAMPLING_DEFAULT_VALUE = 8000;
 	private static final int WEATHER_STATION_SAMPLING_DEFAULT_VALUE = 30000;
@@ -48,9 +49,19 @@ public class Discovery {
 	
 	private int welcomeCameraSampling;
 	private int weatherStationSampling;
-
+	private boolean useLocalUrl = false;
+	
 	@SuppressWarnings("rawtypes")
 	public Discovery(Dictionary properties) {
+		
+		// retrieve useLocalUrl
+		Object useLocalUrlProp = properties.get(CONFIG_CAMERA_USE_LOCAL_URL);
+		if (useLocalUrlProp != null) {
+			useLocalUrl = Boolean.parseBoolean(useLocalUrlProp.toString());
+		} else {
+			// default value = false
+		}
+		
 		server = new Server((String) properties.get(CONFIG_CLIENT_ID), 
 				(String) properties.get(CONFIG_CLIENT_SECRET),
 				(String) properties.get(CONFIG_USERNAME), 
@@ -85,10 +96,18 @@ public class Discovery {
 					return;
 				}
 				Home updatedHome = homes.get(0);
+				
+				// update useLocal parameter
+				for(WelcomeCamera c : updatedHome.getCameras().values()) {
+					c.setUseLocalUrl(useLocalUrl);
+				}
+				
 				if (currentHome == null) {
 					currentHome = updatedHome;
+					
 					// notify new Home
 					notifyHomeAdded(currentHome);
+					
 				} else {
 					if (updatedHome.getId().equals(currentHome.getId())) {
 						// camera

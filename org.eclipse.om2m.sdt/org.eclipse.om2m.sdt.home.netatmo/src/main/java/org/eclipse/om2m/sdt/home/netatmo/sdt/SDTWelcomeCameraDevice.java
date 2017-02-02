@@ -84,7 +84,11 @@ public class SDTWelcomeCameraDevice extends Camera {
 			new StringDataPoint("url") {
 				@Override
 				protected String doGetValue() throws DataPointException {
-					return camera.getVpnUrl() + "/live/index_local.m3u8";
+					if (camera.getUseLocalUrl()) {
+						return camera.getVpnUrl() + "/live/index_local.m3u8";
+					} else {
+						return camera.getVpnUrl() + "/live/index.m3u8";
+					}
 				}
 			}, 
 			new StringDataPoint("login") {

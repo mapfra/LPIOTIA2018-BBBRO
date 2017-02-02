@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: org.eclipse.om2m.sdt.home.netatmo
-Bundle-SymbolicName: org.eclipse.om2m.sdt.home.netatmo
+Bundle-SymbolicName: org.eclipse.om2m.sdt.home.netatmo;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-Activator: org.eclipse.om2m.sdt.home.netatmo.impl.Activator
@@ -13,6 +13,8 @@ Import-Package: org.eclipse.om2m.sdt,
  org.eclipse.om2m.sdt.home.devices,
  org.eclipse.om2m.sdt.home.driver,
  org.eclipse.om2m.sdt.home.modules,
+ org.jmock;resolution:=optional,
+ org.junit;version="4.12.0";resolution:=optional,
  org.osgi.framework,
  org.osgi.service.cm,
  org.osgi.service.log,
