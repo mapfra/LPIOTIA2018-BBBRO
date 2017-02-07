@@ -7,6 +7,7 @@
  *******************************************************************************/
 package org.eclipse.om2m.sdt.home.cloud;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -84,20 +85,24 @@ public class Activator implements BundleActivator {
 	}
 
 	private void readDevices() {
-		List<String> newDevices = null;
+		List<String> newDevices = new ArrayList<String>();
 		try {
-			newDevices = ResourceDiscovery.readDeviceURIs();
+			newDevices.addAll(ResourceDiscovery.readDeviceURIs());
 		} catch (Throwable e) {
 			logger.error("Error reading remote devices: " + e.getMessage(), e);
 		}
+		List<String> toUninstall = new ArrayList<String>();
 		for (String uri : devices.keySet()) {
 			if (! newDevices.contains(uri)) {
-				logger.info("No longer present device");
-				uninstall(uri);
+				toUninstall.add(uri);
 			}
 		}
+		logger.info("No longer present devices: " + toUninstall);
+		for (String uri : toUninstall) {
+			uninstall(uri);
+		}
 		for (String uri : newDevices) {
-			if (devices.get(uri) != null) {
+			if (devices.containsKey(uri)) {
 				logger.info("Already installed device " + uri);
 			} else {
 				install(uri);
@@ -146,7 +151,7 @@ public class Activator implements BundleActivator {
 	@Override
 	public void stop(BundleContext context) throws Exception {
 		running = false;
-		for (String uri : devices.keySet()) {
+		for (String uri : new ArrayList<String>(devices.keySet())) {
 			uninstall(uri);
 		}
 		cseServiceTracker.close();
