@@ -58,10 +58,12 @@ public class CSEInitializer {
 
 	/** Logger */
 	private static final Log LOGGER = LogFactory.getLog(CSEInitializer.class);
-	
-	private static String contentFormat = System.getProperty("org.eclipse.om2m.registration.contentFormat", MimeMediaType.XML);
+
+	private static String contentFormat = System.getProperty("org.eclipse.om2m.registration.contentFormat",
+			MimeMediaType.XML);
+
 	/** Private constructor */
-	private CSEInitializer(){
+	private CSEInitializer() {
 	}
 
 	private static String acpAdminId;
@@ -69,7 +71,7 @@ public class CSEInitializer {
 	/**
 	 * Initialize the current launching CSE.
 	 */
-	public static void init() throws InterruptedException{
+	public static void init() throws InterruptedException {
 		LOGGER.info("Initializating the cseBase");
 		// Check the existence of the cseBase in the database
 		DBService dbs = PersistenceService.getInstance().getDbService();
@@ -77,19 +79,19 @@ public class CSEInitializer {
 		transaction.open();
 		CSEBaseEntity cseBase = dbs.getDAOFactory().getCSEBaseDAO().find(transaction, "/" + Constants.CSE_ID);
 		// if the cseBase is not initialized, then create the base resources
-		if(cseBase == null){
+		if (cseBase == null) {
 			// Create AccessRight resource
 			LOGGER.info("Create AccessControlPolicy resource");
 			initACP();
-			
+
 			// Create CSEBase resource
 			LOGGER.info("Create CSEBase resource");
-			initCSEBase();			
+			initCSEBase();
 
-			if(!Constants.CSE_TYPE.equalsIgnoreCase(CSEType.IN) && Constants.CSE_AUTHENTICATION){
+			if (!Constants.CSE_TYPE.equalsIgnoreCase(CSEType.IN) && Constants.CSE_AUTHENTICATION) {
 				LOGGER.info("Register CSE to another CSE.");
 				new Thread(new Runnable() {
-					
+
 					@Override
 					public void run() {
 						registerCSE();
@@ -110,10 +112,9 @@ public class CSEInitializer {
 		DBService db = PersistenceService.getInstance().getDbService();
 		DBTransaction transaction = db.getDbTransaction();
 		transaction.open();
-		String acpUri = UriMapper.getNonHierarchicalUri("/" + Constants.CSE_ID +"/" + Constants.CSE_NAME + "/" + Constants.ADMIN_PROFILE_ID); 
-		AccessControlPolicyEntity acpEntity = db.getDAOFactory().
-				getAccessControlPolicyDAO().find
-				(transaction, acpUri);
+		String acpUri = UriMapper.getNonHierarchicalUri(
+				"/" + Constants.CSE_ID + "/" + Constants.CSE_NAME + "/" + Constants.ADMIN_PROFILE_ID);
+		AccessControlPolicyEntity acpEntity = db.getDAOFactory().getAccessControlPolicyDAO().find(transaction, acpUri);
 		cseBaseEntity.getAccessControlPolicies().add(acpEntity);
 		cseBaseEntity.getChildAccessControlPolicies().add(acpEntity);
 		cseBaseEntity.setCreationTime(DateUtil.now());
@@ -125,28 +126,20 @@ public class CSEInitializer {
 		cseBaseEntity.setResourceType(BigInteger.valueOf(ResourceType.CSE_BASE));
 		cseBaseEntity.setHierarchicalURI("/" + Constants.CSE_ID + "/" + Constants.CSE_NAME);
 		// generating array of supported resources types
-		int[] supportedResources = {
-				ResourceType.ACCESS_CONTROL_POLICY,
-				ResourceType.AE,
-				ResourceType.CONTAINER,
-				ResourceType.CONTENT_INSTANCE,
-				ResourceType.CSE_BASE,
-				ResourceType.GROUP,
-				ResourceType.NODE,
-				ResourceType.POLLING_CHANNEL,
-				ResourceType.REMOTE_CSE,
-				ResourceType.REQUEST,
-				ResourceType.SUBSCRIPTION
-		};
-		
-		for(int rt : supportedResources){
+		int[] supportedResources = { ResourceType.ACCESS_CONTROL_POLICY, ResourceType.AE, ResourceType.CONTAINER,
+				ResourceType.CONTENT_INSTANCE, ResourceType.CSE_BASE, ResourceType.GROUP, ResourceType.NODE,
+				ResourceType.POLLING_CHANNEL, ResourceType.REMOTE_CSE, ResourceType.REQUEST,
+				ResourceType.SUBSCRIPTION };
+
+		for (int rt : supportedResources) {
 			cseBaseEntity.getSupportedResourceType().add(BigInteger.valueOf(rt));
 		}
 
-		cseBaseEntity.getPointOfAccess().add("http://" + Constants.CSE_IP+ ":" + Constants.CSE_PORT + Constants.CSE_CONTEXT);
+		cseBaseEntity.getPointOfAccess()
+				.add("http://" + Constants.CSE_IP + ":" + Constants.CSE_PORT + Constants.CSE_CONTEXT);
 
 		UriMapper.addNewUri(cseBaseEntity.getHierarchicalURI(), cseBaseEntity.getResourceID(), ResourceType.CSE_BASE);
-		if (db.getDAOFactory().getCSEBaseDAO().find(transaction, cseBaseEntity.getResourceID()) == null){
+		if (db.getDAOFactory().getCSEBaseDAO().find(transaction, cseBaseEntity.getResourceID()) == null) {
 			db.getDAOFactory().getCSEBaseDAO().create(transaction, cseBaseEntity);
 		} else {
 			db.getDAOFactory().getCSEBaseDAO().update(transaction, cseBaseEntity);
@@ -159,7 +152,7 @@ public class CSEInitializer {
 	 */
 	private static void registerCSE() {
 		RemoteCSE remoteCSE = new RemoteCSE();
-		switch(Constants.CSE_TYPE.toLowerCase()){
+		switch (Constants.CSE_TYPE.toLowerCase()) {
 		case CSEType.ASN:
 			remoteCSE.setCseType(CSEType.ASN_CSE);
 			break;
@@ -170,21 +163,22 @@ public class CSEInitializer {
 			break;
 		}
 		String httpPoa = "http://" + Constants.CSE_IP + ":" + Constants.CSE_PORT + Constants.CSE_CONTEXT;
-		if (Constants.CSE_CONTEXT.length() > 1){
-			httpPoa += "/" ;
+		if (Constants.CSE_CONTEXT.length() > 1) {
+			httpPoa += "/";
 		}
 		remoteCSE.getPointOfAccess().add(httpPoa);
 		remoteCSE.setCSEID("/" + Constants.CSE_ID);
 		remoteCSE.setCSEBase("//" + Constants.M2M_SP_ID + remoteCSE.getCSEID());
 		remoteCSE.setRequestReachability(new Boolean(true));
 		remoteCSE.setName(Constants.CSE_NAME);
-		
+
 		String representation = DataMapperSelector.getDataMapperList().get(contentFormat).objToString(remoteCSE);
 
 		RequestPrimitive request = new RequestPrimitive();
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
-		String remotePoa = "http://" + Constants.REMOTE_CSE_IP + ":" + Constants.REMOTE_CSE_PORT + "/~" + Constants.REMOTE_CSE_CONTEXT;
-		if (Constants.REMOTE_CSE_CONTEXT.length() > 1 && !Constants.REMOTE_CSE_CONTEXT.equals("/~")){
+		String remotePoa = "http://" + Constants.REMOTE_CSE_IP + ":" + Constants.REMOTE_CSE_PORT + "/~"
+				+ Constants.REMOTE_CSE_CONTEXT;
+		if (Constants.REMOTE_CSE_CONTEXT.length() > 1 && !Constants.REMOTE_CSE_CONTEXT.equals("/~")) {
 			remotePoa += "/";
 		}
 		remotePoa += Constants.REMOTE_CSE_ID;
@@ -195,14 +189,21 @@ public class CSEInitializer {
 		request.setRequestContentType(contentFormat);
 		request.setRequestIdentifier("001");
 
-		boolean registered = false ; 
-		while(!registered){
+		boolean registered = false;
+		while (!registered) {
 			ResponsePrimitive response = RestClient.sendRequest(request);
 			LOGGER.info("response after registration: " + response);
-			if(response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)
-					|| response.getResponseStatusCode().equals(ResponseStatusCode.CONFLICT)){
+			if (response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {
 				registered = true;
 				break;
+			} else if (ResponseStatusCode.CONFLICT.equals(response.getResponseStatusCode())) {
+				// conflict ==> the CSE was previously registered
+				// need to delete old registration
+				deleteRegistration();
+
+				// then create a new one
+				registered=false;
+
 			} else {
 				try {
 					LOGGER.info("Error in registration to another CSE. Retrying in 10s");
@@ -221,23 +222,22 @@ public class CSEInitializer {
 		DBService dbs = PersistenceService.getInstance().getDbService();
 		DBTransaction transaction = dbs.getDbTransaction();
 		transaction.open();
-		remoteCseEntity.getAccessControlPolicies().add(
-				dbs.getDAOFactory().getAccessControlPolicyDAO().find(
-						transaction, acpAdminId));
+		remoteCseEntity.getAccessControlPolicies()
+				.add(dbs.getDAOFactory().getAccessControlPolicyDAO().find(transaction, acpAdminId));
 		remoteCseEntity.setResourceType(BigInteger.valueOf(ResourceType.REMOTE_CSE));
 		remoteCseEntity.setHierarchicalURI(
 				"/" + Constants.CSE_ID + "/" + Constants.CSE_NAME + "/" + Constants.REMOTE_CSE_NAME);
 		String generatedId = Controller.generateId("", "");
 		remoteCseEntity.setResourceID(
-				"/" + Constants.CSE_ID + "/" + ShortName.REMOTE_CSE + 
-				Constants.PREFIX_SEPERATOR + generatedId);
+				"/" + Constants.CSE_ID + "/" + ShortName.REMOTE_CSE + Constants.PREFIX_SEPERATOR + generatedId);
 		remoteCseEntity.setName(Constants.REMOTE_CSE_NAME);
-		UriMapper.addNewUri(remoteCseEntity.getHierarchicalURI(), 
-				remoteCseEntity.getResourceID(), ResourceType.REMOTE_CSE);
-		remoteCseEntity.setRemoteCseId("/"+Constants.REMOTE_CSE_ID);
+		UriMapper.addNewUri(remoteCseEntity.getHierarchicalURI(), remoteCseEntity.getResourceID(),
+				ResourceType.REMOTE_CSE);
+		remoteCseEntity.setRemoteCseId("/" + Constants.REMOTE_CSE_ID);
 		remoteCseEntity.setRemoteCseUri("//" + Constants.M2M_SP_ID + remoteCseEntity.getRemoteCseId());
-		String poa = "http://" + Constants.REMOTE_CSE_IP + ":" + Constants.REMOTE_CSE_PORT + Constants.REMOTE_CSE_CONTEXT;
-		if (Constants.REMOTE_CSE_CONTEXT.length() > 1){
+		String poa = "http://" + Constants.REMOTE_CSE_IP + ":" + Constants.REMOTE_CSE_PORT
+				+ Constants.REMOTE_CSE_CONTEXT;
+		if (Constants.REMOTE_CSE_CONTEXT.length() > 1) {
 			poa += "/";
 		}
 		remoteCseEntity.getPointOfAccess().add(poa);
@@ -250,6 +250,29 @@ public class CSEInitializer {
 		transaction.close();
 	}
 
+	private static void deleteRegistration() {
+
+		// send DELETE request the Registrar CSE
+		unregisterCse();
+
+		// make sure no remoteCse in database
+		DBService dbs = PersistenceService.getInstance().getDbService();
+		DBTransaction transaction = dbs.getDbTransaction();
+		transaction.open();
+		RemoteCSEEntity remoteCse = dbs.getDAOFactory().getRemoteCSEbyCseIdDAO().find(transaction,
+				"/" + Constants.CSE_ID + "/" + Constants.CSE_NAME + "/" + Constants.REMOTE_CSE_NAME);
+		if (remoteCse != null) {
+			// remove RemoteCSE from database
+			dbs.getDAOFactory().getRemoteCSEDAO().delete(transaction, remoteCse);
+			
+			LOGGER.info("remove remoteCSE from database");
+		} else {
+			LOGGER.warn("No remoteCSE to remove from database");
+		}
+		transaction.close();
+
+	}
+
 	/**
 	 * Creates a default {@link AccessControlPolicy} resource in DataBase.
 	 */
@@ -258,7 +281,8 @@ public class CSEInitializer {
 		acp.setParentID("/" + Constants.CSE_ID);
 		acp.setCreationTime(DateUtil.now());
 		acp.setLastModifiedTime(DateUtil.now());
-		acp.setResourceID("/" + Constants.CSE_ID + "/" + ShortName.ACP + Constants.PREFIX_SEPERATOR + Controller.generateId());
+		acp.setResourceID(
+				"/" + Constants.CSE_ID + "/" + ShortName.ACP + Constants.PREFIX_SEPERATOR + Controller.generateId());
 		acp.setName(Constants.ADMIN_PROFILE_ID);
 		acp.setResourceType(BigInteger.valueOf(ResourceType.ACCESS_CONTROL_POLICY));
 		acp.setHierarchicalURI("/" + Constants.CSE_ID + "/" + Constants.CSE_NAME + "/" + acp.getName());
@@ -266,7 +290,8 @@ public class CSEInitializer {
 
 		// Self-privileges - all rights for admin
 		AccessControlRuleEntity ruleEntity = new AccessControlRuleEntity();
-		AccessControlOriginatorEntity originatorEntity = new AccessControlOriginatorEntity(Constants.ADMIN_REQUESTING_ENTITY);
+		AccessControlOriginatorEntity originatorEntity = new AccessControlOriginatorEntity(
+				Constants.ADMIN_REQUESTING_ENTITY);
 		ruleEntity.getAccessControlOriginators().add(originatorEntity);
 		ruleEntity.setCreate(true);
 		ruleEntity.setRetrieve(true);
@@ -275,7 +300,7 @@ public class CSEInitializer {
 		ruleEntity.setNotify(true);
 		ruleEntity.setDiscovery(true);
 		acp.getSelfPrivileges().add(ruleEntity);
-		
+
 		// Privileges - all rights for admin
 		ruleEntity = new AccessControlRuleEntity();
 		ruleEntity.setCreate(true);
@@ -284,24 +309,26 @@ public class CSEInitializer {
 		ruleEntity.setDelete(true);
 		ruleEntity.setNotify(true);
 		ruleEntity.setDiscovery(true);
-		ruleEntity.getAccessControlOriginators().add(new AccessControlOriginatorEntity(Constants.ADMIN_REQUESTING_ENTITY));
+		ruleEntity.getAccessControlOriginators()
+				.add(new AccessControlOriginatorEntity(Constants.ADMIN_REQUESTING_ENTITY));
 		ruleEntity.getAccessControlOriginators().add(new AccessControlOriginatorEntity("/" + Constants.CSE_ID));
 		acp.getPrivileges().add(ruleEntity);
-		
+
 		// privileges for ALL originators (read + discovery)
 		ruleEntity = new AccessControlRuleEntity();
 		ruleEntity.setRetrieve(true);
 		ruleEntity.setDiscovery(true);
-		ruleEntity.getAccessControlOriginators().add(new AccessControlOriginatorEntity(Constants.GUEST_REQUESTING_ENTITY));
+		ruleEntity.getAccessControlOriginators()
+				.add(new AccessControlOriginatorEntity(Constants.GUEST_REQUESTING_ENTITY));
 		ruleEntity.getAccessControlOriginators().add(new AccessControlOriginatorEntity(AccessControl.ORIGINATOR_ALL));
 		acp.getPrivileges().add(ruleEntity);
 
-		acpAdminId = acp.getResourceID() ;
+		acpAdminId = acp.getResourceID();
 
 		DBService db = PersistenceService.getInstance().getDbService();
 		DBTransaction transaction = db.getDbTransaction();
 		transaction.open();
-		if (db.getDAOFactory().getAccessControlPolicyDAO().find(transaction, acp.getResourceID()) == null){
+		if (db.getDAOFactory().getAccessControlPolicyDAO().find(transaction, acp.getResourceID()) == null) {
 			db.getDAOFactory().getAccessControlPolicyDAO().create(transaction, acp);
 		} else {
 			db.getDAOFactory().getAccessControlPolicyDAO().update(transaction, acp);
@@ -309,23 +336,24 @@ public class CSEInitializer {
 		transaction.commit();
 		transaction.close();
 	}
-	
-	
-	public static void unregisterCse(){
+
+	public static void unregisterCse() {
 		RequestPrimitive request = new RequestPrimitive();
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
-		request.setOperation(Operation.DELETE);;
-		String remotePoa = "http://" + Constants.REMOTE_CSE_IP + ":" + Constants.REMOTE_CSE_PORT + Constants.REMOTE_CSE_CONTEXT ;;
-		if (Constants.REMOTE_CSE_CONTEXT.length() > 1){
-			remotePoa += "/";
+		request.setOperation(Operation.DELETE);
+		;
+		String remotePoa = "http://" + Constants.REMOTE_CSE_IP + ":" + Constants.REMOTE_CSE_PORT
+				+ "/~";
+		;
+		if (Constants.REMOTE_CSE_CONTEXT.length() > 1) {
+			remotePoa += "/" + Constants.REMOTE_CSE_CONTEXT;
 		}
-		remotePoa += "/" +Constants.REMOTE_CSE_ID + "/" + Constants.CSE_ID;
+		remotePoa += "/" + Constants.REMOTE_CSE_ID + "/" + Constants.REMOTE_CSE_NAME + "/" + Constants.CSE_NAME;
 		request.setTo(remotePoa);
 		request.setResultContent(ResultContent.NOTHING);
 		LOGGER.info("Sending unregistration request");
 		ResponsePrimitive response = RestClient.sendRequest(request);
 		LOGGER.info("Unregistration response:\n" + response);
 	}
-
 
 }
