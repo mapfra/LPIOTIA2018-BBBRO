@@ -20,6 +20,10 @@
 package org.eclipse.om2m.core;
 
 import java.math.BigInteger;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -41,11 +45,13 @@ import org.eclipse.om2m.commons.resource.AccessControlPolicy;
 import org.eclipse.om2m.commons.resource.RemoteCSE;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
+import org.eclipse.om2m.commons.resource.ResponseTypeInfo;
 import org.eclipse.om2m.commons.utils.Util.DateUtil;
 import org.eclipse.om2m.core.comm.RestClient;
 import org.eclipse.om2m.core.controller.Controller;
 import org.eclipse.om2m.core.datamapper.DataMapperSelector;
 import org.eclipse.om2m.core.persistence.PersistenceService;
+import org.eclipse.om2m.core.remotecse.RemoteCseService;
 import org.eclipse.om2m.core.urimapper.UriMapper;
 import org.eclipse.om2m.persistence.service.DBService;
 import org.eclipse.om2m.persistence.service.DBTransaction;
@@ -61,6 +67,12 @@ public class CSEInitializer {
 
 	private static String contentFormat = System.getProperty("org.eclipse.om2m.registration.contentFormat",
 			MimeMediaType.XML);
+
+	private static RemoteCSE currentRegistrationToIn;
+
+	private static ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+
+	private static final Object MUTEX = new Object();
 
 	/** Private constructor */
 	private CSEInitializer() {
@@ -95,6 +107,8 @@ public class CSEInitializer {
 					@Override
 					public void run() {
 						registerCSE();
+
+						checkPeriodicallyCSERegistration();
 					}
 				}).start();
 			}
@@ -195,6 +209,13 @@ public class CSEInitializer {
 			LOGGER.info("response after registration: " + response);
 			if (response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {
 				registered = true;
+
+				// retrieve RemoteCSE entity and store it
+				synchronized (MUTEX) {
+					currentRegistrationToIn = (RemoteCSE) DataMapperSelector.getDataMapperList().get(contentFormat)
+							.stringToObj((String) response.getContent());
+				}
+
 				break;
 			} else if (ResponseStatusCode.CONFLICT.equals(response.getResponseStatusCode())) {
 				// conflict ==> the CSE was previously registered
@@ -202,7 +223,7 @@ public class CSEInitializer {
 				deleteRegistration();
 
 				// then create a new one
-				registered=false;
+				registered = false;
 
 			} else {
 				try {
@@ -248,6 +269,8 @@ public class CSEInitializer {
 		dbs.getDAOFactory().getRemoteCSEDAO().create(transaction, remoteCseEntity);
 		transaction.commit();
 		transaction.close();
+
+		RemoteCseService.getInstance().addRemoteCseAndPublish(remoteCseEntity);
 	}
 
 	private static void deleteRegistration() {
@@ -255,20 +278,29 @@ public class CSEInitializer {
 		// send DELETE request the Registrar CSE
 		unregisterCse();
 
+		synchronized (MUTEX) {
+			currentRegistrationToIn = null;
+		}
+
 		// make sure no remoteCse in database
 		DBService dbs = PersistenceService.getInstance().getDbService();
 		DBTransaction transaction = dbs.getDbTransaction();
 		transaction.open();
 		RemoteCSEEntity remoteCse = dbs.getDAOFactory().getRemoteCSEbyCseIdDAO().find(transaction,
-				"/" + Constants.CSE_ID + "/" + Constants.CSE_NAME + "/" + Constants.REMOTE_CSE_NAME);
+				"/" + Constants.REMOTE_CSE_ID);
 		if (remoteCse != null) {
 			// remove RemoteCSE from database
 			dbs.getDAOFactory().getRemoteCSEDAO().delete(transaction, remoteCse);
-			
+			UriMapper.deleteUri("/" + Constants.CSE_ID + "/" + Constants.CSE_NAME + "/" + Constants.REMOTE_CSE_NAME);
+
 			LOGGER.info("remove remoteCSE from database");
+
+			// notify RemoteCseService
+			RemoteCseService.getInstance().removeRemoteCseAndPublish(remoteCse.getName());
 		} else {
 			LOGGER.warn("No remoteCSE to remove from database");
 		}
+		transaction.commit();
 		transaction.close();
 
 	}
@@ -342,8 +374,7 @@ public class CSEInitializer {
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 		request.setOperation(Operation.DELETE);
 		;
-		String remotePoa = "http://" + Constants.REMOTE_CSE_IP + ":" + Constants.REMOTE_CSE_PORT
-				+ "/~";
+		String remotePoa = "http://" + Constants.REMOTE_CSE_IP + ":" + Constants.REMOTE_CSE_PORT + "/~";
 		;
 		if (Constants.REMOTE_CSE_CONTEXT.length() > 1) {
 			remotePoa += "/" + Constants.REMOTE_CSE_CONTEXT;
@@ -354,6 +385,84 @@ public class CSEInitializer {
 		LOGGER.info("Sending unregistration request");
 		ResponsePrimitive response = RestClient.sendRequest(request);
 		LOGGER.info("Unregistration response:\n" + response);
+	}
+
+	private static void checkPeriodicallyCSERegistration() {
+		scheduler.scheduleWithFixedDelay(new Runnable() {
+
+			@Override
+			public void run() {
+				LOGGER.info("check CSE registration");
+
+				RemoteCSE registration = null;
+				synchronized (MUTEX) {
+					registration = currentRegistrationToIn;
+				}
+
+				if (registration != null) {
+					RemoteCSE remoteCSEFromIN = retrieveCSERegistration();
+
+					if (!compareRemoteCSE(registration, remoteCSEFromIN)) {
+
+						// relaunch registration procedure
+						deleteRegistration();
+
+						registerCSE();
+					} else {
+						LOGGER.info("registration is good");
+					}
+				} else {
+					LOGGER.info("registration is null --> registration process on going");
+				}
+
+			}
+		}, 3, 3, TimeUnit.MINUTES);
+
+	}
+
+	protected static boolean compareRemoteCSE(RemoteCSE registration, RemoteCSE remoteCSEFromIN) {
+		if (remoteCSEFromIN == null) {
+			LOGGER.info("compareRemoteCSE() - remoteCSEFromIN is null");
+			return false;
+		}
+
+		// check only resource id
+		if (!remoteCSEFromIN.getResourceID().equals(registration.getResourceID())) {
+			LOGGER.info("compareRemoteCSE() - remoteCSEFromIN.resourceID(" + remoteCSEFromIN.getResourceID()
+					+ ")!=registration.resourceID(" + registration.getResourceID() + ")");
+			return false;
+		}
+		return true;
+	}
+
+	protected static RemoteCSE retrieveCSERegistration() {
+
+		try {
+
+			RequestPrimitive request = new RequestPrimitive();
+			request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
+			request.setOperation(Operation.RETRIEVE);
+			;
+			String remotePoa = "http://" + Constants.REMOTE_CSE_IP + ":" + Constants.REMOTE_CSE_PORT + "/~";
+			;
+			if (Constants.REMOTE_CSE_CONTEXT.length() > 1) {
+				remotePoa += "/" + Constants.REMOTE_CSE_CONTEXT;
+			}
+			remotePoa += "/" + Constants.REMOTE_CSE_ID + "/" + Constants.REMOTE_CSE_NAME + "/" + Constants.CSE_NAME;
+			request.setTo(remotePoa);
+			request.setResultContent(ResultContent.ATTRIBUTES);
+			request.setReturnContentType(MimeMediaType.XML);
+			ResponsePrimitive response = RestClient.sendRequest(request);
+			if (ResponseStatusCode.OK.equals(response.getResponseStatusCode())) {
+				return (RemoteCSE) DataMapperSelector.getDataMapperList().get(MimeMediaType.XML)
+						.stringToObj((String) response.getContent());
+			}
+			return null;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 }

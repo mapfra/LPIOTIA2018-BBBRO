@@ -18,4 +18,5 @@ Import-Package: javax.persistence,
  org.eclipse.om2m.persistence.service,
  org.eclipse.om2m.persistence.service.util,
  org.osgi.framework,
+ org.osgi.service.event,
  org.osgi.util.tracker

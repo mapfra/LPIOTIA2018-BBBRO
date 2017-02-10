@@ -48,6 +48,7 @@ import org.eclipse.om2m.core.datamapper.DataMapperSelector;
 import org.eclipse.om2m.core.entitymapper.EntityMapperFactory;
 import org.eclipse.om2m.core.notifier.Notifier;
 import org.eclipse.om2m.core.persistence.PersistenceService;
+import org.eclipse.om2m.core.remotecse.RemoteCseService;
 import org.eclipse.om2m.core.router.Patterns;
 import org.eclipse.om2m.core.urimapper.UriMapper;
 import org.eclipse.om2m.core.util.ControllerUtil;
@@ -318,6 +319,8 @@ public class RemoteCSEController extends Controller {
 		// Commit the DB transaction
 		transaction.commit();
 
+		RemoteCseService.getInstance().addRemoteCseAndPublish(csrDB);
+		
 		Notifier.notify(subscriptions, csrDB, ResourceStatus.CHILD_CREATED);
 		// Create the response
 		response.setResponseStatusCode(ResponseStatusCode.CREATED);
@@ -537,6 +540,8 @@ public class RemoteCSEController extends Controller {
 
 		UriMapper.deleteUri(csrEntity.getHierarchicalURI());
 		Notifier.notifyDeletion(csrEntity.getSubscriptions(), csrEntity);
+		
+		RemoteCseService.getInstance().removeRemoteCseAndPublish(csrEntity.getName());
 
 		// delete the resource in the database
 		dbs.getDAOFactory().getRemoteCSEDAO().delete(transaction, csrEntity);
