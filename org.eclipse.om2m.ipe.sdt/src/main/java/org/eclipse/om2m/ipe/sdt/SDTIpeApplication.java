@@ -24,7 +24,7 @@ import org.eclipse.om2m.sdt.Device;
 
 public class SDTIpeApplication {
 
-    private static Log logger = LogFactory.getLog(SDTIpeApplication.class);
+	private static Log logger = LogFactory.getLog(SDTIpeApplication.class);
 
 	private static final String SEP = "/";
 	private static final String APPLICATION_NAME = "SDT_IPE";
@@ -46,8 +46,8 @@ public class SDTIpeApplication {
 	private AccessControlPolicy adminAccessControlPolicy;
 	private AccessControlPolicy remoteAdminAccessControlPolicy;
 
-	public SDTIpeApplication(final CseService pCseService, final String announceCseId, 
-			final String pRemoteCseName, final boolean ipeUnder) {
+	public SDTIpeApplication(final CseService pCseService, final String announceCseId, final String pRemoteCseName,
+			final boolean ipeUnder) {
 		cseService = pCseService;
 		this.remoteCseId = announceCseId;
 		this.remoteCseName = pRemoteCseName;
@@ -69,11 +69,10 @@ public class SDTIpeApplication {
 
 	// SDT Device Management
 	protected boolean addSDTDevice(Device device) {
-		logger.info("add SDT Device (id:" + device.getId() + ", name=" + device.getName() 
-				+ ") into oneM2M");
+		logger.info("add SDT Device (id:" + device.getId() + ", name=" + device.getName() + ") into oneM2M");
 
-		SDTDeviceAdaptor sdtDeviceAdaptor = new SDTDeviceAdaptor(sdtIpeApplicationLocation, device,
-				cseService, adminAccessControlPolicy.getResourceID(), remoteCseId, remoteCseName);
+		SDTDeviceAdaptor sdtDeviceAdaptor = new SDTDeviceAdaptor(sdtIpeApplicationLocation, device, cseService,
+				adminAccessControlPolicy.getResourceID(), remoteCseId, remoteCseName);
 		if (sdtDeviceAdaptor.publishIntoOM2MTree()) {
 			synchronized (devices) {
 				devices.put(device, sdtDeviceAdaptor);
@@ -84,8 +83,7 @@ public class SDTIpeApplication {
 	}
 
 	protected void removeSDTDevice(Device device) {
-		logger.info("remove SDT Device (id:" + device.getId() + ", name=" + device.getName() 
-				+ ") into oneM2M");
+		logger.info("remove SDT Device (id:" + device.getId() + ", name=" + device.getName() + ") into oneM2M");
 		SDTDeviceAdaptor sdtDeviceAdaptor = null;
 		synchronized (devices) {
 			sdtDeviceAdaptor = devices.remove(device);
@@ -114,13 +112,24 @@ public class SDTIpeApplication {
 			ae.getAnnounceTo().add(SEP + remoteCseId);
 		}
 
-		ResponsePrimitive resp = CseUtil.sendCreateApplicationEntityRequest(cseService,
-				ae, sdtIpeBaseLocation, APPLICATION_NAME);
+		ResponsePrimitive resp = null;
+		for (int i = 0; i < 2; i++) {
+			 resp = CseUtil.sendCreateApplicationEntityRequest(cseService, ae, sdtIpeBaseLocation,
+					APPLICATION_NAME);
 
-		if (! (resp.getResponseStatusCode().equals(ResponseStatusCode.CREATED)
-				|| resp.getResponseStatusCode().equals(ResponseStatusCode.CONFLICT))) {
-			logger.error("Unable to create SDT IPE Application:" + resp.getContent(), null);
-			throw new Exception("unable to create SDT Application Entity");
+			 if (ResponseStatusCode.CREATED.equals(resp.getResponseStatusCode())) {
+				 // nothing do 
+				 break;
+			 } else if (ResponseStatusCode.CONFLICT.equals(resp.getResponseStatusCode())) {
+				 // remove previous SDT_IPE application
+				 deleteIpeApplicationEntity();
+				 continue;
+			 } else {
+				 logger.error("Unable to create SDT IPE Application:" + resp.getContent(), null);
+					throw new Exception("unable to create SDT Application Entity");
+			 }
+			 
+
 		}
 
 		AE receivedAe = (AE) resp.getContent();
@@ -133,8 +142,7 @@ public class SDTIpeApplication {
 			// remote ACP_Device_Admin
 			response = CseUtil.sendCreateDefaultACP(cseService,
 					SEP + remoteCseId + SEP + remoteCseName + SEP + Constants.CSE_NAME,
-					"ACP_Device_Admin" + System.currentTimeMillis(),
-					new ArrayList<String>());
+					"ACP_Device_Admin" + System.currentTimeMillis(), new ArrayList<String>());
 			remoteAdminAccessControlPolicy = (AccessControlPolicy) response.getContent();
 
 			// update SDT_IPE_ANNC
@@ -151,12 +159,12 @@ public class SDTIpeApplication {
 	protected void deleteIpeApplicationEntity() {
 		logger.info("delete ipe application");
 		ResponsePrimitive response = CseUtil.sendDeleteRequest(cseService, sdtIpeApplicationLocation);
-		if (! response.getResponseStatusCode().equals(ResponseStatusCode.DELETED)) {
+		if (!response.getResponseStatusCode().equals(ResponseStatusCode.DELETED)) {
 			// log only
 			// no need to throw an exception
 			logger.error("unable to delete SDT IPE Application entity:" + response.getContent(), null);
 		}
-		
+
 		if (adminAccessControlPolicy != null) {
 			CseUtil.sendDeleteRequest(cseService, adminAccessControlPolicy.getResourceID());
 		}

@@ -22,4 +22,5 @@ Import-Package: org.apache.commons.logging,
  org.eclipse.om2m.sdt.types,
  org.osgi.framework,
  org.osgi.service.cm,
+ org.osgi.service.event,
  org.osgi.util.tracker
