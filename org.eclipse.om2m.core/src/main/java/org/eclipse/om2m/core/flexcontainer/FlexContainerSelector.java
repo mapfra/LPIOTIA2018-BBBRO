@@ -12,11 +12,15 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.eclipse.om2m.flexcontainer.service.FlexContainerService;
 
 public class FlexContainerSelector {
 
 	private static final Map<String, FlexContainerService> flexContainerServices = new HashMap<>();
+
+	private static Log LOGGER = LogFactory.getLog(FlexContainerSelector.class);
 
 	/**
 	 * Retrieve a FlexContainerService
@@ -25,13 +29,12 @@ public class FlexContainerSelector {
 	 * @return
 	 */
 	public static FlexContainerService getFlexContainerService(String flexContainerLocation) {
-		Logger.getLogger(FlexContainerSelector.class.getName()).log(Level.INFO,
-				"getFlexContainerService(flexContainerLocation=" + flexContainerLocation + ")");
-		
+		LOGGER.debug("getFlexContainerService(flexContainerLocation=" + flexContainerLocation + ")");
+
 		if (flexContainerLocation == null) {
 			return null;
 		}
-		
+
 		String location;
 		if (flexContainerLocation.startsWith("~")) {
 			location = flexContainerLocation.substring(1);
@@ -43,10 +46,9 @@ public class FlexContainerSelector {
 		synchronized (flexContainerServices) {
 			fcs = flexContainerServices.get(location);
 		}
-		
-		Logger.getLogger(FlexContainerSelector.class.getName()).log(Level.INFO,
-				"getFlexContainerService(flexContainerLocation=" + flexContainerLocation + ") - fcs=" + fcs);
-		
+
+		LOGGER.debug("getFlexContainerService(flexContainerLocation=" + flexContainerLocation + ") - fcs=" + fcs);
+
 		return fcs;
 
 	}
