@@ -152,7 +152,7 @@ public class CSEBaseEntity extends ResourceEntity {
 	/**
 	 * List of child AccessControlPolicies
 	 */
-	@OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.ALL})
+	@OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.ALL}, mappedBy="parentCse")
 	@JoinTable(
 			name=DBEntities.CSEBCHILDACP_JOIN,
 			joinColumns={@JoinColumn(name=DBEntities.CSEB_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)},

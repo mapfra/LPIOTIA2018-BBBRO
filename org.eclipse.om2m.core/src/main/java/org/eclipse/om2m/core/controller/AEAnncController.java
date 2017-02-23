@@ -179,6 +179,8 @@ public class AEAnncController extends Controller {
 		aeAnncEntity.setAeid(ShortName.AE_ANNC + Constants.PREFIX_SEPERATOR + generatedId);
 		// Set other parameters
 		aeAnncEntity.setResourceID("/" + Constants.CSE_ID + "/" + aeAnncEntity.getAeid());
+		aeAnncEntity.setParentCsr((RemoteCSEEntity) parentEntity);
+		
 		if (dbs.getDAOFactory().getAeAnncDAO().find(transaction, aeAnncEntity.getResourceID()) != null) {
 			throw new ConflictException("Already registered");
 		}

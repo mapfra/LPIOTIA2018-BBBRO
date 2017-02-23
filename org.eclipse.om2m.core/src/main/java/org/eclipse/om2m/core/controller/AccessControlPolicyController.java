@@ -194,6 +194,18 @@ public class AccessControlPolicyController extends Controller {
 		acpEntity.setLastModifiedTime(DateUtil.now());
 		acpEntity.setParentID(parentEntity.getResourceID());
 		acpEntity.setResourceType(ResourceType.ACCESS_CONTROL_POLICY);
+		switch(parentEntity.getResourceType().intValue()) {
+		case ResourceType.AE:
+			acpEntity.setParentAE((AeEntity) parentEntity);
+			break;
+		case ResourceType.REMOTE_CSE:
+			acpEntity.setParentCsr((RemoteCSEEntity) parentEntity);
+			break;
+		case ResourceType.CSE_BASE:
+			acpEntity.setParentCse((CSEBaseEntity) parentEntity);
+			break;
+		}
+		
 		// expirationTime 		O
 		if (acp.getExpirationTime() != null){
 			acpEntity.setExpirationTime(acp.getExpirationTime());

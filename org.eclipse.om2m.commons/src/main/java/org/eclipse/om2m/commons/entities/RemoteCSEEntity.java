@@ -122,7 +122,7 @@ public class RemoteCSEEntity extends AnnounceableSubordinateEntity {
 
 	// database link with the CHILD acp entities
 	/** List of child AccessControlPolicies */
-	@OneToMany(fetch = FetchType.LAZY)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy="parentCsr")
 	@JoinTable(
 			name = DBEntities.CSRACPCHILD_JOIN,
 			joinColumns = { @JoinColumn(name = DBEntities.CSR_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
@@ -132,7 +132,7 @@ public class RemoteCSEEntity extends AnnounceableSubordinateEntity {
 	
 	// database link with the CHILD acp entities
 	/** List of child AccessControlPolicies */
-	@OneToMany(fetch = FetchType.LAZY)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy="parentCsr")
 	@JoinTable(
 			name = DBEntities.CSRAEANNCCHILD_JOIN,
 			joinColumns = { @JoinColumn(name = DBEntities.CSR_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
