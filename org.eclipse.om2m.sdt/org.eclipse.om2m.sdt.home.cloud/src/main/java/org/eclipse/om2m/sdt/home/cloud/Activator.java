@@ -37,6 +37,8 @@ public class Activator implements BundleActivator {
 	private boolean running;
 	private ServiceTracker cseServiceTracker;
 
+	private Thread readingThread = null;
+	
 	@Override
 	public void start(BundleContext ctxt) throws Exception {
 		try {
@@ -51,7 +53,7 @@ public class Activator implements BundleActivator {
 			registrations = new HashMap<String, List<ServiceRegistration>>();
 			initCseServiceTracker();
 
-			new Thread(new Runnable() {
+			readingThread = new Thread(new Runnable() {
 				@Override
 				public void run() {
 					while (running) {
@@ -62,7 +64,7 @@ public class Activator implements BundleActivator {
 						}
 					}
 				}
-			}).start();
+			});
 		} catch (Exception e) {
 			logger.error("Error starting cloud connector", e);
 		}
@@ -72,12 +74,15 @@ public class Activator implements BundleActivator {
 		cseServiceTracker = new ServiceTracker(context, CseService.class.getName(), null) {
             public void removedService(ServiceReference reference, Object service) {
             	logger.info("CSEService removed");
+            	running = false;
+            	readingThread.interrupt();
             }
             public Object addingService(ServiceReference reference) {
             	logger.info("CSE Service found");
             	CseService cseService = (CseService) this.context.getService(reference); 
             	ResourceDiscovery.initCseService(cseService);
     			running = true;
+    			readingThread.start();
                 return cseService;
             }
         };
