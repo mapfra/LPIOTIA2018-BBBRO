@@ -44,12 +44,19 @@ public class AeDAO extends AbstractDAO<AeEntity> {
 	@Override
 	public void delete(DBTransaction dbTransaction, AeEntity resource) {
 		DBTransactionJPAImpl transaction = (DBTransactionJPAImpl) dbTransaction;
+
+		// de-associate labels
+		List<LabelEntity> labels = resource.getLabelsEntities();
+		for (LabelEntity label : labels) {
+			label.getLinkedFcnt().remove(resource);
+		}
+
 		transaction.getEm().remove(resource);
 		transaction.getEm().getEntityManagerFactory().getCache().evict(CSEBaseEntity.class);
 		transaction.getEm().getEntityManagerFactory().getCache().evict(RemoteCSEEntity.class);
 		transaction.getEm().getEntityManagerFactory().getCache().evict(RemoteCseAnncEntity.class);
 	}
-	
+
 	@Override
 	public void update(DBTransaction dbTransaction, AeEntity resource) {
 		DBTransactionJPAImpl transaction = (DBTransactionJPAImpl) dbTransaction;
@@ -58,5 +65,4 @@ public class AeDAO extends AbstractDAO<AeEntity> {
 		transaction.getEm().merge(resource);
 	}
 
-	
 }

@@ -7,11 +7,13 @@
  *******************************************************************************/
 package org.eclipse.om2m.persistence.eclipselink.internal.dao;
 
+import java.util.List;
+
 import org.eclipse.om2m.commons.entities.AeAnncEntity;
 import org.eclipse.om2m.commons.entities.AeEntity;
 import org.eclipse.om2m.commons.entities.CSEBaseEntity;
-import org.eclipse.om2m.commons.entities.ContainerEntity;
 import org.eclipse.om2m.commons.entities.FlexContainerEntity;
+import org.eclipse.om2m.commons.entities.LabelEntity;
 import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
 import org.eclipse.om2m.commons.entities.RemoteCseAnncEntity;
 import org.eclipse.om2m.persistence.eclipselink.internal.DBTransactionJPAImpl;
@@ -29,12 +31,20 @@ public class FlexContainerDAO extends AbstractDAO<FlexContainerEntity>{
 	@Override
 	public void delete(DBTransaction dbTransaction, FlexContainerEntity resource) {
 		DBTransactionJPAImpl transaction = (DBTransactionJPAImpl) dbTransaction;
+		
+		// de-associate labels
+		List<LabelEntity> labels = resource.getLabelsEntities();
+		for (LabelEntity label : labels) {
+			label.getLinkedFcnt().remove(resource);
+		}
+		
 		transaction.getEm().remove(resource);
 		transaction.getEm().getEntityManagerFactory().getCache().evict(CSEBaseEntity.class);
 		transaction.getEm().getEntityManagerFactory().getCache().evict(AeEntity.class);
 		transaction.getEm().getEntityManagerFactory().getCache().evict(RemoteCSEEntity.class);
 		transaction.getEm().getEntityManagerFactory().getCache().evict(RemoteCseAnncEntity.class);
 		transaction.getEm().getEntityManagerFactory().getCache().evict(AeAnncEntity.class);
+		transaction.getEm().getEntityManagerFactory().getCache().evict(LabelEntity.class);
 	}
 
 }
