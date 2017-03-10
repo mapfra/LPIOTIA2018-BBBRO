@@ -65,7 +65,7 @@ public class RemoteCSEEntity extends AnnounceableSubordinateEntity {
 	protected AccessControlPolicyEntity generatedAcp ;
 
 	// database link with the parent CSEBase entity
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY, targetEntity=CSEBaseEntity.class)
 	@JoinTable(
 			name = DBEntities.CSBCSR_JOIN,
 			joinColumns = {@JoinColumn(name = DBEntities.CSR_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID)},
@@ -122,7 +122,7 @@ public class RemoteCSEEntity extends AnnounceableSubordinateEntity {
 
 	// database link with the CHILD acp entities
 	/** List of child AccessControlPolicies */
-	@OneToMany(fetch = FetchType.LAZY, mappedBy="parentCsr")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy="parentCsr", cascade = CascadeType.ALL)
 	@JoinTable(
 			name = DBEntities.CSRACPCHILD_JOIN,
 			joinColumns = { @JoinColumn(name = DBEntities.CSR_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
@@ -132,7 +132,7 @@ public class RemoteCSEEntity extends AnnounceableSubordinateEntity {
 	
 	// database link with the CHILD acp entities
 	/** List of child AccessControlPolicies */
-	@OneToMany(fetch = FetchType.LAZY, mappedBy="parentCsr")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy="parentCsr", cascade = CascadeType.ALL)
 	@JoinTable(
 			name = DBEntities.CSRAEANNCCHILD_JOIN,
 			joinColumns = { @JoinColumn(name = DBEntities.CSR_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 

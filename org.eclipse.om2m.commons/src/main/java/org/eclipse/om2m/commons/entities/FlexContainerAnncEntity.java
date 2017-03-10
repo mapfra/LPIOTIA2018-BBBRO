@@ -33,7 +33,7 @@ public class FlexContainerAnncEntity extends AnnouncedResourceEntity {
 	protected String containerDefinition;
 
 	// Database link to Subscriptions
-	@OneToMany(fetch = FetchType.LAZY, targetEntity = SubscriptionEntity.class)
+	@OneToMany(fetch = FetchType.LAZY, targetEntity = SubscriptionEntity.class, cascade = CascadeType.ALL)
 	@JoinTable(name = DBEntities.FCNTASUB_JOIN_ID, joinColumns = {
 			@JoinColumn(name = DBEntities.FCNTA_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, inverseJoinColumns = {
 					@JoinColumn(name = DBEntities.SUB_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) })

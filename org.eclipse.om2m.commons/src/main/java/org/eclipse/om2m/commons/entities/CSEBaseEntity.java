@@ -111,7 +111,7 @@ public class CSEBaseEntity extends ResourceEntity {
 	protected List<AeEntity> childAes;
 
 	/** List of Remote CSEs */
-	@OneToMany(fetch = FetchType.LAZY, cascade={CascadeType.ALL})
+	@OneToMany(fetch = FetchType.LAZY, cascade={CascadeType.ALL}, mappedBy="parentCseBase")
 	@JoinTable(
 			name = DBEntities.CSBCSR_JOIN,
 			joinColumns = {@JoinColumn(name = DBEntities.CSEB_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID)},

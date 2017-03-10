@@ -22,6 +22,7 @@ package org.eclipse.om2m.commons.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -59,7 +60,7 @@ public class AeAnncEntity extends AnnouncedResourceEntity {
 	protected String nodeLink;
 
 	// Database link to Subscriptions
-	@OneToMany(fetch = FetchType.LAZY, targetEntity = SubscriptionEntity.class)
+	@OneToMany(fetch = FetchType.LAZY, targetEntity = SubscriptionEntity.class, cascade = CascadeType.ALL)
 	@JoinTable(name = DBEntities.AEANNCSUB_JOIN_ID, joinColumns = {
 			@JoinColumn(name = DBEntities.AEANNC_JOINID, referencedColumnName = ShortName.RESOURCE_ID) }, inverseJoinColumns = {
 					@JoinColumn(name = DBEntities.SUB_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) })
@@ -79,7 +80,7 @@ public class AeAnncEntity extends AnnouncedResourceEntity {
 					@JoinColumn(name = DBEntities.AEANNC_JOINID, referencedColumnName = ShortName.RESOURCE_ID) })
 	protected RemoteCSEEntity parentCsr;
 	
-	@OneToMany(fetch=FetchType.LAZY, targetEntity=FlexContainerAnncEntity.class, mappedBy="parentAeAnnc")
+	@OneToMany(fetch=FetchType.LAZY, targetEntity=FlexContainerAnncEntity.class, mappedBy="parentAeAnnc", cascade = CascadeType.ALL)
 	@JoinTable(
 			name=DBEntities.AEANNC_FCNT_JOIN,
 			joinColumns={@JoinColumn(name=DBEntities.AEANNC_JOINID, referencedColumnName=ShortName.RESOURCE_ID)},

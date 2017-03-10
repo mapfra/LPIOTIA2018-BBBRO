@@ -270,6 +270,9 @@ public class LabelEntity {
 	 * @return the linkedGroup
 	 */
 	public List<ContentInstanceEntity> getLinkedGroup() {
+		if (linkedGroup == null) {
+			linkedGroup = new ArrayList<>();
+		}
 		return linkedGroup;
 	}
 

@@ -136,7 +136,7 @@ public class AeEntity extends AnnounceableSubordinateEntity {
 	
 	
 	// Database link to Subscriptions
-	@OneToMany(fetch = FetchType.LAZY, targetEntity = SubscriptionEntity.class)
+	@OneToMany(fetch = FetchType.LAZY, targetEntity = SubscriptionEntity.class, cascade = CascadeType.ALL)
 	@JoinTable(
 			name = DBEntities.AESUB_JOIN,
 			joinColumns = { @JoinColumn(name = DBEntities.AE_JOINID, referencedColumnName = ShortName.RESOURCE_ID) }, 
