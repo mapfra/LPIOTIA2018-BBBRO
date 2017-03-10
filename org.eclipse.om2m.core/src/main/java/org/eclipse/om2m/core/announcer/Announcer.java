@@ -111,6 +111,9 @@ public class Announcer {
 				request.setTargetId(parentResource.getRemoteAnnouncedId());
 			} else {
 
+				if (!remoteDestination.startsWith("/")) {
+					remoteDestination = "/" + remoteDestination;
+				}
 				request.setTargetId(remoteCSE.getRemoteCseId() + "/" + remoteCSE.getName() + "/" + Constants.CSE_NAME
 						+ remoteDestination);
 			}
