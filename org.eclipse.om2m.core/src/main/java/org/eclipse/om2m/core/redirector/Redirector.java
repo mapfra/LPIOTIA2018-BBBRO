@@ -161,10 +161,12 @@ public class Redirector {
 						transaction.commit();
 					}
 					// convert response as expected
-					if (MimeMediaType.OBJ.equals(initialReturnContentType)) {
-						Object resource = DataMapperSelector.getDataMapperList().get(MimeMediaType.XML)
-								.stringToObj((String) response.getContent());
-						response.setContent(resource);
+					if (response.getContent() != null) {
+						if (MimeMediaType.OBJ.equals(initialReturnContentType)) {
+							Object resource = DataMapperSelector.getDataMapperList().get(MimeMediaType.XML)
+									.stringToObj((String) response.getContent());
+							response.setContent(resource);
+						}
 					}
 					return response;
 				}
