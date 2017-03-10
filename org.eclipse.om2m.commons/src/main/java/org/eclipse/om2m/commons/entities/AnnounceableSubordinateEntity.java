@@ -89,6 +89,10 @@ public class AnnounceableSubordinateEntity extends ResourceEntity {
 		}
 		return this.announceTo;
 	}
+	
+	public void setAnnounceTo(List<String> pAnnounceTo) {
+		this.announceTo = pAnnounceTo;
+	}
 
 	/**
 	 * Gets the value of the announcedAttribute property.
@@ -117,6 +121,10 @@ public class AnnounceableSubordinateEntity extends ResourceEntity {
 			announcedAttribute = new ArrayList<String>();
 		}
 		return this.announcedAttribute;
+	}
+	
+	public void setAnnouncedAttribute(List<String> pAnnouncedAttribute) {
+		this.announcedAttribute = pAnnouncedAttribute;
 	}
 
 }
