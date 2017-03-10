@@ -177,7 +177,7 @@ public abstract class Controller {
 			throw new AccessDeniedException();
 		}
 		if (acpList == null || acpList.isEmpty()) {
-			throw new ResourceNotFoundException("Current resource does not have any ACP attached");
+			throw new AccessDeniedException("Current resource does not have any ACP attached");
 		}
 		// Check Resource accessRight existence not found
 		boolean originatorFound = false;
