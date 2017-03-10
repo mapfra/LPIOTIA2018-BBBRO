@@ -318,6 +318,7 @@ public class CSEInitializer {
 		acp.setName(Constants.ADMIN_PROFILE_ID);
 		acp.setResourceType(BigInteger.valueOf(ResourceType.ACCESS_CONTROL_POLICY));
 		acp.setHierarchicalURI("/" + Constants.CSE_ID + "/" + Constants.CSE_NAME + "/" + acp.getName());
+		acp.setResourceType(ResourceType.ACCESS_CONTROL_POLICY);
 		UriMapper.addNewUri(acp.getHierarchicalURI(), acp.getResourceID(), ResourceType.ACCESS_CONTROL_POLICY);
 
 		// Self-privileges - all rights for admin
