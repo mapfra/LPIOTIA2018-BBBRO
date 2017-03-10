@@ -19,6 +19,9 @@
  *******************************************************************************/
 package org.eclipse.om2m.datamapping.jaxb;
 
+import java.util.Dictionary;
+import java.util.Hashtable;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.om2m.commons.constants.MimeMediaType;
@@ -47,10 +50,17 @@ public class Activator implements BundleActivator {
 
 		// Register XML Mapper Service
 		LOGGER.info("Registering XML Mapper Service..");
-		context.registerService(DataMapperService.class.getName(), new Mapper(MimeMediaType.XML), null);
+		Dictionary <String, String> xmlDataMapperServiceProperties = new Hashtable<>();
+		xmlDataMapperServiceProperties.put("type", MimeMediaType.XML);
+		context.registerService(DataMapperService.class.getName(), new Mapper(MimeMediaType.XML), xmlDataMapperServiceProperties);
 		LOGGER.info("XML Mapper service registered.");
+		
+		// register JSON mapper service
 		LOGGER.info("Registering JSON Mapper Service..");
-		context.registerService(DataMapperService.class.getName(), new Mapper(MimeMediaType.JSON), null);
+		Dictionary<String, String> jsonDataMapperServiceProperties = new Hashtable<>();
+		jsonDataMapperServiceProperties.put("type", MimeMediaType.JSON);
+		context.registerService(DataMapperService.class.getName(), new Mapper(MimeMediaType.JSON), jsonDataMapperServiceProperties);
+
 		LOGGER.info("JSON Mapper service registered.");
 	}
 
