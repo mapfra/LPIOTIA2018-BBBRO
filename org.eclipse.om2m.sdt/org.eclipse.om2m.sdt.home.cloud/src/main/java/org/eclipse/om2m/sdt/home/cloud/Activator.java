@@ -51,7 +51,7 @@ public class Activator implements BundleActivator {
 			context = ctxt;
 			devices = new HashMap<String, GenericDevice>();
 			registrations = new HashMap<String, List<ServiceRegistration>>();
-			initCseServiceTracker();
+			
 
 			readingThread = new Thread(new Runnable() {
 				@Override
@@ -65,6 +65,9 @@ public class Activator implements BundleActivator {
 					}
 				}
 			});
+			
+			
+			initCseServiceTracker();
 		} catch (Exception e) {
 			logger.error("Error starting cloud connector", e);
 		}
@@ -96,6 +99,8 @@ public class Activator implements BundleActivator {
 		} catch (Throwable e) {
 			logger.error("Error reading remote devices: " + e.getMessage(), e);
 		}
+		logger.info("newDevices[size:" + newDevices.size() + "]");
+		
 		List<String> toUninstall = new ArrayList<String>();
 		for (String uri : devices.keySet()) {
 			if (! newDevices.contains(uri)) {
@@ -107,6 +112,7 @@ public class Activator implements BundleActivator {
 			uninstall(uri);
 		}
 		for (String uri : newDevices) {
+			logger.info("newDevices[uri: " + uri + "]");
 			if (devices.containsKey(uri)) {
 				logger.info("Already installed device " + uri);
 			} else {
