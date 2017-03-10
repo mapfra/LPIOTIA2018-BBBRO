@@ -263,6 +263,7 @@ public class RemoteCSEController extends Controller {
 		remoteCseEntity.setCreationTime(DateUtil.now());
 		remoteCseEntity.setLastModifiedTime(DateUtil.now());
 		remoteCseEntity.setParentID(parentEntity.getResourceID());
+		remoteCseEntity.setParentCseBase((CSEBaseEntity) parentEntity);
 		remoteCseEntity.setResourceType(ResourceType.REMOTE_CSE);
 
 		if(newOriginator){
@@ -272,6 +273,7 @@ public class RemoteCSEController extends Controller {
 			acpEntity.setParentID("/" + Constants.CSE_ID);
 			acpEntity.setResourceID("/" + Constants.CSE_ID + "/" + ShortName.ACP + Constants.PREFIX_SEPERATOR + generateId());
 			acpEntity.setName(ShortName.ACP + ShortName.REMOTE_CSE + Constants.PREFIX_SEPERATOR + generatedId);
+			acpEntity.setResourceType(ResourceType.ACCESS_CONTROL_POLICY);
 			AccessControlRuleEntity ruleEntity = new AccessControlRuleEntity();
 			AccessControlOriginatorEntity originatorEntity = new AccessControlOriginatorEntity(Constants.ADMIN_REQUESTING_ENTITY);
 			ruleEntity.getAccessControlOriginators().add(originatorEntity);
