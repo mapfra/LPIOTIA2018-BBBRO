@@ -5,7 +5,6 @@ import static com.mongodb.client.model.Filters.eq;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.bson.Document;
-import org.eclipse.om2m.commons.constants.ShortName;
 import org.eclipse.om2m.commons.entities.UriMapperEntity;
 import org.eclipse.om2m.persistence.mongodb.DAOImpl;
 import org.eclipse.om2m.persistence.mongodb.DBServiceImpl;

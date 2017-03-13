@@ -19,7 +19,6 @@ import org.eclipse.om2m.commons.entities.GroupEntity;
 import org.eclipse.om2m.commons.entities.LabelEntity;
 import org.eclipse.om2m.commons.entities.NodeEntity;
 import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
-import org.eclipse.om2m.commons.resource.Node;
 import org.eclipse.om2m.persistence.mongodb.DBServiceImpl;
 import org.eclipse.om2m.persistence.service.DAO;
 import org.eclipse.om2m.persistence.service.DBTransaction;

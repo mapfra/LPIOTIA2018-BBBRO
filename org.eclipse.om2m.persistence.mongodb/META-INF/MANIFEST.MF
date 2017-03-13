@@ -5,14 +5,14 @@ Bundle-SymbolicName: org.eclipse.om2m.persistence.mongodb
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.eclipse.om2m.persistence.mongodb.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Require-Bundle: org.eclipse.om2m.commons,
- org.eclipse.om2m.persistence.service
 Bundle-ClassPath: .,
- mongodb-driver-3.4.2.jar,
- mongo-java-driver-3.4.2.jar,
- gson-2.2.4.jar
+ libs/gson-2.2.4.jar,
+ libs/mongo-java-driver-3.4.2.jar
 Import-Package: javax.persistence,
  org.apache.commons.logging,
+ org.eclipse.om2m.commons.constants,
+ org.eclipse.om2m.commons.entities,
+ org.eclipse.om2m.commons.resource,
  org.eclipse.om2m.datamapping.service,
  org.eclipse.om2m.persistence.service,
  org.eclipse.om2m.persistence.service.util,

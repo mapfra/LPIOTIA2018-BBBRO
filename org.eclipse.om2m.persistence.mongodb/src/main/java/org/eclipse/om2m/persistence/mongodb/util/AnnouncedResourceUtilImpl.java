@@ -1,6 +1,7 @@
 package org.eclipse.om2m.persistence.mongodb.util;
 
-import static com.mongodb.client.model.Filters.*;
+import static com.mongodb.client.model.Filters.and;
+import static com.mongodb.client.model.Filters.eq;
 
 import org.bson.Document;
 import org.eclipse.om2m.commons.constants.DBEntities;

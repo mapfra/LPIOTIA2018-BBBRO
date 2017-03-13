@@ -1,11 +1,12 @@
 package org.eclipse.om2m.persistence.mongodb.dao;
 
-import static com.mongodb.client.model.Filters.*;
+import static com.mongodb.client.model.Filters.and;
+import static com.mongodb.client.model.Filters.eq;
+
 import org.bson.Document;
 import org.eclipse.om2m.commons.constants.DBEntities;
 import org.eclipse.om2m.commons.entities.CreatedAnnouncedResourceEntity;
 import org.eclipse.om2m.persistence.mongodb.DBServiceImpl;
-import org.eclipse.om2m.persistence.mongodb.DBTransactionImpl;
 import org.eclipse.om2m.persistence.service.DAO;
 import org.eclipse.om2m.persistence.service.DBTransaction;
 

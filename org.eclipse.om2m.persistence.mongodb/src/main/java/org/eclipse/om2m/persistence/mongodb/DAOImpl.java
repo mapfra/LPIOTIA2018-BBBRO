@@ -1,24 +1,14 @@
 package org.eclipse.om2m.persistence.mongodb;
 
-import static com.mongodb.client.model.Filters.*;
-
+import static com.mongodb.client.model.Filters.eq;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.bson.Document;
-import org.eclipse.om2m.commons.constants.DBEntities;
-import org.eclipse.om2m.commons.constants.ShortName;
-import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
-import org.eclipse.om2m.commons.entities.AeEntity;
-import org.eclipse.om2m.commons.entities.CSEBaseEntity;
 import org.eclipse.om2m.commons.entities.ResourceEntity;
-import org.eclipse.om2m.persistence.mongodb.resource.ResourceSerializerDeserializer;
-import org.eclipse.om2m.persistence.mongodb.resource.MongoChildLoader;
 import org.eclipse.om2m.persistence.service.DAO;
 import org.eclipse.om2m.persistence.service.DBTransaction;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.mongodb.client.MongoCursor;
 
 public abstract class DAOImpl<T extends ResourceEntity> implements DAO<T> {
