@@ -4,7 +4,6 @@
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry exported="true" kind="lib" path="libs/eclipselink.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/h2-1.4.186.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/javax.persistence.jar"/>
 	<classpathentry kind="src" path="src/main/java/"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

@@ -5,14 +5,17 @@ Bundle-SymbolicName: org.eclipse.om2m.persistence.eclipselink
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.eclipse.om2m.persistence.eclipselink.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Require-Bundle: org.eclipse.om2m.commons
 Bundle-ClassPath: libs/eclipselink.jar,
  libs/h2-1.4.186.jar,
- libs/javax.persistence.jar,
  .
-Export-Package: org.eclipse.om2m.persistence.eclipselink,org.eclipse.p
- ersistence.internal.jaxb,org.eclipse.persistence.jaxb
-Import-Package: org.apache.commons.logging,
+Import-Package: javax.persistence,
+ javax.persistence.criteria,
+ javax.persistence.metamodel,
+ javax.persistence.spi,
+ org.apache.commons.logging,
+ org.eclipse.om2m.commons.constants,
+ org.eclipse.om2m.commons.entities,
+ org.eclipse.om2m.commons.resource,
  org.eclipse.om2m.persistence.service,
  org.eclipse.om2m.persistence.service.util,
  org.osgi.framework,
