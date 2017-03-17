@@ -39,6 +39,7 @@ import org.eclipse.om2m.commons.exceptions.BadRequestException;
 import org.eclipse.om2m.commons.exceptions.NotImplementedException;
 import org.eclipse.om2m.commons.exceptions.Om2mException;
 import org.eclipse.om2m.commons.exceptions.ResourceNotFoundException;
+import org.eclipse.om2m.commons.resource.DynamicAuthorizationConsultation;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
 import org.eclipse.om2m.core.controller.AEController;
@@ -49,6 +50,7 @@ import org.eclipse.om2m.core.controller.ContainerController;
 import org.eclipse.om2m.core.controller.ContentInstanceController;
 import org.eclipse.om2m.core.controller.Controller;
 import org.eclipse.om2m.core.controller.DiscoveryController;
+import org.eclipse.om2m.core.controller.DynamicAuthorizationConsultationController;
 import org.eclipse.om2m.core.controller.FanOutPointController;
 import org.eclipse.om2m.core.controller.FlexContainerAnncController;
 import org.eclipse.om2m.core.controller.FlexContainerController;
@@ -80,6 +82,7 @@ public class Router implements CseService {
 	 * @return The generic returned response
 	 */
 	public ResponsePrimitive doRequest(RequestPrimitive request) {
+
 		LOGGER.info("Received request in Router: " + request.toString());
 		ResponsePrimitive response = new ResponsePrimitive(request);
 
@@ -280,6 +283,9 @@ public class Router implements CseService {
 		if (Patterns.match(Patterns.CONTAINER_PATTERN, uri)){
 			return new ContainerController();
 		}
+		if (Patterns.match(Patterns.DYNAMIC_AUTHORIZATION_CONSULTATION_PATTERN, uri)){
+			return new DynamicAuthorizationConsultationController();
+		}
 		if(Patterns.match(Patterns.FLEXCONTAINER_PATTERN, uri)) {
 			return new FlexContainerController();
 		}
@@ -336,6 +342,8 @@ public class Router implements CseService {
 			return new ContainerController();
 		case ResourceType.CONTENT_INSTANCE :
 			return new ContentInstanceController();
+		case ResourceType.DYNAMIC_AUTHORIZATION_CONSULTATION:
+			return new DynamicAuthorizationConsultationController();
 		case ResourceType.REMOTE_CSE :
 			return new RemoteCSEController();
 		case ResourceType.GROUP:

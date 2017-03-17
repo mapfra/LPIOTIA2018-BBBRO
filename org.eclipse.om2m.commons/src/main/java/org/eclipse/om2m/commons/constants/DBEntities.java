@@ -29,6 +29,7 @@ import org.eclipse.om2m.commons.entities.CSEBaseEntity;
 import org.eclipse.om2m.commons.entities.ContainerEntity;
 import org.eclipse.om2m.commons.entities.ContentInstanceEntity;
 import org.eclipse.om2m.commons.entities.CustomAttributeEntity;
+import org.eclipse.om2m.commons.entities.DynamicAuthorizationConsultationEntity;
 import org.eclipse.om2m.commons.entities.FlexContainerEntity;
 import org.eclipse.om2m.commons.entities.LabelEntity;
 import org.eclipse.om2m.commons.entities.PollingChannelEntity;
@@ -110,6 +111,9 @@ public class DBEntities {
 	
 	/** Name used for the persisted {@link CreatedAnnouncedResourceEntity} entity */
 	public static final String ANNOUNCED_RESOURCE_ENTITY = "ANNC_RESOURCES";
+	
+	/** Name used for the persisted {@link DynamicAuthorizationConsultationEntity} entity */
+	public static final String DYNAMIC_AUTHORIZATION_CONSULTATION_ENTITY = "DYNAMIC_AUTHORIZATION_CONSULTATION_ENTITY";
 	
 	
 	/** Name of the GROUP entity */
@@ -330,6 +334,32 @@ public class DBEntities {
 	public static final String REMOTE_RESOURCE_ID = "REMOTE_RESOURCE_ID";
 	public static final String LOCAL_RESOURCE_ID = "LOCAL_RESOURCE_ID";
 	public static final String ANNOUNCE_CSE_ID = "ANNOUNCE_CSE_ID"; 
+	
+	
+	// DynamicAuthorisationConsultation DAC
+	public static final String DAC_JOINID = "DAC_JOINID";
+	
+	// DynamicAuthorizationConsutation-AccessControlPolicies
+	public static final String DAC_ACP_JOIN = "DAC_ACP_JOIN";
+	
+	// DynamicAuthorizationConsultation - DynamicAuthorizationConsultation
+	/** Name of the join table for link a DynamicAuthorizationConsultation entity with a child of type DynamicAuthorizationConsultation */
+	public static final String DAC_DACCHILD_JOIN = "DAC_DACCHILD_JOIN";
+	/** Name of the Child DynamicAuthorizationConsultation ID */
+	public static final String DACCHILD_JOIN_ID = "DACCHILD_JOIN_ID";
+	
+	// DynamicAuthorizationConsultation - CseBase
+	/** name of the join table between a DynamicAuthorizationConsultation entity and its parent of type CseBase */ 
+	public static final String CSEB_DAC_JOIN = "CSEB_DAC_JOIN";
+	
+	// Dynamic AuthorizationConsultation - RemoteCSE
+	/** name of the join table between a DynamicAuthorizationConsultation entity and its parent of type RemoceCse */
+	public static final String CSR_DACCHILD_JOIN = "CSR_DACCHILD_JOIN";
+	
+	// Dynamic AuthorizationConsultion - AE
+	/** name of the join table between a DynamicAuthorizationConsultation entity and its parent of type Ae*/
+	public static final String AE_DACCHILD_JOIN = "AE_DACCHILD_JOIN";
+	
 	
 }
 

@@ -10,6 +10,7 @@ import org.eclipse.om2m.commons.entities.AeAnncEntity;
 import org.eclipse.om2m.commons.entities.AeEntity;
 import org.eclipse.om2m.commons.entities.CSEBaseEntity;
 import org.eclipse.om2m.commons.entities.ContainerEntity;
+import org.eclipse.om2m.commons.entities.DynamicAuthorizationConsultationEntity;
 import org.eclipse.om2m.commons.entities.FlexContainerAnncEntity;
 import org.eclipse.om2m.commons.entities.FlexContainerEntity;
 import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
@@ -68,8 +69,24 @@ public class DBServiceImpl implements DBService {
 			LOGGER.info("delete all");
 			resourceCollection.deleteMany(new Document());
 			resourceCollection.dropIndexes();
-			resourceCollection.createIndex(Indexes.ascending("ResourceID", "HierarchicalURI"),
-						new IndexOptions().unique(true));
+			try {
+				Document doc = new Document();
+				doc.put("HierarchicalURI", 100);
+				// resourceCollection.createIndex(Indexes.ascending("ResourceID",
+				// "HierarchicalURI"),
+				// new IndexOptions().unique(true));
+				resourceCollection.createIndex(Indexes.ascending(
+						"ResourceID"/* , "HierarchicalURI" */)/*
+																 * , new
+																 * IndexOptions(
+																 * ).unique(
+																 * true)
+																 */);
+				resourceCollection.createIndex(Indexes.ascending(/* "ResourceID", */ "HierarchicalURI"),
+						new IndexOptions().unique(true)/*.weights(doc)*/);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
 			announceCollection.deleteMany(new Document());
 			announceCollection.dropIndexes();
@@ -82,13 +99,17 @@ public class DBServiceImpl implements DBService {
 		gsonBuilder.registerTypeAdapter(AccessControlPolicyEntity.class,
 				new ResourceSerializerDeserializer<AccessControlPolicyEntity>());
 		gsonBuilder.registerTypeAdapter(AeEntity.class, new ResourceSerializerDeserializer<AeEntity>());
-		gsonBuilder.registerTypeAdapter(FlexContainerEntity.class, new ResourceSerializerDeserializer<FlexContainerEntity>());
+		gsonBuilder.registerTypeAdapter(FlexContainerEntity.class,
+				new ResourceSerializerDeserializer<FlexContainerEntity>());
 		gsonBuilder.registerTypeAdapter(ContainerEntity.class, new ResourceSerializerDeserializer<ContainerEntity>());
-		gsonBuilder.registerTypeAdapter(SubscriptionEntity.class, new ResourceSerializerDeserializer<SubscriptionEntity>());
+		gsonBuilder.registerTypeAdapter(SubscriptionEntity.class,
+				new ResourceSerializerDeserializer<SubscriptionEntity>());
 		gsonBuilder.registerTypeAdapter(RemoteCSEEntity.class, new ResourceSerializerDeserializer<RemoteCSEEntity>());
 		gsonBuilder.registerTypeAdapter(AeAnncEntity.class, new ResourceSerializerDeserializer<AeAnncEntity>());
 		gsonBuilder.registerTypeAdapter(FlexContainerAnncEntity.class,
 				new ResourceSerializerDeserializer<FlexContainerAnncEntity>());
+		gsonBuilder.registerTypeAdapter(DynamicAuthorizationConsultationEntity.class,
+				new ResourceSerializerDeserializer<DynamicAuthorizationConsultationEntity>());
 		gson = gsonBuilder.create();
 	}
 

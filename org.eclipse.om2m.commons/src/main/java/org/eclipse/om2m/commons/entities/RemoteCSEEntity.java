@@ -172,6 +172,15 @@ public class RemoteCSEEntity extends AnnounceableSubordinateEntity {
 			inverseJoinColumns={@JoinColumn(name=DBEntities.NOD_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)}
 			)
 	protected List<NodeEntity> childNodes;
+	
+	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL,mappedBy="parentRemoteCse")
+	@JoinTable(
+			name=DBEntities.CSR_DACCHILD_JOIN,
+			joinColumns={@JoinColumn(name=DBEntities.CSR_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)},
+			inverseJoinColumns={@JoinColumn(name=DBEntities.DAC_JOINID, referencedColumnName=ShortName.RESOURCE_ID)}
+			)
+	private List<DynamicAuthorizationConsultationEntity> childDynamicAuthorizationConsultation;
+	
 	/**
 	 * @return the cseType
 	 */
@@ -498,6 +507,19 @@ public class RemoteCSEEntity extends AnnounceableSubordinateEntity {
 	public void setGeneratedAcp(AccessControlPolicyEntity generatedAcp) {
 		this.generatedAcp = generatedAcp;
 	}
+
+	public List<DynamicAuthorizationConsultationEntity> getChildDynamicAuthorizationConsultation() {
+		if (childDynamicAuthorizationConsultation == null) {
+			childDynamicAuthorizationConsultation = new ArrayList<>();
+		}
+		return childDynamicAuthorizationConsultation;
+	}
+
+	public void setChildDynamicAuthorizationConsultation(
+			List<DynamicAuthorizationConsultationEntity> childDynamicAuthorizationConsultation) {
+		this.childDynamicAuthorizationConsultation = childDynamicAuthorizationConsultation;
+	}
+	
 	
 	
 

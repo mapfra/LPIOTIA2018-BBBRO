@@ -28,6 +28,7 @@ import org.eclipse.om2m.commons.entities.AreaNwkInfoEntity;
 import org.eclipse.om2m.commons.entities.CSEBaseEntity;
 import org.eclipse.om2m.commons.entities.ContainerEntity;
 import org.eclipse.om2m.commons.entities.ContentInstanceEntity;
+import org.eclipse.om2m.commons.entities.DynamicAuthorizationConsultationEntity;
 import org.eclipse.om2m.commons.entities.FlexContainerAnncEntity;
 import org.eclipse.om2m.commons.entities.FlexContainerEntity;
 import org.eclipse.om2m.commons.entities.GroupEntity;
@@ -45,6 +46,7 @@ import org.eclipse.om2m.commons.resource.AreaNwkInfo;
 import org.eclipse.om2m.commons.resource.CSEBase;
 import org.eclipse.om2m.commons.resource.Container;
 import org.eclipse.om2m.commons.resource.ContentInstance;
+import org.eclipse.om2m.commons.resource.DynamicAuthorizationConsultation;
 import org.eclipse.om2m.commons.resource.FlexContainer;
 import org.eclipse.om2m.commons.resource.FlexContainerAnnc;
 import org.eclipse.om2m.commons.resource.Group;
@@ -80,6 +82,12 @@ public class EntityMapperFactory {
 	public static EntityMapper<ContainerEntity, Container> getContainerMapper(){
 		return new ContainerMapper();
 	}
+	
+	/** Get the DynamicAuthorizationConsultation mapper */
+	public static EntityMapper<DynamicAuthorizationConsultationEntity, DynamicAuthorizationConsultation> getDynamicAuthorizationConsultationMapper() {
+		return new DynamicAuthorizationConsultationMapper();
+	}
+	
 	/** Get the FlexContainer mapper */
 	public static EntityMapper<FlexContainerEntity, FlexContainer> getFlexContainerMapper(){
 		return new FlexContainerMapper();
@@ -148,6 +156,8 @@ public class EntityMapperFactory {
 			return new AcpMapper();
 		case ResourceType.CONTAINER:
 			return new ContainerMapper();
+		case ResourceType.DYNAMIC_AUTHORIZATION_CONSULTATION:
+			return new DynamicAuthorizationConsultationMapper();
 		case ResourceType.FLEXCONTAINER:
 			return new FlexContainerMapper();
 		case ResourceType.FLEXCONTAINER_ANNC:

@@ -67,7 +67,7 @@ import org.eclipse.om2m.commons.constants.ShortName;
 		StatsConfig.class, Delivery.class, ExecInstance.class, MgmtCmd.class,
 		Request.class, ServiceSubscribedNode.class,
 		M2MServiceSubscriptionProfile.class, EventConfig.class,
-		PollingChannel.class, Subscription.class, AnnounceableResource.class })
+		PollingChannel.class, Subscription.class, AnnounceableResource.class, DynamicAuthorizationConsultation.class })
 public class RegularResource extends Resource {
 
 	@XmlList

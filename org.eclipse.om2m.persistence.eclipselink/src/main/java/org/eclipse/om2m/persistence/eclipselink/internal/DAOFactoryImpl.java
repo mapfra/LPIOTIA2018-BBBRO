@@ -24,6 +24,7 @@ import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
 import org.eclipse.om2m.commons.entities.AeAnncEntity;
 import org.eclipse.om2m.commons.entities.AeEntity;
 import org.eclipse.om2m.commons.entities.CreatedAnnouncedResourceEntity;
+import org.eclipse.om2m.commons.entities.DynamicAuthorizationConsultationEntity;
 import org.eclipse.om2m.commons.entities.CSEBaseEntity;
 import org.eclipse.om2m.commons.entities.ContainerEntity;
 import org.eclipse.om2m.commons.entities.ContentInstanceEntity;
@@ -41,6 +42,7 @@ import org.eclipse.om2m.persistence.eclipselink.internal.dao.AccessControlPolicy
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.AeAnncDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.AeDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.CreatedAnnouncedResourceDAO;
+import org.eclipse.om2m.persistence.eclipselink.internal.dao.DynamicAuthorizationConsultationDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.CSEBaseDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.ContainerDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.ContentInstanceDAO;
@@ -155,4 +157,8 @@ public class DAOFactoryImpl implements DAOFactory {
 		return new FlexContainerAnncDAO();
 	}
 	
+	@Override
+	public DAO<DynamicAuthorizationConsultationEntity> getDynamicAuthorizationDAO() {
+		return new DynamicAuthorizationConsultationDAO();
+	}
 }

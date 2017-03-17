@@ -144,6 +144,26 @@ public class AeEntity extends AnnounceableSubordinateEntity {
 			)
 	protected List<SubscriptionEntity> subscriptions;
 	
+	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL, mappedBy="parentAe")
+	@JoinTable(
+			name=DBEntities.AE_DACCHILD_JOIN,
+			joinColumns={@JoinColumn(name=DBEntities.AE_JOINID, referencedColumnName=ShortName.RESOURCE_ID)},
+			inverseJoinColumns={@JoinColumn(name=DBEntities.DAC_JOINID, referencedColumnName=ShortName.RESOURCE_ID)}
+			)
+	private List<DynamicAuthorizationConsultationEntity> dynamicAuthorizationConsultations;
+	
+	public List<DynamicAuthorizationConsultationEntity> getDynamicAuthorizationConsultations() {
+		if (dynamicAuthorizationConsultations == null) {
+			dynamicAuthorizationConsultations = new ArrayList<>();
+		}
+		return dynamicAuthorizationConsultations;
+	}
+
+	public void setDynamicAuthorizationConsultations(
+			List<DynamicAuthorizationConsultationEntity> dynamicAuthorizationConsultations) {
+		this.dynamicAuthorizationConsultations = dynamicAuthorizationConsultations;
+	}
+
 	/**
 	 * @return the childAccessControlPolicies
 	 */

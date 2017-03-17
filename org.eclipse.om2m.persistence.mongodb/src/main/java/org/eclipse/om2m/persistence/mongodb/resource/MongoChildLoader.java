@@ -15,6 +15,7 @@ import org.eclipse.om2m.commons.entities.AeAnncEntity;
 import org.eclipse.om2m.commons.entities.AeEntity;
 import org.eclipse.om2m.commons.entities.CSEBaseEntity;
 import org.eclipse.om2m.commons.entities.ContainerEntity;
+import org.eclipse.om2m.commons.entities.DynamicAuthorizationConsultationEntity;
 import org.eclipse.om2m.commons.entities.FlexContainerAnncEntity;
 import org.eclipse.om2m.commons.entities.FlexContainerEntity;
 import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
@@ -80,6 +81,8 @@ public class MongoChildLoader<T extends ResourceEntity> {
 			return ContainerEntity.class;
 		case ResourceType.REMOTE_CSE:
 			return RemoteCSEEntity.class;
+		case ResourceType.DYNAMIC_AUTHORIZATION_CONSULTATION:
+			return DynamicAuthorizationConsultationEntity.class;
 		default:
 			return null;
 		}

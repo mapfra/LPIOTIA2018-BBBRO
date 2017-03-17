@@ -8,6 +8,7 @@ import org.eclipse.om2m.commons.entities.CSEBaseEntity;
 import org.eclipse.om2m.commons.entities.ContainerEntity;
 import org.eclipse.om2m.commons.entities.ContentInstanceEntity;
 import org.eclipse.om2m.commons.entities.CreatedAnnouncedResourceEntity;
+import org.eclipse.om2m.commons.entities.DynamicAuthorizationConsultationEntity;
 import org.eclipse.om2m.commons.entities.FlexContainerAnncEntity;
 import org.eclipse.om2m.commons.entities.FlexContainerEntity;
 import org.eclipse.om2m.commons.entities.GroupEntity;
@@ -136,5 +137,12 @@ public class DAOFactoryImpl implements DAOFactory {
 		return new DAOImpl<FlexContainerAnncEntity>(FlexContainerAnncEntity.class) {
 		};
 	}
+	
+	@Override
+	public DAO<DynamicAuthorizationConsultationEntity> getDynamicAuthorizationDAO() {
+		return  new DAOImpl<DynamicAuthorizationConsultationEntity>(DynamicAuthorizationConsultationEntity.class) {
+		};
+	}
+	
 
 }

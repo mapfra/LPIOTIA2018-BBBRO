@@ -42,6 +42,8 @@ public class ShortName {
 	public static final String CNT = "cnt";
 	/** Short name for ContainerAnnc resource */
 	public static final String CNTA = "cntA";
+	/** Short name for DynamicAuthorizationConsultation resource */
+	public static final String DAC = "dac";
 	/** Short name for FlexContainer resource*/
 	public static final String FCNT = "fcnt";
 	/** Short name for FlexContainerAnnc resource */
@@ -170,6 +172,8 @@ public class ShortName {
 	public static final String ACP_IDS = "acpi";
 	/** Short name for Child Resource */
 	public static final String CHILD_RESOURCE = "ch";
+	/** Short name for DynamicAuthorizationConsultationIDs attribute */
+	public static final String DAC_IDS = "daci";
 	
 	// Attributes for CSEBase Entity
 	/** Short name for SupportedResourceTypes attribute */
@@ -444,4 +448,9 @@ public class ShortName {
 	
 	// short name for URI List
 	public static final String URI_LIST = "uril";
+	
+	// short names for DynamicAuthorizationConsultation 
+	public static final String DYNAMIC_AUTHORIZATION_ENABLED = "dae";
+	public static final String DYNAMIC_AUTHORIZATION_PoA = "dap";
+	public static final String DYNAMIC_AUTHORIZATION_LIFETIME = "dal";
 }

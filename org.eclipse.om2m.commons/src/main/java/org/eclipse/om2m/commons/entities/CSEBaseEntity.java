@@ -168,6 +168,14 @@ public class CSEBaseEntity extends ResourceEntity {
 			inverseJoinColumns = { @JoinColumn(name = DBEntities.SUB_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
 			)
 	protected List<SubscriptionEntity> childSubscriptions;
+	@JoinTable(
+			name = DBEntities.CSEB_DAC_JOIN,
+			joinColumns = { @JoinColumn(name = DBEntities.CSEB_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
+			inverseJoinColumns = { @JoinColumn(name = DBEntities.DAC_JOINID, referencedColumnName = ShortName.RESOURCE_ID) }
+			)
+	@OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL,mappedBy="parentCseBase")
+	
+	private List<DynamicAuthorizationConsultationEntity> childDynamicAuthorizationConsultation;
 
 	/**
 	 * @return the aes
@@ -430,4 +438,19 @@ public class CSEBaseEntity extends ResourceEntity {
 	public void setChildNodes(List<NodeEntity> childNodes) {
 		this.childNodes = childNodes;
 	}
+
+	
+	public List<DynamicAuthorizationConsultationEntity> getChildDynamicAuthorizationConsultation() {
+		if (childDynamicAuthorizationConsultation == null) {
+			childDynamicAuthorizationConsultation = new ArrayList<>();
+		}
+		return childDynamicAuthorizationConsultation;
+	}
+
+	public void setChildDynamicAuthorizationConsultation(
+			List<DynamicAuthorizationConsultationEntity> childDynamicAuthorizationConsultation) {
+		this.childDynamicAuthorizationConsultation = childDynamicAuthorizationConsultation;
+	}
+	
+	
 }

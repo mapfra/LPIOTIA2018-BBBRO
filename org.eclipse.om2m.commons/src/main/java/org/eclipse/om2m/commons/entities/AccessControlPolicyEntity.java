@@ -124,6 +124,15 @@ public class AccessControlPolicyEntity extends AnnounceableSubordinateEntity {
 			)
 	protected List<ContainerEntity> linkedCnts;
 	
+	// database link to DynamicAuthorizationConsultation
+	@ManyToMany
+	@JoinTable(
+			name=DBEntities.DAC_ACP_JOIN,
+			inverseJoinColumns={@JoinColumn(name=DBEntities.DAC_JOINID, referencedColumnName=ShortName.RESOURCE_ID)},
+			joinColumns={@JoinColumn(name=DBEntities.ACP_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)}
+			)
+	protected List<DynamicAuthorizationConsultationEntity> linkedDynamicAuthorizationConsultation;
+	
 	// Database link to FlexContainer
 	@ManyToMany
 	@JoinTable(
@@ -451,6 +460,17 @@ public class AccessControlPolicyEntity extends AnnounceableSubordinateEntity {
 			List<AreaNwkDeviceInfoEntity> areaNwkDeviceInfoEntities) {
 		this.areaNwkDeviceInfoEntities = areaNwkDeviceInfoEntities;
 	}
+
+	public List<DynamicAuthorizationConsultationEntity> getLinkedDynamicAuthorizationConsultation() {
+		return linkedDynamicAuthorizationConsultation;
+	}
+
+	public void setLinkedDynamicAuthorizationConsultation(
+			List<DynamicAuthorizationConsultationEntity> linkedDynamicAuthorizationConsultation) {
+		this.linkedDynamicAuthorizationConsultation = linkedDynamicAuthorizationConsultation;
+	}
+	
+	
 	
 
 }

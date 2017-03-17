@@ -202,6 +202,15 @@ public class ObjectFactory {
 		return new Container();
 	}
 	
+	
+	/**
+	 * Create an instance of {@link DynamicAuthorizationConsultation}
+	 * @return
+	 */
+	public DynamicAuthorizationConsultation createDynamicAuthorizationConsultation() {
+		return new DynamicAuthorizationConsultation();
+	}
+	
 	/**
 	 * Create an instance of {@link FlexContainer}
 	 * 
