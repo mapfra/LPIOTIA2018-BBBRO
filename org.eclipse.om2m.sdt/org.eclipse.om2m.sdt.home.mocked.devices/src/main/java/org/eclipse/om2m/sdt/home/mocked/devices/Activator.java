@@ -30,6 +30,8 @@ interface MockedDevice {
 public class Activator implements BundleActivator {
 
 	static private final String PROTOCOL = "Mocked";
+	static private final String MANUFACTURER = "MockedManufacturer";
+	static private final String ALIAS = "Simulated device for ";
 	
 	static private BundleContext context;
 	static public Logger logger;
@@ -37,7 +39,7 @@ public class Activator implements BundleActivator {
 	private List<GenericDevice> devices;
 	private Domain domain = new Domain("home");
 	private boolean running;
-	private int counter = 1;
+	private int counter = (int)(Math.random() * 100);
 
 	@Override
 	public void start(BundleContext ctxt) throws Exception {
@@ -52,13 +54,16 @@ public class Activator implements BundleActivator {
 			running = true;
 			devices = new ArrayList<GenericDevice>();
 			
-			devices.add(new MockedSmartElectricMeter(getName(), getSerial(), domain));
-			devices.add(new MockedWaterValve(getName(), getSerial(), domain));
-			devices.add(new MockedSmokeDetector(getName(), getSerial(), domain));
-			devices.add(new MockedWarningDevice(getName(), getSerial(), domain));
-			devices.add(new MockedFloodDetector(getName(), getSerial(), domain));
-			devices.add(new MockedDoor(getName(), getSerial(), domain));
-			devices.add(new MockedCamera(getName(), getSerial(), domain));
+			devices.add(new MockedSmartElectricMeter(getId(), getSerial(), domain));
+			devices.add(new MockedWaterValve(getId(), getSerial(), domain));
+			devices.add(new MockedSmokeDetector(getId(), getSerial(), domain));
+			devices.add(new MockedWarningDevice(getId(), getSerial(), domain));
+			devices.add(new MockedFloodDetector(getId(), getSerial(), domain));
+			devices.add(new MockedLight(getId(), getSerial(), domain));
+			devices.add(new MockedDoor(getId(), getSerial(), domain));
+			devices.add(new MockedCamera(getId(), getSerial(), domain));
+			devices.add(new MockedDoor(getId(), getSerial(), domain));
+			devices.add(new MockedCamera(getId(), getSerial(), domain));
 			
 			for (GenericDevice dev : devices) {
 				install(dev);
@@ -68,7 +73,7 @@ public class Activator implements BundleActivator {
 				@Override
 				public void run() {
 					while (running) {
-						GenericDevice light = new MockedLight(getName(), getSerial(), domain);
+						GenericDevice light = new MockedLight(getId(), getSerial(), domain);
 						devices.add(light);
 						logger.info("\n*************************************************");
 						logger.info("start new light " + light);
@@ -81,7 +86,7 @@ public class Activator implements BundleActivator {
 						}
 					}
 				}
-			}).start();
+			});//.start();
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -89,13 +94,11 @@ public class Activator implements BundleActivator {
 	}
 
 	private void install(GenericDevice dev) {
-		String name = dev.getClass().getSimpleName();
-		if (dev instanceof MockedLight)
-			name += " " + (counter-1);
+		String name = dev.getClass().getSimpleName() + " " + dev.getName();
 		dev.setDeviceName(name);
-		dev.setDeviceAliasName("Simulated device for " + name);
+		dev.setDeviceAliasName(ALIAS + name);
 		dev.setProtocol(PROTOCOL);
-		dev.setDeviceManufacturer("MockedManufacturer");
+		dev.setDeviceManufacturer(MANUFACTURER);
 		logger.info("register " + dev);
 		((MockedDevice)dev).registerDevice();
 	}
@@ -121,7 +124,7 @@ public class Activator implements BundleActivator {
 		return Utils.register(device, context);
 	}
 	
-	private final String getName() {
+	private final String getId() {
 		return "mocked_" + counter;
 	}
 	
