@@ -32,6 +32,7 @@ import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
 import org.eclipse.om2m.commons.entities.AccessControlRuleEntity;
 import org.eclipse.om2m.commons.entities.AeEntity;
 import org.eclipse.om2m.commons.entities.CSEBaseEntity;
+import org.eclipse.om2m.commons.entities.RegularResourceEntity;
 import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
 import org.eclipse.om2m.commons.entities.ResourceEntity;
 import org.eclipse.om2m.commons.entities.SubscriptionEntity;
@@ -403,6 +404,16 @@ public class AccessControlPolicyController extends Controller {
 		}
 		
 		// Check this acp is not a generated acp for an AE to avoid inconsistency
+//		for(RegularResourceEntity regularResourceEntity : acpEntity.getLinkedRegularResources()) {
+//			if (regularResourceEntity instanceof AeEntity) {
+//				AeEntity ae = (AeEntity) regularResourceEntity;
+//				if (ae.getGeneratedAcp() != null) {
+//					if(ae.getGeneratedAcp().getResourceID().equals(acpEntity.getResourceID())){
+//						throw new BadRequestException("Delete the linked ae(s) to avoid acp inconsistency.");
+//					}
+//				}
+//			}
+//		}
 		for(AeEntity ae : acpEntity.getLinkedAes()){
 			if (ae.getGeneratedAcp() != null) {
 				if(ae.getGeneratedAcp().getResourceID().equals(acpEntity.getResourceID())){

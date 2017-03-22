@@ -53,6 +53,10 @@ public class RemoteCSEMapper extends EntityMapper<RemoteCSEEntity, RemoteCSE> {
 
 	@Override
 	protected void mapAttributes(RemoteCSEEntity csrEntity, RemoteCSE csr) {
+		// announceableResource attributes
+		EntityMapperFactory.getAnnounceableSubordonateEntity_AnnounceableResourceMapper().mapAttributes(csrEntity, csr);
+			
+		// remoteCse attributes
 		csr.setCSEBase(csrEntity.getRemoteCseUri());
 		csr.setCSEID(csrEntity.getRemoteCseId());
 		csr.setCseType(csrEntity.getCseType());
@@ -61,20 +65,10 @@ public class RemoteCSEMapper extends EntityMapper<RemoteCSEEntity, RemoteCSE> {
 		csr.setNodeLink(csrEntity.getNodeLink());
 		csr.setRequestReachability(csrEntity.isRequestReachability());
 		csr.setTriggerRecipientID(csrEntity.getTriggerRecipientID());
-		if (!csrEntity.getAnnouncedAttribute().isEmpty()) {
-			csr.getAnnouncedAttribute().addAll(csrEntity.getAnnouncedAttribute());
-		}
-		if (!csrEntity.getAnnounceTo().isEmpty()) {
-			csr.getAnnounceTo().addAll(csrEntity.getAnnounceTo());
-		}
 		if (!csrEntity.getPointOfAccess().isEmpty()) {
 			csr.getPointOfAccess().addAll(csrEntity.getPointOfAccess());
 		}
 
-		// setting acpIds
-		for (AccessControlPolicyEntity acp : csrEntity.getAccessControlPolicies()) {
-			csr.getAccessControlPolicyIDs().add(acp.getResourceID());
-		}
 	}
 
 	@Override

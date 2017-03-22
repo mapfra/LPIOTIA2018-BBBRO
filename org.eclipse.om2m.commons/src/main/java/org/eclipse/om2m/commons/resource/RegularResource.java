@@ -52,6 +52,7 @@ import org.eclipse.om2m.commons.constants.ShortName;
  *     &lt;extension base="{http://www.onem2m.org/xml/protocols}resource">
  *       &lt;sequence>
  *         &lt;element name="accessControlPolicyIDs" type="{http://www.onem2m.org/xml/protocols}acpType" minOccurs="0"/>
+ *         &lt;element name="dynamicAuthorizationConsultationIDs" type="{http://www.onem2m.org/xml/protocols}listOfURIs" minOccurs="0"/>
  *         &lt;element name="expirationTime" type="{http://www.onem2m.org/xml/protocols}timestamp"/>
  *       &lt;/sequence>
  *     &lt;/extension>
@@ -73,6 +74,9 @@ public class RegularResource extends Resource {
 	@XmlList
 	@XmlElement(name=ShortName.ACP_IDS)
 	protected List<String> accessControlPolicyIDs;
+	@XmlList
+	@XmlElement(name=ShortName.DAC_IDS, required=true)
+	protected List<String> dynamicAuthorizationConsultationIDs;
 	@XmlElement(name=ShortName.EXPIRATION_TIME, required = true)
 	protected String expirationTime;
 
@@ -103,6 +107,35 @@ public class RegularResource extends Resource {
 			accessControlPolicyIDs = new ArrayList<String>();
 		}
 		return this.accessControlPolicyIDs;
+	}
+	
+	/**
+	 * Gets the value of the dynamicAuthorizationConsultationIDs property.
+	 * 
+	 * <p>
+	 * This accessor method returns a reference to the live list, not a
+	 * snapshot. Therefore any modification you make to the returned list will
+	 * be present inside the JAXB object. This is why there is not a
+	 * <CODE>set</CODE> method for the dynamicAuthorizationConsultationIDs property.
+	 * 
+	 * <p>
+	 * For example, to add a new item, do as follows:
+	 * 
+	 * <pre>
+	 * getDynamicAuthorizationConsultationIDs().add(newItem);
+	 * </pre>
+	 * 
+	 * 
+	 * <p>
+	 * Objects of the following type(s) are allowed in the list {@link String }
+	 * 
+	 * 
+	 */
+	public List<String> getDynamicAuthorizationConsultationIDs() {
+		if (dynamicAuthorizationConsultationIDs == null) {
+			dynamicAuthorizationConsultationIDs = new ArrayList<String>();
+		}
+		return this.dynamicAuthorizationConsultationIDs;
 	}
 
 	/**

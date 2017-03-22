@@ -19,7 +19,6 @@
  *******************************************************************************/
 package org.eclipse.om2m.core.entitymapper;
 
-import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
 import org.eclipse.om2m.commons.entities.AreaNwkDeviceInfoEntity;
 import org.eclipse.om2m.commons.resource.AreaNwkDeviceInfo;
 
@@ -32,27 +31,18 @@ public class AreaNwkDeviceInfoMapper extends EntityMapper<AreaNwkDeviceInfoEntit
 	@Override
 	protected void mapAttributes(AreaNwkDeviceInfoEntity entity,
 			AreaNwkDeviceInfo resource) {
+		// Announceable resource attributes
+		EntityMapperFactory.getAnnounceableSubordonateEntity_AnnounceableResourceMapper().mapAttributes(entity, resource);
+		
+		// AreaNwkDeviceInfo attributes
 		resource.setAreaNwkId(entity.getAreaNwkId());
 		resource.setDescription(entity.getDescription());
 		resource.setDevID(entity.getDevID());
-		resource.setExpirationTime(entity.getExpirationTime());
 		resource.setMgmtDefinition(entity.getMgmtDefinition());
 		resource.setName(entity.getName());
 		resource.setSleepDuration(entity.getSleepDuration());
 		resource.setSleepInterval(entity.getSleepInterval());
 		resource.setStatus(entity.getStatus());
-
-		for (AccessControlPolicyEntity acp : entity.getAcps()) {
-			resource.getAccessControlPolicyIDs().add(acp.getResourceID());
-		}
-		
-		if (!entity.getAnnouncedAttribute().isEmpty()) {
-			resource.getAnnouncedAttribute().addAll(entity.getAnnouncedAttribute());
-		}
-		if (!entity.getAnnounceTo().isEmpty()) {
-			resource.getAnnounceTo().addAll(entity.getAnnounceTo());
-		}
-		
 	}
 
 	@Override

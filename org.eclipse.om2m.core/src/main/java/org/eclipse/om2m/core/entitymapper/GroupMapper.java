@@ -39,8 +39,11 @@ public class GroupMapper extends EntityMapper<GroupEntity, Group>{
 
 	@Override
 	protected void mapAttributes(GroupEntity entity, Group resource) {
+		// announceable resource attributes
+		EntityMapperFactory.getAnnounceableSubordonateEntity_AnnounceableResourceMapper().mapAttributes(entity, resource);
+		
+		// group attributes
 		resource.setConsistencyStrategy(entity.getConsistencyStrategy());
-		resource.setExpirationTime(entity.getExpirationTime());
 		resource.setCreator(entity.getCreator());
 		resource.setCurrentNrOfMembers(BigInteger.valueOf(entity.getMemberIDs().size()));
 		resource.setFanOutPoint(entity.getHierarchicalURI() + "/" + ShortName.FANOUTPOINT);
@@ -48,15 +51,6 @@ public class GroupMapper extends EntityMapper<GroupEntity, Group>{
 		resource.setMaxNrOfMembers(entity.getMaxNrOfMembers());
 		resource.setMemberType(entity.getMemberType());
 		resource.setMemberTypeValidated(entity.isMemberTypeValidated());
-		for(AccessControlPolicyEntity acpEntity : entity.getAccessControlPolicies()){
-			resource.getAccessControlPolicyIDs().add(acpEntity.getResourceID());
-		}
-		if (!entity.getAnnouncedAttribute().isEmpty()) {			
-			resource.getAnnouncedAttribute().addAll(entity.getAnnouncedAttribute());
-		}
-		if (!entity.getAnnounceTo().isEmpty()) {			
-			resource.getAnnounceTo().addAll(entity.getAnnounceTo());
-		}
 		if(!entity.getMemberIDs().isEmpty()){
 			resource.getMemberIDs().addAll(entity.getMemberIDs());
 		}

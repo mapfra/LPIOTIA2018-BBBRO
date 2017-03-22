@@ -34,6 +34,7 @@ import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
 import org.eclipse.om2m.commons.entities.AccessControlRuleEntity;
 import org.eclipse.om2m.commons.entities.AeEntity;
 import org.eclipse.om2m.commons.entities.CSEBaseEntity;
+import org.eclipse.om2m.commons.entities.DynamicAuthorizationConsultationEntity;
 import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
 import org.eclipse.om2m.commons.entities.ResourceEntity;
 import org.eclipse.om2m.commons.entities.SubscriptionEntity;
@@ -109,6 +110,7 @@ public class AEController extends Controller {
 		List<AccessControlPolicyEntity> acpsToCheck = null;
 		List<AeEntity> childAes = null;
 		List<SubscriptionEntity> subs = null;
+		List<DynamicAuthorizationConsultationEntity> dacsToCheck = null;
 
 		// Distinguish parents
 		// Case of CSEBase
@@ -117,6 +119,7 @@ public class AEController extends Controller {
 			acpsToCheck = cseBase.getAccessControlPolicies();
 			childAes = cseBase.getAes();
 			subs = cseBase.getSubscriptions();
+			dacsToCheck = cseBase.getDynamicAuthorizationConsultations();
 		}
 		// Case of remoteCSE
 		if(parentEntity.getResourceType().intValue() == (ResourceType.REMOTE_CSE)){
@@ -124,6 +127,7 @@ public class AEController extends Controller {
 			acpsToCheck = csr.getAccessControlPolicies();
 			childAes = csr.getChildAes();
 			subs = csr.getSubscriptions();
+			dacsToCheck = csr.getDynamicAuthorizationConsultations();
 		}
 		// Case of remoteCSEAnnc
 		if(parentEntity.getResourceType().intValue() == (ResourceType.REMOTE_CSE_ANNC)){
@@ -222,6 +226,15 @@ public class AEController extends Controller {
 					ControllerUtil.buildAcpEntityList(ae.getAccessControlPolicyIDs(), transaction));
 		} else {
 			aeEntity.getAccessControlPolicies().addAll(acpsToCheck);
+		}
+		
+		// dynamicAuthorizationConsultationIDs O
+		if (!ae.getDynamicAuthorizationConsultationIDs().isEmpty()) {
+			aeEntity.setDynamicAuthorizationConsultations(
+					ControllerUtil.buildDacEntityList(ae.getDynamicAuthorizationConsultationIDs(), transaction));
+		} else {
+			// shoud get dacList from parent
+			aeEntity.setDynamicAuthorizationConsultations(dacsToCheck);
 		}
 
 		// FIXME [0001] Creation of AE with an acpi provided
@@ -466,6 +479,14 @@ public class AEController extends Controller {
 			aeEntity.setAccessControlPolicies(ControllerUtil.buildAcpEntityList(ae.getAccessControlPolicyIDs(), transaction));
 			modifiedAttributes.getAccessControlPolicyIDs().addAll(ae.getAccessControlPolicyIDs());
 		}
+		
+		// dynamicAuthorizationConsultationIDs	O
+		if (!ae.getDynamicAuthorizationConsultationIDs().isEmpty()) {
+			aeEntity.setDynamicAuthorizationConsultations(
+					ControllerUtil.buildDacEntityList(ae.getDynamicAuthorizationConsultationIDs(), transaction));
+		} 
+		
+		
 		// expirationTime			O
 		if (ae.getExpirationTime() != null){
 			aeEntity.setExpirationTime(ae.getExpirationTime());

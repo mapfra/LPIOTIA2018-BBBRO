@@ -94,8 +94,8 @@ import org.eclipse.om2m.commons.constants.ShortName;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "accessControlPolicyIDs", "cseType", "cseid",
-		"supportedResourceType", "pointOfAccess", "nodeLink", "childResource",
+@XmlType(name = "", propOrder = { "accessControlPolicyIDs", "dynamicAuthorizationConsultationIDs",
+		"cseType", "cseid", "supportedResourceType", "pointOfAccess", "nodeLink", "childResource",
 		"remoteCSEOrNodeOrAE" })
 @XmlRootElement(name = ShortName.CSE_BASE)
 public class CSEBase extends Resource {
@@ -103,6 +103,9 @@ public class CSEBase extends Resource {
 	@XmlList
 	@XmlElement(name=ShortName.ACP_IDS)
 	protected List<String> accessControlPolicyIDs;
+	@XmlList
+	@XmlElement(name=ShortName.DAC_IDS, required=true)
+	protected List<String> dynamicAuthorizationConsultationIDs;
 	@XmlElement(name=ShortName.CSE_TYPE)
 	protected BigInteger cseType;
 	@XmlElement(name = ShortName.CSE_ID, required = true)
@@ -126,6 +129,7 @@ public class CSEBase extends Resource {
 			@XmlElement(name = ShortName.CNT, namespace = "http://www.onem2m.org/xml/protocols", type = Container.class),
 			@XmlElement(name = ShortName.GROUP, namespace = "http://www.onem2m.org/xml/protocols", type = Group.class),
 			@XmlElement(name = ShortName.ACP, namespace = "http://www.onem2m.org/xml/protocols", type = AccessControlPolicy.class),
+			@XmlElement(name = ShortName.DAC, namespace = "http://www.onem2m.org/xml/protocols", type = DynamicAuthorizationConsultation.class),
 			@XmlElement(name = ShortName.SUB, namespace = "http://www.onem2m.org/xml/protocols", type = Subscription.class),
 			@XmlElement(name = "mgmtCmd", namespace = "http://www.onem2m.org/xml/protocols", type = MgmtCmd.class),
 			@XmlElement(name = "locationPolicy", namespace = "http://www.onem2m.org/xml/protocols", type = LocationPolicy.class),
@@ -166,6 +170,36 @@ public class CSEBase extends Resource {
 		}
 		return this.accessControlPolicyIDs;
 	}
+	
+	/**
+	 * Gets the value of the dynamicAuthorizationConsultationIDs property.
+	 * 
+	 * <p>
+	 * This accessor method returns a reference to the live list, not a
+	 * snapshot. Therefore any modification you make to the returned list will
+	 * be present inside the JAXB object. This is why there is not a
+	 * <CODE>set</CODE> method for the dynamicAuthorizationConsultationIDs property.
+	 * 
+	 * <p>
+	 * For example, to add a new item, do as follows:
+	 * 
+	 * <pre>
+	 * getDynamicAuthorizationConsultationIDs().add(newItem);
+	 * </pre>
+	 * 
+	 * 
+	 * <p>
+	 * Objects of the following type(s) are allowed in the list {@link String }
+	 * 
+	 * 
+	 */
+	public List<String> getDynamicAuthorizationConsultationIDs() {
+		if (dynamicAuthorizationConsultationIDs == null) {
+			dynamicAuthorizationConsultationIDs = new ArrayList<String>();
+		}
+		return this.dynamicAuthorizationConsultationIDs;
+	}
+
 
 	/**
 	 * Gets the value of the cseType property.

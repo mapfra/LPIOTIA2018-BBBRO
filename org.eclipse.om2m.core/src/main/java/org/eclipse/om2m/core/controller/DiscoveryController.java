@@ -229,7 +229,7 @@ public class DiscoveryController extends Controller {
 		case ResourceType.CSE_BASE:
 			return ((CSEBaseEntity) resourceEntity).getAccessControlPolicies();
 		case ResourceType.SUBSCRIPTION:
-			return ((SubscriptionEntity) resourceEntity).getAcpList();
+			return ((SubscriptionEntity) resourceEntity).getAccessControlPolicies();
 		case ResourceType.FLEXCONTAINER:
 			return ((FlexContainerEntity) resourceEntity).getAccessControlPolicies();
 		case ResourceType.FLEXCONTAINER_ANNC:
@@ -238,10 +238,10 @@ public class DiscoveryController extends Controller {
 			return ((NodeEntity) resourceEntity).getAccessControlPolicies();
 		case ResourceType.MGMT_OBJ:
 			if (resourceEntity instanceof AreaNwkInfoEntity) {
-				return ((AreaNwkInfoEntity) resourceEntity).getAcps();
+				return ((AreaNwkInfoEntity) resourceEntity).getAccessControlPolicies();
 			}
 			if (resourceEntity instanceof AreaNwkDeviceInfoEntity) {
-				return ((AreaNwkDeviceInfoEntity) resourceEntity).getAcps();
+				return ((AreaNwkDeviceInfoEntity) resourceEntity).getAccessControlPolicies();
 			}
 			return null;
 		default:

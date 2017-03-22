@@ -134,6 +134,15 @@ function get(targetId) {
                         }
                         table += "</tbody></table>";
                         value = table;
+                    } else if (attribute.localName == "daci") {
+                        // Handle the list of acp ids
+                        var table = "<table class='bordered'><thead><th>DynamicAuthorizationConsultationIDs</th></thdead><tbody>";
+                        var daciList = attribute.textContent.split(" ");
+                        for (var index in daciList) {
+                            table += "<tr><td>" + daciList[index] + "</td></tr>";
+                        }
+                        table += "</tbody></table>";
+                        value = table;
                     } else if (attribute.localName =="ldv"){
                         var table = "<table class='bordered'><thead><th>ListOfDevices</th></thdead><tbody>";
                         var devices = attribute.textContent.split(" ");

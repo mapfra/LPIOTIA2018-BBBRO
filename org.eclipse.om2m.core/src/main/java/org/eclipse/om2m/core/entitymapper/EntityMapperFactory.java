@@ -23,6 +23,8 @@ import org.eclipse.om2m.commons.constants.ResourceType;
 import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
 import org.eclipse.om2m.commons.entities.AeAnncEntity;
 import org.eclipse.om2m.commons.entities.AeEntity;
+import org.eclipse.om2m.commons.entities.AnnounceableSubordinateEntity;
+import org.eclipse.om2m.commons.entities.AnnouncedResourceEntity;
 import org.eclipse.om2m.commons.entities.AreaNwkDeviceInfoEntity;
 import org.eclipse.om2m.commons.entities.AreaNwkInfoEntity;
 import org.eclipse.om2m.commons.entities.CSEBaseEntity;
@@ -35,12 +37,16 @@ import org.eclipse.om2m.commons.entities.GroupEntity;
 import org.eclipse.om2m.commons.entities.MgmtObjEntity;
 import org.eclipse.om2m.commons.entities.NodeEntity;
 import org.eclipse.om2m.commons.entities.PollingChannelEntity;
+import org.eclipse.om2m.commons.entities.RegularResourceEntity;
 import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
 import org.eclipse.om2m.commons.entities.RequestEntity;
 import org.eclipse.om2m.commons.entities.SubscriptionEntity;
 import org.eclipse.om2m.commons.resource.AE;
 import org.eclipse.om2m.commons.resource.AEAnnc;
 import org.eclipse.om2m.commons.resource.AccessControlPolicy;
+import org.eclipse.om2m.commons.resource.AnnounceableResource;
+import org.eclipse.om2m.commons.resource.AnnounceableSubordinateResource;
+import org.eclipse.om2m.commons.resource.AnnouncedResource;
 import org.eclipse.om2m.commons.resource.AreaNwkDeviceInfo;
 import org.eclipse.om2m.commons.resource.AreaNwkInfo;
 import org.eclipse.om2m.commons.resource.CSEBase;
@@ -52,6 +58,7 @@ import org.eclipse.om2m.commons.resource.FlexContainerAnnc;
 import org.eclipse.om2m.commons.resource.Group;
 import org.eclipse.om2m.commons.resource.Node;
 import org.eclipse.om2m.commons.resource.PollingChannel;
+import org.eclipse.om2m.commons.resource.RegularResource;
 import org.eclipse.om2m.commons.resource.RemoteCSE;
 import org.eclipse.om2m.commons.resource.Request;
 import org.eclipse.om2m.commons.resource.Subscription;
@@ -135,6 +142,23 @@ public class EntityMapperFactory {
 	/** Get the Area Nwk device info mapper */
 	public static EntityMapper<AreaNwkDeviceInfoEntity, AreaNwkDeviceInfo> getAreaNwkDeviceInfoMapper(){
 		return new AreaNwkDeviceInfoMapper();
+	}
+	
+	/** Get the AnnounceableSubordinate mapper */
+	public static EntityMapper<AnnounceableSubordinateEntity, AnnounceableSubordinateResource> getAnnounceableSubordinateMapper() {
+		return new AnnounceableSubordinateMapper();
+	}
+	
+	public static EntityMapper<AnnouncedResourceEntity, AnnouncedResource> getAnnouncedResourceMapper() {
+		return new AnnouncedResourceMapper();
+	}
+	
+	public static EntityMapper<AnnounceableSubordinateEntity, AnnounceableResource> getAnnounceableSubordonateEntity_AnnounceableResourceMapper() {
+		return new AnnounceableSubordonateEntity_AnnounceableResourceMapper();
+	}
+	
+	public static EntityMapper<RegularResourceEntity, RegularResource> getRegularResourceMapper() {
+		return new RegularResourceMapper();
 	}
 	
 	/**

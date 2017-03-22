@@ -44,6 +44,10 @@ public class ContainerMapper extends EntityMapper<ContainerEntity, Container>{
 
 	@Override
 	protected void mapAttributes(ContainerEntity entity, Container resource) {
+		// announceable resource mapper
+		EntityMapperFactory.getAnnounceableSubordonateEntity_AnnounceableResourceMapper().mapAttributes(entity, resource);
+		
+		// Container attributes
 		resource.setCreator(entity.getCreator());
 		resource.setCurrentByteSize(BigInteger.valueOf(entity.getCurrentByteSize()));
 		resource.setCurrentNrOfInstances(BigInteger.valueOf(entity.getChildContentInstances().size()));
@@ -53,17 +57,6 @@ public class ContainerMapper extends EntityMapper<ContainerEntity, Container>{
 		resource.setMaxNrOfInstances(entity.getMaxNrOfInstances());
 		resource.setOntologyRef(entity.getOntologyRef());
 		resource.setStateTag(entity.getStateTag());
-		resource.setExpirationTime(entity.getExpirationTime());
-		if (!entity.getAnnouncedAttribute().isEmpty()) {			
-			resource.getAnnouncedAttribute().addAll(entity.getAnnouncedAttribute());
-		}
-		if (!entity.getAnnounceTo().isEmpty()) {			
-			resource.getAnnounceTo().addAll(entity.getAnnounceTo());
-		}
-		// setting acpIds
-		for (AccessControlPolicyEntity acp : entity.getAccessControlPolicies()) {
-			resource.getAccessControlPolicyIDs().add(acp.getResourceID());
-		}
 		resource.setOldest(entity.getHierarchicalURI() + "/" + ShortName.OLDEST);
 		resource.setLatest(entity.getHierarchicalURI() + "/" + ShortName.LATEST);
 	}

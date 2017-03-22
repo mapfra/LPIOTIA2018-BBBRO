@@ -1,6 +1,5 @@
 package org.eclipse.om2m.core.entitymapper;
 
-import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
 import org.eclipse.om2m.commons.entities.DynamicAuthorizationConsultationEntity;
 import org.eclipse.om2m.commons.resource.DynamicAuthorizationConsultation;
 
@@ -9,10 +8,9 @@ public class DynamicAuthorizationConsultationMapper extends EntityMapper<Dynamic
 	@Override
 	protected void mapAttributes(DynamicAuthorizationConsultationEntity entity,
 			DynamicAuthorizationConsultation resource) {
-		// acpIDs
-		for (AccessControlPolicyEntity acpEntity : entity.getAccessControlPolicyIDs()) {
-			resource.getAccessControlPolicyIDs().add(acpEntity.getResourceID());
-		}
+		// regularResource mapper
+		EntityMapperFactory.getRegularResourceMapper().mapAttributes(entity, resource);
+		
 		
 		// dynamicAuthorizationEnabled
 		resource.setDynamicAuthorizationEnabled(entity.getDynamicAuthorizationEnabled());

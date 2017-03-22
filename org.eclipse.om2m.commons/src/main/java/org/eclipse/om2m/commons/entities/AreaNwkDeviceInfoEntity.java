@@ -61,14 +61,24 @@ public class AreaNwkDeviceInfoEntity extends MgmtObjEntity {
 	@Column(name = ShortName.LIST_OF_NEIGHBORS)	
 	protected List<String> listOfNeighbors;
 	
-	// link to acp
-	@ManyToMany(fetch = FetchType.LAZY, targetEntity = AccessControlPolicyEntity.class)
+	/** AccessControlPolicies linked to the MgmtObj */
+	@ManyToMany(fetch=FetchType.LAZY)
 	@JoinTable(
 			name = DBEntities.ANDIACP_JOIN,
 			joinColumns = { @JoinColumn(name = DBEntities.ANDI_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
 			inverseJoinColumns = { @JoinColumn(name = DBEntities.ACP_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
 			)
-	protected List<AccessControlPolicyEntity> acps;
+	protected List<AccessControlPolicyEntity> accessControlPolicies;
+	
+	/** List of DynamicAuthorizationConsultations*/
+	@ManyToMany(fetch=FetchType.LAZY)
+	@JoinTable(
+			name = DBEntities.ANDI_DAC_JOIN,
+			joinColumns = { @JoinColumn(name = DBEntities.ANDI_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
+			inverseJoinColumns = { @JoinColumn(name = DBEntities.DAC_JOINID, referencedColumnName = ShortName.RESOURCE_ID) }
+			)
+	protected List<DynamicAuthorizationConsultationEntity> dynamicAuthorizationConsultations;
+	
 	
 	// Database link to Subscriptions
 	@OneToMany(fetch = FetchType.LAZY, targetEntity = SubscriptionEntity.class)
@@ -223,23 +233,36 @@ public class AreaNwkDeviceInfoEntity extends MgmtObjEntity {
 	public void setParentNode(NodeEntity parentNode) {
 		this.parentNode = parentNode;
 	}
-
+	
 	/**
 	 * @return the acps
 	 */
-	public List<AccessControlPolicyEntity> getAcps() {
-		if (this.acps == null) {
-			this.acps = new ArrayList<>();
+	public List<AccessControlPolicyEntity> getAccessControlPolicies() {
+		if (this.accessControlPolicies == null) {
+			this.accessControlPolicies = new ArrayList<>();
 		}
-		return acps;
+		return accessControlPolicies;
 	}
 
 	/**
 	 * @param acps the acps to set
 	 */
-	public void setAcps(List<AccessControlPolicyEntity> acps) {
-		this.acps = acps;
+	public void setAccessControlPolicies(List<AccessControlPolicyEntity> acps) {
+		this.accessControlPolicies = acps;
 	}	
 	
+	
+	@Override
+	public List<DynamicAuthorizationConsultationEntity> getDynamicAuthorizationConsultations() {
+		if (this.dynamicAuthorizationConsultations == null) {
+			this.dynamicAuthorizationConsultations = new ArrayList<>();
+		}
+		return dynamicAuthorizationConsultations;
+	}
+	
+	@Override
+	public void setDynamicAuthorizationConsultations(List<DynamicAuthorizationConsultationEntity> list) {
+		this.dynamicAuthorizationConsultations = list;
+	}
 	
 }

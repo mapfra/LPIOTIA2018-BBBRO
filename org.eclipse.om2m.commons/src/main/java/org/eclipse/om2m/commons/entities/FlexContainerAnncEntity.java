@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.AssociationOverride;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,7 +21,7 @@ import org.eclipse.om2m.commons.constants.DBEntities;
 import org.eclipse.om2m.commons.constants.ShortName;
 
 @Entity(name = DBEntities.FLEXCONTAINER_ANNC_ENTITY)
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.JOINED)
 public class FlexContainerAnncEntity extends AnnouncedResourceEntity {
 
 	@Column(name = ShortName.STATETAG)
@@ -31,6 +32,15 @@ public class FlexContainerAnncEntity extends AnnouncedResourceEntity {
 	protected String ontologyRef;
 	@Column(name = ShortName.CONTAINER_DEFINITION)
 	protected String containerDefinition;
+	
+	/** List of DynamicAuthorizationConsultations*/
+	@ManyToMany(fetch=FetchType.LAZY)
+	@JoinTable(
+			name = DBEntities.FCNTA_DAC_JOIN,
+			joinColumns = { @JoinColumn(name = DBEntities.FCNTA_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
+			inverseJoinColumns = { @JoinColumn(name = DBEntities.DAC_JOINID, referencedColumnName = ShortName.RESOURCE_ID) }
+			)
+	protected List<DynamicAuthorizationConsultationEntity> dynamicAuthorizationConsultations;
 
 	// Database link to Subscriptions
 	@OneToMany(fetch = FetchType.LAZY, targetEntity = SubscriptionEntity.class, cascade = CascadeType.ALL)
@@ -130,6 +140,25 @@ public class FlexContainerAnncEntity extends AnnouncedResourceEntity {
 	 */
 	public void setContainerDefinition(String containerDefinition) {
 		this.containerDefinition = containerDefinition;
+	}
+	
+	@Override
+	/**
+	 * Retrieve linked dynamicAuthorizationConsultations
+	 */
+	public List<DynamicAuthorizationConsultationEntity> getDynamicAuthorizationConsultations() {
+		if (dynamicAuthorizationConsultations == null) {
+			dynamicAuthorizationConsultations = new ArrayList<>();
+		}
+		return dynamicAuthorizationConsultations;
+	}
+	
+	@Override
+	/**
+	 * Set linked dynamicAuthorizationConsultations
+	 */
+	public void setDynamicAuthorizationConsultations(List<DynamicAuthorizationConsultationEntity> list) {
+		this.dynamicAuthorizationConsultations = list;
 	}
 	
 	/**

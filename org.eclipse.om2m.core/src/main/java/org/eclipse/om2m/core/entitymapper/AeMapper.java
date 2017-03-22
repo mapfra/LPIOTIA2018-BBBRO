@@ -50,21 +50,15 @@ public class AeMapper extends EntityMapper<AeEntity, AE> {
 
 	@Override
 	protected void mapAttributes(AeEntity entity, AE resource) {
+		// AnnounceableResource attributes
+		EntityMapperFactory.getAnnounceableSubordonateEntity_AnnounceableResourceMapper().mapAttributes(entity, resource);
+		
+		// Ae attributes
 		resource.setAEID(entity.getAeid());
 		resource.setAppID(entity.getAppID());
-		resource.setExpirationTime(entity.getExpirationTime());
 		resource.setAppName(entity.getAppName());
 		resource.setNodeLink(entity.getNodeLink());
 		resource.setOntologyRef(entity.getOntologyRef());
-		for (AccessControlPolicyEntity acpEntity : entity.getAccessControlPolicies()) {
-			resource.getAccessControlPolicyIDs().add(acpEntity.getResourceID());
-		}
-		if (!entity.getAnnouncedAttribute().isEmpty()) {
-			resource.getAnnouncedAttribute().addAll(entity.getAnnouncedAttribute());
-		}
-		if (!entity.getAnnounceTo().isEmpty()) {
-			resource.getAnnounceTo().addAll(entity.getAnnounceTo());
-		}
 		if (!entity.getPointOfAccess().isEmpty()) {
 			resource.getPointOfAccess().addAll(entity.getPointOfAccess());
 		}
@@ -124,7 +118,7 @@ public class AeMapper extends EntityMapper<AeEntity, AE> {
 		}
 
 		// adding DynamicAuthorizationConsultation refs
-		for (DynamicAuthorizationConsultationEntity dace : entity.getDynamicAuthorizationConsultations()) {
+		for (DynamicAuthorizationConsultationEntity dace : entity.getChildDynamicAuthorizationConsultations()) {
 			ChildResourceRef ch = new ChildResourceRef();
 			ch.setResourceName(dace.getName());
 			ch.setType(ResourceType.DYNAMIC_AUTHORIZATION_CONSULTATION);
@@ -168,7 +162,7 @@ public class AeMapper extends EntityMapper<AeEntity, AE> {
 		}
 
 		// adding DynamicAuthorizationConsultation resource
-		for (DynamicAuthorizationConsultationEntity daceEntity : entity.getDynamicAuthorizationConsultations()) {
+		for (DynamicAuthorizationConsultationEntity daceEntity : entity.getChildDynamicAuthorizationConsultations()) {
 			DynamicAuthorizationConsultation dace = new DynamicAuthorizationConsultationMapper()
 					.mapEntityToResource(daceEntity, ResultContent.ATTRIBUTES);
 			resource.getContainerOrGroupOrAccessControlPolicy().add(dace);

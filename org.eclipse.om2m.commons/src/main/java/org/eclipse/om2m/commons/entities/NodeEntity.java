@@ -37,7 +37,7 @@ import javax.persistence.OneToMany;
 import org.eclipse.om2m.commons.constants.DBEntities;
 import org.eclipse.om2m.commons.constants.ShortName;
 
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.JOINED)
 @Entity(name = DBEntities.NODE_ENTITY)
 public class NodeEntity extends AnnounceableSubordinateEntity {
 
@@ -49,6 +49,15 @@ public class NodeEntity extends AnnounceableSubordinateEntity {
 			inverseJoinColumns = { @JoinColumn(name = DBEntities.ACP_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
 			)
 	protected List<AccessControlPolicyEntity> linkedAcps;
+	
+	/** List of DynamicAuthorizationConsultations*/
+	@ManyToMany(fetch=FetchType.LAZY)
+	@JoinTable(
+			name = DBEntities.NOD_DAC_JOIN,
+			joinColumns = { @JoinColumn(name = DBEntities.NOD_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
+			inverseJoinColumns = { @JoinColumn(name = DBEntities.DAC_JOINID, referencedColumnName = ShortName.RESOURCE_ID) }
+			)
+	protected List<DynamicAuthorizationConsultationEntity> dynamicAuthorizationConsultations;
 
 	// node id
 	@Column(name = ShortName.NODE_ID)
@@ -203,6 +212,25 @@ public class NodeEntity extends AnnounceableSubordinateEntity {
 	public void setChildAreaNwkDeviceInfoEntities(
 			List<AreaNwkDeviceInfoEntity> childAreaNwkDeviceInfoEntities) {
 		this.childAreaNwkDeviceInfoEntities = childAreaNwkDeviceInfoEntities;
+	}
+	
+	@Override
+	/**
+	 * Retrieve linked dynamicAuthorizationConsultations
+	 */
+	public List<DynamicAuthorizationConsultationEntity> getDynamicAuthorizationConsultations() {
+		if (dynamicAuthorizationConsultations == null) {
+			dynamicAuthorizationConsultations = new ArrayList<>();
+		}
+		return dynamicAuthorizationConsultations;
+	}
+	
+	@Override
+	/**
+	 * Set linked dynamicAuthorizationConsultations
+	 */
+	public void setDynamicAuthorizationConsultations(List<DynamicAuthorizationConsultationEntity> list) {
+		this.dynamicAuthorizationConsultations = list;
 	}
 
 }

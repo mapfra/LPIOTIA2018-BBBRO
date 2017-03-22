@@ -32,34 +32,13 @@ import org.eclipse.om2m.commons.constants.ShortName;
  *
  */
 @MappedSuperclass
-public class AnnounceableSubordinateEntity extends ResourceEntity {
-	@Column(name=ShortName.EXPIRATION_TIME)
-	protected String expirationTime;
+public abstract class AnnounceableSubordinateEntity extends RegularResourceEntity {
+
 	@Column(name=ShortName.ANNOUNCE_TO)
 	protected List<String> announceTo;
 	@Column(name=ShortName.ANNOUNCED_ATTRIBUTE)
 	protected List<String> announcedAttribute;
 
-	/**
-	 * Gets the value of the expirationTime property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getExpirationTime() {
-		return expirationTime;
-	}
-
-	/**
-	 * Sets the value of the expirationTime property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setExpirationTime(String value) {
-		this.expirationTime = value;
-	}
 
 	/**
 	 * Gets the value of the announceTo property.

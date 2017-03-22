@@ -20,6 +20,7 @@
 package org.eclipse.om2m.commons.entities;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -30,7 +31,9 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import org.eclipse.om2m.commons.constants.DBEntities;
 import org.eclipse.om2m.commons.constants.MimeMediaType;
@@ -41,7 +44,7 @@ import org.eclipse.om2m.commons.constants.ShortName;
  *
  */
 @Entity(name = DBEntities.CONTENTINSTANCE_ENTITY)
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.JOINED)
 public class ContentInstanceEntity extends AnnounceableSubordinateEntity {
 	
 	@Column(name = ShortName.STATETAG, nullable = false)
@@ -71,6 +74,24 @@ public class ContentInstanceEntity extends AnnounceableSubordinateEntity {
 			joinColumns={@JoinColumn(name=DBEntities.CINCH_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)}
 			)
 	protected ContainerEntity parentContainer;
+	
+	/** AccessControlPolicies linked to the ContentInstance */
+	@ManyToMany(fetch=FetchType.LAZY)
+	@JoinTable(
+			name = DBEntities.CIN_ACP_JOIN,
+			joinColumns = { @JoinColumn(name = DBEntities.CIN_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
+			inverseJoinColumns = { @JoinColumn(name = DBEntities.ACP_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
+			)
+	protected List<AccessControlPolicyEntity> accessControlPolicies;
+	
+	/** List of DynamicAuthorizationConsultations*/
+	@ManyToMany(fetch=FetchType.LAZY)
+	@JoinTable(
+			name = DBEntities.CIN_DAC_JOIN,
+			joinColumns = { @JoinColumn(name = DBEntities.CIN_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
+			inverseJoinColumns = { @JoinColumn(name = DBEntities.DAC_JOINID, referencedColumnName = ShortName.RESOURCE_ID) }
+			)
+	protected List<DynamicAuthorizationConsultationEntity> dynamicAuthorizationConsultations;
 	
 	/**
 	 * @return the stateTag
@@ -175,6 +196,44 @@ public class ContentInstanceEntity extends AnnounceableSubordinateEntity {
 	 */
 	public int getByteSize() {
 		return this.content.getBytes().length;
+	}
+	
+	/**
+	 * @return the accessControlPolicies
+	 */
+	public List<AccessControlPolicyEntity> getAccessControlPolicies() {
+		if (this.accessControlPolicies == null) {
+			this.accessControlPolicies = new ArrayList<>();
+		}
+		return accessControlPolicies;
+	}
+
+	/**
+	 * @param accessControlPolicies
+	 *            the accessControlPolicies to set
+	 */
+	public void setAccessControlPolicies(
+			List<AccessControlPolicyEntity> accessControlPolicies) {
+		this.accessControlPolicies = accessControlPolicies;
+	}
+	
+	@Override
+	/**
+	 * Retrieve linked dynamicAuthorizationConsultations
+	 */
+	public List<DynamicAuthorizationConsultationEntity> getDynamicAuthorizationConsultations() {
+		if (dynamicAuthorizationConsultations == null) {
+			dynamicAuthorizationConsultations = new ArrayList<>();
+		}
+		return dynamicAuthorizationConsultations;
+	}
+	
+	@Override
+	/**
+	 * Set linked dynamicAuthorizationConsultations
+	 */
+	public void setDynamicAuthorizationConsultations(List<DynamicAuthorizationConsultationEntity> list) {
+		this.dynamicAuthorizationConsultations = list;
 	}
 
 }

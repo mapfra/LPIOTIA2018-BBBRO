@@ -25,18 +25,14 @@ public class FlexContainerAnncMapper extends EntityMapper<FlexContainerAnncEntit
 
 	@Override
 	protected void mapAttributes(FlexContainerAnncEntity entity, FlexContainerAnnc resource) {
+		// announcedResource attribute
+		EntityMapperFactory.getAnnouncedResourceMapper().mapAttributes(entity, resource);
 		
+		// flexContainerAnnc attribute
 		resource.setCreator(entity.getCreator());
 		resource.setOntologyRef(entity.getOntologyRef());
 		resource.setStateTag(entity.getStateTag());
-		resource.setExpirationTime(entity.getExpirationTime());
 		resource.setContainerDefinition(entity.getContainerDefinition());
-		resource.setLink(entity.getLink());
-		resource.setExpirationTime(entity.getExpirationTime());
-		// setting acpIds
-		for (AccessControlPolicyEntity acp : entity.getAccessControlPolicies()) {
-			resource.getAccessControlPolicyIDs().add(acp.getResourceID());
-		}
 		
 	}
 

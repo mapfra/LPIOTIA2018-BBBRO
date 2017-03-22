@@ -32,6 +32,7 @@ import org.eclipse.om2m.commons.entities.AccessControlOriginatorEntity;
 import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
 import org.eclipse.om2m.commons.entities.AccessControlRuleEntity;
 import org.eclipse.om2m.commons.entities.CSEBaseEntity;
+import org.eclipse.om2m.commons.entities.DynamicAuthorizationConsultationEntity;
 import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
 import org.eclipse.om2m.commons.entities.ResourceEntity;
 import org.eclipse.om2m.commons.entities.SubscriptionEntity;
@@ -119,6 +120,7 @@ public class RemoteCSEController extends Controller {
 		List<AccessControlPolicyEntity> acpsToCheck = null;
 		List<RemoteCSEEntity> remoteCSEs = null;
 		List<SubscriptionEntity> subscriptions = null;
+		List<DynamicAuthorizationConsultationEntity> dacsToCheck = null;
 
 		// different cases
 		// case parent is CSEBase
@@ -127,6 +129,7 @@ public class RemoteCSEController extends Controller {
 			acpsToCheck = cseB.getAccessControlPolicies();
 			remoteCSEs = cseB.getRemoteCses();
 			subscriptions = cseB.getSubscriptions();
+			dacsToCheck = cseB.getDynamicAuthorizationConsultations();
 		}
 
 		// check if originator is provided
@@ -196,13 +199,19 @@ public class RemoteCSEController extends Controller {
 		} else {
 			remoteCseEntity.setRequestReachability(remoteCse.isRequestReachability());
 		}
-
 		// accessControlPolicyIDs	O
 		if (!remoteCse.getAccessControlPolicyIDs().isEmpty()){		
 			remoteCseEntity.setAccessControlPolicies(
 					ControllerUtil.buildAcpEntityList(remoteCse.getAccessControlPolicyIDs(), transaction));
 		} else {
 			remoteCseEntity.getAccessControlPolicies().addAll(acpsToCheck);
+		}
+		// dynamicAuthorizationConsultationIDs O
+		if (!remoteCse.getDynamicAuthorizationConsultationIDs().isEmpty()) {
+			remoteCseEntity.setDynamicAuthorizationConsultations(
+					ControllerUtil.buildDacEntityList(remoteCse.getDynamicAuthorizationConsultationIDs(), transaction));
+		} else {
+			remoteCseEntity.setDynamicAuthorizationConsultations(dacsToCheck);
 		}
 		// expiration time 			O
 		if (remoteCse.getExpirationTime() != null){
@@ -467,6 +476,12 @@ public class RemoteCSEController extends Controller {
 			csrEntity.setAccessControlPolicies(
 					ControllerUtil.buildAcpEntityList(csr.getAccessControlPolicyIDs(), transaction));
 			modifiedAttributes.getAccessControlPolicyIDs().addAll(csr.getAccessControlPolicyIDs());
+		}
+		
+		// dynamicAuthorizationConsultationIDs O
+		if (!csr.getDynamicAuthorizationConsultationIDs().isEmpty()) {
+			csrEntity.setDynamicAuthorizationConsultations(
+					ControllerUtil.buildDacEntityList(csr.getDynamicAuthorizationConsultationIDs(), transaction));
 		}
 		
 		// expirationTime			O

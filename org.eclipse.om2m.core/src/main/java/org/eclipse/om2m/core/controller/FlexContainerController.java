@@ -7,6 +7,7 @@
  *******************************************************************************/
 package org.eclipse.om2m.core.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -22,6 +23,7 @@ import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
 import org.eclipse.om2m.commons.entities.AeEntity;
 import org.eclipse.om2m.commons.entities.CSEBaseEntity;
 import org.eclipse.om2m.commons.entities.ContainerEntity;
+import org.eclipse.om2m.commons.entities.DynamicAuthorizationConsultationEntity;
 import org.eclipse.om2m.commons.entities.FlexContainerEntity;
 import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
 import org.eclipse.om2m.commons.entities.ResourceEntity;
@@ -90,9 +92,10 @@ public class FlexContainerController extends Controller {
 
 		// lock parent
 		transaction.lock(parentEntity);
-		
+
 		// get lists to change in the method corresponding to specific object
 		List<AccessControlPolicyEntity> acpsToCheck = null;
+		List<DynamicAuthorizationConsultationEntity> dacsToCheck = null;
 		List<FlexContainerEntity> childFlexContainers = null;
 		List<SubscriptionEntity> subscriptions = null;
 
@@ -103,6 +106,7 @@ public class FlexContainerController extends Controller {
 			acpsToCheck = cseB.getAccessControlPolicies();
 			childFlexContainers = cseB.getChildFlexContainers();
 			subscriptions = cseB.getSubscriptions();
+			dacsToCheck = cseB.getDynamicAuthorizationConsultations();
 		}
 		// case parent is AE
 		if (parentEntity.getResourceType().intValue() == (ResourceType.AE)) {
@@ -110,6 +114,7 @@ public class FlexContainerController extends Controller {
 			acpsToCheck = ae.getAccessControlPolicies();
 			childFlexContainers = ae.getChildFlexContainers();
 			subscriptions = ae.getSubscriptions();
+			dacsToCheck = ae.getDynamicAuthorizationConsultations();
 		}
 		// case parent is a FlexContainer
 		if (parentEntity.getResourceType().intValue() == (ResourceType.FLEXCONTAINER)) {
@@ -117,6 +122,7 @@ public class FlexContainerController extends Controller {
 			acpsToCheck = parentFlexContainer.getAccessControlPolicies();
 			childFlexContainers = parentFlexContainer.getChildFlexContainers();
 			subscriptions = parentFlexContainer.getSubscriptions();
+			dacsToCheck = parentFlexContainer.getDynamicAuthorizationConsultations();
 		}
 		// case parent is a Container
 		if (parentEntity.getResourceType().intValue() == (ResourceType.CONTAINER)) {
@@ -124,6 +130,7 @@ public class FlexContainerController extends Controller {
 			acpsToCheck = parentContainer.getAccessControlPolicies();
 			childFlexContainers = parentContainer.getChildFlexContainers();
 			subscriptions = parentContainer.getSubscriptions();
+			dacsToCheck = parentContainer.getDynamicAuthorizationConsultations();
 		}
 
 		// case parent is a RemoteCSE
@@ -132,6 +139,7 @@ public class FlexContainerController extends Controller {
 			acpsToCheck = csr.getAccessControlPolicies();
 			childFlexContainers = csr.getChildFcnt();
 			subscriptions = csr.getSubscriptions();
+			dacsToCheck = csr.getDynamicAuthorizationConsultations();
 		}
 
 		// check access control policy of the originator
@@ -224,7 +232,7 @@ public class FlexContainerController extends Controller {
 		flexContainerEntity.setHierarchicalURI(parentEntity.getHierarchicalURI() + "/" + flexContainerEntity.getName());
 		flexContainerEntity.setParentID(parentEntity.getResourceID());
 		flexContainerEntity.setResourceType(ResourceType.FLEXCONTAINER);
-		switch(parentEntity.getResourceType().intValue()) {
+		switch (parentEntity.getResourceType().intValue()) {
 		case ResourceType.AE:
 			flexContainerEntity.setParentAE((AeEntity) parentEntity);
 			break;
@@ -232,7 +240,6 @@ public class FlexContainerController extends Controller {
 			flexContainerEntity.setParentFlexContainer((FlexContainerEntity) parentEntity);
 			break;
 		}
-		
 
 		// accessControlPolicyIDs O
 		if (!flexContainer.getAccessControlPolicyIDs().isEmpty()) {
@@ -240,6 +247,15 @@ public class FlexContainerController extends Controller {
 					ControllerUtil.buildAcpEntityList(flexContainer.getAccessControlPolicyIDs(), transaction));
 		} else {
 			flexContainerEntity.getAccessControlPolicies().addAll(acpsToCheck);
+		}
+
+		// dynamicAuthorizationConsultationIDs O
+		if (!flexContainer.getDynamicAuthorizationConsultationIDs().isEmpty()) {
+			flexContainerEntity.setDynamicAuthorizationConsultations(
+					ControllerUtil.buildDacEntityList(flexContainer.getDynamicAuthorizationConsultationIDs(), transaction));
+		} else {
+			// shoud get dacList from parent
+			flexContainerEntity.setDynamicAuthorizationConsultations(dacsToCheck);
 		}
 
 		if (!UriMapper.addNewUri(flexContainerEntity.getHierarchicalURI(), flexContainerEntity.getResourceID(),
@@ -270,7 +286,7 @@ public class FlexContainerController extends Controller {
 		// add the container to the parentEntity child list
 		childFlexContainers.add(flexContainerFromDB);
 		dao.update(transaction, parentEntity);
-		
+
 		// commit the transaction & release lock
 		transaction.commit();
 
@@ -381,10 +397,10 @@ public class FlexContainerController extends Controller {
 		// retrieve the resource from database
 		FlexContainerEntity flexContainerEntity = dbs.getDAOFactory().getFlexContainerDAO().find(transaction,
 				request.getTargetId());
-		
+
 		// lock current object
 		transaction.lock(flexContainerEntity);
-		
+
 		if (flexContainerEntity == null) {
 			throw new ResourceNotFoundException("Resource not found");
 		}
@@ -448,6 +464,13 @@ public class FlexContainerController extends Controller {
 						ControllerUtil.buildAcpEntityList(flexContainer.getAccessControlPolicyIDs(), transaction));
 				modifiedAttributes.getAccessControlPolicyIDs().addAll(flexContainer.getAccessControlPolicyIDs());
 			}
+			
+			// dynamicAuthorizationConsultationIDs O
+			if (!flexContainer.getDynamicAuthorizationConsultationIDs().isEmpty()) {
+				flexContainerEntity.setDynamicAuthorizationConsultations(
+						ControllerUtil.buildDacEntityList(flexContainer.getDynamicAuthorizationConsultationIDs(), transaction));
+			}
+			
 			// labels O
 			if (!flexContainer.getLabels().isEmpty()) {
 				flexContainerEntity.setLabelsEntitiesFromSring(flexContainer.getLabels());
@@ -523,10 +546,10 @@ public class FlexContainerController extends Controller {
 		response.setContent(modifiedAttributes);
 		// update the resource in the database
 		dbs.getDAOFactory().getFlexContainerDAO().update(transaction, flexContainerEntity);
-		
+
 		// commit and release lock
 		transaction.commit();
-		
+
 		Notifier.notify(flexContainerEntity.getSubscriptions(), flexContainerEntity, modifiedAttributes,
 				ResourceStatus.UPDATED);
 
@@ -562,7 +585,8 @@ public class FlexContainerController extends Controller {
 		transaction.commit();
 
 		// deannounce
-		Announcer.deAnnounce(flexContainerEntity.getAnnounceTo(), flexContainerEntity, Constants.ADMIN_REQUESTING_ENTITY);
+		Announcer.deAnnounce(flexContainerEntity.getAnnounceTo(), flexContainerEntity,
+				Constants.ADMIN_REQUESTING_ENTITY);
 
 		// return the response
 		response.setResponseStatusCode(ResponseStatusCode.DELETED);

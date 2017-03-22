@@ -8,48 +8,35 @@ import javax.persistence.MappedSuperclass;
 import org.eclipse.om2m.commons.constants.ShortName;
 
 @MappedSuperclass
-public abstract class AnnouncedResourceEntity extends ResourceEntity {
-
-	@Column(name = ShortName.EXPIRATION_TIME)
+public abstract class RegularResourceEntity extends ResourceEntity {
+	@Column(name=ShortName.EXPIRATION_TIME)
 	protected String expirationTime;
-	@Column(name = ShortName.LINK)
-	protected String link;
-	
 	
 	/**
-	 * @return the expirationTime
+	 * Gets the value of the expirationTime property.
+	 * 
+	 * @return possible object is {@link String }
+	 * 
 	 */
 	public String getExpirationTime() {
 		return expirationTime;
 	}
 
 	/**
-	 * @param expirationTime
-	 *            the expirationTime to set
+	 * Sets the value of the expirationTime property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link String }
+	 * 
 	 */
-	public void setExpirationTime(String expirationTime) {
-		this.expirationTime = expirationTime;
-	}
-
-	/**
-	 * @return the link
-	 */
-	public String getLink() {
-		return link;
-	}
-
-	/**
-	 * @param link
-	 *            the link to set
-	 */
-	public void setLink(String link) {
-		this.link = link;
+	public void setExpirationTime(String value) {
+		this.expirationTime = value;
 	}
 	
 	/**
 	 * @return the accessControlPolicies
 	 */
-	public abstract List<AccessControlPolicyEntity> getAccessControlPolicies();
+	public abstract  List<AccessControlPolicyEntity> getAccessControlPolicies();
 
 	/**
 	 * @param accessControlPolicies

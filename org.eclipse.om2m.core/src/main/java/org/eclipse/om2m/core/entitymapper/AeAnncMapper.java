@@ -22,6 +22,9 @@ public class AeAnncMapper extends EntityMapper<AeAnncEntity, AEAnnc> {
 
 	@Override
 	protected void mapAttributes(AeAnncEntity entity, AEAnnc resource) {
+		// announcedResource attributes
+		EntityMapperFactory.getAnnouncedResourceMapper().mapAttributes(entity, resource);
+		
 		resource.setAEID(entity.getAeid());
 		resource.setAppID(entity.getAppID());
 		resource.setExpirationTime(entity.getExpirationTime());
@@ -29,9 +32,7 @@ public class AeAnncMapper extends EntityMapper<AeAnncEntity, AEAnnc> {
 		resource.setNodeLink(entity.getNodeLink());
 		resource.setLink(entity.getLink());
 		resource.setOntologyRef(entity.getOntologyRef());
-		for (AccessControlPolicyEntity acpEntity : entity.getAccessControlPolicies()) {
-			resource.getAccessControlPolicyIDs().add(acpEntity.getResourceID());
-		}
+		resource.getPointOfAccess().addAll(entity.getPointOfAccess());
 
 	}
 

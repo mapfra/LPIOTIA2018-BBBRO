@@ -22,6 +22,9 @@ package org.eclipse.om2m.persistence.eclipselink.internal.dao;
 import java.util.List;
 
 import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
+import org.eclipse.om2m.commons.entities.AeEntity;
+import org.eclipse.om2m.commons.entities.FlexContainerAnncEntity;
+import org.eclipse.om2m.commons.entities.FlexContainerEntity;
 import org.eclipse.om2m.commons.entities.LabelEntity;
 import org.eclipse.om2m.persistence.eclipselink.internal.DBTransactionJPAImpl;
 import org.eclipse.om2m.persistence.service.DBTransaction;
@@ -30,10 +33,9 @@ import org.eclipse.om2m.persistence.service.DBTransaction;
  * DAO for the {@link AccessControlPolicyEntity} resource
  */
 public class AccessControlPolicyDAO extends AbstractDAO<AccessControlPolicyEntity> {
-	
+
 	@Override
-	public void create(DBTransaction dbTransaction,
-			AccessControlPolicyEntity resource) {
+	public void create(DBTransaction dbTransaction, AccessControlPolicyEntity resource) {
 		DBTransactionJPAImpl transaction = (DBTransactionJPAImpl) dbTransaction;
 		List<LabelEntity> lbls = processLabels(dbTransaction, resource.getLabelsEntities());
 		resource.setLabelsEntities(lbls);
@@ -45,10 +47,9 @@ public class AccessControlPolicyDAO extends AbstractDAO<AccessControlPolicyEntit
 		DBTransactionJPAImpl transaction = (DBTransactionJPAImpl) dbTransaction;
 		return transaction.getEm().find(AccessControlPolicyEntity.class, id);
 	}
-	
+
 	@Override
-	public void update(DBTransaction dbTransaction,
-			AccessControlPolicyEntity resource) {
+	public void update(DBTransaction dbTransaction, AccessControlPolicyEntity resource) {
 		DBTransactionJPAImpl transaction = (DBTransactionJPAImpl) dbTransaction;
 		List<LabelEntity> lbls = processLabels(dbTransaction, resource.getLabelsEntities());
 		resource.setLabelsEntities(lbls);
@@ -58,6 +59,22 @@ public class AccessControlPolicyDAO extends AbstractDAO<AccessControlPolicyEntit
 	@Override
 	public void delete(DBTransaction dbTransaction, AccessControlPolicyEntity resource) {
 		DBTransactionJPAImpl transaction = (DBTransactionJPAImpl) dbTransaction;
+		
+		// remove application link
+		for (AeEntity ae : resource.getLinkedAes()) {
+			ae.getAccessControlPolicies().remove(resource);
+		}
+
+		// remove flexContainer link
+		for (FlexContainerEntity entity : resource.getLinkedFlexContainers()) {
+			entity.getAccessControlPolicies().remove(resource);
+		}
+
+		// remove flexContainerA link
+		for (FlexContainerAnncEntity entity : resource.getLinkedFlexContainerAs()) {
+			entity.getAccessControlPolicies().remove(resource);
+		}
+
 		transaction.getEm().remove(resource);
 		transaction.getEm().getEntityManagerFactory().getCache().evictAll();
 	}

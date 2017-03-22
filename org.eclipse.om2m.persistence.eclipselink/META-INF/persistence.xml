@@ -54,6 +54,8 @@
 		<class>org.eclipse.om2m.commons.entities.SubscriptionEntity</class>
 		<class>org.eclipse.om2m.commons.entities.UriMapperEntity</class>
 		<class>org.eclipse.om2m.commons.entities.CreatedAnnouncedResourceEntity</class>
+		<class>org.eclipse.om2m.commons.entities.RegularResourceEntity</class>
+		<class>org.eclipse.om2m.commons.entities.AnnouncedResourceEntity</class>
 
 		<properties>
 			<!-- Actions performed at the start of the platform -->

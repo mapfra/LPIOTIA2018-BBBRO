@@ -19,15 +19,17 @@
  *******************************************************************************/
 package org.eclipse.om2m.core.entitymapper;
 
-import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
 import org.eclipse.om2m.commons.entities.AreaNwkInfoEntity;
-import org.eclipse.om2m.commons.entities.LabelEntity;
 import org.eclipse.om2m.commons.resource.AreaNwkInfo;
 
 public class AreaNwkInfoMapper extends EntityMapper<AreaNwkInfoEntity, AreaNwkInfo> {
 
 	@Override
 	protected void mapAttributes(AreaNwkInfoEntity entity, AreaNwkInfo resource) {
+		// Announceable resource attributes
+		EntityMapperFactory.getAnnounceableSubordonateEntity_AnnounceableResourceMapper().mapAttributes(entity,
+				resource);
+
 		resource.setAreaNwkType(entity.getAreaNwkType());
 		resource.setCreationTime(entity.getCreationTime());
 		resource.setDescription(entity.getDescription());
@@ -38,33 +40,19 @@ public class AreaNwkInfoMapper extends EntityMapper<AreaNwkInfoEntity, AreaNwkIn
 		resource.setParentID(entity.getParentID());
 		resource.setResourceID(entity.getResourceID());
 		resource.setResourceType(entity.getResourceType());
-		if (!entity.getAnnouncedAttribute().isEmpty()) {
-			resource.getAnnouncedAttribute().addAll(entity.getAnnouncedAttribute());
-		}
-		if (!entity.getAnnounceTo().isEmpty()) {
-			resource.getAnnounceTo().addAll(entity.getAnnounceTo());
-		}
-		for (AccessControlPolicyEntity acp : entity.getAcps()) {
-			resource.getAccessControlPolicyIDs().add(acp.getResourceID());
-		}
-		for (LabelEntity lbl : entity.getLabelsEntities()) {
-			resource.getLabels().add(lbl.getLabel());
-		}
 		if (!entity.getListOfDevices().isEmpty()) {
 			resource.getListOfDevices().addAll(entity.getListOfDevices());
 		}
 	}
 
 	@Override
-	protected void mapChildResourceRef(AreaNwkInfoEntity entity,
-			AreaNwkInfo resource) {
+	protected void mapChildResourceRef(AreaNwkInfoEntity entity, AreaNwkInfo resource) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	protected void mapChildResources(AreaNwkInfoEntity entity,
-			AreaNwkInfo resource) {
+	protected void mapChildResources(AreaNwkInfoEntity entity, AreaNwkInfo resource) {
 		// TODO Auto-generated method stub
 
 	}
@@ -75,4 +63,3 @@ public class AreaNwkInfoMapper extends EntityMapper<AreaNwkInfoEntity, AreaNwkIn
 	}
 
 }
-

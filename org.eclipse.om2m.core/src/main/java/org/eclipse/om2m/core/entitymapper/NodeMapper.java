@@ -21,7 +21,6 @@ package org.eclipse.om2m.core.entitymapper;
 
 import org.eclipse.om2m.commons.constants.ResourceType;
 import org.eclipse.om2m.commons.constants.ResultContent;
-import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
 import org.eclipse.om2m.commons.entities.AreaNwkDeviceInfoEntity;
 import org.eclipse.om2m.commons.entities.AreaNwkInfoEntity;
 import org.eclipse.om2m.commons.entities.NodeEntity;
@@ -38,20 +37,12 @@ public class NodeMapper extends EntityMapper<NodeEntity, Node> {
 
 	@Override
 	protected void mapAttributes(NodeEntity entity, Node resource) {
+		// announceableResource attributes
+		EntityMapperFactory.getAnnounceableSubordonateEntity_AnnounceableResourceMapper().mapAttributes(entity, resource);
+		
+		// node attribute
 		resource.setNodeID(entity.getNodeID());
 		resource.setHostedCSELink(entity.getHostedCSELink());
-		resource.setExpirationTime(entity.getExpirationTime());
-
-		if (!entity.getAnnouncedAttribute().isEmpty()) {
-			resource.getAnnouncedAttribute().addAll(entity.getAnnouncedAttribute());
-		}
-		if (!entity.getAnnounceTo().isEmpty()) {
-			resource.getAnnounceTo().addAll(entity.getAnnounceTo());
-		}
-
-		for (AccessControlPolicyEntity acp : entity.getAccessControlPolicies()) {
-			resource.getAccessControlPolicyIDs().add(acp.getResourceID());
-		}
 	}
 
 	@Override

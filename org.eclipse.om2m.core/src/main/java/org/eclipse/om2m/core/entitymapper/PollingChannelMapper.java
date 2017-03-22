@@ -19,7 +19,6 @@
  *******************************************************************************/
 package org.eclipse.om2m.core.entitymapper;
 
-import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
 import org.eclipse.om2m.commons.entities.PollingChannelEntity;
 import org.eclipse.om2m.commons.resource.PollingChannel;
 
@@ -34,14 +33,13 @@ public class PollingChannelMapper extends
 	@Override
 	protected void mapAttributes(PollingChannelEntity entity,
 			PollingChannel resource) {
-		if (entity.getExpirationTime() != null) {
-			resource.setExpirationTime(entity.getExpirationTime());
-		}
+		// regular resource attributes
+		// expiration time
+		resource.setExpirationTime(entity.getExpirationTime());
+
+		// polling channel attributes
 		if (entity.getPollingChannelUri() != null) {
 			resource.setPollingChannelURI(entity.getPollingChannelUri());
-		}
-		for (AccessControlPolicyEntity acpEntity : entity.getLinkedAcps()) {
-			resource.getAccessControlPolicyIDs().add(acpEntity.getResourceID());
 		}
 	}
 

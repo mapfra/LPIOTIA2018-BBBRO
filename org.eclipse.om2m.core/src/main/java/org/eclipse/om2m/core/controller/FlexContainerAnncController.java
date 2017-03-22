@@ -15,6 +15,7 @@ import org.eclipse.om2m.commons.entities.AeAnncEntity;
 import org.eclipse.om2m.commons.entities.AeEntity;
 import org.eclipse.om2m.commons.entities.CSEBaseEntity;
 import org.eclipse.om2m.commons.entities.ContainerEntity;
+import org.eclipse.om2m.commons.entities.DynamicAuthorizationConsultationEntity;
 import org.eclipse.om2m.commons.entities.FlexContainerAnncEntity;
 import org.eclipse.om2m.commons.entities.FlexContainerEntity;
 import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
@@ -82,6 +83,7 @@ public class FlexContainerAnncController extends Controller {
 		List<AccessControlPolicyEntity> acpsToCheck = null;
 		List<FlexContainerAnncEntity> childFlexContainerAnncs = null;
 		List<SubscriptionEntity> subscriptions = null;
+		List<DynamicAuthorizationConsultationEntity> dacsToCheck = null;
 
 		// different cases
 		// case parent is AEAnnc
@@ -90,13 +92,15 @@ public class FlexContainerAnncController extends Controller {
 			acpsToCheck = aeAnnc.getAccessControlPolicies();
 			childFlexContainerAnncs = aeAnnc.getFlexContainerAnncs();
 			subscriptions = aeAnnc.getSubscriptions();
+			dacsToCheck = aeAnnc.getDynamicAuthorizationConsultations();
 		}
-		// case parent is a FlexContainer
+		// case parent is a FlexContainerAnnc
 		if (parentEntity.getResourceType().intValue() == (ResourceType.FLEXCONTAINER_ANNC)) {
 			FlexContainerAnncEntity parentFlexContainer = (FlexContainerAnncEntity) parentEntity;
 			acpsToCheck = parentFlexContainer.getAccessControlPolicies();
 			childFlexContainerAnncs = parentFlexContainer.getChildFlexContainerAnncs();
 			subscriptions = parentFlexContainer.getSubscriptions();
+			dacsToCheck = parentFlexContainer.getDynamicAuthorizationConsultations();
 		}
 
 		// case parent is a RemoteCSE
@@ -110,12 +114,12 @@ public class FlexContainerAnncController extends Controller {
 			throw new BadRequestException("A content is requiered for FlexContainer creation");
 		}
 		// get the object from the representation
-		FlexContainerAnnc flexContainer = null;
+		FlexContainerAnnc flexContainerAnnc = null;
 		try {
 			if (request.getRequestContentType().equals(MimeMediaType.OBJ)) {
-				flexContainer = (FlexContainerAnnc) request.getContent();
+				flexContainerAnnc = (FlexContainerAnnc) request.getContent();
 			} else {
-				flexContainer = (FlexContainerAnnc) DataMapperSelector.getDataMapperList()
+				flexContainerAnnc = (FlexContainerAnnc) DataMapperSelector.getDataMapperList()
 						.get(request.getRequestContentType()).stringToObj((String) request.getContent());
 			}
 
@@ -125,7 +129,7 @@ public class FlexContainerAnncController extends Controller {
 			throw new BadRequestException("Incorrect resource representation in content", e);
 		}
 
-		if (flexContainer == null) {
+		if (flexContainerAnnc == null) {
 			throw new BadRequestException("Error in provided content");
 		}
 
@@ -143,29 +147,29 @@ public class FlexContainerAnncController extends Controller {
 		// announceTo O
 		// announcedAttribute O
 
-		ControllerUtil.CreateUtil.fillEntityFromGenericResource(flexContainer, flexContainerAnncEntity);
+		ControllerUtil.CreateUtil.fillEntityFromGenericResource(flexContainerAnnc, flexContainerAnncEntity);
 
-		if (flexContainer.getLink() == null) {
+		if (flexContainerAnnc.getLink() == null) {
 			throw new BadRequestException("Link is Mandatory");
 		} else {
-			flexContainerAnncEntity.setLink(flexContainer.getLink());
+			flexContainerAnncEntity.setLink(flexContainerAnnc.getLink());
 		}
 
-		if (flexContainer.getExpirationTime() != null) {
+		if (flexContainerAnnc.getExpirationTime() != null) {
 			flexContainerAnncEntity.setExpirationTime(flexContainerAnncEntity.getExpirationTime());
 		}
 
 		// creator O
-		if (flexContainer.getCreator() != null) {
-			flexContainerAnncEntity.setCreator(flexContainer.getCreator());
+		if (flexContainerAnnc.getCreator() != null) {
+			flexContainerAnncEntity.setCreator(flexContainerAnnc.getCreator());
 		}
 
 		// containerDefinition != null
-		if ((flexContainer.getContainerDefinition() == null) || (flexContainer.getContainerDefinition().isEmpty())) {
+		if ((flexContainerAnnc.getContainerDefinition() == null) || (flexContainerAnnc.getContainerDefinition().isEmpty())) {
 			// the containerDefinition MUST be provided
 			throw new NotPermittedAttrException("containerDefinition attribute must be provided.");
 		} else {
-			flexContainerAnncEntity.setContainerDefinition(flexContainer.getContainerDefinition());
+			flexContainerAnncEntity.setContainerDefinition(flexContainerAnnc.getContainerDefinition());
 		}
 
 		// containerDefinition exists...
@@ -197,11 +201,19 @@ public class FlexContainerAnncController extends Controller {
 		}
 
 		// accessControlPolicyIDs O
-		if (!flexContainer.getAccessControlPolicyIDs().isEmpty()) {
+		if (!flexContainerAnnc.getAccessControlPolicyIDs().isEmpty()) {
 			flexContainerAnncEntity.setAccessControlPolicies(
-					ControllerUtil.buildAcpEntityList(flexContainer.getAccessControlPolicyIDs(), transaction));
+					ControllerUtil.buildAcpEntityList(flexContainerAnnc.getAccessControlPolicyIDs(), transaction));
 		} else {
 			flexContainerAnncEntity.getAccessControlPolicies().addAll(acpsToCheck);
+		}
+		
+		// dynamicAuthorizationConsultationIDs O
+		if (!flexContainerAnnc.getDynamicAuthorizationConsultationIDs().isEmpty()) {
+			flexContainerAnncEntity.setDynamicAuthorizationConsultations(
+					ControllerUtil.buildDacEntityList(flexContainerAnnc.getDynamicAuthorizationConsultationIDs(), transaction));
+		} else {
+			flexContainerAnncEntity.setDynamicAuthorizationConsultations(dacsToCheck);
 		}
 
 		if (!UriMapper.addNewUri(flexContainerAnncEntity.getHierarchicalURI(), flexContainerAnncEntity.getResourceID(),
@@ -210,8 +222,8 @@ public class FlexContainerAnncController extends Controller {
 		}
 
 		// ontologyRef O
-		if (flexContainer.getOntologyRef() != null) {
-			flexContainerAnncEntity.setOntologyRef(flexContainer.getOntologyRef());
+		if (flexContainerAnnc.getOntologyRef() != null) {
+			flexContainerAnncEntity.setOntologyRef(flexContainerAnnc.getOntologyRef());
 		}
 
 		// custom attributes
@@ -357,6 +369,11 @@ public class FlexContainerAnncController extends Controller {
 					flexContainerAnncEntity.setAccessControlPolicies(
 							ControllerUtil.buildAcpEntityList(flexContainerAnnc.getAccessControlPolicyIDs(), transaction));
 					modifiedAttributes.getAccessControlPolicyIDs().addAll(flexContainerAnnc.getAccessControlPolicyIDs());
+				}
+				// dynamicAuthorizationConsultationIDs O
+				if (!flexContainerAnnc.getDynamicAuthorizationConsultationIDs().isEmpty()) {
+					flexContainerAnncEntity.setDynamicAuthorizationConsultations(
+							ControllerUtil.buildDacEntityList(flexContainerAnnc.getDynamicAuthorizationConsultationIDs(), transaction));
 				}
 				// labels O
 				if (!flexContainerAnnc.getLabels().isEmpty()) {

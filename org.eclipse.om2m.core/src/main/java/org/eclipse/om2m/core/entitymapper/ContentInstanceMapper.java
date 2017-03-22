@@ -35,20 +35,16 @@ public class ContentInstanceMapper extends
 	@Override
 	protected void mapAttributes(ContentInstanceEntity entity,
 			ContentInstance resource) {
+		// announceableSubordonate attribute
+		EntityMapperFactory.getAnnounceableSubordinateMapper().mapAttributes(entity, resource);
+		
+		// ContentInstance attributes
 		resource.setContent(entity.getContent());
-		resource.setExpirationTime(entity.getExpirationTime());
 		resource.setContentInfo(entity.getContentInfo());
 		resource.setContentSize(BigInteger.valueOf(entity.getByteSize()));
 		resource.setCreator(entity.getCreator());
 		resource.setOntologyRef(entity.getOntologyRef());
 		resource.setStateTag(entity.getStateTag());
-		if (!entity.getAnnouncedAttribute().isEmpty()) {
-			resource.getAnnouncedAttribute().addAll(
-					entity.getAnnouncedAttribute());
-		}
-		if (!entity.getAnnounceTo().isEmpty()) {
-			resource.getAnnounceTo().addAll(entity.getAnnounceTo());
-		}
 	}
 
 	@Override

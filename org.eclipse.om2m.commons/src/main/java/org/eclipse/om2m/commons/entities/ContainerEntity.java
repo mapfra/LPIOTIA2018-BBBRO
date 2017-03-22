@@ -31,6 +31,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
@@ -43,7 +44,7 @@ import org.eclipse.om2m.commons.constants.ShortName;
  *
  */
 @Entity(name=DBEntities.CONTAINER_ENTITY)
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.JOINED)
 public class ContainerEntity extends AnnounceableSubordinateEntity{
 	@Column(name= ShortName.STATETAG)
 	protected BigInteger stateTag;
@@ -76,6 +77,15 @@ public class ContainerEntity extends AnnounceableSubordinateEntity{
 			inverseJoinColumns = { @JoinColumn(name = DBEntities.ACP_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
 			)
 	protected List<AccessControlPolicyEntity> accessControlPolicies;
+	
+	/** List of DynamicAuthorizationConsultations*/
+	@ManyToMany(fetch=FetchType.LAZY)
+	@JoinTable(
+			name = DBEntities.CNT_DAC_JOIN,
+			joinColumns = { @JoinColumn(name = DBEntities.CNT_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
+			inverseJoinColumns = { @JoinColumn(name = DBEntities.DAC_JOINID, referencedColumnName = ShortName.RESOURCE_ID) }
+			)
+	protected List<DynamicAuthorizationConsultationEntity> dynamicAuthorizationConsultations;
 	
 	/** List of child Container Entities */
 	@OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.ALL})
@@ -388,6 +398,25 @@ public class ContainerEntity extends AnnounceableSubordinateEntity{
 	 */
 	public void setSubscriptions(List<SubscriptionEntity> subscriptions) {
 		this.subscriptions = subscriptions;
+	}
+	
+	@Override
+	/**
+	 * Retrieve linked dynamicAuthorizationConsultations
+	 */
+	public List<DynamicAuthorizationConsultationEntity> getDynamicAuthorizationConsultations() {
+		if (dynamicAuthorizationConsultations == null) {
+			dynamicAuthorizationConsultations = new ArrayList<>();
+		}
+		return dynamicAuthorizationConsultations;
+	}
+	
+	@Override
+	/**
+	 * Set linked dynamicAuthorizationConsultations
+	 */
+	public void setDynamicAuthorizationConsultations(List<DynamicAuthorizationConsultationEntity> list) {
+		this.dynamicAuthorizationConsultations = list;
 	}
 	
 	/**

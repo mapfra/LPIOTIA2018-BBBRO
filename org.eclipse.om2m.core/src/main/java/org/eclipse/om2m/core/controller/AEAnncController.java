@@ -18,6 +18,7 @@ import org.eclipse.om2m.commons.entities.AeAnncEntity;
 import org.eclipse.om2m.commons.entities.AeEntity;
 import org.eclipse.om2m.commons.entities.AnnounceableSubordinateEntity;
 import org.eclipse.om2m.commons.entities.CSEBaseEntity;
+import org.eclipse.om2m.commons.entities.DynamicAuthorizationConsultationEntity;
 import org.eclipse.om2m.commons.entities.FlexContainerEntity;
 import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
 import org.eclipse.om2m.commons.entities.ResourceEntity;
@@ -78,6 +79,7 @@ public class AEAnncController extends Controller {
 		List<AccessControlPolicyEntity> acpsToCheck = null;
 		List<AeAnncEntity> childAnncs = null;
 		List<SubscriptionEntity> subs = null;
+		List<DynamicAuthorizationConsultationEntity> dacsToCheck = null;
 
 		// Distinguish parents
 		
@@ -87,6 +89,7 @@ public class AEAnncController extends Controller {
 			acpsToCheck = csr.getAccessControlPolicies();
 			childAnncs = csr.getChildAeAnncs();
 			subs = csr.getSubscriptions();
+			dacsToCheck = csr.getDynamicAuthorizationConsultations();
 		}
 		// case of FlexContainer
 		if (parentEntity.getResourceType().intValue() == (ResourceType.FLEXCONTAINER_ANNC)) {
@@ -102,6 +105,7 @@ public class AEAnncController extends Controller {
 			acpsToCheck = aeAnncEntity.getAccessControlPolicies();
 			childAnncs = null;
 			subs = aeAnncEntity.getSubscriptions();
+			dacsToCheck = aeAnncEntity.getDynamicAuthorizationConsultations();
 		}
 		
 		// other cases ?
@@ -193,7 +197,13 @@ public class AEAnncController extends Controller {
 			aeAnncEntity.getAccessControlPolicies().addAll(acpsToCheck);
 		}
 		
-		
+		// dynamicAuthorizationConsultationIDs O
+		if (!aeAnnc.getDynamicAuthorizationConsultationIDs().isEmpty()) {
+			aeAnncEntity.setDynamicAuthorizationConsultations(
+					ControllerUtil.buildDacEntityList(aeAnnc.getDynamicAuthorizationConsultationIDs(), transaction));
+		} else {
+			aeAnncEntity.setDynamicAuthorizationConsultations(dacsToCheck);
+		}
 
 		// FIXME [0001] Creation of AE with an acpi provided
 		// } else {
@@ -389,18 +399,18 @@ public class AEAnncController extends Controller {
 		}
 
 		// Create the java object from the resource representation
-		AEAnnc ae = null;
+		AEAnnc aeAnnc = null;
 		try{
 			if (request.getRequestContentType().equals(MimeMediaType.OBJ)){
-				ae = (AEAnnc) request.getContent();
+				aeAnnc = (AEAnnc) request.getContent();
 			} else {
-				ae = (AEAnnc)DataMapperSelector.getDataMapperList()
+				aeAnnc = (AEAnnc)DataMapperSelector.getDataMapperList()
 						.get(request.getRequestContentType()).stringToObj((String)request.getContent());
 			}
 		} catch (ClassCastException e){
 			throw new BadRequestException("Incorrect resource representation in content", e);
 		}
-		if (ae == null){
+		if (aeAnnc == null){
 			throw new BadRequestException("Error in provided content");
 		}
 
@@ -413,55 +423,60 @@ public class AEAnncController extends Controller {
 		// parentID					NP
 		// creationTime				NP
 		// lastModifiedTime			NP
-		UpdateUtil.checkNotPermittedParameters(ae);
+		UpdateUtil.checkNotPermittedParameters(aeAnnc);
 		// app-ID					NP
-		if(ae.getAppID() != null){
+		if(aeAnnc.getAppID() != null){
 			throw new BadRequestException("AppID is NP");
 		}
 		// ae-ID					NP
-		if(ae.getAEID() != null){
+		if(aeAnnc.getAEID() != null){
 			throw new BadRequestException("AE ID is NP");
 		}
 		// nodeLink					NP
-		if(ae.getNodeLink() != null){
+		if(aeAnnc.getNodeLink() != null){
 			throw new BadRequestException("NodeLink is NP");
 		}
 
 		AE modifiedAttributes = new AE();
 		// labels					O
-		if(!ae.getLabels().isEmpty()){
-			aeAnncEntity.setLabelsEntitiesFromSring(ae.getLabels());
-			modifiedAttributes.getLabels().addAll(ae.getLabels());
+		if(!aeAnnc.getLabels().isEmpty()){
+			aeAnncEntity.setLabelsEntitiesFromSring(aeAnnc.getLabels());
+			modifiedAttributes.getLabels().addAll(aeAnnc.getLabels());
 		}
 		// accessControlPolicyIDs	O
-		if(!ae.getAccessControlPolicyIDs().isEmpty()){
+		if(!aeAnnc.getAccessControlPolicyIDs().isEmpty()){
 			for(AccessControlPolicyEntity acpe : aeAnncEntity.getAccessControlPolicies()){
 				checkSelfACP(acpe, request.getFrom(), Operation.UPDATE);
 			}
 			aeAnncEntity.getAccessControlPolicies().clear();
-			aeAnncEntity.setAccessControlPolicies(ControllerUtil.buildAcpEntityList(ae.getAccessControlPolicyIDs(), transaction));
-			modifiedAttributes.getAccessControlPolicyIDs().addAll(ae.getAccessControlPolicyIDs());
+			aeAnncEntity.setAccessControlPolicies(ControllerUtil.buildAcpEntityList(aeAnnc.getAccessControlPolicyIDs(), transaction));
+			modifiedAttributes.getAccessControlPolicyIDs().addAll(aeAnnc.getAccessControlPolicyIDs());
+		}
+		// dynamicAuthorizationConsultationIDs O
+		if (!aeAnnc.getDynamicAuthorizationConsultationIDs().isEmpty()) {
+			aeAnncEntity.setDynamicAuthorizationConsultations(
+					ControllerUtil.buildDacEntityList(aeAnnc.getDynamicAuthorizationConsultationIDs(), transaction));
 		}
 		// expirationTime			O
-		if (ae.getExpirationTime() != null){
-			aeAnncEntity.setExpirationTime(ae.getExpirationTime());
-			modifiedAttributes.setExpirationTime(ae.getExpirationTime());
+		if (aeAnnc.getExpirationTime() != null){
+			aeAnncEntity.setExpirationTime(aeAnnc.getExpirationTime());
+			modifiedAttributes.setExpirationTime(aeAnnc.getExpirationTime());
 		}
 		// appName					O
-		if(ae.getAppName() != null){
-			aeAnncEntity.setAppName(ae.getAppName());
-			modifiedAttributes.setAppName(ae.getAppName());
+		if(aeAnnc.getAppName() != null){
+			aeAnncEntity.setAppName(aeAnnc.getAppName());
+			modifiedAttributes.setAppName(aeAnnc.getAppName());
 		}
 		// pointOfAccess			O
-		if(!ae.getPointOfAccess().isEmpty()){
+		if(!aeAnnc.getPointOfAccess().isEmpty()){
 			aeAnncEntity.getPointOfAccess().clear();
-			aeAnncEntity.getPointOfAccess().addAll(ae.getPointOfAccess());
-			modifiedAttributes.getPointOfAccess().addAll(ae.getPointOfAccess());
+			aeAnncEntity.getPointOfAccess().addAll(aeAnnc.getPointOfAccess());
+			modifiedAttributes.getPointOfAccess().addAll(aeAnnc.getPointOfAccess());
 		}
 		// ontologyRef				O
-		if (ae.getOntologyRef() != null){
-			aeAnncEntity.setOntologyRef(ae.getOntologyRef());
-			modifiedAttributes.setOntologyRef(ae.getOntologyRef());
+		if (aeAnnc.getOntologyRef() != null){
+			aeAnncEntity.setOntologyRef(aeAnnc.getOntologyRef());
+			modifiedAttributes.setOntologyRef(aeAnnc.getOntologyRef());
 		}
 
 		// Last Time Modified update

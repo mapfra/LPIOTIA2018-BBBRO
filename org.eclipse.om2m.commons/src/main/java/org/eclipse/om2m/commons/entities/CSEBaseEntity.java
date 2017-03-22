@@ -52,6 +52,14 @@ public class CSEBaseEntity extends ResourceEntity {
 			inverseJoinColumns={@JoinColumn(name=DBEntities.ACP_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)}
 			)
 	protected List<AccessControlPolicyEntity> accessControlPolicies;
+	
+	@ManyToMany(fetch=FetchType.LAZY, cascade={CascadeType.ALL})
+	@JoinTable(
+			name=DBEntities.CSEB_DAC_JOIN,
+			joinColumns={@JoinColumn(name=DBEntities.CSEB_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)},
+			inverseJoinColumns={@JoinColumn(name=DBEntities.DAC_JOINID, referencedColumnName=ShortName.RESOURCE_ID)}
+			)
+	protected List<DynamicAuthorizationConsultationEntity> dynamicAuthorizationConsultations;
 
 	@Column(name=ShortName.CSE_TYPE)
 	protected BigInteger cseType; // TODO see if better int ? short ?
@@ -169,7 +177,7 @@ public class CSEBaseEntity extends ResourceEntity {
 			)
 	protected List<SubscriptionEntity> childSubscriptions;
 	@JoinTable(
-			name = DBEntities.CSEB_DAC_JOIN,
+			name = DBEntities.CSEB_CHILDDAC_JOIN,
 			joinColumns = { @JoinColumn(name = DBEntities.CSEB_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
 			inverseJoinColumns = { @JoinColumn(name = DBEntities.DAC_JOINID, referencedColumnName = ShortName.RESOURCE_ID) }
 			)
@@ -450,6 +458,24 @@ public class CSEBaseEntity extends ResourceEntity {
 	public void setChildDynamicAuthorizationConsultation(
 			List<DynamicAuthorizationConsultationEntity> childDynamicAuthorizationConsultation) {
 		this.childDynamicAuthorizationConsultation = childDynamicAuthorizationConsultation;
+	}
+
+	/**
+	 * @return the dynamicAuthorizationConsultations
+	 */
+	public List<DynamicAuthorizationConsultationEntity> getDynamicAuthorizationConsultations() {
+		if (dynamicAuthorizationConsultations == null) {
+			dynamicAuthorizationConsultations = new ArrayList<>();
+		}
+		return dynamicAuthorizationConsultations;
+	}
+
+	/**
+	 * @param dynamicAuthorizationConsultations the dynamicAuthorizationConsultations to set
+	 */
+	public void setDynamicAuthorizationConsultations(
+			List<DynamicAuthorizationConsultationEntity> dynamicAuthorizationConsultations) {
+		this.dynamicAuthorizationConsultations = dynamicAuthorizationConsultations;
 	}
 	
 	

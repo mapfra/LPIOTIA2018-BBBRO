@@ -1,5 +1,6 @@
 package org.eclipse.om2m.core.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.om2m.commons.constants.Constants;
@@ -57,6 +58,7 @@ public class DynamicAuthorizationConsultationController extends Controller {
 		List<AccessControlPolicyEntity> acpsToCheck = null;
 		List<DynamicAuthorizationConsultationEntity> childDynamicAuthorizationConsultations = null;
 		List<SubscriptionEntity> subs = null;
+		List<DynamicAuthorizationConsultationEntity> dacsToCheck = null;
 
 		// retrieve fields values depending on the type of the parent
 		switch (parentEntity.getResourceType().intValue()) {
@@ -65,18 +67,21 @@ public class DynamicAuthorizationConsultationController extends Controller {
 			acpsToCheck = cseBaseEntity.getAccessControlPolicies();
 			childDynamicAuthorizationConsultations = cseBaseEntity.getChildDynamicAuthorizationConsultation();
 			subs = cseBaseEntity.getSubscriptions();
+			dacsToCheck = cseBaseEntity.getDynamicAuthorizationConsultations();
 			break;
 		case ResourceType.REMOTE_CSE:
 			RemoteCSEEntity remoteCseEntity = (RemoteCSEEntity) parentEntity;
 			acpsToCheck = remoteCseEntity.getAccessControlPolicies();
 			childDynamicAuthorizationConsultations = remoteCseEntity.getChildDynamicAuthorizationConsultation();
 			subs = remoteCseEntity.getSubscriptions();
+			dacsToCheck = remoteCseEntity.getDynamicAuthorizationConsultations();
 			break;
 		case ResourceType.AE:
 			AeEntity aeEntity = (AeEntity) parentEntity;
 			acpsToCheck = aeEntity.getAccessControlPolicies();
-			childDynamicAuthorizationConsultations = aeEntity.getDynamicAuthorizationConsultations();
+			childDynamicAuthorizationConsultations = aeEntity.getChildDynamicAuthorizationConsultations();
 			subs = aeEntity.getSubscriptions();
+			dacsToCheck = aeEntity.getDynamicAuthorizationConsultations();
 			break;
 		}
 
@@ -124,9 +129,18 @@ public class DynamicAuthorizationConsultationController extends Controller {
 
 		// fill up GenericResource parameters
 		ControllerUtil.CreateUtil.fillEntityFromGenericResource(dac, dacEntity);
-		
+
 		// expirationTime
 		dacEntity.setExpirationTime(dac.getExpirationTime());
+
+		// dynamicAuthorizationConsultationIDs O
+		if (!dac.getDynamicAuthorizationConsultationIDs().isEmpty()) {
+			dacEntity.setDynamicAuthorizationConsultations(
+					ControllerUtil.buildDacEntityList(dac.getDynamicAuthorizationConsultationIDs(), transaction));
+		} else {
+			// shoud get dacList from parent
+			dacEntity.setDynamicAuthorizationConsultations(dacsToCheck);
+		}
 
 		// dynamicAuthorizationEnabled M
 		if (dac.getDynamicAuthorizationEnabled() == null) {
@@ -177,16 +191,16 @@ public class DynamicAuthorizationConsultationController extends Controller {
 			// should not occurs
 			throw new BadRequestException("invalid parent type");
 		}
-		
+
 		// parentID
 		dacEntity.setParentID(parentEntity.getResourceID());
 
 		// accessControlPolicyIDs O
 		if (!dac.getAccessControlPolicyIDs().isEmpty()) {
-			dacEntity.setAccessControlPolicyIDs(
+			dacEntity.setAccessControlPolicies(
 					ControllerUtil.buildAcpEntityList(dac.getAccessControlPolicyIDs(), transaction));
 		} else {
-			dacEntity.setAccessControlPolicyIDs(acpsToCheck);
+			dacEntity.setAccessControlPolicies(acpsToCheck);
 		}
 
 		// check uri does not exist
@@ -233,7 +247,7 @@ public class DynamicAuthorizationConsultationController extends Controller {
 		}
 
 		// check authorization
-		List<AccessControlPolicyEntity> acpsToCheck = dacEntity.getAccessControlPolicyIDs();
+		List<AccessControlPolicyEntity> acpsToCheck = dacEntity.getAccessControlPolicies();
 		checkACP(acpsToCheck, request.getFrom(), request.getOperation());
 
 		// build response content
@@ -262,7 +276,7 @@ public class DynamicAuthorizationConsultationController extends Controller {
 		}
 
 		// check authorization
-		List<AccessControlPolicyEntity> acpsToCheck = dacEntity.getAccessControlPolicyIDs();
+		List<AccessControlPolicyEntity> acpsToCheck = dacEntity.getAccessControlPolicies();
 		checkACP(acpsToCheck, request.getFrom(), request.getOperation());
 
 		// lock current entity
@@ -285,7 +299,7 @@ public class DynamicAuthorizationConsultationController extends Controller {
 		if (dac == null) {
 			throw new BadRequestException("Error in provided content");
 		}
-		
+
 		// modified Dac resource
 		DynamicAuthorizationConsultation modifiedDAC = new DynamicAuthorizationConsultation();
 
@@ -301,65 +315,68 @@ public class DynamicAuthorizationConsultationController extends Controller {
 		// labels O
 		// dynamicAuthorizationConsultationIDs O
 		// accessControlPolicyIDs O
-		
-		// expirationTime                          O
+
+		// expirationTime O
 		if (dac.getExpirationTime() != null) {
 			dacEntity.setExpirationTime(dac.getExpirationTime());
 			modifiedDAC.setExpirationTime(dac.getExpirationTime());
 		}
-		
-		// accessControlPolicyIDs                  O
+
+		// accessControlPolicyIDs O
 		if (!dac.getAccessControlPolicyIDs().isEmpty()) {
-			dacEntity.getAccessControlPolicyIDs().clear();
-			dacEntity.setAccessControlPolicyIDs(
+			dacEntity.getAccessControlPolicies().clear();
+			dacEntity.setAccessControlPolicies(
 					ControllerUtil.buildAcpEntityList(dac.getAccessControlPolicyIDs(), transaction));
 			modifiedDAC.getAccessControlPolicyIDs().addAll(dac.getAccessControlPolicyIDs());
 		}
-		
-		// labels                                  O
+
+		// labels O
 		if (!dac.getLabels().isEmpty()) {
 			dacEntity.getLabelsEntities().clear();
 			dacEntity.setLabelsEntitiesFromSring(dac.getLabels());
 			modifiedDAC.getLabels().addAll(dac.getLabels());
 		}
-		
-		// dynamicAuthorizationIDs
-		// to be done !
-		
-		// dynamicAuthorizationEnabled             O
+
+		// dynamicAuthorizationConsultationIDs O
+		if (!dac.getDynamicAuthorizationConsultationIDs().isEmpty()) {
+			dacEntity.setDynamicAuthorizationConsultations(
+					ControllerUtil.buildDacEntityList(dac.getDynamicAuthorizationConsultationIDs(), transaction));
+		}
+
+		// dynamicAuthorizationEnabled O
 		if (dac.getDynamicAuthorizationEnabled() != null) {
 			dacEntity.setDynamicAuthorizationEnabled(dac.getDynamicAuthorizationEnabled());
 			modifiedDAC.setDynamicAuthorizationEnabled(dac.getDynamicAuthorizationEnabled());
 		}
-		
-		// dynamicAuthorizationPoA                 O
+
+		// dynamicAuthorizationPoA O
 		if (!dac.getDynamicAuthorisationPoA().isEmpty()) {
 			dacEntity.setDynamicAuthorizationPoA(dac.getDynamicAuthorisationPoA());
 			modifiedDAC.setDynamicAuthorisationPoA(dac.getDynamicAuthorisationPoA());
 		}
-		
-		// dynamicAuthorizationLifetime            O
+
+		// dynamicAuthorizationLifetime O
 		if (dac.getDynamicAuthorizationLifetime() != null) {
 			dacEntity.setDynamicAuthorizationLifetime(dac.getDynamicAuthorizationLifetime());
 			modifiedDAC.setDynamicAuthorizationLifetime(dac.getDynamicAuthorizationLifetime());
 		}
-		
+
 		// last modified time
 		dacEntity.setLastModifiedTime(DateUtil.now());
 		modifiedDAC.setLastModifiedTime(dacEntity.getLastModifiedTime());
-		
+
 		// update in database
 		dbs.getDAOFactory().getDynamicAuthorizationDAO().update(transaction, dacEntity);
-		
+
 		// commit & release lock
 		transaction.commit();
-		
+
 		// set content
 		response.setContent(modifiedDAC);
-		
+
 		// set response status code
 		response.setResponseStatusCode(ResponseStatusCode.UPDATED);
-		
+
 		return response;
 	}
 
@@ -376,7 +393,7 @@ public class DynamicAuthorizationConsultationController extends Controller {
 		}
 
 		// check authorization
-		List<AccessControlPolicyEntity> acpsToCheck = dacEntity.getAccessControlPolicyIDs();
+		List<AccessControlPolicyEntity> acpsToCheck = dacEntity.getAccessControlPolicies();
 		checkACP(acpsToCheck, request.getFrom(), request.getOperation());
 
 		// delete uri

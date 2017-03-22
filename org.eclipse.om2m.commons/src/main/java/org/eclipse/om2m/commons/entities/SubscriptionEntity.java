@@ -33,7 +33,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import org.eclipse.om2m.commons.constants.DBEntities;
@@ -46,10 +45,7 @@ import org.eclipse.om2m.commons.constants.ShortName;
  */
 @Entity(name = DBEntities.SUBSCRIPTION_ENTITY)
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class SubscriptionEntity extends ResourceEntity {
-	
-	@Column(name = ShortName.EXPIRATION_TIME)
-	protected String expirationTime;
+public class SubscriptionEntity extends RegularResourceEntity {
 	
 	/** Link to the ACPs */
 	@ManyToMany(fetch=FetchType.LAZY)
@@ -58,7 +54,16 @@ public class SubscriptionEntity extends ResourceEntity {
 			joinColumns={@JoinColumn(name=DBEntities.SUB_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)},
 			inverseJoinColumns={@JoinColumn(name=DBEntities.ACP_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)}
 			)
-	protected List<AccessControlPolicyEntity> linkedAcps;
+	protected List<AccessControlPolicyEntity> accessControlPolicies;
+	
+	/** Link to the ACPs */
+	@ManyToMany(fetch=FetchType.LAZY)
+	@JoinTable(
+			name=DBEntities.SUB_DAC_JOIN,
+			joinColumns={@JoinColumn(name=DBEntities.SUB_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)},
+			inverseJoinColumns={@JoinColumn(name=DBEntities.DAC_JOINID, referencedColumnName=ShortName.RESOURCE_ID)}
+			)
+	protected List<DynamicAuthorizationConsultationEntity> dynamicAuthorizationConsultations;
 	
 	// TODO event notification criteria
 	@Column(name = ShortName.EXPIRATION_COUNTER)
@@ -180,36 +185,6 @@ public class SubscriptionEntity extends ResourceEntity {
 	@JoinColumn(name = "sch_id")
 	protected ScheduleEntity childSchedule;
 	
-	/**
-	 * @return the expirationTime
-	 */
-	public String getExpirationTime() {
-		return expirationTime;
-	}
-
-	/**
-	 * @param expirationTime the expirationTime to set
-	 */
-	public void setExpirationTime(String expirationTime) {
-		this.expirationTime = expirationTime;
-	}
-
-	/**
-	 * @return the acpList
-	 */
-	public List<AccessControlPolicyEntity> getAcpList() {
-		if (linkedAcps == null) {
-			linkedAcps = new ArrayList<>();
-		}
-		return linkedAcps;
-	}
-
-	/**
-	 * @param acpList the acpList to set
-	 */
-	public void setAcpList(List<AccessControlPolicyEntity> acpList) {
-		this.linkedAcps = acpList;
-	}
 
 	/**
 	 * @return the expirationCounter
@@ -569,6 +544,32 @@ public class SubscriptionEntity extends ResourceEntity {
 			break;
 		}
 		
+	}
+
+	@Override
+	public List<AccessControlPolicyEntity> getAccessControlPolicies() {
+		if (accessControlPolicies == null) {
+			accessControlPolicies = new ArrayList<>();
+		}
+		return accessControlPolicies;
+	}
+
+	@Override
+	public void setAccessControlPolicies(List<AccessControlPolicyEntity> accessControlPolicies) {
+		this.accessControlPolicies = accessControlPolicies;
+	}
+
+	@Override
+	public List<DynamicAuthorizationConsultationEntity> getDynamicAuthorizationConsultations() {
+		if (dynamicAuthorizationConsultations == null) {
+			dynamicAuthorizationConsultations = new ArrayList<>();
+		}
+		return dynamicAuthorizationConsultations;
+	}
+
+	@Override
+	public void setDynamicAuthorizationConsultations(List<DynamicAuthorizationConsultationEntity> list) {
+		this.dynamicAuthorizationConsultations = list;
 	}
 	
 }

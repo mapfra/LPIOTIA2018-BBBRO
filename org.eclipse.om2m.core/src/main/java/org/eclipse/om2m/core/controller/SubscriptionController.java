@@ -252,10 +252,10 @@ public class SubscriptionController extends Controller{
 		}
 
 		if(!subscription.getAccessControlPolicyIDs().isEmpty()){
-			subscriptionEntity.setAcpList(
+			subscriptionEntity.setAccessControlPolicies(
 					ControllerUtil.buildAcpEntityList(subscription.getAccessControlPolicyIDs(), transaction));
 		} else {
-			subscriptionEntity.getAcpList().addAll(acpsToCheck);
+			subscriptionEntity.getAccessControlPolicies().addAll(acpsToCheck);
 		}
 
 		String generatedId = generateId();
@@ -305,7 +305,7 @@ public class SubscriptionController extends Controller{
 			throw new ResourceNotFoundException();
 		}
 
-		checkACP(subscriptionEntity.getAcpList(), request.getFrom(), 
+		checkACP(subscriptionEntity.getAccessControlPolicies(), request.getFrom(), 
 				Operation.RETRIEVE);
 		
 
@@ -331,7 +331,7 @@ public class SubscriptionController extends Controller{
 			throw new ResourceNotFoundException();
 		}
 
-		checkACP(subscriptionEntity.getAcpList(), request.getFrom(), 
+		checkACP(subscriptionEntity.getAccessControlPolicies(), request.getFrom(), 
 				Operation.UPDATE);
 		
 
@@ -379,11 +379,11 @@ public class SubscriptionController extends Controller{
 
 		// ACPIDs O
 		if(!subscription.getAccessControlPolicyIDs().isEmpty()){
-			for(AccessControlPolicyEntity acpe : subscriptionEntity.getAcpList()){
+			for(AccessControlPolicyEntity acpe : subscriptionEntity.getAccessControlPolicies()){
 				checkSelfACP(acpe, request.getFrom(), Operation.UPDATE);
 			}
-			subscriptionEntity.getAcpList().clear();
-			subscriptionEntity.setAcpList(ControllerUtil.buildAcpEntityList(subscription.getAccessControlPolicyIDs(), transaction));
+			subscriptionEntity.getAccessControlPolicies().clear();
+			subscriptionEntity.setAccessControlPolicies(ControllerUtil.buildAcpEntityList(subscription.getAccessControlPolicyIDs(), transaction));
 			modifiedAttributes.getAccessControlPolicyIDs().addAll(subscription.getAccessControlPolicyIDs());
 		}
 		// expirationTime O
@@ -488,7 +488,7 @@ public class SubscriptionController extends Controller{
 			throw new ResourceNotFoundException();
 		}
 
-		checkACP(se.getAcpList(), request.getFrom(), 
+		checkACP(se.getAccessControlPolicies(), request.getFrom(), 
 				Operation.DELETE);
 
 		// Delete the resource in UriMapper table

@@ -41,7 +41,7 @@ import org.eclipse.om2m.commons.constants.ShortName;
  *
  */
 @Entity(name = DBEntities.ACCESSCONTROLPOLICY_ENTITY)
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.JOINED)
 public class AccessControlPolicyEntity extends AnnounceableSubordinateEntity {
 	
 	// Database link to selfPrivilege
@@ -61,6 +61,14 @@ public class AccessControlPolicyEntity extends AnnounceableSubordinateEntity {
 			inverseJoinColumns={@JoinColumn(name=DBEntities.ACRID_COLUMN,referencedColumnName=DBEntities.ACCESSCONTROLRULE_ID)}
 			)
 	protected List<AccessControlRuleEntity> privileges;
+	
+	@ManyToMany
+	@JoinTable(
+			name=DBEntities.ACP_DAC_JOIN,
+			inverseJoinColumns={@JoinColumn(name=DBEntities.DAC_JOINID, referencedColumnName=ShortName.RESOURCE_ID)},
+			joinColumns={@JoinColumn(name=DBEntities.ACP_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)}
+			)
+	protected List<DynamicAuthorizationConsultationEntity> dynamicConsultationAuthorizations;
 
 	// Database link to the owner CSE
 	@ManyToOne(fetch=FetchType.LAZY, targetEntity=CSEBaseEntity.class)
@@ -97,6 +105,15 @@ public class AccessControlPolicyEntity extends AnnounceableSubordinateEntity {
 			)
 	protected List<SubscriptionEntity> childSubscriptions;
 
+//	// linked to RegularRessource
+//	@ManyToMany(fetch=FetchType.LAZY, targetEntity=RegularResourceEntity.class)
+//	@JoinTable(
+//			name = DBEntities.REGULARRESOURCE_ACP_JOIN,
+//			inverseJoinColumns = { @JoinColumn(name = DBEntities.REGULARRESOURCE_JOINID, referencedColumnName = ShortName.RESOURCE_ID) }, 
+//			joinColumns = { @JoinColumn(name = DBEntities.ACP_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
+//			)
+//	protected List<RegularResourceEntity> linkedRegularResources;
+	
 	// Database link to CSE
 	@ManyToMany(fetch=FetchType.LAZY, targetEntity=CSEBaseEntity.class)
 	@JoinTable(
@@ -141,6 +158,14 @@ public class AccessControlPolicyEntity extends AnnounceableSubordinateEntity {
 			joinColumns={@JoinColumn(name=DBEntities.ACP_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)}
 			)
 	protected List<FlexContainerEntity> linkedFlexCnts;
+	
+//	@ManyToMany(fetch=FetchType.LAZY, targetEntity = AnnouncedResourceEntity.class)
+//	@JoinTable(
+//			name=DBEntities.ANNOUNCEDRESOURCE_ACP_JOIN,
+//			inverseJoinColumns={@JoinColumn(name=DBEntities.ANNOUNCEDRESOURCE_JOINID, referencedColumnName=ShortName.RESOURCE_ID)},
+//			joinColumns={@JoinColumn(name=DBEntities.ACP_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)}
+//			)
+//	protected List<AnnouncedResourceEntity> linkedAnnouncedResources;
 	
 	// Database link to FlexContainerAnnc
 	@ManyToMany()
@@ -461,6 +486,7 @@ public class AccessControlPolicyEntity extends AnnounceableSubordinateEntity {
 		this.areaNwkDeviceInfoEntities = areaNwkDeviceInfoEntities;
 	}
 
+
 	public List<DynamicAuthorizationConsultationEntity> getLinkedDynamicAuthorizationConsultation() {
 		return linkedDynamicAuthorizationConsultation;
 	}
@@ -468,6 +494,28 @@ public class AccessControlPolicyEntity extends AnnounceableSubordinateEntity {
 	public void setLinkedDynamicAuthorizationConsultation(
 			List<DynamicAuthorizationConsultationEntity> linkedDynamicAuthorizationConsultation) {
 		this.linkedDynamicAuthorizationConsultation = linkedDynamicAuthorizationConsultation;
+	}
+
+	@Override
+	public List<AccessControlPolicyEntity> getAccessControlPolicies() {
+		return new ArrayList<>();
+	}
+
+	@Override
+	public void setAccessControlPolicies(List<AccessControlPolicyEntity> accessControlPolicies) {
+	}
+	
+	@Override
+	public List<DynamicAuthorizationConsultationEntity> getDynamicAuthorizationConsultations() {
+		if (dynamicConsultationAuthorizations == null) {
+			dynamicConsultationAuthorizations = new ArrayList<>();
+		}
+		return dynamicConsultationAuthorizations;
+	}
+	
+	@Override
+	public void setDynamicAuthorizationConsultations(List<DynamicAuthorizationConsultationEntity> list) {
+		dynamicConsultationAuthorizations = list;
 	}
 	
 	

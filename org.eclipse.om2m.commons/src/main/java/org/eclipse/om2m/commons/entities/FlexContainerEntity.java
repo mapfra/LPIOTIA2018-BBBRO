@@ -43,7 +43,7 @@ import org.eclipse.om2m.commons.constants.ShortName;
  *
  */
 @Entity(name=DBEntities.FLEXCONTAINER_ENTITY)
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.JOINED)
 public class FlexContainerEntity extends AnnounceableSubordinateEntity{
 	@Column(name= ShortName.STATETAG)
 	protected BigInteger stateTag;
@@ -78,6 +78,15 @@ public class FlexContainerEntity extends AnnounceableSubordinateEntity{
 			inverseJoinColumns = { @JoinColumn(name = DBEntities.ACP_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
 			)
 	protected List<AccessControlPolicyEntity> accessControlPolicies;
+	
+	/** List of DynamicAuthorizationConsultations*/
+	@ManyToMany(fetch=FetchType.LAZY)
+	@JoinTable(
+			name = DBEntities.FCNT_DAC_JOIN,
+			joinColumns = { @JoinColumn(name = DBEntities.FCNT_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
+			inverseJoinColumns = { @JoinColumn(name = DBEntities.DAC_JOINID, referencedColumnName = ShortName.RESOURCE_ID) }
+			)
+	protected List<DynamicAuthorizationConsultationEntity> dynamicAuthorizationConsultations;
 	
 	/** List of child Container Entities */
 	@OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.ALL})
@@ -336,6 +345,25 @@ public class FlexContainerEntity extends AnnounceableSubordinateEntity{
 	 */
 	public void setSubscriptions(List<SubscriptionEntity> subscriptions) {
 		this.subscriptions = subscriptions;
+	}
+	
+	@Override
+	/**
+	 * Retrieve linked dynamicAuthorizationConsultations
+	 */
+	public List<DynamicAuthorizationConsultationEntity> getDynamicAuthorizationConsultations() {
+		if (dynamicAuthorizationConsultations == null) {
+			dynamicAuthorizationConsultations = new ArrayList<>();
+		}
+		return dynamicAuthorizationConsultations;
+	}
+	
+	@Override
+	/**
+	 * Set linked dynamicAuthorizationConsultations
+	 */
+	public void setDynamicAuthorizationConsultations(List<DynamicAuthorizationConsultationEntity> list) {
+		this.dynamicAuthorizationConsultations = list;
 	}
 	
 	/**

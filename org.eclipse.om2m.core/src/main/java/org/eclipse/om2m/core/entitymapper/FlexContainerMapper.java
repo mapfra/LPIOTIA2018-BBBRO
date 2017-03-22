@@ -7,19 +7,14 @@
  *******************************************************************************/
 package org.eclipse.om2m.core.entitymapper;
 
-import java.math.BigInteger;
-
 import org.eclipse.om2m.commons.constants.ResourceType;
 import org.eclipse.om2m.commons.constants.ResultContent;
-import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
 import org.eclipse.om2m.commons.entities.ContainerEntity;
-import org.eclipse.om2m.commons.entities.ContentInstanceEntity;
 import org.eclipse.om2m.commons.entities.CustomAttributeEntity;
 import org.eclipse.om2m.commons.entities.FlexContainerEntity;
 import org.eclipse.om2m.commons.entities.SubscriptionEntity;
 import org.eclipse.om2m.commons.resource.ChildResourceRef;
 import org.eclipse.om2m.commons.resource.Container;
-import org.eclipse.om2m.commons.resource.ContentInstance;
 import org.eclipse.om2m.commons.resource.CustomAttribute;
 import org.eclipse.om2m.commons.resource.FlexContainer;
 import org.eclipse.om2m.commons.resource.Subscription;
@@ -34,21 +29,14 @@ public class FlexContainerMapper extends EntityMapper<FlexContainerEntity, FlexC
 	@Override
 	protected void mapAttributes(FlexContainerEntity entity, FlexContainer resource) {
 		
+		// announceableResource attributes
+		EntityMapperFactory.getAnnounceableSubordonateEntity_AnnounceableResourceMapper().mapAttributes(entity, resource);
+		
+		// flexContainer attributes
 		resource.setCreator(entity.getCreator());
 		resource.setOntologyRef(entity.getOntologyRef());
 		resource.setStateTag(entity.getStateTag());
-		resource.setExpirationTime(entity.getExpirationTime());
 		resource.setContainerDefinition(entity.getContainerDefinition());
-		if (!entity.getAnnouncedAttribute().isEmpty()) {			
-			resource.getAnnouncedAttribute().addAll(entity.getAnnouncedAttribute());
-		}
-		if (!entity.getAnnounceTo().isEmpty()) {			
-			resource.getAnnounceTo().addAll(entity.getAnnounceTo());
-		}
-		// setting acpIds
-		for (AccessControlPolicyEntity acp : entity.getAccessControlPolicies()) {
-			resource.getAccessControlPolicyIDs().add(acp.getResourceID());
-		}
 		
 		for(CustomAttributeEntity cae : entity.getCustomAttributes()) {
 			CustomAttribute ca = new CustomAttribute();

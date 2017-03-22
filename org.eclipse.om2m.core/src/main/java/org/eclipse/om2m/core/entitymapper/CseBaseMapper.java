@@ -20,6 +20,7 @@
 package org.eclipse.om2m.core.entitymapper;
 
 import java.math.BigInteger;
+import java.util.List;
 
 import org.eclipse.om2m.commons.constants.ResourceType;
 import org.eclipse.om2m.commons.constants.ResultContent;
@@ -69,6 +70,13 @@ public class CseBaseMapper extends EntityMapper<CSEBaseEntity, CSEBase> {
 		for (AccessControlPolicyEntity acp : cseBaseEntity.getAccessControlPolicies()) {
 			cseBaseResource.getAccessControlPolicyIDs().add(acp.getResourceID());
 		}
+
+		// setting dynamic authorization consultation ids
+		List<String> dacis = cseBaseResource.getDynamicAuthorizationConsultationIDs();
+		for(DynamicAuthorizationConsultationEntity dace : cseBaseEntity.getDynamicAuthorizationConsultations()) {
+			dacis.add(dace.getResourceID());
+		}
+		
 		if (!cseBaseEntity.getLabelsEntities().isEmpty()) {
 			for (LabelEntity l : cseBaseEntity.getLabelsEntities()) {
 				cseBaseResource.getLabels().add(l.getLabel());

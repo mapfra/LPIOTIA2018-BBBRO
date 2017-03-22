@@ -10,7 +10,9 @@ import org.eclipse.om2m.commons.constants.MimeMediaType;
 import org.eclipse.om2m.commons.constants.Operation;
 import org.eclipse.om2m.commons.constants.ResourceType;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
+import org.eclipse.om2m.commons.resource.AEAnnc;
 import org.eclipse.om2m.commons.resource.DynamicAuthorizationConsultation;
+import org.eclipse.om2m.commons.resource.RemoteCSE;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
 import org.eclipse.om2m.core.service.CseService;
@@ -193,6 +195,76 @@ public abstract class Test {
 			if (ResponseStatusCode.CREATED.equals(response.getResponseStatusCode())) {
 				// OK
 				return (DynamicAuthorizationConsultation) response.getContent();
+			}
+		}
+
+		// KO
+		return null;
+	}
+
+	protected RemoteCSE createRemoteCse() {
+		// create request
+		RequestPrimitive request = new RequestPrimitive();
+
+		String remoteCseName = "RemoteCse_" + UUID.randomUUID().toString();
+
+		// setup request
+		request.setOperation(Operation.CREATE);
+		request.setTargetId("/" + Constants.CSE_ID + "/" + Constants.CSE_NAME);
+		request.setName(remoteCseName);
+		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
+		request.setResourceType(ResourceType.REMOTE_CSE);
+		request.setRequestContentType(MimeMediaType.OBJ);
+		request.setReturnContentType(MimeMediaType.OBJ);
+
+		// set RemoteCse
+		RemoteCSE remoteCse = new RemoteCSE();
+		remoteCse.setCSEBase("/base/" + remoteCseName);
+		remoteCse.setCSEID(remoteCseName);
+		remoteCse.setRequestReachability(Boolean.FALSE);
+		
+		
+		request.setContent(remoteCse);
+
+		ResponsePrimitive response = getCseService().doRequest(request);
+		if (response != null) {
+			if (ResponseStatusCode.CREATED.equals(response.getResponseStatusCode())) {
+				// OK
+				return (RemoteCSE) response.getContent();
+			}
+		}
+
+		// KO
+		return null;
+	}
+	
+	protected AEAnnc createAeAnnc(String url) {
+		// create request
+		RequestPrimitive request = new RequestPrimitive();
+
+		String aeAnncCseName = "AeAnnc_" + UUID.randomUUID().toString();
+
+		// setup request
+		request.setOperation(Operation.CREATE);
+		request.setTargetId(url);
+		request.setName(aeAnncCseName);
+		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
+		request.setResourceType(ResourceType.AE_ANNC);
+		request.setRequestContentType(MimeMediaType.OBJ);
+		request.setReturnContentType(MimeMediaType.OBJ);
+
+		// set RemoteCse
+		AEAnnc aeAnnc = new AEAnnc();
+		aeAnnc.setAppID("AeAnncAppID_" + UUID.randomUUID());
+		aeAnnc.setLink("/" + aeAnnc.getAppID());
+		
+		request.setContent(aeAnnc);
+
+		ResponsePrimitive response = getCseService().doRequest(request);
+		if (response != null) {
+			if (ResponseStatusCode.CREATED.equals(response.getResponseStatusCode())) {
+				// OK
+				return (AEAnnc) response.getContent();
 			}
 		}
 

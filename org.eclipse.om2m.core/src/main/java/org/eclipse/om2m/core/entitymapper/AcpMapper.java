@@ -36,18 +36,13 @@ public class AcpMapper extends EntityMapper<AccessControlPolicyEntity, AccessCon
 	@Override
 	protected void mapAttributes(AccessControlPolicyEntity entity,
 			AccessControlPolicy resource) {
+		// announceableSubordinateResource attribute
+		EntityMapperFactory.getAnnounceableSubordinateMapper().mapAttributes(entity, resource);
+		
 		resource.setPrivileges(AcpUtils.getSetOfArcsFromACRE(entity
 				.getPrivileges()));
-		resource.setExpirationTime(entity.getExpirationTime());
 		resource.setSelfPrivileges(AcpUtils.getSetOfArcsFromACRE(entity
 				.getSelfPrivileges()));
-		if (!entity.getAnnouncedAttribute().isEmpty()) {
-			resource.getAnnouncedAttribute().addAll(
-					entity.getAnnouncedAttribute());
-		}
-		if (!entity.getAnnounceTo().isEmpty()) {
-			resource.getAnnounceTo().addAll(entity.getAnnounceTo());
-		}		
 	}
 
 	@Override
