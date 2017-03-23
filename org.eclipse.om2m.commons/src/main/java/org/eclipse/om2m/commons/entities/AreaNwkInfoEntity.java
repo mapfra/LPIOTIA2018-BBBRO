@@ -61,7 +61,7 @@ public class AreaNwkInfoEntity extends MgmtObjEntity {
 	protected List<AccessControlPolicyEntity> accessControlPolicies;
 	
 	/** List of DynamicAuthorizationConsultations*/
-	@ManyToMany(fetch=FetchType.LAZY)
+	@ManyToMany(fetch=FetchType.LAZY, mappedBy="linkedAreaNwkInfoEntities")
 	@JoinTable(
 			name = DBEntities.ANI_DAC_JOIN,
 			joinColumns = { @JoinColumn(name = DBEntities.ANI_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 

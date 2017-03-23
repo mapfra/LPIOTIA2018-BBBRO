@@ -51,7 +51,7 @@ public class NodeEntity extends AnnounceableSubordinateEntity {
 	protected List<AccessControlPolicyEntity> linkedAcps;
 	
 	/** List of DynamicAuthorizationConsultations*/
-	@ManyToMany(fetch=FetchType.LAZY)
+	@ManyToMany(fetch=FetchType.LAZY, mappedBy="linkedNodeEntities")
 	@JoinTable(
 			name = DBEntities.NOD_DAC_JOIN,
 			joinColumns = { @JoinColumn(name = DBEntities.NOD_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 

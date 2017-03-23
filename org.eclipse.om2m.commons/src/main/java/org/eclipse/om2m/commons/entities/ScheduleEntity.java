@@ -74,7 +74,7 @@ public class ScheduleEntity extends AnnounceableSubordinateEntity {
 	protected List<AccessControlPolicyEntity> accessControlPolicies;
 	
 	/** List of DynamicAuthorizationConsultations*/
-	@ManyToMany(fetch=FetchType.LAZY)
+	@ManyToMany(fetch=FetchType.LAZY, mappedBy="linkedScheduleEntities")
 	@JoinTable(
 			name = DBEntities.SCH_DAC_JOIN,
 			joinColumns = { @JoinColumn(name = DBEntities.SCH_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 

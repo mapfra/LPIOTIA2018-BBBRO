@@ -62,7 +62,7 @@ public class AccessControlPolicyEntity extends AnnounceableSubordinateEntity {
 			)
 	protected List<AccessControlRuleEntity> privileges;
 	
-	@ManyToMany
+	@ManyToMany(fetch=FetchType.LAZY, mappedBy="linkedAccessControlPolicyEntities")
 	@JoinTable(
 			name=DBEntities.ACP_DAC_JOIN,
 			inverseJoinColumns={@JoinColumn(name=DBEntities.DAC_JOINID, referencedColumnName=ShortName.RESOURCE_ID)},

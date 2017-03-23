@@ -80,7 +80,7 @@ public class FlexContainerEntity extends AnnounceableSubordinateEntity{
 	protected List<AccessControlPolicyEntity> accessControlPolicies;
 	
 	/** List of DynamicAuthorizationConsultations*/
-	@ManyToMany(fetch=FetchType.LAZY)
+	@ManyToMany(fetch=FetchType.LAZY, mappedBy="linkedFlexContainerEntites")
 	@JoinTable(
 			name = DBEntities.FCNT_DAC_JOIN,
 			joinColumns = { @JoinColumn(name = DBEntities.FCNT_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 

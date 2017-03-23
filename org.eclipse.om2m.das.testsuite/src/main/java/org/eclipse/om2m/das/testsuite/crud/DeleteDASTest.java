@@ -79,7 +79,7 @@ public class DeleteDASTest extends Test {
 		}
 
 		// try to retrieve the deleted das
-		ResponsePrimitive retrievedResponse = retrieveDynamicAuthorizationConsultation(dasUrl);
+		ResponsePrimitive retrievedResponse = retrieveEntity(dasUrl);
 		if (retrievedResponse == null) {
 			setState(State.KO);
 			setMessage("no response");

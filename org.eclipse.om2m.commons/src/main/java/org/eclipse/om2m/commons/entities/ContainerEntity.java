@@ -79,7 +79,7 @@ public class ContainerEntity extends AnnounceableSubordinateEntity{
 	protected List<AccessControlPolicyEntity> accessControlPolicies;
 	
 	/** List of DynamicAuthorizationConsultations*/
-	@ManyToMany(fetch=FetchType.LAZY)
+	@ManyToMany(fetch=FetchType.LAZY, mappedBy="linkedContainerEntities")
 	@JoinTable(
 			name = DBEntities.CNT_DAC_JOIN,
 			joinColumns = { @JoinColumn(name = DBEntities.CNT_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 

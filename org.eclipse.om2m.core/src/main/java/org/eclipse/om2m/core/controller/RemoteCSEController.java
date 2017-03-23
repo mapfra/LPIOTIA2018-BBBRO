@@ -326,6 +326,12 @@ public class RemoteCSEController extends Controller {
 		// Add the remoteCSE to the CSEBase list
 		remoteCSEs.add(csrDB);
 		dao.update(transaction, parentEntity);
+		
+		// update link with remoteCseEntity - DacEntity
+		for(DynamicAuthorizationConsultationEntity dace : csrDB.getDynamicAuthorizationConsultations()) {
+			dace.getLinkedRemoteCSEEntities().add(csrDB);
+			dbs.getDAOFactory().getDynamicAuthorizationDAO().update(transaction, dace);
+		}
 
 		// Commit the DB transaction
 		transaction.commit();
@@ -482,6 +488,12 @@ public class RemoteCSEController extends Controller {
 		if (!csr.getDynamicAuthorizationConsultationIDs().isEmpty()) {
 			csrEntity.setDynamicAuthorizationConsultations(
 					ControllerUtil.buildDacEntityList(csr.getDynamicAuthorizationConsultationIDs(), transaction));
+			
+			// update link with remoteCseEntity - DacEntity
+			for(DynamicAuthorizationConsultationEntity dace : csrEntity.getDynamicAuthorizationConsultations()) {
+				dace.getLinkedRemoteCSEEntities().add(csrEntity);
+				dbs.getDAOFactory().getDynamicAuthorizationDAO().update(transaction, dace);
+			}
 		}
 		
 		// expirationTime			O

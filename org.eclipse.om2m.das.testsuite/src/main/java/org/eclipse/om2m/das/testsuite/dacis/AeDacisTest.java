@@ -1,5 +1,6 @@
 package org.eclipse.om2m.das.testsuite.dacis;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 import org.eclipse.om2m.commons.constants.Constants;
@@ -75,20 +76,12 @@ public class AeDacisTest extends Test {
 
 		// check dacis
 		if (!checkEquals(createdAe.getDynamicAuthorizationConsultationIDs(),
-				toBeCreatedAe.getDynamicAuthorizationConsultationIDs(),
-				"dynamicAuthorizationConsultationIDs")) {
+				toBeCreatedAe.getDynamicAuthorizationConsultationIDs(), "dynamicAuthorizationConsultationIDs")) {
 			return;
 		}
 
-		// prepare RETRIEVE request
-		RequestPrimitive retrieveRequest = new RequestPrimitive();
-		retrieveRequest.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
-		retrieveRequest.setOperation(Operation.RETRIEVE);
-		retrieveRequest.setTargetId(createdAe.getResourceID());
-		retrieveRequest.setReturnContentType(MimeMediaType.OBJ);
-
 		// execute RETRIEVE request
-		ResponsePrimitive retrieveResponse = getCseService().doRequest(retrieveRequest);
+		ResponsePrimitive retrieveResponse = retrieveEntity(createdAe.getResourceID());
 		if (retrieveResponse == null) {
 			// ko
 			setState(State.KO);
@@ -115,7 +108,49 @@ public class AeDacisTest extends Test {
 
 		// check dacis
 		if (!checkEquals(retrievedAe.getDynamicAuthorizationConsultationIDs(),
-				toBeCreatedAe.getDynamicAuthorizationConsultationIDs(),
+				toBeCreatedAe.getDynamicAuthorizationConsultationIDs(), "dynamicAuthorizationConsultationIDs")) {
+			return;
+		}
+
+		// delete DAC
+		RequestPrimitive deleteDACRequest = new RequestPrimitive();
+		deleteDACRequest.setOperation(Operation.DELETE);
+		deleteDACRequest.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
+		deleteDACRequest.setTargetId(dac.getResourceID());
+		if (!ResponseStatusCode.DELETED.equals(getCseService().doRequest(deleteDACRequest).getResponseStatusCode())) {
+			setState(State.KO);
+			setMessage("unable to delete DAC");
+			return;
+		}
+
+		// retrieve again ==> dacis list should be empty
+
+		// execute RETRIEVE request
+		retrieveResponse = retrieveEntity(createdAe.getResourceID());
+		if (retrieveResponse == null) {
+			// ko
+			setState(State.KO);
+			setMessage("retrieveResponse is null");
+			return;
+		}
+		// check response status
+		if (!ResponseStatusCode.OK.equals(retrieveResponse.getResponseStatusCode())) {
+			// ko
+			setState(State.KO);
+			setMessage("unable to retrieve Ae: expecting " + ResponseStatusCode.OK + ", found "
+					+ createResponse.getResponseStatusCode());
+			return;
+		}
+		retrievedAe = null;
+		try {
+			retrievedAe = (AE) retrieveResponse.getContent();
+		} catch (ClassCastException e) {
+			setState(State.KO);
+			setMessage("expected response content is not a Ae");
+			return;
+		}
+		// check dacis
+		if (!checkEquals(retrievedAe.getDynamicAuthorizationConsultationIDs(), new ArrayList<String>(),
 				"dynamicAuthorizationConsultationIDs")) {
 			return;
 		}

@@ -334,7 +334,13 @@ public class AEController extends Controller {
 		// Add the AE to the parentEntity list
 		childAes.add(aeDB);
 		dao.update(transaction, parentEntity);
-
+		
+		// update link with aeEntity - DacEntity
+		for(DynamicAuthorizationConsultationEntity dace : aeDB.getDynamicAuthorizationConsultations()) {
+			dace.getLinkedAeEntities().add(aeDB);
+			dbs.getDAOFactory().getDynamicAuthorizationDAO().update(transaction, dace);
+		}
+		
 		// Commit the DB transaction & release lock
 		transaction.commit();
 		
@@ -484,6 +490,12 @@ public class AEController extends Controller {
 		if (!ae.getDynamicAuthorizationConsultationIDs().isEmpty()) {
 			aeEntity.setDynamicAuthorizationConsultations(
 					ControllerUtil.buildDacEntityList(ae.getDynamicAuthorizationConsultationIDs(), transaction));
+			
+			// update link with aeEntity - DacEntity
+			for(DynamicAuthorizationConsultationEntity dace : aeEntity.getDynamicAuthorizationConsultations()) {
+				dace.getLinkedAeEntities().add(aeEntity);
+				dbs.getDAOFactory().getDynamicAuthorizationDAO().update(transaction, dace);
+			}
 		} 
 		
 		

@@ -247,6 +247,12 @@ public class FlexContainerAnncController extends Controller {
 		childFlexContainerAnncs.add(flexContainerFromDB);
 		dao.update(transaction, parentEntity);
 		
+		// update link with flexContainerAnncEntity - DacEntity
+		for(DynamicAuthorizationConsultationEntity dace : flexContainerFromDB.getDynamicAuthorizationConsultations()) {
+			dace.getLinkedFlexContainerAnncEntities().add(flexContainerFromDB);
+			dbs.getDAOFactory().getDynamicAuthorizationDAO().update(transaction, dace);
+		}
+		
 		// commit the transaction & unlock parent entity
 		transaction.commit();
 
@@ -374,6 +380,12 @@ public class FlexContainerAnncController extends Controller {
 				if (!flexContainerAnnc.getDynamicAuthorizationConsultationIDs().isEmpty()) {
 					flexContainerAnncEntity.setDynamicAuthorizationConsultations(
 							ControllerUtil.buildDacEntityList(flexContainerAnnc.getDynamicAuthorizationConsultationIDs(), transaction));
+					
+					// update link with flexContainerAnncEntity - DacEntity
+					for(DynamicAuthorizationConsultationEntity dace : flexContainerAnncEntity.getDynamicAuthorizationConsultations()) {
+						dace.getLinkedFlexContainerAnncEntities().add(flexContainerAnncEntity);
+						dbs.getDAOFactory().getDynamicAuthorizationDAO().update(transaction, dace);
+					}
 				}
 				// labels O
 				if (!flexContainerAnnc.getLabels().isEmpty()) {

@@ -74,7 +74,7 @@ public class AeAnncEntity extends AnnouncedResourceEntity {
 	protected List<AccessControlPolicyEntity> accessControlPolicies;
 	
 	/** List of DynamicAuthorizationConsultations*/
-	@ManyToMany(fetch=FetchType.LAZY)
+	@ManyToMany(fetch=FetchType.LAZY, mappedBy="linkedAeAnncEntities")
 	@JoinTable(
 			name = DBEntities.AEANNC_DAC_JOIN,
 			joinColumns = { @JoinColumn(name = DBEntities.AEANNC_JOINID, referencedColumnName = ShortName.RESOURCE_ID) }, 

@@ -3,6 +3,7 @@
  */
 package org.eclipse.om2m.das.testsuite.dacis;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 import org.eclipse.om2m.commons.constants.Constants;
@@ -15,6 +16,7 @@ import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
 import org.eclipse.om2m.core.service.CseService;
 import org.eclipse.om2m.das.testsuite.Test;
+import org.eclipse.om2m.das.testsuite.Test.State;
 
 /**
  * @author MPCY8647
@@ -89,15 +91,9 @@ public class DynamicAuthorizationConsultationDacisTest extends Test {
 			return;
 		}
 
-		// prepare RETRIEVE request
-		RequestPrimitive retrieveRequest = new RequestPrimitive();
-		retrieveRequest.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
-		retrieveRequest.setOperation(Operation.RETRIEVE);
-		retrieveRequest.setTargetId(createdDac.getResourceID());
-		retrieveRequest.setReturnContentType(MimeMediaType.OBJ);
 
 		// execute RETRIEVE request
-		ResponsePrimitive retrieveResponse = getCseService().doRequest(retrieveRequest);
+		ResponsePrimitive retrieveResponse = retrieveEntity(createdDac.getResourceID());
 		if (retrieveResponse == null) {
 			// ko
 			setState(State.KO);
@@ -127,6 +123,52 @@ public class DynamicAuthorizationConsultationDacisTest extends Test {
 				toBeCreatedDac.getDynamicAuthorizationConsultationIDs(), "dynamicAuthorizationConsultationIDs")) {
 			return;
 		}
+		
+		// delete dac
+		RequestPrimitive deleteRequest = new RequestPrimitive();
+		deleteRequest.setOperation(Operation.DELETE);
+		deleteRequest.setTargetId(dac.getResourceID());
+		deleteRequest.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
+		ResponsePrimitive deleteResponse = getCseService().doRequest(deleteRequest);
+		if (!ResponseStatusCode.DELETED.equals(deleteResponse.getResponseStatusCode())) {
+			// ko
+			setState(State.KO);
+			setMessage("unable to delete DAC");
+			return;
+		}
+		
+		// execute RETRIEVE request
+		retrieveResponse = retrieveEntity(createdDac.getResourceID());
+		if (retrieveResponse == null) {
+			// ko
+			setState(State.KO);
+			setMessage("retrieveResponse is null");
+			return;
+		}
+		// check response status
+		if (!ResponseStatusCode.OK.equals(retrieveResponse.getResponseStatusCode())) {
+			// ko
+			setState(State.KO);
+			setMessage("unable to retrieve DynamicAuthorizationConsultation: expecting " + ResponseStatusCode.OK + ", found "
+					+ createResponse.getResponseStatusCode());
+			return;
+		}
+
+		retrievedDac = null;
+		try {
+			retrievedDac = (DynamicAuthorizationConsultation) retrieveResponse.getContent();
+		} catch (ClassCastException e) {
+			setState(State.KO);
+			setMessage("expected response content is not a DynamicAuthorizationConsultation");
+			return;
+		}
+
+		// check dacis
+		if (!checkEquals(retrievedDac.getDynamicAuthorizationConsultationIDs(),
+				new ArrayList<String>(), "dynamicAuthorizationConsultationIDs")) {
+			return;
+		}
+
 
 		// OK
 		setState(State.OK);

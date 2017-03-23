@@ -53,7 +53,7 @@ public class CSEBaseEntity extends ResourceEntity {
 			)
 	protected List<AccessControlPolicyEntity> accessControlPolicies;
 	
-	@ManyToMany(fetch=FetchType.LAZY, cascade={CascadeType.ALL})
+	@ManyToMany(fetch=FetchType.LAZY, cascade={CascadeType.ALL}, mappedBy="linkedCseBaseEntities")
 	@JoinTable(
 			name=DBEntities.CSEB_DAC_JOIN,
 			joinColumns={@JoinColumn(name=DBEntities.CSEB_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)},

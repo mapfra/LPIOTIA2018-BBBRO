@@ -85,7 +85,7 @@ public class RemoteCSEEntity extends AnnounceableSubordinateEntity {
 	protected List<AccessControlPolicyEntity> accessControlPolicies;
 	
 	/** List of DynamicAuthorizationConsultations*/
-	@ManyToMany(fetch=FetchType.LAZY)
+	@ManyToMany(fetch=FetchType.LAZY, mappedBy="linkedRemoteCSEEntities")
 	@JoinTable(
 			name = DBEntities.CSR_DAC_JOIN,
 			joinColumns = { @JoinColumn(name = DBEntities.CSR_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 

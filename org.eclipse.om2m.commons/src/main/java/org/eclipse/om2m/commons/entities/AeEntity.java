@@ -73,7 +73,7 @@ public class AeEntity extends AnnounceableSubordinateEntity {
 	protected List<AccessControlPolicyEntity> accessControlPolicies;
 	
 	/** DynamicAuthorizationConsultations linked to the AE */
-	@ManyToMany(fetch=FetchType.LAZY)
+	@ManyToMany(fetch=FetchType.LAZY, mappedBy="linkedAeEntities")
 	@JoinTable(
 			name = DBEntities.AE_DAC_JOIN,
 			joinColumns = { @JoinColumn(name = DBEntities.AE_JOINID, referencedColumnName = ShortName.RESOURCE_ID) }, 

@@ -304,6 +304,12 @@ public class AEAnncController extends Controller {
 		// Add the AE to the parentEntity list
 		childAnncs.add(aeAnncDB);
 		dao.update(transaction, parentEntity);
+		
+		// update link with aeAnncEntity - DacEntity
+		for(DynamicAuthorizationConsultationEntity dace : aeAnncDB.getDynamicAuthorizationConsultations()) {
+			dace.getLinkedAeAnncEntities().add(aeAnncDB);
+			dbs.getDAOFactory().getDynamicAuthorizationDAO().update(transaction, dace);
+		}
 
 		// Commit the DB transaction & release lock
 		transaction.commit();
@@ -456,6 +462,12 @@ public class AEAnncController extends Controller {
 		if (!aeAnnc.getDynamicAuthorizationConsultationIDs().isEmpty()) {
 			aeAnncEntity.setDynamicAuthorizationConsultations(
 					ControllerUtil.buildDacEntityList(aeAnnc.getDynamicAuthorizationConsultationIDs(), transaction));
+			
+			// update link with aeAnncEntity - DacEntity
+			for(DynamicAuthorizationConsultationEntity dace : aeAnncEntity.getDynamicAuthorizationConsultations()) {
+				dace.getLinkedAeAnncEntities().add(aeAnncEntity);
+				dbs.getDAOFactory().getDynamicAuthorizationDAO().update(transaction, dace);
+			}
 		}
 		// expirationTime			O
 		if (aeAnnc.getExpirationTime() != null){
@@ -485,7 +497,7 @@ public class AEAnncController extends Controller {
 		response.setContent(modifiedAttributes);
 		// Update the resource in database
 		dbs.getDAOFactory().getAeAnncDAO().update(transaction, aeAnncEntity);
-
+		
 		// commit transaction & release lock
 		transaction.commit();
 

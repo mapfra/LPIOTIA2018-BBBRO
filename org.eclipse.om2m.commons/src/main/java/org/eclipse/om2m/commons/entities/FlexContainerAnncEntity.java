@@ -34,7 +34,7 @@ public class FlexContainerAnncEntity extends AnnouncedResourceEntity {
 	protected String containerDefinition;
 	
 	/** List of DynamicAuthorizationConsultations*/
-	@ManyToMany(fetch=FetchType.LAZY)
+	@ManyToMany(fetch=FetchType.LAZY, mappedBy="linkedFlexContainerAnncEntities")
 	@JoinTable(
 			name = DBEntities.FCNTA_DAC_JOIN,
 			joinColumns = { @JoinColumn(name = DBEntities.FCNTA_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 

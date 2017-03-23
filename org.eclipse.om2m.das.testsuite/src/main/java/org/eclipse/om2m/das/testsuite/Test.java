@@ -222,8 +222,7 @@ public abstract class Test {
 		remoteCse.setCSEBase("/base/" + remoteCseName);
 		remoteCse.setCSEID(remoteCseName);
 		remoteCse.setRequestReachability(Boolean.FALSE);
-		
-		
+
 		request.setContent(remoteCse);
 
 		ResponsePrimitive response = getCseService().doRequest(request);
@@ -237,7 +236,7 @@ public abstract class Test {
 		// KO
 		return null;
 	}
-	
+
 	protected AEAnnc createAeAnnc(String url) {
 		// create request
 		RequestPrimitive request = new RequestPrimitive();
@@ -257,7 +256,7 @@ public abstract class Test {
 		AEAnnc aeAnnc = new AEAnnc();
 		aeAnnc.setAppID("AeAnncAppID_" + UUID.randomUUID());
 		aeAnnc.setLink("/" + aeAnnc.getAppID());
-		
+
 		request.setContent(aeAnnc);
 
 		ResponsePrimitive response = getCseService().doRequest(request);
@@ -272,12 +271,12 @@ public abstract class Test {
 		return null;
 	}
 
-	protected ResponsePrimitive retrieveDynamicAuthorizationConsultation(String url) {
+	protected ResponsePrimitive retrieveEntity(String url) {
 		// create request
 		RequestPrimitive request = new RequestPrimitive();
 
 		// setup request
-		request.setOperation(Operation.CREATE);
+		request.setOperation(Operation.RETRIEVE);
 		request.setTargetId(url);
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 		request.setResourceType(ResourceType.DYNAMIC_AUTHORIZATION_CONSULTATION);

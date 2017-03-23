@@ -31,7 +31,7 @@ public class DynamicAuthorizationConsultationEntity extends RegularResourceEntit
 	private List<AccessControlPolicyEntity> accessControlPolicyIDs;
 	
 	/** dynamicAuthorizationConsultationIDs = daci */
-	@ManyToMany(fetch=FetchType.LAZY)
+	@ManyToMany(fetch=FetchType.LAZY, mappedBy="linkedDynamicAuthorizationConsultationEntity")
 	@JoinTable(
 			name = DBEntities.DAC_DACCHILD_JOIN,
 			joinColumns = { @JoinColumn(name = DBEntities.DAC_JOINID, referencedColumnName = ShortName.RESOURCE_ID) }, 
@@ -109,7 +109,7 @@ public class DynamicAuthorizationConsultationEntity extends RegularResourceEntit
 			)
 	private List<AccessControlPolicyEntity> linkedAccessControlPolicyEntities;
 
-	@ManyToMany(fetch=FetchType.LAZY)
+	@ManyToMany(fetch=FetchType.LAZY/*, mappedBy="dynamicAuthorizationConsultations"*/)
 	@JoinTable(
 			name = DBEntities.AE_DAC_JOIN,
 			joinColumns = { @JoinColumn(name = DBEntities.DAC_JOINID, referencedColumnName = ShortName.RESOURCE_ID) }, 

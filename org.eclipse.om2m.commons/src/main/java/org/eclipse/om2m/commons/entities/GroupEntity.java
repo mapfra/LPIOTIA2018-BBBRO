@@ -87,7 +87,7 @@ public class GroupEntity extends AnnounceableSubordinateEntity {
 	protected List<AccessControlPolicyEntity> accessControlPolicies;
 	
 	/** List of DynamicAuthorizationConsultations*/
-	@ManyToMany(fetch=FetchType.LAZY)
+	@ManyToMany(fetch=FetchType.LAZY, mappedBy="linkedGroupEntities")
 	@JoinTable(
 			name = DBEntities.GRP_DAC_JOIN,
 			joinColumns = { @JoinColumn(name = DBEntities.GRP_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 

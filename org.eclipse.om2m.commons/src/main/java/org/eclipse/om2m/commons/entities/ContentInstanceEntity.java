@@ -85,7 +85,7 @@ public class ContentInstanceEntity extends AnnounceableSubordinateEntity {
 	protected List<AccessControlPolicyEntity> accessControlPolicies;
 	
 	/** List of DynamicAuthorizationConsultations*/
-	@ManyToMany(fetch=FetchType.LAZY)
+	@ManyToMany(fetch=FetchType.LAZY, mappedBy="linkedContentInstanceEntites")
 	@JoinTable(
 			name = DBEntities.CIN_DAC_JOIN,
 			joinColumns = { @JoinColumn(name = DBEntities.CIN_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 

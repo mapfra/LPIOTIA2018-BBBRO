@@ -1,5 +1,6 @@
 package org.eclipse.om2m.das.testsuite.dacis;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 import org.eclipse.om2m.commons.constants.Constants;
@@ -93,15 +94,9 @@ public class AeAnncDacisTest extends Test {
 			return;
 		}
 
-		// prepare RETRIEVE request
-		RequestPrimitive retrieveRequest = new RequestPrimitive();
-		retrieveRequest.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
-		retrieveRequest.setOperation(Operation.RETRIEVE);
-		retrieveRequest.setTargetId(createdAeAnnc.getResourceID());
-		retrieveRequest.setReturnContentType(MimeMediaType.OBJ);
 
 		// execute RETRIEVE request
-		ResponsePrimitive retrieveResponse = getCseService().doRequest(retrieveRequest);
+		ResponsePrimitive retrieveResponse = retrieveEntity(createdAeAnnc.getResourceID());
 		if (retrieveResponse == null) {
 			// ko
 			setState(State.KO);
@@ -131,6 +126,51 @@ public class AeAnncDacisTest extends Test {
 				toBeCreatedAeAnnc.getDynamicAuthorizationConsultationIDs(), "dynamicAuthorizationConsultationIDs")) {
 			return;
 		}
+		
+		// DELETE DAC
+		RequestPrimitive deleteRequest = new RequestPrimitive();
+		deleteRequest.setOperation(Operation.DELETE);
+		deleteRequest.setTargetId(dac.getResourceID());
+		deleteRequest.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
+		ResponsePrimitive deleteResponse = getCseService().doRequest(deleteRequest);
+		if (!ResponseStatusCode.DELETED.equals(deleteResponse.getResponseStatusCode())) {
+			// ko
+			setState(State.KO);
+			setMessage("unable to delete DAC");
+			return;
+		}
+		
+		// execute RETRIEVE request
+		retrieveResponse = retrieveEntity(createdAeAnnc.getResourceID());
+		if (retrieveResponse == null) {
+			// ko
+			setState(State.KO);
+			setMessage("retrieveResponse is null");
+			return;
+		}
+		// check response status
+		if (!ResponseStatusCode.OK.equals(retrieveResponse.getResponseStatusCode())) {
+			// ko
+			setState(State.KO);
+			setMessage("unable to retrieve AeAnnc: expecting " + ResponseStatusCode.OK + ", found "
+					+ createResponse.getResponseStatusCode());
+			return;
+		}
+
+		try {
+			retrievedAeAnnc = (AEAnnc) retrieveResponse.getContent();
+		} catch (ClassCastException e) {
+			setState(State.KO);
+			setMessage("expected response content is not a AeAnnc");
+			return;
+		}
+
+		// check dacis
+		if (!checkEquals(retrievedAeAnnc.getDynamicAuthorizationConsultationIDs(),
+				new ArrayList<String>(), "dynamicAuthorizationConsultationIDs")) {
+			return;
+		}
+		
 
 		// OK
 		setState(State.OK);
