@@ -372,8 +372,10 @@ public class Router implements CseService {
 			request.getQueryStrings().putAll(parameters);
 			if(request.getTo() == null){
 				request.setTo(request.getTargetId().split("\\?")[0]);
-				request.setTargetId(request.getTo());
+			} else {
+				request.setTo(request.getTo().split("\\?")[0]);
 			}
+			request.setTargetId(request.getTo());
 		}
 
 	}
