@@ -337,8 +337,9 @@ public class AEController extends Controller {
 		
 		// update link with aeEntity - DacEntity
 		for(DynamicAuthorizationConsultationEntity dace : aeDB.getDynamicAuthorizationConsultations()) {
-			dace.getLinkedAeEntities().add(aeDB);
-			dbs.getDAOFactory().getDynamicAuthorizationDAO().update(transaction, dace);
+			DynamicAuthorizationConsultationEntity daceFromDB = dbs.getDAOFactory().getDynamicAuthorizationDAO().find(transaction, dace.getResourceID());
+			daceFromDB.getLinkedAeEntities().add(aeDB);
+			dbs.getDAOFactory().getDynamicAuthorizationDAO().update(transaction, daceFromDB);
 		}
 		
 		// Commit the DB transaction & release lock
@@ -493,8 +494,9 @@ public class AEController extends Controller {
 			
 			// update link with aeEntity - DacEntity
 			for(DynamicAuthorizationConsultationEntity dace : aeEntity.getDynamicAuthorizationConsultations()) {
-				dace.getLinkedAeEntities().add(aeEntity);
-				dbs.getDAOFactory().getDynamicAuthorizationDAO().update(transaction, dace);
+				DynamicAuthorizationConsultationEntity daceFromDB = dbs.getDAOFactory().getDynamicAuthorizationDAO().find(transaction, dace.getResourceID());
+				daceFromDB.getLinkedAeEntities().add(aeEntity);
+				dbs.getDAOFactory().getDynamicAuthorizationDAO().update(transaction, daceFromDB);
 			}
 		} 
 		

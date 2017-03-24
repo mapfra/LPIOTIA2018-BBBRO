@@ -224,8 +224,9 @@ public class DynamicAuthorizationConsultationController extends Controller {
 
 		// update link with dynamicAuthorizationConsultation - DacEntity
 		for(DynamicAuthorizationConsultationEntity dace : dacFromDB.getDynamicAuthorizationConsultations()) {
-			dace.getLinkedDynamicAuthorizationConsultationEntity().add(dacFromDB);
-			dbs.getDAOFactory().getDynamicAuthorizationDAO().update(transaction, dace);
+			DynamicAuthorizationConsultationEntity daceFromDB = dbs.getDAOFactory().getDynamicAuthorizationDAO().find(transaction, dace.getResourceID());
+			daceFromDB.getLinkedDynamicAuthorizationConsultationEntity().add(dacFromDB);
+			dbs.getDAOFactory().getDynamicAuthorizationDAO().update(transaction, daceFromDB);
 		}
 		
 		// notify all subscribers if any
@@ -350,8 +351,9 @@ public class DynamicAuthorizationConsultationController extends Controller {
 			
 			// update link with dynamicAuthorizationConsultation - DacEntity
 			for(DynamicAuthorizationConsultationEntity dace : dacEntity.getDynamicAuthorizationConsultations()) {
-				dace.getLinkedDynamicAuthorizationConsultationEntity().add(dacEntity);
-				dbs.getDAOFactory().getDynamicAuthorizationDAO().update(transaction, dace);
+				DynamicAuthorizationConsultationEntity daceFromDB = dbs.getDAOFactory().getDynamicAuthorizationDAO().find(transaction, dace.getResourceID());
+				daceFromDB.getLinkedDynamicAuthorizationConsultationEntity().add(dacEntity);
+				dbs.getDAOFactory().getDynamicAuthorizationDAO().update(transaction, daceFromDB);
 			}
 		}
 

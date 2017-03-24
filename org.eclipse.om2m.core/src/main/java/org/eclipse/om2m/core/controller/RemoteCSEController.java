@@ -329,8 +329,9 @@ public class RemoteCSEController extends Controller {
 		
 		// update link with remoteCseEntity - DacEntity
 		for(DynamicAuthorizationConsultationEntity dace : csrDB.getDynamicAuthorizationConsultations()) {
-			dace.getLinkedRemoteCSEEntities().add(csrDB);
-			dbs.getDAOFactory().getDynamicAuthorizationDAO().update(transaction, dace);
+			DynamicAuthorizationConsultationEntity daceFromDB = dbs.getDAOFactory().getDynamicAuthorizationDAO().find(transaction, dace.getResourceID());
+			daceFromDB.getLinkedRemoteCSEEntities().add(csrDB);
+			dbs.getDAOFactory().getDynamicAuthorizationDAO().update(transaction, daceFromDB);
 		}
 
 		// Commit the DB transaction
@@ -491,8 +492,9 @@ public class RemoteCSEController extends Controller {
 			
 			// update link with remoteCseEntity - DacEntity
 			for(DynamicAuthorizationConsultationEntity dace : csrEntity.getDynamicAuthorizationConsultations()) {
-				dace.getLinkedRemoteCSEEntities().add(csrEntity);
-				dbs.getDAOFactory().getDynamicAuthorizationDAO().update(transaction, dace);
+				DynamicAuthorizationConsultationEntity daceFromDB = dbs.getDAOFactory().getDynamicAuthorizationDAO().find(transaction, dace.getResourceID());
+				daceFromDB.getLinkedRemoteCSEEntities().add(csrEntity);
+				dbs.getDAOFactory().getDynamicAuthorizationDAO().update(transaction, daceFromDB);
 			}
 		}
 		

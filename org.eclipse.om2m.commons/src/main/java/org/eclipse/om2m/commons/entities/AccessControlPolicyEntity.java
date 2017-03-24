@@ -488,6 +488,9 @@ public class AccessControlPolicyEntity extends AnnounceableSubordinateEntity {
 
 
 	public List<DynamicAuthorizationConsultationEntity> getLinkedDynamicAuthorizationConsultation() {
+		if (linkedDynamicAuthorizationConsultation == null) {
+			linkedDynamicAuthorizationConsultation = new ArrayList<>();
+		}
 		return linkedDynamicAuthorizationConsultation;
 	}
 

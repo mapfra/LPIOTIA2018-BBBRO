@@ -289,8 +289,9 @@ public class FlexContainerController extends Controller {
 		
 		// update link with flexContainerEntity - DacEntity
 		for(DynamicAuthorizationConsultationEntity dace : flexContainerFromDB.getDynamicAuthorizationConsultations()) {
-			dace.getLinkedFlexContainerEntites().add(flexContainerFromDB);
-			dbs.getDAOFactory().getDynamicAuthorizationDAO().update(transaction, dace);
+			DynamicAuthorizationConsultationEntity daceFromDB = dbs.getDAOFactory().getDynamicAuthorizationDAO().find(transaction, dace.getResourceID());
+			daceFromDB.getLinkedFlexContainerEntites().add(flexContainerFromDB);
+			dbs.getDAOFactory().getDynamicAuthorizationDAO().update(transaction, daceFromDB);
 		}
 
 		// commit the transaction & release lock
@@ -478,8 +479,9 @@ public class FlexContainerController extends Controller {
 				
 				// update link with flexContainerEntity - DacEntity
 				for(DynamicAuthorizationConsultationEntity dace : flexContainerEntity.getDynamicAuthorizationConsultations()) {
-					dace.getLinkedFlexContainerEntites().add(flexContainerEntity);
-					dbs.getDAOFactory().getDynamicAuthorizationDAO().update(transaction, dace);
+					DynamicAuthorizationConsultationEntity daceFromDB = dbs.getDAOFactory().getDynamicAuthorizationDAO().find(transaction, dace.getResourceID());
+					daceFromDB.getLinkedFlexContainerEntites().add(flexContainerEntity);
+					dbs.getDAOFactory().getDynamicAuthorizationDAO().update(transaction, daceFromDB);
 				}
 			}
 			

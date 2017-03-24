@@ -307,8 +307,9 @@ public class AEAnncController extends Controller {
 		
 		// update link with aeAnncEntity - DacEntity
 		for(DynamicAuthorizationConsultationEntity dace : aeAnncDB.getDynamicAuthorizationConsultations()) {
-			dace.getLinkedAeAnncEntities().add(aeAnncDB);
-			dbs.getDAOFactory().getDynamicAuthorizationDAO().update(transaction, dace);
+			DynamicAuthorizationConsultationEntity daceFromDB = dbs.getDAOFactory().getDynamicAuthorizationDAO().find(transaction, dace.getResourceID());
+			daceFromDB.getLinkedAeAnncEntities().add(aeAnncDB);
+			dbs.getDAOFactory().getDynamicAuthorizationDAO().update(transaction, daceFromDB);
 		}
 
 		// Commit the DB transaction & release lock
@@ -465,8 +466,9 @@ public class AEAnncController extends Controller {
 			
 			// update link with aeAnncEntity - DacEntity
 			for(DynamicAuthorizationConsultationEntity dace : aeAnncEntity.getDynamicAuthorizationConsultations()) {
-				dace.getLinkedAeAnncEntities().add(aeAnncEntity);
-				dbs.getDAOFactory().getDynamicAuthorizationDAO().update(transaction, dace);
+				DynamicAuthorizationConsultationEntity daceFromDB = dbs.getDAOFactory().getDynamicAuthorizationDAO().find(transaction, dace.getResourceID());
+				daceFromDB.getLinkedAeAnncEntities().add(aeAnncEntity);
+				dbs.getDAOFactory().getDynamicAuthorizationDAO().update(transaction, daceFromDB);
 			}
 		}
 		// expirationTime			O
