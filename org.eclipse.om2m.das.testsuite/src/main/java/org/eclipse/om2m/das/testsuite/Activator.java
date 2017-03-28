@@ -17,12 +17,17 @@ import org.eclipse.om2m.das.testsuite.dacis.DynamicAuthorizationConsultationDaci
 import org.eclipse.om2m.das.testsuite.dacis.FlexContainerAnncDacisTest;
 import org.eclipse.om2m.das.testsuite.dacis.FlexContainerDacisTest;
 import org.eclipse.om2m.das.testsuite.dacis.RemoteCseDacisTest;
+import org.eclipse.om2m.das.testsuite.dasservice.DASServiceTest;
+import org.eclipse.om2m.das.testsuite.dasservice.DASServiceTest_AccessDenied;
+import org.eclipse.om2m.das.testsuite.dasservice.DASServiceTest_TwoDAS;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
 public class Activator implements BundleActivator {
 
+	private static BundleContext context;
+	
 	private static List<Class<? extends Test>> testClasses = new ArrayList<>();
 	private List<Test> tests = new ArrayList<>();
 
@@ -40,10 +45,14 @@ public class Activator implements BundleActivator {
 		testClasses.add(RemoteCseDacisTest.class);
 		testClasses.add(AeAnncDacisTest.class); 	
 		testClasses.add(FlexContainerAnncDacisTest.class);
+		testClasses.add(DASServiceTest.class);
+		testClasses.add(DASServiceTest_AccessDenied.class);
+		testClasses.add(DASServiceTest_TwoDAS.class);
 	}
 
 	@Override
 	public void start(BundleContext context) throws Exception {
+		this.context = context;
 		
 		CseService cseService = null;
 		ServiceReference<CseService> serviceRef = context.getServiceReference(CseService.class);
@@ -64,6 +73,9 @@ public class Activator implements BundleActivator {
 					t.performTest();
 					
 					tests.add(t);
+					
+					
+					t.cleanUp();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -75,11 +87,16 @@ public class Activator implements BundleActivator {
 
 	@Override
 	public void stop(BundleContext context) throws Exception {
+		this.context = null;
 
 		printAllTestsReports();
 		
 		tests.clear();
 		
+	}
+	
+	public static BundleContext getBundleContext() {
+		return context;
 	}
 	
 	private void printNoCseService() {

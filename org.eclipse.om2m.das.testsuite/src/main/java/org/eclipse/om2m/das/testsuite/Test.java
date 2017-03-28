@@ -5,16 +5,21 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import org.eclipse.om2m.commons.constants.AccessControl;
 import org.eclipse.om2m.commons.constants.Constants;
 import org.eclipse.om2m.commons.constants.MimeMediaType;
 import org.eclipse.om2m.commons.constants.Operation;
 import org.eclipse.om2m.commons.constants.ResourceType;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
+import org.eclipse.om2m.commons.resource.AE;
 import org.eclipse.om2m.commons.resource.AEAnnc;
+import org.eclipse.om2m.commons.resource.AccessControlPolicy;
+import org.eclipse.om2m.commons.resource.AccessControlRule;
 import org.eclipse.om2m.commons.resource.DynamicAuthorizationConsultation;
 import org.eclipse.om2m.commons.resource.RemoteCSE;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
+import org.eclipse.om2m.commons.resource.SetOfAcrs;
 import org.eclipse.om2m.core.service.CseService;
 
 public abstract class Test {
@@ -62,6 +67,9 @@ public abstract class Test {
 	 * Test to be performed
 	 */
 	public abstract void performTest();
+
+	public void cleanUp() {
+	}
 
 	public boolean checkNotNull(Object object, String objectName) {
 		if (object == null) {
@@ -168,8 +176,8 @@ public abstract class Test {
 		// das field
 		Boolean enabled = Boolean.TRUE;
 		List<String> poa = new ArrayList<>();
-		poa.add("poa1");
-		poa.add("poa2");
+		poa.add("poa1" + UUID.randomUUID());
+		poa.add("poa2" + UUID.randomUUID());
 
 		String dasName = "DAS" + UUID.randomUUID().toString();
 
@@ -271,14 +279,87 @@ public abstract class Test {
 		return null;
 	}
 
+	/**
+	 * Create a fake AE.
+	 * 
+	 * @return
+	 */
+	protected AE createAe() {
+		return createAE(null);
+	}
+
+	protected AE createAE(List<String> dacis) {
+		// create a specific acp for this entity
+		AccessControlPolicy acp = new AccessControlPolicy();
+		AccessControlRule acr = new AccessControlRule();
+		acr.getAccessControlOriginators().add(Constants.ADMIN_REQUESTING_ENTITY);
+		acr.setAccessControlOperations(AccessControl.ALL);
+		acp.setPrivileges(new SetOfAcrs());
+		acp.getPrivileges().getAccessControlRule().add(acr);
+		acp.setSelfPrivileges(new SetOfAcrs());
+		AccessControlRule selfAcr = new AccessControlRule();
+		selfAcr.setAccessControlOperations(AccessControl.ALL);
+		selfAcr.getAccessControlOriginators().add(Constants.ADMIN_REQUESTING_ENTITY);
+		acp.getSelfPrivileges().getAccessControlRule().add(selfAcr );
+		
+		RequestPrimitive acpCreateRequest = new RequestPrimitive();
+		acpCreateRequest.setName("ACP" + UUID.randomUUID());
+		acpCreateRequest.setOperation(Operation.CREATE);
+		acpCreateRequest.setRequestContentType(MimeMediaType.OBJ);
+		acpCreateRequest.setReturnContentType(MimeMediaType.OBJ);
+		acpCreateRequest.setResourceType(ResourceType.ACCESS_CONTROL_POLICY);
+		acpCreateRequest.setTargetId("/" + Constants.CSE_ID + "/" + Constants.CSE_NAME);
+		acpCreateRequest.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
+		acpCreateRequest.setContent(acp);
+		
+		ResponsePrimitive acpCreateResponse = getCseService().doRequest(acpCreateRequest);
+		if (!ResponseStatusCode.CREATED.equals(acpCreateResponse.getResponseStatusCode())) {
+			// ko
+			return null;
+		}
+		AccessControlPolicy createdAcp = (AccessControlPolicy) acpCreateResponse.getContent();
+		
+		AE ae = new AE();
+
+		ae.setAppID("1234");
+		ae.setAppName("appName" + UUID.randomUUID());
+		ae.setRequestReachability(Boolean.FALSE);
+		ae.getAccessControlPolicyIDs().add(createdAcp.getResourceID());
+		if (dacis != null) {
+			ae.getDynamicAuthorizationConsultationIDs().addAll(dacis);
+		}
+
+		RequestPrimitive request = new RequestPrimitive();
+		request.setName(ae.getAppName());
+		request.setOperation(Operation.CREATE);
+		request.setRequestContentType(MimeMediaType.OBJ);
+		request.setReturnContentType(MimeMediaType.OBJ);
+		request.setResourceType(ResourceType.AE);
+		request.setTargetId("/" + Constants.CSE_ID + "/" + Constants.CSE_NAME);
+		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
+		request.setContent(ae);
+
+		// execute
+		ResponsePrimitive response = getCseService().doRequest(request);
+		if ((response != null) && (ResponseStatusCode.CREATED.equals(response.getResponseStatusCode()))) {
+			return (AE) response.getContent();
+		}
+
+		return null;
+	}
+
 	protected ResponsePrimitive retrieveEntity(String url) {
+		return retrieveEntity(url, Constants.ADMIN_REQUESTING_ENTITY);
+	}
+
+	protected ResponsePrimitive retrieveEntity(String url, String from) {
 		// create request
 		RequestPrimitive request = new RequestPrimitive();
 
 		// setup request
 		request.setOperation(Operation.RETRIEVE);
 		request.setTargetId(url);
-		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
+		request.setFrom(from);
 		request.setResourceType(ResourceType.DYNAMIC_AUTHORIZATION_CONSULTATION);
 		request.setReturnContentType(MimeMediaType.OBJ);
 

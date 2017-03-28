@@ -144,7 +144,8 @@ public class AEController extends Controller {
 				assignAeiC = false;
 			} else if(!request.getFrom().equals("")){
 				// Check access control policy of the originator
-				checkACP(acpsToCheck, request.getFrom(), Operation.CREATE);
+//				checkACP(acpsToCheck, request.getFrom(), Operation.CREATE);
+				checkPermissions(request, parentEntity, acpsToCheck, dacsToCheck);
 			}
 		}
 
@@ -376,9 +377,11 @@ public class AEController extends Controller {
 			throw new ResourceNotFoundException("Resource not found");
 		}
 
-		checkACP(aeEntity.getAccessControlPolicies(), request.getFrom(), 
-				Operation.RETRIEVE);
-
+//		checkACP(aeEntity.getAccessControlPolicies(), request.getFrom(), 
+//				Operation.RETRIEVE);
+		checkPermissions(request, aeEntity, aeEntity.getAccessControlPolicies(), 
+				aeEntity.getDynamicAuthorizationConsultations());
+		
 
 		// Create the object used to create the representaiton of the resource
 		AE ae = EntityMapperFactory.getAEMapper().mapEntityToResource(aeEntity, request);
@@ -423,8 +426,10 @@ public class AEController extends Controller {
 		// lock current entity
 		transaction.lock(aeEntity);
 		
-		checkACP(aeEntity.getAccessControlPolicies(), request.getFrom(), 
-				Operation.UPDATE);
+//		checkACP(aeEntity.getAccessControlPolicies(), request.getFrom(), 
+//				Operation.UPDATE);
+		checkPermissions(request, aeEntity, aeEntity.getAccessControlPolicies(), 
+				aeEntity.getDynamicAuthorizationConsultations());
 
 
 		// Check if content is present
@@ -571,8 +576,10 @@ public class AEController extends Controller {
 			throw new ResourceNotFoundException("Resource not found");
 		}
 
-		checkACP(aeEntity.getAccessControlPolicies(), request.getFrom(), 
-				Operation.DELETE);
+//		checkACP(aeEntity.getAccessControlPolicies(), request.getFrom(), 
+//				Operation.DELETE);
+		checkPermissions(request, aeEntity, aeEntity.getAccessControlPolicies(), 
+				aeEntity.getDynamicAuthorizationConsultations());
 
 		UriMapper.deleteUri(aeEntity.getHierarchicalURI());
 		

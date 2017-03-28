@@ -8,6 +8,9 @@ No-otb-proxy: true
 Bundle-ClassPath: .
 Bundle-Activator: org.eclipse.om2m.das.testsuite.Activator
 Import-Package: org.eclipse.om2m.commons.constants,
+ org.eclipse.om2m.commons.entities,
+ org.eclipse.om2m.commons.exceptions,
  org.eclipse.om2m.commons.resource,
  org.eclipse.om2m.core.service,
+ org.eclipse.om2m.das.service,
  org.osgi.framework

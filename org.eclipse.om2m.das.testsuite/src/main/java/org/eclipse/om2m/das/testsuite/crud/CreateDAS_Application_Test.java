@@ -44,34 +44,5 @@ public class CreateDAS_Application_Test extends CreateDAS_CseBase_Test {
 		
 	}
 	
-	/**
-	 * Create a fake AE.
-	 * @return
-	 */
-	private AE createAe() {
-		AE ae = new AE();
-		
-		ae.setAppID("1234");
-		ae.setAppName("appName" + UUID.randomUUID());
-		ae.setRequestReachability(Boolean.FALSE);
-		
-		RequestPrimitive request = new RequestPrimitive();
-		request.setName(ae.getAppName());
-		request.setOperation(Operation.CREATE);
-		request.setRequestContentType(MimeMediaType.OBJ);
-		request.setReturnContentType(MimeMediaType.OBJ);
-		request.setResourceType(ResourceType.AE);
-		request.setTargetId("/" + Constants.CSE_ID + "/" + Constants.CSE_NAME);
-		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
-		request.setContent(ae);
-		
-		// execute
-		ResponsePrimitive response = getCseService().doRequest(request);
-		if ((response != null) && (ResponseStatusCode.CREATED.equals(response.getResponseStatusCode()))) {
-			return (AE) response.getContent();
-		}
-		
-		
-		return null;
-	}
+	
 }

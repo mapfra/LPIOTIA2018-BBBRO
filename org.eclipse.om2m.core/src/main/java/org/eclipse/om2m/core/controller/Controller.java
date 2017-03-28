@@ -32,6 +32,7 @@ import org.eclipse.om2m.commons.constants.ResultContent;
 import org.eclipse.om2m.commons.entities.AccessControlOriginatorEntity;
 import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
 import org.eclipse.om2m.commons.entities.AccessControlRuleEntity;
+import org.eclipse.om2m.commons.entities.DynamicAuthorizationConsultationEntity;
 import org.eclipse.om2m.commons.entities.ResourceEntity;
 import org.eclipse.om2m.commons.exceptions.AccessDeniedException;
 import org.eclipse.om2m.commons.exceptions.BadRequestException;
@@ -40,6 +41,7 @@ import org.eclipse.om2m.commons.exceptions.ResourceNotFoundException;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.Resource;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
+import org.eclipse.om2m.core.das.DynamicAuthorizationServerSelector;
 import org.eclipse.om2m.core.datamapper.DataMapperSelector;
 import org.eclipse.om2m.core.entitymapper.EntityMapper;
 import org.eclipse.om2m.core.entitymapper.EntityMapperFactory;
@@ -139,6 +141,32 @@ public abstract class Controller {
 	 */
 	public ResponsePrimitive doInternalNotify(RequestPrimitive request) {
 		return null;
+	}
+	
+	/**
+	 * Check permissions based on the provided ACPs & DACs.
+	 * 
+	 * @param request request to be performed if the access is granted
+	 * @param resource related resource
+	 * @param acpList list of ACPs
+	 * @param dacList list of DACs
+	 * @throws AccessDeniedException if access granting failed
+	 */
+	public void checkPermissions(RequestPrimitive request, ResourceEntity resource, 
+			List<AccessControlPolicyEntity> acpList, List<DynamicAuthorizationConsultationEntity> dacList) 
+					throws AccessDeniedException {
+		
+		// check ACPs
+		try {
+			checkACP(acpList, request.getFrom(), request.getOperation());
+			//return immediately if one ACP grants access
+			return;
+		} catch (AccessDeniedException e) {
+			// nothing to do as we need to check DynamicAuthorizationConsultation
+		}
+		
+		DynamicAuthorizationServerSelector.getInstance().authorize(dacList, request, resource);
+		
 	}
 
 	/**
