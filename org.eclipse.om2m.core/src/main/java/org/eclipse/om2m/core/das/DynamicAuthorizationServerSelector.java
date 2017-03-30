@@ -84,9 +84,12 @@ public class DynamicAuthorizationServerSelector {
 
 		// iterate over daces list in order to perform authorization process
 		for(DynamicAuthorizationConsultationEntity dace : dacesToBeUsed) {
-			if (authorize(dace, request, resourceEntity)) {
-				// stop authorization process as soon as we grant authorization
-				return;
+			// check if the DynamicAuthorizationConsultation entity is enabled
+			if (dace.getDynamicAuthorizationEnabled()) {
+				if (authorize(dace, request, resourceEntity)) {
+					// stop authorization process as soon as we grant authorization
+					return;
+				}
 			}
 		}
 
