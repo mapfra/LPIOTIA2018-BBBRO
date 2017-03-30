@@ -16,6 +16,8 @@ import org.eclipse.om2m.commons.resource.AEAnnc;
 import org.eclipse.om2m.commons.resource.AccessControlPolicy;
 import org.eclipse.om2m.commons.resource.AccessControlRule;
 import org.eclipse.om2m.commons.resource.DynamicAuthorizationConsultation;
+import org.eclipse.om2m.commons.resource.FlexContainer;
+import org.eclipse.om2m.commons.resource.FlexContainerAnnc;
 import org.eclipse.om2m.commons.resource.RemoteCSE;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
@@ -246,6 +248,17 @@ public abstract class Test {
 	}
 
 	protected AEAnnc createAeAnnc(String url) {
+		return createAeAnnc(url, null);
+	}
+
+	protected AEAnnc createAeAnnc(String url, List<String> dacis) {
+		
+		AccessControlPolicy createdAcp = createAcp();
+		if (createdAcp == null) {
+			// something goes wrong
+			return null;
+		}
+		
 		// create request
 		RequestPrimitive request = new RequestPrimitive();
 
@@ -264,6 +277,10 @@ public abstract class Test {
 		AEAnnc aeAnnc = new AEAnnc();
 		aeAnnc.setAppID("AeAnncAppID_" + UUID.randomUUID());
 		aeAnnc.setLink("/" + aeAnnc.getAppID());
+		aeAnnc.getAccessControlPolicyIDs().add(createdAcp.getResourceID());
+		if (dacis != null) {
+			aeAnnc.getDynamicAuthorizationConsultationIDs().addAll(dacis);
+		}
 
 		request.setContent(aeAnnc);
 
@@ -288,7 +305,7 @@ public abstract class Test {
 		return createAE(null);
 	}
 
-	protected AE createAE(List<String> dacis) {
+	protected AccessControlPolicy createAcp() {
 		// create a specific acp for this entity
 		AccessControlPolicy acp = new AccessControlPolicy();
 		AccessControlRule acr = new AccessControlRule();
@@ -300,8 +317,8 @@ public abstract class Test {
 		AccessControlRule selfAcr = new AccessControlRule();
 		selfAcr.setAccessControlOperations(AccessControl.ALL);
 		selfAcr.getAccessControlOriginators().add(Constants.ADMIN_REQUESTING_ENTITY);
-		acp.getSelfPrivileges().getAccessControlRule().add(selfAcr );
-		
+		acp.getSelfPrivileges().getAccessControlRule().add(selfAcr);
+
 		RequestPrimitive acpCreateRequest = new RequestPrimitive();
 		acpCreateRequest.setName("ACP" + UUID.randomUUID());
 		acpCreateRequest.setOperation(Operation.CREATE);
@@ -311,14 +328,30 @@ public abstract class Test {
 		acpCreateRequest.setTargetId("/" + Constants.CSE_ID + "/" + Constants.CSE_NAME);
 		acpCreateRequest.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 		acpCreateRequest.setContent(acp);
-		
+
 		ResponsePrimitive acpCreateResponse = getCseService().doRequest(acpCreateRequest);
 		if (!ResponseStatusCode.CREATED.equals(acpCreateResponse.getResponseStatusCode())) {
 			// ko
 			return null;
 		}
-		AccessControlPolicy createdAcp = (AccessControlPolicy) acpCreateResponse.getContent();
-		
+		return (AccessControlPolicy) acpCreateResponse.getContent();
+	}
+
+	/**
+	 * Create a new Application entity
+	 * 
+	 * @param dacis
+	 *            associated dynamicAuthorizationConsultation
+	 * @return Ae or null
+	 */
+	protected AE createAE(List<String> dacis) {
+
+		AccessControlPolicy createdAcp = createAcp();
+		if (createdAcp == null) {
+			// something goes wrong
+			return null;
+		}
+
 		AE ae = new AE();
 
 		ae.setAppID("1234");
@@ -343,6 +376,83 @@ public abstract class Test {
 		ResponsePrimitive response = getCseService().doRequest(request);
 		if ((response != null) && (ResponseStatusCode.CREATED.equals(response.getResponseStatusCode()))) {
 			return (AE) response.getContent();
+		}
+
+		return null;
+	}
+
+	protected FlexContainer createFlexContainer(List<String> dacis) {
+		
+		return createFlexContainer("/" + Constants.CSE_ID + "/" + Constants.CSE_NAME, dacis);
+
+	}
+	
+	protected FlexContainer createFlexContainer(String resourceUrl, List<String> dacis) {
+
+		AccessControlPolicy createdAcp = createAcp();
+		if (createdAcp == null) {
+			// something goes wrong
+			return null;
+		}
+
+		FlexContainer flexContainer = new FlexContainer();
+
+		flexContainer.setContainerDefinition("myDef");
+		flexContainer.getAccessControlPolicyIDs().add(createdAcp.getResourceID());
+		if (dacis != null) {
+			flexContainer.getDynamicAuthorizationConsultationIDs().addAll(dacis);
+		}
+
+		RequestPrimitive request = new RequestPrimitive();
+		request.setName("FlexContainer_" + UUID.randomUUID());
+		request.setOperation(Operation.CREATE);
+		request.setRequestContentType(MimeMediaType.OBJ);
+		request.setReturnContentType(MimeMediaType.OBJ);
+		request.setResourceType(ResourceType.FLEXCONTAINER);
+		request.setTargetId(resourceUrl);
+		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
+		request.setContent(flexContainer);
+
+		// execute
+		ResponsePrimitive response = getCseService().doRequest(request);
+		if ((response != null) && (ResponseStatusCode.CREATED.equals(response.getResponseStatusCode()))) {
+			return (FlexContainer) response.getContent();
+		}
+
+		return null;
+	}
+
+	protected FlexContainerAnnc createFlexContainerAnnc(String resourceUrl, List<String> dacis) {
+
+		AccessControlPolicy createdAcp = createAcp();
+		if (createdAcp == null) {
+			// something goes wrong
+			return null;
+		}
+
+		FlexContainerAnnc flexContainerAnnc = new FlexContainerAnnc();
+
+		flexContainerAnnc.setContainerDefinition("myDef");
+		flexContainerAnnc.getAccessControlPolicyIDs().add(createdAcp.getResourceID());
+		flexContainerAnnc.setLink("/link" + UUID.randomUUID());
+		if (dacis != null) {
+			flexContainerAnnc.getDynamicAuthorizationConsultationIDs().addAll(dacis);
+		}
+
+		RequestPrimitive request = new RequestPrimitive();
+		request.setName("FlexContainer_" + UUID.randomUUID());
+		request.setOperation(Operation.CREATE);
+		request.setRequestContentType(MimeMediaType.OBJ);
+		request.setReturnContentType(MimeMediaType.OBJ);
+		request.setResourceType(ResourceType.FLEXCONTAINER_ANNC);
+		request.setTargetId(resourceUrl);
+		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
+		request.setContent(flexContainerAnnc);
+
+		// execute
+		ResponsePrimitive response = getCseService().doRequest(request);
+		if ((response != null) && (ResponseStatusCode.CREATED.equals(response.getResponseStatusCode()))) {
+			return (FlexContainerAnnc) response.getContent();
 		}
 
 		return null;

@@ -17,7 +17,11 @@ import org.eclipse.om2m.das.testsuite.dacis.DynamicAuthorizationConsultationDaci
 import org.eclipse.om2m.das.testsuite.dacis.FlexContainerAnncDacisTest;
 import org.eclipse.om2m.das.testsuite.dacis.FlexContainerDacisTest;
 import org.eclipse.om2m.das.testsuite.dacis.RemoteCseDacisTest;
-import org.eclipse.om2m.das.testsuite.dasservice.DASServiceTest;
+import org.eclipse.om2m.das.testsuite.dasservice.DASServiceTest_Ae;
+import org.eclipse.om2m.das.testsuite.dasservice.DASServiceTest_AeAnnc;
+import org.eclipse.om2m.das.testsuite.dasservice.DASServiceTest_FlexContainer;
+import org.eclipse.om2m.das.testsuite.dasservice.DASServiceTest_FlexContainerAnnc;
+import org.eclipse.om2m.das.testsuite.dasservice.DASServiceTest_IndirectDACIs;
 import org.eclipse.om2m.das.testsuite.dasservice.DASServiceTest_AccessDenied;
 import org.eclipse.om2m.das.testsuite.dasservice.DASServiceTest_TwoDAS;
 import org.osgi.framework.BundleActivator;
@@ -45,9 +49,13 @@ public class Activator implements BundleActivator {
 		testClasses.add(RemoteCseDacisTest.class);
 		testClasses.add(AeAnncDacisTest.class); 	
 		testClasses.add(FlexContainerAnncDacisTest.class);
-		testClasses.add(DASServiceTest.class);
+		testClasses.add(DASServiceTest_Ae.class);
 		testClasses.add(DASServiceTest_AccessDenied.class);
 		testClasses.add(DASServiceTest_TwoDAS.class);
+		testClasses.add(DASServiceTest_FlexContainer.class);
+		testClasses.add(DASServiceTest_FlexContainerAnnc.class);
+		testClasses.add(DASServiceTest_AeAnnc.class);
+		testClasses.add(DASServiceTest_IndirectDACIs.class);
 	}
 
 	@Override

@@ -12,10 +12,9 @@ import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
 import org.eclipse.om2m.core.service.CseService;
 import org.eclipse.om2m.das.service.DynamicAuthorizationServerService;
-import org.eclipse.om2m.das.testsuite.Test.State;
 import org.osgi.framework.ServiceRegistration;
 
-public class DASServiceTest_TwoDAS extends DASServiceTest {
+public class DASServiceTest_TwoDAS extends AbstractDASServiceTest {
 
 	private int nbOfCallDas1 = 0;
 	private int nbOfCallDas2 = 0;

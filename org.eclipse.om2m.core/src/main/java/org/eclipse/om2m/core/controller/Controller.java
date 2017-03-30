@@ -153,7 +153,7 @@ public abstract class Controller {
 	 * @throws AccessDeniedException if access granting failed
 	 */
 	public void checkPermissions(RequestPrimitive request, ResourceEntity resource, 
-			List<AccessControlPolicyEntity> acpList, List<DynamicAuthorizationConsultationEntity> dacList) 
+			List<AccessControlPolicyEntity> acpList) 
 					throws AccessDeniedException {
 		
 		// check ACPs
@@ -165,7 +165,11 @@ public abstract class Controller {
 			// nothing to do as we need to check DynamicAuthorizationConsultation
 		}
 		
-		DynamicAuthorizationServerSelector.getInstance().authorize(dacList, request, resource);
+		DynamicAuthorizationServerSelector.getInstance().
+			authorize(
+				dbs.getDBUtilManager().getDynamicAuthorizationConsultationUtil().
+					getDynamicAuthorizationConsultations(resource.getResourceID())
+				, request, resource);
 		
 	}
 

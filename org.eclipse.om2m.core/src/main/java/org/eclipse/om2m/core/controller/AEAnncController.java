@@ -79,7 +79,6 @@ public class AEAnncController extends Controller {
 		List<AccessControlPolicyEntity> acpsToCheck = null;
 		List<AeAnncEntity> childAnncs = null;
 		List<SubscriptionEntity> subs = null;
-		List<DynamicAuthorizationConsultationEntity> dacsToCheck = null;
 
 		// Distinguish parents
 		
@@ -89,7 +88,6 @@ public class AEAnncController extends Controller {
 			acpsToCheck = csr.getAccessControlPolicies();
 			childAnncs = csr.getChildAeAnncs();
 			subs = csr.getSubscriptions();
-			dacsToCheck = csr.getDynamicAuthorizationConsultations();
 		}
 		// case of FlexContainer
 		if (parentEntity.getResourceType().intValue() == (ResourceType.FLEXCONTAINER_ANNC)) {
@@ -105,13 +103,13 @@ public class AEAnncController extends Controller {
 			acpsToCheck = aeAnncEntity.getAccessControlPolicies();
 			childAnncs = null;
 			subs = aeAnncEntity.getSubscriptions();
-			dacsToCheck = aeAnncEntity.getDynamicAuthorizationConsultations();
 		}
 		
 		// other cases ?
 		
 		// Check access control policy of the originator
-		checkACP(acpsToCheck, request.getFrom(), Operation.CREATE);
+//		checkACP(acpsToCheck, request.getFrom(), Operation.CREATE);
+		checkPermissions(request, parentEntity, acpsToCheck);
 
 
 		// Check if content is present
@@ -201,9 +199,7 @@ public class AEAnncController extends Controller {
 		if (!aeAnnc.getDynamicAuthorizationConsultationIDs().isEmpty()) {
 			aeAnncEntity.setDynamicAuthorizationConsultations(
 					ControllerUtil.buildDacEntityList(aeAnnc.getDynamicAuthorizationConsultationIDs(), transaction));
-		} else {
-			aeAnncEntity.setDynamicAuthorizationConsultations(dacsToCheck);
-		}
+		} 
 
 		// FIXME [0001] Creation of AE with an acpi provided
 		// } else {
@@ -339,8 +335,9 @@ public class AEAnncController extends Controller {
 			throw new ResourceNotFoundException("Resource not found");
 		}
 
-		checkACP(aeAnncEntity.getAccessControlPolicies(), request.getFrom(), 
-				Operation.RETRIEVE);
+//		checkACP(aeAnncEntity.getAccessControlPolicies(), request.getFrom(), 
+//				Operation.RETRIEVE);
+		checkPermissions(request, aeAnncEntity, aeAnncEntity.getAccessControlPolicies());
 
 		if (ResultContent.ORIGINAL_RES.equals(request.getResultContent())) {
 			RequestPrimitive originalResourceRequest = new RequestPrimitive();
@@ -396,8 +393,9 @@ public class AEAnncController extends Controller {
 		// lock current entity
 		transaction.lock(aeAnncEntity);
 
-		checkACP(aeAnncEntity.getAccessControlPolicies(), request.getFrom(), 
-				Operation.UPDATE);
+//		checkACP(aeAnncEntity.getAccessControlPolicies(), request.getFrom(), 
+//				Operation.UPDATE);
+		checkPermissions(request, aeAnncEntity, aeAnncEntity.getAccessControlPolicies());
 
 
 		// Check if content is present
@@ -523,8 +521,9 @@ public class AEAnncController extends Controller {
 			throw new ResourceNotFoundException("Resource not found");
 		}
 
-		checkACP(aeAnncEntity.getAccessControlPolicies(), request.getFrom(), 
-				Operation.DELETE);
+//		checkACP(aeAnncEntity.getAccessControlPolicies(), request.getFrom(), 
+//				Operation.DELETE);
+		checkPermissions(request, aeAnncEntity, aeAnncEntity.getAccessControlPolicies());
 
 		UriMapper.deleteUri(aeAnncEntity.getHierarchicalURI());
 		

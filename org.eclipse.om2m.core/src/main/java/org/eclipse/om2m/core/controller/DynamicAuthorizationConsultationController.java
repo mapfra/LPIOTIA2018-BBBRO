@@ -137,10 +137,7 @@ public class DynamicAuthorizationConsultationController extends Controller {
 		if (!dac.getDynamicAuthorizationConsultationIDs().isEmpty()) {
 			dacEntity.setDynamicAuthorizationConsultations(
 					ControllerUtil.buildDacEntityList(dac.getDynamicAuthorizationConsultationIDs(), transaction));
-		} else {
-			// shoud get dacList from parent
-			dacEntity.setDynamicAuthorizationConsultations(dacsToCheck);
-		}
+		} 
 
 		// dynamicAuthorizationEnabled M
 		if (dac.getDynamicAuthorizationEnabled() == null) {

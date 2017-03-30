@@ -13,10 +13,9 @@ import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
 import org.eclipse.om2m.core.service.CseService;
 import org.eclipse.om2m.das.service.DynamicAuthorizationServerService;
-import org.eclipse.om2m.das.testsuite.Test.State;
 import org.osgi.framework.ServiceRegistration;
 
-public class DASServiceTest_AccessDenied extends DASServiceTest {
+public class DASServiceTest_AccessDenied extends AbstractDASServiceTest {
 	
 	private DynamicAuthorizationConsultation dac; 
 
@@ -34,6 +33,9 @@ public class DASServiceTest_AccessDenied extends DASServiceTest {
 			return;
 		}
 
+		// set poa
+		setPoA(dac.getDynamicAuthorisationPoA().get(0));
+		
 		// set number of expected call
 		setExpectedNumberOfCall(1);
 

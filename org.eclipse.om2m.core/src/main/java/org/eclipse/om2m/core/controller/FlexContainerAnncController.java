@@ -107,7 +107,8 @@ public class FlexContainerAnncController extends Controller {
 		// TODO
 
 		// check access control policy of the originator
-		checkACP(acpsToCheck, request.getFrom(), Operation.CREATE);
+//		checkACP(acpsToCheck, request.getFrom(), Operation.CREATE);
+		checkPermissions(request, parentEntity, acpsToCheck);
 
 		// check if content is present
 		if (request.getContent() == null) {
@@ -212,12 +213,10 @@ public class FlexContainerAnncController extends Controller {
 		if (!flexContainerAnnc.getDynamicAuthorizationConsultationIDs().isEmpty()) {
 			flexContainerAnncEntity.setDynamicAuthorizationConsultations(
 					ControllerUtil.buildDacEntityList(flexContainerAnnc.getDynamicAuthorizationConsultationIDs(), transaction));
-		} else {
-			flexContainerAnncEntity.setDynamicAuthorizationConsultations(dacsToCheck);
-		}
+		} 
 
 		if (!UriMapper.addNewUri(flexContainerAnncEntity.getHierarchicalURI(), flexContainerAnncEntity.getResourceID(),
-				ResourceType.FLEXCONTAINER)) {
+				ResourceType.FLEXCONTAINER_ANNC)) {
 			throw new ConflictException("Name already present in the parent collection.");
 		}
 
@@ -281,7 +280,8 @@ public class FlexContainerAnncController extends Controller {
 		// if resource exists, check authorization
 		// retrieve
 		List<AccessControlPolicyEntity> acpList = flexContainerAnncEntity.getAccessControlPolicies();
-		checkACP(acpList, request.getFrom(), request.getOperation());
+//		checkACP(acpList, request.getFrom(), request.getOperation());
+		checkPermissions(request, flexContainerAnncEntity, flexContainerAnncEntity.getAccessControlPolicies());
 
 		if (ResultContent.ORIGINAL_RES.equals(request.getResultContent())) {
 			RequestPrimitive originalResourceRequest = new RequestPrimitive();
@@ -318,7 +318,8 @@ public class FlexContainerAnncController extends Controller {
 		// if resource exists, check authorization
 		// retrieve
 		List<AccessControlPolicyEntity> acpList = flexContainerAnncEntity.getAccessControlPolicies();
-		checkACP(acpList, request.getFrom(), request.getOperation());
+//		checkACP(acpList, request.getFrom(), request.getOperation());
+		checkPermissions(request, flexContainerAnncEntity, flexContainerAnncEntity.getAccessControlPolicies());
 
 		if (ResultContent.ORIGINAL_RES.equals(request.getResultContent())) {
 			// commit transaction ==> release lock
@@ -457,7 +458,8 @@ public class FlexContainerAnncController extends Controller {
 			throw new ResourceNotFoundException("Resource not found");
 		}
 
-		checkACP(flexContainerAnncEntity.getAccessControlPolicies(), request.getFrom(), Operation.DELETE);
+//		checkACP(flexContainerAnncEntity.getAccessControlPolicies(), request.getFrom(), Operation.DELETE);
+		checkPermissions(request, flexContainerAnncEntity, flexContainerAnncEntity.getAccessControlPolicies());
 
 		UriMapper.deleteUri(flexContainerAnncEntity.getHierarchicalURI());
 

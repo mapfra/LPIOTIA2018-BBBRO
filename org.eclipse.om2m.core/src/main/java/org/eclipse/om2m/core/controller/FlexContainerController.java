@@ -95,7 +95,7 @@ public class FlexContainerController extends Controller {
 
 		// get lists to change in the method corresponding to specific object
 		List<AccessControlPolicyEntity> acpsToCheck = null;
-		List<DynamicAuthorizationConsultationEntity> dacsToCheck = null;
+//		List<DynamicAuthorizationConsultationEntity> dacsToCheck = null;
 		List<FlexContainerEntity> childFlexContainers = null;
 		List<SubscriptionEntity> subscriptions = null;
 
@@ -106,7 +106,7 @@ public class FlexContainerController extends Controller {
 			acpsToCheck = cseB.getAccessControlPolicies();
 			childFlexContainers = cseB.getChildFlexContainers();
 			subscriptions = cseB.getSubscriptions();
-			dacsToCheck = cseB.getDynamicAuthorizationConsultations();
+//			dacsToCheck = cseB.getDynamicAuthorizationConsultations();
 		}
 		// case parent is AE
 		if (parentEntity.getResourceType().intValue() == (ResourceType.AE)) {
@@ -114,7 +114,7 @@ public class FlexContainerController extends Controller {
 			acpsToCheck = ae.getAccessControlPolicies();
 			childFlexContainers = ae.getChildFlexContainers();
 			subscriptions = ae.getSubscriptions();
-			dacsToCheck = ae.getDynamicAuthorizationConsultations();
+//			dacsToCheck = ae.getDynamicAuthorizationConsultations();
 		}
 		// case parent is a FlexContainer
 		if (parentEntity.getResourceType().intValue() == (ResourceType.FLEXCONTAINER)) {
@@ -122,7 +122,7 @@ public class FlexContainerController extends Controller {
 			acpsToCheck = parentFlexContainer.getAccessControlPolicies();
 			childFlexContainers = parentFlexContainer.getChildFlexContainers();
 			subscriptions = parentFlexContainer.getSubscriptions();
-			dacsToCheck = parentFlexContainer.getDynamicAuthorizationConsultations();
+//			dacsToCheck = parentFlexContainer.getDynamicAuthorizationConsultations();
 		}
 		// case parent is a Container
 		if (parentEntity.getResourceType().intValue() == (ResourceType.CONTAINER)) {
@@ -130,7 +130,7 @@ public class FlexContainerController extends Controller {
 			acpsToCheck = parentContainer.getAccessControlPolicies();
 			childFlexContainers = parentContainer.getChildFlexContainers();
 			subscriptions = parentContainer.getSubscriptions();
-			dacsToCheck = parentContainer.getDynamicAuthorizationConsultations();
+//			dacsToCheck = parentContainer.getDynamicAuthorizationConsultations();
 		}
 
 		// case parent is a RemoteCSE
@@ -139,12 +139,13 @@ public class FlexContainerController extends Controller {
 			acpsToCheck = csr.getAccessControlPolicies();
 			childFlexContainers = csr.getChildFcnt();
 			subscriptions = csr.getSubscriptions();
-			dacsToCheck = csr.getDynamicAuthorizationConsultations();
+//			dacsToCheck = csr.getDynamicAuthorizationConsultations();
 		}
 
 		// check access control policy of the originator
-		checkACP(acpsToCheck, request.getFrom(), Operation.CREATE);
-
+//		checkACP(acpsToCheck, request.getFrom(), Operation.CREATE);
+		checkPermissions(request, parentEntity, acpsToCheck);
+		
 		// check if content is present
 		if (request.getContent() == null) {
 			throw new BadRequestException("A content is requiered for FlexContainer creation");
@@ -253,9 +254,6 @@ public class FlexContainerController extends Controller {
 		if (!flexContainer.getDynamicAuthorizationConsultationIDs().isEmpty()) {
 			flexContainerEntity.setDynamicAuthorizationConsultations(
 					ControllerUtil.buildDacEntityList(flexContainer.getDynamicAuthorizationConsultationIDs(), transaction));
-		} else {
-			// shoud get dacList from parent
-			flexContainerEntity.setDynamicAuthorizationConsultations(dacsToCheck);
 		}
 
 		if (!UriMapper.addNewUri(flexContainerEntity.getHierarchicalURI(), flexContainerEntity.getResourceID(),
@@ -340,7 +338,8 @@ public class FlexContainerController extends Controller {
 		// if resource exists, check authorization
 		// retrieve
 		List<AccessControlPolicyEntity> acpList = flexContainerEntity.getAccessControlPolicies();
-		checkACP(acpList, request.getFrom(), request.getOperation());
+//		checkACP(acpList, request.getFrom(), request.getOperation());
+		checkPermissions(request, flexContainerEntity, flexContainerEntity.getAccessControlPolicies());
 
 		// Mapping the entity with the exchange resource
 		FlexContainer flexContainerResource = EntityMapperFactory.getFlexContainerMapper()
@@ -412,7 +411,8 @@ public class FlexContainerController extends Controller {
 			throw new ResourceNotFoundException("Resource not found");
 		}
 		// check ACP
-		checkACP(flexContainerEntity.getAccessControlPolicies(), request.getFrom(), Operation.UPDATE);
+//		checkACP(flexContainerEntity.getAccessControlPolicies(), request.getFrom(), Operation.UPDATE);
+		checkPermissions(request, flexContainerEntity, flexContainerEntity.getAccessControlPolicies());
 
 		FlexContainer modifiedAttributes = new FlexContainer();
 		// check if content is present
@@ -588,7 +588,8 @@ public class FlexContainerController extends Controller {
 		}
 
 		// check access control policies
-		checkACP(flexContainerEntity.getAccessControlPolicies(), request.getFrom(), Operation.DELETE);
+//		checkACP(flexContainerEntity.getAccessControlPolicies(), request.getFrom(), Operation.DELETE);
+		checkPermissions(request, flexContainerEntity, flexContainerEntity.getAccessControlPolicies());
 
 		UriMapper.deleteUri(flexContainerEntity.getHierarchicalURI());
 		Notifier.notifyDeletion(flexContainerEntity.getSubscriptions(), flexContainerEntity);

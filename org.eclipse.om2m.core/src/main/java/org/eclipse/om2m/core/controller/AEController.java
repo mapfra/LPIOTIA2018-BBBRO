@@ -110,7 +110,7 @@ public class AEController extends Controller {
 		List<AccessControlPolicyEntity> acpsToCheck = null;
 		List<AeEntity> childAes = null;
 		List<SubscriptionEntity> subs = null;
-		List<DynamicAuthorizationConsultationEntity> dacsToCheck = null;
+//		List<DynamicAuthorizationConsultationEntity> dacsToCheck = null;
 
 		// Distinguish parents
 		// Case of CSEBase
@@ -119,7 +119,7 @@ public class AEController extends Controller {
 			acpsToCheck = cseBase.getAccessControlPolicies();
 			childAes = cseBase.getAes();
 			subs = cseBase.getSubscriptions();
-			dacsToCheck = cseBase.getDynamicAuthorizationConsultations();
+//			dacsToCheck = cseBase.getDynamicAuthorizationConsultations();
 		}
 		// Case of remoteCSE
 		if(parentEntity.getResourceType().intValue() == (ResourceType.REMOTE_CSE)){
@@ -127,7 +127,7 @@ public class AEController extends Controller {
 			acpsToCheck = csr.getAccessControlPolicies();
 			childAes = csr.getChildAes();
 			subs = csr.getSubscriptions();
-			dacsToCheck = csr.getDynamicAuthorizationConsultations();
+//			dacsToCheck = csr.getDynamicAuthorizationConsultations();
 		}
 		// Case of remoteCSEAnnc
 		if(parentEntity.getResourceType().intValue() == (ResourceType.REMOTE_CSE_ANNC)){
@@ -145,7 +145,7 @@ public class AEController extends Controller {
 			} else if(!request.getFrom().equals("")){
 				// Check access control policy of the originator
 //				checkACP(acpsToCheck, request.getFrom(), Operation.CREATE);
-				checkPermissions(request, parentEntity, acpsToCheck, dacsToCheck);
+				checkPermissions(request, parentEntity, acpsToCheck);
 			}
 		}
 
@@ -233,10 +233,7 @@ public class AEController extends Controller {
 		if (!ae.getDynamicAuthorizationConsultationIDs().isEmpty()) {
 			aeEntity.setDynamicAuthorizationConsultations(
 					ControllerUtil.buildDacEntityList(ae.getDynamicAuthorizationConsultationIDs(), transaction));
-		} else {
-			// shoud get dacList from parent
-			aeEntity.setDynamicAuthorizationConsultations(dacsToCheck);
-		}
+		} 
 
 		// FIXME [0001] Creation of AE with an acpi provided
 		//		} else {
@@ -379,8 +376,7 @@ public class AEController extends Controller {
 
 //		checkACP(aeEntity.getAccessControlPolicies(), request.getFrom(), 
 //				Operation.RETRIEVE);
-		checkPermissions(request, aeEntity, aeEntity.getAccessControlPolicies(), 
-				aeEntity.getDynamicAuthorizationConsultations());
+		checkPermissions(request, aeEntity, aeEntity.getAccessControlPolicies());
 		
 
 		// Create the object used to create the representaiton of the resource
@@ -428,8 +424,7 @@ public class AEController extends Controller {
 		
 //		checkACP(aeEntity.getAccessControlPolicies(), request.getFrom(), 
 //				Operation.UPDATE);
-		checkPermissions(request, aeEntity, aeEntity.getAccessControlPolicies(), 
-				aeEntity.getDynamicAuthorizationConsultations());
+		checkPermissions(request, aeEntity, aeEntity.getAccessControlPolicies());
 
 
 		// Check if content is present
@@ -578,8 +573,7 @@ public class AEController extends Controller {
 
 //		checkACP(aeEntity.getAccessControlPolicies(), request.getFrom(), 
 //				Operation.DELETE);
-		checkPermissions(request, aeEntity, aeEntity.getAccessControlPolicies(), 
-				aeEntity.getDynamicAuthorizationConsultations());
+		checkPermissions(request, aeEntity, aeEntity.getAccessControlPolicies());
 
 		UriMapper.deleteUri(aeEntity.getHierarchicalURI());
 		

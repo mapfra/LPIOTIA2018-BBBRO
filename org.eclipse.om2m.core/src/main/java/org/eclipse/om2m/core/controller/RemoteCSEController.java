@@ -120,7 +120,6 @@ public class RemoteCSEController extends Controller {
 		List<AccessControlPolicyEntity> acpsToCheck = null;
 		List<RemoteCSEEntity> remoteCSEs = null;
 		List<SubscriptionEntity> subscriptions = null;
-		List<DynamicAuthorizationConsultationEntity> dacsToCheck = null;
 
 		// different cases
 		// case parent is CSEBase
@@ -129,7 +128,6 @@ public class RemoteCSEController extends Controller {
 			acpsToCheck = cseB.getAccessControlPolicies();
 			remoteCSEs = cseB.getRemoteCses();
 			subscriptions = cseB.getSubscriptions();
-			dacsToCheck = cseB.getDynamicAuthorizationConsultations();
 		}
 
 		// check if originator is provided
@@ -210,8 +208,6 @@ public class RemoteCSEController extends Controller {
 		if (!remoteCse.getDynamicAuthorizationConsultationIDs().isEmpty()) {
 			remoteCseEntity.setDynamicAuthorizationConsultations(
 					ControllerUtil.buildDacEntityList(remoteCse.getDynamicAuthorizationConsultationIDs(), transaction));
-		} else {
-			remoteCseEntity.setDynamicAuthorizationConsultations(dacsToCheck);
 		}
 		// expiration time 			O
 		if (remoteCse.getExpirationTime() != null){
