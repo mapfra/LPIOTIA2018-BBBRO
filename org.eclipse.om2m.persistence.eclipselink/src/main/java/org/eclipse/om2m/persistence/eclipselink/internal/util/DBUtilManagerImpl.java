@@ -23,6 +23,7 @@ import org.eclipse.om2m.persistence.eclipselink.internal.dao.CreatedAnnouncedRes
 import org.eclipse.om2m.persistence.service.util.AnnouncedResourceUtil;
 import org.eclipse.om2m.persistence.service.util.ComplexFindUtil;
 import org.eclipse.om2m.persistence.service.util.DBUtilManager;
+import org.eclipse.om2m.persistence.service.util.DynamicAuthorizationConsultationUtil;
 
 
 public class DBUtilManagerImpl implements DBUtilManager{
@@ -35,6 +36,11 @@ public class DBUtilManagerImpl implements DBUtilManager{
 	@Override
 	public AnnouncedResourceUtil getAnnouncedResourceUtil() {
 		return new CreatedAnnouncedResourceDAO();
+	}
+	
+	@Override
+	public DynamicAuthorizationConsultationUtil getDynamicAuthorizationConsultationUtil() {
+		return new DynamicAuthorizationConsultationUtilImpl();
 	}
 	
 }

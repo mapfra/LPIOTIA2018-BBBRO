@@ -25,4 +25,6 @@ public interface DBUtilManager {
 	
 	public abstract AnnouncedResourceUtil getAnnouncedResourceUtil();
 	
+	public abstract DynamicAuthorizationConsultationUtil getDynamicAuthorizationConsultationUtil();
+	
 }

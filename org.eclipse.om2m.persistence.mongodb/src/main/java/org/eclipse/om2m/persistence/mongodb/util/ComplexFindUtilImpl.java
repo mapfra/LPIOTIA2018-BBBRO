@@ -9,9 +9,18 @@ import org.eclipse.om2m.persistence.service.util.ComplexFindUtil;
 
 public class ComplexFindUtilImpl implements ComplexFindUtil {
 
+	private static final ComplexFindUtilImpl INSTANCE = new ComplexFindUtilImpl();
+	
+	private ComplexFindUtilImpl() {
+	}
+	
+	
+	public static ComplexFindUtilImpl getInstance() {
+		return INSTANCE;
+	}
+
 	@Override
 	public List<UriMapperEntity> getChildUrisDis(String rootUri, FilterCriteria filter) {
-		// TODO Auto-generated method stub
 		return new ArrayList<>();
 	}
 
