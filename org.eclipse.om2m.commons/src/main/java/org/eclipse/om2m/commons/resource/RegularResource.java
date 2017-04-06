@@ -137,6 +137,11 @@ public class RegularResource extends Resource {
 		}
 		return this.dynamicAuthorizationConsultationIDs;
 	}
+	
+	
+	public List<String> getRawDynamicAuthorizationConsultationIDs() {
+		return this.dynamicAuthorizationConsultationIDs;
+	}
 
 	/**
 	 * Gets the value of the expirationTime property.

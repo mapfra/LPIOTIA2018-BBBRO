@@ -488,17 +488,15 @@ public class AEController extends Controller {
 		}
 		
 		// dynamicAuthorizationConsultationIDs	O
-		if (!ae.getDynamicAuthorizationConsultationIDs().isEmpty()) {
+		List<DynamicAuthorizationConsultationEntity> previousDynamicAuthorizationConsultations = null;
+		if (ae.getRawDynamicAuthorizationConsultationIDs() != null) {
+			// store previous version of DAC in order to delete link
+			previousDynamicAuthorizationConsultations = aeEntity.getDynamicAuthorizationConsultations();
+			
+			// update with the new list 
 			aeEntity.setDynamicAuthorizationConsultations(
 					ControllerUtil.buildDacEntityList(ae.getDynamicAuthorizationConsultationIDs(), transaction));
-			
-			// update link with aeEntity - DacEntity
-			for(DynamicAuthorizationConsultationEntity dace : aeEntity.getDynamicAuthorizationConsultations()) {
-				DynamicAuthorizationConsultationEntity daceFromDB = dbs.getDAOFactory().getDynamicAuthorizationDAO().find(transaction, dace.getResourceID());
-				daceFromDB.getLinkedAeEntities().add(aeEntity);
-				dbs.getDAOFactory().getDynamicAuthorizationDAO().update(transaction, daceFromDB);
-			}
-		} 
+		}
 		
 		
 		// expirationTime			O
@@ -547,6 +545,25 @@ public class AEController extends Controller {
 		response.setContent(modifiedAttributes);
 		// Update the resource in database
 		dbs.getDAOFactory().getAeDAO().update(transaction, aeEntity);
+		
+		// delete old link between AE and DAC if necessary		
+		if (previousDynamicAuthorizationConsultations != null) {
+			// delete old link between AE and DAC
+			for(DynamicAuthorizationConsultationEntity dace : previousDynamicAuthorizationConsultations) {
+				DynamicAuthorizationConsultationEntity daceFromDB = dbs.getDAOFactory().getDynamicAuthorizationDAO().find(transaction, dace.getResourceID());
+				daceFromDB.getLinkedAeEntities().remove(aeEntity);
+				dbs.getDAOFactory().getDynamicAuthorizationDAO().update(transaction, daceFromDB);
+			}
+			
+			// create new link with aeEntity - DacEntity
+			for(DynamicAuthorizationConsultationEntity dace : aeEntity.getDynamicAuthorizationConsultations()) {
+				DynamicAuthorizationConsultationEntity daceFromDB = dbs.getDAOFactory().getDynamicAuthorizationDAO().find(transaction, dace.getResourceID());
+				daceFromDB.getLinkedAeEntities().add(aeEntity);
+				dbs.getDAOFactory().getDynamicAuthorizationDAO().update(transaction, daceFromDB);
+			}
+		}
+		
+		
 
 		// commit and release lock
 		transaction.commit();
