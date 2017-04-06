@@ -37,6 +37,7 @@ import org.eclipse.om2m.commons.entities.AreaNwkInfoEntity;
 import org.eclipse.om2m.commons.entities.CSEBaseEntity;
 import org.eclipse.om2m.commons.entities.ContainerEntity;
 import org.eclipse.om2m.commons.entities.ContentInstanceEntity;
+import org.eclipse.om2m.commons.entities.DynamicAuthorizationConsultationEntity;
 import org.eclipse.om2m.commons.entities.FlexContainerAnncEntity;
 import org.eclipse.om2m.commons.entities.FlexContainerEntity;
 import org.eclipse.om2m.commons.entities.GroupEntity;
@@ -218,6 +219,8 @@ public class DiscoveryController extends Controller {
 			return ((AeEntity) resourceEntity).getAccessControlPolicies();
 		case ResourceType.AE_ANNC:
 			return ((AeAnncEntity) resourceEntity).getAccessControlPolicies();
+		case ResourceType.DYNAMIC_AUTHORIZATION_CONSULTATION:
+			return ((DynamicAuthorizationConsultationEntity) resourceEntity).getAccessControlPolicies();
 		case ResourceType.CONTAINER:
 			return ((ContainerEntity) resourceEntity).getAccessControlPolicies();		
 		case ResourceType.CONTENT_INSTANCE:
