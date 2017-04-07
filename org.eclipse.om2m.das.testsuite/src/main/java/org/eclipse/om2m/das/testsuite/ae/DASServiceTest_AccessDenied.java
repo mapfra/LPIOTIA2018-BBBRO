@@ -1,18 +1,19 @@
-package org.eclipse.om2m.das.testsuite.dasservice;
+package org.eclipse.om2m.das.testsuite.ae;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.om2m.commons.constants.Operation;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
-import org.eclipse.om2m.commons.entities.ResourceEntity;
-import org.eclipse.om2m.commons.exceptions.AccessDeniedException;
+import org.eclipse.om2m.commons.constants.SecurityInfoType;
 import org.eclipse.om2m.commons.resource.AE;
+import org.eclipse.om2m.commons.resource.DynAuthDasRequest;
 import org.eclipse.om2m.commons.resource.DynamicAuthorizationConsultation;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
+import org.eclipse.om2m.commons.resource.SecurityInfo;
 import org.eclipse.om2m.core.service.CseService;
-import org.eclipse.om2m.das.service.DynamicAuthorizationServerService;
+import org.eclipse.om2m.interworking.service.InterworkingService;
 import org.osgi.framework.ServiceRegistration;
 
 public class DASServiceTest_AccessDenied extends AbstractDASServiceTest {
@@ -26,21 +27,18 @@ public class DASServiceTest_AccessDenied extends AbstractDASServiceTest {
 	@Override
 	public void performTest() {
 		// create DAC
-		dac = createDAS();
+		dac = createDAS(getDasAE().getResourceID());
 		if (dac == null) {
 			setState(State.KO);
 			setMessage("unable to create dac");
 			return;
 		}
 
-		// set poa
-		setPoA(dac.getDynamicAuthorisationPoA().get(0));
-		
 		// set number of expected call
 		setExpectedNumberOfCall(1);
 
-		// register this as a DynamicAuthorizationServerService
-		ServiceRegistration<DynamicAuthorizationServerService> dassRegistration = registerDynamicAuthorizationServerService(this);
+		// register this as a InterworkingService
+		ServiceRegistration<InterworkingService> interworkingServiceRegistration = registerInterworkingService(this);
 
 		// create application (with DynamicAuthorizationConsultationIDs)
 		List<String> dacis = new ArrayList<>();
@@ -62,7 +60,7 @@ public class DASServiceTest_AccessDenied extends AbstractDASServiceTest {
 		}
 
 		// unregister DASS
-		unregisterDynamicAuthorizationServerService(dassRegistration);
+		unregisterInterworkingService(interworkingServiceRegistration);
 		
 		// one call
 		List<Call> receivedCalls = getCalls();
@@ -73,46 +71,46 @@ public class DASServiceTest_AccessDenied extends AbstractDASServiceTest {
 		}
 		
 		Call receivedCall = receivedCalls.get(0);
-		if (receivedCall.getRequestPrimitive() == null) {
+		if (receivedCall.getDynAuthRequest() == null) {
 			setMessage("request is null");
 			setState(State.KO);
 			return;
 		}
 
 		// targetId
-		if (!receivedCall.getRequestPrimitive().getTargetId().equals(ae.getResourceID())) {
+		if (!receivedCall.getDynAuthRequest().getTargetedResourceID().equals(ae.getResourceID())) {
 			setState(State.KO);
 			setMessage("bad targetId, expecting " + ae.getResourceID() + ", found "
-					+ receivedCall.getRequestPrimitive().getTargetId());
+					+ receivedCall.getDynAuthRequest().getTargetedResourceID());
 			return;
 		}
 
 		// from
-		if (!receivedCall.getRequestPrimitive().getFrom().equals("nom:password")) {
+		if (!receivedCall.getDynAuthRequest().getOriginator().equals("nom:password")) {
 			setState(State.KO);
 			setMessage("bad caller credentials, expecting:" + "nom:password" + ", found "
-					+ receivedCall.getRequestPrimitive().getFrom());
+					+ receivedCall.getDynAuthRequest().getOriginator());
 			return;
 		}
 
 		// operation
-		if (!Operation.RETRIEVE.equals(receivedCall.getRequestPrimitive().getOperation())) {
+		if (!Operation.RETRIEVE.equals(receivedCall.getDynAuthRequest().getOperation())) {
 			setState(State.KO);
 			setMessage("bad operation, expecting:" + Operation.RETRIEVE + ", found "
-					+ receivedCall.getRequestPrimitive().getOperation());
+					+ receivedCall.getDynAuthRequest().getOperation());
 			return;
 		}
 
 		// check resource entity
-		if (receivedCall.getResourceEntity() == null) {
+		if (receivedCall.getDynAuthRequest().getTargetedResourceID() == null) {
 			setState(State.KO);
 			setMessage("resourceEntity is null");
 			return;
 		}
-		if (!ae.getResourceID().equals(receivedCall.getResourceEntity().getResourceID())) {
+		if (!ae.getResourceID().equals(receivedCall.getDynAuthRequest().getTargetedResourceID())) {
 			setState(State.KO);
 			setMessage("bad resourceEntity id, expecting " + ae.getResourceID() + ", found:"
-					+ receivedCall.getResourceEntity().getResourceID());
+					+ receivedCall.getDynAuthRequest().getTargetedResourceID());
 			return;
 		}
 
@@ -120,22 +118,49 @@ public class DASServiceTest_AccessDenied extends AbstractDASServiceTest {
 		
 
 	}
-
-	@Override
-	public void authorize(RequestPrimitive request, ResourceEntity resourceEntity) throws AccessDeniedException {
-		Call call = new Call(request, resourceEntity);
-		addCall(call);
-
-		// in all cases
-		throw new AccessDeniedException();
-	}
 	
 	@Override
-	public String getPoA() {
-		if (dac != null) {
-			return dac.getDynamicAuthorisationPoA().get(0);
+	public ResponsePrimitive doExecute(RequestPrimitive request) {
+		ResponsePrimitive response = new ResponsePrimitive(request);
+		if (!Operation.NOTIFY.equals(request.getOperation())) {
+			// ko
+			response.setResponseStatusCode(ResponseStatusCode.OPERATION_NOT_ALLOWED);
+			return response;
 		}
-		return null;
+		
+		SecurityInfo securityInfo = null;
+		try {
+			securityInfo = (SecurityInfo) request.getContent();
+			if (securityInfo == null) {
+				// ko
+				response.setResponseStatusCode(ResponseStatusCode.CONTENTS_UNACCEPTABLE);
+				return response;
+			}
+		} catch (ClassCastException e) {
+			// ko
+			response.setResponseStatusCode(ResponseStatusCode.CONTENTS_UNACCEPTABLE);
+			return response;
+		}
+		
+		if (!SecurityInfoType.DYNAMIC_AUTHORIZATION_REQUEST.equals(securityInfo.getSecurityInfoType())) {
+			// ko
+			response.setResponseStatusCode(ResponseStatusCode.CONTENTS_UNACCEPTABLE);
+			return response;
+		}
+		
+		// retrieve das request
+		DynAuthDasRequest dasRequest = securityInfo.getDasRequest();
+		if (dasRequest == null) {
+			response.setResponseStatusCode(ResponseStatusCode.ACCESS_DENIED);
+			return response;
+		}
+		
+		Call call = new Call(dasRequest);
+		addCall(call);
+		
+		response.setResponseStatusCode(ResponseStatusCode.ACCESS_DENIED);
+		return response;
 	}
+
 
 }

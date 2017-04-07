@@ -25,8 +25,8 @@ import org.eclipse.om2m.binding.service.RestClientService;
 import org.eclipse.om2m.commons.constants.CSEType;
 import org.eclipse.om2m.commons.constants.Constants;
 import org.eclipse.om2m.core.comm.RestClient;
-import org.eclipse.om2m.core.das.DynamicAuthorizationServerSelector;
 import org.eclipse.om2m.core.datamapper.DataMapperSelector;
+import org.eclipse.om2m.core.dynamicauthorization.DynamicAuthorizationSelector;
 import org.eclipse.om2m.core.flexcontainer.FlexContainerSelector;
 import org.eclipse.om2m.core.interworking.IpeSelector;
 import org.eclipse.om2m.core.persistence.PersistenceService;
@@ -34,7 +34,6 @@ import org.eclipse.om2m.core.remotecse.RemoteCseService;
 import org.eclipse.om2m.core.router.Router;
 import org.eclipse.om2m.core.service.CseService;
 import org.eclipse.om2m.core.thread.CoreExecutor;
-import org.eclipse.om2m.das.service.DynamicAuthorizationServerService;
 import org.eclipse.om2m.datamapping.service.DataMapperService;
 import org.eclipse.om2m.flexcontainer.service.FlexContainerService;
 import org.eclipse.om2m.interworking.service.InterworkingService;
@@ -63,8 +62,6 @@ public class Activator implements BundleActivator {
 	private ServiceTracker<Object, Object> databaseServiceTracker;
 	/** FlexContainerService tracker */
 	private ServiceTracker<Object, Object> flexContainerServiceTracker;
-	/** DynamicAuthorizationServerService tracker */
-	private ServiceTracker<DynamicAuthorizationServerService, DynamicAuthorizationServerService> dynamicAuthorizationServerServiceTracker;
 	/** EventAdmin tracker */
 	private ServiceTracker<Object, Object> eventAdminTracker;
 	
@@ -192,35 +189,6 @@ public class Activator implements BundleActivator {
 		};
 		flexContainerServiceTracker.open();
 		
-		// track DynamicAuthorizationServer service
-		dynamicAuthorizationServerServiceTracker = new ServiceTracker<DynamicAuthorizationServerService, DynamicAuthorizationServerService>(bundleContext, DynamicAuthorizationServerService.class.getName(), null) {
-			
-			@Override
-			public DynamicAuthorizationServerService addingService(
-					ServiceReference<DynamicAuthorizationServerService> reference) {
-				DynamicAuthorizationServerService service = this.context.getService(reference);
-				LOGGER.info("new DynamicAuthorizationServerService (poa=" + service.getPoA() + ")");
-				
-				// push to selector
-				if (DynamicAuthorizationServerSelector.getInstance().addDynamicAuthorizationServerService(service)) {
-					return service;
-				} 
-				
-				return null;
-				
-			}
-			
-			@Override
-			public void removedService(ServiceReference<DynamicAuthorizationServerService> reference,
-					DynamicAuthorizationServerService service) {
-				
-				LOGGER.info("DynamicAuthorizationServerService no longer available");
-				
-				// push to selector
-				DynamicAuthorizationServerSelector.getInstance().removeDynamicAuthorizationServerService(service);
-			}
-		};
-		dynamicAuthorizationServerServiceTracker.open();
 		
 		// eventAdmin tracker
 		eventAdminTracker = new ServiceTracker<Object, Object>(bundleContext, EventAdmin.class.getName(), null) {

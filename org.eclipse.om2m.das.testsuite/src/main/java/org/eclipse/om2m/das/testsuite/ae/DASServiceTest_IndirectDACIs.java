@@ -1,4 +1,4 @@
-package org.eclipse.om2m.das.testsuite.dasservice;
+package org.eclipse.om2m.das.testsuite.ae;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,8 +13,7 @@ import org.eclipse.om2m.commons.resource.FlexContainer;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
 import org.eclipse.om2m.core.service.CseService;
-import org.eclipse.om2m.das.service.DynamicAuthorizationServerService;
-import org.eclipse.om2m.das.testsuite.Test.State;
+import org.eclipse.om2m.interworking.service.InterworkingService;
 import org.osgi.framework.ServiceRegistration;
 
 public class DASServiceTest_IndirectDACIs extends AbstractDASServiceTest {
@@ -40,21 +39,18 @@ public class DASServiceTest_IndirectDACIs extends AbstractDASServiceTest {
 		// flexContainer created at step 2 must be used
 
 		// create DAC
-		DynamicAuthorizationConsultation dac = createDAS();
+		DynamicAuthorizationConsultation dac = createDAS(getDasAE().getResourceID());
 		if (dac == null) {
 			setState(State.KO);
 			setMessage("unable to create dac");
 			return;
 		}
 
-		// set poa
-		setPoA(dac.getDynamicAuthorisationPoA().get(0));
-
 		// set number of expected call
 		setExpectedNumberOfCall(1);
 
-		// register this as a DynamicAuthorizationServerService
-		ServiceRegistration<DynamicAuthorizationServerService> dassRegistration = registerDynamicAuthorizationServerService(
+		// register this as a InterworkingService
+		ServiceRegistration<InterworkingService> interworkingServiceRegistration = registerInterworkingService(
 				this);
 
 		// create a FlexContainer
@@ -198,8 +194,8 @@ public class DASServiceTest_IndirectDACIs extends AbstractDASServiceTest {
 			return;
 		}
 
-		// unregister DynamicAuthorizationServerService
-		unregisterDynamicAuthorizationServerService(dassRegistration);
+		// unregister InterworkingService
+		unregisterInterworkingService(interworkingServiceRegistration);
 
 		// OK
 		setState(State.OK);

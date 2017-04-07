@@ -1,4 +1,4 @@
-package org.eclipse.om2m.das.testsuite.dasservice;
+package org.eclipse.om2m.das.testsuite.ae;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,19 +6,17 @@ import java.util.UUID;
 
 import org.eclipse.om2m.commons.constants.MimeMediaType;
 import org.eclipse.om2m.commons.constants.Operation;
-import org.eclipse.om2m.commons.constants.ResourceType;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.resource.AEAnnc;
-import org.eclipse.om2m.commons.resource.CustomAttribute;
 import org.eclipse.om2m.commons.resource.DynamicAuthorizationConsultation;
 import org.eclipse.om2m.commons.resource.RemoteCSE;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
 import org.eclipse.om2m.core.service.CseService;
-import org.eclipse.om2m.das.service.DynamicAuthorizationServerService;
+import org.eclipse.om2m.interworking.service.InterworkingService;
 import org.osgi.framework.ServiceRegistration;
 
-public class DASServiceTest_AeAnnc extends AbstractDASServiceTest implements DynamicAuthorizationServerService {
+public class DASServiceTest_AeAnnc extends AbstractDASServiceTest {
 
 	/**
 	 * To be used by activator
@@ -33,21 +31,18 @@ public class DASServiceTest_AeAnnc extends AbstractDASServiceTest implements Dyn
 	public void performTest() {
 
 		// create DAC
-		DynamicAuthorizationConsultation dac = createDAS();
+		DynamicAuthorizationConsultation dac = createDAS(getDasAE().getResourceID());
 		if (dac == null) {
 			setState(State.KO);
 			setMessage("unable to create dac");
 			return;
 		}
 
-		// set poa
-		setPoA(dac.getDynamicAuthorisationPoA().get(0));
-
 		// set number of expected call
 		setExpectedNumberOfCall(1);
 
-		// register this as a DynamicAuthorizationServerService
-		ServiceRegistration<DynamicAuthorizationServerService> dassRegistration = registerDynamicAuthorizationServerService(
+		// register this as a InterworkingService
+		ServiceRegistration<InterworkingService> interworkingServiceRegistration = registerInterworkingService(
 				this);
 		
 		// create the following hierarchy : RemoteCse > AeAnnc > FlexContainerAnnc
@@ -149,8 +144,8 @@ public class DASServiceTest_AeAnnc extends AbstractDASServiceTest implements Dyn
 			return;
 		}
 
-		// unregister DASS
-		unregisterDynamicAuthorizationServerService(dassRegistration);
+		// unregister InterworkingService
+		unregisterInterworkingService(interworkingServiceRegistration);
 
 		setState(State.OK);
 	}

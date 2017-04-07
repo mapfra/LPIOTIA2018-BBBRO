@@ -5,6 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.om2m.core.service.CseService;
+import org.eclipse.om2m.das.testsuite.ae.DASServiceTest_AccessDenied;
+import org.eclipse.om2m.das.testsuite.ae.DASServiceTest_Ae;
+import org.eclipse.om2m.das.testsuite.ae.DASServiceTest_AeAnnc;
+import org.eclipse.om2m.das.testsuite.ae.DASServiceTest_FlexContainer;
+import org.eclipse.om2m.das.testsuite.ae.DASServiceTest_FlexContainerAnnc;
+import org.eclipse.om2m.das.testsuite.ae.DASServiceTest_IndirectDACIs;
+import org.eclipse.om2m.das.testsuite.ae.DASServiceTest_TwoDAS;
 import org.eclipse.om2m.das.testsuite.crud.CreateDAS_Application_Test;
 import org.eclipse.om2m.das.testsuite.crud.CreateDAS_CseBase_Test;
 import org.eclipse.om2m.das.testsuite.crud.CreateDAS_RemoteCSE_Test;
@@ -17,13 +24,6 @@ import org.eclipse.om2m.das.testsuite.dacis.DynamicAuthorizationConsultationDaci
 import org.eclipse.om2m.das.testsuite.dacis.FlexContainerAnncDacisTest;
 import org.eclipse.om2m.das.testsuite.dacis.FlexContainerDacisTest;
 import org.eclipse.om2m.das.testsuite.dacis.RemoteCseDacisTest;
-import org.eclipse.om2m.das.testsuite.dasservice.DASServiceTest_Ae;
-import org.eclipse.om2m.das.testsuite.dasservice.DASServiceTest_AeAnnc;
-import org.eclipse.om2m.das.testsuite.dasservice.DASServiceTest_FlexContainer;
-import org.eclipse.om2m.das.testsuite.dasservice.DASServiceTest_FlexContainerAnnc;
-import org.eclipse.om2m.das.testsuite.dasservice.DASServiceTest_IndirectDACIs;
-import org.eclipse.om2m.das.testsuite.dasservice.DASServiceTest_AccessDenied;
-import org.eclipse.om2m.das.testsuite.dasservice.DASServiceTest_TwoDAS;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;

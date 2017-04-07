@@ -457,6 +457,9 @@ public class FlexContainerAnncController extends Controller {
 		if (flexContainerAnncEntity == null) {
 			throw new ResourceNotFoundException("Resource not found");
 		}
+		
+		// lock entity
+		transaction.lock(flexContainerAnncEntity);
 
 //		checkACP(flexContainerAnncEntity.getAccessControlPolicies(), request.getFrom(), Operation.DELETE);
 		checkPermissions(request, flexContainerAnncEntity, flexContainerAnncEntity.getAccessControlPolicies());
@@ -468,7 +471,7 @@ public class FlexContainerAnncController extends Controller {
 		// Delete the resource
 		dbs.getDAOFactory().getFlexContainerAnncDAO().delete(transaction, flexContainerAnncEntity);
 
-		// Commit the transaction
+		// Commit the transaction & release lock
 		transaction.commit();
 
 		// Return rsc

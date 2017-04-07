@@ -95,6 +95,9 @@ public class AccessControlPolicyController extends Controller {
 		if (parentEntity == null){
 			throw new ResourceNotFoundException("Cannot find parent resource");
 		}
+		
+		// lock parent database entity
+		transaction.lock(parentEntity);
 
 		// Get lists to change in the method corresponding to specific object
 		List<AccessControlPolicyEntity> acpsToCheck = null;
@@ -228,7 +231,7 @@ public class AccessControlPolicyController extends Controller {
 		childAcps.add(acpDB);
 		dao.update(transaction, parentEntity);
 
-		// Commit the DB transaction
+		// Commit the DB transaction & release lock
 		transaction.commit();
 
 		Notifier.notify(subscriptions, acpDB, ResourceStatus.CHILD_CREATED);
@@ -296,6 +299,9 @@ public class AccessControlPolicyController extends Controller {
 		if (acpEntity == null){
 			throw new ResourceNotFoundException("Resource " + request.getTargetId() + " not found.");
 		}
+		
+		// lock entity
+		transaction.lock(acpEntity);
 
 		// Check self ACP
 		checkSelfACP(acpEntity, request.getFrom(), Operation.UPDATE);
@@ -374,6 +380,8 @@ public class AccessControlPolicyController extends Controller {
 		modifiedAttributes.setLastModifiedTime(acpEntity.getLastModifiedTime());
 		response.setContent(modifiedAttributes);
 		dbs.getDAOFactory().getAccessControlPolicyDAO().update(transaction, acpEntity);
+		
+		// commit transaction & unlock
 		transaction.commit();
 
 		Notifier.notify(acpEntity.getChildSubscriptions(), acpEntity, ResourceStatus.UPDATED);
@@ -402,6 +410,9 @@ public class AccessControlPolicyController extends Controller {
 		if (acpEntity == null){
 			throw new ResourceNotFoundException("Resource not found");
 		}
+		
+		// transaction lock
+		transaction.lock(acpEntity);
 		
 		// Check this acp is not a generated acp for an AE to avoid inconsistency
 //		for(RegularResourceEntity regularResourceEntity : acpEntity.getLinkedRegularResources()) {
@@ -435,6 +446,7 @@ public class AccessControlPolicyController extends Controller {
 		// Delete the resource
 		dbs.getDAOFactory().getAccessControlPolicyDAO().delete(transaction, acpEntity);
 		
+		// commit & unlock
 		transaction.commit();
 		
 		// Close transaction and return

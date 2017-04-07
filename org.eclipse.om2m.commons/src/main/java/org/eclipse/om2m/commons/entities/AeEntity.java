@@ -419,7 +419,7 @@ public class AeEntity extends AnnounceableSubordinateEntity {
 	/**
 	 * @return the requestReachability
 	 */
-	public boolean isRequestReachable() {
+	public boolean isRequestReachability() {
 		return requestReachability;
 	}
 

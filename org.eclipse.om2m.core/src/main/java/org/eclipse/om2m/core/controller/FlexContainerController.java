@@ -587,6 +587,9 @@ public class FlexContainerController extends Controller {
 			throw new ResourceNotFoundException("Resource not found");
 		}
 
+		// lock entity
+		transaction.lock(flexContainerEntity);
+		
 		// check access control policies
 //		checkACP(flexContainerEntity.getAccessControlPolicies(), request.getFrom(), Operation.DELETE);
 		checkPermissions(request, flexContainerEntity, flexContainerEntity.getAccessControlPolicies());
@@ -596,7 +599,7 @@ public class FlexContainerController extends Controller {
 
 		// delete the resource in the database
 		dbs.getDAOFactory().getFlexContainerDAO().delete(transaction, flexContainerEntity);
-		// commit the transaction
+		// commit the transaction & release lock
 		transaction.commit();
 
 		// deannounce

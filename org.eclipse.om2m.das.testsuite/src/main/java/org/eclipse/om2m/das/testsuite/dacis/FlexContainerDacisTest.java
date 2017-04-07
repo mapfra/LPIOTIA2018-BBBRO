@@ -14,7 +14,6 @@ import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
 import org.eclipse.om2m.core.service.CseService;
 import org.eclipse.om2m.das.testsuite.Test;
-import org.eclipse.om2m.das.testsuite.Test.State;
 
 public class FlexContainerDacisTest extends Test {
 

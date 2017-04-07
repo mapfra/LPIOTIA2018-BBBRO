@@ -38,11 +38,13 @@ import org.eclipse.om2m.commons.exceptions.AccessDeniedException;
 import org.eclipse.om2m.commons.exceptions.BadRequestException;
 import org.eclipse.om2m.commons.exceptions.Om2mException;
 import org.eclipse.om2m.commons.exceptions.ResourceNotFoundException;
+import org.eclipse.om2m.commons.resource.AccessControlPolicy;
+import org.eclipse.om2m.commons.resource.AccessControlRule;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.Resource;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
-import org.eclipse.om2m.core.das.DynamicAuthorizationServerSelector;
 import org.eclipse.om2m.core.datamapper.DataMapperSelector;
+import org.eclipse.om2m.core.dynamicauthorization.DynamicAuthorizationSelector;
 import org.eclipse.om2m.core.entitymapper.EntityMapper;
 import org.eclipse.om2m.core.entitymapper.EntityMapperFactory;
 import org.eclipse.om2m.core.persistence.PersistenceService;
@@ -72,6 +74,7 @@ public abstract class Controller {
 		ResponsePrimitive response = new ResponsePrimitive(request);
 		dbs = PersistenceService.getInstance().getDbService();
 		transaction = dbs.getDbTransaction();
+		System.out.println("create transaction " + transaction.toString() + ", targetId " + request.getTargetId() + ", operation =" + request.getOperation());
 		try{
 			transaction.open();
 			if(request.getOperation().equals(Operation.CREATE)){
@@ -165,11 +168,11 @@ public abstract class Controller {
 			// nothing to do as we need to check DynamicAuthorizationConsultation
 		}
 		
-		DynamicAuthorizationServerSelector.getInstance().
+		DynamicAuthorizationSelector.getInstance().
 			authorize(
 				dbs.getDBUtilManager().getDynamicAuthorizationConsultationUtil().
 					getDynamicAuthorizationConsultations(resource.getResourceID())
-				, request, resource);
+						, request, resource);
 		
 	}
 
@@ -255,6 +258,9 @@ public abstract class Controller {
 			throw new AccessDeniedException();
 		}
 	}
+	
+	
+	
 
 	/**
 	 * Check Access Right from Acp Self privileges for ACP modifications

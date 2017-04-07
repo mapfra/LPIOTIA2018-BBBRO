@@ -12,5 +12,5 @@ Import-Package: org.eclipse.om2m.commons.constants,
  org.eclipse.om2m.commons.exceptions,
  org.eclipse.om2m.commons.resource,
  org.eclipse.om2m.core.service,
- org.eclipse.om2m.das.service,
+ org.eclipse.om2m.interworking.service,
  org.osgi.framework

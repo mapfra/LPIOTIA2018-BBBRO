@@ -99,11 +99,6 @@ public class RemoteCSEController extends Controller {
 
 		ResponsePrimitive response = new ResponsePrimitive(request);
 
-		// get the database service
-		DBService dbs = PersistenceService.getInstance().getDbService();
-		DBTransaction transaction = dbs.getDbTransaction();
-		transaction.open();
-
 		// get the dao of the parent
 		DAO<ResourceEntity> dao = (DAO<ResourceEntity>) Patterns.getDAO(request.getTargetId(), dbs);
 		if (dao == null){
@@ -115,6 +110,9 @@ public class RemoteCSEController extends Controller {
 		if (parentEntity == null) {
 			throw new ResourceNotFoundException("Cannot find the parent resource");
 		}
+		
+		// lock parent
+		transaction.lock(parentEntity);
 
 		// get lists to change in the method corresponding to specific object
 		List<AccessControlPolicyEntity> acpsToCheck = null;
@@ -330,7 +328,7 @@ public class RemoteCSEController extends Controller {
 			dbs.getDAOFactory().getDynamicAuthorizationDAO().update(transaction, daceFromDB);
 		}
 
-		// Commit the DB transaction
+		// Commit the DB transaction & release lock
 		transaction.commit();
 
 		RemoteCseService.getInstance().addRemoteCseAndPublish(csrDB);
@@ -354,7 +352,7 @@ public class RemoteCSEController extends Controller {
 		if (csrEntity == null) {
 			throw new ResourceNotFoundException();
 		}
-
+		
 		// if resource exists, check authorization
 		// retrieve 
 		List<AccessControlPolicyEntity> acpList = csrEntity.getAccessControlPolicies();
@@ -401,10 +399,6 @@ public class RemoteCSEController extends Controller {
 		 */
 		// create the response base
 		ResponsePrimitive response = new ResponsePrimitive(request);
-		// get the persistence service
-		DBService dbs = PersistenceService.getInstance().getDbService();
-		DBTransaction transaction = dbs.getDbTransaction();
-		transaction.open();
 
 		// retrieve the resource from the DB
 		RemoteCSEEntity csrEntity = dbs.getDAOFactory().getRemoteCSEDAO().find(transaction, request.getTargetId());
@@ -412,6 +406,9 @@ public class RemoteCSEController extends Controller {
 			throw new ResourceNotFoundException();
 		}
 
+		// lock entity
+		transaction.lock(csrEntity);
+		
 		// check ACP
 		checkACP(csrEntity.getAccessControlPolicies(), request.getFrom(), Operation.UPDATE);
 		
@@ -540,7 +537,10 @@ public class RemoteCSEController extends Controller {
 		
 		// update the resource in the database
 		dbs.getDAOFactory().getRemoteCSEDAO().update(transaction, csrEntity);
+		
+		// commit & release lock
 		transaction.commit();
+		
 		Notifier.notify(csrEntity.getSubscriptions(), csrEntity, ResourceStatus.UPDATED);
 
 		// set response status code
@@ -561,6 +561,9 @@ public class RemoteCSEController extends Controller {
 		if (csrEntity == null) {
 			throw new ResourceNotFoundException();
 		}
+		
+		// lock entity
+		transaction.lock(csrEntity);
 
 		// check access control policies
 		checkACP(csrEntity.getAccessControlPolicies(), request.getFrom(), Operation.DELETE);
@@ -568,12 +571,13 @@ public class RemoteCSEController extends Controller {
 		UriMapper.deleteUri(csrEntity.getHierarchicalURI());
 		Notifier.notifyDeletion(csrEntity.getSubscriptions(), csrEntity);
 		
-		RemoteCseService.getInstance().removeRemoteCseAndPublish(csrEntity.getName());
-
 		// delete the resource in the database
 		dbs.getDAOFactory().getRemoteCSEDAO().delete(transaction, csrEntity);
-		// commit the transaction
+		// commit the transaction & release lock
 		transaction.commit();
+		
+		RemoteCseService.getInstance().removeRemoteCseAndPublish(csrEntity.getName());
+		
 		// return the response
 		response.setResponseStatusCode(ResponseStatusCode.DELETED);
 		return response;

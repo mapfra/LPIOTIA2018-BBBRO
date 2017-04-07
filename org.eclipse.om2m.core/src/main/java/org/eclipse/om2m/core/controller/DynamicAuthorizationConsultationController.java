@@ -402,6 +402,9 @@ public class DynamicAuthorizationConsultationController extends Controller {
 		if (dacEntity == null) {
 			throw new ResourceNotFoundException("Resource not found");
 		}
+		
+		// lock entity
+		transaction.lock(dacEntity);
 
 		// check authorization
 		List<AccessControlPolicyEntity> acpsToCheck = dacEntity.getAccessControlPolicies();
@@ -413,7 +416,7 @@ public class DynamicAuthorizationConsultationController extends Controller {
 		// delete in database
 		dbs.getDAOFactory().getDynamicAuthorizationDAO().delete(transaction, dacEntity);
 
-		// commit transaction
+		// commit transaction & release lock
 		transaction.commit();
 
 		// set response status DELETED

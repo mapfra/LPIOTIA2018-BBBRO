@@ -62,7 +62,7 @@ public class AeMapper extends EntityMapper<AeEntity, AE> {
 		if (!entity.getPointOfAccess().isEmpty()) {
 			resource.getPointOfAccess().addAll(entity.getPointOfAccess());
 		}
-		resource.setRequestReachability(entity.isRequestReachable());
+		resource.setRequestReachability(entity.isRequestReachability());
 	}
 
 	@Override

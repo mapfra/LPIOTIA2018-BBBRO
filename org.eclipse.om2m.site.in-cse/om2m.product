@@ -58,7 +58,6 @@
       <plugin id="org.eclipse.om2m.commons.logging" fragment="true"/>
       <plugin id="org.eclipse.om2m.core"/>
       <plugin id="org.eclipse.om2m.core.service"/>
-      <plugin id="org.eclipse.om2m.das.service"/>
       <plugin id="org.eclipse.om2m.das.testsuite"/>
       <plugin id="org.eclipse.om2m.datamapping.jaxb"/>
       <plugin id="org.eclipse.om2m.datamapping.service"/>
@@ -79,7 +78,6 @@
       <plugin id="org.eclipse.om2m.binding.coap" autoStart="true" startLevel="2" />
       <plugin id="org.eclipse.om2m.binding.http" autoStart="true" startLevel="2" />
       <plugin id="org.eclipse.om2m.core" autoStart="true" startLevel="4" />
-      <plugin id="org.eclipse.om2m.das.service" autoStart="false" startLevel="0" />
       <plugin id="org.eclipse.om2m.das.testsuite" autoStart="false" startLevel="6" />
       <plugin id="org.eclipse.om2m.datamapping.jaxb" autoStart="true" startLevel="1" />
       <plugin id="org.eclipse.om2m.persistence.eclipselink" autoStart="true" startLevel="2" />

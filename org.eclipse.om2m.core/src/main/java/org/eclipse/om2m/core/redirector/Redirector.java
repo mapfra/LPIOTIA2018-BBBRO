@@ -203,7 +203,7 @@ public class Redirector {
 		}
 
 		// Get point of access
-		if (ae.getPointOfAccess().isEmpty() || !(ae.isRequestReachable())) {
+		if (ae.getPointOfAccess().isEmpty() || !(ae.isRequestReachability())) {
 			throw new Om2mException("AE has no point of access", ResponseStatusCode.TARGET_NOT_REACHABLE);
 		} else {
 			boolean done = false;

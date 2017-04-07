@@ -170,16 +170,34 @@ public abstract class Test {
 	public void printTestReport() {
 		System.out.println("\t - " + getName() + ", state=" + getState() + ", message=" + getMessage());
 	}
-
+	
 	protected DynamicAuthorizationConsultation createDAS() {
+		return createDAS((String) null);
+	}
+	
+	
+	protected DynamicAuthorizationConsultation createDAS(String poA) {
+		List<String> poas = null;
+		if (poA != null) {
+			poas = new ArrayList<>();
+			poas.add(poA);
+		}
+		return createDAS(poas);
+	}
+
+	protected DynamicAuthorizationConsultation createDAS(List<String> poAs) {
 		// create request
 		RequestPrimitive request = new RequestPrimitive();
 
 		// das field
 		Boolean enabled = Boolean.TRUE;
 		List<String> poa = new ArrayList<>();
-		poa.add("poa1" + UUID.randomUUID());
-		poa.add("poa2" + UUID.randomUUID());
+		if (poAs == null) {
+			poa.add("poa1" + UUID.randomUUID());
+			poa.add("poa2" + UUID.randomUUID());
+		} else {
+			poa.addAll(poAs);
+		}
 
 		String dasName = "DAS" + UUID.randomUUID().toString();
 
@@ -356,8 +374,9 @@ public abstract class Test {
 
 		ae.setAppID("1234");
 		ae.setAppName("appName" + UUID.randomUUID());
-		ae.setRequestReachability(Boolean.FALSE);
+		ae.setRequestReachability(Boolean.TRUE);
 		ae.getAccessControlPolicyIDs().add(createdAcp.getResourceID());
+		ae.getPointOfAccess().add("poa_" + UUID.randomUUID()); 
 		if (dacis != null) {
 			ae.getDynamicAuthorizationConsultationIDs().addAll(dacis);
 		}
@@ -474,5 +493,14 @@ public abstract class Test {
 		request.setReturnContentType(MimeMediaType.OBJ);
 
 		return getCseService().doRequest(request);
+	}
+	
+	protected void deleteEntity(String url) {
+		RequestPrimitive request = new RequestPrimitive();
+		request.setOperation(Operation.DELETE);
+		request.setTargetId(url);
+		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
+		
+		getCseService().doRequest(request);
 	}
 }

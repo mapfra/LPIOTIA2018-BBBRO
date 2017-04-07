@@ -520,6 +520,9 @@ public class AEAnncController extends Controller {
 		if (aeAnncEntity == null){
 			throw new ResourceNotFoundException("Resource not found");
 		}
+		
+		// lock entity
+		transaction.lock(aeAnncEntity);
 
 //		checkACP(aeAnncEntity.getAccessControlPolicies(), request.getFrom(), 
 //				Operation.DELETE);
@@ -532,7 +535,7 @@ public class AEAnncController extends Controller {
 		// Delete the resource
 		dbs.getDAOFactory().getAeAnncDAO().delete(transaction, aeAnncEntity);
 
-		// Commit the transaction
+		// Commit the transaction & unlock
 		transaction.commit();
 
 		// Return rsc
