@@ -105,6 +105,7 @@ public abstract class ModuleClass extends Element {
 			throw new IllegalArgumentException(msg);
 		}
 		dataPoints.put(dp.getName(), dp);
+		dp.setParent((Module) this);
 		if (owner != null) {
 			dp.setOwner(owner);
 		}

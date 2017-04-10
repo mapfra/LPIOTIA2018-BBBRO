@@ -18,6 +18,8 @@ public class DataPoint extends Element {
 	private DataType type;
 	
 	private Device owner;
+	
+	private Module parent;
 
 	public DataPoint(final String name, final DataType type) {
 		super(name);
@@ -73,6 +75,14 @@ public class DataPoint extends Element {
 
 	public Device getOwner() {
 		return owner;
+	}
+
+	void setParent(Module parent) {
+		this.parent = parent;
+	}
+
+	public Module getParent() {
+		return parent;
 	}
 
 }
