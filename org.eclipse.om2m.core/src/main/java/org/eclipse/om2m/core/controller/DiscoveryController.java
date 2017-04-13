@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.eclipse.om2m.core.controller;
 
+
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -77,11 +78,6 @@ public class DiscoveryController extends Controller {
 	public ResponsePrimitive doRetrieve(RequestPrimitive request) {
 		// Create the response
 		ResponsePrimitive response = new ResponsePrimitive(request);
-
-		//Get the database service
-		DBService dbs = PersistenceService.getInstance().getDbService();
-		DBTransaction transaction = dbs.getDbTransaction();
-		transaction.open();
 
 		// Get the DAO of the parent
 		DAO<?> dao = (DAO<?>) Patterns.getDAO(request.getTargetId(), dbs);

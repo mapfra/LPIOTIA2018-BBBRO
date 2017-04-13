@@ -397,11 +397,6 @@ public class AccessControlPolicyController extends Controller {
 	public ResponsePrimitive doDelete(RequestPrimitive request) {
 		ResponsePrimitive response = new ResponsePrimitive(request);
 
-		// Get the database service & initialize the transaction
-		DBService dbs = PersistenceService.getInstance().getDbService();
-		DBTransaction transaction = dbs.getDbTransaction();
-		transaction.open();
-
 		// Retrieve the resource from database
 		AccessControlPolicyEntity acpEntity = dbs.getDAOFactory()
 				.getAccessControlPolicyDAO().find(transaction, request.getTargetId());
