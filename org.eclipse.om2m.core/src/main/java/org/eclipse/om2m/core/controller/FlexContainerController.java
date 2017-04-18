@@ -412,7 +412,9 @@ public class FlexContainerController extends Controller {
 		}
 		// check ACP
 //		checkACP(flexContainerEntity.getAccessControlPolicies(), request.getFrom(), Operation.UPDATE);
-		checkPermissions(request, flexContainerEntity, flexContainerEntity.getAccessControlPolicies());
+		if (!isInternalNotify) {
+			checkPermissions(request, flexContainerEntity, flexContainerEntity.getAccessControlPolicies());
+		}
 
 		FlexContainer modifiedAttributes = new FlexContainer();
 		// check if content is present
