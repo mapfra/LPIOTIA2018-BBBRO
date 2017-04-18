@@ -126,9 +126,7 @@ public class CSEInitializer {
 		DBService db = PersistenceService.getInstance().getDbService();
 		DBTransaction transaction = db.getDbTransaction();
 		transaction.open();
-		String acpUri = UriMapper.getNonHierarchicalUri(
-				"/" + Constants.CSE_ID + "/" + Constants.CSE_NAME + "/" + Constants.ADMIN_PROFILE_ID);
-		AccessControlPolicyEntity acpEntity = db.getDAOFactory().getAccessControlPolicyDAO().find(transaction, acpUri);
+		AccessControlPolicyEntity acpEntity = db.getDAOFactory().getAccessControlPolicyDAO().find(transaction, acpAdminId);
 		cseBaseEntity.getAccessControlPolicies().add(acpEntity);
 		cseBaseEntity.getChildAccessControlPolicies().add(acpEntity);
 		cseBaseEntity.setCreationTime(DateUtil.now());
