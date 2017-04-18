@@ -25,6 +25,7 @@ public class SDTActionAdaptor {
 
 	private static final String SEP = "/";
 
+	private final boolean hasToBeAnnounced;
 	private final CseService cseService;
 	private final String parentLocation;
 	private final String resourceLocation;
@@ -36,8 +37,9 @@ public class SDTActionAdaptor {
 	private ActionFlexContainerService actionFlexContainerService;
 
 	public SDTActionAdaptor(final CseService pCseService, final Action pAction, 
-			final String pParentLocation, final Module pModule, final String announceCseId) {
+			final String pParentLocation, final Module pModule, final String announceCseId, final boolean hasToBeAnnounced) {
 		this.cseService = pCseService;
+		this.hasToBeAnnounced = hasToBeAnnounced;
 		this.action = pAction;
 		this.parentLocation = pParentLocation;
 		this.resourceName = action.getName();
@@ -52,7 +54,7 @@ public class SDTActionAdaptor {
 
 		FlexContainer actionFlexContainer = new FlexContainer();
 		actionFlexContainer.setContainerDefinition(action.getDefinition());
-		if (announceCseId != null) {
+		if (hasToBeAnnounced) {
 			actionFlexContainer.getAnnounceTo().add(SEP + announceCseId);
 		}
 		

@@ -42,16 +42,19 @@ public class SDTIpeApplication {
 	private final String sdtIpeApplicationLocation;
 	private final String sdtIpeBaseLocation;
 	private final boolean ipeUnderAnnouncedResource;
-
+	private final boolean hasToBeAnnounced;
+	
 	private AccessControlPolicy adminAccessControlPolicy;
 	private AccessControlPolicy remoteAdminAccessControlPolicy;
+	private AE registeredAe;
 
 	public SDTIpeApplication(final CseService pCseService, final String announceCseId, final String pRemoteCseName,
-			final boolean ipeUnder) {
+			final boolean ipeUnder, final boolean hasToBeAnnounced) {
 		cseService = pCseService;
 		this.remoteCseId = announceCseId;
 		this.remoteCseName = pRemoteCseName;
 		this.ipeUnderAnnouncedResource = ipeUnder;
+		this.hasToBeAnnounced = hasToBeAnnounced;
 
 		if (ipeUnderAnnouncedResource) {
 			if ((remoteCseId != null) && (remoteCseName != null)) {
@@ -72,7 +75,7 @@ public class SDTIpeApplication {
 		logger.info("add SDT Device (id:" + device.getId() + ", name=" + device.getName() + ") into oneM2M");
 
 		SDTDeviceAdaptor sdtDeviceAdaptor = new SDTDeviceAdaptor(sdtIpeApplicationLocation, device, cseService,
-				adminAccessControlPolicy.getResourceID(), remoteCseId, remoteCseName);
+				adminAccessControlPolicy.getResourceID(), remoteCseId, remoteCseName, hasToBeAnnounced);
 		if (sdtDeviceAdaptor.publishIntoOM2MTree()) {
 			synchronized (devices) {
 				devices.put(device, sdtDeviceAdaptor);
@@ -108,12 +111,12 @@ public class SDTIpeApplication {
 		ae.setAppID(APPLICATION_NAME);
 		ae.setRequestReachability(Boolean.TRUE);
 		ae.getPointOfAccess().add(POA);
-		if (remoteCseId != null) {
+		if (hasToBeAnnounced) {
 			ae.getAnnounceTo().add(SEP + remoteCseId);
 		}
 
 		ResponsePrimitive resp = null;
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < 3; i++) {
 			 resp = CseUtil.sendCreateApplicationEntityRequest(cseService, ae, sdtIpeBaseLocation,
 					APPLICATION_NAME);
 
@@ -132,17 +135,22 @@ public class SDTIpeApplication {
 
 		}
 
-		AE receivedAe = (AE) resp.getContent();
+		if (!ResponseStatusCode.CREATED.equals(resp.getResponseStatusCode())) {
+			// no need to continue
+			return;
+		} else {
+			registeredAe = (AE) resp.getContent();
+		}
 
 		ResponsePrimitive response = CseUtil.sendCreateDefaultACP(cseService, sdtIpeBaseLocation,
 				"ACP_Device_Admin_" + System.currentTimeMillis(), new ArrayList<String>());
 		adminAccessControlPolicy = (AccessControlPolicy) response.getContent();
 
-		if ((remoteCseId != null) && (remoteCseName != null)) {
+		if (/*(remoteCseId != null) && (remoteCseName != null)*/ hasToBeAnnounced) {
 			// remote ACP_Device_Admin
 			response = CseUtil.sendCreateDefaultACP(cseService,
 					SEP + remoteCseId + SEP + remoteCseName + SEP + Constants.CSE_NAME,
-					"ACP_Device_Admin" + System.currentTimeMillis(), new ArrayList<String>());
+					"Remote_ACP_Device_Admin" + System.currentTimeMillis(), new ArrayList<String>());
 			remoteAdminAccessControlPolicy = (AccessControlPolicy) response.getContent();
 
 			// update SDT_IPE_ANNC
@@ -158,18 +166,24 @@ public class SDTIpeApplication {
 	 */
 	protected void deleteIpeApplicationEntity() {
 		logger.info("delete ipe application");
-		ResponsePrimitive response = CseUtil.sendDeleteRequest(cseService, sdtIpeApplicationLocation);
-		if (!response.getResponseStatusCode().equals(ResponseStatusCode.DELETED)) {
-			// log only
-			// no need to throw an exception
-			logger.error("unable to delete SDT IPE Application entity:" + response.getContent(), null);
+		if (registeredAe != null) { 
+			ResponsePrimitive response = CseUtil.sendDeleteRequest(cseService, registeredAe.getResourceID()/* sdtIpeApplicationLocation*/);
+			if (!response.getResponseStatusCode().equals(ResponseStatusCode.DELETED)) {
+				// log only
+				// no need to throw an exception
+				logger.error("unable to delete SDT IPE Application entity:" + response.getContent(), null);
+			}
+			registeredAe = null;
 		}
+		
 
 		if (adminAccessControlPolicy != null) {
 			CseUtil.sendDeleteRequest(cseService, adminAccessControlPolicy.getResourceID());
+			adminAccessControlPolicy = null;
 		}
 		if (remoteAdminAccessControlPolicy != null) {
 			CseUtil.sendDeleteRequest(cseService, remoteAdminAccessControlPolicy.getResourceID());
+			remoteAdminAccessControlPolicy = null;
 		}
 	}
 

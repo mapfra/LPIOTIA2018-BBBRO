@@ -36,6 +36,7 @@ public class SDTModuleAdaptor {
 	private static final String SEP = "/";
 	private static final String SDT_IPE_SUBSCRIPTION_NAME = "SDT_IPE_SUBSCRIPTION";
 
+	private final boolean hasToBeAnnounced;
 	private final Module module;
 	private final CseService cseService;
 	private final String parentLocation;
@@ -46,8 +47,9 @@ public class SDTModuleAdaptor {
 	private ModuleSDTListener moduleSDTListener;
 
 	public SDTModuleAdaptor(final Module pModule, final CseService pCseService, 
-			final String pParentLocation, final String pAnnounceCseId) {
+			final String pParentLocation, final String pAnnounceCseId, final boolean hasToBeAnnounced) {
 		this.module = pModule;
+		this.hasToBeAnnounced = hasToBeAnnounced;
 		this.cseService = pCseService;
 		this.parentLocation = pParentLocation;
 		this.resourceLocation = this.parentLocation + SEP + this.module.getName();
@@ -68,7 +70,7 @@ public class SDTModuleAdaptor {
 
 		FlexContainer flexContainer = new FlexContainer();
 		flexContainer.setContainerDefinition(this.module.getDefinition());
-		if (announceCseId != null) {
+		if (hasToBeAnnounced) {
 			flexContainer.getAnnounceTo().add(SEP + announceCseId);	
 		}
 
@@ -164,7 +166,7 @@ public class SDTModuleAdaptor {
 		// publish actions
 		for (Action action : module.getActions()) {
 			SDTActionAdaptor actionAdaptor = new SDTActionAdaptor(cseService, action, 
-					resourceLocation, module, announceCseId);
+					resourceLocation, module, announceCseId, hasToBeAnnounced);
 			if (actionAdaptor.publishActionIntoOM2MTree()) {
 				actions.put(action.getName(), actionAdaptor);
 			} else {

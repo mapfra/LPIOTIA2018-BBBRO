@@ -28,6 +28,7 @@ public class SDTDeviceAdaptor {
 	private static final String SEP = "/";
 	private static final String DEVICE_PREFIX = "DEVICE_";
 	
+	private final boolean hasToBeAnnounced;
 	private final String parentLocation;
 	private final String resourceLocation;
 	private final String resourceName;
@@ -47,8 +48,9 @@ public class SDTDeviceAdaptor {
 	 */
 	public SDTDeviceAdaptor(final String pParentLocation, final Device pDevice, 
 			final CseService pCseService, final String pAdminAcpResource, 
-			final String pAnnounceCseId, final String pRemoteCseName) {
+			final String pAnnounceCseId, final String pRemoteCseName, final boolean hasToBeAnnounced) {
 		this.parentLocation = pParentLocation;
+		this.hasToBeAnnounced = hasToBeAnnounced;
 		this.device = pDevice;
 		this.resourceName = DEVICE_PREFIX + device.getId();
 		this.resourceLocation = parentLocation + SEP + resourceName;
@@ -70,7 +72,7 @@ public class SDTDeviceAdaptor {
 		// set container definition with the value of the Device definition
 		flexContainer.setContainerDefinition(device.getDefinition());
 		flexContainer.getAccessControlPolicyIDs().add(adminAcpResource);
-		if (announceCseId != null) {
+		if (hasToBeAnnounced) {
 			flexContainer.getAnnounceTo().add(SEP + announceCseId);
 		}
 		
@@ -117,7 +119,7 @@ public class SDTDeviceAdaptor {
 		// Modules (must be done now because Device FlexContainer is the parent of each Module)
 		for (Module module : this.device.getModules()) {
 			SDTModuleAdaptor sdtModuleAdaptor = new SDTModuleAdaptor(module, cseService, 
-					resourceLocation, announceCseId);
+					resourceLocation, announceCseId, hasToBeAnnounced);
 			if (sdtModuleAdaptor.publishModuleIntoOM2MTree()) {
 				modules.put(module, sdtModuleAdaptor);
 			} else {

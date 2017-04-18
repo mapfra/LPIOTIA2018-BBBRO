@@ -50,6 +50,7 @@ public class Activator implements BundleActivator, ManagedService, EventHandler 
 	private String cseIdToBeAnnounced;
 	private String cseNameToBeAnnounced;
 	private boolean ipeUnderAnnouncedResource;
+	private boolean hasToBeAnnounced;
 	private ServiceRegistration<?> serviceRegistration;
 	private boolean isSDTIPEStarted = false;
 
@@ -121,35 +122,39 @@ public class Activator implements BundleActivator, ManagedService, EventHandler 
 						// at this point, we are sure this is the firstly
 						// detected CSE Service.
 						cseService = (CseService) bundleContext.getService(reference);
-						if (isSDTIPEStarted)
+						if (!isSDTIPEStarted) {
 							startSDTIpe();
+						}
 						return cseService;
 					}
 				});
 		cseServiceTracker.open();
 
 		// register this activator as a managed service
-		try {
-			ServiceReference ref = bundleContext.getServiceReference(ConfigurationAdmin.class.getName());
-			if ((ref == null) || (bundleContext.getService(ref) == null)) {
-				// No config admin. Start with default values: no announcement
-				logger.info("Manage default properties");
-				cseIdToBeAnnounced = null;
-				cseNameToBeAnnounced = null;
-				ipeUnderAnnouncedResource = false;
-				startSDTIpe();
-			} else {
-				logger.info("Manage configuration properties");
-				Dictionary properties = new Hashtable<>();
-				properties.put(org.osgi.framework.Constants.SERVICE_PID, SDT_IPE);
-				properties.put(EventConstants.EVENT_TOPIC, RemoteCseService.REMOTE_CSE_TOPIC);
-				serviceRegistration = bundleContext.registerService(
-						new String[] { ManagedService.class.getName(), EventHandler.class.getName() }, this,
-						properties);
-			}
-		} catch (Exception e) {
-			logger.error("Error starting SDT IPE Activator", e);
-		}
+//		try {
+//			ServiceReference ref = bundleContext.getServiceReference(ConfigurationAdmin.class.getName());
+//			if ((ref == null) || (bundleContext.getService(ref) == null)) {
+//				// No config admin. Start with default values: no announcement
+//				logger.info("Manage default properties");
+//				cseIdToBeAnnounced = null;
+//				cseNameToBeAnnounced = null;
+//				ipeUnderAnnouncedResource = false;
+//				startSDTIpe();
+//			} else {
+//				logger.info("Manage configuration properties");
+//				
+//			}
+//		} catch (Exception e) {
+//			logger.error("Error starting SDT IPE Activator", e);
+//		}
+		
+		// 
+		Dictionary properties = new Hashtable<>();
+		properties.put(org.osgi.framework.Constants.SERVICE_PID, SDT_IPE);
+		properties.put(EventConstants.EVENT_TOPIC, RemoteCseService.REMOTE_CSE_TOPIC);
+		serviceRegistration = bundleContext.registerService(
+				new String[] { ManagedService.class.getName(), EventHandler.class.getName() }, this,
+				properties);
 	}
 
 	@Override
@@ -184,7 +189,11 @@ public class Activator implements BundleActivator, ManagedService, EventHandler 
 	 * @throws Exception
 	 */
 	protected void registerSdtIpeApplication(String announceCseId, String cseName, boolean ipeUnder) throws Exception {
-		sdtIPEApplication = new SDTIpeApplication(cseService, announceCseId, cseName, ipeUnder);
+		if (sdtIPEApplication != null) {
+			// unregister a previous version
+			unregisterSdtIpeApplication();
+		}
+		sdtIPEApplication = new SDTIpeApplication(cseService, announceCseId, cseName, ipeUnder, hasToBeAnnounced);
 		sdtIPEApplication.publishSDTIPEApplication();
 	}
 
@@ -320,21 +329,22 @@ public class Activator implements BundleActivator, ManagedService, EventHandler 
 					+ ANNOUNCEMENT_ENABLED + "=" + propAnnouncementEnabled + ")\n" + "updated("
 					+ IPE_UNDER_ANNOUNCED_RESOURCE + "=" + propIpeUnderAnnouncedResource + ")");
 
+			
+			boolean isValidConfiguration = false;
+
 			if (propAnnouncementEnabled == null) {
 				logger.info("Undefined property announcement.enabled. Announcement disabled");
 				cseIdToBeAnnounced = null;
 				cseNameToBeAnnounced = null;
 				ipeUnderAnnouncedResource = false;
-				return;
-			}
-			boolean isValidConfiguration = false;
-
-			if (propAnnouncementEnabled) {
+				isValidConfiguration = true;
+			} else if (propAnnouncementEnabled) {
 				if ((propCseIdToBeAnnounced != null) && (propCseNameToBeAnnounced != null)) {
 					// check if CSE is connected
 					// if (checkIfRemoteCSEExists(propCseIdToBeAnnounced,
 					// propCseNameToBeAnnounced)) {
 					isValidConfiguration = true;
+					hasToBeAnnounced = true;
 					cseIdToBeAnnounced = propCseIdToBeAnnounced;
 					cseNameToBeAnnounced = propCseNameToBeAnnounced;
 					ipeUnderAnnouncedResource = (propIpeUnderAnnouncedResource == null) ? false
@@ -347,10 +357,30 @@ public class Activator implements BundleActivator, ManagedService, EventHandler 
 				}
 			} else {
 				// announcement.enabled = false
-				isValidConfiguration = true;
-				cseIdToBeAnnounced = null;
-				cseNameToBeAnnounced = null;
-				ipeUnderAnnouncedResource = false;
+				if (propIpeUnderAnnouncedResource.booleanValue()) {
+					if ((propCseIdToBeAnnounced != null) && (propCseNameToBeAnnounced != null)) {
+						isValidConfiguration = true;
+						hasToBeAnnounced = false;
+						cseIdToBeAnnounced = propCseIdToBeAnnounced;
+						cseNameToBeAnnounced = propCseNameToBeAnnounced;
+						ipeUnderAnnouncedResource = true;
+					} else {
+						// invalid configuration
+						isValidConfiguration = false;
+						hasToBeAnnounced = false;
+						cseIdToBeAnnounced = null;
+						cseNameToBeAnnounced = null;
+						ipeUnderAnnouncedResource = false;
+						logger.info("no REMOTE CSE where ipe.under.announced.resource=true");
+					}
+				} else {
+					isValidConfiguration = true;
+					cseIdToBeAnnounced = null;
+					cseNameToBeAnnounced = null;
+					ipeUnderAnnouncedResource = false;
+					hasToBeAnnounced = false;
+				}
+
 			}
 
 			if (isValidConfiguration) {
@@ -403,29 +433,37 @@ public class Activator implements BundleActivator, ManagedService, EventHandler 
 	public void handleEvent(Event event) {
 
 		logger.debug("handleEvent!!!!!!");
+
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		// check event
 		String remoteCseId = (String) event.getProperty(RemoteCseService.REMOTE_CSE_ID_PROPERTY);
-		String remoteCseName=  (String) event.getProperty(RemoteCseService.REMOTE_CSE_NAME_PROPERTY);
-		String operationProperty = (String) event.getProperty(RemoteCseService.REMOTE_CSE_NAME_PROPERTY);
-		
+		String remoteCseName = (String) event.getProperty(RemoteCseService.REMOTE_CSE_NAME_PROPERTY);
+		String operationProperty = (String) event.getProperty(RemoteCseService.OPERATION_PROPERTY);
+
 		if ((remoteCseId == null) || (remoteCseName == null)) {
 			// nothing to do
 			return;
 		}
-		
+
 		if (RemoteCseService.ADD_OPERATION_VALUE.equals(operationProperty)) {
 			// add a new cse
-			if((remoteCseId.equals(cseIdToBeAnnounced)) && (remoteCseName.equals(cseNameToBeAnnounced))) {
+			if ((remoteCseId.equals(cseIdToBeAnnounced)) && (remoteCseName.equals(cseNameToBeAnnounced))) {
 				startSDTIpe();
 			}
-			
+
 		} else if (RemoteCseService.REMOVE_OPERATION_VALUE.equals(operationProperty)) {
 			// remove a remoteCse
-			if((remoteCseId.equals(cseIdToBeAnnounced)) && (remoteCseName.equals(cseNameToBeAnnounced))) {
+			if ((remoteCseId.equals(cseIdToBeAnnounced)) && (remoteCseName.equals(cseNameToBeAnnounced))) {
 				stopSDTIPE();
 			}
 		}
-		
+
 	}
 
 }
