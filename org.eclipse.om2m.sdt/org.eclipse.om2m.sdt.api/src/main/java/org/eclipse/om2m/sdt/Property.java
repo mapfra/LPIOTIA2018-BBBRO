@@ -11,25 +11,33 @@ import org.eclipse.om2m.sdt.types.SimpleType;
 
 public class Property extends Element {
 	
+	private final String shortName;
+	
 	private boolean optional;
 	
 	private String value;
 	
 	private SimpleType type;
 
-	public Property(final String name) {
+	public Property(final String name, final String shortName) {
 		super(name);
 		optional = false;
 		type = SimpleType.String;
+		this.shortName = shortName;
 	}
 
-	public Property(final String name, final String value) {
-		this(name);
+	public Property(final String name, final String shortName, final String value) {
+		this(name, shortName);
 		setValue(value);
+		
 	}
 
 	public String getName() {
 		return name;
+	}
+	
+	public String getShortName() {
+		return shortName;
 	}
 
 	public SimpleType getType() {

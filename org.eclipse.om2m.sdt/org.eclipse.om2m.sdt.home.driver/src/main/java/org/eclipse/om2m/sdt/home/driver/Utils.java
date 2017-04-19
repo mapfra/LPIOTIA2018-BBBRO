@@ -108,7 +108,7 @@ public class Utils {
 				device.setDeviceModelName(val.toString());
 			else if (prop.equals(Utils.DEVICE_FRIENDLY_NAME))
 				device.setDeviceName(val.toString());
-			else device.setProperty(prop, val.toString());
+			else device.setProperty(prop, Utils.DEVICE_FRIENDLY_NAME, val.toString());
 		}
 		if (device.getDeviceManufacturer() == null)
 			device.setDeviceManufacturer("Unknown");

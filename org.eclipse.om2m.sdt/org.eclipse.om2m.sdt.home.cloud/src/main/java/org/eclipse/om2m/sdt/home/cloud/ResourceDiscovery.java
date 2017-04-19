@@ -210,7 +210,7 @@ public class ResourceDiscovery {
 		List<Property> props = new ArrayList<Property>();
 		for (CustomAttribute attr : moduleFlexContainer.getCustomAttributes()) {
 			if (attr.getCustomAttributeName().startsWith("prop")) {
-				Property prop = new Property(attr.getCustomAttributeName(), 
+				Property prop = new Property(attr.getCustomAttributeName(), attr.getCustomAttributeName(), 
 						attr.getCustomAttributeValue());
 				prop.setType(SimpleType.getSimpleType(attr.getCustomAttributeType()));
 				props.add(prop);
@@ -220,7 +220,7 @@ public class ResourceDiscovery {
 		Module module = (Module) Activator.DOMAIN.getModule(modName);
 		if (module != null) {
 			for (Property prop : props) {
-				module.setProperty(prop.getName(), prop.getValue());
+				module.setProperty(prop.getName(), prop.getShortName(), prop.getValue());
 			}
 			Activator.logger.info("Full retrieved SDT module " + module);//.prettyPrint());
 			return module;

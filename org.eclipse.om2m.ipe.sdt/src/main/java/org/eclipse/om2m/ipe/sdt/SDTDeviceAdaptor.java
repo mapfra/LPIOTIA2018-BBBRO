@@ -95,7 +95,7 @@ public class SDTDeviceAdaptor {
 
 			if (sdtProperty.getType() != null) {
 				CustomAttribute customAttributeForSdtProperty = new CustomAttribute();
-				customAttributeForSdtProperty.setCustomAttributeName(sdtProperty.getName());
+				customAttributeForSdtProperty.setCustomAttributeName(sdtProperty.getShortName());
 				customAttributeForSdtProperty.setCustomAttributeValue(sdtProperty.getValue());
 				customAttributeForSdtProperty.setCustomAttributeType(
 						sdtProperty.getType().getOneM2MType());

@@ -89,14 +89,14 @@ public class Device extends Element {
 		this.properties.put(property.getName(), property);
 	}
 
-	public void setProperty(String name, String value) {
-		setProperty(name, value, null);
+	public void setProperty(String name, String shortName, String value) {
+		setProperty(name, shortName, value, null);
 	}
 
-	public void setProperty(String name, String value, String type) {
+	public void setProperty(String name, String shortName, String value, String type) {
 		Property prop = getProperty(name);
 		if (prop == null) {
-			prop = new Property(name);
+			prop = new Property(name, shortName);
 			if (type != null)
 				prop.setType(SimpleType.getSimpleType(type));
 		}

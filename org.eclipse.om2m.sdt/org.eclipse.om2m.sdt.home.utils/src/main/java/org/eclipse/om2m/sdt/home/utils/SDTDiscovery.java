@@ -305,7 +305,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 		List<Property> props = new ArrayList<Property>();
 		for (CustomAttribute attr : moduleFlex.getCustomAttributes()) {
 			if (attr.getCustomAttributeName().startsWith("prop")) {
-				Property prop = new Property(attr.getCustomAttributeName(), 
+				Property prop = new Property(attr.getCustomAttributeName(), attr.getCustomAttributeName(),
 						attr.getCustomAttributeValue());
 				prop.setType(SimpleType.getSimpleType(attr.getCustomAttributeType()));
 				props.add(prop);
@@ -316,7 +316,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 		Module module = (Module) domain.getModule(modName);
 		if (module != null) {
 			for (Property prop : props) {
-				module.setProperty(prop.getName(), prop.getValue());
+				module.setProperty(prop.getName(), prop.getShortName(), prop.getValue());
 			}
 			Activator.LOGGER.info("Full retrieved SDT module " + module);//.prettyPrint());
 			return module;

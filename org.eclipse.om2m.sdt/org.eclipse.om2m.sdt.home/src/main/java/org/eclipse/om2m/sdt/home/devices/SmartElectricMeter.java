@@ -33,7 +33,7 @@ public class SmartElectricMeter extends GenericDevice {
 	public SmartElectricMeter(final String id, final String serial, final Domain domain) {
 		super(id, serial, DeviceType.deviceSmartElectricMeter, domain);
 		
-		measuringScope = new Property("propMeasuringScope");
+		measuringScope = new Property("propMeasuringScope", "meaSe");
 		measuringScope.setType(SimpleType.String);
 		measuringScope.setOptional(true);
 		measuringScope.setDoc("Measuring scope of the meter (ex. Whole house, room, or device)");

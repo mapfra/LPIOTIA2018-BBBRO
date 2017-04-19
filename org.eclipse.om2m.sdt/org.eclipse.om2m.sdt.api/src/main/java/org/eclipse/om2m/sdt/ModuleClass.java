@@ -186,10 +186,10 @@ public abstract class ModuleClass extends Element {
 		properties.put(arg.getName(), arg);
 	}
 
-	public void setProperty(String name, String value) {
+	public void setProperty(String name, String shortName, String value) {
 		Property prop = getProperty(name);
 		if (prop == null) {
-			prop = new Property(name);
+			prop = new Property(name, shortName);
 			properties.put(name, prop);
 		}
 		prop.setValue(value);
@@ -222,7 +222,7 @@ public abstract class ModuleClass extends Element {
 	
 	void setOwner(Device owner) {
 		this.owner = owner;
-		setProperty("propOwner", owner.getPid());
+		setProperty("propOwner", "propOwner", owner.getPid());
 		for (DataPoint dp : dataPoints.values()) {
 			dp.setOwner(owner);
 		}

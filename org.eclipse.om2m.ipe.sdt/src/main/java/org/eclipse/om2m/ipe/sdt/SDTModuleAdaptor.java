@@ -137,7 +137,7 @@ public class SDTModuleAdaptor {
 		for (Property sdtProperty : module.getProperties()) {
 			if (sdtProperty.getType() != null) {
 				CustomAttribute caForSdtProperty = new CustomAttribute();
-				caForSdtProperty.setCustomAttributeName(sdtProperty.getName());
+				caForSdtProperty.setCustomAttributeName(sdtProperty.getShortName());
 				caForSdtProperty.setCustomAttributeValue(sdtProperty.getValue());
 				caForSdtProperty.setCustomAttributeType(sdtProperty.getType().getOneM2MType());
 
