@@ -156,7 +156,13 @@ public class CSEInitializer {
 		} else {
 			db.getDAOFactory().getCSEBaseDAO().update(transaction, cseBaseEntity);
 		}
+		
+		// update acp admin entity's parent
+		CSEBaseEntity dbCseBaseEntity = db.getDAOFactory().getCSEBaseDAO().find(transaction, cseBaseEntity.getResourceID());
+		acpEntity.setParentCse(dbCseBaseEntity);
+		
 		transaction.commit();
+		transaction.close();
 	}
 
 	/**
