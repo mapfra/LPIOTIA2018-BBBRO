@@ -248,7 +248,7 @@ public class ShortName {
 	
 	// Attributes for FlexContainerEntity
 	/** Short name for ContainerDefinition attribute */
-	public static final String CONTAINER_DEFINITION = "cntDef";
+	public static final String CONTAINER_DEFINITION = "cnd";
 	
 	
 	// Attributes for Content Instance
