@@ -51,8 +51,6 @@ public class AeAnncDAO extends AbstractDAO<AeAnncEntity> {
 		}
 
 		transaction.getEm().remove(resource);
-//		transaction.getEm().getEntityManagerFactory().getCache().evict(CSEBaseEntity.class);
-//		transaction.getEm().getEntityManagerFactory().getCache().evict(RemoteCSEEntity.class);
 	}
 
 }
