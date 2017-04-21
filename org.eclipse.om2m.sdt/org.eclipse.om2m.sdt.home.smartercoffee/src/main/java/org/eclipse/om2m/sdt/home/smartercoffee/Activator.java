@@ -63,18 +63,27 @@ public class Activator implements ManagedService, BundleActivator {
 		sCoffee = new SmarterCoffeeMachine((Activator.ID + idNum++), domain, ip, port); 
 		sCoffee.setProtocol(PROTOCOL);
 		sCoffee.register(context);	
-//		test();
+		System.out.println("test - addCoffe");
+		//test();
 		
 	}
 	
 	public void test(){
 		try{
+			System.out.println("URUCHOMIONO TEST");
+			
+			
 			//logger.debug("SENDING REQUEST TO SMARTER COFFEE");
 			sCoffee.getBrewing().setCupsNumber(1);
 			sCoffee.getBrewing().setStrength(TasteStrength.zero);
-			sCoffee.getBrewing().setKeepWarm(true);
-			sCoffee.getGrinder().setUseGrinder(true);
-			sCoffee.getBrewing().setStatus(1);  	
+			//sCoffee.getKeepWarm();
+			sCoffee.getKeepWarm().setPowerState(true);
+			//sCoffee.getGrinder().setUseGrinder(true);
+			//sCoffee.getBrewing().setStatus(1); 
+			
+			System.out.println("settint true to powerState");
+			sCoffee.getBrewingSwitch().setPowerState(true);
+			
 			
 			if(sCoffee.getFaultDetection().getStatus()){
 				logger.debug("Fault description: " + sCoffee.getFaultDetection().getDescription() + " code: " + sCoffee.getFaultDetection().getCode());
@@ -110,10 +119,13 @@ public class Activator implements ManagedService, BundleActivator {
 			} catch (Exception ignored) {
 				ignored.printStackTrace();
 			}
-		
+			System.out.println("zaaaaaaaaraz: addCoffeMachine w UPDATED");
 			addCoffeeMachine(ip, port);
 		
 		}
+		
+		
+		//test();
 	}
 
 
@@ -126,6 +138,8 @@ public class Activator implements ManagedService, BundleActivator {
 		Dictionary properties = new Hashtable();
 		properties.put(Constants.SERVICE_PID, PID_VALUE);
 		serviceRegistration = context.registerService(ManagedService.class.getName(), this, properties );
+		
+		//test();
 	}
 
 

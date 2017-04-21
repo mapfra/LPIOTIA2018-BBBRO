@@ -125,6 +125,10 @@ public class SmarterCoffeeCommunication {
 		return status.getWaterLevel();
 	}
 	
+	public boolean getKeepWarmStatus(){
+		return status.getKeepWarm();
+	}
+	
 	
 	public void start(){ 
 		TCPConnection tcp = new TCPConnection(this.ip, this.port);

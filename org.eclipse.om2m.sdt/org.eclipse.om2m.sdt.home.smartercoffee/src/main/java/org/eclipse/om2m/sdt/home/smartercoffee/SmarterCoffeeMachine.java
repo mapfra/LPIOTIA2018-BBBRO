@@ -17,9 +17,11 @@ import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.devices.CoffeeMachine;
 import org.eclipse.om2m.sdt.home.driver.Utils;
+import org.eclipse.om2m.sdt.home.modules.BinarySwitch;
 import org.eclipse.om2m.sdt.home.modules.Brewing;
 import org.eclipse.om2m.sdt.home.modules.FaultDetection;
 import org.eclipse.om2m.sdt.home.modules.Grinder;
+import org.eclipse.om2m.sdt.home.modules.KeepWarm;
 import org.eclipse.om2m.sdt.home.modules.Level;
 import org.eclipse.om2m.sdt.home.smartercoffee.communication.SmarterCoffeeCommands;
 import org.eclipse.om2m.sdt.home.smartercoffee.communication.SmarterCoffeeCommunication;
@@ -36,6 +38,21 @@ public class SmarterCoffeeMachine extends CoffeeMachine{
 	private String IP;
 	private int port;
 	private SmarterCoffeeCommunication smarterCoffee;
+	
+	private IntegerDataPoint cupsNumber;
+	private BooleanDataPoint keepWarm;
+	private TasteStrength strength;
+	private IntegerDataPoint status;
+	
+	
+	/*
+	 * Paweł
+	 * Zawartość doGetValue i doSetValue z keepWarma osadzonego jako DataPoint w Brewing została przeniesiona do Modułu keepWarm do dataPointa keepWarm. W kwestii KeepWarm nic więcej nie zostało
+	 * ruszone, więc wszystko powinno (nie)działać tak samo jak wczesniej. 
+	 * 
+	 * 
+	 * 
+	 */
 
 	public SmarterCoffeeMachine(String id, Domain domain, String ip , int port) {
 		super(id, id, domain);
@@ -68,7 +85,18 @@ public class SmarterCoffeeMachine extends CoffeeMachine{
 		} catch (Exception e) {
 			Activator.logger.warning("Error addWaterStatus", e);
 		}
+		try {
+			addBrewingSwitch();
+		} catch (Exception e) {
+			Activator.logger.warning("Error addBrewingSwitch", e);
+		}
+		try {
+			addKeepWarm();
+		} catch (Exception e) {
+			Activator.logger.warning("Error addKeepWarm", e);
+		}
 		
+				
 		setDeviceManufacturer("Smarter");
 		setDeviceModelName("IKTSMC10EUFR");
 		setDeviceName("Smarter coffee machine");
@@ -103,7 +131,7 @@ public class SmarterCoffeeMachine extends CoffeeMachine{
 			@Override
 			protected Integer doGetValue() throws DataPointException {
 				return smarterCoffee.getCode();
-			}
+			}	
 		}, new StringDataPoint("description") {
 			
 			@Override
@@ -115,6 +143,7 @@ public class SmarterCoffeeMachine extends CoffeeMachine{
 		addModule(faultDetection);
 	}
 	
+		
 	private void addBrewing(){
 		
 		Activator.logger.info("add Brewing starting");
@@ -133,24 +162,7 @@ public class SmarterCoffeeMachine extends CoffeeMachine{
 				cupNumber = value;
 				smarterCoffee.setNumberOfCups(value);
 			}
-		}, new BooleanDataPoint("keepWarm") {
-			
-			boolean keepWarm = false;
-			
-			@Override
-			protected Boolean doGetValue() throws DataPointException {
-				return keepWarm;
-			}
-			
-			@Override
-			protected void doSetValue(Boolean value) throws DataPointException {
-				keepWarm = value;
-				if(value)
-					smarterCoffee.setHotPlateOn(5); // argument is a mintues user want to use hot plate
-				else 
-					smarterCoffee.setHotPlateOff();
-			}
-		}, new TasteStrength("strength") {
+		},  new TasteStrength("strength") {
 			
 			int strength = TasteStrength.zero;
 
@@ -174,19 +186,34 @@ public class SmarterCoffeeMachine extends CoffeeMachine{
 			}
 			
 			
-		}, new IntegerDataPoint("status") {
+		});
 		
+		addModule(brewing);
+		
+	}
+	
+	public void addBrewingSwitch(){
+		BinarySwitch brewingSwitch = new BinarySwitch(IP, domain, new BooleanDataPoint("powerState") {
+			
 			@Override
-			protected Integer doGetValue() throws DataPointException {
+			protected Boolean doGetValue() throws DataPointException {
 				smarterCoffee.getStatus();
-				return smarterCoffee.getCoffeeReadyStatus();
+				
+				if(smarterCoffee.getCoffeeReadyStatus() == 1)
+					return true;
+				else {
+					return false;
+				}
+				
+				//return smarterCoffee.getCoffeeReadyStatus();
 			}
 			@Override
-			protected void doSetValue(Integer value) throws DataPointException {
-				if(value.intValue() == 1)
-					try {
-						smarterCoffee.start(getGrinder().getUseGrinder(), getBrewing().getCupsNumber(), getBrewing().getStrength(), getBrewing().getKeepWarm());
-												
+			protected void doSetValue(Boolean value) throws DataPointException {
+				if(value == true)
+					try {System.out.println("start brewing swtich");
+						smarterCoffee.start(getGrinder().getUseGrinder(), getBrewing().getCupsNumber(), getBrewing().getStrength(), getKeepWarm().getPowerState());//tu się powinno pojawić getKeepWarm();
+						//smarterCoffee.start(true, 1, getBrewing().getStrength(), false);
+					
 					} catch (AccessException e) {
 						throw new DataPointException(e.getMessage());
 					}
@@ -195,9 +222,9 @@ public class SmarterCoffeeMachine extends CoffeeMachine{
 			}
 		});
 		
-		addModule(brewing);
-		
+		addModule(brewingSwitch);
 	}
+	
 	
 	private void addGrinder(){
 	
@@ -245,6 +272,31 @@ public class SmarterCoffeeMachine extends CoffeeMachine{
 		
 	}
 	
+	private void addKeepWarm(){
+		
+	KeepWarm keepWarm = new KeepWarm(name, domain, new BooleanDataPoint("powerState") {
+			
+			@Override
+			protected Boolean doGetValue() throws DataPointException {
+				// TODO Auto-generated method stub
+				return smarterCoffee.getKeepWarmStatus();
+				
+			}
+			
+			protected void doSetValue(Boolean value){
+				boolean keepWarm = value;
+				if(value)
+					smarterCoffee.setHotPlateOn(5); // argument is a mintues user want to use hot plate
+				else 
+					smarterCoffee.setHotPlateOff();
+			}
+		});
+		
+		addModule(keepWarm);
+		
+		
+	}
+
 	
 	
 	public void setProperties(){

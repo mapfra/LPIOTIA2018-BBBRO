@@ -16,37 +16,37 @@ public class Brewing extends Module{
 	
 	private IntegerDataPoint cupsNumber;
 	
-	private BooleanDataPoint keepWarm;
+	//private BooleanDataPoint keepWarm;
 	
 	private TasteStrength strength;
 	
-	private IntegerDataPoint status;
+	//private IntegerDataPoint status;
 	
 	//TODO add properties maxCupsNumber
 
-	public Brewing(String name, Domain domain, IntegerDataPoint cupsNumber, BooleanDataPoint keepWarm, TasteStrength strength, IntegerDataPoint status) {
+	public Brewing(String name, Domain domain, IntegerDataPoint cupsNumber, TasteStrength strength) {
 		super(name, domain, ModuleType.brewing.getDefinition());
 		
 		this.cupsNumber = cupsNumber;
 		this.cupsNumber.setDoc("The current number of the cups requested to brew.");
 		addDataPoint(this.cupsNumber);
 		
-		this.keepWarm = keepWarm;
+	/*	this.keepWarm = keepWarm;
 		this.keepWarm.setDoc("The current status of the keeping a drink warm after brewing enabling. “True” indicates enabled, and “False” indicates not enabled.");
-		addDataPoint(this.keepWarm);
+		addDataPoint(this.keepWarm);*/
 	
 		this.strength = strength;
 		this.strength.setDoc("The current strength of the drink taste. A higher value indicates a stronger taste.");
 		addDataPoint(this.strength);
-		
+		/*
 		this.status = status;
 		this.status.setDoc("The current status of the machine which prepares the drinks. Status equals 1 means the brewing is ongoing, 0 means the brewing is not ongoing.");
-		addDataPoint(this.status);
+		addDataPoint(this.status);*/
 
 	}
 	
 	public Brewing(final String name, final Domain domain, Map<String, DataPoint> dps) {
-	        this(name, domain, (IntegerDataPoint) dps.get("cupsNumber"), (BooleanDataPoint) dps.get("keepWarm"), (TasteStrength) dps.get("strength"), (IntegerDataPoint) dps.get("status"));
+	        this(name, domain, (IntegerDataPoint) dps.get("cupsNumber"), (TasteStrength) dps.get("strength"));
 	}
 
 	public int getCupsNumber() throws DataPointException, AccessException {
@@ -57,13 +57,13 @@ public class Brewing extends Module{
 			cupsNumber.setValue(v);
 		}	
 	
-	public boolean getKeepWarm() throws DataPointException, AccessException {
+/*	public boolean getKeepWarm() throws DataPointException, AccessException {
 		return keepWarm.getValue();
-	}
+	}*/
 
-	public void setKeepWarm(boolean v) throws DataPointException, AccessException {
+	/*public void setKeepWarm(boolean v) throws DataPointException, AccessException {
 		keepWarm.setValue(v);
-	}
+	}*/
 	
 	public int getStrength() throws DataPointException, AccessException {
 		return strength.getValue();
@@ -72,7 +72,7 @@ public class Brewing extends Module{
 	public void setStrength(int v) throws DataPointException, AccessException {
 		strength.setValue(v);
 	}
-	
+	/*
 	public int getStatus() throws DataPointException, AccessException {
 		return status.getValue();
 	}
@@ -80,5 +80,5 @@ public class Brewing extends Module{
 	public void setStatus(int v) throws DataPointException, AccessException {
 		status.setValue(v);
 	}
-
+*/
 }

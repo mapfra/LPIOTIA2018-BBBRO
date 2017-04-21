@@ -57,6 +57,8 @@ public enum ModuleType {
 	grinder(42, "grinder"),
 	foaming(43, "foaming"),
 	brewing(44, "brewing"),
+	boiling(45, "boiling"),
+	keepWarm(46, "keepwarm"),
 	
 	
 	/***********************/

@@ -5,11 +5,13 @@ import java.util.Collection;
 
 import org.eclipse.om2m.sdt.Domain;
 import org.eclipse.om2m.sdt.Module;
+import org.eclipse.om2m.sdt.home.modules.BinarySwitch;
 import org.eclipse.om2m.sdt.home.modules.Brewing;
 import org.eclipse.om2m.sdt.home.modules.Clock;
 import org.eclipse.om2m.sdt.home.modules.FaultDetection;
 import org.eclipse.om2m.sdt.home.modules.Foaming;
 import org.eclipse.om2m.sdt.home.modules.Grinder;
+import org.eclipse.om2m.sdt.home.modules.KeepWarm;
 import org.eclipse.om2m.sdt.home.modules.Level;
 import org.eclipse.om2m.sdt.home.modules.RunMode;
 import org.eclipse.om2m.sdt.home.types.DeviceType;
@@ -41,6 +43,10 @@ public class CoffeeMachine extends GenericDevice{
 	
 	private Level milkQuantity;
 	
+	private KeepWarm keepWarm;
+	
+	private BinarySwitch brewingSwitch;
+	
 	public void addModule(Module module) {
 		if (module instanceof FaultDetection)
 			addModule((FaultDetection)module);
@@ -69,6 +75,10 @@ public class CoffeeMachine extends GenericDevice{
 			addModule((Grinder)module);
 		else if (module instanceof Foaming)
 			addModule((Foaming)module);
+		else if(module instanceof KeepWarm)
+			addModule((KeepWarm)module);
+		else if(module instanceof BinarySwitch)
+			addModule((BinarySwitch)module);
 		else
 			super.addModule(module);
 	}
@@ -77,6 +87,17 @@ public class CoffeeMachine extends GenericDevice{
 		this.faultDetection = mod;
 		super.addModule(faultDetection);
 	}
+	
+	public void addModule(BinarySwitch mod){
+		this.brewingSwitch = mod;
+		super.addModule(brewingSwitch);
+	}
+	
+	public void addModule(KeepWarm mod){
+		this.keepWarm = mod;
+		super.addModule(keepWarm);
+	}
+
 	
 	public void addModule(RunMode mod) {
 		this.runMode = mod;
@@ -163,6 +184,22 @@ public class CoffeeMachine extends GenericDevice{
 
 	public Level getMilkQuantity() {
 		return milkQuantity;
+	}
+
+	public KeepWarm getKeepWarm() {
+		return keepWarm;
+	}
+
+	public void setKeepWarm(KeepWarm keepWarm) {
+		this.keepWarm = keepWarm;
+	}
+
+	public BinarySwitch getBrewingSwitch() {
+		return brewingSwitch;
+	}
+
+	public void setBrewingSwitch(BinarySwitch brewingSwitch) {
+		this.brewingSwitch = brewingSwitch;
 	}
 
 	

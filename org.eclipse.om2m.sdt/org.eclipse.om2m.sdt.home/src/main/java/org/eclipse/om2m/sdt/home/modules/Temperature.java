@@ -39,8 +39,11 @@ public class Temperature extends Module {
 	public Temperature(final String name, final Domain domain, Map<String, DataPoint> dps) {
 		this(name, domain, (FloatDataPoint) dps.get("currentTemperature"));
 		FloatDataPoint targetTemperature = (FloatDataPoint) dps.get("targetTemperature");
-		if (targetTemperature != null)
+		if (targetTemperature != null){
 			setTargetTemperature(targetTemperature);
+			targetTemperature.setWritable(true);
+		}
+			
 		FloatDataPoint minValue = (FloatDataPoint) dps.get("minValue");
 		if (minValue != null)
 			setMinValue(minValue);
@@ -53,6 +56,29 @@ public class Temperature extends Module {
 		StringDataPoint units = (StringDataPoint) dps.get("units");
 		if (units != null)
 			setUnits(units);
+	}
+
+
+
+	public Temperature(String name, Domain domain, FloatDataPoint currentTemperature, FloatDataPoint targetTemperature,
+			StringDataPoint unit, FloatDataPoint minValue, FloatDataPoint maxValue,
+			FloatDataPoint stepValue) {
+		// TODO Auto-generated constructor stub
+		this(name, domain, (FloatDataPoint) currentTemperature);
+		
+		
+		if(targetTemperature!=null)
+			setTargetTemperature(targetTemperature);
+		if(unit!=null)
+			setUnits(unit);
+		if(minValue!=null)
+			setMinValue(minValue);
+		if(maxValue!=null)
+			setMaxValue(maxValue);
+		if(stepValue!=null)
+			setStepValue(stepValue);
+		
+		
 	}
 
 	public float getCurrentTemperature() throws DataPointException, AccessException {
@@ -73,9 +99,16 @@ public class Temperature extends Module {
 	}
 
 	public void setTargetTemperature(float b) throws DataPointException, AccessException {
+		System.out.println("Korzysta z funkcji setTargetTemperature(float b) --- " + b);
+
+		if(targetTemperature == null)
+			System.out.println("WYJATEK");
+		
 		if (targetTemperature == null)
 			throw new DataPointException("Not implemented");
+		
 		targetTemperature.setValue(b);
+		
 	}
 
 	public void setMinValue(FloatDataPoint dp) {

@@ -215,4 +215,12 @@ public class SmarterCoffeeStatus {
 		
 	}
 
+	public void setKeepWarm(boolean keepWarm) {
+		this.keepWarm = keepWarm;
+	}
+	
+	public boolean getKeepWarm(){
+		return keepWarm;
+	}
+
 }
