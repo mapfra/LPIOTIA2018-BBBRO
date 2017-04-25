@@ -8,6 +8,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: org.apache.commons.logging,
  org.eclipse.om2m.commons.constants,
  org.eclipse.om2m.commons.resource,
+ org.eclipse.om2m.commons.resource.flexcontainerspec,
  org.eclipse.om2m.datamapping.service,
  org.osgi.framework,
  org.osgi.util.tracker

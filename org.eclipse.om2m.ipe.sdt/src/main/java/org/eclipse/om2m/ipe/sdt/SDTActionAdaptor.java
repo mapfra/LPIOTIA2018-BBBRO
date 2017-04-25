@@ -54,6 +54,8 @@ public class SDTActionAdaptor {
 
 		FlexContainer actionFlexContainer = new FlexContainer();
 		actionFlexContainer.setContainerDefinition(action.getDefinition());
+		actionFlexContainer.setLongName("myActionLongName");
+		actionFlexContainer.setShortName("masn");
 		if (hasToBeAnnounced) {
 			actionFlexContainer.getAnnounceTo().add(SEP + announceCseId);
 		}

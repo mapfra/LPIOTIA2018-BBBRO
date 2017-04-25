@@ -7,10 +7,12 @@
  *******************************************************************************/
 package org.eclipse.om2m.commons.resource;
 
+import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -22,8 +24,17 @@ public class CustomAttributeAdapter extends XmlAdapter<Element, CustomAttribute>
 	public CustomAttribute unmarshal(Element v) throws Exception {
 		CustomAttribute customAttribute = new CustomAttribute();
 
+		String value = null;
+		Attr att = v.getAttributeNode("value");
+		if (att != null) {
+			// json case
+			value = v.getAttribute("value");
+		} else {
+			// xml case
+			value = v.getTextContent();
+		}
 		customAttribute.setCustomAttributeName(v.getTagName());
-		customAttribute.setCustomAttributeValue(v.getTextContent());
+		customAttribute.setCustomAttributeValue(value);
 		customAttribute.setCustomAttributeType(v.getAttribute("type"));
 		
 
@@ -32,7 +43,6 @@ public class CustomAttributeAdapter extends XmlAdapter<Element, CustomAttribute>
 
 	@Override
 	public Element marshal(CustomAttribute v) throws Exception {
-		
 		
 		if (null == v) {
 			return null;

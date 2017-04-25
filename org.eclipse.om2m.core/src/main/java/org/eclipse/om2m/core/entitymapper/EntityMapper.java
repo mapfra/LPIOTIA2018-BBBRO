@@ -97,7 +97,7 @@ public abstract class EntityMapper<E extends ResourceEntity, R extends Resource>
 	 * @return the mapped serializable resource
 	 */
 	public R mapEntityToResource(E entity, BigInteger resultContent) {
-		R result = createResource();
+		R result = createResource(entity);
 		if (resultContent.equals(ResultContent.ATTRIBUTES)
 				|| resultContent.equals(ResultContent.ATTRIBUTES_AND_CHILD_REF)
 				|| resultContent.equals(ResultContent.ATTRIBUTES_AND_CHILD_RES)
@@ -146,6 +146,15 @@ public abstract class EntityMapper<E extends ResourceEntity, R extends Resource>
 	 */
 	protected abstract void mapChildResources(E entity, R resource);
 
+	/**
+	 * Method use to create the object to return corresponding to the R type.
+	 * 
+	 * @return the created empty resource
+	 */
+	protected R createResource(E entity) {
+		return createResource();
+	}
+	
 	/**
 	 * Method use to create the object to return corresponding to the R type.
 	 * 

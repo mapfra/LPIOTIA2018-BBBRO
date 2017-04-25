@@ -21,11 +21,62 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSchemaType;
+import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlValue;
 
 import org.eclipse.om2m.commons.constants.ShortName;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceCameraFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceCoffeeMachineFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceContactDetectorFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceDoorFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceFloodDetectorFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceGasValveFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceLightFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceMotionDetectorFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceSmartElectricMeterFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceSmokeDetectorFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceSmokeExtractorFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceSwitchButtonFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceTemperatureDetectorFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceWarningDeviceFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceWaterHeaterFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceWaterValveFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceWeatherStationFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.FakeClass;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.FakeClass2;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleAlarmSpeakerFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleAtmosphericPressureSensorFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleAudioVolumeFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleBinarySwitchFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleBoilerFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleBrewingFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleBrightnessFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleCarbonDioxideSensorFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleCarbonMonoxideSensorFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleClockFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleColourFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleColourSaturationFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleContactSensorFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleDimmingFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleDoorStatusFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleEnergyConsumptionFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleEnergyGenerationFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleEnergyOverloadCircuitBreakerFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleExtendedCarbonDioxideSensorFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleFaultDetectionFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleFoamingFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleGrinderFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleNoiseFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.ModulePersonSensorFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleRelativeHumidityFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleRunModeFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleSmokeSensorFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleStreamingFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleTemperatureFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleWaterLevelFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleWaterSensorFlexContainer;
 import org.w3c.dom.Element;
 
 /**
@@ -69,10 +120,39 @@ import org.w3c.dom.Element;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "")
-@XmlRootElement(name = ShortName.FCNT)
+@XmlSeeAlso({FakeClass.class, FakeClass2.class, DeviceLightFlexContainer.class,
+	DeviceSmartElectricMeterFlexContainer.class, DeviceWaterHeaterFlexContainer.class,
+	DeviceCameraFlexContainer.class, DeviceCoffeeMachineFlexContainer.class,
+	DeviceContactDetectorFlexContainer.class, DeviceDoorFlexContainer.class,
+	DeviceFloodDetectorFlexContainer.class, DeviceGasValveFlexContainer.class,
+	DeviceMotionDetectorFlexContainer.class, DeviceSmokeDetectorFlexContainer.class,
+	DeviceSmokeExtractorFlexContainer.class, DeviceSwitchButtonFlexContainer.class,
+	DeviceTemperatureDetectorFlexContainer.class, DeviceWarningDeviceFlexContainer.class,
+	DeviceWaterValveFlexContainer.class, DeviceWeatherStationFlexContainer.class,
+	ModuleAlarmSpeakerFlexContainer.class, ModuleAudioVolumeFlexContainer.class,
+	ModuleBinarySwitchFlexContainer.class, ModuleBoilerFlexContainer.class,
+	ModuleBrightnessFlexContainer.class, ModuleClockFlexContainer.class,
+	ModuleColourFlexContainer.class, ModuleColourSaturationFlexContainer.class,
+	ModuleDoorStatusFlexContainer.class, ModuleEnergyConsumptionFlexContainer.class,
+	ModuleEnergyGenerationFlexContainer.class, ModuleFaultDetectionFlexContainer.class,
+	ModuleRelativeHumidityFlexContainer.class, ModuleRunModeFlexContainer.class,
+	ModuleSmokeSensorFlexContainer.class, ModuleTemperatureFlexContainer.class,
+	ModuleWaterLevelFlexContainer.class, ModuleWaterSensorFlexContainer.class,
+	ModuleAtmosphericPressureSensorFlexContainer.class, ModuleBrewingFlexContainer.class,
+	ModuleCarbonDioxideSensorFlexContainer.class, ModuleCarbonMonoxideSensorFlexContainer.class,
+	ModuleContactSensorFlexContainer.class, ModuleDimmingFlexContainer.class,
+	ModuleEnergyOverloadCircuitBreakerFlexContainer.class, ModuleExtendedCarbonDioxideSensorFlexContainer.class,
+	ModuleFoamingFlexContainer.class, ModuleGrinderFlexContainer.class,
+	ModuleNoiseFlexContainer.class, ModulePersonSensorFlexContainer.class,
+	ModuleStreamingFlexContainer.class})
 public class FlexContainer extends AnnounceableResource {
 
+	@XmlTransient
+	private String shortName;
+	
+	@XmlTransient
+	private String longName;
+	
 	@XmlElement(name = ShortName.STATETAG, required = true)
 	@XmlSchemaType(name = "nonNegativeInteger")
 	protected BigInteger stateTag;
@@ -94,6 +174,34 @@ public class FlexContainer extends AnnounceableResource {
 	
 	@XmlAnyElement()
 	protected List<CustomAttribute> customAttributes;
+	
+	/**
+	 * @return the shortName
+	 */
+	public String getShortName() {
+		return shortName;
+	}
+
+	/**
+	 * @param shortName the shortName to set
+	 */
+	public void setShortName(String shortName) {
+		this.shortName = shortName;
+	}
+
+	/**
+	 * @return the longName
+	 */
+	public String getLongName() {
+		return longName;
+	}
+
+	/**
+	 * @param longName the longName to set
+	 */
+	public void setLongName(String longName) {
+		this.longName = longName;
+	}
 
 	public List<CustomAttribute> getCustomAttributes() {
 		if (customAttributes == null) {

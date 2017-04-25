@@ -70,6 +70,8 @@ public class SDTModuleAdaptor {
 
 		FlexContainer flexContainer = new FlexContainer();
 		flexContainer.setContainerDefinition(this.module.getDefinition());
+		flexContainer.setLongName("myLongModuleName");
+		flexContainer.setShortName("msmn");
 		if (hasToBeAnnounced) {
 			flexContainer.getAnnounceTo().add(SEP + announceCseId);	
 		}

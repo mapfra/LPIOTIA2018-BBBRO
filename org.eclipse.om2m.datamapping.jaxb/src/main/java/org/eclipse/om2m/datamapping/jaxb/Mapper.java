@@ -48,7 +48,8 @@ public class Mapper implements DataMapperService {
 	/** JAXB Context, entry point to the JAXB API */
 	private JAXBContext context;
 	/** Resource package name used for JAXBContext instantiation */
-	private String resourcePackage = "org.eclipse.om2m.commons.resource";
+	// org.eclipse.om2m.commons.resource:
+	private String resourcePackage = "org.eclipse.om2m.commons.resource.flexcontainerspec";
 	private String mediaType;
 
 	/**
@@ -88,7 +89,9 @@ public class Mapper implements DataMapperService {
 			OutputStream outputStream = new ByteArrayOutputStream();
 			marshaller.setProperty(MarshallerProperties.MEDIA_TYPE,mediaType);
 			marshaller.setProperty(MarshallerProperties.JSON_INCLUDE_ROOT, true);
+			marshaller.setProperty(MarshallerProperties.JSON_REDUCE_ANY_ARRAYS, true);
 			marshaller.marshal(obj, outputStream);
+			
 			return outputStream.toString();
 		} catch (JAXBException e) {
 			LOGGER.error("JAXB marshalling error!", e);
@@ -113,8 +116,14 @@ public class Mapper implements DataMapperService {
 			Unmarshaller unmarshaller = context.createUnmarshaller();
 			unmarshaller.setProperty(UnmarshallerProperties.MEDIA_TYPE, mediaType);
 			unmarshaller.setProperty(UnmarshallerProperties.JSON_INCLUDE_ROOT, true);
+			unmarshaller.setProperty(UnmarshallerProperties.JSON_WRAPPER_AS_ARRAY_NAME , true);
+			unmarshaller.setProperty(UnmarshallerProperties.JSON_VALUE_WRAPPER , "value");
+			
+			Object unmarshaledObject = unmarshaller.unmarshal(stringReader);
+			Object toBeReturned = null;
+			toBeReturned = unmarshaledObject;
 
-			return unmarshaller.unmarshal(stringReader);
+			return toBeReturned;
 		} catch (JAXBException e) {
 			LOGGER.error("JAXB unmarshalling error!", e);
 		}

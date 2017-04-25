@@ -71,6 +71,10 @@ public class SDTDeviceAdaptor {
 		FlexContainer flexContainer = new FlexContainer();
 		// set container definition with the value of the Device definition
 		flexContainer.setContainerDefinition(device.getDefinition());
+		
+		// set long and short name
+		flexContainer.setLongName("myLongDeviceName");
+		flexContainer.setShortName("msdn");
 		flexContainer.getAccessControlPolicyIDs().add(adminAcpResource);
 		if (hasToBeAnnounced) {
 			flexContainer.getAnnounceTo().add(SEP + announceCseId);

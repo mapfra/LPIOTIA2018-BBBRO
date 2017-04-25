@@ -201,6 +201,9 @@ public class FlexContainerController extends Controller {
 		// announcedAttribute O
 
 		ControllerUtil.CreateUtil.fillEntityFromAnnounceableResource(flexContainer, flexContainerEntity);
+		
+		flexContainerEntity.setLongName(flexContainer.getLongName());
+		flexContainerEntity.setShortName(flexContainer.getShortName());
 
 		// creator O
 		if (flexContainer.getCreator() != null) {

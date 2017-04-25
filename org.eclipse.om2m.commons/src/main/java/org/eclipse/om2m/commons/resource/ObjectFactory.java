@@ -81,13 +81,21 @@ public class ObjectFactory {
 			"update");
 	private final static QName _FirmwareAnncUpdateStatus_QNAME = new QName("",
 			"updateStatus");
-
+	
+	private final static QName _MyDef2_QNAME = new QName("http://www.onem2m.org/xml/protocols",
+			"myDef2");
+	private final static QName _FlexContainer_QNAME = new QName("",
+			"fcnt");
+	
 	/**
 	 * Create a new ObjectFactory that can be used to create new instances of
 	 * schema derived classes for package: org.eclipse.om2m.commons.resource
 	 * 
 	 */
 	public ObjectFactory() {
+		System.out.println("###########################################################");
+		System.out.println("Object Factory parent");
+		System.out.println("###########################################################");
 	}
 
 	/**
@@ -211,13 +219,24 @@ public class ObjectFactory {
 		return new DynamicAuthorizationConsultation();
 	}
 	
-	/**
-	 * Create an instance of {@link FlexContainer}
-	 * 
-	 */
-	public FlexContainer createFlexContainer() {
-		return new FlexContainer();
-	}
+//	/**
+//	 * Create an instance of {@link FlexContainer}
+//	 * 
+//	 */
+//	private FlexContainer createFlexContainer(String longName, String shortName) {
+//		FlexContainer fc = new FlexContainer();
+//		fc.setLongName(longName);
+//		fc.setShortName(shortName);
+//		return fc;
+//	}
+	
+//	public FlexContainer createFlexContainer() {
+//		return new FlexContainer();
+//	}
+	
+//	public FlexContainer createmyDef2() {
+//		return createFlexContainer("myDef2", "myDef2");
+//	}
 	
 	/**
 	 * Create an instance of {@link FlexContainerAnnc}
@@ -1414,5 +1433,19 @@ public class ObjectFactory {
 		return new JAXBElement<String>(_SoftwareVersion_QNAME, String.class,
 				SoftwareAnnc.class, value);
 	}
+	
+	
+//	@XmlElementDecl(namespace = "http://www.onem2m.org/xml/protocols", name = "myDef2"/*, scope = FlexContainer.class*/)
+//	public JAXBElement<FlexContainer> createmyDef2(FlexContainer value) {
+//		return new JAXBElement<FlexContainer>(_MyDef2_QNAME, FlexContainer.class,
+//				null, value);
+//	}
+	
+//	@XmlElementDecl(namespace = "", name = "fcnt"/*, scope = FlexContainer.class*/)
+//	public JAXBElement<FlexContainer> createFlexContainer(FlexContainer value) {
+//		return new JAXBElement<FlexContainer>(_FlexContainer_QNAME, FlexContainer.class,
+//				null, value);
+//	}
+
 
 }

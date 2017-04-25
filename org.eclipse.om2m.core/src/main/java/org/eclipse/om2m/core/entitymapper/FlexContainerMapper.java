@@ -18,12 +18,18 @@ import org.eclipse.om2m.commons.resource.Container;
 import org.eclipse.om2m.commons.resource.CustomAttribute;
 import org.eclipse.om2m.commons.resource.FlexContainer;
 import org.eclipse.om2m.commons.resource.Subscription;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.FlexContainerFactory;
 
 public class FlexContainerMapper extends EntityMapper<FlexContainerEntity, FlexContainer>{
 
 	@Override
 	protected FlexContainer createResource() {
 		return new FlexContainer();
+	}
+	
+	@Override
+	protected FlexContainer createResource(FlexContainerEntity entity) {
+		return FlexContainerFactory.getSpecializationFlexContainer(entity.getShortName());
 	}
 
 	@Override
@@ -37,6 +43,9 @@ public class FlexContainerMapper extends EntityMapper<FlexContainerEntity, FlexC
 		resource.setOntologyRef(entity.getOntologyRef());
 		resource.setStateTag(entity.getStateTag());
 		resource.setContainerDefinition(entity.getContainerDefinition());
+		
+		resource.setLongName(entity.getLongName());
+		resource.setShortName(entity.getShortName());
 		
 		for(CustomAttributeEntity cae : entity.getCustomAttributes()) {
 			CustomAttribute ca = new CustomAttribute();

@@ -57,6 +57,16 @@
 		<java-type name="Container">
 			<xml-root-element name="m2m:cnt" />
 		</java-type>
+		
+		<!-- <java-type name="FlexContainer">
+			<xml-root-element name="m2m:fcnt" />
+		</java-type>
+		
+		<java-type name="MyDef">
+			<xml-root-element name="hd:myDef" />
+		</java-type> -->
+		
+		
 
 		<java-type name="ContentInstance">
 			<xml-root-element name="m2m:cin" />
@@ -114,5 +124,12 @@
 		</java-type>
 
 	</java-types>
+	
+	<xml-registries>
+        <xml-registry name="org.eclipse.om2m.commons.resource.flexcontainerspec.ObjectFactory">
+            <xml-element-decl java-method="createmyDef4"
+                name="hd:myDef4" type="org.eclipse.om2m.commons.resource.FlexContainer" />
+        </xml-registry>
+    </xml-registries>
 
 </xml-bindings>
