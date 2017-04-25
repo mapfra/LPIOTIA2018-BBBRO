@@ -33,32 +33,39 @@ public class Timer extends Module {
 	private BooleanDataPoint activated;
 	
 	public Timer(final String name, final Domain domain) {
-		super(name, domain, ModuleType.timer.getDefinition());
+		super(name, domain, ModuleType.timer.getDefinition(), ModuleType.timer.getLongDefinitionName(), ModuleType.timer.getShortDefinitionName());
 	}
 
 	public Timer(final String name, final Domain domain, Map<String, DataPoint> dps) {
 		this(name, domain);
 		IntegerDataPoint referenceTimer = (IntegerDataPoint) dps.get("referenceTimer");
-		if (referenceTimer != null)
+		if (referenceTimer != null) {
 			setReferenceTimer(referenceTimer);
+		}
 		IntegerDataPoint targetTimeToStart = (IntegerDataPoint) dps.get("targetTimeToStart");
-		if (targetTimeToStart != null)
+		if (targetTimeToStart != null) {
 			setTargetTimeToStart(targetTimeToStart);
+		}
 		IntegerDataPoint targetTimeToStop = (IntegerDataPoint) dps.get("targetTimeToStop");
-		if (targetTimeToStop != null)
+		if (targetTimeToStop != null) {
 			setTargetTimeToStop(targetTimeToStop);
+		}
 		IntegerDataPoint estimatedTimeToEnd = (IntegerDataPoint) dps.get("estimatedTimeToEnd");
-		if (estimatedTimeToEnd != null)
+		if (estimatedTimeToEnd != null) {
 			setEstimatedTimeToEnd(estimatedTimeToEnd);
+		}
 		IntegerDataPoint runningTime = (IntegerDataPoint) dps.get("runningTime");
-		if (runningTime != null)
+		if (runningTime != null) {
 			setRunningTime(runningTime);
+		}
 		IntegerDataPoint targetDuration = (IntegerDataPoint) dps.get("targetDuration");
-		if (targetDuration != null)
+		if (targetDuration != null) {
 			setTargetDuration(targetDuration);
+		}
 		BooleanDataPoint activated = (BooleanDataPoint) dps.get("activated");
-		if (activated != null)
+		if (activated != null) {
 			setActivated(activated);
+		}
 	}
 
 	public void setReferenceTimer(IntegerDataPoint dp) {
@@ -66,6 +73,8 @@ public class Timer extends Module {
 		referenceTimer.setOptional(true);
 		referenceTimer.setWritable(false);
 		referenceTimer.setDoc("...");
+		referenceTimer.setLongDefinitionType("referenceTimer");
+		referenceTimer.setShortDefinitionType("refTr");
 		addDataPoint(referenceTimer);
 	}
 
@@ -79,6 +88,8 @@ public class Timer extends Module {
 		this.targetTimeToStart = dp;
 		this.targetTimeToStart.setOptional(true);
 		this.targetTimeToStart.setDoc("...");
+		this.targetTimeToStart.setLongDefinitionType("targetTimeToStart");
+		this.targetTimeToStart.setShortDefinitionType("tTTSt");
 		addDataPoint(targetTimeToStart);
 	}
 
@@ -98,6 +109,8 @@ public class Timer extends Module {
 		this.targetTimeToStop = dp;
 		this.targetTimeToStop.setOptional(true);
 		this.targetTimeToStop.setDoc("...");
+		this.targetTimeToStop.setLongDefinitionType("targetTimeToStop");
+		this.targetTimeToStart.setShortDefinitionType("tTTSp");
 		addDataPoint(targetTimeToStop);
 	}
 
@@ -118,6 +131,8 @@ public class Timer extends Module {
 		this.estimatedTimeToEnd.setOptional(true);
 		this.estimatedTimeToEnd.setWritable(false);
 		this.estimatedTimeToEnd.setDoc("...");
+		this.estimatedTimeToEnd.setLongDefinitionType("estimatedTimeToEnd");
+		this.estimatedTimeToEnd.setShortDefinitionType("eTTEd");
 		addDataPoint(estimatedTimeToEnd);
 	}
 
@@ -132,6 +147,8 @@ public class Timer extends Module {
 		this.runningTime.setOptional(true);
 		this.runningTime.setWritable(false);
 		this.runningTime.setDoc("...");
+		this.runningTime.setLongDefinitionType("runningTime");
+		this.runningTime.setShortDefinitionType("runTe");
 		addDataPoint(runningTime);
 	}
 
@@ -146,6 +163,8 @@ public class Timer extends Module {
 		this.targetDuration.setOptional(true);
 		this.targetDuration.setWritable(false);
 		this.targetDuration.setDoc("...");
+		this.targetDuration.setLongDefinitionType("targetDuration");
+		this.targetDuration.setShortDefinitionType("tarDn");
 		addDataPoint(targetDuration);
 	}
 
@@ -221,6 +240,8 @@ public class Timer extends Module {
 		this.activated = dp;
 		this.activated.setOptional(true);
 		this.activated.setDoc("...");
+		this.activated.setLongDefinitionType("activated");
+		this.activated.setShortDefinitionType("activ");
 		addDataPoint(activated);
 	}
 

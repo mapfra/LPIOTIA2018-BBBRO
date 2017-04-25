@@ -102,10 +102,10 @@ public class FlexContainerFactory {
 			return new ModulePersonSensorFlexContainer();
 		case ModuleStreamingFlexContainer.SHORT_NAME:
 			return new ModuleStreamingFlexContainer();
-		case "fake":
-			return new FakeClass();
-		case "fakeGreg":
-			return new FakeClass2();
+		case ModuleLockFlexContainer.SHORT_NAME:
+			return new ModuleLockFlexContainer();
+		case ActionToggleFlexContainer.SHORT_NAME:
+			return new ActionToggleFlexContainer();
 		}
 		return new FlexContainer();
 		

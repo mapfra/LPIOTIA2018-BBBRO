@@ -15,9 +15,12 @@ public class Noise extends Module {
 	private IntegerDataPoint noise;
 	
 	public Noise(String name, Domain domain, IntegerDataPoint noiseDataPoint) {
-		super(name, domain, ModuleType.noise.getDefinition());
+		super(name, domain, ModuleType.noise.getDefinition(),
+				ModuleType.noise.getLongDefinitionName(), ModuleType.noise.getShortDefinitionName());
 		this.noise = noiseDataPoint;
 		this.noise.setWritable(false);
+		this.noise.setLongDefinitionType("noise");
+		this.noise.setShortDefinitionType("noise");
 		addDataPoint(this.noise);
 	}
 

@@ -25,11 +25,15 @@ public class GenericSensor extends Module {
 	
 	public GenericSensor(final String name, final Domain domain, 
 			BooleanDataPoint value, String containerDefinition) {
-		super(name, domain, containerDefinition);
+		super(name, domain, containerDefinition, 
+				ModuleType.genericSensor.getLongDefinitionName(),
+				ModuleType.genericSensor.getShortDefinitionName());
 
 		this.value = value;
 		this.value.setWritable(false);
 		this.value.setDoc("True = Sensed, False = Not Sensed");
+		this.value.setLongDefinitionType("value");
+		this.value.setShortDefinitionType("value");
 		addDataPoint(this.value);
 	}
 

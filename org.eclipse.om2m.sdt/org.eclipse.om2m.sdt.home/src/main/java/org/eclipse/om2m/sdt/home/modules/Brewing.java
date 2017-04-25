@@ -25,10 +25,13 @@ public class Brewing extends Module{
 	//TODO add properties maxCupsNumber
 
 	public Brewing(String name, Domain domain, IntegerDataPoint cupsNumber, TasteStrength strength) {
-		super(name, domain, ModuleType.brewing.getDefinition());
+		super(name, domain, ModuleType.brewing.getDefinition(),
+				ModuleType.brewing.getLongDefinitionName(), ModuleType.brewing.getShortDefinitionName());
 		
 		this.cupsNumber = cupsNumber;
 		this.cupsNumber.setDoc("The current number of the cups requested to brew.");
+		this.cupsNumber.setLongDefinitionType("cupsNumber");
+		this.cupsNumber.setShortDefinitionType("cupNr");
 		addDataPoint(this.cupsNumber);
 		
 	/*	this.keepWarm = keepWarm;
@@ -37,6 +40,8 @@ public class Brewing extends Module{
 	
 		this.strength = strength;
 		this.strength.setDoc("The current strength of the drink taste. A higher value indicates a stronger taste.");
+		this.strength.setLongDefinitionType("strength");
+		this.strength.setShortDefinitionType("stren");
 		addDataPoint(this.strength);
 		/*
 		this.status = status;

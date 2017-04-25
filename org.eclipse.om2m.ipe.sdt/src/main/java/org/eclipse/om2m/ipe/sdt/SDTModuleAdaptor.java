@@ -70,8 +70,8 @@ public class SDTModuleAdaptor {
 
 		FlexContainer flexContainer = new FlexContainer();
 		flexContainer.setContainerDefinition(this.module.getDefinition());
-		flexContainer.setLongName("myLongModuleName");
-		flexContainer.setShortName("msmn");
+		flexContainer.setLongName(this.module.getLongDefinitionName());
+		flexContainer.setShortName(this.module.getShortDefinitionName());
 		if (hasToBeAnnounced) {
 			flexContainer.getAnnounceTo().add(SEP + announceCseId);	
 		}
@@ -90,7 +90,11 @@ public class SDTModuleAdaptor {
 		/// each DataPoint is a custom attribute
 		for (DataPoint dp : module.getDataPoints()) {
 			CustomAttribute customAttribute = new CustomAttribute();
-			customAttribute.setCustomAttributeName(dp.getName());
+			String customAttributeName = dp.getShortDefinitionType();
+			if (customAttributeName == null) {
+				customAttributeName = dp.getName();
+			}
+			customAttribute.setCustomAttributeName(customAttributeName);
 			customAttribute.setCustomAttributeType(dp.getDataType().getTypeChoice().getOneM2MType());
 			String value = null;
 			try {
@@ -138,6 +142,11 @@ public class SDTModuleAdaptor {
 		// SDT properties are customAttribute of the module FlexContainer
 		for (Property sdtProperty : module.getProperties()) {
 			if (sdtProperty.getType() != null) {
+				
+				if ((sdtProperty.getValue() == null) && (sdtProperty.isOptional())) {
+					continue;
+				}
+				
 				CustomAttribute caForSdtProperty = new CustomAttribute();
 				caForSdtProperty.setCustomAttributeName(sdtProperty.getShortName());
 				caForSdtProperty.setCustomAttributeValue(sdtProperty.getValue());

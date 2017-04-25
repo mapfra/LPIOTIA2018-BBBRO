@@ -23,13 +23,19 @@ public class Device extends Element {
 	private Map<String, SubDevice> devices;
 
 	private String definition;
+	
+	private String longDefinitionName;
+	private String shortDefinitionName;
 
-	public Device(final String id, final Domain domain, final String definition) {
+	public Device(final String id, final Domain domain, final String definition, 
+			final String longDefinitionName, final String shortDefinitionName) {
 		super(definition + "__" + id);
 		if (domain.getDevice(getName()) != null)
 			throw new IllegalArgumentException("Already a device with name " 
 					+ getName() + " in domain " + domain);
 		this.definition = definition;
+		this.longDefinitionName = longDefinitionName;
+		this.shortDefinitionName = shortDefinitionName;
 		modules = new HashMap<String, Module>();
 		properties = new HashMap<String, Property>();
 		devices = new HashMap<String, SubDevice>();
@@ -46,6 +52,14 @@ public class Device extends Element {
 	
 	public String getDefinition() {
 		return definition;
+	}
+	
+	public String getLongDefinitionName() {
+		return longDefinitionName;
+	}
+	
+	public String getShortDefinitionName() {
+		return shortDefinitionName;
 	}
 
 	public Collection<String> getModuleNames() {

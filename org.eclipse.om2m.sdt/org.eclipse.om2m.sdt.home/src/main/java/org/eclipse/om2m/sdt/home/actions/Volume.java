@@ -17,7 +17,7 @@ public abstract class Volume extends Command {
 	private BooleanArg upArg;
 
 	public Volume(String name) {
-		super(name, "org.onem2m.home.actions.volume");
+		super(name, "org.onem2m.home.actions.volume", "downVolume", "dowVe");
 		setDoc("Increase/Decrease volume by the amount of the stepValue upto the maxValue");
 		upArg = new BooleanArg("up");
 		addArg(upArg);

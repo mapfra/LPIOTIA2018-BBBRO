@@ -23,16 +23,22 @@ public class Level extends Module {
 	private org.eclipse.om2m.sdt.home.types.LevelType status;
 
 	public Level(final String name, final Domain domain, org.eclipse.om2m.sdt.home.types.LevelType dpQuantity, org.eclipse.om2m.sdt.home.types.LevelType dpStatus) {
-		super(name, domain, ModuleType.level.getDefinition());
+		super(name, domain, ModuleType.level.getDefinition(),
+				ModuleType.level.getLongDefinitionName(),
+				ModuleType.level.getShortDefinitionName());
 
 		if(dpQuantity != null){
 			quantity = dpQuantity;
 			quantity.setDoc("The desired quantity of supplies to be used; e.g. of rinse liquid, of water, of milk in a cup of coffee.");
+			quantity.setLongDefinitionType("quantity");
+			quantity.setShortDefinitionType("quanty");
 			addDataPoint(quantity);
 		}
 		if(dpStatus != null){
 			status = dpStatus;
 			status.setDoc("The current status of supplies e.g. of water, of coffee beans.");
+			status.setLongDefinitionType("status");
+			status.setShortDefinitionType("stats");
 			addDataPoint(status);
 		}
 	}

@@ -14,7 +14,7 @@ public class KeepWarm extends BinarySwitch {
 	
 	public KeepWarm(String name, Domain domain, BooleanDataPoint keepWarmSwitch){
 		
-		super(name, domain, ModuleType.keepWarm.getDefinition(), keepWarmSwitch);
+		super(name, domain, ModuleType.keepWarm.getDefinition(), keepWarmSwitch, ModuleType.keepWarm.getLongDefinitionName(), ModuleType.keepWarm.getShortDefinitionName());
 		
 	}
 

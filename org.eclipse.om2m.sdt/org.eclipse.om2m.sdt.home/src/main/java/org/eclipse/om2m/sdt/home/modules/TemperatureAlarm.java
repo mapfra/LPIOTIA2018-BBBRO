@@ -20,7 +20,7 @@ import org.eclipse.om2m.sdt.home.types.ModuleType;
 public class TemperatureAlarm extends AbstractAlarmSensor {
 	
 	private IntegerDataPoint temperature;
-	private IntegerDataPoint temperatureThreshhold;
+	private IntegerDataPoint temperatureThreshold;
 	
 	public TemperatureAlarm(final String name, final Domain domain, BooleanDataPoint alarm) {
 		super(name, domain, alarm, ModuleType.temperatureAlarm,
@@ -36,6 +36,8 @@ public class TemperatureAlarm extends AbstractAlarmSensor {
 		temperature.setOptional(true);
 		temperature.setWritable(false);
 		temperature.setDoc("To report the value of the temperature; the common unit is ºC");
+		temperature.setLongDefinitionType("temperature");
+		temperature.setShortDefinitionType("tempe");
 		addDataPoint(temperature);
 	}
 	
@@ -46,22 +48,24 @@ public class TemperatureAlarm extends AbstractAlarmSensor {
 	}
 
 	public void setTemperatureThreshhold(IntegerDataPoint dp) {
-		this.temperatureThreshhold = dp;
-		temperatureThreshhold.setOptional(true);
-		temperatureThreshhold.setDoc("The threshhold to trigger the alarm.");
-		addDataPoint(temperatureThreshhold);
+		this.temperatureThreshold = dp;
+		temperatureThreshold.setOptional(true);
+		temperatureThreshold.setDoc("The threshhold to trigger the alarm.");
+		temperatureThreshold.setLongDefinitionType("temperatureThreshold");
+		temperatureThreshold.setShortDefinitionType("temTd");
+		addDataPoint(temperatureThreshold);
 	}
 	
 	public int getTemperatureThreshhold() throws DataPointException, AccessException {
-		if (temperatureThreshhold == null)
+		if (temperatureThreshold == null)
 			throw new DataPointException("Not implemented");
-		return temperatureThreshhold.getValue();
+		return temperatureThreshold.getValue();
 	}
 	
 	public void setTemperatureThreshhold(int v) throws DataPointException, AccessException {
-		if (temperatureThreshhold == null)
+		if (temperatureThreshold == null)
 			throw new DataPointException("Not implemented");
-		temperatureThreshhold.setValue(v);
+		temperatureThreshold.setValue(v);
 	}
 
 }

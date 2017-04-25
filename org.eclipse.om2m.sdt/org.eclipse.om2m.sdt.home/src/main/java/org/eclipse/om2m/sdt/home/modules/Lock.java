@@ -22,10 +22,14 @@ public class Lock extends Module {
 	private LockState lockState;
 
 	public Lock(final String name, final Domain domain, LockState lock) {
-		super(name, domain, ModuleType.lock.getDefinition());
+		super(name, domain, ModuleType.lock.getDefinition(),
+				ModuleType.lock.getLongDefinitionName(),
+				ModuleType.lock.getShortDefinitionName());
 		
 		this.lockState = lock;
 		this.lockState.setDoc("Status of the lock (Locked / Unlocked)");
+		this.lockState.setLongDefinitionType("lockState");
+		this.lockState.setShortDefinitionType("lokSe");
 		addDataPoint(this.lockState);
 	}
 	

@@ -23,12 +23,16 @@ public class AtmosphericPressureSensor extends Module {
 
 	public AtmosphericPressureSensor(final String name, final Domain domain, 
 			FloatDataPoint atmosphericPressure) {
-		super(name, domain, ModuleType.atmosphericPressureSensor.getDefinition());
+		super(name, domain, ModuleType.atmosphericPressureSensor.getDefinition(),
+				ModuleType.atmosphericPressureSensor.getLongDefinitionName(), 
+				ModuleType.atmosphericPressureSensor.getShortDefinitionName());
 		
 		this.atmosphericPressure = atmosphericPressure;
 		this.atmosphericPressure.setWritable(false);
 		this.atmosphericPressure.getDataType().setUnitOfMeasure("Mbar");
 		this.atmosphericPressure.setDoc("Current Atmospheric Pressure In Mbar");
+		this.atmosphericPressure.setLongDefinitionType("atmosphericPressure");
+		this.atmosphericPressure.setShortDefinitionType("atmPe");
 		addDataPoint(this.atmosphericPressure);
 	}
 	

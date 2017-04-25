@@ -29,11 +29,13 @@ public class AbstractAlarmSensor extends Module {
 
 	public AbstractAlarmSensor(final String name, final Domain domain, 
 			BooleanDataPoint alarm, ModuleType type, String doc) {
-		super(name, domain, type.getDefinition());
+		super(name, domain, type.getDefinition(), type.getLongDefinitionName(), type.getShortDefinitionName());
 
 		this.alarm = alarm;
 		this.alarm.setWritable(false);
 		this.alarm.setDoc(doc);
+		this.alarm.setLongDefinitionType("alarm");
+		this.alarm.setShortDefinitionType("alarm");
 		addDataPoint(this.alarm);
 	}
 

@@ -18,21 +18,21 @@ public class MockedEnergyGeneration extends EnergyGeneration {
 	public MockedEnergyGeneration(String name, Domain domain) {
 		super(name, domain);
 
-		addDataPoint(new FloatDataPoint("powerGenerationData") {
+		setPowerGenerationData(new FloatDataPoint("powerGenerationData") {
 			@Override
 			public Float doGetValue() throws DataPointException {
 				return new Float(Math.random() * 1000);
 			}
 		});
 		
-		addDataPoint(new IntegerDataPoint("roundingEnergyGeneration") {
+		setRoundingEnergyGeneration(new IntegerDataPoint("roundingEnergyGeneration") {
 			@Override
 			public Integer doGetValue() throws DataPointException {
 				return new Integer((int)(Math.random() * 1000));
 			}
 		});
 		
-		addDataPoint(new IntegerDataPoint("significantDigits") {
+		setSignificantDigits(new IntegerDataPoint("significantDigits") {
 			private Integer significantDigits = new Integer(1);
 			@Override
 			public void doSetValue(Integer value) throws DataPointException {
@@ -44,7 +44,7 @@ public class MockedEnergyGeneration extends EnergyGeneration {
 			}
 		});
 		
-		addDataPoint(new IntegerDataPoint("multiplyingFactors") {
+		setMultiplyingFactors(new IntegerDataPoint("multiplyingFactors") {
 			Integer multiplyingFactors = new Integer(2);
 			@Override
 			public void doSetValue(Integer value) throws DataPointException {

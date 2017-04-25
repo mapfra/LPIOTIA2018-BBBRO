@@ -27,14 +27,20 @@ public class RunMode extends Module {
 	public RunMode(final String name, final Domain domain,
 			ArrayDataPoint<String> operationMode,
 			ArrayDataPoint<String> supportedModes) {
-		super(name, domain, ModuleType.runMode.getDefinition());
+		super(name, domain, ModuleType.runMode.getDefinition(),
+				ModuleType.runMode.getLongDefinitionName(), 
+				ModuleType.runMode.getShortDefinitionName());
 		
 		this.operationMode = operationMode;
 		this.operationMode.setDoc("Comma separated list of the currently active mode(s)");
+		this.operationMode.setLongDefinitionType("operationMode");
+		this.operationMode.setShortDefinitionType("opeMe");
 		addDataPoint(this.operationMode);
 		
 		this.supportedModes = supportedModes;
 		this.supportedModes.setDoc("Comma separated list of possible modes the device supports");
+		this.supportedModes.setLongDefinitionType("supportedModes");
+		this.supportedModes.setShortDefinitionType("supMs");
 		addDataPoint(this.supportedModes);
 	}
 	

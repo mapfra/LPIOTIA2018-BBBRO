@@ -32,14 +32,19 @@ public class AudioVolume extends Module {
 	
 	public AudioVolume(final String name, final Domain domain, 
 			IntegerDataPoint volumePercentage, BooleanDataPoint muteEnabled) {
-		super(name, domain, ModuleType.audioVolume.getDefinition());
+		super(name, domain, ModuleType.audioVolume.getDefinition(),
+				ModuleType.audioVolume.getLongDefinitionName(), ModuleType.audioVolume.getShortDefinitionName());
 
 		this.muteEnabled = muteEnabled;
 		this.muteEnabled.setDoc("The current status of the mute enablement. \"True\" indicates enabaled, and \"False\" indicates not enabled.");
+		this.muteEnabled.setLongDefinitionType("muteEnabled");
+		this.muteEnabled.setShortDefinitionType("mutEd");
 		addDataPoint(this.muteEnabled);
 		
 		this.volumePercentage = volumePercentage;
 		this.volumePercentage.setDoc("The rounded percentage of the current volume in the range of [0, maxValue]. 0% shall mean no sound produced.");
+		this.volumePercentage.setLongDefinitionType("volumePercentage");
+		this.volumePercentage.setShortDefinitionType("volPe");
 		addDataPoint(this.volumePercentage);
 	}
 	
@@ -98,6 +103,8 @@ public class AudioVolume extends Module {
 		stepValue.setWritable(false);
 		stepValue.setOptional(true);
 		stepValue.setDoc("Step value used by UpVolume and DownVolume.");
+		stepValue.setLongDefinitionType("stepValue");
+		stepValue.setShortDefinitionType("steVe");
 		addDataPoint(stepValue);
 	}
 
@@ -112,6 +119,8 @@ public class AudioVolume extends Module {
 		maxValue.setWritable(false);
 		maxValue.setOptional(true);
 		maxValue.setDoc("Maximum value allowed for Volume.");
+		maxValue.setLongDefinitionType("maxValue");
+		maxValue.setShortDefinitionType("maxVe");
 		addDataPoint(maxValue);
 	}
 

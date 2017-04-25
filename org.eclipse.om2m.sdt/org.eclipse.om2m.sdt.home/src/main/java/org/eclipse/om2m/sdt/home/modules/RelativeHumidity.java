@@ -24,11 +24,15 @@ public class RelativeHumidity extends Module {
 	private IntegerDataPoint desiredHumidity;
 	
 	public RelativeHumidity(final String name, final Domain domain, FloatDataPoint dp) {
-		super(name, domain, ModuleType.relativeHumidity.getDefinition());
+		super(name, domain, ModuleType.relativeHumidity.getDefinition(), 
+				ModuleType.relativeHumidity.getLongDefinitionName(),
+				ModuleType.relativeHumidity.getShortDefinitionName());
 
 		this.relativeHumidity = dp;
 		this.relativeHumidity.setWritable(false);
 		this.relativeHumidity.setDoc("The measurement of the relative humidity value; the common unit is percentage.");
+		this.relativeHumidity.setLongDefinitionType("relativeHumidity");
+		this.relativeHumidity.setShortDefinitionType("relHy");
 		addDataPoint(relativeHumidity);
 	}
 
@@ -47,6 +51,8 @@ public class RelativeHumidity extends Module {
 		this.desiredHumidity = dp;
 		this.desiredHumidity.setOptional(true);
 		this.desiredHumidity.setDoc("Desired value for Humidity.");
+		this.desiredHumidity.setLongDefinitionType("desiredHumidity");
+		this.desiredHumidity.setShortDefinitionType("desHy");
 		addDataPoint(desiredHumidity);
 	}
 

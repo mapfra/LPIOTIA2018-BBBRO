@@ -14,7 +14,7 @@ import org.eclipse.om2m.sdt.exceptions.ActionException;
 public abstract class Toggle extends Command {
 
 	public Toggle(String name) {
-		super(name, "org.onem2m.home.actions.toggle");
+		super(name, "org.onem2m.home.actions.toggle", "toggle", "togge");
 		setDoc("Toggle the switch.");
 	}
 

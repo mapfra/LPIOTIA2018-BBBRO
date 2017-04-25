@@ -20,6 +20,9 @@ public class DataPoint extends Element {
 	private Device owner;
 	
 	private Module parent;
+	
+	private String longDefinitionType;
+	private String shortDefinitionType;
 
 	public DataPoint(final String name, final DataType type) {
 		super(name);
@@ -76,13 +79,41 @@ public class DataPoint extends Element {
 	public Device getOwner() {
 		return owner;
 	}
-
+	
 	void setParent(Module parent) {
 		this.parent = parent;
 	}
 
 	public Module getParent() {
 		return parent;
+	}
+	
+	/**
+	 * @return the longDefinitionType
+	 */
+	public String getLongDefinitionType() {
+		return longDefinitionType;
+	}
+
+	/**
+	 * @param longDefinitionType the longDefinitionType to set
+	 */
+	public void setLongDefinitionType(String longDefinitionType) {
+		this.longDefinitionType = longDefinitionType;
+	}
+
+	/**
+	 * @return the shortDefinitionType
+	 */
+	public String getShortDefinitionType() {
+		return shortDefinitionType;
+	}
+
+	/**
+	 * @param shortDefinitionType the shortDefinitionType to set
+	 */
+	public void setShortDefinitionType(String shortDefinitionType) {
+		this.shortDefinitionType = shortDefinitionType;
 	}
 
 }

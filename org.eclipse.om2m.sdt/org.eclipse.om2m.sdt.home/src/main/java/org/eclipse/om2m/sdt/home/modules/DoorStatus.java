@@ -29,11 +29,15 @@ public class DoorStatus extends Module {
 	
 	
 	public DoorStatus(final String name, final Domain domain, DoorState state) {
-		super(name, domain, ModuleType.doorStatus.getDefinition());
+		super(name, domain, ModuleType.doorStatus.getDefinition(),
+				ModuleType.doorStatus.getLongDefinitionName(),
+				ModuleType.doorStatus.getShortDefinitionName());
 
 		this.doorState = state;
 		this.doorState.setWritable(false);
 		this.doorState.setDoc("\"True\" indicates that door is closed, \"False\"indicates the door is open.");
+		this.doorState.setLongDefinitionType("doorState");
+		this.doorState.setShortDefinitionType("dooSe");
 		addDataPoint(this.doorState);
 	}
 	
@@ -56,6 +60,8 @@ public class DoorStatus extends Module {
 		this.openDuration.setOptional(true);
 		this.openDuration.setWritable(false);
 		this.openDuration.setDoc("The time duration the door has been open. The type of openDuration is an ISO 8601 Time encoded string.");
+		this.openDuration.setLongDefinitionType("openDuration");
+		this.openDuration.setShortDefinitionType("opeDn");
 		addDataPoint(openDuration);
 	}
 
@@ -70,6 +76,8 @@ public class DoorStatus extends Module {
 		this.openAlarm.setOptional(true);
 		this.openAlarm.setWritable(true);
 		this.openAlarm.setDoc("The state of the door open alarm. True indicates that the open alarm is active. False indicates that open alarm is not active.");
+		this.openAlarm.setLongDefinitionType("openAlarm");
+		this.openAlarm.setShortDefinitionType("opeAm");
 		addDataPoint(openAlarm);
 	}
 

@@ -25,17 +25,27 @@ public class Colour extends Module {
 
 	public Colour(final String name, final Domain domain, IntegerDataPoint red, 
 			IntegerDataPoint green, IntegerDataPoint blue) {
-		super(name, domain, ModuleType.colour.getDefinition());
+		super(name, domain, ModuleType.colour.getDefinition(),
+				ModuleType.colour.getLongDefinitionName(),
+				ModuleType.colour.getShortDefinitionName());
 		setExtends(domain.getName(), "Colour");
 		
 		this.red = red;
 		this.red.setDoc("The R value of RGB; the range is [0,255]");
+		this.red.setLongDefinitionType("red");
+		this.red.setShortDefinitionType("red");
 		addDataPoint(this.red);
+		
 		this.green = green;
 		this.green.setDoc("The G value of RGB; the range is [0,255]");
+		this.green.setLongDefinitionType("green");
+		this.green.setShortDefinitionType("green");
 		addDataPoint(this.green);
+		
 		this.blue = blue;
 		this.blue.setDoc("The B value of RGB; the range is [0,255]");
+		this.blue.setLongDefinitionType("blue");
+		this.blue.setShortDefinitionType("blue");
 		addDataPoint(this.blue);
 	}
 

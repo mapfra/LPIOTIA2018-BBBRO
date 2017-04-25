@@ -15,7 +15,7 @@ public class Boiling extends Module {
 	
 	
 	public Boiling(String name, Domain domain, BooleanDataPoint keepWarm, IntegerDataPoint status){
-		super(name, domain, ModuleType.boiling.getDefinition());
+		super(name, domain, ModuleType.boiling.getDefinition(), ModuleType.boiling.getLongDefinitionName(), ModuleType.boiling.getShortDefinitionName());
 		
 		this.keepWarm = keepWarm;
 		this.keepWarm.setDoc("The current status of the keeping a drink warm after brewing enabling. “True” indicates enabled, and “False” indicates not enabled");
@@ -26,11 +26,6 @@ public class Boiling extends Module {
 		addDataPoint(this.status);
 	}
 
-	public Boiling(String name, Domain domain, String definition) {
-		super(name, domain, definition);
-		// TODO Auto-generated constructor stub
-	}
-	
 	public Boolean getKeepWarm() throws DataPointException, AccessException{
 		return keepWarm.getValue();
 	}

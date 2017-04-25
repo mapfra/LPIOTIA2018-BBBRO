@@ -28,10 +28,14 @@ public class Dimming extends Module {
 	
 	public Dimming(final String name, final Domain domain, 
 			IntegerDataPoint value) {
-		super(name, domain, ModuleType.dimming.getDefinition());
+		super(name, domain, ModuleType.dimming.getDefinition(),
+				ModuleType.dimming.getLongDefinitionName(),
+				ModuleType.dimming.getShortDefinitionName());
 
 		this.dimmingSetting = value;
 		this.dimmingSetting.setDoc("Current dimming value.");
+		this.dimmingSetting.setLongDefinitionType("dimmingSetting");
+		this.dimmingSetting.setShortDefinitionType("dimSg");
 		addDataPoint(this.dimmingSetting);
 	}
 
@@ -58,6 +62,8 @@ public class Dimming extends Module {
 		this.range.setOptional(true);
 		this.range.setWritable(false);
 		this.range.setDoc("Min And Max Values For The Dimming Setting.");
+		this.range.setLongDefinitionType("range");
+		this.range.setShortDefinitionType("range");
 		addDataPoint(range);
 	}
 
@@ -72,6 +78,8 @@ public class Dimming extends Module {
 		this.step.setOptional(true);
 		this.step.setWritable(false);
 		this.step.setDoc("Step Increment For Dimming Values.");
+		this.step.setLongDefinitionType("step");
+		this.step.setShortDefinitionType("step");
 		addDataPoint(step);
 	}
 

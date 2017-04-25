@@ -23,11 +23,15 @@ public class PushButton extends Module {
 	
 	public PushButton(final String name, final Domain domain, 
 			BooleanDataPoint pressed) {
-		super(name, domain, ModuleType.pushButton.getDefinition());
+		super(name, domain, ModuleType.pushButton.getDefinition(),
+				ModuleType.pushButton.getLongDefinitionName(),
+				ModuleType.pushButton.getShortDefinitionName());
 
 		this.pushed = pressed;
 		this.pushed.setWritable(false);
 		this.pushed.setDoc("To indicate the press of the button.");
+		this.pushed.setLongDefinitionType("pushed");
+		this.pushed.setShortDefinitionType("pushd");
 		addDataPoint(this.pushed);
 	}
 

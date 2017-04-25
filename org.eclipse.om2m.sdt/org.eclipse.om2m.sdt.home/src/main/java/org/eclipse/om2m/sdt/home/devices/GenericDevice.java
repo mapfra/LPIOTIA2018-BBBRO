@@ -40,7 +40,7 @@ public class GenericDevice extends Device {
 
 	public GenericDevice(final String id, final String serial, 
 			final DeviceType type, final Domain domain) {
-		super(id, domain, type.getDefinition());
+		super(id, domain, type.getDefinition(), type.getLongDefinitionName(), type.getShortDefinitionName());
 		this.type = type;
 
 		propDeviceSerialNum = new Property("propDeviceSerialNum", "deSNm", serial);

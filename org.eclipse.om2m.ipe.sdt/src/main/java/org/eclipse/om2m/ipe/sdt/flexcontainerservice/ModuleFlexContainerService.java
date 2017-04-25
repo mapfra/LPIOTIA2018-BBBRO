@@ -67,7 +67,7 @@ public class ModuleFlexContainerService implements FlexContainerService {
 		}
 
 		// retrieve the DataPoint object based on customAttributeName input parameter
-		DataPoint dataPoint = module.getDataPoint(customAttributeName);
+		DataPoint dataPoint = module.getDataPointByShortDefinitionType(customAttributeName);
 		if (dataPoint == null) {
 			throw new Om2mException("unknown custom attribute " + customAttributeName + " in " + module,
 					ResponseStatusCode.INTERNAL_SERVER_ERROR);
@@ -105,7 +105,7 @@ public class ModuleFlexContainerService implements FlexContainerService {
 		logger.debug("setCustomAttributeValue()");
 
 		for (CustomAttribute ca : customAttributes) {
-			DataPoint dataPoint = module.getDataPoint(ca.getCustomAttributeName());
+			DataPoint dataPoint = module.getDataPointByShortDefinitionType(ca.getCustomAttributeName());
 			if (dataPoint != null) {
 				// the custom attribute is a dataPoint
 				ValuedDataPoint<Object> valuedDataPoint = (ValuedDataPoint<Object>) dataPoint;

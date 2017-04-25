@@ -34,11 +34,15 @@ public class EnergyConsumption extends Module {
 
 	
 	public EnergyConsumption(final String name, final Domain domain, FloatDataPoint value) {
-		super(name, domain, ModuleType.energyConsumption.getDefinition());
+		super(name, domain, ModuleType.energyConsumption.getDefinition(),
+				ModuleType.energyConsumption.getLongDefinitionName(), 
+				ModuleType.energyConsumption.getShortDefinitionName());
 
 		this.power = value;
 		this.power.setWritable(false);
 		this.power.setDoc("The power of the device; The common unit is Watt (W).");
+		this.power.setLongDefinitionType("power");
+		this.power.setShortDefinitionType("power");
 		addDataPoint(this.power);
 	}
 	
@@ -77,6 +81,8 @@ public class EnergyConsumption extends Module {
 		this.multiplyingFactors.setOptional(true);
 		this.multiplyingFactors.setWritable(true);
 		this.multiplyingFactors.setDoc("The unit for data (multiplying factors) Ex. 1kWh, 0.1kWh, 0.01kWh etc.");
+		this.multiplyingFactors.setLongDefinitionType("multiplyingFactors");
+		this.multiplyingFactors.setShortDefinitionType("mulFs");
 		addDataPoint(multiplyingFactors);
 	}
 
@@ -97,6 +103,8 @@ public class EnergyConsumption extends Module {
 		this.absoluteEnergyConsumption.setOptional(true);
 		this.absoluteEnergyConsumption.setWritable(false);
 		this.absoluteEnergyConsumption.setDoc("The absolute energy consumption, reflecting the real measurement of accumulative energy; The common unit is Watt-hour (Wh).");
+		this.absoluteEnergyConsumption.setLongDefinitionType("absoluteEnergyConsumption");
+		this.absoluteEnergyConsumption.setShortDefinitionType("abECn");
 		addDataPoint(absoluteEnergyConsumption);
 	}
 
@@ -111,6 +119,8 @@ public class EnergyConsumption extends Module {
 		this.voltage.setOptional(true);
 		this.voltage.setWritable(false);
 		this.voltage.setDoc("The voltage of the device; The common unit is Voltage (V).");
+		this.voltage.setLongDefinitionType("voltage");
+		this.voltage.setShortDefinitionType("volte");
 		addDataPoint(voltage);
 	}
 
@@ -125,6 +135,8 @@ public class EnergyConsumption extends Module {
 		this.current.setOptional(true);
 		this.current.setWritable(false);
 		this.current.setDoc("The current of the device; The common unit is Current (A).");
+		this.current.setLongDefinitionType("current");
+		this.current.setShortDefinitionType("currt");
 		addDataPoint(current);
 	}
 
@@ -139,6 +151,8 @@ public class EnergyConsumption extends Module {
 		this.frequency.setOptional(true);
 		this.frequency.setWritable(false);
 		this.frequency.setDoc("The frequency of the device; The common unit is Hertz (Hz).");
+		this.frequency.setLongDefinitionType("frequency");
+		this.frequency.setShortDefinitionType("freqy");
 		addDataPoint(frequency);
 	}
 
@@ -153,6 +167,8 @@ public class EnergyConsumption extends Module {
 		this.roundingEnergyConsumption.setOptional(true);
 		this.roundingEnergyConsumption.setWritable(false);
 		this.roundingEnergyConsumption.setDoc("This energy consumption data can be calculated by using significantDigits and units.");
+		this.roundingEnergyConsumption.setLongDefinitionType("roundingEnergyConsumption");
+		this.roundingEnergyConsumption.setShortDefinitionType("roECn");
 		addDataPoint(roundingEnergyConsumption);
 	}
 
@@ -167,6 +183,8 @@ public class EnergyConsumption extends Module {
 		this.significantDigits.setOptional(true);
 		this.significantDigits.setWritable(true);
 		this.significantDigits.setDoc("The number of effective digits for data.");
+		this.significantDigits.setLongDefinitionType("significantDigits");
+		this.significantDigits.setShortDefinitionType("sigDs");
 		addDataPoint(significantDigits);
 	}
 

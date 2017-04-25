@@ -15,10 +15,14 @@ public class Foaming extends Module{
 	private FoamStrength foamingStrength;
 	
 	public Foaming(String name, Domain domain, FoamStrength dp) {
-		super(name, domain, ModuleType.foaming.getDefinition());
+		super(name, domain, ModuleType.foaming.getDefinition(),
+				ModuleType.foaming.getLongDefinitionName(),
+				ModuleType.foaming.getShortDefinitionName());
 		
 		foamingStrength = dp;
 		foamingStrength.setDoc("The current strength of foamed milk. A higher value indicates a milk which is more foamed.");
+		foamingStrength.setLongDefinitionType("foamingStrength");
+		foamingStrength.setShortDefinitionType("fogSh");
 		addDataPoint(foamingStrength);
 	}
 	

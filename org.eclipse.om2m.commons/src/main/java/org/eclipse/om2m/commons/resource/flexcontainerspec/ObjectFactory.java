@@ -198,11 +198,13 @@ public class ObjectFactory {
 	public FlexContainer createStrem() {
 		return new ModuleStreamingFlexContainer();
 	}
-	public FlexContainer createFake() {
-		return new FakeClass();
+	
+	public FlexContainer createLock() {
+		return new ModuleLockFlexContainer();
 	}
 	
-	public FlexContainer createFakeGreg() {
-		return new FakeClass2();
+	public FlexContainer createTogge() {
+		return new ActionToggleFlexContainer();
 	}
+	
 }

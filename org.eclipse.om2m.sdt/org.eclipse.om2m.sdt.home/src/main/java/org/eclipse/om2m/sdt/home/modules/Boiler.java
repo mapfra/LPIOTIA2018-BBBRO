@@ -22,10 +22,13 @@ public class Boiler extends Module {
 	private BooleanDataPoint status;
 
 	public Boiler(final String name, final Domain domain, BooleanDataPoint status) {
-		super(name, domain, ModuleType.boiler.getDefinition());
+		super(name, domain, ModuleType.boiler.getDefinition(),
+				ModuleType.boiler.getLongDefinitionName(), ModuleType.boiler.getShortDefinitionName());
 		
 		this.status = status;
 		this.status.setDoc("The status of boiling");
+		this.status.setLongDefinitionType("status");
+		this.status.setShortDefinitionType("stats");
 		addDataPoint(status);
 	}
 

@@ -9,49 +9,53 @@ package org.eclipse.om2m.sdt.home.types;
 
 public enum DeviceType {
 	
-	deviceAirConditioner(1, "deviceAirConditioner"),
-	deviceClothesWasher(2, "deviceClothesWasher"),
-	deviceElectricVehicleCharger(3, "deviceElectricVehicleCharger"),
-	deviceLight(4, "deviceLight"),
-	deviceMicrogeneration (5, "deviceMicrogeneration"),
-	deviceOven(6, "deviceOven"),
-	deviceRefrigerator(7, "deviceRefrigerator"),
-	deviceRobotCleaner(8, "deviceRobotCleaner"),
-	deviceSmartElectricMeter(9, "deviceSmartElectricMeter"),
-	deviceStorageBattery(10, "deviceStorageBattery"),
-	deviceTelevision(11, "deviceTelevision"),
-	deviceThermostat(12, "deviceThermostat"),
-	deviceWaterHeater(13, "deviceWaterHeater"),
-	deviceCoffeeMachine(14, "deviceCoffeeMachine"), 
-	deviceKettle(15, "deviceKettle"),
+	deviceAirConditioner(1, "deviceAirConditioner", "deviceAirConditioner", "deACr"),
+	deviceClothesWasher(2, "deviceClothesWasher", "deviceClothesWasher", "deCWr"),
+	deviceElectricVehicleCharger(3, "deviceElectricVehicleCharger", "deviceElectricVehicleCharger", "dEVCr"),
+	deviceLight(4, "deviceLight", "deviceLight", "devLt"),
+	deviceMicrogeneration (5, "deviceMicrogeneration", "deviceMicrogeneration", "devMn"),
+	deviceOven(6, "deviceOven", "deviceOven", "devOn"),
+	deviceRefrigerator(7, "deviceRefrigerator", "deviceRefrigerator", "devRr"),
+	deviceRobotCleaner(8, "deviceRobotCleaner", "deviceRobotCleaner", "devRCr"),
+	deviceSmartElectricMeter(9, "deviceSmartElectricMeter", "deviceSmartElectricMeter", "dSEMr"),
+	deviceStorageBattery(10, "deviceStorageBattery", "deviceStorageBattery", "deSBy"),
+	deviceTelevision(11, "deviceTelevision", "deviceTelevision", "devTn"),
+	deviceThermostat(12, "deviceThermostat", "deviceThermostat", "devTt"),
+	deviceWaterHeater(13, "deviceWaterHeater", "deviceWaterHeater", "devWHr"),
+	deviceCoffeeMachine(14, "deviceCoffeeMachine", "deviceCoffeeMachine", "dCeMe"), 
+	deviceKettle(15, "deviceKettle", "deviceKettle", "dKtle"),
 	
-	deviceDoor(100, "deviceDoor"),
-	deviceSmokeExtractor(101, "deviceSmokeExtractor"),
-	deviceSwitchButton(102, "deviceSwitchButton"),
-	deviceWarningDevice(103, "deviceWarningDevice"),
+	deviceDoor(100, "deviceDoor", "deviceDoor", "devDr"),
+	deviceSmokeExtractor(101, "deviceSmokeExtractor", "deviceSmokeExtractor", "dSeEr"),
+	deviceSwitchButton(102, "deviceSwitchButton", "deviceSwitchButton", "dShBn"),
+	deviceWarningDevice(103, "deviceWarningDevice", "deviceWarningDevice", "dWgDe"),
 	
-	deviceGasValve(200, "deviceGasValve"),
-	deviceWaterValve(201, "deviceWaterValve"),
+	deviceGasValve(200, "deviceGasValve", "deviceGasValve", "dGsVe"),
+	deviceWaterValve(201, "deviceWaterValve", "deviceWaterValve", "devWV"),
 	
-	deviceFloodDetector(300, "deviceFloodDetector"),
-	deviceMotionDetector(301, "deviceMotionDetector"),
-	deviceSmokeDetector(302, "deviceSmokeDetector"),
-	deviceTemperatureDetector(303, "deviceTemperatureDetector"),
-	deviceContactDetector(304, "deviceContactDetector"),
+	deviceFloodDetector(300, "deviceFloodDetector", "deviceFloodDetector", "dFdDr"),
+	deviceMotionDetector(301, "deviceMotionDetector", "deviceMotionDetector", "dMnDr"),
+	deviceSmokeDetector(302, "deviceSmokeDetector", "deviceSmokeDetector", "dSeDr"),
+	deviceTemperatureDetector(303, "deviceTemperatureDetector", "deviceTemperatureDetector", "dTeDr"),
+	deviceContactDetector(304, "deviceContactDetector", "deviceContactDetector", "dCtDr"),
 	
-	deviceCamera(400, "deviceCamera"),
-	deviceWeatherStation(500, "deviceWeatherStation"),
+	deviceCamera(400, "deviceCamera", "deviceCamera", "devCa"),
+	deviceWeatherStation(500, "deviceWeatherStation", "deviceWeatherStation", "dWrSn"),
 	
-	undefinedVendorExt(0, "undefinedVendorExt");
+	undefinedVendorExt(0, "undefinedVendorExt", "", "");
 	
 	static public final String PATH = "org.onem2m.home.device.";
 	
 	private int value;
-	private String def;
+	private final String def;
+	private final String longDefinitionName;
+	private final String shortDefinitionName;
 	
-	DeviceType(int v, String s) {
+	DeviceType(int v, String s, String longDef, String shortDef) {
 		value = v;
 		def = s;
+		longDefinitionName = longDef;
+		shortDefinitionName = shortDef;
 	}
 
     public int getValue() {
@@ -61,8 +65,26 @@ public enum DeviceType {
     public String getDefinition() {
     	return PATH + def;
     }
+    
+    
 
-    public static DeviceType fromValue(int v) {
+    /**
+	 * @return the longDefinitionName
+	 */
+	public String getLongDefinitionName() {
+		return longDefinitionName;
+	}
+
+
+	/**
+	 * @return the shortDefinitionName
+	 */
+	public String getShortDefinitionName() {
+		return shortDefinitionName;
+	}
+
+
+	public static DeviceType fromValue(int v) {
         for (DeviceType c: DeviceType.values()) {
             if (c.value == v) {
                 return c;

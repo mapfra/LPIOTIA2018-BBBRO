@@ -22,9 +22,13 @@ public class ColourSaturation extends Module {
 	private IntegerDataPoint colourSaturation;
 
 	public ColourSaturation(final String name, final Domain domain, IntegerDataPoint colourSaturation) {
-		super(name, domain, ModuleType.colourSaturation.getDefinition());
+		super(name, domain, ModuleType.colourSaturation.getDefinition(),
+				ModuleType.colourSaturation.getLongDefinitionName(),
+				ModuleType.colourSaturation.getShortDefinitionName());
 		setExtends(domain.getName(), "ColourSaturation");
 		this.colourSaturation = colourSaturation;
+		this.colourSaturation.setLongDefinitionType("colourSaturation");
+		this.colourSaturation.setShortDefinitionType("colSn");
 		addDataPoint(this.colourSaturation);
 	}
 

@@ -73,8 +73,8 @@ public class SDTDeviceAdaptor {
 		flexContainer.setContainerDefinition(device.getDefinition());
 		
 		// set long and short name
-		flexContainer.setLongName("myLongDeviceName");
-		flexContainer.setShortName("msdn");
+		flexContainer.setLongName(device.getLongDefinitionName());
+		flexContainer.setShortName(device.getShortDefinitionName());
 		flexContainer.getAccessControlPolicyIDs().add(adminAcpResource);
 		if (hasToBeAnnounced) {
 			flexContainer.getAnnounceTo().add(SEP + announceCseId);
@@ -98,6 +98,12 @@ public class SDTDeviceAdaptor {
 				+ ", value=" + sdtProperty.getValue() + ", type=" + sdtProperty.getType() + ")");
 
 			if (sdtProperty.getType() != null) {
+				
+				if ((sdtProperty.getValue() == null) && (sdtProperty.isOptional())) {
+					// do not add this property because it is null and optional
+					continue;
+				}
+				
 				CustomAttribute customAttributeForSdtProperty = new CustomAttribute();
 				customAttributeForSdtProperty.setCustomAttributeName(sdtProperty.getShortName());
 				customAttributeForSdtProperty.setCustomAttributeValue(sdtProperty.getValue());

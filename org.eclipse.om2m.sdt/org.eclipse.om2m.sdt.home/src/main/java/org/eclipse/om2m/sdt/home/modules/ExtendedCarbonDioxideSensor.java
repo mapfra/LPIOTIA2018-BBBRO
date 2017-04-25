@@ -20,6 +20,8 @@ public class ExtendedCarbonDioxideSensor extends CarbonDioxideSensor {
 		
 		this.carbonDioxideValue = carbonDioxideValue;
 		this.carbonDioxideValue.setWritable(false);
+		this.carbonDioxideValue.setLongDefinitionType("carbonDioxideValue");
+		this.carbonDioxideValue.setShortDefinitionType("cDeVe");
 		addDataPoint(carbonDioxideValue);
 	}
 

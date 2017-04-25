@@ -94,6 +94,16 @@ public class SDTDiscovery implements ISDTDiscovery {
 		public String toString() {
 			return (flex == null) ? flexA.toString() : flex.toString();
 		}
+		
+		public String getLongName() {
+			// TODO update flexA case
+			return (flex== null) ? flexA.getName() : flex.getLongName();
+		}
+		
+		public String getShortName() {
+			// TODO update flexA case
+			return (flex== null) ? flexA.getName() : flex.getShortName();
+		}
 
 	}
 
@@ -428,7 +438,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 			Activator.LOGGER.info("Full retrieved SDT action " + action);
 			return action;
 		}
-		action = new Command(actionName, cntDef, args) {
+		action = new Command(actionName, cntDef, args, actionFlexContainer.getLongName(), actionFlexContainer.getShortName()) {
 			@Override
 			protected Object doInvoke() throws ActionException {
 				Activator.LOGGER.info("invoke SDT action");

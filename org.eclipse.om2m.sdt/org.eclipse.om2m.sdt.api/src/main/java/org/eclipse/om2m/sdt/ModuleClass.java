@@ -25,6 +25,7 @@ public abstract class ModuleClass extends Element {
 	private Map<String, Action> actions;
 
 	private Map<String, DataPoint> dataPoints;
+	private Map<String, DataPoint> dataPointsByShortDefinitionType;
 
 	private Map<String, Event> events;
 
@@ -42,6 +43,7 @@ public abstract class ModuleClass extends Element {
 		optional = false;
 		this.actions = new HashMap<String, Action>();
 		this.dataPoints = new HashMap<String, DataPoint>();
+		this.dataPointsByShortDefinitionType = new HashMap<String, DataPoint>();
 		this.events = new HashMap<String, Event>();
 		this.properties = new HashMap<String, Property>();
 		domain.addModule(this);
@@ -98,6 +100,10 @@ public abstract class ModuleClass extends Element {
 	public DataPoint getDataPoint(final String name) {
 		return dataPoints.get(name);
 	}
+	
+	public DataPoint getDataPointByShortDefinitionType(final String shortDefinitionType) {
+		return dataPointsByShortDefinitionType.get(shortDefinitionType);
+	}
 
 	public void addDataPoint(final DataPoint dp) {
 		if (dataPoints.get(dp.getName()) != null) {
@@ -106,12 +112,23 @@ public abstract class ModuleClass extends Element {
 			throw new IllegalArgumentException(msg);
 		}
 		dp.setParent((Module) this);
+		if (dp.getShortDefinitionType() == null) {
+			String msg = "Short definition type is null of " + dp.getName() + " in module " + getName();
+			Logger.warning(msg);
+			throw new IllegalArgumentException(msg);
+		}
 		dataPoints.put(dp.getName(), dp);
-		dp.setOwner(owner);
+		dataPointsByShortDefinitionType.put(dp.getShortDefinitionType(), dp);
+		if (owner!= null) {
+			dp.setOwner(owner);
+		}
 	}
 
 	public void removeDataPoint(final String name) {
-		dataPoints.remove(name);
+		DataPoint dp = dataPoints.remove(name);
+		if (dp != null) {
+			dataPointsByShortDefinitionType.remove(dp.getShortDefinitionType());
+		}
 	}
 
 	public Collection<String> getEventNames() {

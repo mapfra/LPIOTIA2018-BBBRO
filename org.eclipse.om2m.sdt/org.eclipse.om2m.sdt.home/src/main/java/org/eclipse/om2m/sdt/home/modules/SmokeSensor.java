@@ -37,6 +37,8 @@ public class SmokeSensor extends AbstractAlarmSensor {
 		detectedTime = dp;
 		detectedTime.setOptional(true);
 		detectedTime.setDoc("The time the smoke is detected.");
+		detectedTime.setLongDefinitionType("detectedTime");
+		detectedTime.setShortDefinitionType("detTe");
 		addDataPoint(detectedTime);
 	}
 	

@@ -21,21 +21,42 @@ public class Action extends Element {
 	
 	private DataType type;
 
-	private String definition;
-
+	private final String definition;
+	private final String longDefinitionName;
+	private final String shortDefinitionName;
+	
 	private Device owner;
 
 	private Module parent;
 
-	public Action(final String name, final String definition) {
+	public Action(final String name, final String definition, 
+			final String longDefinitionName, final String shortDefinitionName) {
 		super(definition + "__" + name);
 		optional = false;
 		this.args = new HashMap<String, Arg>();
 		this.definition = definition;
+		this.longDefinitionName = longDefinitionName;
+		this.shortDefinitionName = shortDefinitionName;
 	}
 	
 	public String getDefinition() {
 		return definition;
+	}
+	
+	
+
+	/**
+	 * @return the longDefinitionName
+	 */
+	public String getLongDefinitionName() {
+		return longDefinitionName;
+	}
+
+	/**
+	 * @return the shortDefinitionName
+	 */
+	public String getShortDefinitionName() {
+		return shortDefinitionName;
 	}
 
 	public DataType getDataType() {

@@ -9,8 +9,6 @@ package org.eclipse.om2m.sdt.home.modules;
 
 import java.util.Map;
 
-import javax.print.attribute.standard.Sides;
-
 import org.eclipse.om2m.sdt.Action;
 import org.eclipse.om2m.sdt.DataPoint;
 import org.eclipse.om2m.sdt.Domain;
@@ -28,33 +26,32 @@ public class BinarySwitch extends Module {
 	
 	private Toggle toggle;
 	
-	
-	public BinarySwitch(final String name, final Domain domain, BooleanDataPoint powerState) {
+	public BinarySwitch(final String name, final Domain domain, 
+			BooleanDataPoint powerState) {
+		this(name, domain, ModuleType.binarySwitch.getDefinition(), 
+				powerState, ModuleType.binarySwitch.getLongDefinitionName(), 
+				ModuleType.binarySwitch.getShortDefinitionName());
 		
-		this(name, domain, ModuleType.binarySwitch.getDefinition(), powerState);
-	
 	}
 	
-	
+	public BinarySwitch(final String name, final Domain domain, final String definition,
+			BooleanDataPoint powerState, final String longDefinitionName, 
+			final String shortDefinitionName) {
+		super(name, domain, definition,
+				longDefinitionName,
+				shortDefinitionName);
+
+		this.powerState = powerState;
+		this.powerState.setDoc("The current status of the BinarySwitch. \"True\" indicates turned-on, and \"False\" indicates turned-off.");
+		this.powerState.setLongDefinitionType("powerState");
+		this.powerState.setShortDefinitionType("powSe");
+		addDataPoint(this.powerState);
+	}
 	
 	public BinarySwitch(final String name, final Domain domain, Map<String, DataPoint> dps) {
 		this(name, domain, (BooleanDataPoint) dps.get("powerState"));
 	}
-
-	public BinarySwitch(String name, Domain domain, String definition, BooleanDataPoint powerState) {
-		
-		super(name, domain, definition);
-		
-		this.powerState = powerState;
-		
-		this.powerState.setDoc("The current status of the BinarySwitch. \"True\" indicates turned-on, and \"False\" indicates turned-off.");
-		
-		addDataPoint(this.powerState);
-		
-	}
-
-
-
+	
 	public void addAction(Action action) {
 		if (action instanceof Toggle)
 			setToggle((Toggle)action);

@@ -41,6 +41,8 @@ public class MotionSensor extends AbstractAlarmSensor {
 		silentTime = dp;
 		silentTime.setOptional(true);
 		silentTime.setDoc("The time that the motionSensor restrains from sending an alarm in case continous motions are detected after one alarm is produced. This DataPoint can be used to avoid repeated alarm reports.");
+		silentTime.setLongDefinitionType("silentTime");
+		silentTime.setShortDefinitionType("silTe");
 		addDataPoint(silentTime);
 	}
 	
@@ -60,6 +62,8 @@ public class MotionSensor extends AbstractAlarmSensor {
 		sensitivity = dp;
 		sensitivity.setOptional(true);
 		sensitivity.setDoc("The level of the detection accuracy of the motion sensor. This DataPoint can be used to control the number of the report.");
+		sensitivity.setLongDefinitionType("sensitivity");
+		sensitivity.setShortDefinitionType("sensy");
 		addDataPoint(sensitivity);
 	}
 	

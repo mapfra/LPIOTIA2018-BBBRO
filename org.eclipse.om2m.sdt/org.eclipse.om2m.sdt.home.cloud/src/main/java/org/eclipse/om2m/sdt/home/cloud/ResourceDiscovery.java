@@ -335,7 +335,7 @@ public class ResourceDiscovery {
 			Activator.logger.info("Full retrieved SDT action " + action);
 			return action;
 		}
-		action = new Command(actionName, cntDef, args) {
+		action = new Command(actionName, cntDef, args, actionFlexContainer.getLongName(), actionFlexContainer.getShortName()) {
 			@Override
 			protected Object doInvoke() throws ActionException {
 				Activator.logger.info("invoke SDT action");

@@ -22,10 +22,14 @@ public class Brightness extends Module {
 	private IntegerDataPoint brightness;
 
 	public Brightness(final String name, final Domain domain, IntegerDataPoint brightness) {
-		super(name, domain, ModuleType.brightness.getDefinition());
+		super(name, domain, ModuleType.brightness.getDefinition(),
+				ModuleType.brightness.getLongDefinitionName(), 
+				ModuleType.brightness.getShortDefinitionName());
 		
 		this.brightness = brightness;
 		this.brightness.setDoc("Current sensed or set value for Brightness");
+		this.brightness.setLongDefinitionType("brightness");
+		this.brightness.setShortDefinitionType("brigs");
 		addDataPoint(this.brightness);
 	}
 

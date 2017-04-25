@@ -28,11 +28,15 @@ public class Temperature extends Module {
 	private StringDataPoint units;
 	
 	public Temperature(final String name, final Domain domain, FloatDataPoint dp) {
-		super(name, domain, ModuleType.temperature.getDefinition());
+		super(name, domain, ModuleType.temperature.getDefinition(), 
+				ModuleType.temperature.getLongDefinitionName(),
+				ModuleType.temperature.getShortDefinitionName());
 
 		currentTemperature = dp;
 		currentTemperature.setWritable(false);
 		currentTemperature.setDoc("The current currentTemperature");
+		currentTemperature.setLongDefinitionType("currentTemperature");
+		currentTemperature.setShortDefinitionType("curT0");
 		addDataPoint(currentTemperature);
 	}
 
@@ -89,6 +93,8 @@ public class Temperature extends Module {
 		this.targetTemperature = dp;
 		this.targetTemperature.setOptional(true);
 		this.targetTemperature.setDoc("The desired temperature to reach.");
+		this.targetTemperature.setLongDefinitionType("targetTemperature");
+		this.targetTemperature.setShortDefinitionType("tarTe");
 		addDataPoint(targetTemperature);
 	}
 
@@ -116,6 +122,8 @@ public class Temperature extends Module {
 		this.minValue.setOptional(true);
 		this.minValue.setWritable(false);
 		this.minValue.setDoc("Minimum value of targetTemperature.");
+		this.minValue.setLongDefinitionType("minValue");
+		this.minValue.setShortDefinitionType("minVe");
 		addDataPoint(minValue);
 	}
 
@@ -130,6 +138,8 @@ public class Temperature extends Module {
 		this.maxValue.setOptional(true);
 		this.maxValue.setWritable(false);
 		this.maxValue.setDoc("Maximum value of targetTemperature.");
+		this.maxValue.setLongDefinitionType("maxValue");
+		this.maxValue.setShortDefinitionType("maxVe");
 		addDataPoint(maxValue);
 	}
 
@@ -144,6 +154,8 @@ public class Temperature extends Module {
 		this.stepValue.setOptional(true);
 		this.stepValue.setWritable(false);
 		this.stepValue.setDoc("Step value allowed for targetTemperature.");
+		this.stepValue.setLongDefinitionType("stepValue");
+		this.stepValue.setShortDefinitionType("steVe");
 		addDataPoint(stepValue);
 	}
 
@@ -158,6 +170,8 @@ public class Temperature extends Module {
 		this.units.setOptional(true);
 		this.units.setWritable(false);
 		this.units.setDoc("The list of units for the temperature values. The default is Celsius only [C].");
+		this.units.setLongDefinitionType("unit");
+		this.units.setShortDefinitionType("unit");
 		addDataPoint(units);
 	}
 

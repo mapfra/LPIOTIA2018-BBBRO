@@ -26,14 +26,20 @@ public class Clock extends Module {
 
 	public Clock(final String name, final Domain domain, TimeDataPoint currentTime,
 			DateDataPoint currentDate) {
-		super(name, domain, ModuleType.clock.getDefinition());
+		super(name, domain, ModuleType.clock.getDefinition(),
+				ModuleType.clock.getLongDefinitionName(), 
+				ModuleType.clock.getShortDefinitionName());
 		
 		this.currentDate = currentDate;
 		currentDate.setDoc("Information of the current date");
+		this.currentDate.setLongDefinitionType("currentDate");
+		this.currentDate.setShortDefinitionType("curDe");
 		addDataPoint(currentDate);
 		
 		this.currentTime = currentTime;
 		currentTime.setDoc("Information of the current time");
+		this.currentTime.setLongDefinitionType("currentTime");
+		this.currentTime.setShortDefinitionType("curTe");
 		addDataPoint(currentTime);
 	}
 

@@ -19,12 +19,12 @@ import org.eclipse.om2m.sdt.utils.Activator;
 
 public abstract class Command extends Action {
 
-	public Command(String name, String definition) {
-		super(name, definition);
+	public Command(String name, String definition, final String longDefinitionName, final String shortDefinitionName) {
+		super(name, definition, longDefinitionName, shortDefinitionName);
 	}
 
-	public Command(String name, String definition, Collection<Arg> args) {
-		super(name, definition);
+	public Command(String name, String definition, Collection<Arg> args, final String longDefinitionName, final String shortDefinitionName) {
+		super(name, definition, longDefinitionName, shortDefinitionName);
 		if (args != null)
 			for (Arg arg : args)
 				addArg(arg);

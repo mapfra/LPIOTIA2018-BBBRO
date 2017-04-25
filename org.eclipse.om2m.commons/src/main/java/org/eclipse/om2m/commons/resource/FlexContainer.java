@@ -27,6 +27,7 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlValue;
 
 import org.eclipse.om2m.commons.constants.ShortName;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.ActionToggleFlexContainer;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceCameraFlexContainer;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceCoffeeMachineFlexContainer;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceContactDetectorFlexContainer;
@@ -44,8 +45,6 @@ import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceWarningDeviceFl
 import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceWaterHeaterFlexContainer;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceWaterValveFlexContainer;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceWeatherStationFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.FakeClass;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.FakeClass2;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleAlarmSpeakerFlexContainer;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleAtmosphericPressureSensorFlexContainer;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleAudioVolumeFlexContainer;
@@ -68,6 +67,7 @@ import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleExtendedCarbonD
 import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleFaultDetectionFlexContainer;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleFoamingFlexContainer;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleGrinderFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleLockFlexContainer;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleNoiseFlexContainer;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.ModulePersonSensorFlexContainer;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleRelativeHumidityFlexContainer;
@@ -77,7 +77,6 @@ import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleStreamingFlexCo
 import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleTemperatureFlexContainer;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleWaterLevelFlexContainer;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleWaterSensorFlexContainer;
-import org.w3c.dom.Element;
 
 /**
  * <p>
@@ -120,7 +119,7 @@ import org.w3c.dom.Element;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlSeeAlso({FakeClass.class, FakeClass2.class, DeviceLightFlexContainer.class,
+@XmlSeeAlso({DeviceLightFlexContainer.class,
 	DeviceSmartElectricMeterFlexContainer.class, DeviceWaterHeaterFlexContainer.class,
 	DeviceCameraFlexContainer.class, DeviceCoffeeMachineFlexContainer.class,
 	DeviceContactDetectorFlexContainer.class, DeviceDoorFlexContainer.class,
@@ -144,7 +143,8 @@ import org.w3c.dom.Element;
 	ModuleEnergyOverloadCircuitBreakerFlexContainer.class, ModuleExtendedCarbonDioxideSensorFlexContainer.class,
 	ModuleFoamingFlexContainer.class, ModuleGrinderFlexContainer.class,
 	ModuleNoiseFlexContainer.class, ModulePersonSensorFlexContainer.class,
-	ModuleStreamingFlexContainer.class})
+	ModuleStreamingFlexContainer.class, ModuleLockFlexContainer.class,
+	ActionToggleFlexContainer.class})
 public class FlexContainer extends AnnounceableResource {
 
 	@XmlTransient

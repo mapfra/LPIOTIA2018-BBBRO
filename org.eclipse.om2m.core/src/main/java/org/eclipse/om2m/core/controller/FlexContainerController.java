@@ -37,6 +37,7 @@ import org.eclipse.om2m.commons.resource.CustomAttribute;
 import org.eclipse.om2m.commons.resource.FlexContainer;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.FlexContainerFactory;
 import org.eclipse.om2m.commons.utils.Util.DateUtil;
 import org.eclipse.om2m.core.announcer.Announcer;
 import org.eclipse.om2m.core.datamapper.DataMapperSelector;
@@ -419,7 +420,7 @@ public class FlexContainerController extends Controller {
 			checkPermissions(request, flexContainerEntity, flexContainerEntity.getAccessControlPolicies());
 		}
 
-		FlexContainer modifiedAttributes = new FlexContainer();
+		FlexContainer modifiedAttributes = /*new FlexContainer()*/ FlexContainerFactory.getSpecializationFlexContainer(flexContainerEntity.getShortName());
 		// check if content is present
 		if (request.getContent() != null) {
 			// create the java object from the resource representation

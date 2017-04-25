@@ -26,10 +26,13 @@ public class AlarmSpeaker extends Module {
 	private AlertColourCode light;
 
 	public AlarmSpeaker(final String name, final Domain domain, BooleanDataPoint alarmStatus) {
-		super(name, domain, ModuleType.alarmSpeaker.getDefinition());
+		super(name, domain, ModuleType.alarmSpeaker.getDefinition(), 
+				ModuleType.alarmSpeaker.getLongDefinitionName(), ModuleType.alarmSpeaker.getShortDefinitionName());
 		
 		this.alarmStatus = alarmStatus;
 		this.alarmStatus.setDoc("\"True\" indicates the alarm start while \"False\" indicates the alarm stop");
+		this.alarmStatus.setLongDefinitionType("alarmStatus");
+		this.alarmStatus.setShortDefinitionType("alaSs");
 		addDataPoint(this.alarmStatus);
 	}
 
@@ -59,6 +62,8 @@ public class AlarmSpeaker extends Module {
 		tone = dp;
 		tone.setDoc("Representing the tones of the alarm");
 		tone.setOptional(true);
+		tone.setLongDefinitionType("tone");
+		tone.setShortDefinitionType("tone");
 		addDataPoint(tone);
 	}
 
@@ -78,6 +83,8 @@ public class AlarmSpeaker extends Module {
 		light = dp;
 		light.setDoc("Representing the lighting mode of the alarm");
 		light.setOptional(true);
+		light.setLongDefinitionType("light");
+		light.setShortDefinitionType("light");
 		addDataPoint(light);
 	}
 

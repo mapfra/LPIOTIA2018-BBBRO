@@ -20,20 +20,33 @@ public class Streaming extends Module {
 	public Streaming(String name, Domain domain, final StringDataPoint urlDP,
 			final StringDataPoint loginDP, final StringDataPoint passwordDP, 
 			final StringDataPoint formatDP) {
-		super(name, domain, ModuleType.streaming.getDefinition());
+		super(name, domain, ModuleType.streaming.getDefinition(),
+				ModuleType.streaming.getLongDefinitionName(),
+				ModuleType.streaming.getShortDefinitionName());
 		this.url = urlDP;
+		this.url.setLongDefinitionType("url");
+		this.url.setShortDefinitionType("url");
+		this.url.setWritable(false);
 		addDataPoint(url);
+		
 		this.login = loginDP;
+		this.login.setLongDefinitionType("login");
+		this.login.setShortDefinitionType("login");
+		this.login.setWritable(false);
 		addDataPoint(login);
+		
 		this.password = passwordDP;
+		this.password.setLongDefinitionType("password");
+		this.password.setShortDefinitionType("passd");
+		this.password.setWritable(false);
 		addDataPoint(password);
+		
 		this.format = formatDP;
+		this.format.setLongDefinitionType("format");
+		this.format.setShortDefinitionType("format");
+		this.format.setWritable(false);
 		addDataPoint(format);
 		
-		url.setWritable(false);
-		login.setWritable(false);
-		password.setWritable(false);
-		format.setWritable(false);
 	}
 
 	public Streaming(final String name, final Domain domain, Map<String, DataPoint> dps) {

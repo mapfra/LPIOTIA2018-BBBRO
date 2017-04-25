@@ -26,16 +26,22 @@ public class FaultDetection extends Module {
 	private StringDataPoint description;
 
 	public FaultDetection(final String name, final Domain domain, BooleanDataPoint status) {
-		super(name, domain, ModuleType.faultDetection.getDefinition());
+		super(name, domain, ModuleType.faultDetection.getDefinition(),
+				ModuleType.faultDetection.getLongDefinitionName(),
+				ModuleType.faultDetection.getShortDefinitionName());
 		
 		this.status = status;
 		this.status.setWritable(false);
 		this.status.setDoc("Status of fault detection");
+		this.status.setLongDefinitionType("status");
+		this.status.setShortDefinitionType("stats");
 		addDataPoint(this.status);
 	}
 	
 	public FaultDetection(final String name, final Domain domain, BooleanDataPoint status, IntegerDataPoint code, StringDataPoint description) {
-		super(name, domain, ModuleType.faultDetection.getDefinition());
+		super(name, domain, ModuleType.faultDetection.getDefinition(),
+				ModuleType.faultDetection.getLongDefinitionName(),
+				ModuleType.faultDetection.getShortDefinitionName());
 		
 		this.status = status;
 		this.status.setWritable(false);
@@ -82,6 +88,8 @@ public class FaultDetection extends Module {
 		this.code.setOptional(true);
 		this.code.setWritable(false);
 		this.code.setDoc("Code of the fault.");
+		this.code.setLongDefinitionType("code");
+		this.code.setShortDefinitionType("code");
 		addDataPoint(code);
 	}
 
@@ -96,6 +104,8 @@ public class FaultDetection extends Module {
 		this.description.setOptional(true);
 		this.description.setWritable(false);
 		this.description.setDoc("Message of the fault.");
+		this.description.setLongDefinitionType("description");
+		this.description.setShortDefinitionType("descn");
 		addDataPoint(description);
 	}
 

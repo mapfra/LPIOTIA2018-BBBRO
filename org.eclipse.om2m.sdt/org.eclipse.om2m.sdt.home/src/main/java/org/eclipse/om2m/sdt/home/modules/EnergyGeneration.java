@@ -27,7 +27,9 @@ public class EnergyGeneration extends Module {
 	private IntegerDataPoint multiplyingFactors;
 	
 	public EnergyGeneration(final String name, final Domain domain) {
-		super(name, domain, ModuleType.energyGeneration.getDefinition());
+		super(name, domain, ModuleType.energyGeneration.getDefinition(),
+				ModuleType.energyGeneration.getLongDefinitionName(),
+				ModuleType.energyGeneration.getShortDefinitionName());
 	}
 	
 	public EnergyGeneration(final String name, final Domain domain, Map<String, DataPoint> dps) {
@@ -59,6 +61,8 @@ public class EnergyGeneration extends Module {
 		this.powerGenerationData.setOptional(true);
 		this.powerGenerationData.setWritable(false);
 		this.powerGenerationData.setDoc("Amount of instaneous generation data.");
+		this.powerGenerationData.setLongDefinitionType("powerGenerationData");
+		this.powerGenerationData.setShortDefinitionType("poGDa");
 		addDataPoint(powerGenerationData);
 	}
 
@@ -67,6 +71,8 @@ public class EnergyGeneration extends Module {
 		this.multiplyingFactors.setOptional(true);
 		this.multiplyingFactors.setWritable(true);
 		this.multiplyingFactors.setDoc("The unit for data (multiplying factors) Ex. 1kWh, 0.1kWh, 0.01kWh etc.");
+		this.multiplyingFactors.setLongDefinitionType("multiplyingFactors");
+		this.multiplyingFactors.setShortDefinitionType("mulFs");
 		addDataPoint(multiplyingFactors);
 	}
 
@@ -87,6 +93,8 @@ public class EnergyGeneration extends Module {
 		this.roundingEnergyGeneration.setOptional(true);
 		this.roundingEnergyGeneration.setWritable(false);
 		this.roundingEnergyGeneration.setDoc("This energy generation data can be calculated by using significantFigures and units.");
+		this.roundingEnergyGeneration.setLongDefinitionType("roundingEnergyGeneration");
+		this.roundingEnergyGeneration.setShortDefinitionType("roEGn");
 		addDataPoint(roundingEnergyGeneration);
 	}
 
@@ -105,6 +113,8 @@ public class EnergyGeneration extends Module {
 		this.significantDigits.setOptional(true);
 		this.significantDigits.setWritable(true);
 		this.significantDigits.setDoc("The number of effective digits for data.");
+		this.significantDigits.setLongDefinitionType("significantDigits");
+		this.significantDigits.setShortDefinitionType("sigDs");
 		addDataPoint(significantDigits);
 	}
 

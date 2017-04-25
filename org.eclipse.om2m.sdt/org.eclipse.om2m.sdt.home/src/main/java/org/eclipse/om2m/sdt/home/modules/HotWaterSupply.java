@@ -23,11 +23,15 @@ public class HotWaterSupply extends Module {
 	private BooleanDataPoint bath;
 
 	public HotWaterSupply(final String name, final Domain domain, BooleanDataPoint status) {
-		super(name, domain, ModuleType.hotWaterSupply.getDefinition());
+		super(name, domain, ModuleType.hotWaterSupply.getDefinition(),
+				ModuleType.hotWaterSupply.getLongDefinitionName(),
+				ModuleType.hotWaterSupply.getShortDefinitionName());
 		
 		this.status = status;
 		this.status.setWritable(false);
 		this.status.setDoc("The status of watering operation");
+		this.status.setLongDefinitionType("status");
+		this.status.setShortDefinitionType("stats");
 		addDataPoint(this.status);
 	}
 
@@ -46,6 +50,8 @@ public class HotWaterSupply extends Module {
 		bath = dp;
 		bath.setDoc("The status of filling bath tub");
 		bath.setOptional(true);
+		this.bath.setLongDefinitionType("bath");
+		this.bath.setShortDefinitionType("bath");
 		addDataPoint(bath);
 	}
 
