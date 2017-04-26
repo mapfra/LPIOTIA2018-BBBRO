@@ -21,7 +21,6 @@ import org.eclipse.om2m.sdt.Property;
 import org.eclipse.om2m.sdt.home.devices.GenericDevice;
 import org.eclipse.om2m.sdt.home.modules.GenericSensor;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.Constants;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.cm.Configuration;
@@ -76,7 +75,7 @@ public class Utils {
 						if (prop.getValue() != null)
 							props.put(prop.getName(), prop.getValue());
 					}
-					props.put(Constants.SERVICE_PID, device.getPid());
+					props.put(SERVICE_PID, device.getPid());
 					log.info("persist: " + props);
 					pDev.setRegistration(context.registerService(ManagedService.class.getName(),
 							pDev, props));
@@ -178,12 +177,10 @@ public class Utils {
 	
 	static private final Configuration getConfiguration(BundleContext bc , String pid) throws IOException {
 		Configuration config = null;
-		
 		ConfigurationAdmin configAdmin = getConfigurationAdmin(bc);
 		if (configAdmin != null) {
 			config = configAdmin.getConfiguration(pid);
 		}
-		
 		return config;
 	}
 

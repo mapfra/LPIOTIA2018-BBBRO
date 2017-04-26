@@ -7,6 +7,7 @@
  *******************************************************************************/
 package org.eclipse.om2m.sdt.home.mocked.modules;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.om2m.sdt.Domain;
@@ -19,7 +20,7 @@ public class MockedRunMode extends RunMode {
 	public MockedRunMode(String name, Domain domain) {
 		super(name, domain,
 			new ArrayDataPoint<String>("operationMode") {
-				private List<String> operationModes;
+				private List<String> operationModes = Arrays.asList("mode1", "mode2", "mode3");
 				@Override
 				public List<String> doGetValue() throws DataPointException {
 					return operationModes;
@@ -30,7 +31,7 @@ public class MockedRunMode extends RunMode {
 				}
 			}, 
 			new ArrayDataPoint<String>("supportedModes") {
-				private List<String> supportedModes;
+				private List<String> supportedModes = Arrays.asList("mode1", "mode3");
 				@Override
 				public List<String> doGetValue() throws DataPointException {
 					return supportedModes;

@@ -7,7 +7,6 @@
  *******************************************************************************/
 package org.eclipse.om2m.sdt.home.mocked.devices;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.om2m.sdt.Domain;
@@ -37,7 +36,7 @@ public class MockedLight extends Light implements MockedDevice {
 		// Module RunMode
 		addModule(new MockedRunMode("runMode_" + id, domain));
 
-		// Module Colour
+		// Module Color
 		addModule(new MockedColour("colour_" + id, domain));
 
 		addModule(new ColourSaturation("colourSaturation_" + id, domain, 
@@ -58,12 +57,6 @@ public class MockedLight extends Light implements MockedDevice {
 	public void registerDevice() {
 		if (! ((serviceRegistrations == null) || serviceRegistrations.isEmpty())) {
 			return;
-		}
-		try {
-			getRunMode().setSupportedModes(Arrays.asList("mode1", "mode2", "mode3"));
-			getRunMode().setOperationMode(Arrays.asList("mode1", "mode3"));
-		} catch (Exception e) {
-			Activator.logger.warning("", e);
 		}
 		serviceRegistrations = Activator.register(this);
 	}

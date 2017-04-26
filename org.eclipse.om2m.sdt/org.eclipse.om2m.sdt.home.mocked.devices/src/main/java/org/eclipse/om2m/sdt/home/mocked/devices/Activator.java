@@ -62,8 +62,10 @@ public class Activator implements BundleActivator {
 			devices.add(new MockedLight(getId(), getSerial(), domain));
 			devices.add(new MockedDoor(getId(), getSerial(), domain));
 			devices.add(new MockedCamera(getId(), getSerial(), domain));
-			devices.add(new MockedDoor(getId(), getSerial(), domain));
-			devices.add(new MockedCamera(getId(), getSerial(), domain));
+			devices.add(new MockedThermometer(getId(), getSerial(), domain));
+			devices.add(new MockedThermostat(getId(), getSerial(), domain));
+//			devices.add(new MockedDoor(getId(), getSerial(), domain));
+//			devices.add(new MockedCamera(getId(), getSerial(), domain));
 			
 			for (GenericDevice dev : devices) {
 				install(dev);
@@ -120,6 +122,7 @@ public class Activator implements BundleActivator {
 	 * @param bundleContext
 	 * @return true if successful registration
 	 */
+	@SuppressWarnings("rawtypes")
 	public static List<ServiceRegistration> register(GenericDevice device) {
 		return Utils.register(device, context);
 	}

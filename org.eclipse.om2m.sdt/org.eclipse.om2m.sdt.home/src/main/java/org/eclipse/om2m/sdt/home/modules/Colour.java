@@ -70,4 +70,13 @@ public class Colour extends Module {
 		blue.setValue(value);
 	}
 	
+	public void setValues(Integer red, Integer green, Integer blue) throws DataPointException, AccessException {
+		if (red != null)
+			setRed(red);
+		if (green != null)
+			setGreen(green);
+		if (blue != null)
+			setBlue(blue);
+	}
+	
 }
