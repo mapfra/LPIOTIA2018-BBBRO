@@ -78,6 +78,7 @@ public abstract class ModuleClass extends Element {
 			Logger.warning(msg);
 			throw new IllegalArgumentException(msg);
 		}
+		action.setParent((Module) this);
 		action.setOwner(owner);
 		actions.put(action.getName(), action);
 	}
@@ -104,11 +105,9 @@ public abstract class ModuleClass extends Element {
 			Logger.warning(msg);
 			throw new IllegalArgumentException(msg);
 		}
-		dataPoints.put(dp.getName(), dp);
 		dp.setParent((Module) this);
-		if (owner != null) {
-			dp.setOwner(owner);
-		}
+		dataPoints.put(dp.getName(), dp);
+		dp.setOwner(owner);
 	}
 
 	public void removeDataPoint(final String name) {

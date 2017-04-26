@@ -24,7 +24,8 @@ public class Action extends Element {
 	private String definition;
 
 	private Device owner;
-	
+
+	private Module parent;
 
 	public Action(final String name, final String definition) {
 		super(definition + "__" + name);
@@ -90,6 +91,14 @@ public class Action extends Element {
 
 	public Device getOwner() {
 		return owner;
+	}
+
+	void setParent(Module parent) {
+		this.parent = parent;
+	}
+
+	public Module getParent() {
+		return parent;
 	}
 
 }
