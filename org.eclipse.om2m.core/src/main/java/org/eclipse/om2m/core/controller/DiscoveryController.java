@@ -172,7 +172,8 @@ public class DiscoveryController extends Controller {
 			if (currentResourceEntity != null) {
 				List<AccessControlPolicyEntity> acps = getAcpsFromEntity(currentResourceEntity);
 				try {
-					checkACP(acps, request.getFrom(), Operation.DISCOVERY);
+					checkPermissions(request, currentResourceEntity, acps);
+//					checkACP(acps, request.getFrom(), Operation.DISCOVERY);
 					if(request.getDiscoveryResultType().equals(DiscoveryResultType.HIERARCHICAL)){
 						if(!uriList.getListOfUri().contains(uriEntity.getHierarchicalUri())){
 							uriList.getListOfUri().add(uriEntity.getHierarchicalUri());
