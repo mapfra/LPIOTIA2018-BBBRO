@@ -35,8 +35,8 @@ public class Discovery {
 	public static final String CONFIG_CAMERA_DETECTION_THRESHOLD = "camera.detection.threshold";
 	public static final String CONFIG_CAMERA_USE_LOCAL_URL = "camera.use.local.url";
 
-	private static final int WELCOME_CAMERA_SAMPLING_DEFAULT_VALUE = 8000;
-	private static final int WEATHER_STATION_SAMPLING_DEFAULT_VALUE = 30000;
+	private static final int WELCOME_CAMERA_SAMPLING_DEFAULT_VALUE = 10000;
+	private static final int WEATHER_STATION_SAMPLING_DEFAULT_VALUE = 500000;
 
 	private Timer discoveryWelcomeTimer;
 	private TimerTask discoveryWelcomeTimerTask;
@@ -73,6 +73,7 @@ public class Discovery {
 			welcomeCameraSampling = 
 				Integer.parseInt(properties.get(CONFIG_WELCOME_CAMERA_SAMPLING).toString());
 		} catch (Exception e) {
+			e.printStackTrace();
 			welcomeCameraSampling = WELCOME_CAMERA_SAMPLING_DEFAULT_VALUE;
 		}
 		
@@ -81,6 +82,7 @@ public class Discovery {
 			weatherStationSampling = 
 				Integer.parseInt(properties.get(CONFIG_WEATHER_STATION_SAMPLING).toString());
 		} catch (Exception e) {
+			e.printStackTrace();
 			weatherStationSampling = WEATHER_STATION_SAMPLING_DEFAULT_VALUE;
 		}
 		

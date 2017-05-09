@@ -229,7 +229,8 @@ public class Activator implements BundleActivator, HomeListener, ManagedService 
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public void updated(Dictionary properties) throws ConfigurationException {
+	public synchronized void updated(Dictionary properties) throws ConfigurationException {
+		logger.info("updated(properties=" + properties + ")");
 		// check all parameters are located into properties
 		if (! checkParameters(properties)) {
 			logger.info("Missing a mandatory property --> Netatmo driver is not started");
@@ -256,11 +257,14 @@ public class Activator implements BundleActivator, HomeListener, ManagedService 
 	 */
 	@SuppressWarnings("rawtypes")
 	private static boolean checkParameters(Dictionary properties) {
+		logger.info("checkParameters");
 		if (properties == null) {
 			// no properties
 			logger.info("No properties to configure SDT Netatmo Driver --> the driver is not started !");
 			return false;
 		}
+		
+		logger.info("checkParameter(properties.length=" + properties.size() + ")");
 		List<String> missing = new ArrayList<String>();
 		if (properties.get(Discovery.CONFIG_CLIENT_ID) == null) {
 			missing.add(Discovery.CONFIG_CLIENT_ID);
