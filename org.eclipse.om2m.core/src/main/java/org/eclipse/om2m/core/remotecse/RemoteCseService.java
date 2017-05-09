@@ -47,7 +47,7 @@ public class RemoteCseService implements org.eclipse.om2m.core.service.RemoteCse
 		if (eventAdmin != null) {
 
 			// create a new Event
-			Map<String, String> properties = new Hashtable<>();
+			Map<String, Object> properties = new Hashtable<>();
 			String cseId = toBeAdded.getRemoteCseId();
 			if (cseId.startsWith("/")) {
 				cseId = cseId.substring(1);
@@ -55,6 +55,7 @@ public class RemoteCseService implements org.eclipse.om2m.core.service.RemoteCse
 			properties.put(REMOTE_CSE_ID_PROPERTY, cseId);
 			properties.put(REMOTE_CSE_NAME_PROPERTY, toBeAdded.getName());
 			properties.put(OPERATION_PROPERTY, ADD_OPERATION_VALUE);
+			properties.put(REMOTE_CSE_POA, toBeAdded.getPointOfAccess());
 			Event event = new Event(REMOTE_CSE_TOPIC, properties);
 
 			// send it through EventAdmin (asynchronously)
