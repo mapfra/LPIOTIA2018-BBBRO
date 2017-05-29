@@ -95,7 +95,7 @@ public class Activator implements BundleActivator, ManagedService, LIFXDiscovere
 	}
 
 	@Override
-	public void updated(Dictionary properties) throws ConfigurationException {
+	public synchronized void updated(Dictionary properties) throws ConfigurationException {
 		try {
 			if (properties != null) {
 
