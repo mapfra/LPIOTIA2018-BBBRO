@@ -21,7 +21,7 @@ public abstract class LIFXDevice {
 	private double brightness;
 	
 	/** kelvin: from 2500 to 9000 */ 
-	private long kelvin;
+	private double kelvin;
 	
 	/** power: 0=off, 65535=on */ 
 	private int power;
@@ -175,13 +175,13 @@ public abstract class LIFXDevice {
 	 * @return kelvin value from 2500 to 9000
 	 * @throws Exception
 	 */
-	public long getKelvin(){
+	public double getKelvin(){
 		return kelvin;
 	}
 	
-	public abstract long getKelvinRemotely() throws Exception;
+	public abstract double getKelvinRemotely() throws Exception;
 	
-	public long getKelvin(boolean cache) throws Exception {
+	public double getKelvin(boolean cache) throws Exception {
 		if (cache) {
 			return getKelvin();
 		} else {
@@ -193,7 +193,7 @@ public abstract class LIFXDevice {
 	 * 
 	 * @param kelvin value from 2500 to 9000
 	 */
-	public void setKelvin(long kelvin) {
+	public void setKelvin(double kelvin) {
 		this.kelvin = kelvin;
 		updateLastDataFromDevice();
 	}
@@ -238,7 +238,7 @@ public abstract class LIFXDevice {
 	}
 	
 	
-	public abstract void setLightState(int newPower, double newHue, double newSaturation, long newKelvin, double newBrightness, int duration) throws Exception;
+	public abstract void setLightState(int newPower, double newHue, double newSaturation, double newKelvin, double newBrightness, int duration) throws Exception;
 
 	public String getLabel()  throws Exception {
 		return label;

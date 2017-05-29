@@ -86,7 +86,7 @@ public class LIFXDeviceLan extends LIFXDevice implements LIFXDeviceListener {
 		return super.getBrightness();
 	}
 	
-	public long getKelvinRemotely() throws Exception {
+	public double getKelvinRemotely() throws Exception {
 		executeGetLightMessage();
 		return super.getKelvin();
 	}
@@ -101,7 +101,7 @@ public class LIFXDeviceLan extends LIFXDevice implements LIFXDeviceListener {
 	}
 	
 	@Override
-	public void setLightState(int newPower, double newHue, double newSaturation, long newKelvin, double newBrightness, int duration)
+	public void setLightState(int newPower, double newHue, double newSaturation, double newKelvin, double newBrightness, int duration)
 			throws Exception {
 		executeSetPowerMessage(newPower, duration);
 		executeSetColorMessage((int)newHue, (int)newSaturation, (int)newBrightness, (int) newKelvin, duration);

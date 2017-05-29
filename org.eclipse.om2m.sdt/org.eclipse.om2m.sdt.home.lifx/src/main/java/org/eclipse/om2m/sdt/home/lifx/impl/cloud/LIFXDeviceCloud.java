@@ -47,7 +47,7 @@ public class LIFXDeviceCloud extends LIFXDevice {
 	 * 
 	 */
 	public LIFXDeviceCloud(final String id, final String uuid, final String label, final boolean connected,
-			String power, final double hue, final double saturation, final long kelvin, final double brightness,
+			String power, final double hue, final double saturation, final double kelvin, final double brightness,
 			final String authenticationToken) {
 		super(id);
 		this.uuid = uuid;
@@ -126,7 +126,7 @@ public class LIFXDeviceCloud extends LIFXDevice {
 	}
 
 	@Override
-	public long getKelvinRemotely() throws Exception {
+	public double getKelvinRemotely() throws Exception {
 		DiscoveryCloud.updateLightState(this);
 		return super.getKelvin();
 	}
@@ -144,7 +144,7 @@ public class LIFXDeviceCloud extends LIFXDevice {
 	}
 
 	@Override
-	public void setLightState(int newPower, double newHue, double newSaturation, long newKelvin, double newBrightness,
+	public void setLightState(int newPower, double newHue, double newSaturation, double newKelvin, double newBrightness,
 			int duration) throws Exception {
 		DiscoveryCloud.setLightPower(this, (newPower == 0 ? "off" : "on"), newHue / 65535d * 360d,
 				newSaturation / 65535d, newKelvin, newBrightness / 65535d, (double) duration);
@@ -163,9 +163,9 @@ public class LIFXDeviceCloud extends LIFXDevice {
 		String power = (String) json.get(POWER);
 		Boolean connected = (Boolean) json.get(CONNECTED);
 		JSONObject colorJsonObject = (JSONObject) json.get(COLOR);
-		double hue = (double) colorJsonObject.get(HUE);
-		double saturation = (double) colorJsonObject.get(SATURATION);
-		long kelvin = (long) colorJsonObject.get(KELVIN);
+		double hue = getDoubleValue(colorJsonObject.get(HUE));
+		double saturation = getDoubleValue(colorJsonObject.get(SATURATION));
+		double kelvin = getDoubleValue(colorJsonObject.get(KELVIN));
 		double brightness = (double) json.get(BRIGHTNESS);
 
 		// convert cloud value to lan value
@@ -187,11 +187,11 @@ public class LIFXDeviceCloud extends LIFXDevice {
 		String power = (String) json.get(POWER);
 		Boolean connected = (Boolean) json.get(CONNECTED);
 		JSONObject colorJsonObject = (JSONObject) json.get(COLOR);
-		double hue = (double) colorJsonObject.get(HUE);
-		double saturation = (double) colorJsonObject.get(SATURATION);
-		long kelvin = (long) colorJsonObject.get(KELVIN);
+		double hue = getDoubleValue(colorJsonObject.get(HUE));
+		double saturation = getDoubleValue(colorJsonObject.get(SATURATION));
+		double kelvin = getDoubleValue(colorJsonObject.get(KELVIN));
 		double brightness = (double) json.get(BRIGHTNESS);
-
+		
 		// convert cloud value to lan value
 		// hue (0 to 360) -> (0 to 65535)
 		hue = hue / 360d * 65535d;
@@ -207,5 +207,16 @@ public class LIFXDeviceCloud extends LIFXDevice {
 		super.setSaturation(saturation);
 		super.setKelvin(kelvin);
 		super.setBrightness(brightness);
+	}
+	
+	private static double getDoubleValue(Object object) {
+		double value = 0;
+		try {
+			value = (double) object;
+		} catch (Exception e) {
+			value = (long) object;
+		}
+		
+		return value;
 	}
 }

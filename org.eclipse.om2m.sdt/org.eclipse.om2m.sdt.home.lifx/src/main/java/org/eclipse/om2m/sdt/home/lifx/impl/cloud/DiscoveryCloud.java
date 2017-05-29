@@ -177,7 +177,7 @@ public class DiscoveryCloud extends Discovery {
 	}
 
 	public static void setLightPower(LIFXDeviceCloud lifxDevice, String power, Double hue, Double saturation,
-			Long kelvin, Double brightness, Double duration) throws MalformedURLException, IOException {
+			Double kelvin, Double brightness, Double duration) throws MalformedURLException, IOException {
 		HttpURLConnection httpUrlConnection = null;
 		httpUrlConnection = (HttpURLConnection) new URL(LIGHT_URL + lifxDevice.getId() + "/state").openConnection();
 		httpUrlConnection.setRequestMethod("PUT");
