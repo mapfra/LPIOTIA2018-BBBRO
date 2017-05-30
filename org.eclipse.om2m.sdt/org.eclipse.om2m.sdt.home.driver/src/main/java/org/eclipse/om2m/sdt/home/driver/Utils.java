@@ -75,7 +75,7 @@ public class Utils {
 						if (prop.getValue() != null)
 							props.put(prop.getName(), prop.getValue());
 					}
-					props.put(SERVICE_PID, device.getPid());
+					props.put(SERVICE_PID, "P_" + device.getPid());
 					log.info("persist: " + props);
 					pDev.setRegistration(context.registerService(ManagedService.class.getName(),
 							pDev, props));
