@@ -74,7 +74,6 @@ public abstract class Controller {
 		ResponsePrimitive response = new ResponsePrimitive(request);
 		dbs = PersistenceService.getInstance().getDbService();
 		transaction = dbs.getDbTransaction();
-		System.out.println("create transaction " + transaction.toString() + ", targetId " + request.getTargetId() + ", operation =" + request.getOperation());
 		try{
 			transaction.open();
 			if(request.getOperation().equals(Operation.CREATE)){
