@@ -93,7 +93,7 @@ function get(targetId) {
 
                 if (attribute.localName == "ch") {
                     // If it is a child resource (ch) add it to the resource tree
-                    $("#" + encodeId(targetId)).append("<li onclick=get('" + attribute.textContent + "')>" + $(attribute).attr('rn') + "<ul id=" + encodeId(attribute.textContent) + "></ul></li>");
+                    $("#" + encodeId(targetId)).append("<li onclick=get('" + attribute.textContent + "')>" + $(attribute).attr('nm') + "<ul id=" + encodeId(attribute.textContent) + "></ul></li>");
                 } else {
                     // Handle other attributes
                     var value;

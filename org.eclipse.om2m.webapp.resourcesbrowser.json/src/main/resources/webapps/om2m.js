@@ -88,7 +88,7 @@ function get(targetId){
                     if(attribute == "ch"){
                         for (var index in resource[attribute]){
                             var child = resource[attribute][index];
-                            $("#"+encodeId(targetId)).append("<li onclick=get('"+child["value"]+"')>"+child["rn"]+"<ul id="+encodeId(child["value"])+"></ul></li>");
+                            $("#"+encodeId(targetId)).append("<li onclick=get('"+child["value"]+"')>"+child["nm"]+"<ul id="+encodeId(child["value"])+"></ul></li>");
                         }
                         
                     } else {

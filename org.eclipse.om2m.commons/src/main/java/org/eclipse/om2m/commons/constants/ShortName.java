@@ -175,6 +175,12 @@ public class ShortName {
 	/** Short name for DynamicAuthorizationConsultationIDs attribute */
 	public static final String DAC_IDS = "daci";
 	
+	// Attributes for Child Resources
+	/** Short name for name attribute of a ChildResourceRef */
+	public static final String CHILD_RESOURCE_NAME = "nm";
+	/** Short name for type attribute of a ChildResourceRef */
+	public static final String CHILD_RESOURCE_TYPE = "typ";
+	
 	// Attributes for CSEBase Entity
 	/** Short name for SupportedResourceTypes attribute */
 	public static final String SRT = "srt";
