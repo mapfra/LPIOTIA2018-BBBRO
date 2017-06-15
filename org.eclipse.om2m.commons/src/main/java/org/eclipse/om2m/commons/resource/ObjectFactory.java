@@ -82,20 +82,12 @@ public class ObjectFactory {
 	private final static QName _FirmwareAnncUpdateStatus_QNAME = new QName("",
 			"updateStatus");
 	
-	private final static QName _MyDef2_QNAME = new QName("http://www.onem2m.org/xml/protocols",
-			"myDef2");
-	private final static QName _FlexContainer_QNAME = new QName("",
-			"fcnt");
-	
 	/**
 	 * Create a new ObjectFactory that can be used to create new instances of
 	 * schema derived classes for package: org.eclipse.om2m.commons.resource
 	 * 
 	 */
 	public ObjectFactory() {
-		System.out.println("###########################################################");
-		System.out.println("Object Factory parent");
-		System.out.println("###########################################################");
 	}
 
 	/**
