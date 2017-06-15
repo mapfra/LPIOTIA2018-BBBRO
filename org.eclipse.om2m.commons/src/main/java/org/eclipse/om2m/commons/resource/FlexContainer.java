@@ -9,22 +9,16 @@ package org.eclipse.om2m.commons.resource;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAnyAttribute;
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.XmlValue;
 
 import org.eclipse.om2m.commons.constants.ShortName;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.ActionToggleFlexContainer;
@@ -169,6 +163,56 @@ public class FlexContainer extends AnnounceableResource {
 	@XmlElements({
 			@XmlElement(name = ShortName.CNT, namespace = "http://www.onem2m.org/xml/protocols", type = Container.class),
 			@XmlElement(name = ShortName.FCNT, namespace = "http://www.onem2m.org/xml/protocols", type = FlexContainer.class),
+			@XmlElement(name = DeviceLightFlexContainer.SHORT_NAME, type = DeviceLightFlexContainer.class),
+			@XmlElement(name = DeviceSmartElectricMeterFlexContainer.SHORT_NAME, type = DeviceSmartElectricMeterFlexContainer.class),
+			@XmlElement(name = DeviceWaterHeaterFlexContainer.SHORT_NAME, type = DeviceWaterHeaterFlexContainer.class),
+			@XmlElement(name = DeviceCameraFlexContainer.SHORT_NAME, type = DeviceCameraFlexContainer.class),
+			@XmlElement(name = DeviceCoffeeMachineFlexContainer.SHORT_NAME, type = DeviceCoffeeMachineFlexContainer.class),
+			@XmlElement(name = DeviceContactDetectorFlexContainer.SHORT_NAME, type = DeviceContactDetectorFlexContainer.class),
+			@XmlElement(name = DeviceDoorFlexContainer.SHORT_NAME, type = DeviceDoorFlexContainer.class),
+			@XmlElement(name = DeviceFloodDetectorFlexContainer.SHORT_NAME, type = DeviceFloodDetectorFlexContainer.class),
+			@XmlElement(name = DeviceGasValveFlexContainer.SHORT_NAME, type = DeviceGasValveFlexContainer.class),
+			@XmlElement(name = DeviceMotionDetectorFlexContainer.SHORT_NAME, type = DeviceMotionDetectorFlexContainer.class),
+			@XmlElement(name = DeviceSmokeDetectorFlexContainer.SHORT_NAME, type = DeviceSmokeDetectorFlexContainer.class),
+			@XmlElement(name = DeviceSmokeExtractorFlexContainer.SHORT_NAME, type = DeviceSmokeExtractorFlexContainer.class),
+			@XmlElement(name = DeviceSwitchButtonFlexContainer.SHORT_NAME, type = DeviceSwitchButtonFlexContainer.class),
+			@XmlElement(name = DeviceTemperatureDetectorFlexContainer.SHORT_NAME, type = DeviceTemperatureDetectorFlexContainer.class),
+			@XmlElement(name = DeviceWarningDeviceFlexContainer.SHORT_NAME, type = DeviceWarningDeviceFlexContainer.class),
+			@XmlElement(name = DeviceWaterValveFlexContainer.SHORT_NAME, type = DeviceWaterValveFlexContainer.class),
+			@XmlElement(name = DeviceWeatherStationFlexContainer.SHORT_NAME, type = DeviceWeatherStationFlexContainer.class),
+			@XmlElement(name = ModuleAlarmSpeakerFlexContainer.SHORT_NAME, type = ModuleAlarmSpeakerFlexContainer.class),
+			@XmlElement(name = ModuleAudioVolumeFlexContainer.SHORT_NAME, type = ModuleAudioVolumeFlexContainer.class),
+			@XmlElement(name = ModuleBinarySwitchFlexContainer.SHORT_NAME, type = ModuleBinarySwitchFlexContainer.class),
+			@XmlElement(name = ModuleBoilerFlexContainer.SHORT_NAME, type = ModuleBoilerFlexContainer.class),
+			@XmlElement(name = ModuleBrightnessFlexContainer.SHORT_NAME, type = ModuleBrightnessFlexContainer.class),
+			@XmlElement(name = ModuleClockFlexContainer.SHORT_NAME, type = ModuleClockFlexContainer.class),
+			@XmlElement(name = ModuleColourFlexContainer.SHORT_NAME, type = ModuleColourFlexContainer.class),
+			@XmlElement(name = ModuleColourSaturationFlexContainer.SHORT_NAME, type = ModuleColourSaturationFlexContainer.class),
+			@XmlElement(name = ModuleDoorStatusFlexContainer.SHORT_NAME, type = ModuleDoorStatusFlexContainer.class),
+			@XmlElement(name = ModuleEnergyConsumptionFlexContainer.SHORT_NAME, type = ModuleEnergyConsumptionFlexContainer.class),
+			@XmlElement(name = ModuleEnergyGenerationFlexContainer.SHORT_NAME, type = ModuleEnergyGenerationFlexContainer.class),
+			@XmlElement(name = ModuleFaultDetectionFlexContainer.SHORT_NAME, type = ModuleFaultDetectionFlexContainer.class),
+			@XmlElement(name = ModuleRelativeHumidityFlexContainer.SHORT_NAME, type = ModuleRelativeHumidityFlexContainer.class),
+			@XmlElement(name = ModuleRunModeFlexContainer.SHORT_NAME, type = ModuleRunModeFlexContainer.class),
+			@XmlElement(name = ModuleSmokeSensorFlexContainer.SHORT_NAME, type = ModuleSmokeSensorFlexContainer.class),
+			@XmlElement(name = ModuleTemperatureFlexContainer.SHORT_NAME, type = ModuleTemperatureFlexContainer.class),
+			@XmlElement(name = ModuleWaterLevelFlexContainer.SHORT_NAME, type = ModuleWaterLevelFlexContainer.class),
+			@XmlElement(name = ModuleWaterSensorFlexContainer.SHORT_NAME, type = ModuleWaterSensorFlexContainer.class),
+			@XmlElement(name = ModuleAtmosphericPressureSensorFlexContainer.SHORT_NAME, type = ModuleAtmosphericPressureSensorFlexContainer.class),
+			@XmlElement(name = ModuleBrewingFlexContainer.SHORT_NAME, type = ModuleBrewingFlexContainer.class),
+			@XmlElement(name = ModuleCarbonDioxideSensorFlexContainer.SHORT_NAME, type = ModuleCarbonDioxideSensorFlexContainer.class),
+			@XmlElement(name = ModuleCarbonMonoxideSensorFlexContainer.SHORT_NAME, type = ModuleCarbonMonoxideSensorFlexContainer.class),
+			@XmlElement(name = ModuleContactSensorFlexContainer.SHORT_NAME, type = ModuleContactSensorFlexContainer.class),
+			@XmlElement(name = ModuleDimmingFlexContainer.SHORT_NAME, type = ModuleDimmingFlexContainer.class),
+			@XmlElement(name = ModuleEnergyOverloadCircuitBreakerFlexContainer.SHORT_NAME, type = ModuleEnergyOverloadCircuitBreakerFlexContainer.class),
+			@XmlElement(name = ModuleExtendedCarbonDioxideSensorFlexContainer.SHORT_NAME, type = ModuleExtendedCarbonDioxideSensorFlexContainer.class),
+			@XmlElement(name = ModuleFoamingFlexContainer.SHORT_NAME, type = ModuleFoamingFlexContainer.class),
+			@XmlElement(name = ModuleGrinderFlexContainer.SHORT_NAME, type = ModuleGrinderFlexContainer.class),
+			@XmlElement(name = ModuleNoiseFlexContainer.SHORT_NAME, type = ModuleNoiseFlexContainer.class),
+			@XmlElement(name = ModulePersonSensorFlexContainer.SHORT_NAME, type = ModulePersonSensorFlexContainer.class),
+			@XmlElement(name = ModuleStreamingFlexContainer.SHORT_NAME, type = ModuleStreamingFlexContainer.class),
+			@XmlElement(name = ModuleLockFlexContainer.SHORT_NAME, type = ModuleLockFlexContainer.class),
+			@XmlElement(name = ActionToggleFlexContainer.SHORT_NAME, type = ActionToggleFlexContainer.class),
 			@XmlElement(name = ShortName.SUB, namespace = "http://www.onem2m.org/xml/protocols", type = Subscription.class) })
 	protected List<Resource> flexContainerOrContainerOrSubscription;
 	
