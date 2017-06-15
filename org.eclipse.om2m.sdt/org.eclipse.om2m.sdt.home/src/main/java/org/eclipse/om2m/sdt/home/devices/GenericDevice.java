@@ -43,100 +43,100 @@ public class GenericDevice extends Device {
 		super(id, domain, type.getDefinition(), type.getLongDefinitionName(), type.getShortDefinitionName());
 		this.type = type;
 
-		propDeviceSerialNum = new Property("propDeviceSerialNum", "deSNm", serial);
+		propDeviceSerialNum = new Property("propDeviceSerialNum", "pDSNm", serial);
 		propDeviceSerialNum.setType(SimpleType.String);
 		propDeviceSerialNum.setDoc("Device serial number (assigned by manufacturer)");
 		addProperty(propDeviceSerialNum);
 
-		propDeviceManufacturer = new Property("propDeviceManufacturer", "devMr");
+		propDeviceManufacturer = new Property("propDeviceManufacturer", "prDMr");
 		propDeviceManufacturer.setType(SimpleType.String);
 		propDeviceManufacturer.setDoc("Manufacturer name of the device");
 		addProperty(propDeviceManufacturer);
 
-		propDeviceModelName = new Property("propDeviceModelName", "deMNe");
+		propDeviceModelName = new Property("propDeviceModelName", "pDMNe");
 		propDeviceModelName.setType(SimpleType.String);
 		propDeviceModelName.setDoc("Device Model Name");
 		addProperty(propDeviceModelName);
 
-		propDeviceName = new Property("propDeviceName", "devNe");
+		propDeviceName = new Property("propDeviceName", "prDNe");
 		propDeviceName.setType(SimpleType.String);
 		propDeviceName.setOptional(true);
 		propDeviceName.setDoc("Device name");
 		addProperty(propDeviceName);
 
-		propDeviceSubModelName = new Property("propDeviceSubModelName", "dSMNe");
+		propDeviceSubModelName = new Property("propDeviceSubModelName", "pDSMN");
 		propDeviceSubModelName.setType(SimpleType.String);
 		propDeviceSubModelName.setOptional(true);
 		propDeviceSubModelName.setDoc("Device sub-modelname");
 		addProperty(propDeviceSubModelName);
 
-		propDeviceAliasName = new Property("propDeviceAliasName", "deANe");
+		propDeviceAliasName = new Property("propDeviceAliasName", "pDANe");
 		propDeviceAliasName.setType(SimpleType.String);
 		propDeviceAliasName.setOptional(true);
 		propDeviceAliasName.setDoc("Device alias name");
 		addProperty(propDeviceAliasName);
 
-		propDeviceFirmwareVersion = new Property("propDeviceFirmwareVersion", "deFVn");
+		propDeviceFirmwareVersion = new Property("propDeviceFirmwareVersion", "pDFVn");
 		propDeviceFirmwareVersion.setType(SimpleType.String);
 		propDeviceFirmwareVersion.setOptional(true);
 		propDeviceFirmwareVersion.setDoc("Device firmware version");
 		addProperty(propDeviceFirmwareVersion);
 
-		propHardwareVersion = new Property("propHardwareVersion", "harVn");
+		propHardwareVersion = new Property("propHardwareVersion", "prHVn");
 		propHardwareVersion.setType(SimpleType.String);
 		propHardwareVersion.setOptional(true);
 		propHardwareVersion.setDoc("Device hardware version");
 		addProperty(propHardwareVersion);
 
-		propOsVersion = new Property("propOsVersion", "oseVn");
+		propOsVersion = new Property("propOsVersion", "prOVn");
 		propOsVersion.setType(SimpleType.String);
 		propOsVersion.setOptional(true);
 		propOsVersion.setDoc("Version of the operation system (defined by manufacturer)");
 		addProperty(propOsVersion);
 
-		propProtocol = new Property("propProtocol", "protl");
+		propProtocol = new Property("propProtocol", "proPl");
 		propProtocol.setType(SimpleType.String);
 		propProtocol.setOptional(true);
 		propProtocol.setDoc("A comma separated list of MIME types for all supported communication protocol(s) of the device. Example: “application/x-alljoin;version=1.0,application/x-echonet-lite;version=1.0” indicates the device supports both AllJoyn v1.0 and Echonet Lite v1.0.");
 		addProperty(propProtocol);
 
-		propCountry = new Property("propCountry", "couny");
+		propCountry = new Property("propCountry", "proCy");
 		propCountry.setType(SimpleType.String);
 		propCountry.setOptional(true);
 		propCountry.setDoc("Country code of the device");
 		addProperty(propCountry);
 
-		propLocation = new Property("propLocation", "locan");
+		propLocation = new Property("propLocation", "proLn");
 		propLocation.setType(SimpleType.String);
 		propLocation.setOptional(true);
 		propLocation.setDoc("Location where the device is installed. It may be configured via the user interface provided by  the ‘presentationURL’ property or any other means.");
 		addProperty(propLocation);
 
-		propSystemTime = new Property("propSystemTime", "sysTe");
+		propSystemTime = new Property("propSystemTime", "prSTe");
 		propSystemTime.setType(SimpleType.Datetime);
 		propSystemTime.setOptional(true);
 		propSystemTime.setDoc("Reference time for the device");
 		addProperty(propSystemTime);
 
-		propManufacturerDetailsLink = new Property("propManufacturerDetailsLink", "maDLk");
+		propManufacturerDetailsLink = new Property("propManufacturerDetailsLink", "pMDLk");
 		propManufacturerDetailsLink.setType(SimpleType.String);
 		propManufacturerDetailsLink.setOptional(true);
 		propManufacturerDetailsLink.setDoc("URL to manufacturer’s website");
 		addProperty(propManufacturerDetailsLink);
 
-		propDateOfManufacture = new Property("propDateOfManufacture", "propDateOfManufacture");
+		propDateOfManufacture = new Property("propDateOfManufacture", "pDOMe");
 		propDateOfManufacture.setType(SimpleType.Datetime);
 		propDateOfManufacture.setOptional(true);
 		propDateOfManufacture.setDoc("Manufacturing date of device");
 		addProperty(propDateOfManufacture);
 
-		propSupportURL = new Property("propSupportURL", "suURL");
+		propSupportURL = new Property("propSupportURL", "pSURL");
 		propSupportURL.setType(SimpleType.String);
 		propSupportURL.setOptional(true);
 		propSupportURL.setDoc("URL that points to product support information of the device");
 		addProperty(propSupportURL);
 
-		propPresentationURL = new Property("propPresentationURL", "propPresentationURL");
+		propPresentationURL = new Property("propPresentationURL", "pPURL");
 		propPresentationURL.setType(SimpleType.String);
 		propPresentationURL.setOptional(true);
 		propPresentationURL.setDoc("To quote UPnP: “the control point can retrieve a page from this URL, load the page into a web browser, and depending on the capabilities of the page, allow a user to control the device and/or view device status. The degree to which each of these can be accomplished depends on the specific capabilities of the presentation page and device.”");
