@@ -32,7 +32,7 @@ import org.eclipse.om2m.commons.entities.SubscriptionEntity;
 import org.eclipse.om2m.commons.resource.ChildResourceRef;
 import org.eclipse.om2m.commons.resource.Container;
 import org.eclipse.om2m.commons.resource.ContentInstance;
-import org.eclipse.om2m.commons.resource.FlexContainer;
+import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
 import org.eclipse.om2m.commons.resource.Subscription;
 
 public class ContainerMapper extends EntityMapper<ContainerEntity, Container>{
@@ -127,7 +127,7 @@ public class ContainerMapper extends EntityMapper<ContainerEntity, Container>{
 		
 		// add child ref flexContainers
 		for(FlexContainerEntity childFlexCont : entity.getChildFlexContainers()) {
-			FlexContainer fcnt = new FlexContainerMapper().mapEntityToResource(childFlexCont, ResultContent.ATTRIBUTES);
+			AbstractFlexContainer fcnt = new FlexContainerMapper().mapEntityToResource(childFlexCont, ResultContent.ATTRIBUTES);
 			resource.getContentInstanceOrContainerOrSubscription().add(fcnt);
 		}
 	}

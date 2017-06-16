@@ -7,14 +7,12 @@
  *******************************************************************************/
 package org.eclipse.om2m.core.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.om2m.commons.constants.Constants;
 import org.eclipse.om2m.commons.constants.MimeMediaType;
-import org.eclipse.om2m.commons.constants.Operation;
 import org.eclipse.om2m.commons.constants.ResourceStatus;
 import org.eclipse.om2m.commons.constants.ResourceType;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
@@ -34,7 +32,7 @@ import org.eclipse.om2m.commons.exceptions.NotPermittedAttrException;
 import org.eclipse.om2m.commons.exceptions.Om2mException;
 import org.eclipse.om2m.commons.exceptions.ResourceNotFoundException;
 import org.eclipse.om2m.commons.resource.CustomAttribute;
-import org.eclipse.om2m.commons.resource.FlexContainer;
+import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.FlexContainerFactory;
@@ -152,18 +150,18 @@ public class FlexContainerController extends Controller {
 			throw new BadRequestException("A content is requiered for FlexContainer creation");
 		}
 		// get the object from the representation
-		FlexContainer flexContainer = null;
+		AbstractFlexContainer flexContainer = null;
 		try {
 
 			String xmlPayload = null;
 			if (request.getRequestContentType().equals(MimeMediaType.OBJ)) {
-				flexContainer = (FlexContainer) request.getContent();
+				flexContainer = (AbstractFlexContainer) request.getContent();
 
 				// need to create the XML payload in order to validate it
 				xmlPayload = DataMapperSelector.getDataMapperList().get(MimeMediaType.XML).objToString(flexContainer);
 
 			} else {
-				flexContainer = (FlexContainer) DataMapperSelector.getDataMapperList()
+				flexContainer = (AbstractFlexContainer) DataMapperSelector.getDataMapperList()
 						.get(request.getRequestContentType()).stringToObj((String) request.getContent());
 
 				if (request.getRequestContentType().equals(MimeMediaType.XML)) {
@@ -346,7 +344,7 @@ public class FlexContainerController extends Controller {
 		checkPermissions(request, flexContainerEntity, flexContainerEntity.getAccessControlPolicies());
 
 		// Mapping the entity with the exchange resource
-		FlexContainer flexContainerResource = EntityMapperFactory.getFlexContainerMapper()
+		AbstractFlexContainer flexContainerResource = EntityMapperFactory.getFlexContainerMapper()
 				.mapEntityToResource(flexContainerEntity, request);
 
 		if (!request.getQueryStrings().containsKey("#")) {
@@ -420,22 +418,22 @@ public class FlexContainerController extends Controller {
 			checkPermissions(request, flexContainerEntity, flexContainerEntity.getAccessControlPolicies());
 		}
 
-		FlexContainer modifiedAttributes = /*new FlexContainer()*/ FlexContainerFactory.getSpecializationFlexContainer(flexContainerEntity.getShortName());
+		AbstractFlexContainer modifiedAttributes = /*new FlexContainer()*/ FlexContainerFactory.getSpecializationFlexContainer(flexContainerEntity.getShortName());
 		// check if content is present
 		if (request.getContent() != null) {
 			// create the java object from the resource representation
 			// get the object from the representation
-			FlexContainer flexContainer = null;
+			AbstractFlexContainer flexContainer = null;
 			try {
 				String xmlPayload = null;
 				if (request.getRequestContentType().equals(MimeMediaType.OBJ)) {
-					flexContainer = (FlexContainer) request.getContent();
+					flexContainer = (AbstractFlexContainer) request.getContent();
 					// need to create the XML payload in order to validate it
 					xmlPayload = DataMapperSelector.getDataMapperList().get(MimeMediaType.XML)
 							.objToString(flexContainer);
 
 				} else {
-					flexContainer = (FlexContainer) DataMapperSelector.getDataMapperList()
+					flexContainer = (AbstractFlexContainer) DataMapperSelector.getDataMapperList()
 							.get(request.getRequestContentType()).stringToObj((String) request.getContent());
 
 					if (request.getRequestContentType().equals(MimeMediaType.XML)) {

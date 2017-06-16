@@ -1,10 +1,11 @@
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
 
+import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
 import org.eclipse.om2m.commons.resource.FlexContainer;
 
 public class FlexContainerFactory {
 	
-	public static FlexContainer getSpecializationFlexContainer(String shortName) {
+	public static AbstractFlexContainer getSpecializationFlexContainer(String shortName) {
 		switch (shortName) {
 		case DeviceLightFlexContainer.SHORT_NAME:
 			return new DeviceLightFlexContainer();

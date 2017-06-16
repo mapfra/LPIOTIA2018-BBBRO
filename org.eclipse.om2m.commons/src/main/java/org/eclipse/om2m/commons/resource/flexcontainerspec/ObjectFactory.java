@@ -2,208 +2,208 @@ package org.eclipse.om2m.commons.resource.flexcontainerspec;
 
 import javax.xml.bind.annotation.XmlRegistry;
 
-import org.eclipse.om2m.commons.resource.FlexContainer;
+import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
 
 @XmlRegistry
 public class ObjectFactory {
 	
-	public FlexContainer createDevLt() {
+	public AbstractFlexContainer createDevLt() {
 		return new DeviceLightFlexContainer();
 	}
 	
-	public FlexContainer createDSEMr() {
+	public AbstractFlexContainer createDSEMr() {
 		return new DeviceSmartElectricMeterFlexContainer();
 	}
 	
-	public FlexContainer createDeWHr() {
+	public AbstractFlexContainer createDeWHr() {
 		return new DeviceWaterHeaterFlexContainer();
 	}
 	
-	public FlexContainer createDevCa() {
+	public AbstractFlexContainer createDevCa() {
 		return new DeviceCameraFlexContainer();
 	}
 	
-	public FlexContainer createDCeMe() {
+	public AbstractFlexContainer createDCeMe() {
 		return new DeviceCoffeeMachineFlexContainer();
 	}
 	
-	public FlexContainer createDCtDr() {
+	public AbstractFlexContainer createDCtDr() {
 		return new DeviceContactDetectorFlexContainer();
 	}
 	
-	public FlexContainer createDevDr() {
+	public AbstractFlexContainer createDevDr() {
 		return new DeviceDoorFlexContainer();
 	}
 	
-	public FlexContainer createDFdDr() {
+	public AbstractFlexContainer createDFdDr() {
 		return new DeviceFloodDetectorFlexContainer();
 	}
 	
-	public FlexContainer createDGsVe() {
+	public AbstractFlexContainer createDGsVe() {
 		return new DeviceGasValveFlexContainer();
 	}
 	
-	public FlexContainer createDMnDr() {
+	public AbstractFlexContainer createDMnDr() {
 		return new DeviceMotionDetectorFlexContainer();
 	}
 	
-	public FlexContainer createDSeDr() {
+	public AbstractFlexContainer createDSeDr() {
 		return new DeviceSmokeDetectorFlexContainer();
 	}
 	
-	public FlexContainer createDSeEr() {
+	public AbstractFlexContainer createDSeEr() {
 		return new DeviceSmokeExtractorFlexContainer();
 	}
 	
-	public FlexContainer createDShBn() {
+	public AbstractFlexContainer createDShBn() {
 		return new DeviceSwitchButtonFlexContainer();
 	}
 	
-	public FlexContainer createDTeDr() {
+	public AbstractFlexContainer createDTeDr() {
 		return new DeviceTemperatureDetectorFlexContainer();
 	}
 	
-	public FlexContainer createDWgDe() {
+	public AbstractFlexContainer createDWgDe() {
 		return new DeviceWarningDeviceFlexContainer();
 	}
 	
-	public FlexContainer createDevWV() {
+	public AbstractFlexContainer createDevWV() {
 		return new DeviceWaterValveFlexContainer();
 	}
 	
-	public FlexContainer createDWrSn() {
+	public AbstractFlexContainer createDWrSn() {
 		return new DeviceWeatherStationFlexContainer();
 	}
 	
-	public FlexContainer createAlaSr() {
+	public AbstractFlexContainer createAlaSr() {
 		return new ModuleAlarmSpeakerFlexContainer();
 	}
 	
-	public FlexContainer createAudVe() {
+	public AbstractFlexContainer createAudVe() {
 		return new ModuleAudioVolumeFlexContainer();
 	}
 	
-	public FlexContainer createBinSh() {
+	public AbstractFlexContainer createBinSh() {
 		return new ModuleBinarySwitchFlexContainer();
 	}
 	
-	public FlexContainer createBoilr() {
+	public AbstractFlexContainer createBoilr() {
 		return new ModuleBoilerFlexContainer();
 	}
 	
-	public FlexContainer createBrigs() {
+	public AbstractFlexContainer createBrigs() {
 		return new ModuleBrightnessFlexContainer();
 	}
 	
-	public FlexContainer createClock() {
+	public AbstractFlexContainer createClock() {
 		return new ModuleClockFlexContainer();
 	}
 	
-	public FlexContainer createColor() {
+	public AbstractFlexContainer createColor() {
 		return new ModuleColourFlexContainer();
 	}
 	
-	public FlexContainer createColSn() {
+	public AbstractFlexContainer createColSn() {
 		return new ModuleColourSaturationFlexContainer();
 	}
 	
-	public FlexContainer createDooSe() {
+	public AbstractFlexContainer createDooSe() {
 		return new ModuleDoorStatusFlexContainer();
 	}
 	
-	public FlexContainer createEneCn() {
+	public AbstractFlexContainer createEneCn() {
 		return new ModuleEnergyConsumptionFlexContainer();
 	}
 	
-	public FlexContainer createEneGn() {
+	public AbstractFlexContainer createEneGn() {
 		return new ModuleEnergyGenerationFlexContainer();
 	}
 	
-	public FlexContainer createFauDn() {
+	public AbstractFlexContainer createFauDn() {
 		return new ModuleFaultDetectionFlexContainer();
 	}
 	
-	public FlexContainer createRelHy() {
+	public AbstractFlexContainer createRelHy() {
 		return new ModuleRelativeHumidityFlexContainer();
 	}
 	
-	public FlexContainer createRunMe() {
+	public AbstractFlexContainer createRunMe() {
 		return new ModuleRunModeFlexContainer();
 	}
 	
-	public FlexContainer createSmoSr() {
+	public AbstractFlexContainer createSmoSr() {
 		return new ModuleSmokeSensorFlexContainer();
 	}
 	
-	public FlexContainer createTempe() {
+	public AbstractFlexContainer createTempe() {
 		return new ModuleTemperatureFlexContainer();
 	}
 	
-	public FlexContainer createWatLl() {
+	public AbstractFlexContainer createWatLl() {
 		return new ModuleWaterLevelFlexContainer();
 	}
 	
-	public FlexContainer createWatSr() {
+	public AbstractFlexContainer createWatSr() {
 		return new ModuleWaterSensorFlexContainer();
 	}
 	
-	public FlexContainer createAtPSr() {
+	public AbstractFlexContainer createAtPSr() {
 		return new ModuleAtmosphericPressureSensorFlexContainer();
 	}
 	
-	public FlexContainer createBrwng() {
+	public AbstractFlexContainer createBrwng() {
 		return new ModuleBrewingFlexContainer();
 	}
 	
-	public FlexContainer createCbDSr() {
+	public AbstractFlexContainer createCbDSr() {
 		return new ModuleCarbonDioxideSensorFlexContainer();
 	}
 	
-	public FlexContainer createCbMSr() {
+	public AbstractFlexContainer createCbMSr() {
 		return new ModuleCarbonMonoxideSensorFlexContainer();
 	}
 	
-	public FlexContainer createConSr() {
+	public AbstractFlexContainer createConSr() {
 		return new ModuleContactSensorFlexContainer();
 	}
 	
-	public FlexContainer createDimng() {
+	public AbstractFlexContainer createDimng() {
 		return new ModuleDimmingFlexContainer();
 	}
 	
-	public FlexContainer createEOCBr() {
+	public AbstractFlexContainer createEOCBr() {
 		return new ModuleEnergyOverloadCircuitBreakerFlexContainer();
 	}
 	
-	public FlexContainer createECDSr() {
+	public AbstractFlexContainer createECDSr() {
 		return new ModuleExtendedCarbonDioxideSensorFlexContainer();
 	}
 	
-	public FlexContainer createFomng() {
+	public AbstractFlexContainer createFomng() {
 		return new ModuleFoamingFlexContainer();
 	}
 	
-	public FlexContainer createGridr() {
+	public AbstractFlexContainer createGridr() {
 		return new ModuleGrinderFlexContainer();
 	}
 	
-	public FlexContainer createNoise() {
+	public AbstractFlexContainer createNoise() {
 		return new ModuleNoiseFlexContainer();
 	}
 	
-	public FlexContainer createPerSr() {
+	public AbstractFlexContainer createPerSr() {
 		return new ModulePersonSensorFlexContainer();
 	}
 	
-	public FlexContainer createStrem() {
+	public AbstractFlexContainer createStrem() {
 		return new ModuleStreamingFlexContainer();
 	}
 	
-	public FlexContainer createLock() {
+	public AbstractFlexContainer createLock() {
 		return new ModuleLockFlexContainer();
 	}
 	
-	public FlexContainer createTogge() {
+	public AbstractFlexContainer createTogge() {
 		return new ActionToggleFlexContainer();
 	}
 	

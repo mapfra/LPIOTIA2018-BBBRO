@@ -16,9 +16,9 @@ import org.eclipse.om2m.commons.constants.Operation;
 import org.eclipse.om2m.commons.constants.ResourceType;
 import org.eclipse.om2m.commons.resource.AE;
 import org.eclipse.om2m.commons.resource.AEAnnc;
+import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
 import org.eclipse.om2m.commons.resource.AccessControlPolicy;
 import org.eclipse.om2m.commons.resource.AccessControlRule;
-import org.eclipse.om2m.commons.resource.FlexContainer;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
 import org.eclipse.om2m.commons.resource.SetOfAcrs;
@@ -121,7 +121,7 @@ public class CseUtil {
 	 * @param resourceName name of the to be created resource
 	 * @return response sent by the CSE
 	 */
-	public static ResponsePrimitive sendCreateFlexContainerRequest(CseService cseService, FlexContainer flexContainer,
+	public static ResponsePrimitive sendCreateFlexContainerRequest(CseService cseService, AbstractFlexContainer flexContainer,
 			String resourceLocation, String resourceName) {
 		RequestPrimitive request = new RequestPrimitive();
 
@@ -182,7 +182,7 @@ public class CseUtil {
 	 * 
 	 * @return response sent by the CSE
 	 */
-	public static ResponsePrimitive sendInternalNotifyFlexContainerRequest(CseService cseService, FlexContainer flexContainer,
+	public static ResponsePrimitive sendInternalNotifyFlexContainerRequest(CseService cseService, AbstractFlexContainer flexContainer,
 			String resourceLocation) {
 		RequestPrimitive request = new RequestPrimitive();
 

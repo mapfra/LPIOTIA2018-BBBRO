@@ -36,7 +36,7 @@ import org.eclipse.om2m.commons.resource.AE;
 import org.eclipse.om2m.commons.resource.AEAnnc;
 import org.eclipse.om2m.commons.resource.AnnounceableResource;
 import org.eclipse.om2m.commons.resource.AnnouncedResource;
-import org.eclipse.om2m.commons.resource.FlexContainer;
+import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
 import org.eclipse.om2m.commons.resource.FlexContainerAnnc;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
@@ -82,7 +82,7 @@ public class Announcer {
 			break;
 		case ResourceType.FLEXCONTAINER:
 			FlexContainerAnnc flexContainerAnnc = new FlexContainerAnnc();
-			flexContainerAnnc.setContainerDefinition(((FlexContainer) toBeAnnounced).getContainerDefinition());
+			flexContainerAnnc.setContainerDefinition(((AbstractFlexContainer) toBeAnnounced).getContainerDefinition());
 			announcedResource = flexContainerAnnc;
 		default:
 		}

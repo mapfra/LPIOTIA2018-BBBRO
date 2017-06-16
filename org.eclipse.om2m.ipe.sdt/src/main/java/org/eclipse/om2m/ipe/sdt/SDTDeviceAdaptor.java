@@ -13,9 +13,10 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
+import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
 import org.eclipse.om2m.commons.resource.CustomAttribute;
-import org.eclipse.om2m.commons.resource.FlexContainer;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.FlexContainerFactory;
 import org.eclipse.om2m.core.service.CseService;
 import org.eclipse.om2m.sdt.Device;
 import org.eclipse.om2m.sdt.Module;
@@ -68,10 +69,10 @@ public class SDTDeviceAdaptor {
 		logger.info("publishIntoOM2MTree(flexContainerName=" + resourceName 
 				+ ", parentLocation:" + parentLocation);
 		
-		FlexContainer flexContainer = new FlexContainer();
+		AbstractFlexContainer flexContainer = FlexContainerFactory.getSpecializationFlexContainer(device.getShortDefinitionName());
 		// set container definition with the value of the Device definition
 		flexContainer.setContainerDefinition(device.getDefinition());
-		
+				
 		// set long and short name
 		flexContainer.setLongName(device.getLongDefinitionName());
 		flexContainer.setShortName(device.getShortDefinitionName());

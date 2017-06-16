@@ -53,7 +53,7 @@ import org.eclipse.om2m.commons.resource.CSEBase;
 import org.eclipse.om2m.commons.resource.Container;
 import org.eclipse.om2m.commons.resource.ContentInstance;
 import org.eclipse.om2m.commons.resource.DynamicAuthorizationConsultation;
-import org.eclipse.om2m.commons.resource.FlexContainer;
+import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
 import org.eclipse.om2m.commons.resource.FlexContainerAnnc;
 import org.eclipse.om2m.commons.resource.Group;
 import org.eclipse.om2m.commons.resource.Node;
@@ -96,7 +96,7 @@ public class EntityMapperFactory {
 	}
 	
 	/** Get the FlexContainer mapper */
-	public static EntityMapper<FlexContainerEntity, FlexContainer> getFlexContainerMapper(){
+	public static EntityMapper<FlexContainerEntity, AbstractFlexContainer> getFlexContainerMapper(){
 		return new FlexContainerMapper();
 	}
 	/** Get the FlexContainerAnnc mapper */

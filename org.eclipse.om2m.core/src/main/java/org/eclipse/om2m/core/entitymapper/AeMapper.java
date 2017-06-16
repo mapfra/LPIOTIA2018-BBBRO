@@ -36,7 +36,7 @@ import org.eclipse.om2m.commons.resource.AccessControlPolicy;
 import org.eclipse.om2m.commons.resource.ChildResourceRef;
 import org.eclipse.om2m.commons.resource.Container;
 import org.eclipse.om2m.commons.resource.DynamicAuthorizationConsultation;
-import org.eclipse.om2m.commons.resource.FlexContainer;
+import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
 import org.eclipse.om2m.commons.resource.Group;
 import org.eclipse.om2m.commons.resource.PollingChannel;
 import org.eclipse.om2m.commons.resource.Subscription;
@@ -141,7 +141,7 @@ public class AeMapper extends EntityMapper<AeEntity, AE> {
 		}
 		// ChildResourceRef FlexContainer
 		for (FlexContainerEntity flexContainerEntity : entity.getChildFlexContainers()) {
-			FlexContainer fcnt = new FlexContainerMapper().mapEntityToResource(flexContainerEntity,
+			AbstractFlexContainer fcnt = new FlexContainerMapper().mapEntityToResource(flexContainerEntity,
 					ResultContent.ATTRIBUTES);
 			resource.getContainerOrGroupOrAccessControlPolicy().add(fcnt);
 		}

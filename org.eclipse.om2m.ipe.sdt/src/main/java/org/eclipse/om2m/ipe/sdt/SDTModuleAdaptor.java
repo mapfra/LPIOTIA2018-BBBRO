@@ -14,9 +14,10 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
+import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
 import org.eclipse.om2m.commons.resource.CustomAttribute;
-import org.eclipse.om2m.commons.resource.FlexContainer;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.FlexContainerFactory;
 import org.eclipse.om2m.core.service.CseService;
 import org.eclipse.om2m.ipe.sdt.flexcontainerservice.ModuleFlexContainerService;
 import org.eclipse.om2m.sdt.Action;
@@ -68,7 +69,7 @@ public class SDTModuleAdaptor {
 		logger.info("publishModuleFromOM2MTree(name=" + this.module.getName() 
 				+ ", parentLocation=" + parentLocation + ")");
 
-		FlexContainer flexContainer = new FlexContainer();
+		AbstractFlexContainer flexContainer = FlexContainerFactory.getSpecializationFlexContainer(this.module.getShortDefinitionName());
 		flexContainer.setContainerDefinition(this.module.getDefinition());
 		flexContainer.setLongName(this.module.getLongDefinitionName());
 		flexContainer.setShortName(this.module.getShortDefinitionName());
@@ -168,7 +169,7 @@ public class SDTModuleAdaptor {
 					null);
 			return false;
 		}
-		FlexContainer createdFlexContainer = (FlexContainer) resp.getContent();
+		AbstractFlexContainer createdFlexContainer = (AbstractFlexContainer) resp.getContent();
 		// create a ModuleFlexContainerService
 		moduleFlexContainerService = new ModuleFlexContainerService(module, 
 				createdFlexContainer.getResourceID());

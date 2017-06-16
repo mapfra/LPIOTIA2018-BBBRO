@@ -17,23 +17,24 @@ import org.eclipse.om2m.commons.resource.ChildResourceRef;
 import org.eclipse.om2m.commons.resource.Container;
 import org.eclipse.om2m.commons.resource.CustomAttribute;
 import org.eclipse.om2m.commons.resource.FlexContainer;
+import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
 import org.eclipse.om2m.commons.resource.Subscription;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.FlexContainerFactory;
 
-public class FlexContainerMapper extends EntityMapper<FlexContainerEntity, FlexContainer>{
+public class FlexContainerMapper extends EntityMapper<FlexContainerEntity, AbstractFlexContainer>{
 
 	@Override
-	protected FlexContainer createResource() {
+	protected AbstractFlexContainer createResource() {
 		return new FlexContainer();
 	}
 	
 	@Override
-	protected FlexContainer createResource(FlexContainerEntity entity) {
+	protected AbstractFlexContainer createResource(FlexContainerEntity entity) {
 		return FlexContainerFactory.getSpecializationFlexContainer(entity.getShortName());
 	}
 
 	@Override
-	protected void mapAttributes(FlexContainerEntity entity, FlexContainer resource) {
+	protected void mapAttributes(FlexContainerEntity entity, AbstractFlexContainer resource) {
 		
 		// announceableResource attributes
 		EntityMapperFactory.getAnnounceableSubordonateEntity_AnnounceableResourceMapper().mapAttributes(entity, resource);
@@ -58,7 +59,7 @@ public class FlexContainerMapper extends EntityMapper<FlexContainerEntity, FlexC
 
 	@Override
 	protected void mapChildResourceRef(FlexContainerEntity entity,
-			FlexContainer resource) {
+			AbstractFlexContainer resource) {
 
 		// add child ref FlexContainer
 		for (FlexContainerEntity fcnt : entity.getChildFlexContainers()) {
@@ -90,10 +91,10 @@ public class FlexContainerMapper extends EntityMapper<FlexContainerEntity, FlexC
 	}
 
 	@Override
-	protected void mapChildResources(FlexContainerEntity entity, FlexContainer resource) {
+	protected void mapChildResources(FlexContainerEntity entity, AbstractFlexContainer resource) {
 		// add child ref flexContainer
 		for (FlexContainerEntity cin : entity.getChildFlexContainers()) {
-			FlexContainer flexContainerRes = new FlexContainerMapper().mapEntityToResource(cin, ResultContent.ATTRIBUTES);
+			AbstractFlexContainer flexContainerRes = new FlexContainerMapper().mapEntityToResource(cin, ResultContent.ATTRIBUTES);
 			resource.getFlexContainerOrContainerOrSubscription().add(flexContainerRes);
 		}
 

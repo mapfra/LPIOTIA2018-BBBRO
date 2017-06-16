@@ -42,7 +42,7 @@ import org.eclipse.om2m.commons.resource.CSEBase;
 import org.eclipse.om2m.commons.resource.ChildResourceRef;
 import org.eclipse.om2m.commons.resource.Container;
 import org.eclipse.om2m.commons.resource.DynamicAuthorizationConsultation;
-import org.eclipse.om2m.commons.resource.FlexContainer;
+import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
 import org.eclipse.om2m.commons.resource.Group;
 import org.eclipse.om2m.commons.resource.RemoteCSE;
 import org.eclipse.om2m.commons.resource.Request;
@@ -192,7 +192,7 @@ public class CseBaseMapper extends EntityMapper<CSEBaseEntity, CSEBase> {
 		}
 		// adding flexcontainer refs
 		for (FlexContainerEntity fcnt : entity.getChildFlexContainers()) {
-			FlexContainer fcntRes = new FlexContainerMapper().mapEntityToResource(fcnt, ResultContent.ATTRIBUTES);
+			AbstractFlexContainer fcntRes = new FlexContainerMapper().mapEntityToResource(fcnt, ResultContent.ATTRIBUTES);
 			resource.getRemoteCSEOrNodeOrAE().add(fcntRes);
 		}
 		// adding remoteCSE refs

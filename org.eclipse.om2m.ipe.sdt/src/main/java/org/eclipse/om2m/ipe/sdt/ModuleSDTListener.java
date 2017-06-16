@@ -13,6 +13,7 @@ import java.util.Hashtable;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
+import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
 import org.eclipse.om2m.commons.resource.CustomAttribute;
 import org.eclipse.om2m.commons.resource.FlexContainer;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
@@ -79,7 +80,7 @@ public class ModuleSDTListener implements SDTEventListener {
 		logger.info("receive a notification for " + notif.getDataPoint().getName() 
 				+ ", value=" + notif.getValue());
 
-		FlexContainer toBeUpdated = new FlexContainer();
+		AbstractFlexContainer toBeUpdated = new FlexContainer();
 		CustomAttribute ca = new CustomAttribute();
 		ca.setCustomAttributeName(notif.getDataPoint().getName());
 		ca.setCustomAttributeType(

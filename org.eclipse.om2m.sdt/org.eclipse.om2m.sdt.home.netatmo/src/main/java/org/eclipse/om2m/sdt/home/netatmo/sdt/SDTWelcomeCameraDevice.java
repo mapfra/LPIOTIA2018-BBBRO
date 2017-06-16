@@ -60,7 +60,7 @@ public class SDTWelcomeCameraDevice extends Camera {
 		}
 
 		// create properties for vpn
-		addProperty(new Property("vpnUrl", camera.getVpnUrl()));
+		addProperty(new Property("vpnUrl", "vpnUrl", camera.getVpnUrl()));
 
 		setPersonSensor(new PersonSensor("personSensor_" + getId(), Activator.NETATMO_DOMAIN,
 			new ArrayDataPoint<String>("detectedPersons") {

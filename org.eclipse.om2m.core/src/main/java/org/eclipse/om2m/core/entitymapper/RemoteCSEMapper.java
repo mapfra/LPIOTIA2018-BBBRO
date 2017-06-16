@@ -38,7 +38,7 @@ import org.eclipse.om2m.commons.resource.AccessControlPolicy;
 import org.eclipse.om2m.commons.resource.ChildResourceRef;
 import org.eclipse.om2m.commons.resource.Container;
 import org.eclipse.om2m.commons.resource.DynamicAuthorizationConsultation;
-import org.eclipse.om2m.commons.resource.FlexContainer;
+import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
 import org.eclipse.om2m.commons.resource.Group;
 import org.eclipse.om2m.commons.resource.PollingChannel;
 import org.eclipse.om2m.commons.resource.RemoteCSE;
@@ -188,7 +188,7 @@ public class RemoteCSEMapper extends EntityMapper<RemoteCSEEntity, RemoteCSE> {
 		}
 		// adding fcnt ref
 		for (FlexContainerEntity flexContainer : csrEntity.getChildFcnt()) {
-			FlexContainer chFcnt = new FlexContainerMapper().mapEntityToResource(flexContainer,
+			AbstractFlexContainer chFcnt = new FlexContainerMapper().mapEntityToResource(flexContainer,
 					ResultContent.ATTRIBUTES);
 			csr.getAEOrContainerOrGroup().add(chFcnt);
 		}

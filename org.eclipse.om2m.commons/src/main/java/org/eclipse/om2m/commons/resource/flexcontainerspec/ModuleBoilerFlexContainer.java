@@ -5,12 +5,12 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.eclipse.om2m.commons.resource.FlexContainer;
+import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
 
 @XmlRootElement(name=ModuleBoilerFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name=ModuleBoilerFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain")
-public class ModuleBoilerFlexContainer extends FlexContainer {
+public class ModuleBoilerFlexContainer extends AbstractFlexContainer {
 	
 	public static final String LONG_NAME = "boiler";
 	public static final String SHORT_NAME = "boilr";
