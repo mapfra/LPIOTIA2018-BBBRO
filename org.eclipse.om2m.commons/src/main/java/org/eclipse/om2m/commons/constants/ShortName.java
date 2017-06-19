@@ -180,6 +180,8 @@ public class ShortName {
 	public static final String CHILD_RESOURCE_NAME = "nm";
 	/** Short name for type attribute of a ChildResourceRef */
 	public static final String CHILD_RESOURCE_TYPE = "typ";
+	/** Short name for spid attribute of a ChildResourceRef */ 
+	public static final String CHILD_RESOURCE_SPID = "spid";
 	
 	// Attributes for CSEBase Entity
 	/** Short name for SupportedResourceTypes attribute */

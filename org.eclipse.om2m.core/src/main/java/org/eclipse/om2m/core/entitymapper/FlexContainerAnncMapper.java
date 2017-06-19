@@ -46,6 +46,7 @@ public class FlexContainerAnncMapper extends EntityMapper<FlexContainerAnncEntit
 			child.setResourceName(fcntAnnc.getName());
 			child.setType(ResourceType.FLEXCONTAINER_ANNC);
 			child.setValue(fcntAnnc.getResourceID());
+			child.setSpid(fcntAnnc.getContainerDefinition());
 			resource.getChildResource().add(child);	
 		}
 

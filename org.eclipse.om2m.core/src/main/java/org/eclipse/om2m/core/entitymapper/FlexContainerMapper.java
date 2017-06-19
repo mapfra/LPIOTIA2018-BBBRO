@@ -67,6 +67,7 @@ public class FlexContainerMapper extends EntityMapper<FlexContainerEntity, Abstr
 			child.setResourceName(fcnt.getName());
 			child.setType(ResourceType.FLEXCONTAINER);
 			child.setValue(fcnt.getResourceID());
+			child.setSpid(fcnt.getContainerDefinition());
 			resource.getChildResource().add(child);	
 		}
 

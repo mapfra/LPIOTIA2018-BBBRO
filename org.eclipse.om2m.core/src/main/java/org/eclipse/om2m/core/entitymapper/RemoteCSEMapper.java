@@ -119,6 +119,7 @@ public class RemoteCSEMapper extends EntityMapper<RemoteCSEEntity, RemoteCSE> {
 			child.setResourceName(flexContainer.getName());
 			child.setType(ResourceType.FLEXCONTAINER);
 			child.setValue(flexContainer.getResourceID());
+			child.setSpid(flexContainer.getContainerDefinition());
 			csr.getChildResource().add(child);
 		}
 		// adding group ref

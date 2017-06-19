@@ -44,6 +44,7 @@ public class AeAnncMapper extends EntityMapper<AeAnncEntity, AEAnnc> {
 			child.setResourceName(flexContainerEntity.getName());
 			child.setType(flexContainerEntity.getResourceType());
 			child.setValue(flexContainerEntity.getResourceID());
+			child.setSpid(flexContainerEntity.getContainerDefinition());
 			resource.getChildResource().add(child);
 		}
 

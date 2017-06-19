@@ -73,6 +73,9 @@ public class ChildResourceRef {
 	protected String resourceName;
 	@XmlAttribute(name = ShortName.CHILD_RESOURCE_TYPE, required = true)
 	protected BigInteger type;
+	@XmlAttribute(name=ShortName.CHILD_RESOURCE_SPID, required=false)
+	@XmlSchemaType(name = "anyURI")
+	protected String spid;
 
 	/**
 	 * Gets the value of the value property.
@@ -140,5 +143,21 @@ public class ChildResourceRef {
 	public void setType(int value){
 		this.type = BigInteger.valueOf(value);
 	}
+
+	/**
+	 * @return the spid
+	 */
+	public String getSpid() {
+		return spid;
+	}
+
+	/**
+	 * @param spid the spid to set
+	 */
+	public void setSpid(String spid) {
+		this.spid = spid;
+	}
+	
+	
 
 }
