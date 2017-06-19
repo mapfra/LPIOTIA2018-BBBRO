@@ -141,7 +141,7 @@ public class CSEInitializer {
 		int[] supportedResources = { ResourceType.ACCESS_CONTROL_POLICY, ResourceType.AE, ResourceType.CONTAINER,
 				ResourceType.CONTENT_INSTANCE, ResourceType.CSE_BASE, ResourceType.GROUP, ResourceType.NODE,
 				ResourceType.POLLING_CHANNEL, ResourceType.REMOTE_CSE, ResourceType.REQUEST,
-				ResourceType.SUBSCRIPTION };
+				ResourceType.SUBSCRIPTION, ResourceType.FLEXCONTAINER };
 
 		for (int rt : supportedResources) {
 			cseBaseEntity.getSupportedResourceType().add(BigInteger.valueOf(rt));
