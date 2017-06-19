@@ -112,6 +112,7 @@ public class RemoteCSE extends AnnounceableResource {
 	protected List<ChildResourceRef> childResource;
 	@XmlElements({
 			@XmlElement(name = ShortName.AE, namespace = "http://www.onem2m.org/xml/protocols", type = AE.class),
+			@XmlElement(name = ShortName.AE_ANNC, namespace = "http://www.onem2m.org/xml/protocols", type = AEAnnc.class),
 			@XmlElement(name = ShortName.CNT, namespace = "http://www.onem2m.org/xml/protocols", type = Container.class),
 			@XmlElement(name = ShortName.GROUP, namespace = "http://www.onem2m.org/xml/protocols", type = Group.class),
 			@XmlElement(name = ShortName.ACP, namespace = "http://www.onem2m.org/xml/protocols", type = AccessControlPolicy.class),
