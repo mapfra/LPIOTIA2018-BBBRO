@@ -33,6 +33,11 @@
 
 		<java-type name="RemoteCSE">
 			<xml-root-element name="m2m:csr" />
+			<java-attributes>
+				<xml-element java-attribute="accessControlPolicyIDs"
+					name="acpi" />
+				<xml-element java-attribute="pointOfAccess" name="poa" />
+			</java-attributes>
 		</java-type>
 
 		<!-- Access Control resources -->
