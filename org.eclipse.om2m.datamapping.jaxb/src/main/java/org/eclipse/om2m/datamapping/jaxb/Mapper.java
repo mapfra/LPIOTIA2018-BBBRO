@@ -89,6 +89,7 @@ public class Mapper implements DataMapperService {
 			OutputStream outputStream = new ByteArrayOutputStream();
 			marshaller.setProperty(MarshallerProperties.MEDIA_TYPE,mediaType);
 			marshaller.setProperty(MarshallerProperties.JSON_INCLUDE_ROOT, true);
+			marshaller.setProperty(MarshallerProperties.JSON_VALUE_WRAPPER, "val");
 			marshaller.setProperty(MarshallerProperties.JSON_REDUCE_ANY_ARRAYS, true);
 			marshaller.marshal(obj, outputStream);
 			
