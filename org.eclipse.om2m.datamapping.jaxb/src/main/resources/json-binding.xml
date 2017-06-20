@@ -18,6 +18,13 @@
 					name="acpi" />
 			</java-attributes>
 		</java-type>
+		
+		<java-type name="AnnouncedResource">
+			<java-attributes>
+				<xml-element java-attribute="accessControlPolicyIDs"
+					name="acpi" />
+			</java-attributes>
+		</java-type>
 
 		<!-- CSE Descriptions -->
 		<java-type name="CSEBase">
@@ -34,8 +41,6 @@
 		<java-type name="RemoteCSE">
 			<xml-root-element name="m2m:csr" />
 			<java-attributes>
-				<xml-element java-attribute="accessControlPolicyIDs"
-					name="acpi" />
 				<xml-element java-attribute="pointOfAccess" name="poa" />
 			</java-attributes>
 		</java-type>
@@ -58,19 +63,21 @@
 				<xml-element java-attribute="pointOfAccess" name="poa" />
 			</java-attributes>
 		</java-type>
+		<java-type name="AEAnnc">
+			<xml-root-element name="m2m:aeA" />
+			<java-attributes>
+				<xml-element java-attribute="pointOfAccess" name="poa" />
+			</java-attributes>
+		</java-type>
 
 		<java-type name="Container">
 			<xml-root-element name="m2m:cnt" />
 		</java-type>
 		
-		<!-- <java-type name="FlexContainer">
-			<xml-root-element name="m2m:fcnt" />
+		<java-type name="AbstractFlexContainer">
+			<java-attributes>
+			</java-attributes>
 		</java-type>
-		
-		<java-type name="MyDef">
-			<xml-root-element name="hd:myDef" />
-		</java-type> -->
-		
 		
 
 		<java-type name="ContentInstance">
@@ -129,12 +136,5 @@
 		</java-type>
 
 	</java-types>
-	
-	<xml-registries>
-        <xml-registry name="org.eclipse.om2m.commons.resource.flexcontainerspec.ObjectFactory">
-            <xml-element-decl java-method="createmyDef4"
-                name="hd:myDef4" type="org.eclipse.om2m.commons.resource.FlexContainer" />
-        </xml-registry>
-    </xml-registries>
 
 </xml-bindings>
