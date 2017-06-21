@@ -276,13 +276,13 @@ public class Notifier {
 						// for non modified controllers, send the ResourceEntity 
 						// but it is not compliant with the specs
 						serializableResource  = (Resource) mapper
-								.mapEntityToResource(resource, ResultContent.ATTRIBUTES);
+								.mapEntityToResource(resource, ResultContent.ATTRIBUTES, 0, 0);
 						representation.setResource(serializableResource);
 					}
 					notification.getNotificationEvent().setRepresentation(representation);
 					request.setRequestContentType(MimeMediaType.XML);
 				} else if(sub.getNotificationContentType().equals(NotificationContentType.WHOLE_RESOURCE)){
-					serializableResource = (Resource) mapper.mapEntityToResource(resource, ResultContent.ATTRIBUTES);
+					serializableResource = (Resource) mapper.mapEntityToResource(resource, ResultContent.ATTRIBUTES, 0, 0);
 					Representation representation = new Representation();
 					representation.setResource(serializableResource);
 					notification.getNotificationEvent().setRepresentation(representation);

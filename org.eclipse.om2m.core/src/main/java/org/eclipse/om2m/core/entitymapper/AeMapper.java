@@ -20,6 +20,8 @@
 package org.eclipse.om2m.core.entitymapper;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.om2m.commons.constants.ResourceType;
 import org.eclipse.om2m.commons.constants.ResultContent;
@@ -49,9 +51,14 @@ public class AeMapper extends EntityMapper<AeEntity, AE> {
 	}
 
 	@Override
-	protected void mapAttributes(AeEntity entity, AE resource) {
+	protected void mapAttributes(AeEntity entity, AE resource, int level, int offset) {
+		
+		if (level < 0) {
+			return;
+		}
+		
 		// AnnounceableResource attributes
-		EntityMapperFactory.getAnnounceableSubordonateEntity_AnnounceableResourceMapper().mapAttributes(entity, resource);
+		EntityMapperFactory.getAnnounceableSubordonateEntity_AnnounceableResourceMapper().mapAttributes(entity, resource, level, offset);
 		
 		// Ae attributes
 		resource.setAEID(entity.getAeid());
@@ -64,17 +71,24 @@ public class AeMapper extends EntityMapper<AeEntity, AE> {
 		}
 		resource.setRequestReachability(entity.isRequestReachability());
 	}
-
+	
 	@Override
-	protected void mapChildResourceRef(AeEntity entity, AE resource) {
-
+	protected List<ChildResourceRef> getChildResourceRef(AeEntity entity, int level, int offset) {
+		List<ChildResourceRef> childRefs = new ArrayList<>();
+		
+		if (level == 0) {
+			return childRefs;
+		}
+		
 		// ChildResourceRef ACP
 		for (AccessControlPolicyEntity acpEntity : entity.getChildAccessControlPolicies()) {
 			ChildResourceRef child = new ChildResourceRef();
 			child.setResourceName(acpEntity.getName());
 			child.setType(BigInteger.valueOf(ResourceType.ACCESS_CONTROL_POLICY));
 			child.setValue(acpEntity.getResourceID());
-			resource.getChildResource().add(child);
+			childRefs.add(child);
+			
+			childRefs.addAll(new AcpMapper().getChildResourceRef(acpEntity, level - 1, offset - 1));
 		}
 		// ChildResourceRef Container
 		for (ContainerEntity containerEntity : entity.getChildContainers()) {
@@ -82,7 +96,9 @@ public class AeMapper extends EntityMapper<AeEntity, AE> {
 			child.setResourceName(containerEntity.getName());
 			child.setType(BigInteger.valueOf(ResourceType.CONTAINER));
 			child.setValue(containerEntity.getResourceID());
-			resource.getChildResource().add(child);
+			childRefs.add(child);
+			
+			childRefs.addAll(new ContainerMapper().getChildResourceRef(containerEntity, level - 1, offset - 1));
 		}
 		// ChildResourceRef FlexContainer
 		for (FlexContainerEntity flexContainerEntity : entity.getChildFlexContainers()) {
@@ -91,7 +107,9 @@ public class AeMapper extends EntityMapper<AeEntity, AE> {
 			child.setType(flexContainerEntity.getResourceType());
 			child.setValue(flexContainerEntity.getResourceID());
 			child.setSpid(flexContainerEntity.getContainerDefinition());
-			resource.getChildResource().add(child);
+			childRefs.add(child);
+			
+			childRefs.addAll(new FlexContainerMapper().getChildResourceRef(flexContainerEntity, level - 1, offset - 1));
 		}
 		// ChildResourceRef Subscription
 		for (SubscriptionEntity sub : entity.getSubscriptions()) {
@@ -99,7 +117,9 @@ public class AeMapper extends EntityMapper<AeEntity, AE> {
 			child.setResourceName(sub.getName());
 			child.setType(BigInteger.valueOf(ResourceType.SUBSCRIPTION));
 			child.setValue(sub.getResourceID());
-			resource.getChildResource().add(child);
+			childRefs.add(child);
+			
+			childRefs.addAll(new SubscriptionMapper().getChildResourceRef(sub, level - 1, offset - 1));
 		}
 		// ChildResourceRef Group
 		for (GroupEntity group : entity.getChildGroups()) {
@@ -107,7 +127,9 @@ public class AeMapper extends EntityMapper<AeEntity, AE> {
 			child.setResourceName(group.getName());
 			child.setType(BigInteger.valueOf(ResourceType.GROUP));
 			child.setValue(group.getResourceID());
-			resource.getChildResource().add(child);
+			childRefs.add(child);
+			
+			childRefs.addAll(new GroupMapper().getChildResourceRef(group, level - 1, offset - 1));
 		}
 		// ChildResourceRef PollingChannel
 		for (PollingChannelEntity pollEntity : entity.getPollingChannels()) {
@@ -115,7 +137,9 @@ public class AeMapper extends EntityMapper<AeEntity, AE> {
 			child.setResourceName(pollEntity.getName());
 			child.setValue(pollEntity.getResourceID());
 			child.setType(ResourceType.POLLING_CHANNEL);
-			resource.getChildResource().add(child);
+			childRefs.add(child);
+			
+			childRefs.addAll(new PollingChannelMapper().getChildResourceRef(pollEntity, level - 1, offset - 1));
 		}
 
 		// adding DynamicAuthorizationConsultation refs
@@ -124,48 +148,62 @@ public class AeMapper extends EntityMapper<AeEntity, AE> {
 			ch.setResourceName(dace.getName());
 			ch.setType(ResourceType.DYNAMIC_AUTHORIZATION_CONSULTATION);
 			ch.setValue(dace.getResourceID());
-			resource.getChildResource().add(ch);
+			childRefs.add(ch);
+			
+			childRefs.addAll(new DynamicAuthorizationConsultationMapper().getChildResourceRef(dace, level - 1, offset - 1));
 		}
+		
+		return childRefs;
 	}
 
 	@Override
-	protected void mapChildResources(AeEntity entity, AE resource) {
+	protected void mapChildResourceRef(AeEntity entity, AE resource, int level, int offset) {
+		resource.getChildResource().addAll(getChildResourceRef(entity, level, offset));
+		
+	}
+
+	@Override
+	protected void mapChildResources(AeEntity entity, AE resource, int level, int offset) {
+		if (level == 0) {
+			return;
+		}
+		
 		// ChildResourceRef ACP
 		for (AccessControlPolicyEntity acpEntity : entity.getChildAccessControlPolicies()) {
-			AccessControlPolicy acpRes = new AcpMapper().mapEntityToResource(acpEntity, ResultContent.ATTRIBUTES);
+			AccessControlPolicy acpRes = new AcpMapper().mapEntityToResource(acpEntity, ResultContent.ATTRIBUTES_AND_CHILD_RES, level - 1, offset - 1);
 			resource.getContainerOrGroupOrAccessControlPolicy().add(acpRes);
 		}
 		// ChildResourceRef Container
 		for (ContainerEntity containerEntity : entity.getChildContainers()) {
-			Container cnt = new ContainerMapper().mapEntityToResource(containerEntity, ResultContent.ATTRIBUTES);
+			Container cnt = new ContainerMapper().mapEntityToResource(containerEntity, ResultContent.ATTRIBUTES_AND_CHILD_RES, level - 1, offset - 1);
 			resource.getContainerOrGroupOrAccessControlPolicy().add(cnt);
 		}
 		// ChildResourceRef FlexContainer
 		for (FlexContainerEntity flexContainerEntity : entity.getChildFlexContainers()) {
 			AbstractFlexContainer fcnt = new FlexContainerMapper().mapEntityToResource(flexContainerEntity,
-					ResultContent.ATTRIBUTES);
+					ResultContent.ATTRIBUTES_AND_CHILD_RES, level - 1, offset - 1);
 			resource.getContainerOrGroupOrAccessControlPolicy().add(fcnt);
 		}
 		// ChildResourceRef Subscription
 		for (SubscriptionEntity sub : entity.getSubscriptions()) {
-			Subscription subRes = new SubscriptionMapper().mapEntityToResource(sub, ResultContent.ATTRIBUTES);
+			Subscription subRes = new SubscriptionMapper().mapEntityToResource(sub, ResultContent.ATTRIBUTES_AND_CHILD_RES, level - 1, offset - 1);
 			resource.getContainerOrGroupOrAccessControlPolicy().add(subRes);
 		}
 		// ChildResourceRef Group
 		for (GroupEntity group : entity.getChildGroups()) {
-			Group grp = new GroupMapper().mapEntityToResource(group, ResultContent.ATTRIBUTES);
+			Group grp = new GroupMapper().mapEntityToResource(group, ResultContent.ATTRIBUTES_AND_CHILD_RES, level - 1, offset - 1);
 			resource.getContainerOrGroupOrAccessControlPolicy().add(grp);
 		}
 		// ChildResourceRef PollingChannel
 		for (PollingChannelEntity pollEntity : entity.getPollingChannels()) {
-			PollingChannel poll = new PollingChannelMapper().mapEntityToResource(pollEntity, ResultContent.ATTRIBUTES);
+			PollingChannel poll = new PollingChannelMapper().mapEntityToResource(pollEntity, ResultContent.ATTRIBUTES_AND_CHILD_RES, level - 1, offset - 1);
 			resource.getContainerOrGroupOrAccessControlPolicy().add(poll);
 		}
 
 		// adding DynamicAuthorizationConsultation resource
 		for (DynamicAuthorizationConsultationEntity daceEntity : entity.getChildDynamicAuthorizationConsultations()) {
 			DynamicAuthorizationConsultation dace = new DynamicAuthorizationConsultationMapper()
-					.mapEntityToResource(daceEntity, ResultContent.ATTRIBUTES);
+					.mapEntityToResource(daceEntity, ResultContent.ATTRIBUTES_AND_CHILD_RES, level - 1, offset - 1);
 			resource.getContainerOrGroupOrAccessControlPolicy().add(dace);
 		}
 	}

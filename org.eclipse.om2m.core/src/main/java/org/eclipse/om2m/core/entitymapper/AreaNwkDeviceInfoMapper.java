@@ -19,8 +19,12 @@
  *******************************************************************************/
 package org.eclipse.om2m.core.entitymapper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.om2m.commons.entities.AreaNwkDeviceInfoEntity;
 import org.eclipse.om2m.commons.resource.AreaNwkDeviceInfo;
+import org.eclipse.om2m.commons.resource.ChildResourceRef;
 
 /**
  * Mapper for AreaNwkDeviceInfo
@@ -30,9 +34,13 @@ public class AreaNwkDeviceInfoMapper extends EntityMapper<AreaNwkDeviceInfoEntit
 
 	@Override
 	protected void mapAttributes(AreaNwkDeviceInfoEntity entity,
-			AreaNwkDeviceInfo resource) {
+			AreaNwkDeviceInfo resource, int level, int offset) {
+		if (level < 0) {
+			return;
+		}
+		
 		// Announceable resource attributes
-		EntityMapperFactory.getAnnounceableSubordonateEntity_AnnounceableResourceMapper().mapAttributes(entity, resource);
+		EntityMapperFactory.getAnnounceableSubordonateEntity_AnnounceableResourceMapper().mapAttributes(entity, resource, level, offset);
 		
 		// AreaNwkDeviceInfo attributes
 		resource.setAreaNwkId(entity.getAreaNwkId());
@@ -44,17 +52,22 @@ public class AreaNwkDeviceInfoMapper extends EntityMapper<AreaNwkDeviceInfoEntit
 		resource.setSleepInterval(entity.getSleepInterval());
 		resource.setStatus(entity.getStatus());
 	}
+	
+	@Override
+	protected List<ChildResourceRef> getChildResourceRef(AreaNwkDeviceInfoEntity entity, int level, int offset) {
+		return new ArrayList<>();
+	}
 
 	@Override
 	protected void mapChildResourceRef(AreaNwkDeviceInfoEntity entity,
-			AreaNwkDeviceInfo resource) {
+			AreaNwkDeviceInfo resource, int level, int offset) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	protected void mapChildResources(AreaNwkDeviceInfoEntity entity,
-			AreaNwkDeviceInfo resource) {
+			AreaNwkDeviceInfo resource, int level, int offset) {
 		// TODO Auto-generated method stub
 
 	}

@@ -19,6 +19,10 @@
  *******************************************************************************/
 package org.eclipse.om2m.core.entitymapper;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.om2m.commons.constants.ResourceType;
 import org.eclipse.om2m.commons.constants.ResultContent;
 import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
@@ -35,9 +39,13 @@ public class AcpMapper extends EntityMapper<AccessControlPolicyEntity, AccessCon
 
 	@Override
 	protected void mapAttributes(AccessControlPolicyEntity entity,
-			AccessControlPolicy resource) {
+			AccessControlPolicy resource, int level, int offset) {
+		if (level < 0) {
+			return;
+		}
+		
 		// announceableSubordinateResource attribute
-		EntityMapperFactory.getAnnounceableSubordinateMapper().mapAttributes(entity, resource);
+		EntityMapperFactory.getAnnounceableSubordinateMapper().mapAttributes(entity, resource, level, offset);
 		
 		resource.setPrivileges(AcpUtils.getSetOfArcsFromACRE(entity
 				.getPrivileges()));
@@ -46,24 +54,45 @@ public class AcpMapper extends EntityMapper<AccessControlPolicyEntity, AccessCon
 	}
 
 	@Override
-	protected void mapChildResourceRef(AccessControlPolicyEntity entity,
-			AccessControlPolicy resource) {
-		// add sub child resource
+	protected List<ChildResourceRef> getChildResourceRef(AccessControlPolicyEntity entity, int level, int offset) {
+		
+		List<ChildResourceRef> childRefs = new ArrayList<>();
+		
+		if (level == 0) {
+			return childRefs;
+		}
+		
 		for(SubscriptionEntity sub : entity.getChildSubscriptions()){
 			ChildResourceRef child = new ChildResourceRef();
 			child.setValue(sub.getResourceID());
 			child.setType(ResourceType.SUBSCRIPTION);
 			child.setResourceName(sub.getName());
-			resource.getChildResource().add(child);
+			childRefs.add(child);
+
+			childRefs.addAll(new SubscriptionMapper().getChildResourceRef(sub, level-1, offset-1));
 		}
+		
+		return childRefs;
+	}
+	
+	@Override
+	protected void mapChildResourceRef(AccessControlPolicyEntity entity,
+			AccessControlPolicy resource, int level, int offset) {
+		resource.getChildResource().addAll(getChildResourceRef(entity, level, offset));
 	}
 
 	@Override
 	protected void mapChildResources(AccessControlPolicyEntity entity,
-			AccessControlPolicy resource) {
+			AccessControlPolicy resource, int level, int offset) {
+		
+		if (level == 0) {
+			// reach limit
+			return;
+		}
+		
 		// add sub child resource
 		for(SubscriptionEntity sub : entity.getChildSubscriptions()){
-			Subscription subRes = new SubscriptionMapper().mapEntityToResource(sub, ResultContent.ATTRIBUTES);
+			Subscription subRes = new SubscriptionMapper().mapEntityToResource(sub, ResultContent.ATTRIBUTES, level-1, offset-1);
 			resource.getSubscription().add(subRes);
 		}
 	}

@@ -36,7 +36,8 @@ public class FlexContainerAnnc extends AnnouncedResource {
 	@XmlElements({
 			@XmlElement(name = ShortName.CNT, namespace = "http://www.onem2m.org/xml/protocols", type = Container.class),
 			@XmlElement(name = ShortName.FCNT, namespace = "http://www.onem2m.org/xml/protocols", type = AbstractFlexContainer.class),
-			@XmlElement(name = ShortName.SUB, namespace = "http://www.onem2m.org/xml/protocols", type = Subscription.class) })
+			@XmlElement(name = ShortName.SUB, namespace = "http://www.onem2m.org/xml/protocols", type = Subscription.class),
+			@XmlElement(name = ShortName.FCNTA, namespace = "http://www.onem2m.org/xml/protocols", type = FlexContainerAnnc.class)})
 	protected List<Resource> flexContainerOrContainerOrSubscription;
 
 	@XmlAnyElement()

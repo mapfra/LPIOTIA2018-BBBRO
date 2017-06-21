@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.eclipse.om2m.core.entitymapper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -27,6 +28,7 @@ import org.eclipse.om2m.commons.constants.MimeMediaType;
 import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
 import org.eclipse.om2m.commons.entities.DynamicAuthorizationConsultationEntity;
 import org.eclipse.om2m.commons.entities.RequestEntity;
+import org.eclipse.om2m.commons.resource.ChildResourceRef;
 import org.eclipse.om2m.commons.resource.MetaInformation;
 import org.eclipse.om2m.commons.resource.OperationResult;
 import org.eclipse.om2m.commons.resource.PrimitiveContent;
@@ -43,8 +45,12 @@ public class RequestMapper extends EntityMapper<RequestEntity, Request> {
 	private static Log LOGGER = LogFactory.getLog(RequestMapper.class);
 
 	@Override
-	protected void mapAttributes(RequestEntity entity, Request resource) {
+	protected void mapAttributes(RequestEntity entity, Request resource, int level, int offset) {
 
+		if (level < 0) {
+			return;
+		}
+		
 		// requestEntity attributes
 		if (entity.getContent() != null) {
 			PrimitiveContent pc = new PrimitiveContent();
@@ -61,14 +67,19 @@ public class RequestMapper extends EntityMapper<RequestEntity, Request> {
 		resource.setStateTag(entity.getStateTag());
 		resource.setTarget(entity.getTarget());
 	}
+	
+	@Override
+	protected List<ChildResourceRef> getChildResourceRef(RequestEntity entity, int level, int offset) {
+		return new ArrayList<>();
+	}
 
 	@Override
-	protected void mapChildResourceRef(RequestEntity entity, Request resource) {
+	protected void mapChildResourceRef(RequestEntity entity, Request resource, int level, int offset) {
 		// TODO subscriptions childs
 	}
 
 	@Override
-	protected void mapChildResources(RequestEntity entity, Request resource) {
+	protected void mapChildResources(RequestEntity entity, Request resource, int level, int offset) {
 		// TODO subscription childs
 	}
 

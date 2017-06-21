@@ -355,7 +355,7 @@ public abstract class Controller {
 			}
 			if(request.getResultContent().equals(ResultContent.HIERARCHICAL_AND_ATTRIBUTES)
 					|| request.getResultContent().equals(ResultContent.ATTRIBUTES)){
-				Resource res = mapper.mapEntityToResource(entity, ResultContent.ATTRIBUTES);
+				Resource res = mapper.mapEntityToResource(entity, ResultContent.ATTRIBUTES, 0, 0);
 				if(request.getReturnContentType().equals(MimeMediaType.OBJ)){
 					response.setContent(res);
 				} else {
@@ -365,7 +365,7 @@ public abstract class Controller {
 				}
 			}
 		} else {
-			response.setContent(mapper.mapEntityToResource(entity, ResultContent.ATTRIBUTES));
+			response.setContent(mapper.mapEntityToResource(entity, ResultContent.ATTRIBUTES, 0, 0));
 			response.setLocation(entity.getResourceID());			
 		}
 	}

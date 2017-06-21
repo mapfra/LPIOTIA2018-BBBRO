@@ -20,8 +20,11 @@
 package org.eclipse.om2m.core.entitymapper;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.om2m.commons.entities.ContentInstanceEntity;
+import org.eclipse.om2m.commons.resource.ChildResourceRef;
 import org.eclipse.om2m.commons.resource.ContentInstance;
 
 public class ContentInstanceMapper extends
@@ -34,9 +37,13 @@ public class ContentInstanceMapper extends
 
 	@Override
 	protected void mapAttributes(ContentInstanceEntity entity,
-			ContentInstance resource) {
+			ContentInstance resource, int level, int offset) {
+		if (level < 0) {
+			return;
+		}
+		
 		// announceableSubordonate attribute
-		EntityMapperFactory.getAnnounceableSubordinateMapper().mapAttributes(entity, resource);
+		EntityMapperFactory.getAnnounceableSubordinateMapper().mapAttributes(entity, resource, level, offset);
 		
 		// ContentInstance attributes
 		resource.setContent(entity.getContent());
@@ -46,15 +53,20 @@ public class ContentInstanceMapper extends
 		resource.setOntologyRef(entity.getOntologyRef());
 		resource.setStateTag(entity.getStateTag());
 	}
+	
+	@Override
+	protected List<ChildResourceRef> getChildResourceRef(ContentInstanceEntity entity, int level, int offset) {
+		return new ArrayList<>();
+	}
 
 	@Override
 	protected void mapChildResourceRef(ContentInstanceEntity entity,
-			ContentInstance resource) {
+			ContentInstance resource, int level, int offset) {
 	}
 
 	@Override
 	protected void mapChildResources(ContentInstanceEntity entity,
-			ContentInstance resource) {
+			ContentInstance resource, int level, int offset) {
 	}
 
 }

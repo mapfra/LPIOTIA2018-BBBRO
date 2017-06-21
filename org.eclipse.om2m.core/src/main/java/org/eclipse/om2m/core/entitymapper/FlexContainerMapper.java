@@ -7,6 +7,9 @@
  *******************************************************************************/
 package org.eclipse.om2m.core.entitymapper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.om2m.commons.constants.ResourceType;
 import org.eclipse.om2m.commons.constants.ResultContent;
 import org.eclipse.om2m.commons.entities.ContainerEntity;
@@ -34,10 +37,14 @@ public class FlexContainerMapper extends EntityMapper<FlexContainerEntity, Abstr
 	}
 
 	@Override
-	protected void mapAttributes(FlexContainerEntity entity, AbstractFlexContainer resource) {
+	protected void mapAttributes(FlexContainerEntity entity, AbstractFlexContainer resource, int level, int offset) {
+		
+		if (level < 0) {
+			return;
+		}
 		
 		// announceableResource attributes
-		EntityMapperFactory.getAnnounceableSubordonateEntity_AnnounceableResourceMapper().mapAttributes(entity, resource);
+		EntityMapperFactory.getAnnounceableSubordonateEntity_AnnounceableResourceMapper().mapAttributes(entity, resource, level, offset);
 		
 		// flexContainer attributes
 		resource.setCreator(entity.getCreator());
@@ -56,11 +63,15 @@ public class FlexContainerMapper extends EntityMapper<FlexContainerEntity, Abstr
 			resource.getCustomAttributes().add(ca);
 		}
 	}
-
+	
 	@Override
-	protected void mapChildResourceRef(FlexContainerEntity entity,
-			AbstractFlexContainer resource) {
-
+	protected List<ChildResourceRef> getChildResourceRef(FlexContainerEntity entity, int level, int offset) {
+		List<ChildResourceRef> childRefs = new ArrayList<>();
+		
+		if (level == 0) {
+			return childRefs;
+		}
+		
 		// add child ref FlexContainer
 		for (FlexContainerEntity fcnt : entity.getChildFlexContainers()) {
 			ChildResourceRef child = new ChildResourceRef();
@@ -68,7 +79,8 @@ public class FlexContainerMapper extends EntityMapper<FlexContainerEntity, Abstr
 			child.setType(ResourceType.FLEXCONTAINER);
 			child.setValue(fcnt.getResourceID());
 			child.setSpid(fcnt.getContainerDefinition());
-			resource.getChildResource().add(child);	
+			childRefs.add(child);
+			childRefs.addAll(new FlexContainerMapper().getChildResourceRef(fcnt, level - 1, offset - 1));
 		}
 
 		// add child ref subscription
@@ -77,7 +89,8 @@ public class FlexContainerMapper extends EntityMapper<FlexContainerEntity, Abstr
 			child.setResourceName(sub.getName());
 			child.setType(ResourceType.SUBSCRIPTION);
 			child.setValue(sub.getResourceID());
-			resource.getChildResource().add(child);
+			childRefs.add(child);
+			childRefs.addAll(new SubscriptionMapper().getChildResourceRef(sub, level - 1, offset - 1));
 		}
 		
 		
@@ -87,28 +100,41 @@ public class FlexContainerMapper extends EntityMapper<FlexContainerEntity, Abstr
 			child.setResourceName(childCont.getName());
 			child.setType(ResourceType.CONTAINER);
 			child.setValue(childCont.getResourceID());
-			resource.getChildResource().add(child);
+			childRefs.add(child);
+			childRefs.addAll(new ContainerMapper().getChildResourceRef(childCont, level - 1, offset - 1));
 		}
+		
+		return childRefs;
 	}
 
 	@Override
-	protected void mapChildResources(FlexContainerEntity entity, AbstractFlexContainer resource) {
+	protected void mapChildResourceRef(FlexContainerEntity entity,
+			AbstractFlexContainer resource, int level, int offset) {
+		resource.getChildResource().addAll(getChildResourceRef(entity, level, offset));
+	}
+
+	@Override
+	protected void mapChildResources(FlexContainerEntity entity, AbstractFlexContainer resource, int level, int offset) {
+		
+		if (level == 0) {
+			return;
+		}
 		// add child ref flexContainer
 		for (FlexContainerEntity cin : entity.getChildFlexContainers()) {
-			AbstractFlexContainer flexContainerRes = new FlexContainerMapper().mapEntityToResource(cin, ResultContent.ATTRIBUTES);
+			AbstractFlexContainer flexContainerRes = new FlexContainerMapper().mapEntityToResource(cin, ResultContent.ATTRIBUTES_AND_CHILD_RES, level - 1, offset - 1);
 			resource.getFlexContainerOrContainerOrSubscription().add(flexContainerRes);
 		}
 
 		// add child ref subscription
 		for (SubscriptionEntity sub : entity.getSubscriptions()){
-			Subscription subRes = new SubscriptionMapper().mapEntityToResource(sub, ResultContent.ATTRIBUTES);
+			Subscription subRes = new SubscriptionMapper().mapEntityToResource(sub, ResultContent.ATTRIBUTES_AND_CHILD_RES, level - 1, offset - 1);
 			resource.getFlexContainerOrContainerOrSubscription().add(subRes);
 		}
 		
 		
 		// add child ref with containers
 		for (ContainerEntity childCont : entity.getChildContainers()) {
-			Container cnt = new ContainerMapper().mapEntityToResource(childCont, ResultContent.ATTRIBUTES);
+			Container cnt = new ContainerMapper().mapEntityToResource(childCont, ResultContent.ATTRIBUTES_AND_CHILD_RES, level - 1, offset - 1);
 			resource.getFlexContainerOrContainerOrSubscription().add(cnt);
 		}
 	}

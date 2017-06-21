@@ -20,6 +20,7 @@
 package org.eclipse.om2m.core.entitymapper;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.om2m.commons.constants.ResourceType;
@@ -56,7 +57,11 @@ public class CseBaseMapper extends EntityMapper<CSEBaseEntity, CSEBase> {
 	}
 
 	@Override
-	protected void mapAttributes(CSEBaseEntity cseBaseEntity, CSEBase cseBaseResource) {
+	protected void mapAttributes(CSEBaseEntity cseBaseEntity, CSEBase cseBaseResource, int level, int offset) {
+		if (level < 0) {
+			return;
+		}
+		
 		cseBaseResource.setNodeLink(cseBaseEntity.getNodeLink());
 		cseBaseResource.setCSEID(cseBaseEntity.getCseid());
 		cseBaseResource.setCseType(cseBaseEntity.getCseType());
@@ -86,17 +91,22 @@ public class CseBaseMapper extends EntityMapper<CSEBaseEntity, CSEBase> {
 			cseBaseResource.getPointOfAccess().addAll(cseBaseEntity.getPointOfAccess());
 		}
 	}
-
+	
 	@Override
-	protected void mapChildResourceRef(CSEBaseEntity cseBaseEntity, CSEBase cseBaseResource) {
-		// setting child resources refs
-		// setting acps refs
+	protected List<ChildResourceRef> getChildResourceRef(CSEBaseEntity cseBaseEntity, int level, int offset) {
+		List<ChildResourceRef> childRefs = new ArrayList<>();
+		if (level == 0) {
+			return childRefs;
+		}
+		
 		for (AccessControlPolicyEntity acp : cseBaseEntity.getChildAccessControlPolicies()) {
 			ChildResourceRef child = new ChildResourceRef();
 			child.setResourceName(acp.getName());
 			child.setType(ResourceType.ACCESS_CONTROL_POLICY);
 			child.setValue(acp.getResourceID());
-			cseBaseResource.getChildResource().add(child);
+			childRefs.add(child);
+			
+			childRefs.addAll(new AcpMapper().getChildResourceRef(acp, level - 1, offset - 1));
 		}
 		// adding aes refs
 		for (AeEntity ae : cseBaseEntity.getAes()) {
@@ -104,7 +114,9 @@ public class CseBaseMapper extends EntityMapper<CSEBaseEntity, CSEBase> {
 			child.setResourceName(ae.getName());
 			child.setType(ResourceType.AE);
 			child.setValue(ae.getResourceID());
-			cseBaseResource.getChildResource().add(child);
+			childRefs.add(child);
+			
+			childRefs.addAll(new AeMapper().getChildResourceRef(ae, level - 1, offset - 1));
 		}
 		// adding container refs
 		for (ContainerEntity cnt : cseBaseEntity.getChildContainers()) {
@@ -112,7 +124,9 @@ public class CseBaseMapper extends EntityMapper<CSEBaseEntity, CSEBase> {
 			child.setResourceName(cnt.getName());
 			child.setType(ResourceType.CONTAINER);
 			child.setValue(cnt.getResourceID());
-			cseBaseResource.getChildResource().add(child);
+			childRefs.add(child);
+			
+			childRefs.addAll(new ContainerMapper().getChildResourceRef(cnt, level - 1, offset - 1));
 		}
 		// adding flexcontainer refs
 		for (FlexContainerEntity fcnt : cseBaseEntity.getChildFlexContainers()) {
@@ -120,7 +134,9 @@ public class CseBaseMapper extends EntityMapper<CSEBaseEntity, CSEBase> {
 			child.setResourceName(fcnt.getName());
 			child.setType(ResourceType.FLEXCONTAINER);
 			child.setValue(fcnt.getResourceID());
-			cseBaseResource.getChildResource().add(child);
+			childRefs.add(child);
+			
+			childRefs.addAll(new FlexContainerMapper().getChildResourceRef(fcnt, level - 1, offset - 1));
 		}
 
 		// adding remoteCSE refs
@@ -129,7 +145,9 @@ public class CseBaseMapper extends EntityMapper<CSEBaseEntity, CSEBase> {
 			child.setResourceName(csr.getName());
 			child.setType(ResourceType.REMOTE_CSE);
 			child.setValue(csr.getResourceID());
-			cseBaseResource.getChildResource().add(child);
+			childRefs.add(child);
+			
+			childRefs.addAll(new RemoteCSEMapper().getChildResourceRef(csr, level - 1, offset - 1));
 		}
 		// adding group refs
 		for (GroupEntity group : cseBaseEntity.getGroups()) {
@@ -137,7 +155,9 @@ public class CseBaseMapper extends EntityMapper<CSEBaseEntity, CSEBase> {
 			child.setResourceName(group.getName());
 			child.setType(ResourceType.GROUP);
 			child.setValue(group.getResourceID());
-			cseBaseResource.getChildResource().add(child);
+			childRefs.add(child);
+			
+			childRefs.addAll(new GroupMapper().getChildResourceRef(group, level - 1, offset - 1));
 		}
 		// adding subscription refs
 		for (SubscriptionEntity sub : cseBaseEntity.getSubscriptions()) {
@@ -145,7 +165,9 @@ public class CseBaseMapper extends EntityMapper<CSEBaseEntity, CSEBase> {
 			child.setResourceName(sub.getName());
 			child.setType(ResourceType.SUBSCRIPTION);
 			child.setValue(sub.getResourceID());
-			cseBaseResource.getChildResource().add(child);
+			childRefs.add(child);
+			
+			childRefs.addAll(new SubscriptionMapper().getChildResourceRef(sub, level - 1, offset - 1));
 		}
 		// adding request refs
 		for (RequestEntity req : cseBaseEntity.getChildReq()) {
@@ -153,7 +175,9 @@ public class CseBaseMapper extends EntityMapper<CSEBaseEntity, CSEBase> {
 			child.setResourceName(req.getName());
 			child.setType(ResourceType.REQUEST);
 			child.setValue(req.getResourceID());
-			cseBaseResource.getChildResource().add(child);
+			childRefs.add(child);
+			
+			childRefs.addAll(new RequestMapper().getChildResourceRef(req, level - 1, offset - 1));
 		}
 		// adding node refs
 		for (NodeEntity nod : cseBaseEntity.getChildNodes()) {
@@ -161,7 +185,9 @@ public class CseBaseMapper extends EntityMapper<CSEBaseEntity, CSEBase> {
 			ch.setResourceName(nod.getName());
 			ch.setType(ResourceType.NODE);
 			ch.setValue(nod.getResourceID());
-			cseBaseResource.getChildResource().add(ch);
+			childRefs.add(ch);
+			
+			childRefs.addAll(new NodeMapper().getChildResourceRef(nod, level - 1, offset - 1));
 		}
 
 		// adding DynamicAuthorizationConsultation refs
@@ -170,56 +196,70 @@ public class CseBaseMapper extends EntityMapper<CSEBaseEntity, CSEBase> {
 			ch.setResourceName(dace.getName());
 			ch.setType(ResourceType.DYNAMIC_AUTHORIZATION_CONSULTATION);
 			ch.setValue(dace.getResourceID());
-			cseBaseResource.getChildResource().add(ch);
+			childRefs.add(ch);
+			
+			childRefs.addAll(new DynamicAuthorizationConsultationMapper().getChildResourceRef(dace, level - 1, offset - 1));
 		}
+		
+		return childRefs;
 	}
 
 	@Override
-	protected void mapChildResources(CSEBaseEntity entity, CSEBase resource) {
+	protected void mapChildResourceRef(CSEBaseEntity cseBaseEntity, CSEBase cseBaseResource, int level, int offset) {
+		// setting child resources refs
+		cseBaseResource.getChildResource().addAll(getChildResourceRef(cseBaseEntity, level, offset));
+	}
+
+	@Override
+	protected void mapChildResources(CSEBaseEntity entity, CSEBase resource, int level, int offset) {
+		if (level == 0) {
+			return;
+		}
+		
 		for (AccessControlPolicyEntity acp : entity.getChildAccessControlPolicies()) {
-			AccessControlPolicy acpRes = new AcpMapper().mapEntityToResource(acp, ResultContent.ATTRIBUTES);
+			AccessControlPolicy acpRes = new AcpMapper().mapEntityToResource(acp, ResultContent.ATTRIBUTES_AND_CHILD_RES, level - 1, offset - 1);
 			resource.getRemoteCSEOrNodeOrAE().add(acpRes);
 		}
 		// adding aes refs
 		for (AeEntity ae : entity.getAes()) {
-			AE aeRes = new AeMapper().mapEntityToResource(ae, ResultContent.ATTRIBUTES);
+			AE aeRes = new AeMapper().mapEntityToResource(ae, ResultContent.ATTRIBUTES_AND_CHILD_RES, level - 1, offset - 1);
 			resource.getRemoteCSEOrNodeOrAE().add(aeRes);
 		}
 		// adding container refs
 		for (ContainerEntity cnt : entity.getChildContainers()) {
-			Container cntRes = new ContainerMapper().mapEntityToResource(cnt, ResultContent.ATTRIBUTES);
+			Container cntRes = new ContainerMapper().mapEntityToResource(cnt, ResultContent.ATTRIBUTES_AND_CHILD_RES, level - 1, offset - 1);
 			resource.getRemoteCSEOrNodeOrAE().add(cntRes);
 		}
 		// adding flexcontainer refs
 		for (FlexContainerEntity fcnt : entity.getChildFlexContainers()) {
-			AbstractFlexContainer fcntRes = new FlexContainerMapper().mapEntityToResource(fcnt, ResultContent.ATTRIBUTES);
+			AbstractFlexContainer fcntRes = new FlexContainerMapper().mapEntityToResource(fcnt, ResultContent.ATTRIBUTES_AND_CHILD_RES, level - 1, offset - 1);
 			resource.getRemoteCSEOrNodeOrAE().add(fcntRes);
 		}
 		// adding remoteCSE refs
 		for (RemoteCSEEntity csr : entity.getRemoteCses()) {
-			RemoteCSE csrRes = new RemoteCSEMapper().mapEntityToResource(csr, ResultContent.ATTRIBUTES);
+			RemoteCSE csrRes = new RemoteCSEMapper().mapEntityToResource(csr, ResultContent.ATTRIBUTES_AND_CHILD_RES, level - 1, offset - 1);
 			resource.getRemoteCSEOrNodeOrAE().add(csrRes);
 		}
 		// adding group refs
 		for (GroupEntity group : entity.getGroups()) {
-			Group grp = new GroupMapper().mapEntityToResource(group, ResultContent.ATTRIBUTES);
+			Group grp = new GroupMapper().mapEntityToResource(group, ResultContent.ATTRIBUTES_AND_CHILD_RES, level - 1, offset - 1);
 			resource.getRemoteCSEOrNodeOrAE().add(grp);
 		}
 		// adding subscription refs
 		for (SubscriptionEntity sub : entity.getSubscriptions()) {
-			Subscription subRes = new SubscriptionMapper().mapEntityToResource(sub, ResultContent.ATTRIBUTES);
+			Subscription subRes = new SubscriptionMapper().mapEntityToResource(sub, ResultContent.ATTRIBUTES_AND_CHILD_RES, level - 1, offset - 1);
 			resource.getRemoteCSEOrNodeOrAE().add(subRes);
 		}
 		// adding request refs
 		for (RequestEntity req : entity.getChildReq()) {
-			Request reqResource = new RequestMapper().mapEntityToResource(req, ResultContent.ATTRIBUTES);
+			Request reqResource = new RequestMapper().mapEntityToResource(req, ResultContent.ATTRIBUTES_AND_CHILD_RES, level - 1, offset - 1);
 			resource.getRemoteCSEOrNodeOrAE().add(reqResource);
 		}
 
 		// adding DynamicAuthorizationConsultation resource
 		for (DynamicAuthorizationConsultationEntity daceEntity : entity.getChildDynamicAuthorizationConsultation()) {
 			DynamicAuthorizationConsultation dace = new DynamicAuthorizationConsultationMapper()
-					.mapEntityToResource(daceEntity, ResultContent.ATTRIBUTES);
+					.mapEntityToResource(daceEntity, ResultContent.ATTRIBUTES_AND_CHILD_RES, level - 1, offset - 1);
 			resource.getRemoteCSEOrNodeOrAE().add(dace);
 		}
 	}

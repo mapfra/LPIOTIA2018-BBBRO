@@ -305,19 +305,26 @@ public class RestHttpServlet extends HttpServlet {
 			primitive.setDiscoveryResultType(new BigInteger(request.getParameter(HttpParameters.DISCOVERY_RESULT_TYPE)));
 		}
 
+		// create filter criteria
+		FilterCriteria filterCriteria = new FilterCriteria();
+		primitive.setFilterCriteria(filterCriteria);
+		if (request.getParameter(HttpParameters.LEVEL) != null) {
+			filterCriteria.setLevel(new BigInteger(request.getParameter(HttpParameters.LEVEL)));
+		}
+		if (request.getParameter(HttpParameters.OFFSET) != null) {
+			filterCriteria.setOffset(new BigInteger(request.getParameter(HttpParameters.OFFSET)));
+		}
 		if(request.getParameter(HttpParameters.FILTER_USAGE) != null){
-			FilterCriteria filterCriteria = new FilterCriteria();
 			filterCriteria.setFilterUsage(new BigInteger(request.getParameter(HttpParameters.FILTER_USAGE)));
-			if(request.getParameter(HttpParameters.LIMIT) != null){
-				filterCriteria.setLimit(new BigInteger(request.getParameter(HttpParameters.LIMIT)));
-			}
-			if(request.getParameter(HttpParameters.LABELS) != null){
-				filterCriteria.getLabels().addAll(Arrays.asList(request.getParameterValues(HttpParameters.LABELS)));
-			}
-			if(request.getParameter(HttpParameters.RESOURCE_TYPE) != null){
-				filterCriteria.setResourceType(new BigInteger(request.getParameter(HttpParameters.RESOURCE_TYPE)));
-			}
-			primitive.setFilterCriteria(filterCriteria);
+		}
+		if(request.getParameter(HttpParameters.LIMIT) != null){
+			filterCriteria.setLimit(new BigInteger(request.getParameter(HttpParameters.LIMIT)));
+		}
+		if(request.getParameter(HttpParameters.LABELS) != null){
+			filterCriteria.getLabels().addAll(Arrays.asList(request.getParameterValues(HttpParameters.LABELS)));
+		}
+		if(request.getParameter(HttpParameters.RESOURCE_TYPE) != null){
+			filterCriteria.setResourceType(new BigInteger(request.getParameter(HttpParameters.RESOURCE_TYPE)));
 		}
 	}
 

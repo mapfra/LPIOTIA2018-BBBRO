@@ -34,6 +34,7 @@ import org.eclipse.om2m.commons.entities.ResourceEntity;
 import org.eclipse.om2m.commons.resource.AnnounceableResource;
 import org.eclipse.om2m.commons.resource.AnnounceableSubordinateResource;
 import org.eclipse.om2m.commons.resource.AnnouncedResource;
+import org.eclipse.om2m.commons.resource.ChildResourceRef;
 import org.eclipse.om2m.commons.resource.RegularResource;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.Resource;
@@ -54,7 +55,10 @@ public abstract class EntityMapper<E extends ResourceEntity, R extends Resource>
 	 * @param entity
 	 * @param resource
 	 */
-	private void mapGenericAttributes(E entity, R resource) {
+	private void mapGenericAttributes(E entity, R resource, int level, int offset) {
+		if (level < 0) {
+			return;
+		}
 		resource.setCreationTime(entity.getCreationTime());
 		resource.setLastModifiedTime(entity.getLastModifiedTime());
 		resource.setName(entity.getName());
@@ -77,6 +81,22 @@ public abstract class EntityMapper<E extends ResourceEntity, R extends Resource>
 	 */
 	public R mapEntityToResource(E entity, RequestPrimitive request) {
 		BigInteger resultContent = request.getResultContent();
+		BigInteger level = null;
+		BigInteger offset = null;
+		if (request.getFilterCriteria() != null) {
+			level = request.getFilterCriteria().getLevel();
+			offset = request.getFilterCriteria().getOffset();
+		}
+		// default value for level = 1000 => all possible levels
+		int levelInt = 1000;
+		int offsetInt = 0;
+		if (level != null) {
+			levelInt = level.intValue();
+		}
+		if (offset != null) {
+			offsetInt = offset.intValue();
+		}
+		
 		if (resultContent == null) {
 			resultContent = ResultContent.ATTRIBUTES;
 		} else {
@@ -84,7 +104,7 @@ public abstract class EntityMapper<E extends ResourceEntity, R extends Resource>
 				resultContent = ResultContent.ATTRIBUTES;
 			}
 		}
-		return mapEntityToResource(entity, resultContent);
+		return mapEntityToResource(entity, resultContent, levelInt, offsetInt);
 	}
 
 	/**
@@ -96,7 +116,7 @@ public abstract class EntityMapper<E extends ResourceEntity, R extends Resource>
 	 *            to use
 	 * @return the mapped serializable resource
 	 */
-	public R mapEntityToResource(E entity, BigInteger resultContent) {
+	public R mapEntityToResource(E entity, BigInteger resultContent, int level, int offset) {
 		R result = createResource(entity);
 		if (resultContent.equals(ResultContent.ATTRIBUTES)
 				|| resultContent.equals(ResultContent.ATTRIBUTES_AND_CHILD_REF)
@@ -104,15 +124,15 @@ public abstract class EntityMapper<E extends ResourceEntity, R extends Resource>
 				|| resultContent.equals(ResultContent.HIERARCHICAL_ADRESS)
 				|| resultContent.equals(ResultContent.HIERARCHICAL_AND_ATTRIBUTES)
 				|| resultContent.equals(ResultContent.ORIGINAL_RES)) {
-			mapGenericAttributes(entity, result);
-			mapAttributes(entity, result);
+			mapGenericAttributes(entity, result, level, offset);
+			mapAttributes(entity, result, level, offset);
 		}
 		if (resultContent.equals(ResultContent.ATTRIBUTES_AND_CHILD_REF)
 				|| resultContent.equals(ResultContent.CHILD_REF)) {
-			mapChildResourceRef(entity, result);
+			mapChildResourceRef(entity, result, level, offset);
 		}
 		if (resultContent.equals(ResultContent.ATTRIBUTES_AND_CHILD_RES)) {
-			mapChildResources(entity, result);
+			mapChildResources(entity, result, level, offset);
 		}
 		return result;
 	}
@@ -125,7 +145,7 @@ public abstract class EntityMapper<E extends ResourceEntity, R extends Resource>
 	 * @param resource
 	 *            result
 	 */
-	protected abstract void mapAttributes(E entity, R resource);
+	protected abstract void mapAttributes(E entity, R resource, int level, int offset);
 
 	/**
 	 * Map child resource references of the resource
@@ -135,7 +155,14 @@ public abstract class EntityMapper<E extends ResourceEntity, R extends Resource>
 	 * @param resource
 	 *            resource
 	 */
-	protected abstract void mapChildResourceRef(E entity, R resource);
+	protected abstract void mapChildResourceRef(E entity, R resource, int level, int offset);
+	
+	/**
+	 * 
+	 * @param entity
+	 * @return
+	 */
+	protected abstract List<ChildResourceRef> getChildResourceRef(E entity, int level, int offset);
 
 	/**
 	 * Map child reosurces using their attributes
@@ -144,7 +171,7 @@ public abstract class EntityMapper<E extends ResourceEntity, R extends Resource>
 	 *            to map
 	 * @param resource
 	 */
-	protected abstract void mapChildResources(E entity, R resource);
+	protected abstract void mapChildResources(E entity, R resource, int level, int offset);
 
 	/**
 	 * Method use to create the object to return corresponding to the R type.

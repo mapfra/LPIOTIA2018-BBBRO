@@ -117,6 +117,13 @@ public class FilterCriteria {
 	@XmlSchemaType(name = "nonNegativeInteger")
 	@XmlElement(name = ShortName.LIMIT)
 	protected BigInteger limit;
+	@XmlSchemaType(name="positiveInteger")
+	@XmlElement(name=ShortName.LEVEL)
+	protected BigInteger level;
+	@XmlSchemaType(name="positiveInteger")
+	@XmlElement(name=ShortName.OFFSET)
+	protected BigInteger offset;
+	
 
 	/**
 	 * Gets the value of the createdBefore property.
@@ -478,5 +485,35 @@ public class FilterCriteria {
 	public void setLimit(BigInteger value) {
 		this.limit = value;
 	}
+
+	/**
+	 * @return the level
+	 */
+	public BigInteger getLevel() {
+		return level;
+	}
+
+	/**
+	 * @param level the level to set
+	 */
+	public void setLevel(BigInteger level) {
+		this.level = level;
+	}
+
+	/**
+	 * @return the offset
+	 */
+	public BigInteger getOffset() {
+		return offset;
+	}
+
+	/**
+	 * @param offset the offset to set
+	 */
+	public void setOffset(BigInteger offset) {
+		this.offset = offset;
+	}
+	
+	
 
 }

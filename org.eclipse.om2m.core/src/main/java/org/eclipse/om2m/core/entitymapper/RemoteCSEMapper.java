@@ -19,6 +19,9 @@
  *******************************************************************************/
 package org.eclipse.om2m.core.entitymapper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.om2m.commons.constants.ResourceType;
 import org.eclipse.om2m.commons.constants.ResultContent;
 import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
@@ -52,9 +55,14 @@ public class RemoteCSEMapper extends EntityMapper<RemoteCSEEntity, RemoteCSE> {
 	}
 
 	@Override
-	protected void mapAttributes(RemoteCSEEntity csrEntity, RemoteCSE csr) {
+	protected void mapAttributes(RemoteCSEEntity csrEntity, RemoteCSE csr, int level, int offset) {
+		
+		if (level < 0) {
+			return;
+		}
+		
 		// announceableResource attributes
-		EntityMapperFactory.getAnnounceableSubordonateEntity_AnnounceableResourceMapper().mapAttributes(csrEntity, csr);
+		EntityMapperFactory.getAnnounceableSubordonateEntity_AnnounceableResourceMapper().mapAttributes(csrEntity, csr, level, offset);
 			
 		// remoteCse attributes
 		csr.setCSEBase(csrEntity.getRemoteCseUri());
@@ -70,16 +78,23 @@ public class RemoteCSEMapper extends EntityMapper<RemoteCSEEntity, RemoteCSE> {
 		}
 
 	}
-
+	
 	@Override
-	protected void mapChildResourceRef(RemoteCSEEntity csrEntity, RemoteCSE csr) {
+	protected List<ChildResourceRef> getChildResourceRef(RemoteCSEEntity csrEntity, int level, int offset) {
+		List<ChildResourceRef> childRefs = new ArrayList<>();
+		
+		if (level == 0) {
+			return childRefs;
+		}
+		
 		// adding subscription refs
 		for (SubscriptionEntity sub : csrEntity.getSubscriptions()) {
 			ChildResourceRef child = new ChildResourceRef();
 			child.setResourceName(sub.getName());
 			child.setType(ResourceType.SUBSCRIPTION);
 			child.setValue(sub.getResourceID());
-			csr.getChildResource().add(child);
+			childRefs.add(child);
+			childRefs.addAll(new SubscriptionMapper().getChildResourceRef(sub, level - 1, offset - 1));
 		}
 		// adding ae ref
 		for (AeEntity ae : csrEntity.getChildAes()) {
@@ -87,7 +102,8 @@ public class RemoteCSEMapper extends EntityMapper<RemoteCSEEntity, RemoteCSE> {
 			child.setResourceName(ae.getName());
 			child.setType(ResourceType.AE);
 			child.setValue(ae.getResourceID());
-			csr.getChildResource().add(child);
+			childRefs.add(child);
+			childRefs.addAll(new AeMapper().getChildResourceRef(ae, level - 1, offset - 1));
 		}
 		// adding aeA ref
 		for (AeAnncEntity aeAnnc : csrEntity.getChildAeAnncs()) {
@@ -95,7 +111,8 @@ public class RemoteCSEMapper extends EntityMapper<RemoteCSEEntity, RemoteCSE> {
 			child.setResourceName(aeAnnc.getName());
 			child.setType(ResourceType.AE_ANNC);
 			child.setValue(aeAnnc.getResourceID());
-			csr.getChildResource().add(child);
+			childRefs.add(child);
+			childRefs.addAll(new AeAnncMapper().getChildResourceRef(aeAnnc, level - 1, offset - 1));
 		}
 		// adding acp ref
 		for (AccessControlPolicyEntity acp : csrEntity.getChildAcps()) {
@@ -103,7 +120,8 @@ public class RemoteCSEMapper extends EntityMapper<RemoteCSEEntity, RemoteCSE> {
 			child.setResourceName(acp.getName());
 			child.setType(ResourceType.ACCESS_CONTROL_POLICY);
 			child.setValue(acp.getResourceID());
-			csr.getChildResource().add(child);
+			childRefs.add(child);
+			childRefs.addAll(new AcpMapper().getChildResourceRef(acp, level - 1, offset - 1));
 		}
 		// adding cnt ref
 		for (ContainerEntity container : csrEntity.getChildCnt()) {
@@ -111,7 +129,8 @@ public class RemoteCSEMapper extends EntityMapper<RemoteCSEEntity, RemoteCSE> {
 			child.setResourceName(container.getName());
 			child.setType(ResourceType.CONTAINER);
 			child.setValue(container.getResourceID());
-			csr.getChildResource().add(child);
+			childRefs.add(child);
+			childRefs.addAll(new ContainerMapper().getChildResourceRef(container, level - 1, offset - 1));
 		}
 		// adding fcnt ref
 		for (FlexContainerEntity flexContainer : csrEntity.getChildFcnt()) {
@@ -120,7 +139,8 @@ public class RemoteCSEMapper extends EntityMapper<RemoteCSEEntity, RemoteCSE> {
 			child.setType(ResourceType.FLEXCONTAINER);
 			child.setValue(flexContainer.getResourceID());
 			child.setSpid(flexContainer.getContainerDefinition());
-			csr.getChildResource().add(child);
+			childRefs.add(child);
+			childRefs.addAll(new FlexContainerMapper().getChildResourceRef(flexContainer, level - 1, offset - 1));
 		}
 		// adding group ref
 		for (GroupEntity group : csrEntity.getChildGrps()) {
@@ -128,7 +148,8 @@ public class RemoteCSEMapper extends EntityMapper<RemoteCSEEntity, RemoteCSE> {
 			child.setResourceName(group.getName());
 			child.setType(ResourceType.GROUP);
 			child.setValue(group.getResourceID());
-			csr.getChildResource().add(child);
+			childRefs.add(child);
+			childRefs.addAll(new GroupMapper().getChildResourceRef(group, level - 1, offset - 1));
 		}
 		// adding polling channel child
 		for (PollingChannelEntity pollEntity : csrEntity.getPollingChannels()) {
@@ -136,7 +157,8 @@ public class RemoteCSEMapper extends EntityMapper<RemoteCSEEntity, RemoteCSE> {
 			child.setResourceName(pollEntity.getName());
 			child.setValue(pollEntity.getResourceID());
 			child.setType(ResourceType.POLLING_CHANNEL);
-			csr.getChildResource().add(child);
+			childRefs.add(child);
+			childRefs.addAll(new PollingChannelMapper().getChildResourceRef(pollEntity, level - 1, offset - 1));
 		}
 		// adding schedule child
 		ScheduleEntity sch = csrEntity.getLinkedSchedule();
@@ -145,7 +167,7 @@ public class RemoteCSEMapper extends EntityMapper<RemoteCSEEntity, RemoteCSE> {
 			child.setResourceName(sch.getName());
 			child.setValue(sch.getResourceID());
 			child.setType(ResourceType.SCHEDULE);
-			csr.getChildResource().add(child);
+			childRefs.add(child);
 		}
 		// TODO add NODE ref
 
@@ -155,52 +177,64 @@ public class RemoteCSEMapper extends EntityMapper<RemoteCSEEntity, RemoteCSE> {
 			ch.setResourceName(dace.getName());
 			ch.setType(ResourceType.DYNAMIC_AUTHORIZATION_CONSULTATION);
 			ch.setValue(dace.getResourceID());
-			csr.getChildResource().add(ch);
+			childRefs.add(ch);
+			childRefs.addAll(new DynamicAuthorizationConsultationMapper().getChildResourceRef(dace, level - 1, offset - 1));
 		}
+		
+		return childRefs;
 	}
 
 	@Override
-	protected void mapChildResources(RemoteCSEEntity csrEntity, RemoteCSE csr) {
+	protected void mapChildResourceRef(RemoteCSEEntity csrEntity, RemoteCSE csr, int level, int offset) {
+		csr.getChildResource().addAll(getChildResourceRef(csrEntity, level, offset));
+	}
+
+	@Override
+	protected void mapChildResources(RemoteCSEEntity csrEntity, RemoteCSE csr, int level, int offset) {
+		if (level == 0) {
+			return;
+		}
+		
 		// adding subscription refs
 		for (SubscriptionEntity sub : csrEntity.getSubscriptions()) {
-			Subscription chSub = new SubscriptionMapper().mapEntityToResource(sub, ResultContent.ATTRIBUTES);
+			Subscription chSub = new SubscriptionMapper().mapEntityToResource(sub, ResultContent.ATTRIBUTES_AND_CHILD_RES, level - 1, offset - 1);
 			csr.getAEOrContainerOrGroup().add(chSub);
 		}
 		// adding ae ref
 		for (AeEntity ae : csrEntity.getChildAes()) {
-			AE chAe = new AeMapper().mapEntityToResource(ae, ResultContent.ATTRIBUTES);
+			AE chAe = new AeMapper().mapEntityToResource(ae, ResultContent.ATTRIBUTES_AND_CHILD_RES, level - 1, offset - 1);
 			csr.getAEOrContainerOrGroup().add(chAe);
 		}
 		// adding aeAnnc ref
 		for (AeAnncEntity aeAnnc : csrEntity.getChildAeAnncs()) {
-			AEAnnc chAeAnnc = new AeAnncMapper().mapEntityToResource(aeAnnc, ResultContent.ATTRIBUTES);
+			AEAnnc chAeAnnc = new AeAnncMapper().mapEntityToResource(aeAnnc, ResultContent.ATTRIBUTES_AND_CHILD_RES, level - 1, offset - 1);
 			csr.getAEOrContainerOrGroup().add(chAeAnnc);
 		}
 
 		// adding acp ref
 		for (AccessControlPolicyEntity acp : csrEntity.getChildAcps()) {
-			AccessControlPolicy chAcp = new AcpMapper().mapEntityToResource(acp, ResultContent.ATTRIBUTES);
+			AccessControlPolicy chAcp = new AcpMapper().mapEntityToResource(acp, ResultContent.ATTRIBUTES_AND_CHILD_RES, level - 1, offset - 1);
 			csr.getAEOrContainerOrGroup().add(chAcp);
 		}
 		// adding cnt ref
 		for (ContainerEntity container : csrEntity.getChildCnt()) {
-			Container chCnt = new ContainerMapper().mapEntityToResource(container, ResultContent.ATTRIBUTES);
+			Container chCnt = new ContainerMapper().mapEntityToResource(container, ResultContent.ATTRIBUTES_AND_CHILD_RES, level - 1, offset - 1);
 			csr.getAEOrContainerOrGroup().add(chCnt);
 		}
 		// adding fcnt ref
 		for (FlexContainerEntity flexContainer : csrEntity.getChildFcnt()) {
 			AbstractFlexContainer chFcnt = new FlexContainerMapper().mapEntityToResource(flexContainer,
-					ResultContent.ATTRIBUTES);
+					ResultContent.ATTRIBUTES_AND_CHILD_RES, level - 1, offset - 1);
 			csr.getAEOrContainerOrGroup().add(chFcnt);
 		}
 		// adding group ref
 		for (GroupEntity grp : csrEntity.getChildGrps()) {
-			Group chGrp = new GroupMapper().mapEntityToResource(grp, ResultContent.ATTRIBUTES);
+			Group chGrp = new GroupMapper().mapEntityToResource(grp, ResultContent.ATTRIBUTES_AND_CHILD_RES, level - 1, offset - 1);
 			csr.getAEOrContainerOrGroup().add(chGrp);
 		}
 		// adding polling channel child
 		for (PollingChannelEntity pollEntity : csrEntity.getPollingChannels()) {
-			PollingChannel chPch = new PollingChannelMapper().mapEntityToResource(pollEntity, ResultContent.ATTRIBUTES);
+			PollingChannel chPch = new PollingChannelMapper().mapEntityToResource(pollEntity, ResultContent.ATTRIBUTES_AND_CHILD_RES, level - 1, offset - 1);
 			csr.getAEOrContainerOrGroup().add(chPch);
 		}
 		// adding schedule child
@@ -212,7 +246,7 @@ public class RemoteCSEMapper extends EntityMapper<RemoteCSEEntity, RemoteCSE> {
 		// adding DynamicAuthorizationConsultation resource
 		for (DynamicAuthorizationConsultationEntity daceEntity : csrEntity.getChildDynamicAuthorizationConsultation()) {
 			DynamicAuthorizationConsultation dace = new DynamicAuthorizationConsultationMapper()
-					.mapEntityToResource(daceEntity, ResultContent.ATTRIBUTES);
+					.mapEntityToResource(daceEntity, ResultContent.ATTRIBUTES_AND_CHILD_RES, level - 1, offset - 1);
 			csr.getAEOrContainerOrGroup().add(dace);
 		}
 	}

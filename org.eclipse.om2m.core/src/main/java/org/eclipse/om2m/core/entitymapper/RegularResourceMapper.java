@@ -3,11 +3,13 @@
  */
 package org.eclipse.om2m.core.entitymapper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
 import org.eclipse.om2m.commons.entities.DynamicAuthorizationConsultationEntity;
 import org.eclipse.om2m.commons.entities.RegularResourceEntity;
+import org.eclipse.om2m.commons.resource.ChildResourceRef;
 import org.eclipse.om2m.commons.resource.RegularResource;
 
 /**
@@ -17,7 +19,12 @@ import org.eclipse.om2m.commons.resource.RegularResource;
 public class RegularResourceMapper extends EntityMapper<RegularResourceEntity, RegularResource> {
 
 	@Override
-	protected void mapAttributes(RegularResourceEntity entity, RegularResource resource) {
+	protected void mapAttributes(RegularResourceEntity entity, RegularResource resource, int level, int offset) {
+		
+		if (level < 0) {
+			return;
+		}
+		
 		// expiration time
 		resource.setExpirationTime(entity.getExpirationTime());
 
@@ -32,14 +39,19 @@ public class RegularResourceMapper extends EntityMapper<RegularResourceEntity, R
 			dacis.add(dace.getResourceID());
 		}
 	}
+	
+	@Override
+	protected List<ChildResourceRef> getChildResourceRef(RegularResourceEntity entity, int level, int offset) {
+		return new ArrayList<>();
+	}
 
 	@Override
-	protected void mapChildResourceRef(RegularResourceEntity entity, RegularResource resource) {
+	protected void mapChildResourceRef(RegularResourceEntity entity, RegularResource resource, int level, int offset) {
 
 	}
 
 	@Override
-	protected void mapChildResources(RegularResourceEntity entity, RegularResource resource) {
+	protected void mapChildResources(RegularResourceEntity entity, RegularResource resource, int level, int offset) {
 
 	}
 

@@ -62,7 +62,7 @@ function get(targetId) {
         type: "GET",
         beforeSend: function() {},
         dataType: "xml",
-        url: context + targetId + "?rcn=5",
+        url: context + targetId + "?rcn=5&lvl=1",
         headers: {
             "X-M2M-Origin": make_base_auth(username, password),
             "Accept": "application/xml"

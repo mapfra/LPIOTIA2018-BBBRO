@@ -1,6 +1,8 @@
 package org.eclipse.om2m.core.entitymapper;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.om2m.commons.constants.ResourceType;
 import org.eclipse.om2m.commons.constants.ResultContent;
@@ -21,9 +23,13 @@ import org.eclipse.om2m.commons.resource.Subscription;
 public class AeAnncMapper extends EntityMapper<AeAnncEntity, AEAnnc> {
 
 	@Override
-	protected void mapAttributes(AeAnncEntity entity, AEAnnc resource) {
+	protected void mapAttributes(AeAnncEntity entity, AEAnnc resource, int level, int offset) {
+		if (level < 0) {
+			return;
+		}
+		
 		// announcedResource attributes
-		EntityMapperFactory.getAnnouncedResourceMapper().mapAttributes(entity, resource);
+		EntityMapperFactory.getAnnouncedResourceMapper().mapAttributes(entity, resource, level, offset);
 		
 		resource.setAEID(entity.getAeid());
 		resource.setAppID(entity.getAppID());
@@ -37,15 +43,29 @@ public class AeAnncMapper extends EntityMapper<AeAnncEntity, AEAnnc> {
 	}
 
 	@Override
-	protected void mapChildResourceRef(AeAnncEntity entity, AEAnnc resource) {
-		// ChildResourceRef FlexContainerAnnc
+	protected void mapChildResourceRef(AeAnncEntity entity, AEAnnc resource, int level, int offset) {
+		resource.getChildResource().addAll(getChildResourceRef(entity, level, offset));
+	}
+	
+	@Override
+	protected List<ChildResourceRef> getChildResourceRef(AeAnncEntity entity, int level, int offset) {
+		
+		
+		List<ChildResourceRef> childRefs = new ArrayList<>();
+		
+		if (level == 0) {
+			return childRefs;
+		}
+		
 		for (FlexContainerAnncEntity flexContainerEntity : entity.getFlexContainerAnncs()) {
 			ChildResourceRef child = new ChildResourceRef();
 			child.setResourceName(flexContainerEntity.getName());
 			child.setType(flexContainerEntity.getResourceType());
 			child.setValue(flexContainerEntity.getResourceID());
 			child.setSpid(flexContainerEntity.getContainerDefinition());
-			resource.getChildResource().add(child);
+			childRefs.add(child);
+			
+			childRefs.addAll(new FlexContainerAnncMapper().getChildResourceRef(flexContainerEntity, level - 1, offset - 1));
 		}
 
 		// ChildResourceRef Subscription
@@ -54,24 +74,30 @@ public class AeAnncMapper extends EntityMapper<AeAnncEntity, AEAnnc> {
 			child.setResourceName(sub.getName());
 			child.setType(BigInteger.valueOf(ResourceType.SUBSCRIPTION));
 			child.setValue(sub.getResourceID());
-			resource.getChildResource().add(child);
+			childRefs.add(child);
+			
+			childRefs.addAll(new SubscriptionMapper().getChildResourceRef(sub, level - 1, offset - 1));
 		}
-
-
+		
+		return childRefs;
 	}
 
 	@Override
-	protected void mapChildResources(AeAnncEntity entity, AEAnnc resource) {
+	protected void mapChildResources(AeAnncEntity entity, AEAnnc resource, int level, int offset) {
 
+		if (level == 0) {
+			return;
+		}
+		
 		// ChildResourceRef FlexContainerAnnc
 		for (FlexContainerAnncEntity flexContainerEntity : entity.getFlexContainerAnncs()) {
 			FlexContainerAnnc fcnt = new FlexContainerAnncMapper().mapEntityToResource(flexContainerEntity,
-					ResultContent.ATTRIBUTES);
+					ResultContent.ATTRIBUTES_AND_CHILD_RES, level - 1, offset - 1);
 			resource.getContainerOrContainerAnncOrGroup().add(fcnt);
 		}
 		// ChildResourceRef Subscription
 		for (SubscriptionEntity sub : entity.getSubscriptions()) {
-			Subscription subRes = new SubscriptionMapper().mapEntityToResource(sub, ResultContent.ATTRIBUTES);
+			Subscription subRes = new SubscriptionMapper().mapEntityToResource(sub, ResultContent.ATTRIBUTES_AND_CHILD_RES, level - 1, offset - 1);
 			resource.getContainerOrContainerAnncOrGroup().add(subRes);
 		}
 	}

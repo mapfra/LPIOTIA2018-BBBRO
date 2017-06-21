@@ -20,6 +20,8 @@
 package org.eclipse.om2m.core.entitymapper;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.om2m.commons.constants.ResultContent;
 import org.eclipse.om2m.commons.constants.ShortName;
@@ -38,9 +40,13 @@ public class GroupMapper extends EntityMapper<GroupEntity, Group>{
 	}
 
 	@Override
-	protected void mapAttributes(GroupEntity entity, Group resource) {
+	protected void mapAttributes(GroupEntity entity, Group resource, int level, int offset) {
+		if (level < 0) {
+			return;
+		}
+		
 		// announceable resource attributes
-		EntityMapperFactory.getAnnounceableSubordonateEntity_AnnounceableResourceMapper().mapAttributes(entity, resource);
+		EntityMapperFactory.getAnnounceableSubordonateEntity_AnnounceableResourceMapper().mapAttributes(entity, resource, level, offset);
 		
 		// group attributes
 		resource.setConsistencyStrategy(entity.getConsistencyStrategy());
@@ -58,23 +64,40 @@ public class GroupMapper extends EntityMapper<GroupEntity, Group>{
 			resource.getMembersAccessControlPolicyIDs().addAll(entity.getMemberAcpIds());
 		}
 	}
-
+	
 	@Override
-	protected void mapChildResourceRef(GroupEntity entity, Group resource) {
+	protected List<ChildResourceRef> getChildResourceRef(GroupEntity entity, int level, int offset) {
+		List<ChildResourceRef> childRefs = new ArrayList<>();
+		
+		if (level == 0) {
+			return childRefs;
+		}
+		
 		// ChildResourceRef Subscription
 		for(SubscriptionEntity sub : entity.getSubscriptions()){
 			ChildResourceRef ref = new ChildResourceRef();
 			ref.setResourceName(sub.getName());
 			ref.setType(sub.getResourceType());
 			ref.setValue(sub.getResourceID());
-			resource.getChildResource().add(ref);
+			childRefs.add(ref);
+			childRefs.addAll(new SubscriptionMapper().getChildResourceRef(sub, level - 1, offset - 1));
 		}
+		
+		return childRefs;
 	}
 
 	@Override
-	protected void mapChildResources(GroupEntity entity, Group resource) {
+	protected void mapChildResourceRef(GroupEntity entity, Group resource, int level, int offset) {
+		resource.getChildResource().addAll(getChildResourceRef(entity, level, offset));
+	}
+
+	@Override
+	protected void mapChildResources(GroupEntity entity, Group resource, int level, int offset) {
+		if (level == 0) {
+			return;
+		}
 		for(SubscriptionEntity sub : entity.getSubscriptions()){
-			Subscription subRes = new SubscriptionMapper().mapEntityToResource(sub, ResultContent.ATTRIBUTES);
+			Subscription subRes = new SubscriptionMapper().mapEntityToResource(sub, ResultContent.ATTRIBUTES, level - 1, offset - 1);
 			resource.getSubscription().add(subRes);
 		}
 	}

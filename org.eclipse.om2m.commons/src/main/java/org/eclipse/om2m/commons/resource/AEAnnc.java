@@ -109,7 +109,8 @@ public class AEAnnc extends AnnouncedResource {
 			@XmlElement(name = "accessControlPolicy", namespace = "http://www.onem2m.org/xml/protocols", type = AccessControlPolicy.class),
 			@XmlElement(name = "accessControlPolicyAnnc", namespace = "http://www.onem2m.org/xml/protocols", type = AccessControlPolicyAnnc.class),
 			@XmlElement(name = "subscription", namespace = "http://www.onem2m.org/xml/protocols", type = Subscription.class),
-			@XmlElement(name = "pollingChannel", namespace = "http://www.onem2m.org/xml/protocols", type = PollingChannel.class) })
+			@XmlElement(name = "pollingChannel", namespace = "http://www.onem2m.org/xml/protocols", type = PollingChannel.class),
+			@XmlElement(name = ShortName.FCNTA, namespace = "http://www.onem2m.org/xml/protocols", type = FlexContainerAnnc.class)})
 	protected List<Resource> containerOrContainerAnncOrGroup;
 
 	/**

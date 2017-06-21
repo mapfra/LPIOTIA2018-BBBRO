@@ -131,7 +131,7 @@ public class NonBlockingHandler {
 		dbs.getDAOFactory().getCSEBaseDAO().update(transaction, cseBaseEntity);
 		transaction.commit();
 		
-		Request requestResource = EntityMapperFactory.getRequestMapper().mapEntityToResource(requestEntity, ResultContent.ATTRIBUTES);
+		Request requestResource = EntityMapperFactory.getRequestMapper().mapEntityToResource(requestEntity, ResultContent.ATTRIBUTES, 0, 0);
 		response.setContent(requestResource.getResourceID());
 		response.setContentType(MimeMediaType.TEXT_PLAIN);
 		

@@ -7,6 +7,9 @@
  *******************************************************************************/
 package org.eclipse.om2m.core.entitymapper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.om2m.commons.constants.ResourceType;
 import org.eclipse.om2m.commons.constants.ResultContent;
 import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
@@ -24,9 +27,12 @@ public class FlexContainerAnncMapper extends EntityMapper<FlexContainerAnncEntit
 	}
 
 	@Override
-	protected void mapAttributes(FlexContainerAnncEntity entity, FlexContainerAnnc resource) {
+	protected void mapAttributes(FlexContainerAnncEntity entity, FlexContainerAnnc resource, int level, int offset) {
+		if (level < 0) {
+			return;
+		}
 		// announcedResource attribute
-		EntityMapperFactory.getAnnouncedResourceMapper().mapAttributes(entity, resource);
+		EntityMapperFactory.getAnnouncedResourceMapper().mapAttributes(entity, resource, level, offset);
 		
 		// flexContainerAnnc attribute
 		resource.setCreator(entity.getCreator());
@@ -35,11 +41,14 @@ public class FlexContainerAnncMapper extends EntityMapper<FlexContainerAnncEntit
 		resource.setContainerDefinition(entity.getContainerDefinition());
 		
 	}
-
+	
 	@Override
-	protected void mapChildResourceRef(FlexContainerAnncEntity entity,
-			FlexContainerAnnc resource) {
-
+	protected List<ChildResourceRef> getChildResourceRef(FlexContainerAnncEntity entity, int level, int offset) {
+		List<ChildResourceRef> childRefs = new ArrayList<>();
+		if (level == 0) {
+			return childRefs;
+		}
+		
 		// add child ref FlexContainer
 		for (FlexContainerAnncEntity fcntAnnc : entity.getChildFlexContainerAnncs()) {
 			ChildResourceRef child = new ChildResourceRef();
@@ -47,7 +56,9 @@ public class FlexContainerAnncMapper extends EntityMapper<FlexContainerAnncEntit
 			child.setType(ResourceType.FLEXCONTAINER_ANNC);
 			child.setValue(fcntAnnc.getResourceID());
 			child.setSpid(fcntAnnc.getContainerDefinition());
-			resource.getChildResource().add(child);	
+			childRefs.add(child);
+			
+			childRefs.addAll(new FlexContainerAnncMapper().getChildResourceRef(fcntAnnc, level - 1, offset - 1));
 		}
 
 		// add child ref subscription
@@ -56,24 +67,35 @@ public class FlexContainerAnncMapper extends EntityMapper<FlexContainerAnncEntit
 			child.setResourceName(sub.getName());
 			child.setType(ResourceType.SUBSCRIPTION);
 			child.setValue(sub.getResourceID());
-			resource.getChildResource().add(child);
+			childRefs.add(child);
+			
+			childRefs.addAll(new SubscriptionMapper().getChildResourceRef(sub, level - 1, offset - 1));
 		}
 		
-		
-		// add child ref with containers
+		return childRefs;
 	}
 
 	@Override
-	protected void mapChildResources(FlexContainerAnncEntity entity, FlexContainerAnnc resource) {
+	protected void mapChildResourceRef(FlexContainerAnncEntity entity,
+			FlexContainerAnnc resource, int level, int offset) {
+		resource.getChildResource().addAll(getChildResourceRef(entity, level, offset));
+	}
+
+	@Override
+	protected void mapChildResources(FlexContainerAnncEntity entity, FlexContainerAnnc resource, int level, int offset) {
+		if (level == 0) {
+			return;
+		}
+		
 		// add child ref flexContainer
 		for (FlexContainerAnncEntity flexContainerAnncEntity : entity.getChildFlexContainerAnncs()) {
-			FlexContainerAnnc flexContainerAnncRes = new FlexContainerAnncMapper().mapEntityToResource(flexContainerAnncEntity, ResultContent.ATTRIBUTES);
+			FlexContainerAnnc flexContainerAnncRes = new FlexContainerAnncMapper().mapEntityToResource(flexContainerAnncEntity, ResultContent.ATTRIBUTES_AND_CHILD_RES, level - 1, offset - 1);
 			resource.getFlexContainerOrContainerOrSubscription().add(flexContainerAnncRes);
 		}
 
 		// add child ref subscription
 		for (SubscriptionEntity sub : entity.getSubscriptions()){
-			Subscription subRes = new SubscriptionMapper().mapEntityToResource(sub, ResultContent.ATTRIBUTES);
+			Subscription subRes = new SubscriptionMapper().mapEntityToResource(sub, ResultContent.ATTRIBUTES_AND_CHILD_RES, level - 1, offset - 1);
 			resource.getFlexContainerOrContainerOrSubscription().add(subRes);
 		}
 		
