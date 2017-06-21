@@ -71,6 +71,7 @@
       <plugin id="org.eclipse.om2m.sdt.home"/>
       <plugin id="org.eclipse.om2m.sdt.home.driver"/>
       <plugin id="org.eclipse.om2m.sdt.home.mocked.devices"/>
+      <plugin id="org.eclipse.om2m.webapp.resourcesbrowser.json"/>
       <plugin id="org.eclipse.om2m.webapp.resourcesbrowser.xml"/>
       <plugin id="org.eclipse.osgi"/>
       <plugin id="org.eclipse.osgi.services"/>
@@ -97,7 +98,8 @@
       <plugin id="org.eclipse.om2m.sdt.home" autoStart="true" startLevel="5" />
       <plugin id="org.eclipse.om2m.sdt.home.driver" autoStart="true" startLevel="5" />
       <plugin id="org.eclipse.om2m.sdt.home.mocked.devices" autoStart="false" startLevel="5" />
-      <plugin id="org.eclipse.om2m.webapp.resourcesbrowser.xml" autoStart="true" startLevel="4" />
+      <plugin id="org.eclipse.om2m.webapp.resourcesbrowser.json" autoStart="true" startLevel="4" />
+      <plugin id="org.eclipse.om2m.webapp.resourcesbrowser.xml" autoStart="false" startLevel="4" />
       <property name="log4j.configuration" value="file:./log4j.configuration" />
       <property name="org.apache.commons.logging.Log" value="org.apache.commons.logging.impl.Log4JLogger" />
       <property name="org.eclipse.equinox.http.jetty.http.port" value="8080" />
