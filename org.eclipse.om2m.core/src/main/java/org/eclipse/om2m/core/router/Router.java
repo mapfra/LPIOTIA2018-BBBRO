@@ -210,7 +210,8 @@ public class Router implements CseService {
 			}
 
 			// Discovery case
-			if (request.getFilterCriteria() != null){
+			if ((request.getFilterCriteria() != null) && (request.getFilterCriteria().getFilterUsage() != null)
+					&& (request.getFilterCriteria().getFilterUsage().intValue() == 1)){
 				controller = new DiscoveryController();
 			}
 
