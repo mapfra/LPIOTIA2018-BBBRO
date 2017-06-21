@@ -61,7 +61,6 @@ public class Activator implements BundleActivator, ManagedService, EventHandler 
 	private SDTIpeApplication sdtIPEApplication;
 	private CseService cseService;
 
-	private static DataMapperService dataMapperService;
 	private static BundleContext bundleContext;
 	private static Object sync = new Object();
 
@@ -71,31 +70,6 @@ public class Activator implements BundleActivator, ManagedService, EventHandler 
 	public void start(final BundleContext context) throws Exception {
 		bundleContext = context;
 		logger.info("start SDT IPE");
-
-		dataMapperServiceTracker = new ServiceTracker(bundleContext, DataMapperService.class.getName(),
-				new ServiceTrackerCustomizer() {
-					@Override
-					public void removedService(ServiceReference reference, Object service) {
-						setDataMapper(null);
-					}
-
-					@Override
-					public void modifiedService(ServiceReference reference, Object service) {
-					}
-
-					@Override
-					public Object addingService(ServiceReference reference) {
-						if (getDataMapper() == null) {
-							DataMapperService dms = (DataMapperService) bundleContext.getService(reference);
-							if (MimeMediaType.XML.equals(dms.getServiceDataType())) {
-								setDataMapper(dms);
-								return dataMapperService;
-							}
-						}
-						return null;
-					}
-				});
-		dataMapperServiceTracker.open();
 
 		cseServiceTracker = new ServiceTracker(bundleContext, CseService.class.getName(),
 				new ServiceTrackerCustomizer() {
@@ -291,19 +265,6 @@ public class Activator implements BundleActivator, ManagedService, EventHandler 
 		}
 	}
 
-	protected static void setDataMapper(DataMapperService dms) {
-		synchronized (sync) {
-			dataMapperService = dms;
-		}
-	}
-
-	protected static DataMapperService getDataMapper() {
-		DataMapperService dms = null;
-		synchronized (sync) {
-			dms = dataMapperService;
-		}
-		return dms;
-	}
 
 	public static ServiceRegistration registerFlexContainerService(FlexContainerService instance) {
 		logger.info("registerFlexContainerService for path " + instance.getFlexContainerLocation());
