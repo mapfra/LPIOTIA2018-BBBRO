@@ -38,11 +38,11 @@ public class RemoteCseDacisTest extends Test {
 		toBeCreatedRemoteCse.setRequestReachability(Boolean.FALSE);
 		toBeCreatedRemoteCse.setCSEBase("/cseBase" + UUID.randomUUID());
 		toBeCreatedRemoteCse.setCSEID("cseId" + UUID.randomUUID());
+		toBeCreatedRemoteCse.setName("RemoteCSE_" + UUID.randomUUID());
 
 		// prepare CREATE request
 		RequestPrimitive createRequest = new RequestPrimitive();
 		createRequest.setOperation(Operation.CREATE);
-		createRequest.setName("RemoteCSE_" + UUID.randomUUID());
 		createRequest.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 		createRequest.setTargetId("/" + Constants.CSE_ID + "/" + Constants.CSE_NAME);
 		createRequest.setRequestContentType(MimeMediaType.OBJ);

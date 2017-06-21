@@ -47,11 +47,11 @@ public class DynamicAuthorizationConsultationDacisTest extends Test {
 		DynamicAuthorizationConsultation toBeCreatedDac = new DynamicAuthorizationConsultation();
 		toBeCreatedDac.getDynamicAuthorizationConsultationIDs().add(dac.getResourceID());
 		toBeCreatedDac.setDynamicAuthorizationEnabled(Boolean.FALSE);
-
+		toBeCreatedDac.setName("DAC_" + UUID.randomUUID());
+		
 		// prepare CREATE request
 		RequestPrimitive createRequest = new RequestPrimitive();
 		createRequest.setOperation(Operation.CREATE);
-		createRequest.setName("DAC_" + UUID.randomUUID());
 		createRequest.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 		createRequest.setTargetId("/" + Constants.CSE_ID + "/" + Constants.CSE_NAME);
 		createRequest.setRequestContentType(MimeMediaType.OBJ);

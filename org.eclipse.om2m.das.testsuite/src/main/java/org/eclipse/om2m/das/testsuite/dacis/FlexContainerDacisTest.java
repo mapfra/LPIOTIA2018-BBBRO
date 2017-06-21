@@ -39,11 +39,11 @@ public class FlexContainerDacisTest extends Test {
 		FlexContainer toBeCreatedFlexContainer = new FlexContainer();
 		toBeCreatedFlexContainer.setContainerDefinition("mydef");
 		toBeCreatedFlexContainer.getDynamicAuthorizationConsultationIDs().add(dac.getResourceID());
+		toBeCreatedFlexContainer.setName(flexContainerName);
 
 		// prepare CREATE request
 		RequestPrimitive createRequest = new RequestPrimitive();
 		createRequest.setOperation(Operation.CREATE);
-		createRequest.setName(flexContainerName);
 		createRequest.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 		createRequest.setTargetId("/" + Constants.CSE_ID + "/" + Constants.CSE_NAME);
 		createRequest.setRequestContentType(MimeMediaType.OBJ);

@@ -40,7 +40,7 @@ public class SampleController {
 		ContentInstance cin = new ContentInstance();
 		cin.setContent(ObixUtil.getStateRep(lampId, value));
 		cin.setContentInfo(MimeMediaType.OBIX + ":" + MimeMediaType.ENCOD_PLAIN);
-		RequestSender.createContentInstance(targetID, null, cin);
+		RequestSender.createContentInstance(targetID, cin);
 	}
 	
 	public static String getFormatedLampState(String lampId){

@@ -63,11 +63,11 @@ public class FlexContainerAnncDacisTest extends Test {
 		toBeCreatedFlexContainerAnnc.getDynamicAuthorizationConsultationIDs().add(dac.getResourceID());
 		toBeCreatedFlexContainerAnnc.setContainerDefinition("myDef");
 		toBeCreatedFlexContainerAnnc.setLink("/FlexContainerAnnc" + UUID.randomUUID());
+		toBeCreatedFlexContainerAnnc.setName("FlexContainerAnnc_" + UUID.randomUUID());
 
 		// prepare CREATE request
 		RequestPrimitive createRequest = new RequestPrimitive();
 		createRequest.setOperation(Operation.CREATE);
-		createRequest.setName("FlexContainerAnnc_" + UUID.randomUUID());
 		createRequest.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 		createRequest.setTargetId(aeAnnc.getResourceID());
 		createRequest.setRequestContentType(MimeMediaType.OBJ);

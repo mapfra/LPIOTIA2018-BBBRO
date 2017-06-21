@@ -270,12 +270,6 @@ public class SubscriptionController extends Controller{
 				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
 			}
 			subscriptionEntity.setName(subscription.getName());
-		} else 
-		if(request.getName() != null){
-			if(!Patterns.checkResourceName(request.getName())){
-				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
-			}
-			subscriptionEntity.setName(request.getName());
 		} else {
 			subscriptionEntity.setName(ShortName.SUB + "_" + generatedId);
 		}

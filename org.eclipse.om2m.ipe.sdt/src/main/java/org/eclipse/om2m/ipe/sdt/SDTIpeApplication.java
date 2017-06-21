@@ -108,6 +108,7 @@ public class SDTIpeApplication {
 		logger.info("create ipe application");
 
 		AE ae = new AE();
+		ae.setName(APPLICATION_NAME);
 		ae.setAppID(APPLICATION_NAME);
 		ae.setRequestReachability(Boolean.TRUE);
 		ae.getPointOfAccess().add(POA);
@@ -117,8 +118,7 @@ public class SDTIpeApplication {
 
 		ResponsePrimitive resp = null;
 		for (int i = 0; i < 3; i++) {
-			 resp = CseUtil.sendCreateApplicationEntityRequest(cseService, ae, sdtIpeBaseLocation,
-					APPLICATION_NAME);
+			 resp = CseUtil.sendCreateApplicationEntityRequest(cseService, ae, sdtIpeBaseLocation);
 
 			 if (ResponseStatusCode.CREATED.equals(resp.getResponseStatusCode())) {
 				 // nothing do 

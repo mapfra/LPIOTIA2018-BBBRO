@@ -396,12 +396,6 @@ public class RestHttpServlet extends HttpServlet {
 			request.setReturnContentType(request.getRequestContentType());
 		}
 
-		// Map name header
-		String nameHeader = httpServletRequest.getHeader(HttpHeaders.NAME);
-		if (nameHeader != null){
-			request.setName(nameHeader);
-		}
-
 		// Map Response Type Uri for non-blocking request
 		String rtuHeader = httpServletRequest.getHeader(HttpHeaders.RESPONSE_TYPE);
 		if(rtuHeader != null){

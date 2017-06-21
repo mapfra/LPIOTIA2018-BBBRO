@@ -277,11 +277,6 @@ public class AEAnncController extends Controller {
 				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
 			}
 			aeAnncEntity.setName(aeAnnc.getName());
-		} else if (request.getName() != null) {
-			if (!Patterns.checkResourceName(request.getName())) {
-				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
-			}
-			aeAnncEntity.setName(request.getName());
 		} else {
 			aeAnncEntity.setName(ShortName.AE_ANNC + "_" + generatedId);
 		}

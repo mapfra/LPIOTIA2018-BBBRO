@@ -72,8 +72,8 @@ public abstract class FlexContainerTestSuite {
 	}
 
 	protected ResponsePrimitive sendCreateFlexContainerRequest(FlexContainer flexContainer, String resourceLocation,
-			String resourceName, String from) {
-		return sendCreateRequest(resourceLocation, resourceName, ResourceType.FLEXCONTAINER, flexContainer, from);
+			String from) {
+		return sendCreateRequest(resourceLocation, ResourceType.FLEXCONTAINER, flexContainer, from);
 	}
 
 	/**
@@ -84,25 +84,23 @@ public abstract class FlexContainerTestSuite {
 	 * @param resourceLocation
 	 * @param resourceName
 	 */
-	protected ResponsePrimitive sendCreateFlexContainerRequest(FlexContainer flexContainer, String resourceLocation,
-			String resourceName) {
-		return sendCreateRequest(resourceLocation, resourceName, ResourceType.FLEXCONTAINER, flexContainer,
+	protected ResponsePrimitive sendCreateFlexContainerRequest(FlexContainer flexContainer, String resourceLocation) {
+		return sendCreateRequest(resourceLocation, ResourceType.FLEXCONTAINER, flexContainer,
 				Constants.ADMIN_REQUESTING_ENTITY);
 	}
 
-	protected ResponsePrimitive sendCreateSubscriptionRequest(Subscription subscription, String resourceLocation,
-			String resourceName) {
-		return sendCreateRequest(resourceLocation, resourceName, ResourceType.SUBSCRIPTION, subscription,
+	protected ResponsePrimitive sendCreateSubscriptionRequest(Subscription subscription, String resourceLocation) {
+		return sendCreateRequest(resourceLocation, ResourceType.SUBSCRIPTION, subscription,
 				Constants.ADMIN_REQUESTING_ENTITY);
 	}
 
 	protected ResponsePrimitive sendCreateAccessControlPolicyRequest(AccessControlPolicy policy,
-			String resourceLocation, String resourceName) {
-		return sendCreateRequest(resourceLocation, resourceName, ResourceType.ACCESS_CONTROL_POLICY, policy,
+			String resourceLocation) {
+		return sendCreateRequest(resourceLocation, ResourceType.ACCESS_CONTROL_POLICY, policy,
 				Constants.ADMIN_REQUESTING_ENTITY);
 	}
 
-	private ResponsePrimitive sendCreateRequest(String resourceLocation, String resourceName, int resourceType,
+	private ResponsePrimitive sendCreateRequest(String resourceLocation, int resourceType,
 			Resource resource, String from) {
 		RequestPrimitive request = new RequestPrimitive();
 		request.setContent(resource);
@@ -112,7 +110,6 @@ public abstract class FlexContainerTestSuite {
 		request.setResourceType(BigInteger.valueOf(resourceType));
 		request.setRequestContentType(MimeMediaType.OBJ);
 		request.setReturnContentType(MimeMediaType.OBJ);
-		request.setName(resourceName);
 		request.setOperation(Operation.CREATE);
 		ResponsePrimitive response = cseService.doRequest(request);
 		return response;

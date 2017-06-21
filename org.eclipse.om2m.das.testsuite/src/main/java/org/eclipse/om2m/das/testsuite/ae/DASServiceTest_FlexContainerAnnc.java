@@ -135,10 +135,10 @@ public class DASServiceTest_FlexContainerAnnc extends AbstractDASServiceTest {
 		FlexContainerAnnc flexContainerAnncChildToBeCreated = new FlexContainerAnnc();
 		flexContainerAnncChildToBeCreated.setContainerDefinition("tototto");
 		flexContainerAnncChildToBeCreated.setLink("/link" + UUID.randomUUID());
-
+		flexContainerAnncChildToBeCreated.setName("FlexContainer_" + UUID.randomUUID());
+		
 		// prepare child creation request
 		RequestPrimitive createChildRequest = new RequestPrimitive();
-		createChildRequest.setName("FlexContainer_" + UUID.randomUUID());
 		createChildRequest.setContent(flexContainerAnncChildToBeCreated);
 		createChildRequest.setRequestContentType(MimeMediaType.OBJ);
 		createChildRequest.setReturnContentType(MimeMediaType.OBJ);

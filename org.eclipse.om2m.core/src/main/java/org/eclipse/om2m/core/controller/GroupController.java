@@ -252,12 +252,6 @@ public class GroupController extends Controller {
 				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
 			}
 			groupEntity.setName(group.getName());
-		} else 
-		if(request.getName() != null){
-			if (!Patterns.checkResourceName(request.getName())){
-				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
-			}
-			groupEntity.setName(request.getName());
 		} else {
 			groupEntity.setName(ShortName.GROUP + "_" + generatedId);
 		}

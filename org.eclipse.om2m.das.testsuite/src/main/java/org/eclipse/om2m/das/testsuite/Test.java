@@ -204,7 +204,6 @@ public abstract class Test {
 		// setup request
 		request.setOperation(Operation.CREATE);
 		request.setTargetId("/" + Constants.CSE_ID + "/" + Constants.CSE_NAME);
-		request.setName(dasName);
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 		request.setResourceType(ResourceType.DYNAMIC_AUTHORIZATION_CONSULTATION);
 		request.setRequestContentType(MimeMediaType.OBJ);
@@ -215,6 +214,7 @@ public abstract class Test {
 		das.setDynamicAuthorizationEnabled(enabled);
 		das.setDynamicAuthorisationPoA(poa);
 		das.setDynamicAuthorizationLifetime(new Date().toString());
+		das.setName(dasName);
 
 		request.setContent(das);
 
@@ -239,7 +239,6 @@ public abstract class Test {
 		// setup request
 		request.setOperation(Operation.CREATE);
 		request.setTargetId("/" + Constants.CSE_ID + "/" + Constants.CSE_NAME);
-		request.setName(remoteCseName);
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 		request.setResourceType(ResourceType.REMOTE_CSE);
 		request.setRequestContentType(MimeMediaType.OBJ);
@@ -250,6 +249,7 @@ public abstract class Test {
 		remoteCse.setCSEBase("/base/" + remoteCseName);
 		remoteCse.setCSEID(remoteCseName);
 		remoteCse.setRequestReachability(Boolean.FALSE);
+		remoteCse.setName(remoteCseName);
 
 		request.setContent(remoteCse);
 
@@ -285,7 +285,6 @@ public abstract class Test {
 		// setup request
 		request.setOperation(Operation.CREATE);
 		request.setTargetId(url);
-		request.setName(aeAnncCseName);
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 		request.setResourceType(ResourceType.AE_ANNC);
 		request.setRequestContentType(MimeMediaType.OBJ);
@@ -293,6 +292,7 @@ public abstract class Test {
 
 		// set RemoteCse
 		AEAnnc aeAnnc = new AEAnnc();
+		aeAnnc.setName(aeAnncCseName);
 		aeAnnc.setAppID("AeAnncAppID_" + UUID.randomUUID());
 		aeAnnc.setLink("/" + aeAnnc.getAppID());
 		aeAnnc.getAccessControlPolicyIDs().add(createdAcp.getResourceID());
@@ -326,6 +326,7 @@ public abstract class Test {
 	protected AccessControlPolicy createAcp() {
 		// create a specific acp for this entity
 		AccessControlPolicy acp = new AccessControlPolicy();
+		acp.setName("ACP" + UUID.randomUUID());
 		AccessControlRule acr = new AccessControlRule();
 		acr.getAccessControlOriginators().add(Constants.ADMIN_REQUESTING_ENTITY);
 		acr.setAccessControlOperations(AccessControl.ALL);
@@ -338,7 +339,6 @@ public abstract class Test {
 		acp.getSelfPrivileges().getAccessControlRule().add(selfAcr);
 
 		RequestPrimitive acpCreateRequest = new RequestPrimitive();
-		acpCreateRequest.setName("ACP" + UUID.randomUUID());
 		acpCreateRequest.setOperation(Operation.CREATE);
 		acpCreateRequest.setRequestContentType(MimeMediaType.OBJ);
 		acpCreateRequest.setReturnContentType(MimeMediaType.OBJ);
@@ -371,9 +371,10 @@ public abstract class Test {
 		}
 
 		AE ae = new AE();
-
+		
 		ae.setAppID("1234");
 		ae.setAppName("appName" + UUID.randomUUID());
+		ae.setName(ae.getAppName());
 		ae.setRequestReachability(Boolean.TRUE);
 		ae.getAccessControlPolicyIDs().add(createdAcp.getResourceID());
 		ae.getPointOfAccess().add("poa_" + UUID.randomUUID()); 
@@ -382,7 +383,6 @@ public abstract class Test {
 		}
 
 		RequestPrimitive request = new RequestPrimitive();
-		request.setName(ae.getAppName());
 		request.setOperation(Operation.CREATE);
 		request.setRequestContentType(MimeMediaType.OBJ);
 		request.setReturnContentType(MimeMediaType.OBJ);
@@ -415,7 +415,7 @@ public abstract class Test {
 		}
 
 		FlexContainer flexContainer = new FlexContainer();
-
+		flexContainer.setName("FlexContainer_" + UUID.randomUUID());
 		flexContainer.setContainerDefinition("myDef");
 		flexContainer.getAccessControlPolicyIDs().add(createdAcp.getResourceID());
 		if (dacis != null) {
@@ -423,7 +423,6 @@ public abstract class Test {
 		}
 
 		RequestPrimitive request = new RequestPrimitive();
-		request.setName("FlexContainer_" + UUID.randomUUID());
 		request.setOperation(Operation.CREATE);
 		request.setRequestContentType(MimeMediaType.OBJ);
 		request.setReturnContentType(MimeMediaType.OBJ);
@@ -450,7 +449,7 @@ public abstract class Test {
 		}
 
 		FlexContainerAnnc flexContainerAnnc = new FlexContainerAnnc();
-
+		flexContainerAnnc.setName("FlexContainer_" + UUID.randomUUID());
 		flexContainerAnnc.setContainerDefinition("myDef");
 		flexContainerAnnc.getAccessControlPolicyIDs().add(createdAcp.getResourceID());
 		flexContainerAnnc.setLink("/link" + UUID.randomUUID());
@@ -459,7 +458,6 @@ public abstract class Test {
 		}
 
 		RequestPrimitive request = new RequestPrimitive();
-		request.setName("FlexContainer_" + UUID.randomUUID());
 		request.setOperation(Operation.CREATE);
 		request.setRequestContentType(MimeMediaType.OBJ);
 		request.setReturnContentType(MimeMediaType.OBJ);

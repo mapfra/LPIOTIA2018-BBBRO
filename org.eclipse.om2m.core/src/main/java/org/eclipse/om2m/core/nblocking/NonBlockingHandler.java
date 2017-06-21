@@ -100,7 +100,6 @@ public class NonBlockingHandler {
 		metaInf.setDiscoveryResultType(request.getDiscoveryResultType());
 		// TODO EventCat nblock handler
 		metaInf.setGroupRequestIdentifier(request.getGroupRequestIdentifier());
-		metaInf.setName(request.getName());
 		metaInf.setOperationalExecutionTime(request.getOperationExecutionTime());
 		metaInf.setOriginatingTimestamp(request.getOriginatingTimestamp());
 		metaInf.setRequestExpirationTimestamp(request.getResultExpirationTimestamp());

@@ -70,6 +70,7 @@ public class SDTDeviceAdaptor {
 				+ ", parentLocation:" + parentLocation);
 		
 		AbstractFlexContainer flexContainer = FlexContainerFactory.getSpecializationFlexContainer(device.getShortDefinitionName());
+		flexContainer.setName(resourceName);
 		// set container definition with the value of the Device definition
 		flexContainer.setContainerDefinition(device.getDefinition());
 				
@@ -120,7 +121,7 @@ public class SDTDeviceAdaptor {
 		}
 		
 		ResponsePrimitive response = CseUtil.sendCreateFlexContainerRequest(cseService, 
-				flexContainer, parentLocation, resourceName);
+				flexContainer, parentLocation);
 		if (! response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {
 			logger.error("unable to create a FlexContainer for SDT Device "
 					+ resourceName + " : " + response.getContent(), null);

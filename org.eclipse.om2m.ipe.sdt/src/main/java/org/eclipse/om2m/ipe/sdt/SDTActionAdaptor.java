@@ -54,6 +54,7 @@ public class SDTActionAdaptor {
 				+ ", location=" + resourceLocation + ")");
 
 		AbstractFlexContainer actionFlexContainer = FlexContainerFactory.getSpecializationFlexContainer(action.getShortDefinitionName());
+		actionFlexContainer.setName(resourceName);
 		actionFlexContainer.setContainerDefinition(action.getDefinition());
 		actionFlexContainer.setLongName(action.getLongDefinitionName());
 		actionFlexContainer.setShortName(action.getShortDefinitionName());
@@ -73,7 +74,7 @@ public class SDTActionAdaptor {
 		}
 
 		ResponsePrimitive response = CseUtil.sendCreateFlexContainerRequest(cseService, 
-				actionFlexContainer, parentLocation, resourceName);
+				actionFlexContainer, parentLocation);
 		if (! response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {
 			logger.error("unable to create a FlexContainer for action " + action.getName() 
 					+ ":" + response.getContent(), null);

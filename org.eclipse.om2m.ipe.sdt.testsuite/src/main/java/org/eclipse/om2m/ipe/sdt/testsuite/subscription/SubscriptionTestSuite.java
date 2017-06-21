@@ -262,8 +262,10 @@ public class SubscriptionTestSuite extends HttpServlet {
 	
 	public String createSubscription(Module pModule, String servletPath) {
 		String subscriptionUrl = null;
+		String subscriptionName = "subscription_" + System.currentTimeMillis();
 		
 		Subscription subscription = new Subscription();
+		subscription.setName(subscriptionName);
 		subscription.getNotificationURI().add("http://127.0.0.1:" + Constants.CSE_PORT + servletPath);
 		subscription.setNotificationContentType(NotificationContentType.WHOLE_RESOURCE);
 		
@@ -285,10 +287,10 @@ public class SubscriptionTestSuite extends HttpServlet {
 			}
 		}
 		
-		String subscriptionName = "subscription_" + System.currentTimeMillis();
+		
 		
 		if (moduleFlexContainerUrl != null) {
-			ResponsePrimitive response = CSEUtil.createSubscription(cseService, subscription, moduleFlexContainerUrl, subscriptionName);
+			ResponsePrimitive response = CSEUtil.createSubscription(cseService, subscription, moduleFlexContainerUrl);
 			if (!ResponseStatusCode.CREATED.equals(response.getResponseStatusCode())) {
 				System.out.println("unable to create subscription");
 				

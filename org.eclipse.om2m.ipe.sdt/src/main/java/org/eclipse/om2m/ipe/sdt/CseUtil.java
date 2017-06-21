@@ -41,13 +41,12 @@ public class CseUtil {
 	 * @return ResponsePrimitive sent by the CSE
 	 */
 	public static ResponsePrimitive sendCreateApplicationEntityRequest(CseService cseService, AE ae,
-			String resourceLocation, String resourceName) {
+			String resourceLocation) {
 		RequestPrimitive request = new RequestPrimitive();
 
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 		request.setTo(resourceLocation);
 		request.setOperation(Operation.CREATE);
-		request.setName(resourceName);
 		request.setRequestContentType(MimeMediaType.OBJ);
 		request.setResourceType(ResourceType.AE);
 		request.setReturnContentType(MimeMediaType.OBJ);
@@ -65,8 +64,6 @@ public class CseUtil {
 	 *            new application entity to create
 	 * @param resourceLocation
 	 *            location of the to be created application
-	 * @param resourceName
-	 *            name of the to be created application
 	 * @return ResponsePrimitive sent by the CSE
 	 */
 	public static ResponsePrimitive sendUpdateApplicationAnncEntityRequest(CseService cseService, AEAnnc aeAnnc,
@@ -92,18 +89,15 @@ public class CseUtil {
 	 *            new application entity to create
 	 * @param resourceLocation
 	 *            location of the to be created application
-	 * @param resourceName
-	 *            name of the to be created application
 	 * @return ResponsePrimitive sent by the CSE
 	 */
 	public static ResponsePrimitive sendCreateSubscriptionRequest(CseService cseService, Subscription subscription,
-			String resourceLocation, String resourceName) {
+			String resourceLocation) {
 		RequestPrimitive request = new RequestPrimitive();
 
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 		request.setTo(resourceLocation);
 		request.setOperation(Operation.CREATE);
-		request.setName(resourceName);
 		request.setRequestContentType(MimeMediaType.OBJ);
 		request.setResourceType(ResourceType.SUBSCRIPTION);
 		request.setReturnContentType(MimeMediaType.OBJ);
@@ -118,17 +112,15 @@ public class CseUtil {
 	 * @param cseService CSE service
 	 * @param flexContainer flexContainer to be created
 	 * @param resourceLocation location of the to be created resource
-	 * @param resourceName name of the to be created resource
 	 * @return response sent by the CSE
 	 */
 	public static ResponsePrimitive sendCreateFlexContainerRequest(CseService cseService, AbstractFlexContainer flexContainer,
-			String resourceLocation, String resourceName) {
+			String resourceLocation) {
 		RequestPrimitive request = new RequestPrimitive();
 
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 		request.setTo(resourceLocation);
 		request.setOperation(Operation.CREATE);
-		request.setName(resourceName);
 		request.setRequestContentType(MimeMediaType.OBJ);
 		request.setResourceType(ResourceType.FLEXCONTAINER);
 		request.setReturnContentType(MimeMediaType.OBJ);
@@ -140,6 +132,7 @@ public class CseUtil {
 	public static ResponsePrimitive sendCreateDefaultACP(CseService cseService, String acpLocation, String acpName, List<String> labels) {
 		
 		AccessControlPolicy acp = new AccessControlPolicy();
+		acp.setName(acpName);
 		acp.getLabels().addAll(labels);
 		
 		// privileges
@@ -162,7 +155,6 @@ public class CseUtil {
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 		request.setTo(acpLocation);
 		request.setOperation(Operation.CREATE);
-		request.setName(acpName);
 		request.setRequestContentType(MimeMediaType.OBJ);
 		request.setResourceType(ResourceType.ACCESS_CONTROL_POLICY);
 		request.setReturnContentType(MimeMediaType.OBJ);

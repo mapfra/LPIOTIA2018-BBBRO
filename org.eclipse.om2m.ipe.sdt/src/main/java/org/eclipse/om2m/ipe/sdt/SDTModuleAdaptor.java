@@ -70,6 +70,7 @@ public class SDTModuleAdaptor {
 				+ ", parentLocation=" + parentLocation + ")");
 
 		AbstractFlexContainer flexContainer = FlexContainerFactory.getSpecializationFlexContainer(this.module.getShortDefinitionName());
+		flexContainer.setName(this.module.getName());
 		flexContainer.setContainerDefinition(this.module.getDefinition());
 		flexContainer.setLongName(this.module.getLongDefinitionName());
 		flexContainer.setShortName(this.module.getShortDefinitionName());
@@ -162,7 +163,7 @@ public class SDTModuleAdaptor {
 		}
 
 		ResponsePrimitive resp = CseUtil.sendCreateFlexContainerRequest(cseService, flexContainer,
-				parentLocation, this.module.getName());
+				parentLocation);
 		if (! resp.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {
 			logger.error("publishModuleFromOM2MTree(name=" + this.module.getName() 
 					+ ", parentLocation=" + parentLocation + ") : failed to publish:" + resp.getContent(),

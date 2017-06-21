@@ -32,7 +32,9 @@ public class AccessControlPolicyTest extends FlexContainerTestSuite {
 
 	public void testCreateAccessControlPolicy() {
 
+		String acpName = "acp_" + System.currentTimeMillis();
 		AccessControlPolicy acp = new AccessControlPolicy();
+		acp.setName(acpName);
 		SetOfAcrs privileges = new SetOfAcrs();
 		AccessControlRule accessControlRule = new AccessControlRule();
 		accessControlRule.getAccessControlOriginators().add("greg:greg");
@@ -49,10 +51,10 @@ public class AccessControlPolicyTest extends FlexContainerTestSuite {
 		acp.setSelfPrivileges(selfPrivileges);
 
 		String baseLocation = "/" + Constants.CSE_ID + "/" + Constants.CSE_NAME;
-		String acpName = "acp_" + System.currentTimeMillis();
+		
 		String acpLocation = baseLocation + "/" + acpName;
 
-		ResponsePrimitive response = sendCreateAccessControlPolicyRequest(acp, baseLocation, acpName);
+		ResponsePrimitive response = sendCreateAccessControlPolicyRequest(acp, baseLocation);
 		if (!response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {
 			// KO
 			createTestReport("testAccessControlPolicy", Status.KO, "unable to create a new acp", null);
@@ -119,7 +121,9 @@ public class AccessControlPolicyTest extends FlexContainerTestSuite {
 
 	public void testCreateFlexContainerWithNoRight() {
 		// create an ACP for greg:greg with RETRIEVE rights
+		String acpName = "acp_" + System.currentTimeMillis();
 		AccessControlPolicy acp = new AccessControlPolicy();
+		acp.setName(acpName);
 		SetOfAcrs privileges = new SetOfAcrs();
 		AccessControlRule accessControlRule = new AccessControlRule();
 		accessControlRule.getAccessControlOriginators().add("greg:greg");
@@ -136,10 +140,10 @@ public class AccessControlPolicyTest extends FlexContainerTestSuite {
 		acp.setSelfPrivileges(selfPrivileges);
 
 		String baseLocation = "/" + Constants.CSE_ID + "/" + Constants.CSE_NAME;
-		String acpName = "acp_" + System.currentTimeMillis();
+		
 		String acpLocation = baseLocation + "/" + acpName;
 
-		ResponsePrimitive response = sendCreateAccessControlPolicyRequest(acp, baseLocation, acpName);
+		ResponsePrimitive response = sendCreateAccessControlPolicyRequest(acp, baseLocation);
 		if (!response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {
 			// KO
 			createTestReport("testCreateFlexContainerWithNoRight", Status.KO, "unable to create a new acp", null);
@@ -149,19 +153,21 @@ public class AccessControlPolicyTest extends FlexContainerTestSuite {
 		AccessControlPolicy returnedAcp = (AccessControlPolicy) response.getContent();
 
 		// init a new FlexContainer
+		String flexContainerName = "flexContainerACPTest_" + System.currentTimeMillis();
 		FlexContainer flexContainer = new FlexContainer();
+		flexContainer.setName(flexContainerName);
 		flexContainer.setContainerDefinition("org.onem2m.home.moduleclass.binaryswitch");
 		CustomAttribute ca = new CustomAttribute();
 		ca.setCustomAttributeName("powerState");
 		ca.setCustomAttributeType("xs:boolean");
 		ca.setCustomAttributeValue("false");
 		flexContainer.getCustomAttributes().add(ca);
-		String flexContainerName = "flexContainerACPTest_" + System.currentTimeMillis();
+		
 		String flexContainerLocation = baseLocation + "/" + flexContainerName;
 
 		// try to create a FlexContainer using greg:greg credentials => expect
 		// ACCESS DENIED
-		response = sendCreateFlexContainerRequest(flexContainer, baseLocation, flexContainerName, "greg:greg");
+		response = sendCreateFlexContainerRequest(flexContainer, baseLocation, "greg:greg");
 		if (!response.getResponseStatusCode().equals(ResponseStatusCode.ACCESS_DENIED)) {
 			// KO
 			createTestReport(
@@ -176,7 +182,9 @@ public class AccessControlPolicyTest extends FlexContainerTestSuite {
 
 	public void testDeleteFlexContainerWithNoRight() {
 		// create an ACP for greg:greg with RETRIEVE rights
+		String acpName = "acp_" + System.currentTimeMillis();
 		AccessControlPolicy acp = new AccessControlPolicy();
+		acp.setName(acpName);
 		SetOfAcrs privileges = new SetOfAcrs();
 		AccessControlRule accessControlRule = new AccessControlRule();
 		accessControlRule.getAccessControlOriginators().add("greg:greg");
@@ -193,10 +201,10 @@ public class AccessControlPolicyTest extends FlexContainerTestSuite {
 		acp.setSelfPrivileges(selfPrivileges);
 
 		String baseLocation = "/" + Constants.CSE_ID + "/" + Constants.CSE_NAME;
-		String acpName = "acp_" + System.currentTimeMillis();
+		
 		String acpLocation = baseLocation + "/" + acpName;
 
-		ResponsePrimitive response = sendCreateAccessControlPolicyRequest(acp, baseLocation, acpName);
+		ResponsePrimitive response = sendCreateAccessControlPolicyRequest(acp, baseLocation);
 		if (!response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {
 			// KO
 			createTestReport("testDeleteFlexContainerWithNoRight", Status.KO, "unable to create a new acp", null);
@@ -206,19 +214,21 @@ public class AccessControlPolicyTest extends FlexContainerTestSuite {
 		AccessControlPolicy returnedAcp = (AccessControlPolicy) response.getContent();
 
 		// init a new FlexContainer
+		String flexContainerName = "flexContainerACPTest_" + System.currentTimeMillis();
 		FlexContainer flexContainer = new FlexContainer();
+		flexContainer.setName(flexContainerName);
 		flexContainer.setContainerDefinition("org.onem2m.home.moduleclass.binaryswitch");
 		CustomAttribute ca = new CustomAttribute();
 		ca.setCustomAttributeName("powerState");
 		ca.setCustomAttributeType("xs:boolean");
 		ca.setCustomAttributeValue("false");
 		flexContainer.getCustomAttributes().add(ca);
-		String flexContainerName = "flexContainerACPTest_" + System.currentTimeMillis();
+		
 		String flexContainerLocation = baseLocation + "/" + flexContainerName;
 
 		// try to create a FlexContainer using admin:admin credentials
 		FlexContainer createdFlexContainer = null;
-		response = sendCreateFlexContainerRequest(flexContainer, baseLocation, flexContainerName,
+		response = sendCreateFlexContainerRequest(flexContainer, baseLocation,
 				Constants.ADMIN_REQUESTING_ENTITY);
 		if (!response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {
 			// KO

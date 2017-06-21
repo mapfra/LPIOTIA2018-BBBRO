@@ -66,6 +66,7 @@ public class DASServiceTest_IndirectDACIs extends AbstractDASServiceTest {
 		// create a child flexContainer
 		FlexContainer childFlexContainer = new FlexContainer();
 		childFlexContainer.setContainerDefinition("grege");
+		childFlexContainer.setName("FlexContainer_" + UUID.randomUUID());
 
 		// prepare childCreateRequest
 		RequestPrimitive childCreateRequest = new RequestPrimitive();
@@ -74,7 +75,6 @@ public class DASServiceTest_IndirectDACIs extends AbstractDASServiceTest {
 		childCreateRequest.setOperation(Operation.CREATE);
 		childCreateRequest.setRequestContentType(MimeMediaType.OBJ);
 		childCreateRequest.setReturnContentType(MimeMediaType.OBJ);
-		childCreateRequest.setName("FlexContainer_" + UUID.randomUUID());
 		childCreateRequest.setResourceType(ResourceType.FLEXCONTAINER);
 		childCreateRequest.setContent(childFlexContainer);
 
@@ -132,6 +132,7 @@ public class DASServiceTest_IndirectDACIs extends AbstractDASServiceTest {
 		// create grandson (with no dacis)
 		FlexContainer grandSonFlexContainer = new FlexContainer();
 		grandSonFlexContainer.setContainerDefinition("juju");
+		grandSonFlexContainer.setName("FlexContainerGrandSon_" + UUID.randomUUID());
 
 		// prepare createGrandSonRequest
 		RequestPrimitive createGrandSonRequest = new RequestPrimitive();
@@ -140,7 +141,6 @@ public class DASServiceTest_IndirectDACIs extends AbstractDASServiceTest {
 		createGrandSonRequest.setTargetId(createdChildFlexContainer.getResourceID());
 		createGrandSonRequest.setRequestContentType(MimeMediaType.OBJ);
 		createGrandSonRequest.setReturnContentType(MimeMediaType.OBJ);
-		createGrandSonRequest.setName("FlexContainerGrandSon_" + UUID.randomUUID());
 		createGrandSonRequest.setResourceType(ResourceType.FLEXCONTAINER);
 		createGrandSonRequest.setContent(grandSonFlexContainer);
 

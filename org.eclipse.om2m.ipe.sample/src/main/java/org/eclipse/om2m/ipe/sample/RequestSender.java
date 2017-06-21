@@ -40,7 +40,7 @@ public class RequestSender {
 	 */
 	private RequestSender(){}
 	
-	public static ResponsePrimitive createResource(String targetId, String name, Resource resource, int resourceType){
+	public static ResponsePrimitive createResource(String targetId, Resource resource, int resourceType){
 		RequestPrimitive request = new RequestPrimitive();
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 		request.setTargetId(targetId);
@@ -48,26 +48,22 @@ public class RequestSender {
 		request.setRequestContentType(MimeMediaType.OBJ);
 		request.setReturnContentType(MimeMediaType.OBJ);
 		request.setContent(resource);
-		request.setName(name);
 		request.setOperation(Operation.CREATE);
 		return SampleController.CSE.doRequest(request);
 	}
 	
-	public static ResponsePrimitive createAE(AE resource, String name){
-		return createResource("/" + Constants.CSE_ID, name, resource, ResourceType.AE);
+	public static ResponsePrimitive createAE(AE resource){
+		return createResource("/" + Constants.CSE_ID, resource, ResourceType.AE);
 	}
 	
-	public static ResponsePrimitive createContainer(String targetId, String name, Container resource){
-		return createResource(targetId, name, resource, ResourceType.CONTAINER);
-	}
-	
-	public static ResponsePrimitive createContentInstance(String targetId, String name, ContentInstance resource){
-		return createResource(targetId, name, resource, ResourceType.CONTENT_INSTANCE);
+	public static ResponsePrimitive createContainer(String targetId, Container resource){
+		return createResource(targetId, resource, ResourceType.CONTAINER);
 	}
 	
 	public static ResponsePrimitive createContentInstance(String targetId, ContentInstance resource){
-		return createContentInstance(targetId, null, resource);
+		return createResource(targetId, resource, ResourceType.CONTENT_INSTANCE);
 	}
+	
 
 	public static ResponsePrimitive getRequest(String targetId){
 		RequestPrimitive request = new RequestPrimitive();

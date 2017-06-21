@@ -309,15 +309,9 @@ public class AEController extends Controller {
 				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
 			}
 			aeEntity.setName(ae.getName());
-		} else
-			if (request.getName() != null){
-				if (!Patterns.checkResourceName(request.getName())){
-					throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
-				}
-				aeEntity.setName(request.getName());
-			} else {
+		} else {
 				aeEntity.setName(ShortName.AE + "_" + generatedId);
-			}
+		}
 		aeEntity.setHierarchicalURI(parentEntity.getHierarchicalURI() + "/" + aeEntity.getName());
 		if (!UriMapper.addNewUri(aeEntity.getHierarchicalURI(), aeEntity.getResourceID(), ResourceType.AE)){
 			throw new ConflictException("Name already present in the parent collection.");
@@ -344,7 +338,7 @@ public class AEController extends Controller {
 		transaction.commit();
 		
 		if ((ae.getAnnounceTo() != null) && (!ae.getAnnounceTo().isEmpty())) {
-			ae.setName(request.getName());
+			ae.setName(aeDB.getName());
 			ae.setResourceID(aeDB.getResourceID());
 			ae.setResourceType(ResourceType.AE);
 			Announcer.announce(ae.getAnnounceTo(), ae.getAnnouncedAttribute(), ae, request.getFrom(), "");

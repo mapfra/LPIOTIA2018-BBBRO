@@ -177,12 +177,6 @@ public class ContentInstanceController extends Controller {
 				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
 			}
 			cinEntity.setName(cin.getName());
-		} else 
-		if (request.getName() != null){
-			if (!Patterns.checkResourceName(request.getName())){
-				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
-			}
-			cinEntity.setName(request.getName());
 		} else {
 			cinEntity.setName(ShortName.CIN + "_" + generatedId);
 		}

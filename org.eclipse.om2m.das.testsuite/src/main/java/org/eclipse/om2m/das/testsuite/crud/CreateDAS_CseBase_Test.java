@@ -69,7 +69,6 @@ public class CreateDAS_CseBase_Test extends Test {
 		// setup request
 		request.setOperation(Operation.CREATE);
 		request.setTargetId(toBeCreatedDasUrl);
-		request.setName(dasName);
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 		request.setResourceType(ResourceType.DYNAMIC_AUTHORIZATION_CONSULTATION);
 		request.setRequestContentType(MimeMediaType.OBJ);
@@ -80,7 +79,8 @@ public class CreateDAS_CseBase_Test extends Test {
 		das.setDynamicAuthorizationEnabled(enabled);
 		das.setDynamicAuthorisationPoA(poa);
 		das.setDynamicAuthorizationLifetime(new Date().toString());
-
+		das.setName(dasName);
+		
 		request.setContent(das);
 
 		ResponsePrimitive response = getCseService().doRequest(request);

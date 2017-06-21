@@ -99,8 +99,6 @@ public class RequestPrimitive {
 	protected String requestIdentifier;
 	@XmlElement(name = ShortName.RESOURCE_TYPE)
 	protected BigInteger resourceType;
-	@XmlElement(name = ShortName.NAME)
-	protected String name;
 	@XmlTransient
 	protected Object content;
 	@XmlElement(name = ShortName.PRIMITIVE_CONTENT)
@@ -260,26 +258,6 @@ public class RequestPrimitive {
 		this.resourceType = BigInteger.valueOf(value);
 	}
 	
-	/**
-	 * Gets the value of the name property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getName() {
-		return name;
-	}
-
-	/**
-	 * Sets the value of the name property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setName(String value) {
-		this.name = value;
-	}
 
 	/**
 	 * Gets the value of the content property.
@@ -610,7 +588,6 @@ public class RequestPrimitive {
 						+ requestIdentifier + ",\n " : "")
 				+ (resourceType != null ? "resourceType=" + resourceType
 						+ ",\n " : "")
-				+ (name != null ? "name=" + name + ",\n " : "")
 				+ (content != null ? "content=" + content + ",\n " : "")
 				+ (originatingTimestamp != null ? "originatingTimestamp="
 						+ originatingTimestamp + ",\n " : "")
@@ -659,7 +636,6 @@ public class RequestPrimitive {
 		result.filterCriteria = this.filterCriteria;
 		result.from = this.from;
 		result.groupRequestIdentifier = this.groupRequestIdentifier;
-		result.name = this.name;
 		result.operation = this.operation;
 		result.operationExecutionTime = this.operationExecutionTime;
 		result.originatingTimestamp = this.originatingTimestamp;

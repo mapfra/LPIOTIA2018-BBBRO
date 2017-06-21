@@ -84,17 +84,18 @@ public class SubscriptionTest extends FlexContainerTestSuite {
 		// here flexContainer has been successfully created
 
 		// add a subscription
+		String subscriptionName = "subscription_" + System.currentTimeMillis();
 		Subscription subscription = new Subscription();
 		subscription.getNotificationURI().add(subscriptionServlet.getServletUrl());
 		subscription.setSubscriberURI(subscriptionServlet.getServletUrl());
 		subscription.setNotificationContentType(NotificationContentType.MODIFIED_ATTRIBUTES);
-
+		subscription.setName(subscriptionName);
+		
 		String flexContainerLocation = "/" + Constants.CSE_ID + "/" + Constants.CSE_NAME + "/"
 				+ flexContainer.getName();
-		String subscriptionName = "subscription_" + System.currentTimeMillis();
+		
 
-		ResponsePrimitive response = sendCreateSubscriptionRequest(subscription, flexContainerLocation,
-				subscriptionName);
+		ResponsePrimitive response = sendCreateSubscriptionRequest(subscription, flexContainerLocation);
 		Subscription returnedSubscription = null;
 		if (!response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {
 			// KO
@@ -232,18 +233,19 @@ public class SubscriptionTest extends FlexContainerTestSuite {
 		// here flexContainer has been successfully created
 
 		// add a subscription
+		String subscriptionName = "subscription_" + System.currentTimeMillis();
 		Subscription subscription = new Subscription();
 		subscription.getNotificationURI().add(subscriptionServlet.getServletUrl());
 		subscription.setSubscriberURI(subscriptionServlet.getServletUrl());
 		subscription.setNotificationContentType(NotificationContentType.MODIFIED_ATTRIBUTES);
-
+		subscription.setName(subscriptionName);
+		
 		String flexContainerLocation = "/" + Constants.CSE_ID + "/" + Constants.CSE_NAME + "/"
 				+ flexContainer.getName();
-		String subscriptionName = "subscription_" + System.currentTimeMillis();
+		
 		String subscriptionLocation = flexContainerLocation + "/" + subscriptionName;
 
-		ResponsePrimitive response = sendCreateSubscriptionRequest(subscription, flexContainerLocation,
-				subscriptionName);
+		ResponsePrimitive response = sendCreateSubscriptionRequest(subscription, flexContainerLocation);
 		Subscription returnedSubscription = null;
 		if (!response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {
 			// KO
@@ -362,18 +364,19 @@ public class SubscriptionTest extends FlexContainerTestSuite {
 		// here flexContainer has been successfully created
 
 		// add a subscription
+		String subscriptionName = "subscription_" + System.currentTimeMillis();
 		Subscription subscription = new Subscription();
 		subscription.getNotificationURI().add(subscriptionServlet.getServletUrl());
 		subscription.setSubscriberURI(subscriptionServlet.getServletUrl());
 		subscription.setNotificationContentType(NotificationContentType.MODIFIED_ATTRIBUTES);
+		subscription.setName(subscriptionName);
 
 		String flexContainerLocation = "/" + Constants.CSE_ID + "/" + Constants.CSE_NAME + "/"
 				+ flexContainer.getName();
-		String subscriptionName = "subscription_" + System.currentTimeMillis();
+		
 		String subscriptionLocation = flexContainerLocation + "/" + subscriptionName;
 
-		ResponsePrimitive response = sendCreateSubscriptionRequest(subscription, flexContainerLocation,
-				subscriptionName);
+		ResponsePrimitive response = sendCreateSubscriptionRequest(subscription, flexContainerLocation);
 		Subscription returnedSubscription = null;
 		if (!response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {
 			// KO

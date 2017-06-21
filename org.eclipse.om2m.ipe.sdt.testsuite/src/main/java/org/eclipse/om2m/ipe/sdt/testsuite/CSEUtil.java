@@ -66,7 +66,7 @@ public class CSEUtil {
 		return cseService.doRequest(request);
 	}
 	
-	public static ResponsePrimitive createSubscription(final CseService cseService, final Subscription subscription, final String subscriptionLocation, final String subscriptionName) {
+	public static ResponsePrimitive createSubscription(final CseService cseService, final Subscription subscription, final String subscriptionLocation) {
 		RequestPrimitive request = new RequestPrimitive();
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 		request.setRequestContentType(MimeMediaType.OBJ);
@@ -75,7 +75,6 @@ public class CSEUtil {
 		request.setContent(subscription);
 		request.setTo(subscriptionLocation);
 		request.setResourceType(ResourceType.SUBSCRIPTION);
-		request.setName(subscriptionName);
 		
 		return cseService.doRequest(request);
 	}

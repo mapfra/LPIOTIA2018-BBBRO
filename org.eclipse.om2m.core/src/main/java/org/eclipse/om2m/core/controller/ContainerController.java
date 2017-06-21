@@ -201,12 +201,6 @@ public class ContainerController extends Controller {
 				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
 			}
 			containerEntity.setName(container.getName());
-		} else 
-		if (request.getName() != null) {
-			if(!Patterns.checkResourceName(request.getName())){
-				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
-			}
-			containerEntity.setName(request.getName());
 		} else {
 			containerEntity.setName(ShortName.CNT + "_" + generatedId);
 		}

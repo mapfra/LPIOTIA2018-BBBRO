@@ -86,6 +86,8 @@ public class Announcer {
 			announcedResource = flexContainerAnnc;
 		default:
 		}
+		
+		announcedResource.setName(toBeAnnounced.getName() + "_Annc");
 
 		// get the database service
 		DBService dbs = PersistenceService.getInstance().getDbService();
@@ -133,7 +135,6 @@ public class Announcer {
 			request.setRequestContentType(MimeMediaType.OBJ);
 			request.setReturnContentType(MimeMediaType.OBJ);
 			request.setFrom(requestingEntity);
-			request.setName(toBeAnnounced.getName() + "_Annc");
 
 			ResponsePrimitive response = Redirector.retarget(request);
 			if (response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {

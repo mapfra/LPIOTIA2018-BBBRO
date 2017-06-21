@@ -63,12 +63,15 @@ public class LocationFlexContainerTest extends FlexContainerTestSuite {
 
 	public void testUnderContainer() {
 		
+		String parentContainerName = "parentContainerName_" + System.currentTimeMillis();
+		
 		// Container
 		Container container = new Container();
 		container.setOntologyRef("OrangeOntology");
+		container.setName(parentContainerName);
 
 		String baseParentContainerLocation = "/" + Constants.CSE_ID + "/" + Constants.CSE_NAME;
-		String parentContainerName = "parentContainerName_" + System.currentTimeMillis();
+		
 		
 		
 		RequestPrimitive request = new RequestPrimitive();
@@ -78,7 +81,6 @@ public class LocationFlexContainerTest extends FlexContainerTestSuite {
 		request.setResourceType(BigInteger.valueOf(ResourceType.CONTAINER));
 		request.setRequestContentType(MimeMediaType.OBJ);
 		request.setReturnContentType(MimeMediaType.OBJ);
-		request.setName(parentContainerName);
 		request.setOperation(Operation.CREATE);
 		ResponsePrimitive response = getCseService().doRequest(request);
 		

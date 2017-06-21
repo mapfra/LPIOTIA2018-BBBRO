@@ -53,10 +53,10 @@ public class CreateDAS_RemoteCSE_Test extends CreateDAS_CseBase_Test {
 		remoteCse.setCSEID("cseId" + UUID.randomUUID());
 		remoteCse.setCSEBase("/base" + remoteCse.getCSEID());
 		remoteCse.setRequestReachability(Boolean.FALSE);
+		remoteCse.setName(remoteCse.getCSEID());
 		
 		
 		RequestPrimitive request = new RequestPrimitive();
-		request.setName(remoteCse.getCSEID());
 		request.setOperation(Operation.CREATE);
 		request.setRequestContentType(MimeMediaType.OBJ);
 		request.setReturnContentType(MimeMediaType.OBJ);

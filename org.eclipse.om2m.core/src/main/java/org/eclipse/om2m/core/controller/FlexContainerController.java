@@ -222,11 +222,11 @@ public class FlexContainerController extends Controller {
 
 		String generatedId = generateId("", "");
 		// set name if present and without any conflict
-		if (request.getName() != null) {
-			if (!Patterns.checkResourceName(request.getName())) {
+		if (flexContainer.getName() != null) {
+			if (!Patterns.checkResourceName(flexContainer.getName())) {
 				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
 			}
-			flexContainerEntity.setName(request.getName());
+			flexContainerEntity.setName(flexContainer.getName());
 		} else {
 			flexContainerEntity.setName(ShortName.FCNT + "_" + generatedId);
 		}
@@ -298,7 +298,7 @@ public class FlexContainerController extends Controller {
 		transaction.commit();
 
 		if ((flexContainer.getAnnounceTo() != null) && (!flexContainer.getAnnounceTo().isEmpty())) {
-			flexContainer.setName(request.getName());
+			flexContainer.setName(flexContainerFromDB.getName());
 			flexContainer.setResourceID(flexContainerFromDB.getResourceID());
 			flexContainer.setResourceType(ResourceType.FLEXCONTAINER);
 			flexContainer.setParentID(flexContainerFromDB.getParentID());

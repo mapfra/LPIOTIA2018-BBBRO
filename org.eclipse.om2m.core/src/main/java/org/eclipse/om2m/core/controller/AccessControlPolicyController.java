@@ -178,12 +178,6 @@ public class AccessControlPolicyController extends Controller {
 				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
 			}
 			acpEntity.setName(acp.getName());
-		} else 
-		if (request.getName() != null){
-			if (!Patterns.checkResourceName(request.getName())){
-				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
-			}
-			acpEntity.setName(request.getName());			
 		} else {
 			acpEntity.setName(ShortName.ACP + "_" + generatedId);			
 		}

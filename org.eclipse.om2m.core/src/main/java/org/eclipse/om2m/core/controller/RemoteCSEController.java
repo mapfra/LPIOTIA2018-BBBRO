@@ -250,12 +250,6 @@ public class RemoteCSEController extends Controller {
 				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
 			}
 			remoteCseEntity.setName(remoteCse.getName());
-		} else 
-		if (request.getName() != null){
-			if (!Patterns.checkResourceName(request.getName())){
-				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
-			}
-			remoteCseEntity.setName(request.getName());
 		} else {
 			remoteCseEntity.setName(ShortName.REMOTE_CSE + "_" + generatedId);
 		}

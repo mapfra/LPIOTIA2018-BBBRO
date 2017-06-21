@@ -178,11 +178,11 @@ public class FlexContainerAnncController extends Controller {
 
 		String generatedId = generateId("", "");
 		// set name if present and without any conflict
-		if (request.getName() != null) {
-			if (!Patterns.checkResourceName(request.getName())) {
+		if (flexContainerAnnc.getName() != null) {
+			if (!Patterns.checkResourceName(flexContainerAnnc.getName())) {
 				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
 			}
-			flexContainerAnncEntity.setName(request.getName());
+			flexContainerAnncEntity.setName(flexContainerAnnc.getName());
 		} else {
 			flexContainerAnncEntity.setName(ShortName.FCNTA + "_" + generatedId);
 		}

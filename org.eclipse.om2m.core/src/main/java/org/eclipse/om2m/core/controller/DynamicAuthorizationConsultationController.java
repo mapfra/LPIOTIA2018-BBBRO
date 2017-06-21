@@ -154,11 +154,11 @@ public class DynamicAuthorizationConsultationController extends Controller {
 		// name
 		String generatedId = generateId("", "");
 		// set name if present and without any conflict
-		if (request.getName() != null) {
-			if (!Patterns.checkResourceName(request.getName())) {
+		if (dac.getName() != null) {
+			if (!Patterns.checkResourceName(dac.getName())) {
 				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
 			}
-			dacEntity.setName(request.getName());
+			dacEntity.setName(dac.getName());
 		} else {
 			dacEntity.setName(ShortName.DAC + "_" + generatedId);
 		}

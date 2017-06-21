@@ -37,11 +37,11 @@ public class AeDacisTest extends Test {
 		toBeCreatedAe.getDynamicAuthorizationConsultationIDs().add(dac.getResourceID());
 		toBeCreatedAe.setAppID("App" + UUID.randomUUID());
 		toBeCreatedAe.setRequestReachability(Boolean.FALSE);
+		toBeCreatedAe.setName(toBeCreatedAe.getAppID());
 
 		// prepare CREATE request
 		RequestPrimitive createRequest = new RequestPrimitive();
 		createRequest.setOperation(Operation.CREATE);
-		createRequest.setName(toBeCreatedAe.getAppID());
 		createRequest.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 		createRequest.setTargetId("/" + Constants.CSE_ID + "/" + Constants.CSE_NAME);
 		createRequest.setRequestContentType(MimeMediaType.OBJ);
