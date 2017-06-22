@@ -8,42 +8,31 @@
 package org.eclipse.om2m.ipe.sdt;
 
 import java.util.Dictionary;
-import java.util.Hashtable;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.om2m.commons.constants.Constants;
-import org.eclipse.om2m.commons.constants.MimeMediaType;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
 import org.eclipse.om2m.core.service.CseService;
 import org.eclipse.om2m.core.service.RemoteCseService;
-import org.eclipse.om2m.datamapping.service.DataMapperService;
 import org.eclipse.om2m.flexcontainer.service.FlexContainerService;
 import org.eclipse.om2m.sdt.Device;
 import org.eclipse.om2m.sdt.events.SDTEventListener;
-import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
-import org.osgi.service.cm.ConfigurationAdmin;
-import org.osgi.service.cm.ConfigurationException;
-import org.osgi.service.cm.ManagedService;
+import org.osgi.service.component.ComponentContext;
 import org.osgi.service.event.Event;
-import org.osgi.service.event.EventAdmin;
-import org.osgi.service.event.EventConstants;
 import org.osgi.service.event.EventHandler;
-import org.osgi.util.tracker.ServiceTracker;
-import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
-public class Activator implements BundleActivator, ManagedService, EventHandler {
+public class Activator implements EventHandler {
 
 	private static final String CSE_ID_TO_BE_ANNOUNCED = "cse.id.to.be.announced";
 	private static final String CSE_NAME_TO_BE_ANNOUNCED = "cse.name.to.be.announced";
 	private static final String ANNOUNCEMENT_ENABLED = "announcement.enabled";
 	private static final String IPE_UNDER_ANNOUNCED_RESOURCE = "ipe.under.announced.resource";
-	private static final String SDT_IPE = "sdt.ipe";
 	private static final String PROP_PROTOCOL = "propProtocol";
 	private static final String CLOUD_PROTOCOL = "Cloud.";
 
@@ -51,107 +40,66 @@ public class Activator implements BundleActivator, ManagedService, EventHandler 
 	private String cseNameToBeAnnounced;
 	private boolean ipeUnderAnnouncedResource;
 	private boolean hasToBeAnnounced;
-	private ServiceRegistration<?> serviceRegistration;
 	private boolean isSDTIPEStarted = false;
-
-	private ServiceTracker cseServiceTracker;
-	private ServiceTracker deviceServiceTracker;
-	private ServiceTracker dataMapperServiceTracker;
 
 	private SDTIpeApplication sdtIPEApplication;
 	private CseService cseService;
 
 	private static BundleContext bundleContext;
-	private static Object sync = new Object();
 
 	private static Log logger = LogFactory.getLog(Activator.class);
 
-	@Override
-	public void start(final BundleContext context) throws Exception {
-		bundleContext = context;
-		logger.info("start SDT IPE");
-
-		cseServiceTracker = new ServiceTracker(bundleContext, CseService.class.getName(),
-				new ServiceTrackerCustomizer() {
-					@Override
-					public void removedService(ServiceReference reference, Object service) {
-						// a single CSEService
-						// unregister Sdt IPE application
-						unregisterSdtIpeApplication();
-						cseService = null;
-					}
-
-					@Override
-					public void modifiedService(ServiceReference reference, Object service) {
-						// nothing to do
-					}
-
-					@Override
-					public Object addingService(ServiceReference reference) {
-						if (cseService != null) {
-							// a CSE Service has been previously caught.
-							// No need to use a second instance !
-							return null;
-						}
-						// at this point, we are sure this is the firstly
-						// detected CSE Service.
-						cseService = (CseService) bundleContext.getService(reference);
-						if (!isSDTIPEStarted) {
-							startSDTIpe();
-						}
-						return cseService;
-					}
-				});
-		cseServiceTracker.open();
-
-		// register this activator as a managed service
-//		try {
-//			ServiceReference ref = bundleContext.getServiceReference(ConfigurationAdmin.class.getName());
-//			if ((ref == null) || (bundleContext.getService(ref) == null)) {
-//				// No config admin. Start with default values: no announcement
-//				logger.info("Manage default properties");
-//				cseIdToBeAnnounced = null;
-//				cseNameToBeAnnounced = null;
-//				ipeUnderAnnouncedResource = false;
-//				startSDTIpe();
-//			} else {
-//				logger.info("Manage configuration properties");
-//				
-//			}
-//		} catch (Exception e) {
-//			logger.error("Error starting SDT IPE Activator", e);
-//		}
-		
-		// 
-		Dictionary properties = new Hashtable<>();
-		properties.put(org.osgi.framework.Constants.SERVICE_PID, SDT_IPE);
-		properties.put(EventConstants.EVENT_TOPIC, RemoteCseService.REMOTE_CSE_TOPIC);
-		serviceRegistration = bundleContext.registerService(
-				new String[] { ManagedService.class.getName(), EventHandler.class.getName() }, this,
-				properties);
+	public Activator() {
 	}
 
-	@Override
-	public void stop(BundleContext context) throws Exception {
-		logger.info("stop SDT IPE");
-		try {
-			stopSDTIPE();
+	/**
+	 * Activate method.
+	 * 
+	 * @param pBundleContext
+	 * @param properties
+	 *            contains the first configuration
+	 */
+	protected void activate(BundleContext pBundleContext, Map<String, Object> properties) {
+		logger.info("activate SDT IPE");
+		bundleContext = pBundleContext;
 
-			if (cseServiceTracker != null) {
-				// stop CseServiceTracker
-				cseServiceTracker.close();
-				cseServiceTracker = null;
-			}
-			if (serviceRegistration != null) {
-				serviceRegistration.unregister();
-				serviceRegistration = null;
-			}
-			deviceServiceTracker = null;
-			sdtIPEApplication = null;
-			bundleContext = null;
-		} catch (Exception e) {
-			e.printStackTrace();
+		if (checkConfigurations(properties)) {
+			startSdtIpe();
 		}
+
+	}
+
+	protected void deactivate(ComponentContext cc) {
+		logger.info("deactivate SDT IPE");
+
+		stopSdtIpe(); 
+		bundleContext = null;
+	}
+
+	protected void modified(Map<String, Object> properties) {
+		logger.info("Modified SDT IPE");
+		checkConfigurations(properties);
+
+	}
+
+	protected void setCseService(CseService cseService) {
+		logger.info("setCseService");
+		this.cseService = cseService;
+	}
+
+	protected void unsetCseService(CseService pCseService) {
+		logger.info("unsetCseService");
+		this.cseService = null;
+	}
+
+	protected void setDevice(Device pDevice) {
+		logger.info("setDevice(" + pDevice.getName() + ")");
+		DeviceList.getInstance().addDevice(pDevice);
+	}
+
+	protected void unsetDevice(Device pDevice) {
+		logger.info("unsetDevice(" + pDevice.getName() + ")");
+		DeviceList.getInstance().removeDevice(pDevice);
 	}
 
 	/**
@@ -169,6 +117,7 @@ public class Activator implements BundleActivator, ManagedService, EventHandler 
 		}
 		sdtIPEApplication = new SDTIpeApplication(cseService, announceCseId, cseName, ipeUnder, hasToBeAnnounced);
 		sdtIPEApplication.publishSDTIPEApplication();
+		DeviceList.getInstance().addListenerAndSend(sdtIPEApplication);
 	}
 
 	/**
@@ -178,18 +127,15 @@ public class Activator implements BundleActivator, ManagedService, EventHandler 
 	 */
 	protected void unregisterSdtIpeApplication() {
 		if (sdtIPEApplication != null) {
+			DeviceList.getInstance().removeListener(sdtIPEApplication);
 			sdtIPEApplication.deleteIpeApplicationEntity();
 			sdtIPEApplication = null;
 		}
 	}
 
-	private void startSDTIpe() {
+	private void startSdtIpe() {
 		synchronized (this) {
 			isSDTIPEStarted = true;
-			if (cseService == null) {
-				// Wait for CSEService!
-				return;
-			}
 
 			if (checkIfRemoteCSEExists(cseIdToBeAnnounced, cseNameToBeAnnounced)) {
 
@@ -198,10 +144,9 @@ public class Activator implements BundleActivator, ManagedService, EventHandler 
 					logger.info("Start IPE App " + cseIdToBeAnnounced + " / " + cseNameToBeAnnounced + " / "
 							+ ipeUnderAnnouncedResource);
 					registerSdtIpeApplication(cseIdToBeAnnounced, cseNameToBeAnnounced, ipeUnderAnnouncedResource);
-					startSDTDeviceTracking();
 				} catch (Exception e) {
 					logger.error("SdtIpeApplication oneM2M publishing failed", e);
-					stopSDTIPE();
+					stopSdtIpe();
 				}
 
 			} else {
@@ -211,60 +156,16 @@ public class Activator implements BundleActivator, ManagedService, EventHandler 
 		}
 	}
 
-	private void stopSDTIPE() {
+	private void stopSdtIpe() {
 		synchronized (this) {
 
 			if (isSDTIPEStarted) {
-				stopSDTDeviceTracking();
 				unregisterSdtIpeApplication();
 			}
 			isSDTIPEStarted = false;
 
 		}
 	}
-
-	/**
-	 * Start SDTDevice tracking.
-	 * 
-	 * @param pCseService
-	 */
-	private void startSDTDeviceTracking() {
-		deviceServiceTracker = new ServiceTracker(bundleContext, Device.class.getName(),
-				new ServiceTrackerCustomizer() {
-					@Override
-					public void removedService(ServiceReference reference, Object service) {
-						sdtIPEApplication.removeSDTDevice((Device) service);
-					}
-
-					@Override
-					public void modifiedService(ServiceReference reference, Object service) {
-					}
-
-					@Override
-					public Object addingService(ServiceReference reference) {
-						String protocol = (String) reference.getProperty(PROP_PROTOCOL);
-						logger.info("Found device, protocol " + protocol);
-						if ((protocol != null) && protocol.startsWith(CLOUD_PROTOCOL)) {
-							logger.info("Cloud device, ignore...");
-						} else {
-							Device device = (Device) bundleContext.getService(reference);
-							if (sdtIPEApplication.addSDTDevice(device)) {
-								return device;
-							}
-						}
-						return null;
-					}
-				});
-		deviceServiceTracker.open();
-	}
-
-	private void stopSDTDeviceTracking() {
-		if (deviceServiceTracker != null) {
-			deviceServiceTracker.close();
-			deviceServiceTracker = null;
-		}
-	}
-
 
 	public static ServiceRegistration registerFlexContainerService(FlexContainerService instance) {
 		logger.info("registerFlexContainerService for path " + instance.getFlexContainerLocation());
@@ -276,9 +177,9 @@ public class Activator implements BundleActivator, ManagedService, EventHandler 
 		return bundleContext.registerService(SDTEventListener.class.getName(), listener, dictionary);
 	}
 
-	@Override
-	public void updated(Dictionary properties) throws ConfigurationException {
-		logger.info("updated(properties=" + properties + ")");
+	private boolean checkConfigurations(Map<String, Object> properties) {
+		boolean isValidConfiguration = false;
+
 		if (properties != null) {
 			String propCseIdToBeAnnounced = (String) properties.get(CSE_ID_TO_BE_ANNOUNCED);
 			String propCseNameToBeAnnounced = (String) properties.get(CSE_NAME_TO_BE_ANNOUNCED);
@@ -290,20 +191,8 @@ public class Activator implements BundleActivator, ManagedService, EventHandler 
 					+ ANNOUNCEMENT_ENABLED + "=" + propAnnouncementEnabled + ")\n" + "updated("
 					+ IPE_UNDER_ANNOUNCED_RESOURCE + "=" + propIpeUnderAnnouncedResource + ")");
 
-			
-			boolean isValidConfiguration = false;
-
-			if (propAnnouncementEnabled == null) {
-				logger.info("Undefined property announcement.enabled. Announcement disabled");
-				cseIdToBeAnnounced = null;
-				cseNameToBeAnnounced = null;
-				ipeUnderAnnouncedResource = false;
-				isValidConfiguration = true;
-			} else if (propAnnouncementEnabled) {
+			if (propAnnouncementEnabled) {
 				if ((propCseIdToBeAnnounced != null) && (propCseNameToBeAnnounced != null)) {
-					// check if CSE is connected
-					// if (checkIfRemoteCSEExists(propCseIdToBeAnnounced,
-					// propCseNameToBeAnnounced)) {
 					isValidConfiguration = true;
 					hasToBeAnnounced = true;
 					cseIdToBeAnnounced = propCseIdToBeAnnounced;
@@ -343,15 +232,16 @@ public class Activator implements BundleActivator, ManagedService, EventHandler 
 				}
 
 			}
-
-			if (isValidConfiguration) {
-				// stop previous configuration
-				stopSDTIPE();
-
-				// start again with the new one
-				startSDTIpe();
-			}
+		} else {
+			logger.info("No properties. Deactivate announcement");
+			cseIdToBeAnnounced = null;
+			cseNameToBeAnnounced = null;
+			ipeUnderAnnouncedResource = false;
+			hasToBeAnnounced = false;
+			isValidConfiguration = true;
 		}
+
+		return isValidConfiguration;
 	}
 
 	/**
@@ -361,9 +251,6 @@ public class Activator implements BundleActivator, ManagedService, EventHandler 
 	 * @return
 	 */
 	private boolean checkIfRemoteCSEExists(final String remoteCseId, final String remoteCseName) {
-		if (cseService == null) {
-			return false;
-		}
 
 		if (remoteCseId == null) {
 			// no need to check remote cse !
@@ -393,7 +280,7 @@ public class Activator implements BundleActivator, ManagedService, EventHandler 
 	@Override
 	public void handleEvent(Event event) {
 
-		logger.debug("handleEvent!!!!!!");
+		logger.info("handleEvent!!!!!!");
 
 		try {
 			Thread.sleep(3000);
@@ -415,13 +302,13 @@ public class Activator implements BundleActivator, ManagedService, EventHandler 
 		if (RemoteCseService.ADD_OPERATION_VALUE.equals(operationProperty)) {
 			// add a new cse
 			if ((remoteCseId.equals(cseIdToBeAnnounced)) && (remoteCseName.equals(cseNameToBeAnnounced))) {
-				startSDTIpe();
+				startSdtIpe();
 			}
 
 		} else if (RemoteCseService.REMOVE_OPERATION_VALUE.equals(operationProperty)) {
 			// remove a remoteCse
 			if ((remoteCseId.equals(cseIdToBeAnnounced)) && (remoteCseName.equals(cseNameToBeAnnounced))) {
-				stopSDTIPE();
+				stopSdtIpe();
 			}
 		}
 

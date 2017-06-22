@@ -6,7 +6,7 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 No-otb-proxy: true
 Bundle-ClassPath: .
-Bundle-Activator: org.eclipse.om2m.ipe.sdt.Activator
+Service-Component: OSGI-INF/component.xml
 Import-Package: org.apache.commons.logging,
  org.eclipse.om2m.commons.constants,
  org.eclipse.om2m.commons.exceptions,
@@ -23,5 +23,6 @@ Import-Package: org.apache.commons.logging,
  org.eclipse.om2m.sdt.types,
  org.osgi.framework,
  org.osgi.service.cm,
+ org.osgi.service.component;version="1.2.2",
  org.osgi.service.event,
  org.osgi.util.tracker

@@ -22,7 +22,7 @@ import org.eclipse.om2m.commons.resource.ResponsePrimitive;
 import org.eclipse.om2m.core.service.CseService;
 import org.eclipse.om2m.sdt.Device;
 
-public class SDTIpeApplication {
+public class SDTIpeApplication implements DeviceListListener {
 
 	private static Log logger = LogFactory.getLog(SDTIpeApplication.class);
 
@@ -71,7 +71,7 @@ public class SDTIpeApplication {
 	}
 
 	// SDT Device Management
-	protected boolean addSDTDevice(Device device) {
+	private boolean addSDTDevice(Device device) {
 		logger.info("add SDT Device (id:" + device.getId() + ", name=" + device.getName() + ") into oneM2M");
 
 		SDTDeviceAdaptor sdtDeviceAdaptor = new SDTDeviceAdaptor(sdtIpeApplicationLocation, device, cseService,
@@ -85,7 +85,7 @@ public class SDTIpeApplication {
 		return false;
 	}
 
-	protected void removeSDTDevice(Device device) {
+	private void removeSDTDevice(Device device) {
 		logger.info("remove SDT Device (id:" + device.getId() + ", name=" + device.getName() + ") into oneM2M");
 		SDTDeviceAdaptor sdtDeviceAdaptor = null;
 		synchronized (devices) {
@@ -185,6 +185,16 @@ public class SDTIpeApplication {
 			CseUtil.sendDeleteRequest(cseService, remoteAdminAccessControlPolicy.getResourceID());
 			remoteAdminAccessControlPolicy = null;
 		}
+	}
+
+	@Override
+	public void notifyNewDevice(Device newDevice) {
+		addSDTDevice(newDevice);
+	}
+
+	@Override
+	public void notifyDeviceRemoved(Device toBeRemovedDevice) {
+		removeSDTDevice(toBeRemovedDevice);
 	}
 
 }
