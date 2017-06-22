@@ -138,7 +138,7 @@ function get(targetId){
                         } else {
                             value = resource[attribute];
                             if (value instanceof Object) {
-                              value = value.value;
+                              value = value.val;
                             }
                         }
 
