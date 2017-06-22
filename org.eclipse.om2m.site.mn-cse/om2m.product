@@ -39,6 +39,7 @@
       <plugin id="org.apache.httpcomponents.httpcore"/>
       <plugin id="org.eclipse.equinox.cm"/>
       <plugin id="org.eclipse.equinox.console"/>
+      <plugin id="org.eclipse.equinox.ds"/>
       <plugin id="org.eclipse.equinox.event"/>
       <plugin id="org.eclipse.equinox.http.jetty"/>
       <plugin id="org.eclipse.equinox.http.servlet"/>
@@ -82,6 +83,7 @@
       <plugin id="org.apache.felix.gogo.shell" autoStart="true" startLevel="0" />
       <plugin id="org.eclipse.equinox.cm" autoStart="true" startLevel="1" />
       <plugin id="org.eclipse.equinox.console" autoStart="true" startLevel="0" />
+      <plugin id="org.eclipse.equinox.ds" autoStart="true" startLevel="1" />
       <plugin id="org.eclipse.equinox.event" autoStart="true" startLevel="1" />
       <plugin id="org.eclipse.equinox.http.jetty" autoStart="true" startLevel="1" />
       <plugin id="org.eclipse.om2m.binding.http" autoStart="true" startLevel="2" />
