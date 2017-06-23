@@ -23,6 +23,8 @@ import org.eclipse.om2m.commons.resource.FlexContainer;
 import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
 import org.eclipse.om2m.commons.resource.Subscription;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.FlexContainerFactory;
+import org.eclipse.om2m.core.flexcontainer.FlexContainerSelector;
+import org.eclipse.om2m.flexcontainer.service.FlexContainerService;
 
 public class FlexContainerMapper extends EntityMapper<FlexContainerEntity, AbstractFlexContainer>{
 
@@ -55,11 +57,18 @@ public class FlexContainerMapper extends EntityMapper<FlexContainerEntity, Abstr
 		resource.setLongName(entity.getLongName());
 		resource.setShortName(entity.getShortName());
 		
+		FlexContainerService fcs = FlexContainerSelector
+				.getFlexContainerService(entity.getResourceID());
+		
 		for(CustomAttributeEntity cae : entity.getCustomAttributes()) {
 			CustomAttribute ca = new CustomAttribute();
 			ca.setCustomAttributeName(cae.getCustomAttributeName());
 			ca.setCustomAttributeType(cae.getCustomAttributeType());
-			ca.setCustomAttributeValue(cae.getCustomAttributeValue());
+			if (fcs != null) {
+				ca.setCustomAttributeValue(fcs.getCustomAttributeValue(ca.getCustomAttributeName()));
+			} else {
+				ca.setCustomAttributeValue(cae.getCustomAttributeValue());
+			}
 			resource.getCustomAttributes().add(ca);
 		}
 	}
