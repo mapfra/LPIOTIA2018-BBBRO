@@ -25,17 +25,17 @@ public class CustomAttributeAdapter extends XmlAdapter<Element, CustomAttribute>
 		CustomAttribute customAttribute = new CustomAttribute();
 
 		String value = null;
-		Attr att = v.getAttributeNode("value");
+		Attr att = v.getAttributeNode("val");
 		if (att != null) {
 			// json case
-			value = v.getAttribute("value");
+			value = v.getAttribute("val");
 		} else {
 			// xml case
 			value = v.getTextContent();
 		}
 		customAttribute.setCustomAttributeName(v.getTagName());
 		customAttribute.setCustomAttributeValue(value);
-		customAttribute.setCustomAttributeType(v.getAttribute("type"));
+		customAttribute.setCustomAttributeType(v.getAttribute("typ"));
 		
 
 		return customAttribute;
@@ -55,7 +55,7 @@ public class CustomAttributeAdapter extends XmlAdapter<Element, CustomAttribute>
 			Document document = getDocumentBuilder().newDocument();
 			e = document.createElement(v.getCustomAttributeName());
 			e.setTextContent((value != null ? value.toString() : ""));
-			e.setAttribute("type", v.getCustomAttributeType());
+			e.setAttribute("typ", v.getCustomAttributeType());
 			
 		} catch (Throwable t) {
 			t.printStackTrace();
