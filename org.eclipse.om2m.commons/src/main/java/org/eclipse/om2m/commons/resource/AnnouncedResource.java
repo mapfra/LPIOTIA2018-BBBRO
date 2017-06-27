@@ -73,7 +73,7 @@ import org.eclipse.om2m.commons.constants.ShortName;
 public class AnnouncedResource extends Resource {
 
 	@XmlList
-	@XmlElement(name=ShortName.ACP_IDS)
+	@XmlElement(name=ShortName.ACP_IDS, required=true)
 	protected List<String> accessControlPolicyIDs;
 	@XmlElement(name=ShortName.EXPIRATION_TIME, required = true)
 	protected String expirationTime;
@@ -81,7 +81,7 @@ public class AnnouncedResource extends Resource {
 	@XmlSchemaType(name = "anyURI")
 	protected String link;
 	@XmlList
-	@XmlElement(name=ShortName.DAC_IDS, required=true)
+	@XmlElement(name=ShortName.DAC_IDS, required=false)
 	protected List<String> dynamicAuthorizationConsultationIDs;
 
 	/**

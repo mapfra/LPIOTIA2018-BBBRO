@@ -131,24 +131,24 @@ import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleWaterSensorFlex
 @XmlType(name = "")
 @XmlRootElement(name = ShortName.AE)
 public class AE extends AnnounceableResource {
-	@XmlElement(name = ShortName.APP_NAME)
+	@XmlElement(name = ShortName.APP_NAME, required=false)
 	protected String appName;
 	@XmlElement(name = ShortName.APP_ID, required = true)
 	protected String appID;
 	@XmlElement(name = ShortName.AE_ID, required = true)
 	protected String aeid;
 	@XmlList
-	@XmlElement(name = ShortName.POA)
+	@XmlElement(name = ShortName.POA, required=false)
 	protected List<String> pointOfAccess;
 	@XmlSchemaType(name = "anyURI")
-	@XmlElement(name = ShortName.ONTOLOGY_REF)
+	@XmlElement(name = ShortName.ONTOLOGY_REF, required=false)
 	protected String ontologyRef;
 	@XmlSchemaType(name = "anyURI")
-	@XmlElement(name = ShortName.NODE_LINK)
+	@XmlElement(name = ShortName.NODE_LINK, required=false)
 	protected String nodeLink;
 	@XmlElement(name = ShortName.CHILD_RESOURCE)
 	protected List<ChildResourceRef> childResource;
-	@XmlElement(name = ShortName.REQUEST_REACHABILITY)
+	@XmlElement(name = ShortName.REQUEST_REACHABILITY, required=true)
 	protected Boolean requestReachability;
 	@XmlElements({
 			@XmlElement(name = ShortName.CNT, namespace = "http://www.onem2m.org/xml/protocols", type = Container.class),

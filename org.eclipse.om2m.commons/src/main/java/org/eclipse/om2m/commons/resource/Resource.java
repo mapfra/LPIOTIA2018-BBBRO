@@ -93,7 +93,7 @@ public class Resource {
 	@XmlElement(name=ShortName.LAST_MODIFIED_TIME, required = true)
 	protected String lastModifiedTime;
 	@XmlList
-	@XmlElement(name=ShortName.LABELS)
+	@XmlElement(name=ShortName.LABELS, required=false)
 	protected List<String> labels;
 	@XmlAttribute(name = ShortName.RESOURCE_NAME, required = true)
 	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)

@@ -29,12 +29,14 @@ package org.eclipse.om2m.commons.resource;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.MappedSuperclass;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlValue;
 
 import org.eclipse.om2m.commons.constants.ShortName;
 
@@ -69,13 +71,14 @@ import org.eclipse.om2m.commons.constants.ShortName;
 		Request.class, ServiceSubscribedNode.class,
 		M2MServiceSubscriptionProfile.class, EventConfig.class,
 		PollingChannel.class, Subscription.class, AnnounceableResource.class, DynamicAuthorizationConsultation.class })
+@MappedSuperclass
 public class RegularResource extends Resource {
 
 	@XmlList
-	@XmlElement(name=ShortName.ACP_IDS)
+	@XmlElement(name=ShortName.ACP_IDS, required=false)
 	protected List<String> accessControlPolicyIDs;
 	@XmlList
-	@XmlElement(name=ShortName.DAC_IDS, required=true)
+	@XmlElement(name=ShortName.DAC_IDS, required=false)
 	protected List<String> dynamicAuthorizationConsultationIDs;
 	@XmlElement(name=ShortName.EXPIRATION_TIME, required = true)
 	protected String expirationTime;

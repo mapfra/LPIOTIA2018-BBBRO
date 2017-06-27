@@ -60,12 +60,21 @@ public class Mapper implements DataMapperService {
 		try {
 			if(context==null){
 				if(mediaType.equals(MimeMediaType.JSON)){
+					// JSON
 					ClassLoader classLoader = Mapper.class.getClassLoader(); 
 					InputStream iStream = classLoader.getResourceAsStream("json-binding.xml"); 
 					Map<String, Object> properties = new HashMap<String, Object>(); 
 					properties.put(JAXBContextProperties.OXM_METADATA_SOURCE, iStream);
 					context = JAXBContext.newInstance(resourcePackage, classLoader , properties);
+				} else if (mediaType.equals(MimeMediaType.XML)) {
+					// XML
+					ClassLoader classLoader = Mapper.class.getClassLoader(); 
+					InputStream iStream = classLoader.getResourceAsStream("xml-binding.xml"); 
+					Map<String, Object> properties = new HashMap<String, Object>(); 
+					properties.put(JAXBContextProperties.OXM_METADATA_SOURCE, iStream);
+					context = JAXBContext.newInstance(resourcePackage, classLoader , properties);
 				} else {
+					// other
 					context = JAXBContext.newInstance(resourcePackage, Mapper.class.getClassLoader());
 				}
 			}
@@ -91,6 +100,7 @@ public class Mapper implements DataMapperService {
 			marshaller.setProperty(MarshallerProperties.JSON_INCLUDE_ROOT, true);
 			marshaller.setProperty(MarshallerProperties.JSON_VALUE_WRAPPER, "val");
 			marshaller.setProperty(MarshallerProperties.JSON_REDUCE_ANY_ARRAYS, true);
+			marshaller.setProperty(MarshallerProperties.JSON_MARSHAL_EMPTY_COLLECTIONS, false);
 			marshaller.marshal(obj, outputStream);
 			
 			return outputStream.toString();

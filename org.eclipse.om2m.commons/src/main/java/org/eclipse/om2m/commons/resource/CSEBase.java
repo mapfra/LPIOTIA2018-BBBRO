@@ -38,6 +38,7 @@ import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlValue;
 
 import org.eclipse.om2m.commons.constants.ShortName;
 
@@ -101,12 +102,12 @@ import org.eclipse.om2m.commons.constants.ShortName;
 public class CSEBase extends Resource {
 
 	@XmlList
-	@XmlElement(name=ShortName.ACP_IDS)
+	@XmlElement(name=ShortName.ACP_IDS, required=false)
 	protected List<String> accessControlPolicyIDs;
 	@XmlList
-	@XmlElement(name=ShortName.DAC_IDS, required=true)
+	@XmlElement(name=ShortName.DAC_IDS, required=false)
 	protected List<String> dynamicAuthorizationConsultationIDs;
-	@XmlElement(name=ShortName.CSE_TYPE)
+	@XmlElement(name=ShortName.CSE_TYPE, required=false)
 	protected BigInteger cseType;
 	@XmlElement(name = ShortName.CSE_ID, required = true)
 	protected String cseid;
@@ -117,7 +118,7 @@ public class CSEBase extends Resource {
 	@XmlElement(name=ShortName.POA, required = true)
 	protected List<String> pointOfAccess;
 	@XmlSchemaType(name = "anyURI")
-	@XmlElement(name=ShortName.NODE_LINK)
+	@XmlElement(name=ShortName.NODE_LINK, required=false)
 	protected String nodeLink;
 	@XmlElement(name=ShortName.CHILD_RESOURCE)
 	protected List<ChildResourceRef> childResource;

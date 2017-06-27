@@ -88,25 +88,25 @@ import org.eclipse.om2m.commons.constants.ShortName;
 @XmlType(name = "")
 @XmlRootElement(name = ShortName.REMOTE_CSE)
 public class RemoteCSE extends AnnounceableResource {
-	@XmlElement(name=ShortName.CSE_TYPE)
+	@XmlElement(name=ShortName.CSE_TYPE, required=false)
 	protected BigInteger cseType;
 	@XmlList
-	@XmlElement(name=ShortName.POA)
+	@XmlElement(name=ShortName.POA, required=false)
 	protected List<String> pointOfAccess;
 	@XmlElement(name = ShortName.REMOTE_CSE_CSEBASE, required = true)
 	@XmlSchemaType(name = "anyURI")
 	protected String cseBase;
 	@XmlElement(name = ShortName.CSE_ID, required = true)
 	protected String cseid;
-	@XmlElement(name = ShortName.M2M_EXT_ID)
+	@XmlElement(name = ShortName.M2M_EXT_ID, required=false)
 	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
 	protected String m2MExtID;
-	@XmlElement(name = ShortName.TRIGGER_RECIPIENT_ID)
+	@XmlElement(name = ShortName.TRIGGER_RECIPIENT_ID, required=false)
 	protected Long triggerRecipientID;
-	@XmlElement(name=ShortName.REQUEST_REACHABILITY)
+	@XmlElement(name=ShortName.REQUEST_REACHABILITY, required=true)
 	protected Boolean requestReachability;
 	@XmlSchemaType(name = "anyURI")
-	@XmlElement(name=ShortName.NODE_LINK)
+	@XmlElement(name=ShortName.NODE_LINK, required=false)
 	protected String nodeLink;
 	@XmlElement(name=ShortName.CHILD_RESOURCE)
 	protected List<ChildResourceRef> childResource;

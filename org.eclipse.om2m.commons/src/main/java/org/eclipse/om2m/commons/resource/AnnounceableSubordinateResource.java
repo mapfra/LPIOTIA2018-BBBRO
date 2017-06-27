@@ -76,10 +76,10 @@ public class AnnounceableSubordinateResource extends Resource {
 	@XmlElement(name=ShortName.EXPIRATION_TIME, required = true)
 	protected String expirationTime;
 	@XmlList
-	@XmlElement(name=ShortName.ANNOUNCE_TO)
+	@XmlElement(name=ShortName.ANNOUNCE_TO, required=false)
 	protected List<String> announceTo;
 	@XmlList
-	@XmlElement(name=ShortName.ANNOUNCED_ATTRIBUTE)
+	@XmlElement(name=ShortName.ANNOUNCED_ATTRIBUTE, required=false)
 	protected List<String> announcedAttribute;
 
 	/**

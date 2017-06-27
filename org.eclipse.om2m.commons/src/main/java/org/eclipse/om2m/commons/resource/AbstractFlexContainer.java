@@ -150,13 +150,13 @@ public abstract class AbstractFlexContainer extends AnnounceableResource {
 	@XmlElement(name = ShortName.STATETAG, required = true)
 	@XmlSchemaType(name = "nonNegativeInteger")
 	protected BigInteger stateTag;
-	@XmlElement(name = ShortName.CREATOR, required = true)
+	@XmlElement(name = ShortName.CREATOR, required = false)
 	protected String creator;
 	@XmlSchemaType(name = "anyURI")
-	@XmlElement(name = ShortName.ONTOLOGY_REF)
+	@XmlElement(name = ShortName.ONTOLOGY_REF, required = false)
 	protected String ontologyRef;
 	@XmlSchemaType(name="anyURI")
-	@XmlElement(name = ShortName.CONTAINER_DEFINITION)
+	@XmlElement(name = ShortName.CONTAINER_DEFINITION, required=true)
 	protected String containerDefinition;
 	@XmlElement(name = ShortName.CHILD_RESOURCE)
 	protected List<ChildResourceRef> childResource;

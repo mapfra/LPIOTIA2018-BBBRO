@@ -8,16 +8,16 @@
 		<!-- Generic resource -->
 		<java-type name="Resource">
 			<java-attributes>
-				<xml-element java-attribute="labels" name="lbl" />
+				<xml-element java-attribute="labels" name="lbl"  xml-list="true"/>
 			</java-attributes>
 		</java-type>
 
 		<java-type name="RegularResource">
 			<java-attributes>
 				<xml-element java-attribute="accessControlPolicyIDs"
-					name="acpi" />
+					name="acpi"/>
 				<xml-element java-attribute="dynamicAuthorizationConsultationIDs"
-					name="daci" />
+					name="daci"/>
 			</java-attributes>
 		</java-type>
 		
@@ -26,7 +26,7 @@
 				<xml-element java-attribute="announceTo"
 					name="at" />
 				<xml-element java-attribute="announcedAttribute"
-					name="aa" />
+					name="aa"  />
 			</java-attributes>
 		</java-type>
 		
@@ -42,34 +42,31 @@
 		<java-type name="AnnouncedResource">
 			<java-attributes>
 				<xml-element java-attribute="accessControlPolicyIDs"
-					name="acpi" />
+					name="acpi"  />
 			</java-attributes>
 		</java-type>
 
 		<!-- CSE Descriptions -->
 		<java-type name="CSEBase">
-			<xml-root-element name="m2m:cb" />
 			<java-attributes>
 				<xml-element java-attribute="accessControlPolicyIDs"
 					name="acpi" />
 				<xml-element java-attribute="dynamicAuthorizationConsultationIDs"
 					name="daci" />
 				<xml-element java-attribute="supportedResourceType"
-					name="srt" />
+					name="srt" xml-list="true" />
 				<xml-element java-attribute="pointOfAccess" name="poa" />
 			</java-attributes>
 		</java-type>
 
 		<java-type name="RemoteCSE">
-			<xml-root-element name="m2m:csr" />
 			<java-attributes>
-				<xml-element java-attribute="pointOfAccess" name="poa" />
+				<xml-element java-attribute="pointOfAccess" name="poa"/>
 			</java-attributes>
 		</java-type>
 
 		<!-- Access Control resources -->
 		<java-type name="AccessControlPolicy">
-			<xml-root-element name="m2m:acp" />
 		</java-type>
 		<java-type name="AccessControlRule">
 			<java-attributes>
@@ -80,20 +77,17 @@
 
 		<!-- Common resources -->
 		<java-type name="AE">
-			<xml-root-element name="m2m:ae" />
 			<java-attributes>
-				<xml-element java-attribute="pointOfAccess" name="poa" />
+				<xml-element java-attribute="pointOfAccess" name="poa" xml-list="true" />
 			</java-attributes>
 		</java-type>
 		<java-type name="AEAnnc">
-			<xml-root-element name="m2m:aeA" />
 			<java-attributes>
-				<xml-element java-attribute="pointOfAccess" name="poa" />
+				<xml-element java-attribute="pointOfAccess" name="poa" xml-list="true" />
 			</java-attributes>
 		</java-type>
 
 		<java-type name="Container">
-			<xml-root-element name="m2m:cnt" />
 		</java-type>
 		
 		<java-type name="AbstractFlexContainer">
@@ -103,11 +97,9 @@
 		
 
 		<java-type name="ContentInstance">
-			<xml-root-element name="m2m:cin" />
 		</java-type>
 
 		<java-type name="Group">
-			<xml-root-element name="m2m:grp" />
 			<java-attributes>
 				<xml-element java-attribute="memberIDs" name="mid" />
 				<xml-element java-attribute="membersAccessControlPolicyIDs"
@@ -116,20 +108,17 @@
 		</java-type>
 
 		<java-type name="Node">
-			<xml-root-element name="m2m:nod" />
 		</java-type>
 
 		<!-- Subscription and notification handling -->
 
 		<java-type name="Subscription">
-			<xml-root-element name="m2m:sub" />
 			<java-attributes>
 				<xml-element java-attribute="notificationURI" name="nu" />
 			</java-attributes>
 		</java-type>
 
 		<java-type name="Notification">
-			<xml-root-element name="m2m:sgn" />
 		</java-type>
 
 		<!-- TODO Mgmt Objects -->
@@ -137,15 +126,12 @@
 		<!-- Other resources -->
 
         <java-type name="URIList">
-            <xml-root-element name="m2m:uril"/>
         </java-type>
 
 		<java-type name="PollingChannel">
-			<xml-root-element name="m2m:pch" />
 		</java-type>
 
 		<java-type name="Schedule">
-			<xml-root-element name="m2m:sch" />
 		</java-type>
 
 		<java-type name="LocationRegion">
