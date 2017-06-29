@@ -36,7 +36,7 @@ public class PushButton extends Module {
 	}
 
 	public PushButton(final String name, final Domain domain, Map<String, DataPoint> dps) {
-		this(name, domain, (BooleanDataPoint) dps.get("pushed"));
+		this(name, domain, (BooleanDataPoint) dps.get("pushd"));
 	}
 
 	public boolean isPushed() throws DataPointException, AccessException {

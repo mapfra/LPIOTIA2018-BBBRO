@@ -21,6 +21,7 @@ import org.eclipse.om2m.commons.constants.Operation;
 import org.eclipse.om2m.commons.constants.ResourceType;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.constants.ResultContent;
+import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
 import org.eclipse.om2m.commons.resource.ChildResourceRef;
 import org.eclipse.om2m.commons.resource.CustomAttribute;
 import org.eclipse.om2m.commons.resource.FilterCriteria;
@@ -134,7 +135,7 @@ public class ResourceDiscovery {
 
 	static public GenericDevice readDevice(String uri) throws Exception {
 		Activator.logger.info("Get device " + uri);
-		FlexContainer deviceFlexContainer = (FlexContainer) retrieveFlexContainer(uri,
+		AbstractFlexContainer deviceFlexContainer = (AbstractFlexContainer) retrieveFlexContainer(uri,
 				ResultContent.ORIGINAL_RES);
 		if (deviceFlexContainer == null) {
 			throw new Exception("Could not read device " + uri);
@@ -147,7 +148,7 @@ public class ResourceDiscovery {
 				labels.put(label.substring(0, idx), label.substring(idx+1));
 		}
 		String deviceId = labels.get("id");
-		CustomAttribute serialAttr = deviceFlexContainer.getCustomAttribute("propDeviceSerialNum");
+		CustomAttribute serialAttr = deviceFlexContainer.getCustomAttribute("pDSNm");
 		String serial = null;
 		if (serialAttr == null) {
 			Activator.logger.info("No serial number property. Take id instead.");
@@ -173,8 +174,8 @@ public class ResourceDiscovery {
 		}
 		for (CustomAttribute attr : deviceFlexContainer.getCustomAttributes()) {
 			device.setProperty(attr.getCustomAttributeName(),
-					attr.getCustomAttributeValue(),
-					attr.getCustomAttributeType());
+					attr.getCustomAttributeName(),
+					attr.getCustomAttributeValue());
 		}
 		// Search children resources: modules
 		FlexContainerAnnc ctr = (FlexContainerAnnc)retrieveFlexContainer(uri, ResultContent.ATTRIBUTES_AND_CHILD_REF);
@@ -195,7 +196,7 @@ public class ResourceDiscovery {
 
 	private static Module readModule(String uri) throws Exception {
 		Activator.logger.info("Get module " + uri);
-		FlexContainer moduleFlexContainer = (FlexContainer) retrieveFlexContainer(uri,
+		AbstractFlexContainer moduleFlexContainer = (AbstractFlexContainer) retrieveFlexContainer(uri,
 				ResultContent.ORIGINAL_RES);
 		if (moduleFlexContainer == null) {
 			throw new Exception("Could not read module " + uri);
@@ -297,7 +298,7 @@ public class ResourceDiscovery {
 	
 	private static Action readAction(final String uri, final Module module) throws Exception {
 		Activator.logger.info("Get action " + uri);
-		FlexContainer actionFlexContainer = (FlexContainer) retrieveFlexContainer(uri,
+		AbstractFlexContainer actionFlexContainer = (AbstractFlexContainer) retrieveFlexContainer(uri,
 				ResultContent.ORIGINAL_RES);
 		if (actionFlexContainer == null) {
 			throw new Exception("Could not read action " + uri);
@@ -755,6 +756,8 @@ public class ResourceDiscovery {
 		request.setReturnContentType(MimeMediaType.OBJ);
 		request.setRequestContentType(MimeMediaType.OBJ);
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
+		request.setFilterCriteria(new FilterCriteria());
+		request.getFilterCriteria().setLevel(BigInteger.valueOf(1l));
 //		request.setFrom(name + ":" + pwd);
 		request.setTargetId(uri);
 		request.setResultContent(resultContent);
@@ -780,7 +783,7 @@ public class ResourceDiscovery {
 //		Activator.logger.info(response.toString(), ResourceDiscovery.class);
 		if (! ResponseStatusCode.OK.equals(response.getResponseStatusCode()))
 			throw new Exception("Error reading cloud data: " + response.getResponseStatusCode());
-		return SDTUtil.getValue(((FlexContainer) response.getContent()).getCustomAttribute(attr));
+		return SDTUtil.getValue(((AbstractFlexContainer) response.getContent()).getCustomAttribute(attr));
 	}
 
 	public static void updateAttribute(final String uri, 
@@ -825,7 +828,7 @@ public class ResourceDiscovery {
 		Activator.logger.info(response.toString(), ResourceDiscovery.class);
 		if (! ResponseStatusCode.UPDATED.equals(response.getResponseStatusCode()))
 			throw new Exception("Error invoking cloud action: " + response.getResponseStatusCode());
-		CustomAttribute ret = ((FlexContainer) response.getContent()).getCustomAttribute("output");
+		CustomAttribute ret = ((AbstractFlexContainer) response.getContent()).getCustomAttribute("output");
 		return (ret == null) ? null : ret.getCustomAttributeValue();
 	}
 

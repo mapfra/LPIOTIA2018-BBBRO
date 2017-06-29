@@ -52,7 +52,7 @@ public class Streaming extends Module {
 	public Streaming(final String name, final Domain domain, Map<String, DataPoint> dps) {
 		this(name, domain, (StringDataPoint) dps.get("url"),
 				(StringDataPoint) dps.get("login"),
-				(StringDataPoint) dps.get("password"),
+				(StringDataPoint) dps.get("passd"),
 				(StringDataPoint) dps.get("format"));
 	}
 	

@@ -63,6 +63,10 @@ public class ObjectFactory {
 		return new DeviceTemperatureDetectorFlexContainer();
 	}
 	
+	public AbstractFlexContainer createDevTt() {
+		return new DeviceThermostatFlexContainer();
+	}
+	
 	public AbstractFlexContainer createDWgDe() {
 		return new DeviceWarningDeviceFlexContainer();
 	}
@@ -201,6 +205,10 @@ public class ObjectFactory {
 	
 	public AbstractFlexContainer createLock() {
 		return new ModuleLockFlexContainer();
+	}
+	
+	public AbstractFlexContainer createTimer() {
+		return new ModuleTimerFlexContainer();
 	}
 	
 	public AbstractFlexContainer createTogge() {

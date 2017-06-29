@@ -49,25 +49,25 @@ public class EnergyConsumption extends Module {
 	public EnergyConsumption(final String name, final Domain domain, Map<String, DataPoint> dps) {
 		this(name, domain, (FloatDataPoint) dps.get("power"));
 		
-		IntegerDataPoint roundingEnergyConsumption = (IntegerDataPoint) dps.get("roundingEnergyConsumption");
+		IntegerDataPoint roundingEnergyConsumption = (IntegerDataPoint) dps.get("roECn");
 		if (roundingEnergyConsumption != null)
 			setRoundingEnergyConsumption(roundingEnergyConsumption);
-		IntegerDataPoint significantDigits = (IntegerDataPoint) dps.get("significantDigits");
+		IntegerDataPoint significantDigits = (IntegerDataPoint) dps.get("sigDs");
 		if (significantDigits != null)
 			setSignificantDigits(significantDigits);
-		IntegerDataPoint multiplyingFactors = (IntegerDataPoint) dps.get("multiplyingFactors");
+		IntegerDataPoint multiplyingFactors = (IntegerDataPoint) dps.get("mulFs");
 		if (multiplyingFactors != null)
 			setMultiplyingFactors(multiplyingFactors);
-		FloatDataPoint absoluteEnergyConsumption = (FloatDataPoint) dps.get("absoluteEnergyConsumption");
+		FloatDataPoint absoluteEnergyConsumption = (FloatDataPoint) dps.get("abECn");
 		if (absoluteEnergyConsumption != null)
 			setAbsoluteEnergyConsumption(absoluteEnergyConsumption);
-		FloatDataPoint voltage = (FloatDataPoint) dps.get("voltage");
+		FloatDataPoint voltage = (FloatDataPoint) dps.get("volte");
 		if (voltage != null)
 			setVoltage(voltage);
-		FloatDataPoint current = (FloatDataPoint) dps.get("current");
+		FloatDataPoint current = (FloatDataPoint) dps.get("currt");
 		if (current != null)
 			setCurrent(current);
-		FloatDataPoint frequency = (FloatDataPoint) dps.get("frequency");
+		FloatDataPoint frequency = (FloatDataPoint) dps.get("freqy");
 		if (frequency != null)
 			setFrequency(frequency);
 	}

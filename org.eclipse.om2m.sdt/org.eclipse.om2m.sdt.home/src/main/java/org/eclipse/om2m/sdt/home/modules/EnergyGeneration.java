@@ -34,16 +34,16 @@ public class EnergyGeneration extends Module {
 	
 	public EnergyGeneration(final String name, final Domain domain, Map<String, DataPoint> dps) {
 		this(name, domain);
-		FloatDataPoint powerGenerationData = (FloatDataPoint) dps.get("powerGenerationData");
+		FloatDataPoint powerGenerationData = (FloatDataPoint) dps.get("poGDa");
 		if (powerGenerationData != null)
 			setPowerGenerationData(powerGenerationData);
-		IntegerDataPoint roundingEnergyGeneration = (IntegerDataPoint) dps.get("roundingEnergyGeneration");
+		IntegerDataPoint roundingEnergyGeneration = (IntegerDataPoint) dps.get("roEGn");
 		if (roundingEnergyGeneration != null)
 			setRoundingEnergyGeneration(roundingEnergyGeneration);
-		IntegerDataPoint significantDigits = (IntegerDataPoint) dps.get("significantDigits");
+		IntegerDataPoint significantDigits = (IntegerDataPoint) dps.get("sigDs");
 		if (significantDigits != null)
 			setSignificantDigits(significantDigits);
-		IntegerDataPoint multiplyingFactors = (IntegerDataPoint) dps.get("multiplyingFactors");
+		IntegerDataPoint multiplyingFactors = (IntegerDataPoint) dps.get("mulFs");
 		if (multiplyingFactors != null)
 			setMultiplyingFactors(multiplyingFactors);
 	}

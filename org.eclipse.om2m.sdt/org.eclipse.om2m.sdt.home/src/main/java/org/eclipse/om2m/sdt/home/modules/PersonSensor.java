@@ -28,7 +28,7 @@ public class PersonSensor extends Module {
 	}
 
 	public PersonSensor(final String name, final Domain domain, Map<String, DataPoint> dps) {
-		this(name, domain, (ArrayDataPoint<String>) dps.get("detectedPersons"));
+		this(name, domain, (ArrayDataPoint<String>) dps.get("dedPs"));
 	}
 
 	public List<String> getDetectedPersons() throws DataPointException, AccessException  {

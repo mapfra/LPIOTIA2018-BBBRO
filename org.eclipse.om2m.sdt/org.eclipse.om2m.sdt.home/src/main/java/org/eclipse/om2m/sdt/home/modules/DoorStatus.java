@@ -42,11 +42,11 @@ public class DoorStatus extends Module {
 	}
 	
 	public DoorStatus(final String name, final Domain domain, Map<String, DataPoint> dps) {
-		this(name, domain, (DoorState) dps.get("doorState"));
-		StringDataPoint openDuration = (StringDataPoint) dps.get("openDuration");
+		this(name, domain, (DoorState) dps.get("dooSe"));
+		StringDataPoint openDuration = (StringDataPoint) dps.get("opeDn");
 		if (openDuration != null)
 			setOpenDuration(openDuration);
-		BooleanDataPoint openAlarm = (BooleanDataPoint) dps.get("openAlarm");
+		BooleanDataPoint openAlarm = (BooleanDataPoint) dps.get("opeAm");
 		if (openAlarm != null)
 			setOpenAlarm(openAlarm);
 	}

@@ -38,31 +38,31 @@ public class Timer extends Module {
 
 	public Timer(final String name, final Domain domain, Map<String, DataPoint> dps) {
 		this(name, domain);
-		IntegerDataPoint referenceTimer = (IntegerDataPoint) dps.get("referenceTimer");
+		IntegerDataPoint referenceTimer = (IntegerDataPoint) dps.get("refTr");
 		if (referenceTimer != null) {
 			setReferenceTimer(referenceTimer);
 		}
-		IntegerDataPoint targetTimeToStart = (IntegerDataPoint) dps.get("targetTimeToStart");
+		IntegerDataPoint targetTimeToStart = (IntegerDataPoint) dps.get("tTTSt");
 		if (targetTimeToStart != null) {
 			setTargetTimeToStart(targetTimeToStart);
 		}
-		IntegerDataPoint targetTimeToStop = (IntegerDataPoint) dps.get("targetTimeToStop");
+		IntegerDataPoint targetTimeToStop = (IntegerDataPoint) dps.get("tTTSp");
 		if (targetTimeToStop != null) {
 			setTargetTimeToStop(targetTimeToStop);
 		}
-		IntegerDataPoint estimatedTimeToEnd = (IntegerDataPoint) dps.get("estimatedTimeToEnd");
+		IntegerDataPoint estimatedTimeToEnd = (IntegerDataPoint) dps.get("eTTEd");
 		if (estimatedTimeToEnd != null) {
 			setEstimatedTimeToEnd(estimatedTimeToEnd);
 		}
-		IntegerDataPoint runningTime = (IntegerDataPoint) dps.get("runningTime");
+		IntegerDataPoint runningTime = (IntegerDataPoint) dps.get("runTe");
 		if (runningTime != null) {
 			setRunningTime(runningTime);
 		}
-		IntegerDataPoint targetDuration = (IntegerDataPoint) dps.get("targetDuration");
+		IntegerDataPoint targetDuration = (IntegerDataPoint) dps.get("tarDn");
 		if (targetDuration != null) {
 			setTargetDuration(targetDuration);
 		}
-		BooleanDataPoint activated = (BooleanDataPoint) dps.get("activated");
+		BooleanDataPoint activated = (BooleanDataPoint) dps.get("activ");
 		if (activated != null) {
 			setActivated(activated);
 		}

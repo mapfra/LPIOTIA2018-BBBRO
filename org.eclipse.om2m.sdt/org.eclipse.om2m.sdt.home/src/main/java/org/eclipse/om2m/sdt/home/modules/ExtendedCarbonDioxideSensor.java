@@ -28,7 +28,7 @@ public class ExtendedCarbonDioxideSensor extends CarbonDioxideSensor {
 	public ExtendedCarbonDioxideSensor(final String name, final Domain domain,
 			Map<String, DataPoint> dps) {
 		this(name, domain, (BooleanDataPoint) dps.get("alarm"),
-				(IntegerDataPoint) dps.get("carbonDioxideValue"));
+				(IntegerDataPoint) dps.get("cDeVe"));
 	}
 
 	public int getCarbonDioxideValue() throws DataPointException, AccessException {

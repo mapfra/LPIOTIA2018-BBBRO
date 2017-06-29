@@ -37,7 +37,7 @@ public class AlarmSpeaker extends Module {
 	}
 
 	public AlarmSpeaker(final String name, final Domain domain, Map<String, DataPoint> dps) {
-		this(name, domain, (BooleanDataPoint) dps.get("alarmStatus"));
+		this(name, domain, (BooleanDataPoint) dps.get("alaSs"));
 		Tone tone = (Tone) dps.get("tone");
 		if (tone != null)
 			setTone(tone);

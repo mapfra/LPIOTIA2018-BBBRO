@@ -126,19 +126,25 @@ public class SmarterCoffeeMachine extends CoffeeMachine{
 				smarterCoffee.getStatus();
 				return smarterCoffee.getFaultDetection(); 
 			}
-		}, new IntegerDataPoint("code") {
+		});
+		
+		IntegerDataPoint codeDp = new IntegerDataPoint("code") {
 			
 			@Override
 			protected Integer doGetValue() throws DataPointException {
 				return smarterCoffee.getCode();
 			}	
-		}, new StringDataPoint("description") {
+		};
+		faultDetection.setCode(codeDp);
+		
+		StringDataPoint descriptionDP = new StringDataPoint("description") {
 			
 			@Override
 			protected String doGetValue() throws DataPointException {
 				return smarterCoffee.getDescription();
 			}
-		});
+		};
+		faultDetection.setDescription(descriptionDP);
 		
 		addModule(faultDetection);
 	}

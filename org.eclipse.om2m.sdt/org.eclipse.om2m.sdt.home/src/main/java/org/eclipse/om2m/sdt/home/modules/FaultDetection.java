@@ -38,37 +38,37 @@ public class FaultDetection extends Module {
 		addDataPoint(this.status);
 	}
 	
-	public FaultDetection(final String name, final Domain domain, BooleanDataPoint status, IntegerDataPoint code, StringDataPoint description) {
-		super(name, domain, ModuleType.faultDetection.getDefinition(),
-				ModuleType.faultDetection.getLongDefinitionName(),
-				ModuleType.faultDetection.getShortDefinitionName());
-		
-		this.status = status;
-		this.status.setWritable(false);
-		this.status.setDoc("Status of fault detection");
-		addDataPoint(this.status);
-		
-		if(code!=null){
-			this.code = code;
-			this.code.setWritable(false);
-			this.code.setDoc("Code of the fault.");
-			addDataPoint(this.code);
-		}
-		if(description!= null){
-			this.description = description;
-			this.description.setWritable(false);
-			this.description.setDoc("Message of the fault.");
-			addDataPoint(this.description);
-		}
-	}
+//	public FaultDetection(final String name, final Domain domain, BooleanDataPoint status, IntegerDataPoint code, StringDataPoint description) {
+//		super(name, domain, ModuleType.faultDetection.getDefinition(),
+//				ModuleType.faultDetection.getLongDefinitionName(),
+//				ModuleType.faultDetection.getShortDefinitionName());
+//		
+//		this.status = status;
+//		this.status.setWritable(false);
+//		this.status.setDoc("Status of fault detection");
+//		addDataPoint(this.status);
+//		
+//		if(code!=null){
+//			this.code = code;
+//			this.code.setWritable(false);
+//			this.code.setDoc("Code of the fault.");
+//			addDataPoint(this.code);
+//		}
+//		if(description!= null){
+//			this.description = description;
+//			this.description.setWritable(false);
+//			this.description.setDoc("Message of the fault.");
+//			addDataPoint(this.description);
+//		}
+//	}
 
 	public FaultDetection(final String name, final Domain domain, Map<String, DataPoint> dps) {
-		this(name, domain, (BooleanDataPoint) dps.get("status"), (IntegerDataPoint)dps.get("code"), (StringDataPoint) dps.get("description"));
+		this(name, domain, (BooleanDataPoint) dps.get("stats"));
 
 		IntegerDataPoint code = (IntegerDataPoint) dps.get("code");
 		if (code != null)
 			setCode(code);
-		StringDataPoint description = (StringDataPoint) dps.get("description");
+		StringDataPoint description = (StringDataPoint) dps.get("descn");
 		if (description != null)
 			setDescription(description);
 	}

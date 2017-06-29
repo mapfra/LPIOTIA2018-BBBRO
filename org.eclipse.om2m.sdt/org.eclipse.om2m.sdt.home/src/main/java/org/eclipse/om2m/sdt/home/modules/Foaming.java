@@ -28,7 +28,7 @@ public class Foaming extends Module{
 	
 
     public Foaming(final String name, final Domain domain,  Map<String, DataPoint> dps) {
-        this(name, domain,  (FoamStrength) dps.get("foamingStrength"));
+        this(name, domain,  (FoamStrength) dps.get("fogSh"));
     }
 
     

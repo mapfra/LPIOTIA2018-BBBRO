@@ -53,6 +53,7 @@ import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceSmokeDetectorFl
 import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceSmokeExtractorFlexContainer;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceSwitchButtonFlexContainer;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceTemperatureDetectorFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceThermostatFlexContainer;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceWarningDeviceFlexContainer;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceWaterHeaterFlexContainer;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceWaterValveFlexContainer;
@@ -87,6 +88,7 @@ import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleRunModeFlexCont
 import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleSmokeSensorFlexContainer;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleStreamingFlexContainer;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleTemperatureFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleTimerFlexContainer;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleWaterLevelFlexContainer;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleWaterSensorFlexContainer;
 
@@ -171,6 +173,7 @@ public class AE extends AnnounceableResource {
 			@XmlElement(name = DeviceSmokeExtractorFlexContainer.SHORT_NAME, type = DeviceSmokeExtractorFlexContainer.class),
 			@XmlElement(name = DeviceSwitchButtonFlexContainer.SHORT_NAME, type = DeviceSwitchButtonFlexContainer.class),
 			@XmlElement(name = DeviceTemperatureDetectorFlexContainer.SHORT_NAME, type = DeviceTemperatureDetectorFlexContainer.class),
+			@XmlElement(name = DeviceThermostatFlexContainer.SHORT_NAME, type = DeviceThermostatFlexContainer.class),
 			@XmlElement(name = DeviceWarningDeviceFlexContainer.SHORT_NAME, type = DeviceWarningDeviceFlexContainer.class),
 			@XmlElement(name = DeviceWaterValveFlexContainer.SHORT_NAME, type = DeviceWaterValveFlexContainer.class),
 			@XmlElement(name = DeviceWeatherStationFlexContainer.SHORT_NAME, type = DeviceWeatherStationFlexContainer.class),
@@ -206,6 +209,7 @@ public class AE extends AnnounceableResource {
 			@XmlElement(name = ModulePersonSensorFlexContainer.SHORT_NAME, type = ModulePersonSensorFlexContainer.class),
 			@XmlElement(name = ModuleStreamingFlexContainer.SHORT_NAME, type = ModuleStreamingFlexContainer.class),
 			@XmlElement(name = ModuleLockFlexContainer.SHORT_NAME, type = ModuleLockFlexContainer.class),
+			@XmlElement(name = ModuleTimerFlexContainer.SHORT_NAME, type = ModuleTimerFlexContainer.class),
 			@XmlElement(name = ActionToggleFlexContainer.SHORT_NAME, type = ActionToggleFlexContainer.class)
 			})
 	protected List<Resource> containerOrGroupOrAccessControlPolicy;

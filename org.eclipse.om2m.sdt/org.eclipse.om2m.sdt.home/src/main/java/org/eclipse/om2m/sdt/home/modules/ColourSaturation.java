@@ -33,7 +33,7 @@ public class ColourSaturation extends Module {
 	}
 
 	public ColourSaturation(final String name, final Domain domain, Map<String, DataPoint> dps) {
-		this(name, domain, (IntegerDataPoint) dps.get("colourSaturation"));
+		this(name, domain, (IntegerDataPoint) dps.get("colSn"));
 	}
 
 	public int getColourSaturation() throws DataPointException, AccessException {

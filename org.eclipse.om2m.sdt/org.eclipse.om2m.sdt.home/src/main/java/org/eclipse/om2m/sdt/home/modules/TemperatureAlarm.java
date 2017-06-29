@@ -29,6 +29,16 @@ public class TemperatureAlarm extends AbstractAlarmSensor {
 
 	public TemperatureAlarm(final String name, final Domain domain, Map<String, DataPoint> dps) {
 		this(name, domain, (BooleanDataPoint) dps.get("alarm"));
+		
+		IntegerDataPoint temperature = (IntegerDataPoint) dps.get("tempe");
+		if (temperature != null) {
+			setTemperature(temperature);
+		}
+		
+		IntegerDataPoint temperatureThreshold = (IntegerDataPoint) dps.get("temTd");
+		if (temperatureThreshold != null) {
+			setTemperatureThreshhold(temperatureThreshold);
+		}
 	}
 
 	public void setTemperature(IntegerDataPoint dp) {

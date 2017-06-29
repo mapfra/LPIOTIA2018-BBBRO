@@ -45,8 +45,8 @@ public class Clock extends Module {
 
 	public Clock(final String name, final Domain domain, Map<String, DataPoint> dps) {
 		this(name, domain, 
-				(TimeDataPoint) dps.get("currentTime"), 
-				(DateDataPoint) dps.get("currentDate"));
+				(TimeDataPoint) dps.get("curTe"), 
+				(DateDataPoint) dps.get("curDe"));
 	}
 
 	public Date getCurrentTime() throws DataPointException, AccessException {

@@ -49,7 +49,7 @@ public class BinarySwitch extends Module {
 	}
 	
 	public BinarySwitch(final String name, final Domain domain, Map<String, DataPoint> dps) {
-		this(name, domain, (BooleanDataPoint) dps.get("powerState"));
+		this(name, domain, (BooleanDataPoint) dps.get("powSe"));
 	}
 	
 	public void addAction(Action action) {

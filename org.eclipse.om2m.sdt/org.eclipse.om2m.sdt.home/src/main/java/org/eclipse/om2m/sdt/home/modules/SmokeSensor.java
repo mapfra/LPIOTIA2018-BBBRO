@@ -28,7 +28,7 @@ public class SmokeSensor extends AbstractAlarmSensor {
 	
 	public SmokeSensor(final String name, final Domain domain, Map<String, DataPoint> dps) {
 		this(name, domain, (BooleanDataPoint) dps.get("alarm"));
-		IntegerDataPoint detectedTime = (IntegerDataPoint) dps.get("detectedTime");
+		IntegerDataPoint detectedTime = (IntegerDataPoint) dps.get("detTe");
 		if (detectedTime != null)
 			setDetectedTime(detectedTime);
 	}

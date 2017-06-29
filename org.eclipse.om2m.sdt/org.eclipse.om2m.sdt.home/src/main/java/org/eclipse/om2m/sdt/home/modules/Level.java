@@ -45,7 +45,7 @@ public class Level extends Module {
 	
 	
     public Level(final String name, final Domain domain, Map<String, DataPoint> dps) {
-        this(name, domain, (org.eclipse.om2m.sdt.home.types.LevelType) dps.get("quantity"), (org.eclipse.om2m.sdt.home.types.LevelType) dps.get("status"));
+        this(name, domain, (org.eclipse.om2m.sdt.home.types.LevelType) dps.get("quanty"), (org.eclipse.om2m.sdt.home.types.LevelType) dps.get("stats"));
     }
 
 	

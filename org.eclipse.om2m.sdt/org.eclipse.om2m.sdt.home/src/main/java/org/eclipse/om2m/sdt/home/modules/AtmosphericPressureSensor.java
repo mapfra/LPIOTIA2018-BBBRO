@@ -38,7 +38,7 @@ public class AtmosphericPressureSensor extends Module {
 	
 	public AtmosphericPressureSensor(final String name, final Domain domain, 
 			Map<String, DataPoint> dps) {
-		this(name, domain, (FloatDataPoint) dps.get("atmosphericPressure"));
+		this(name, domain, (FloatDataPoint) dps.get("atmPe"));
 	}
 
 	public float getAtmosphericPressure() throws DataPointException, AccessException {

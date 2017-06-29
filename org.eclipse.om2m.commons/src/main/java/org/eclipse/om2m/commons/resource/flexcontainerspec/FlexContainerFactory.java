@@ -35,6 +35,8 @@ public class FlexContainerFactory {
 			return new DeviceSwitchButtonFlexContainer();
 		case DeviceTemperatureDetectorFlexContainer.SHORT_NAME:
 			return new DeviceTemperatureDetectorFlexContainer();
+		case DeviceThermostatFlexContainer.SHORT_NAME:
+			return new DeviceThermostatFlexContainer();
 		case DeviceWarningDeviceFlexContainer.SHORT_NAME:
 			return new DeviceWarningDeviceFlexContainer();
 		case DeviceWaterValveFlexContainer.SHORT_NAME:
@@ -103,6 +105,8 @@ public class FlexContainerFactory {
 			return new ModulePersonSensorFlexContainer();
 		case ModuleStreamingFlexContainer.SHORT_NAME:
 			return new ModuleStreamingFlexContainer();
+		case ModuleTimerFlexContainer.SHORT_NAME:
+			return new ModuleTimerFlexContainer();
 		case ModuleLockFlexContainer.SHORT_NAME:
 			return new ModuleLockFlexContainer();
 		case ActionToggleFlexContainer.SHORT_NAME:

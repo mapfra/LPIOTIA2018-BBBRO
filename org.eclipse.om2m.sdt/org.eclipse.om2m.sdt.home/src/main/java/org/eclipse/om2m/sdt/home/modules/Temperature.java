@@ -41,23 +41,23 @@ public class Temperature extends Module {
 	}
 
 	public Temperature(final String name, final Domain domain, Map<String, DataPoint> dps) {
-		this(name, domain, (FloatDataPoint) dps.get("currentTemperature"));
-		FloatDataPoint targetTemperature = (FloatDataPoint) dps.get("targetTemperature");
+		this(name, domain, (FloatDataPoint) dps.get("curT0"));
+		FloatDataPoint targetTemperature = (FloatDataPoint) dps.get("tarTe");
 		if (targetTemperature != null){
 			setTargetTemperature(targetTemperature);
 			targetTemperature.setWritable(true);
 		}
 			
-		FloatDataPoint minValue = (FloatDataPoint) dps.get("minValue");
+		FloatDataPoint minValue = (FloatDataPoint) dps.get("minVe");
 		if (minValue != null)
 			setMinValue(minValue);
-		FloatDataPoint maxValue = (FloatDataPoint) dps.get("maxValue");
+		FloatDataPoint maxValue = (FloatDataPoint) dps.get("maxVe");
 		if (maxValue != null)
 			setMaxValue(maxValue);
-		FloatDataPoint stepValue = (FloatDataPoint) dps.get("stepValue");
+		FloatDataPoint stepValue = (FloatDataPoint) dps.get("steVe");
 		if (stepValue != null)
 			setStepValue(stepValue);
-		StringDataPoint units = (StringDataPoint) dps.get("units");
+		StringDataPoint units = (StringDataPoint) dps.get("unit");
 		if (units != null)
 			setUnits(units);
 	}

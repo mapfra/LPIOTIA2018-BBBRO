@@ -37,7 +37,7 @@ public class Grinder extends Module {
 	}
 	
     public Grinder(final String name, final Domain domain, Map<String, DataPoint> dps) {
-        this(name, domain, (BooleanDataPoint) dps.get("useGrinder"), (IntegerDataPoint) dps.get("grindCoarsenes"));
+        this(name, domain, (BooleanDataPoint) dps.get("useGr"), (IntegerDataPoint) dps.get("gdCos"));
     }
 	
 	public boolean getUseGrinder() throws DataPointException, AccessException {

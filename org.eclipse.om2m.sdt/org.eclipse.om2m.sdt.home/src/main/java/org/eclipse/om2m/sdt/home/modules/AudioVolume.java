@@ -50,12 +50,12 @@ public class AudioVolume extends Module {
 	
 	public AudioVolume(final String name, final Domain domain, Map<String, DataPoint> dps) {
 		this(name, domain, 
-			(IntegerDataPoint) dps.get("volumePercentage"), 
-			(BooleanDataPoint) dps.get("muteEnabled"));
-		IntegerDataPoint stepValue = (IntegerDataPoint) dps.get("stepValue");
+			(IntegerDataPoint) dps.get("volPe"), 
+			(BooleanDataPoint) dps.get("mutEd"));
+		IntegerDataPoint stepValue = (IntegerDataPoint) dps.get("steVe");
 		if (stepValue != null)
 			setStepValue(stepValue);
-		IntegerDataPoint maxValue = (IntegerDataPoint) dps.get("maxValue");
+		IntegerDataPoint maxValue = (IntegerDataPoint) dps.get("maxVe");
 		if (maxValue != null)
 			setMaxValue(maxValue);
 	}

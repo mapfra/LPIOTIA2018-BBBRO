@@ -34,7 +34,7 @@ public class Brightness extends Module {
 	}
 
 	public Brightness(final String name, final Domain domain, Map<String, DataPoint> dps) {
-		this(name, domain, (IntegerDataPoint) dps.get("brightness"));
+		this(name, domain, (IntegerDataPoint) dps.get("brigs"));
 	}
 
 	public int getBrightness() throws DataPointException, AccessException {

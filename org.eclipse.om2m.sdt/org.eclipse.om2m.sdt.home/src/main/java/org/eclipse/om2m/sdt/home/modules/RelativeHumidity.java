@@ -37,8 +37,8 @@ public class RelativeHumidity extends Module {
 	}
 
 	public RelativeHumidity(final String name, final Domain domain, Map<String, DataPoint> dps) {
-		this(name, domain, (FloatDataPoint) dps.get("relativeHumidity"));
-		IntegerDataPoint desiredHumidity = (IntegerDataPoint) dps.get("desiredHumidity");
+		this(name, domain, (FloatDataPoint) dps.get("relHy"));
+		IntegerDataPoint desiredHumidity = (IntegerDataPoint) dps.get("desHy");
 		if (desiredHumidity != null)
 			setDesiredHumidity(desiredHumidity);
 	}

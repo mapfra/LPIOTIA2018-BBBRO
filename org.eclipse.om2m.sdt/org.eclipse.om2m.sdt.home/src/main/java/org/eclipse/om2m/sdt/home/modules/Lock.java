@@ -34,7 +34,7 @@ public class Lock extends Module {
 	}
 	
 	public Lock(final String name, final Domain domain, Map<String, DataPoint> dps) {
-		this(name, domain, (LockState) dps.get("lockState"));
+		this(name, domain, (LockState) dps.get("lokSe"));
 	}
 
 	public void setLockState(int c) throws DataPointException, AccessException {

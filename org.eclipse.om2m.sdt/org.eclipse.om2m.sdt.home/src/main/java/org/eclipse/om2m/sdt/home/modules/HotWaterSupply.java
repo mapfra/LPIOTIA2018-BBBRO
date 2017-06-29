@@ -36,7 +36,7 @@ public class HotWaterSupply extends Module {
 	}
 
 	public HotWaterSupply(final String name, final Domain domain, Map<String, DataPoint> dps) {
-		this(name, domain, (BooleanDataPoint) dps.get("status"));
+		this(name, domain, (BooleanDataPoint) dps.get("stats"));
 		BooleanDataPoint bath = (BooleanDataPoint) dps.get("bath");
 		if (bath != null)
 			setBath(bath);

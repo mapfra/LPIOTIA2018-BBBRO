@@ -40,7 +40,7 @@ public class Dimming extends Module {
 	}
 
 	public Dimming(final String name, final Domain domain, Map<String, DataPoint> dps) {
-		this(name, domain, (IntegerDataPoint) dps.get("dimmingSetting"));
+		this(name, domain, (IntegerDataPoint) dps.get("dimSg"));
 		StringDataPoint range = (StringDataPoint) dps.get("range");
 		if (range != null)
 			setRange(range);

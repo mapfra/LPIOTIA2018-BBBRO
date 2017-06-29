@@ -33,7 +33,7 @@ public class Boiler extends Module {
 	}
 
 	public Boiler(final String name, final Domain domain, Map<String, DataPoint> dps) {
-		this(name, domain, (BooleanDataPoint) dps.get("status"));
+		this(name, domain, (BooleanDataPoint) dps.get("stats"));
 	}
 
 	public boolean getStatus() throws DataPointException, AccessException {

@@ -46,8 +46,8 @@ public class RunMode extends Module {
 	
 	public RunMode(final String name, final Domain domain, Map<String, DataPoint> dps) {
 		this(name, domain, 
-			(ArrayDataPoint<String>) dps.get("operationMode"),
-			(ArrayDataPoint<String>) dps.get("supportedModes"));
+			(ArrayDataPoint<String>) dps.get("opeMe"),
+			(ArrayDataPoint<String>) dps.get("supMs"));
 	}
 
 	public List<String> getOperationMode() throws DataPointException, AccessException {
