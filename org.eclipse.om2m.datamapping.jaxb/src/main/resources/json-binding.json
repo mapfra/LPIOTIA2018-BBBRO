@@ -1,0 +1,196 @@
+{
+  "package-name": "org.eclipse.om2m.commons.resource",
+  "xml-schema": {
+    "element-form-default": "QUALIFIED",
+    "namespace": "http:\/\/www.onem2m.org\/xml\/protocols"
+  },
+  "java-types": {
+    "java-type": [
+      {
+        "name": "Resource",
+        "java-attributes": {
+          "xml-element": [
+            {
+              "java-attribute": "labels",
+              "name": "lbl"
+            }
+          ]
+        }
+      },
+      {
+        "name": "RegularResource",
+        "java-attributes": {
+          "xml-element": [
+            {
+              "java-attribute": "accessControlPolicyIDs",
+              "name": "acpi"
+            },
+            {
+              "java-attribute": "dynamicAuthorizationConsultationIDs",
+              "name": "daci"
+            }
+          ]
+        }
+      },
+      {
+        "name": "AnnounceableResource",
+        "java-attributes": {
+          "xml-element": [
+            {
+              "java-attribute": "announceTo",
+              "name": "at"
+            },
+            {
+              "java-attribute": "announcedAttribute",
+              "name": "aa"
+            }
+          ]
+        }
+      },
+      {
+        "name": "AnnounceableSubordinateResource",
+        "java-attributes": {
+          "xml-element": [
+            {
+              "java-attribute": "announceTo",
+              "name": "at"
+            },
+            {
+              "java-attribute": "announcedAttribute",
+              "name": "aa"
+            }
+          ]
+        }
+      },
+      {
+        "name": "AnnouncedResource",
+        "java-attributes": {
+          "xml-element": [
+            {
+              "java-attribute": "accessControlPolicyIDs",
+              "name": "acpi"
+            }
+          ]
+        }
+      },
+      {
+        "name": "CSEBase",
+        "java-attributes": {
+          "xml-element": [
+            {
+              "java-attribute": "accessControlPolicyIDs",
+              "name": "acpi"
+            },
+            {
+              "java-attribute": "dynamicAuthorizationConsultationIDs",
+              "name": "daci"
+            },
+            {
+              "java-attribute": "supportedResourceType",
+              "name": "srt"
+            },
+            {
+              "java-attribute": "pointOfAccess",
+              "name": "poa"
+            }
+          ]
+        }
+      },
+      {
+        "name": "RemoteCSE",
+        "java-attributes": {
+          "xml-element": [
+            {
+              "java-attribute": "pointOfAccess",
+              "name": "poa"
+            }
+          ]
+        }
+      },
+      {
+        "name": "AccessControlRule",
+        "java-attributes": {
+          "xml-element": [
+            {
+              "java-attribute": "accessControlOriginators",
+              "name": "acor"
+            }
+          ]
+        }
+      },
+      {
+        "name": "AE",
+        "java-attributes": {
+          "xml-element": [
+            {
+              "java-attribute": "pointOfAccess",
+              "name": "poa"
+            }
+          ]
+        }
+      },
+      {
+        "name": "AEAnnc",
+        "java-attributes": {
+          "xml-element": [
+            {
+              "java-attribute": "pointOfAccess",
+              "name": "poa"
+            }
+          ]
+        }
+      },
+      {
+        "name": "Group",
+        "java-attributes": {
+          "xml-element": [
+            {
+              "java-attribute": "memberIDs",
+              "name": "mid"
+            },
+            {
+              "java-attribute": "membersAccessControlPolicyIDs",
+              "name": "macp"
+            }
+          ]
+        }
+      },
+      {
+        "name": "Subscription",
+        "java-attributes": {
+          "xml-element": [
+            {
+              "java-attribute": "notificationURI",
+              "name": "nu"
+            }
+          ]
+        }
+      },
+      {
+        "name": "URIList",
+        "java-attributes": {
+          "xml-element": [
+            {
+              "java-attribute": "listOfUri",
+              "name":"uril"
+            }
+          ]
+        }
+      },
+      {
+        "name": "Group",
+        "java-attributes": {
+          "xml-element": [
+            {
+              "java-attribute": "countryCode"
+            },
+            {
+              "java-attribute": "circRegion"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
+

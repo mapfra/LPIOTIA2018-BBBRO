@@ -161,6 +161,8 @@ public class DiscoveryController extends Controller {
 		}
 		
 		URIList uriList = new URIList();
+		// need to call getListofUri in order to create at least an empty list
+		uriList.getListOfUri();
 		for(UriMapperEntity uriEntity : childUris){
 			if(filter.getLimit() != null && uriList.getListOfUri().size() == filter.getLimit().intValue()){
 				break;

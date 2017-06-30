@@ -36,6 +36,7 @@ import javax.xml.bind.Unmarshaller;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.om2m.commons.constants.MimeMediaType;
+import org.eclipse.om2m.commons.resource.URIList;
 import org.eclipse.om2m.datamapping.service.DataMapperService;
 import org.eclipse.persistence.jaxb.JAXBContextProperties;
 import org.eclipse.persistence.jaxb.MarshallerProperties;
@@ -64,13 +65,14 @@ public class Mapper implements DataMapperService {
 				if(mediaType.equals(MimeMediaType.JSON)){
 					// JSON
 					ClassLoader classLoader = Mapper.class.getClassLoader(); 
-					InputStream iStreamJsonBinding = classLoader.getResourceAsStream("json-binding.xml");
-					InputStream iStreamJsonBindingFlexcontainer = classLoader.getResourceAsStream("json-binding-flexcontainer.xml");
+					InputStream iStreamJsonBinding = classLoader.getResourceAsStream("json-binding.json");
+					InputStream iStreamJsonBindingFlexcontainer = classLoader.getResourceAsStream("json-binding-flexcontainer.json");
 					List<Object> iStreamList = new ArrayList<>();
 					iStreamList.add(iStreamJsonBinding);
 					iStreamList.add(iStreamJsonBindingFlexcontainer);
 					Map<String, Object> properties = new HashMap<String, Object>(); 
-					properties.put(JAXBContextProperties.OXM_METADATA_SOURCE, iStreamList);
+					properties.put("eclipselink-oxm-xml", iStreamList); 
+					properties.put("eclipselink.media-type", "application/json");;
 					context = JAXBContext.newInstance(resourcePackage, classLoader , properties);
 				} else if (mediaType.equals(MimeMediaType.XML)) {
 					// XML
@@ -103,10 +105,17 @@ public class Mapper implements DataMapperService {
 			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 			OutputStream outputStream = new ByteArrayOutputStream();
 			marshaller.setProperty(MarshallerProperties.MEDIA_TYPE,mediaType);
-			marshaller.setProperty(MarshallerProperties.JSON_INCLUDE_ROOT, true);
+			if (obj instanceof URIList) {
+				marshaller.setProperty(MarshallerProperties.JSON_INCLUDE_ROOT, false);
+				marshaller.setProperty(MarshallerProperties.JSON_MARSHAL_EMPTY_COLLECTIONS, true);
+				marshaller.setProperty(MarshallerProperties.JSON_REDUCE_ANY_ARRAYS, false);
+			} else {
+				marshaller.setProperty(MarshallerProperties.JSON_INCLUDE_ROOT, true);
+				marshaller.setProperty(MarshallerProperties.JSON_MARSHAL_EMPTY_COLLECTIONS, false);
+				marshaller.setProperty(MarshallerProperties.JSON_REDUCE_ANY_ARRAYS, true);
+			}
 			marshaller.setProperty(MarshallerProperties.JSON_VALUE_WRAPPER, "val");
-			marshaller.setProperty(MarshallerProperties.JSON_REDUCE_ANY_ARRAYS, true);
-			marshaller.setProperty(MarshallerProperties.JSON_MARSHAL_EMPTY_COLLECTIONS, false);
+			
 			
 			Map<String, String> namespaces = new HashMap<String, String>(); 
 			namespaces.put("http://www.onem2m.org/xml/protocols/homedomain", "hd"); 
