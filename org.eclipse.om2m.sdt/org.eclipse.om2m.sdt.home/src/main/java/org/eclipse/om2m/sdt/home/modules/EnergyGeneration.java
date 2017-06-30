@@ -16,6 +16,7 @@ import org.eclipse.om2m.sdt.datapoints.FloatDataPoint;
 import org.eclipse.om2m.sdt.datapoints.IntegerDataPoint;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 import org.eclipse.om2m.sdt.home.types.ModuleType;
 
 public class EnergyGeneration extends Module {
@@ -27,23 +28,25 @@ public class EnergyGeneration extends Module {
 	private IntegerDataPoint multiplyingFactors;
 	
 	public EnergyGeneration(final String name, final Domain domain) {
-		super(name, domain, ModuleType.energyGeneration.getDefinition(),
-				ModuleType.energyGeneration.getLongDefinitionName(),
-				ModuleType.energyGeneration.getShortDefinitionName());
+		super(name, domain, ModuleType.energyGeneration);
 	}
 	
 	public EnergyGeneration(final String name, final Domain domain, Map<String, DataPoint> dps) {
 		this(name, domain);
-		FloatDataPoint powerGenerationData = (FloatDataPoint) dps.get("poGDa");
+		FloatDataPoint powerGenerationData = 
+				(FloatDataPoint) dps.get(DatapointType.powerGenerationData.getShortName());
 		if (powerGenerationData != null)
 			setPowerGenerationData(powerGenerationData);
-		IntegerDataPoint roundingEnergyGeneration = (IntegerDataPoint) dps.get("roEGn");
+		IntegerDataPoint roundingEnergyGeneration = 
+				(IntegerDataPoint) dps.get(DatapointType.roundingEnergyGeneration.getShortName());
 		if (roundingEnergyGeneration != null)
 			setRoundingEnergyGeneration(roundingEnergyGeneration);
-		IntegerDataPoint significantDigits = (IntegerDataPoint) dps.get("sigDs");
+		IntegerDataPoint significantDigits = 
+				(IntegerDataPoint) dps.get(DatapointType.significantDigits.getShortName());
 		if (significantDigits != null)
 			setSignificantDigits(significantDigits);
-		IntegerDataPoint multiplyingFactors = (IntegerDataPoint) dps.get("mulFs");
+		IntegerDataPoint multiplyingFactors = 
+				(IntegerDataPoint) dps.get(DatapointType.multiplyingFactors.getShortName());
 		if (multiplyingFactors != null)
 			setMultiplyingFactors(multiplyingFactors);
 	}
@@ -61,8 +64,6 @@ public class EnergyGeneration extends Module {
 		this.powerGenerationData.setOptional(true);
 		this.powerGenerationData.setWritable(false);
 		this.powerGenerationData.setDoc("Amount of instaneous generation data.");
-		this.powerGenerationData.setLongDefinitionType("powerGenerationData");
-		this.powerGenerationData.setShortDefinitionType("poGDa");
 		addDataPoint(powerGenerationData);
 	}
 
@@ -71,8 +72,6 @@ public class EnergyGeneration extends Module {
 		this.multiplyingFactors.setOptional(true);
 		this.multiplyingFactors.setWritable(true);
 		this.multiplyingFactors.setDoc("The unit for data (multiplying factors) Ex. 1kWh, 0.1kWh, 0.01kWh etc.");
-		this.multiplyingFactors.setLongDefinitionType("multiplyingFactors");
-		this.multiplyingFactors.setShortDefinitionType("mulFs");
 		addDataPoint(multiplyingFactors);
 	}
 
@@ -93,8 +92,6 @@ public class EnergyGeneration extends Module {
 		this.roundingEnergyGeneration.setOptional(true);
 		this.roundingEnergyGeneration.setWritable(false);
 		this.roundingEnergyGeneration.setDoc("This energy generation data can be calculated by using significantFigures and units.");
-		this.roundingEnergyGeneration.setLongDefinitionType("roundingEnergyGeneration");
-		this.roundingEnergyGeneration.setShortDefinitionType("roEGn");
 		addDataPoint(roundingEnergyGeneration);
 	}
 
@@ -113,8 +110,6 @@ public class EnergyGeneration extends Module {
 		this.significantDigits.setOptional(true);
 		this.significantDigits.setWritable(true);
 		this.significantDigits.setDoc("The number of effective digits for data.");
-		this.significantDigits.setLongDefinitionType("significantDigits");
-		this.significantDigits.setShortDefinitionType("sigDs");
 		addDataPoint(significantDigits);
 	}
 

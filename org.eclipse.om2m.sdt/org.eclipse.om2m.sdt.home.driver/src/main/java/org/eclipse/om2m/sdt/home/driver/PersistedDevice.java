@@ -11,23 +11,29 @@ import java.util.Dictionary;
 import java.util.Enumeration;
 
 import org.eclipse.om2m.sdt.Property;
+import org.eclipse.om2m.sdt.exceptions.PropertyException;
 import org.eclipse.om2m.sdt.home.devices.GenericDevice;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.cm.ConfigurationException;
 import org.osgi.service.cm.ManagedService;
 
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class PersistedDevice implements ManagedService {
 
 	private GenericDevice device;
-	private ServiceRegistration registration;
+	private ServiceRegistration<?> registration;
 	private Logger logger;
 	
 	PersistedDevice(GenericDevice device) {
 		this.device = device;
-		logger = new Logger(device.getProtocol());
+		try {
+			logger = new Logger(device.getProtocol());
+		} catch (PropertyException e) {
+			logger = new Logger("Driver");
+		}
 	}
 	
-	void setRegistration(ServiceRegistration registration) {
+	void setRegistration(ServiceRegistration<?> registration) {
 		this.registration = registration;
 	}
 
@@ -42,12 +48,12 @@ public class PersistedDevice implements ManagedService {
 		}
 	}
 	
-	public boolean updateDevice(Dictionary props) {
+	public boolean updateDevice(Dictionary<?,?> props) {
 		boolean modified = false;
 		for (Enumeration keys = props.keys(); keys.hasMoreElements(); ) {
 			String key = (String)keys.nextElement();
 			String val = (String)props.get(key);
-			Property old = device.getProperty(key);
+			Property old = device.getProperty(key, false);
 			if (old == null) {
 				// Not a valid property: ignore (cannot add dynamically new properties)
 				logger.info("Unknown property (not SDT): " + key + "/" + val);

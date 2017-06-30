@@ -16,6 +16,7 @@ import org.eclipse.om2m.sdt.datapoints.FloatDataPoint;
 import org.eclipse.om2m.sdt.datapoints.IntegerDataPoint;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 import org.eclipse.om2m.sdt.home.types.ModuleType;
 
 public class RelativeHumidity extends Module {
@@ -23,22 +24,24 @@ public class RelativeHumidity extends Module {
 	private FloatDataPoint relativeHumidity;
 	private IntegerDataPoint desiredHumidity;
 	
-	public RelativeHumidity(final String name, final Domain domain, FloatDataPoint dp) {
-		super(name, domain, ModuleType.relativeHumidity.getDefinition(), 
-				ModuleType.relativeHumidity.getLongDefinitionName(),
-				ModuleType.relativeHumidity.getShortDefinitionName());
+	public RelativeHumidity(final String name, final Domain domain, 
+			FloatDataPoint relativeHumidity) {
+		super(name, domain, ModuleType.relativeHumidity);
 
-		this.relativeHumidity = dp;
+		if ((relativeHumidity == null) ||
+				! relativeHumidity.getShortDefinitionType().equals(DatapointType.relativeHumidity.getShortName())) {
+			domain.removeDevice(name);
+			throw new IllegalArgumentException("Wrong relativeHumidity datapoint: " + relativeHumidity);
+		}
+		this.relativeHumidity = relativeHumidity;
 		this.relativeHumidity.setWritable(false);
 		this.relativeHumidity.setDoc("The measurement of the relative humidity value; the common unit is percentage.");
-		this.relativeHumidity.setLongDefinitionType("relativeHumidity");
-		this.relativeHumidity.setShortDefinitionType("relHy");
 		addDataPoint(relativeHumidity);
 	}
 
 	public RelativeHumidity(final String name, final Domain domain, Map<String, DataPoint> dps) {
-		this(name, domain, (FloatDataPoint) dps.get("relHy"));
-		IntegerDataPoint desiredHumidity = (IntegerDataPoint) dps.get("desHy");
+		this(name, domain, (FloatDataPoint) dps.get(DatapointType.relativeHumidity.getShortName()));
+		IntegerDataPoint desiredHumidity = (IntegerDataPoint) dps.get(DatapointType.desiredHumidity.getShortName());
 		if (desiredHumidity != null)
 			setDesiredHumidity(desiredHumidity);
 	}
@@ -51,8 +54,6 @@ public class RelativeHumidity extends Module {
 		this.desiredHumidity = dp;
 		this.desiredHumidity.setOptional(true);
 		this.desiredHumidity.setDoc("Desired value for Humidity.");
-		this.desiredHumidity.setLongDefinitionType("desiredHumidity");
-		this.desiredHumidity.setShortDefinitionType("desHy");
 		addDataPoint(desiredHumidity);
 	}
 

@@ -15,7 +15,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.om2m.sdt.Property;
 import org.eclipse.om2m.sdt.datapoints.ArrayDataPoint;
 import org.eclipse.om2m.sdt.datapoints.StringDataPoint;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
@@ -27,9 +26,11 @@ import org.eclipse.om2m.sdt.home.modules.Streaming;
 import org.eclipse.om2m.sdt.home.netatmo.impl.Activator;
 import org.eclipse.om2m.sdt.home.netatmo.model.DetectedPerson;
 import org.eclipse.om2m.sdt.home.netatmo.model.WelcomeCamera;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 
+@SuppressWarnings("rawtypes")
 public class SDTWelcomeCameraDevice extends Camera {
 
 	private static final long DEFAULT_DETECTION_THRESHOLD = 75000; // 75 s
@@ -49,7 +50,7 @@ public class SDTWelcomeCameraDevice extends Camera {
 		this.detectionThreshold = (detectionThreshold <= 0) ? DEFAULT_DETECTION_THRESHOLD 
 				: (detectionThreshold);
 
-		// sdt properties
+		// SDT properties
 		setDeviceManufacturer("Netatmo");
 		setDeviceName(pCamera.getName());
 		setDeviceModelName(camera.getType());
@@ -60,10 +61,11 @@ public class SDTWelcomeCameraDevice extends Camera {
 		}
 
 		// create properties for vpn
-		addProperty(new Property("vpnUrl", "vpnUrl", camera.getVpnUrl()));
+		// TODO check if needed
+//		addProperty(new Property("vpnUrl", camera.getVpnUrl()));
 
 		setPersonSensor(new PersonSensor("personSensor_" + getId(), Activator.NETATMO_DOMAIN,
-			new ArrayDataPoint<String>("detectedPersons") {
+			new ArrayDataPoint<String>(DatapointType.detectedPersons) {
 				@Override
 				protected List<String> doGetValue() throws DataPointException {
 					List<String> ret = new ArrayList<>();
@@ -81,7 +83,7 @@ public class SDTWelcomeCameraDevice extends Camera {
 			}));
 		
 		setStreaming(new Streaming("streaming_" + getId(), Activator.NETATMO_DOMAIN, 
-			new StringDataPoint("url") {
+			new StringDataPoint(DatapointType.url) {
 				@Override
 				protected String doGetValue() throws DataPointException {
 					if (camera.getUseLocalUrl()) {
@@ -91,19 +93,19 @@ public class SDTWelcomeCameraDevice extends Camera {
 					}
 				}
 			}, 
-			new StringDataPoint("login") {
+			new StringDataPoint(DatapointType.login) {
 				@Override
 				protected String doGetValue() throws DataPointException {
 					return "";
 				}
 			}, 
-			new StringDataPoint("password") {
+			new StringDataPoint(DatapointType.password) {
 				@Override
 				protected String doGetValue() throws DataPointException {
 					return "";
 				}
 			}, 
-			new StringDataPoint("format") {
+			new StringDataPoint(DatapointType.format) {
 				@Override
 				protected String doGetValue() throws DataPointException {
 					return "HLS";

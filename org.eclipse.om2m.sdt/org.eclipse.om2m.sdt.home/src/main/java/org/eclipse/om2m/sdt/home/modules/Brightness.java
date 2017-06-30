@@ -15,6 +15,7 @@ import org.eclipse.om2m.sdt.Module;
 import org.eclipse.om2m.sdt.datapoints.IntegerDataPoint;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 import org.eclipse.om2m.sdt.home.types.ModuleType;
 
 public class Brightness extends Module {
@@ -22,19 +23,20 @@ public class Brightness extends Module {
 	private IntegerDataPoint brightness;
 
 	public Brightness(final String name, final Domain domain, IntegerDataPoint brightness) {
-		super(name, domain, ModuleType.brightness.getDefinition(),
-				ModuleType.brightness.getLongDefinitionName(), 
-				ModuleType.brightness.getShortDefinitionName());
+		super(name, domain, ModuleType.brightness);
 		
+		if ((brightness == null) ||
+				! brightness.getShortDefinitionType().equals(DatapointType.brightness.getShortName())) {
+			domain.removeDevice(name);
+			throw new IllegalArgumentException("Wrong brightness datapoint: " + brightness);
+		}
 		this.brightness = brightness;
 		this.brightness.setDoc("Current sensed or set value for Brightness");
-		this.brightness.setLongDefinitionType("brightness");
-		this.brightness.setShortDefinitionType("brigs");
 		addDataPoint(this.brightness);
 	}
 
 	public Brightness(final String name, final Domain domain, Map<String, DataPoint> dps) {
-		this(name, domain, (IntegerDataPoint) dps.get("brigs"));
+		this(name, domain, (IntegerDataPoint) dps.get(DatapointType.brightness.getShortName()));
 	}
 
 	public int getBrightness() throws DataPointException, AccessException {

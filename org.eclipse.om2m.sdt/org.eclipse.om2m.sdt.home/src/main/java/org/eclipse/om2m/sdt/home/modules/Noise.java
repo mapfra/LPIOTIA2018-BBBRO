@@ -8,24 +8,27 @@ import org.eclipse.om2m.sdt.Module;
 import org.eclipse.om2m.sdt.datapoints.IntegerDataPoint;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 import org.eclipse.om2m.sdt.home.types.ModuleType;
 
 public class Noise extends Module {
 
 	private IntegerDataPoint noise;
 	
-	public Noise(String name, Domain domain, IntegerDataPoint noiseDataPoint) {
-		super(name, domain, ModuleType.noise.getDefinition(),
-				ModuleType.noise.getLongDefinitionName(), ModuleType.noise.getShortDefinitionName());
-		this.noise = noiseDataPoint;
+	public Noise(String name, Domain domain, IntegerDataPoint noise) {
+		super(name, domain, ModuleType.noise);
+		if ((noise == null) ||
+				! noise.getShortDefinitionType().equals(DatapointType.noise.getShortName())) {
+			domain.removeDevice(name);
+			throw new IllegalArgumentException("Wrong noise datapoint: " + noise);
+		}
+		this.noise = noise;
 		this.noise.setWritable(false);
-		this.noise.setLongDefinitionType("noise");
-		this.noise.setShortDefinitionType("noise");
 		addDataPoint(this.noise);
 	}
 
 	public Noise(final String name, final Domain domain, Map<String, DataPoint> dps) {
-		this(name, domain, (IntegerDataPoint) dps.get("noise"));
+		this(name, domain, (IntegerDataPoint) dps.get(DatapointType.noise.getShortName()));
 	}
 
 	public int getNoise() throws DataPointException, AccessException {

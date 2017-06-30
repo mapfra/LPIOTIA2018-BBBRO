@@ -11,30 +11,31 @@ import org.eclipse.om2m.sdt.Domain;
 import org.eclipse.om2m.sdt.datapoints.StringDataPoint;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.modules.Streaming;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 
 public class MockedStreaming extends Streaming {
 
 	public MockedStreaming(String name, Domain domain) {
 		super(name, domain,
-			new StringDataPoint("url") {
+			new StringDataPoint(DatapointType.url) {
 				@Override
 				public String doGetValue() throws DataPointException {
 					return "my url";
 				}
 			}, 
-			new StringDataPoint("login") {
+			new StringDataPoint(DatapointType.login) {
 				@Override
 				public String doGetValue() throws DataPointException {
 					return "my login";
 				}
 			}, 
-			new StringDataPoint("password") {
+			new StringDataPoint(DatapointType.password) {
 				@Override
 				public String doGetValue() throws DataPointException {
 					return "my password";
 				}
 			}, 
-			new StringDataPoint("format") {
+			new StringDataPoint(DatapointType.format) {
 				@Override
 				public String doGetValue() throws DataPointException {
 					return "HLS";

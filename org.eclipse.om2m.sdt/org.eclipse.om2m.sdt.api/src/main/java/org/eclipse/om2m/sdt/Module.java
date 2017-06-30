@@ -13,13 +13,11 @@ public class Module extends ModuleClass {
 	private final String longDefinitionName;
 	private final String shortDefinitionName;
 
-
-	public Module(final String name, final Domain domain, final String definition, 
-			final String longDefinitionName, final String shortDefinitionName) {
-		super(definition + "__" + name, domain);
-		this.definition = definition;
-		this.longDefinitionName = longDefinitionName;
-		this.shortDefinitionName = shortDefinitionName;
+	public Module(final String id, final Domain domain, final Identifiers ids) {
+		super(ids.getDefinition() + "__" + id, domain);
+		this.definition = ids.getDefinition();
+		this.longDefinitionName = ids.getLongName();
+		this.shortDefinitionName = ids.getShortName();
 	}
 	
 	public String getDefinition() {
@@ -39,7 +37,5 @@ public class Module extends ModuleClass {
 	public String getShortDefinitionName() {
 		return shortDefinitionName;
 	}
-
-
 	
 }

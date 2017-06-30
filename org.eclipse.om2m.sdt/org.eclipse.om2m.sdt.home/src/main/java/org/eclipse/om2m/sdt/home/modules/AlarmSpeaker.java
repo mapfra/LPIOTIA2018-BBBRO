@@ -16,6 +16,7 @@ import org.eclipse.om2m.sdt.datapoints.BooleanDataPoint;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.types.AlertColourCode;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 import org.eclipse.om2m.sdt.home.types.ModuleType;
 import org.eclipse.om2m.sdt.home.types.Tone;
 
@@ -26,22 +27,24 @@ public class AlarmSpeaker extends Module {
 	private AlertColourCode light;
 
 	public AlarmSpeaker(final String name, final Domain domain, BooleanDataPoint alarmStatus) {
-		super(name, domain, ModuleType.alarmSpeaker.getDefinition(), 
-				ModuleType.alarmSpeaker.getLongDefinitionName(), ModuleType.alarmSpeaker.getShortDefinitionName());
+		super(name, domain, ModuleType.alarmSpeaker);
 		
+		if ((alarmStatus == null) ||
+				! alarmStatus.getShortDefinitionType().equals(DatapointType.alarmStatus.getShortName())) {
+			domain.removeDevice(name);
+			throw new IllegalArgumentException("Wrong alarmStatus datapoint: " + alarmStatus);
+		}
 		this.alarmStatus = alarmStatus;
 		this.alarmStatus.setDoc("\"True\" indicates the alarm start while \"False\" indicates the alarm stop");
-		this.alarmStatus.setLongDefinitionType("alarmStatus");
-		this.alarmStatus.setShortDefinitionType("alaSs");
 		addDataPoint(this.alarmStatus);
 	}
 
 	public AlarmSpeaker(final String name, final Domain domain, Map<String, DataPoint> dps) {
-		this(name, domain, (BooleanDataPoint) dps.get("alaSs"));
-		Tone tone = (Tone) dps.get("tone");
+		this(name, domain, (BooleanDataPoint) dps.get(DatapointType.alarmStatus.getShortName()));
+		Tone tone = (Tone) dps.get(DatapointType.tone.getShortName());
 		if (tone != null)
 			setTone(tone);
-		AlertColourCode light = (AlertColourCode) dps.get("light");
+		AlertColourCode light = (AlertColourCode) dps.get(DatapointType.light.getShortName());
 		if (light != null)
 			setLight(light);
 	}
@@ -62,8 +65,6 @@ public class AlarmSpeaker extends Module {
 		tone = dp;
 		tone.setDoc("Representing the tones of the alarm");
 		tone.setOptional(true);
-		tone.setLongDefinitionType("tone");
-		tone.setShortDefinitionType("tone");
 		addDataPoint(tone);
 	}
 
@@ -83,8 +84,6 @@ public class AlarmSpeaker extends Module {
 		light = dp;
 		light.setDoc("Representing the lighting mode of the alarm");
 		light.setOptional(true);
-		light.setLongDefinitionType("light");
-		light.setShortDefinitionType("light");
 		addDataPoint(light);
 	}
 

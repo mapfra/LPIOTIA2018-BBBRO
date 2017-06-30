@@ -15,12 +15,13 @@ import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.actions.Toggle;
 import org.eclipse.om2m.sdt.home.mocked.devices.Activator;
 import org.eclipse.om2m.sdt.home.modules.BinarySwitch;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 
 public class MockedBinarySwitch extends BinarySwitch {
 
 	public MockedBinarySwitch(String name, Domain domain) {
 		super(name, domain,
-			new BooleanDataPoint("powerState") {
+			new BooleanDataPoint(DatapointType.powerState) {
 				private Boolean powerState = Boolean.TRUE;
 				@Override
 				public void doSetValue(Boolean value) throws DataPointException {

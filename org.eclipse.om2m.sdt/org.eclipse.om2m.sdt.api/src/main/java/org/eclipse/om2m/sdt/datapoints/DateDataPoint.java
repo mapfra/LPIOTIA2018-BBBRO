@@ -7,11 +7,12 @@
  *******************************************************************************/
 package org.eclipse.om2m.sdt.datapoints;
 
+import org.eclipse.om2m.sdt.Identifiers;
 import org.eclipse.om2m.sdt.types.DataType;
 
 public abstract class DateDataPoint extends AbstractDateDataPoint {
 
-	public DateDataPoint(String name) {
+	public DateDataPoint(Identifiers name) {
 		super(name, DataType.Date);
 	}
 

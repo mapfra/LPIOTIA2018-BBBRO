@@ -12,13 +12,14 @@ import java.util.List;
 import org.eclipse.om2m.sdt.Domain;
 import org.eclipse.om2m.sdt.Event;
 import org.eclipse.om2m.sdt.datapoints.BooleanDataPoint;
+import org.eclipse.om2m.sdt.datapoints.EnumDataPoint;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.devices.WaterValve;
 import org.eclipse.om2m.sdt.home.driver.Utils;
 import org.eclipse.om2m.sdt.home.enocean.Activator.EnOceanSDTDevice;
 import org.eclipse.om2m.sdt.home.modules.FaultDetection;
-import org.eclipse.om2m.sdt.home.modules.Level;
-import org.eclipse.om2m.sdt.home.types.LevelType;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
+import org.eclipse.om2m.sdt.home.types.LiquidLevel;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.enocean.EnOceanDevice;
@@ -26,6 +27,7 @@ import org.osgi.service.enocean.EnOceanHandler;
 import org.osgi.service.enocean.EnOceanMessage;
 import org.osgi.service.enocean.EnOceanRPC;
 
+@SuppressWarnings("rawtypes")
 public class EOWaterValve extends WaterValve implements EnOceanSDTDevice {
 
 	protected EnOceanDevice eoDevice;
@@ -35,10 +37,10 @@ public class EOWaterValve extends WaterValve implements EnOceanSDTDevice {
 	private BundleContext context;
 
 	private FaultDetection faultDetection;
-	private Level waterLevel;
+	private org.eclipse.om2m.sdt.home.modules.LiquidLevel waterLevel;
 	
-	private LevelType liquidLevelDP;
-	private Integer liquidLevel = LevelType.maximum;
+	private LiquidLevel liquidLevelDP;
+	private Integer liquidLevel = LiquidLevel.maximum;
 
 	public EOWaterValve(EnOceanDevice device, Domain domain,
 			String serial, BundleContext context) {
@@ -95,10 +97,10 @@ public class EOWaterValve extends WaterValve implements EnOceanSDTDevice {
 		String msg;
 		if (feedback == 1) {
 			msg = "Closed";
-			liquidLevel = LevelType.zero;
+			liquidLevel = LiquidLevel.zero;
 		} else if (feedback == 2) {
 			msg = "Opened";
-			liquidLevel = LevelType.maximum;
+			liquidLevel = LiquidLevel.maximum;
 		} else {
 			msg = "Not defined";
 			liquidLevel = null;
@@ -112,7 +114,7 @@ public class EOWaterValve extends WaterValve implements EnOceanSDTDevice {
 	}
 
 	private void addWaterLevel() {
-		liquidLevelDP = new LevelType("liquidLevel") {
+		liquidLevelDP = new LiquidLevel(new EnumDataPoint<Integer>(null) {
 			@Override
 			public void doSetValue(Integer value) throws DataPointException {
 				try {
@@ -129,16 +131,16 @@ public class EOWaterValve extends WaterValve implements EnOceanSDTDevice {
 					throw new DataPointException("Unknown");
 				return liquidLevel;
 			}
-		};
-		waterLevel = new Level("Level_" + eoDevice.getChipId(), domain, null, liquidLevelDP);
+		});
+		waterLevel = new org.eclipse.om2m.sdt.home.modules.LiquidLevel("Level_" + eoDevice.getChipId(), domain, liquidLevelDP);
 		
-		Activator.logger.info("add Level module: " + waterLevel);
+		Activator.logger.info("add LiquidLevel module: " + waterLevel);
 		addModule(waterLevel);
 	}
 
 	private void addFaultDetection() {
 		faultDetection = new FaultDetection("FaultDetection_" + eoDevice.getChipId(), domain, 
-				new BooleanDataPoint("status") {
+				new BooleanDataPoint(DatapointType.status) {
 			@Override
 			public Boolean doGetValue() throws DataPointException {
 				return false;
@@ -150,10 +152,10 @@ public class EOWaterValve extends WaterValve implements EnOceanSDTDevice {
 	private void turn(int value) throws DataPointException {
 		final String command;
 		switch (value) {
-		case LevelType.zero:
+		case LiquidLevel.zero:
 			command = "HARDCODED_TURN_OFF";
 			break;
-		case LevelType.maximum:
+		case LiquidLevel.maximum:
 			command = "HARDCODED_APPAIR_TURN_ON";
 			break;
 		default:
@@ -189,7 +191,7 @@ public class EOWaterValve extends WaterValve implements EnOceanSDTDevice {
 		};
 
 		Activator.logger.info("Water pump available, " 
-				+ ((value == LevelType.zero) ? "close it!" : "Open it!"),
+				+ ((value == LiquidLevel.zero) ? "close it!" : "Open it!"),
 			EOWaterValve.class);
 		eoDevice.invoke(appairRPC, handlerTurnRPC);
 		Activator.logger.info("OK!", EOWaterValve.class);

@@ -10,15 +10,16 @@ package org.eclipse.om2m.sdt.home.mocked.devices;
 import java.util.List;
 
 import org.eclipse.om2m.sdt.Domain;
-import org.eclipse.om2m.sdt.datapoints.BooleanDataPoint;
 import org.eclipse.om2m.sdt.datapoints.FloatDataPoint;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.devices.Thermostat;
 import org.eclipse.om2m.sdt.home.mocked.modules.MockedTemperature;
 import org.eclipse.om2m.sdt.home.modules.Temperature;
 import org.eclipse.om2m.sdt.home.modules.Timer;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 import org.osgi.framework.ServiceRegistration;
 
+@SuppressWarnings("rawtypes")
 public class MockedThermostat extends Thermostat implements MockedDevice {
 
 	private List<ServiceRegistration> serviceRegistrations;
@@ -31,14 +32,14 @@ public class MockedThermostat extends Thermostat implements MockedDevice {
 		super(id, serial, domain);
 		
 		temperature = new MockedTemperature("temperature_" + id, domain, 
-				new FloatDataPoint("currentTemperature") {
+				new FloatDataPoint(DatapointType.currentTemperature) {
 				@Override
 				public Float doGetValue() throws DataPointException {
 					return currentTemp;
 				}
 			});
 		
-		temperature.setTargetTemperature(new FloatDataPoint("targetTemperature") {
+		temperature.setTargetTemperature(new FloatDataPoint(DatapointType.targetTemperature) {
 			@Override
 			protected Float doGetValue() throws DataPointException {
 				return targetTemp;
@@ -51,16 +52,16 @@ public class MockedThermostat extends Thermostat implements MockedDevice {
 		addModule(temperature);
 		
 		Timer timer = new Timer("timer_" + id, domain);
-		timer.setActivated(new BooleanDataPoint("activated") {
-			@Override
-			protected Boolean doGetValue() throws DataPointException {
-				return running;
-			}
-			@Override
-			protected void doSetValue(Boolean b) throws DataPointException {
-				running = b;
-			}
-		});
+//		timer.setActivated(new BooleanDataPoint(DatapointType.activated) {
+//			@Override
+//			protected Boolean doGetValue() throws DataPointException {
+//				return running;
+//			}
+//			@Override
+//			protected void doSetValue(Boolean b) throws DataPointException {
+//				running = b;
+//			}
+//		});
 		addModule(timer);
 	}
 
@@ -73,7 +74,6 @@ public class MockedThermostat extends Thermostat implements MockedDevice {
 		serviceRegistrations = Activator.register(this);
 	}
 
-	@SuppressWarnings("rawtypes")
 	public void unregisterDevice() {
 		running = false;
 		if (serviceRegistrations == null)

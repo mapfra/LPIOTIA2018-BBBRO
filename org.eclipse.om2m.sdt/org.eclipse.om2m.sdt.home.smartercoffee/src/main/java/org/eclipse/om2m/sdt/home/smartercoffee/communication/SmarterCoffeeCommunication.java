@@ -15,21 +15,15 @@ import org.eclipse.om2m.sdt.home.types.TasteStrength;
 public class SmarterCoffeeCommunication {
 	
 	private static final String IP = "10.0.1.25";
-	
 	private static final int PORT = 2081;
 	
 	private String ip;
-	
 	private int port = 0;
-	
 	//TODO status
-	
 	private SmarterCoffeeStatus status;
 	
-	
-	
-	public SmarterCoffeeCommunication (String ip, int port){
-		if(ip != null && port != 0){
+	public SmarterCoffeeCommunication (String ip, int port) {
+		if (ip != null && port != 0) {
 			this.ip = ip;
 			this.port = port;		
 		}
@@ -40,28 +34,27 @@ public class SmarterCoffeeCommunication {
 		status = new SmarterCoffeeStatus();
 	}
 	
-	public boolean getFaultDetection(){
+	public boolean getFaultDetection() {
 		return status.getFaultDetection();
 	}
 	
-	public int getCode(){
+	public int getCode() {
 		return status.getCode();
 	}
 	
-	public String getDescription(){
+	public String getDescription() {
 		return status.getDescription();
 	}
 	
-	public void start(boolean useGrinder, int numberOfCups, int sdtStrength, boolean keepWarm){ 
-		
+	public void start(boolean useGrinder, int numberOfCups, int sdtStrength, boolean keepWarm) { 
 		byte strength = 0;
-		if(sdtStrength >= TasteStrength.zero && sdtStrength < TasteStrength.medium){
+		if (sdtStrength >= TasteStrength.zero && sdtStrength < TasteStrength.medium) {
 			strength = SmarterCoffeeCommands.BREW_STRENGTH_0;
 		}
-		else if(sdtStrength == TasteStrength.medium){
+		else if (sdtStrength == TasteStrength.medium) {
 			strength = SmarterCoffeeCommands.BREW_STRENGTH_1;
 		}
-		else if (sdtStrength > TasteStrength.medium && sdtStrength <= TasteStrength.maximum){
+		else if (sdtStrength > TasteStrength.medium && sdtStrength <= TasteStrength.maximum) {
 			strength = SmarterCoffeeCommands.BREW_STRENGTH_2;
 		}
 		
@@ -77,30 +70,28 @@ public class SmarterCoffeeCommunication {
 		detectCoffeeReady(tcp.sendTCPPacket(request)); 
 	}
 	
-	public synchronized void detectCoffeeReady(final byte[] dataToParse){
-		
-		
+	public synchronized void detectCoffeeReady(final byte[] dataToParse) {
 		new Thread(new Runnable() {
 			boolean brewingInProgress = true;
 			boolean isFirst = true;
 			
 			@Override
 			public void run() {
-				while(brewingInProgress){
+				while(brewingInProgress) {
 					Activator.logger.debug("Check coffee ready Thread...");
-					if(isFirst){
+					if (isFirst) {
 						status.parseStatus(dataToParse);
 						isFirst = false;
 					}
-					if(status.getFaultDetection()){
+					if (status.getFaultDetection()) {
 						brewingInProgress = false;
 					}
-					else{
+					else {
 						TCPConnection tcp = new TCPConnection(ip, port);
 						status.parseStatus(tcp.checkStatus());
 					}
 			
-					if(status.isCoffeeReady()) {
+					if (status.isCoffeeReady()) {
 						brewingInProgress = false; 
 						Activator.logger.debug("Coffee is ready!");
 					}
@@ -112,25 +103,21 @@ public class SmarterCoffeeCommunication {
 				}
 			}
 		}).start();
-		
-		
 	}
 	
-	public int getCoffeeReadyStatus(){
-		
+	public int getCoffeeReadyStatus() {
 		return status.getCoffeePreparationStatus();
 	}
 	
-	public int getWaterStatus(){
+	public int getWaterStatus() {
 		return status.getWaterLevel();
 	}
 	
-	public boolean getKeepWarmStatus(){
+	public boolean getKeepWarmStatus() {
 		return status.getKeepWarm();
 	}
 	
-	
-	public void start(){ 
+	public void start() { 
 		TCPConnection tcp = new TCPConnection(this.ip, this.port);
 		tcp.setWaitForResponse(true);
 		byte[] request = new byte[2];
@@ -139,7 +126,7 @@ public class SmarterCoffeeCommunication {
 		status.parseStatus(tcp.sendTCPPacket(request));
 	}
 	
-	public void getStatus(){ 
+	public void getStatus() { 
 		TCPConnection tcp = new TCPConnection(this.ip, this.port);
 		tcp.setWaitForResponse(true);
 		byte[] request = new byte[2];
@@ -148,10 +135,10 @@ public class SmarterCoffeeCommunication {
 		status.parseStatus(tcp.sendTCPPacket(request));
 	}
 	
-	public void stop(){		
+	public void stop() {		
 	}
 	
-	public void setBrewStrength(int strength){
+	public void setBrewStrength(int strength) {
 		TCPConnection tcp = new TCPConnection(this.ip, this.port);
 		tcp.setWaitForResponse(true);
 		byte[] request = new byte[3];
@@ -159,10 +146,9 @@ public class SmarterCoffeeCommunication {
 		request[1] = (byte)strength;
 		request[2] = (byte)SmarterCoffeeCommands.END_OF_MESSAGE;
 		status.parseStatus(tcp.sendTCPPacket(request));
-		
 	}
 	
-	public void setNumberOfCups(int number){
+	public void setNumberOfCups(int number) {
 		TCPConnection tcp = new TCPConnection(this.ip, this.port);
 		tcp.setWaitForResponse(true);
 		byte[] request = new byte[3];
@@ -170,21 +156,18 @@ public class SmarterCoffeeCommunication {
 		request[1] = (byte)number;
 		request[2] = (byte)SmarterCoffeeCommands.END_OF_MESSAGE;
 		status.parseStatus(tcp.sendTCPPacket(request));
-		
 	}
 	
-	
-	public void tooggleGrinder(){
+	public void tooggleGrinder() {
 		TCPConnection tcp = new TCPConnection(this.ip, this.port);
 		tcp.setWaitForResponse(true);
 		byte[] request = new byte[2];
 		request[0] = SmarterCoffeeCommands.HEADER_GRINDTGGL;
 		request[1] = (byte)SmarterCoffeeCommands.END_OF_MESSAGE;
 		status.parseStatus(tcp.sendTCPPacket(request));
-		
 	}
 	
-	public void setHotPlateOn(int minutes){
+	public void setHotPlateOn(int minutes) {
 		TCPConnection tcp = new TCPConnection(this.ip, this.port);
 		tcp.setWaitForResponse(true);
 		byte[] request = new byte[3];
@@ -194,10 +177,7 @@ public class SmarterCoffeeCommunication {
 		status.parseStatus(tcp.sendTCPPacket(request));
 	}
 	
-	
-	public void setHotPlateOff(){
-		
-
+	public void setHotPlateOff() {
 		TCPConnection tcp = new TCPConnection(this.ip, this.port);
 		tcp.setWaitForResponse(true);
 		byte[] request = new byte[2];
@@ -206,27 +186,21 @@ public class SmarterCoffeeCommunication {
 		status.parseStatus(tcp.sendTCPPacket(request));
 	}
 	
-	public void setTime(Date date){  //Calendar??
-		
-		
+	public void setTime(Date date) {  //Calendar??
 	}
 	
-	public void reset(){
-
+	public void reset() {
 		TCPConnection tcp = new TCPConnection(this.ip, this.port);
 		tcp.setWaitForResponse(true);
 		byte[] request = new byte[2];
 		request[0] = SmarterCoffeeCommands.HEADER_RESET;
 		request[1] = (byte)SmarterCoffeeCommands.END_OF_MESSAGE;
 		status.parseStatus(tcp.sendTCPPacket(request));
-		
 	}
 	
-	public void checkStatus(){
+	public void checkStatus() {
 		TCPConnection tcp = new TCPConnection(this.ip, this.port);
 		tcp.checkStatus();
 	}
-
-	
 
 }

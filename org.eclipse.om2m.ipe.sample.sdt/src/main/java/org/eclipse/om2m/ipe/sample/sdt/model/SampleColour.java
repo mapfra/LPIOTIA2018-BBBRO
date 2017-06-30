@@ -13,13 +13,14 @@ import org.eclipse.om2m.sdt.datapoints.IntegerDataPoint;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.modules.Colour;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 
 public class SampleColour extends Colour {
 
 	public SampleColour(String name, Domain domain) {
 		// Default color: yellow (rgb: 255,255,0)
 		super(name, domain,
-			new IntegerDataPoint("red") {
+			new IntegerDataPoint(DatapointType.red) {
 				private Integer v = 255;
 				@Override
 				public void doSetValue(Integer value) throws DataPointException {
@@ -30,7 +31,7 @@ public class SampleColour extends Colour {
 					return v;
 				}
 			}, 
-			new IntegerDataPoint("green") {
+			new IntegerDataPoint(DatapointType.green) {
 				private Integer v = 255;
 				@Override
 				public void doSetValue(Integer value) throws DataPointException {
@@ -41,7 +42,7 @@ public class SampleColour extends Colour {
 					return v;
 				}
 			}, 
-			new IntegerDataPoint("blue") {
+			new IntegerDataPoint(DatapointType.blue) {
 				private Integer v = 0;
 				@Override
 				public void doSetValue(Integer value) throws DataPointException {
@@ -60,7 +61,7 @@ public class SampleColour extends Colour {
 		super.setRed(v);
 		if (old != v) {
 			Event evt = new Event("Set RED " + getOwner().getId());
-			evt.addDataPoint(getDataPoint("red"));
+			evt.addDataPoint(getDataPointByShortName(DatapointType.red.getShortName()));
 			evt.setValue(v);
 			addEvent(evt);
 		}
@@ -71,7 +72,7 @@ public class SampleColour extends Colour {
 		super.setGreen(v);
 		if (old != v) {
 			Event evt = new Event("Set GREEN " + getOwner().getId());
-			evt.addDataPoint(getDataPoint("green"));
+			evt.addDataPoint(getDataPointByShortName(DatapointType.green.getShortName()));
 			evt.setValue(v);
 			addEvent(evt);
 		}
@@ -82,7 +83,7 @@ public class SampleColour extends Colour {
 		super.setBlue(v);
 		if (old != v) {
 			Event evt = new Event("Set BLUE " + getOwner().getId());
-			evt.addDataPoint(getDataPoint("blue"));
+			evt.addDataPoint(getDataPointByShortName(DatapointType.blue.getShortName()));
 			evt.setValue(v);
 			addEvent(evt);
 		}

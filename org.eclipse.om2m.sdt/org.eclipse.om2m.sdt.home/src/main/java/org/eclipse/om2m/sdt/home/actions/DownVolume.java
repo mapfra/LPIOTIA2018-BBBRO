@@ -7,32 +7,27 @@
  *******************************************************************************/
 package org.eclipse.om2m.sdt.home.actions;
 
-import org.eclipse.om2m.sdt.args.BooleanArg;
 import org.eclipse.om2m.sdt.args.Command;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.ActionException;
+import org.eclipse.om2m.sdt.home.types.ActionType;
 
-public abstract class Volume extends Command {
+public abstract class DownVolume extends Command {
 	
-	private BooleanArg upArg;
-
-	public Volume(String name) {
-		super(name, "org.onem2m.home.actions.volume", "downVolume", "dowVe");
-		setDoc("Increase/Decrease volume by the amount of the stepValue upto the maxValue");
-		upArg = new BooleanArg("up");
-		addArg(upArg);
+	public DownVolume(String name) {
+		super(name, ActionType.downVolume);
+		setDoc("Decrease volume by the amount of the stepValue upto 0");
 	}
 
-	public final void upOrDown(final boolean up) throws ActionException, AccessException {
-		upArg.setValue(up);
+	public final void downVolume() throws AccessException, ActionException {
 		invoke();
 	}
 	
-	abstract protected void doUpOrDown(final boolean up) throws ActionException;
+	abstract protected void doDownVolume() throws ActionException;
 	
 	@Override
 	protected Object doInvoke() throws ActionException {
-		doUpOrDown(upArg.getValue());
+		doDownVolume();
 		return null;
 	}
 

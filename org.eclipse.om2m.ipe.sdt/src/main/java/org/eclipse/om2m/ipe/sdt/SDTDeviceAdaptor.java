@@ -112,10 +112,7 @@ public class SDTDeviceAdaptor {
 				customAttributeForSdtProperty.setCustomAttributeType(
 						sdtProperty.getType().getOneM2MType());
 
-				logger.debug("create a new CustomAttribute (name=" 
-						+ customAttributeForSdtProperty.getCustomAttributeName()
-						+ ", value=" + customAttributeForSdtProperty.getCustomAttributeValue() 
-						+ ", type=" + customAttributeForSdtProperty.getCustomAttributeType() + ")");
+				logger.info("new Property CustomAttribute (" + customAttributeForSdtProperty + ")");
 				flexContainer.getCustomAttributes().add(customAttributeForSdtProperty);
 			}
 		}

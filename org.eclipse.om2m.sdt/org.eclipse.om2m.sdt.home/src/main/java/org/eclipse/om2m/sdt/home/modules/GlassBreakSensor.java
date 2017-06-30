@@ -12,6 +12,7 @@ import java.util.Map;
 import org.eclipse.om2m.sdt.DataPoint;
 import org.eclipse.om2m.sdt.Domain;
 import org.eclipse.om2m.sdt.datapoints.BooleanDataPoint;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 import org.eclipse.om2m.sdt.home.types.ModuleType;
 
 public class GlassBreakSensor extends AbstractAlarmSensor {
@@ -22,7 +23,7 @@ public class GlassBreakSensor extends AbstractAlarmSensor {
 	}
 
 	public GlassBreakSensor(final String name, final Domain domain, Map<String, DataPoint> dps) {
-		this(name, domain, (BooleanDataPoint) dps.get("alarm"));
+		this(name, domain, (BooleanDataPoint) dps.get(DatapointType.alarm.getShortName()));
 	}
 
 }

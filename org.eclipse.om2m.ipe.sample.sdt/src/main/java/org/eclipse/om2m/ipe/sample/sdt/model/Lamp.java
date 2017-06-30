@@ -15,6 +15,7 @@ import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.devices.Light;
 import org.eclipse.om2m.sdt.home.driver.Utils;
 import org.eclipse.om2m.sdt.home.modules.ColourSaturation;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 
@@ -32,7 +33,7 @@ public class Lamp extends Light {
 		addModule(new SampleColour("colour_" + id, domain));
 
 		addModule(new ColourSaturation("colourSaturation_" + id, domain, 
-			new IntegerDataPoint("colourSaturation") {
+			new IntegerDataPoint(DatapointType.colourSat) {
 				private Integer v = new Integer((int)(Math.random() * 100));
 				@Override
 				public void doSetValue(Integer value) throws DataPointException {

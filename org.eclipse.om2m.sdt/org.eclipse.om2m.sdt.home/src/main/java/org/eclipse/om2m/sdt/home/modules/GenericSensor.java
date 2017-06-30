@@ -9,6 +9,7 @@ package org.eclipse.om2m.sdt.home.modules;
 
 import org.eclipse.om2m.sdt.Domain;
 import org.eclipse.om2m.sdt.Module;
+import org.eclipse.om2m.sdt.Identifiers;
 import org.eclipse.om2m.sdt.datapoints.BooleanDataPoint;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
@@ -20,20 +21,20 @@ public class GenericSensor extends Module {
 	
 	public GenericSensor(final String name, final Domain domain, 
 			BooleanDataPoint value) {
-		this(name, domain, value, ModuleType.genericSensor.getDefinition());
+		this(name, domain, value, ModuleType.genericSensor);
 	}
 	
 	public GenericSensor(final String name, final Domain domain, 
-			BooleanDataPoint value, String containerDefinition) {
-		super(name, domain, containerDefinition, 
-				ModuleType.genericSensor.getLongDefinitionName(),
-				ModuleType.genericSensor.getShortDefinitionName());
+			BooleanDataPoint value, Identifiers identifiers) {
+		super(name, domain, identifiers); 
 
+		if (value == null) {
+			domain.removeDevice(name);
+			throw new IllegalArgumentException("Wrong value datapoint: " + value);
+		}
 		this.value = value;
 		this.value.setWritable(false);
 		this.value.setDoc("True = Sensed, False = Not Sensed");
-		this.value.setLongDefinitionType("value");
-		this.value.setShortDefinitionType("value");
 		addDataPoint(this.value);
 	}
 

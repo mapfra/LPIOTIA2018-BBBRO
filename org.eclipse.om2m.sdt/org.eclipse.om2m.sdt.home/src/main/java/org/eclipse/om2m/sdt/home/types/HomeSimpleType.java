@@ -6,13 +6,24 @@ import org.eclipse.om2m.sdt.types.SimpleType;
 public class HomeSimpleType extends SimpleType {
 
 	static public final HomeSimpleType AlertColourCode = new HomeSimpleType(HomeBasicType.ALERTCOLOURCODE);
+	static public final HomeSimpleType DeviceType = new HomeSimpleType(HomeBasicType.DEVICETYPE);
+	static public final HomeSimpleType SupportedInputSources = new HomeSimpleType(HomeBasicType.SUPPORTEDINPUTSOURCES);
+	static public final HomeSimpleType LiquidLevel = new HomeSimpleType(HomeBasicType.LIQUIDLEVEL);
+	static public final HomeSimpleType SpinLevelStrength = new HomeSimpleType(HomeBasicType.SPINLEVELSTRENGTH);
 	static public final HomeSimpleType DoorState = new HomeSimpleType(HomeBasicType.DOORSTATE);
-	static public final HomeSimpleType Level = new HomeSimpleType(HomeBasicType.LEVEL);
-	static public final HomeSimpleType LockState = new HomeSimpleType(HomeBasicType.LOCKSTATE);
-	static public final HomeSimpleType SupportedMode = new HomeSimpleType(HomeBasicType.SUPPORTEDMODE);
 	static public final HomeSimpleType Tone = new HomeSimpleType(HomeBasicType.TONE);
+	static public final HomeSimpleType JobStates = new HomeSimpleType(HomeBasicType.JOBSTATES);
+	static public final HomeSimpleType WaterFlowStrength = new HomeSimpleType(HomeBasicType.WATERFLOWSTRENGTH);
+	static public final HomeSimpleType WindStrength = new HomeSimpleType(HomeBasicType.WINDSTRENGTH);
+	static public final HomeSimpleType GrainsLevel = new HomeSimpleType(HomeBasicType.GRAINSLEVEL);
 	static public final HomeSimpleType FoamStrength = new HomeSimpleType(HomeBasicType.FOAMSTRENGTH);
 	static public final HomeSimpleType TasteStrength = new HomeSimpleType(HomeBasicType.TASTESTRENGTH);
+	static public final HomeSimpleType GrindCoarseness = new HomeSimpleType(HomeBasicType.GRINDCOARSENESS);
+	static public final HomeSimpleType MachineState = new HomeSimpleType(HomeBasicType.MACHINESTATE);
+	static public final HomeSimpleType WashingCourse = new HomeSimpleType(HomeBasicType.WASHINGCOURSE);
+	static public final HomeSimpleType GeneralTemperature = new HomeSimpleType(HomeBasicType.GENERALTEMPERATURE);
+	static public final HomeSimpleType GeneralLevel = new HomeSimpleType(HomeBasicType.GENERALLEVEL);
+	static public final HomeSimpleType GeneralSpeed = new HomeSimpleType(HomeBasicType.GENERALSPEED);
 	
 	protected HomeSimpleType(final BasicType type) {
 		super(type);

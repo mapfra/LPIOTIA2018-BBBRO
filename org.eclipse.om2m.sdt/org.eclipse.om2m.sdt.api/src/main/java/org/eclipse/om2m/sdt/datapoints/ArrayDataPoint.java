@@ -9,12 +9,13 @@ package org.eclipse.om2m.sdt.datapoints;
 
 import java.util.List;
 
+import org.eclipse.om2m.sdt.Identifiers;
 import org.eclipse.om2m.sdt.types.Array;
 import org.eclipse.om2m.sdt.types.DataType;
 
 public abstract class ArrayDataPoint<T> extends ValuedDataPoint<List<T>> {
 
-	public ArrayDataPoint(String name) {
+	public ArrayDataPoint(Identifiers name) {
 		super(name, new DataType("array", new Array<T>()));
 	}
 

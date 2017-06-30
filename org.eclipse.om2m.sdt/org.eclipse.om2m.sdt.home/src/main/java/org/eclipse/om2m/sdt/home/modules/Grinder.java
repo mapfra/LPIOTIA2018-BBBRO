@@ -9,35 +9,43 @@ import org.eclipse.om2m.sdt.datapoints.BooleanDataPoint;
 import org.eclipse.om2m.sdt.datapoints.IntegerDataPoint;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 import org.eclipse.om2m.sdt.home.types.ModuleType;
 
 public class Grinder extends Module {
 	
 	private BooleanDataPoint useGrinder;
 	
-	private IntegerDataPoint grindCoarsenes;
+	private IntegerDataPoint coarseness;
 	
-	public Grinder(final String name, final Domain domain, BooleanDataPoint useGrinder, IntegerDataPoint grindCoarsenes){
-		super(name, domain, ModuleType.grinder.getDefinition(),
-				ModuleType.grinder.getLongDefinitionName(),
-				ModuleType.grinder.getShortDefinitionName());
+	public Grinder(final String name, final Domain domain, 
+			BooleanDataPoint useGrinder, IntegerDataPoint coarseness){
+		super(name, domain, ModuleType.grinder);
 		setExtends(domain.getName(), "Grinder");
 		
+		if ((useGrinder == null) ||
+				! useGrinder.getShortDefinitionType().equals(DatapointType.useGrinder.getShortName())) {
+			domain.removeDevice(name);
+			throw new IllegalArgumentException("Wrong useGrinder datapoint: " + useGrinder);
+		}
 		this.useGrinder = useGrinder;
 		this.useGrinder.setDoc("The current status of the grinder enablement");
-		this.useGrinder.setLongDefinitionType("useGrinder");
-		this.useGrinder.setShortDefinitionType("useGr");
 		addDataPoint(this.useGrinder);
 		
-		this.grindCoarsenes = grindCoarsenes;
-		this.grindCoarsenes.setDoc("The current coarseness of the object after grinding.");
-		this.grindCoarsenes.setLongDefinitionType("grindCoarsenes");
-		this.grindCoarsenes.setShortDefinitionType("gdCos");
-		addDataPoint(this.grindCoarsenes);
+		if ((coarseness == null) ||
+				! coarseness.getShortDefinitionType().equals(DatapointType.coarseness.getShortName())) {
+			domain.removeDevice(name);
+			throw new IllegalArgumentException("Wrong coarseness datapoint: " + coarseness);
+		}
+		this.coarseness = coarseness;
+		this.coarseness.setDoc("The current coarseness of the object after grinding.");
+		addDataPoint(this.coarseness);
 	}
 	
     public Grinder(final String name, final Domain domain, Map<String, DataPoint> dps) {
-        this(name, domain, (BooleanDataPoint) dps.get("useGr"), (IntegerDataPoint) dps.get("gdCos"));
+        this(name, domain, 
+        		(BooleanDataPoint) dps.get(DatapointType.useGrinder.getShortName()), 
+        		(IntegerDataPoint) dps.get(DatapointType.coarseness.getShortName()));
     }
 	
 	public boolean getUseGrinder() throws DataPointException, AccessException {
@@ -49,11 +57,11 @@ public class Grinder extends Module {
 	}
 
 	public int getGrindCoarsenes() throws DataPointException, AccessException  {
-		return grindCoarsenes.getValue();
+		return coarseness.getValue();
 	}
 
 	public void setGrindCoarsenes(int v) throws DataPointException, AccessException  {
-		this.grindCoarsenes.setValue(v);
+		this.coarseness.setValue(v);
 	}
 	
 }

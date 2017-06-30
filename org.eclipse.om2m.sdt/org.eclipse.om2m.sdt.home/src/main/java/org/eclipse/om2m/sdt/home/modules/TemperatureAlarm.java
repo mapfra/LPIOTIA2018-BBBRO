@@ -15,12 +15,13 @@ import org.eclipse.om2m.sdt.datapoints.BooleanDataPoint;
 import org.eclipse.om2m.sdt.datapoints.IntegerDataPoint;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 import org.eclipse.om2m.sdt.home.types.ModuleType;
 
 public class TemperatureAlarm extends AbstractAlarmSensor {
 	
 	private IntegerDataPoint temperature;
-	private IntegerDataPoint temperatureThreshold;
+	private IntegerDataPoint temperatureThreshhold;
 	
 	public TemperatureAlarm(final String name, final Domain domain, BooleanDataPoint alarm) {
 		super(name, domain, alarm, ModuleType.temperatureAlarm,
@@ -28,17 +29,11 @@ public class TemperatureAlarm extends AbstractAlarmSensor {
 	}
 
 	public TemperatureAlarm(final String name, final Domain domain, Map<String, DataPoint> dps) {
-		this(name, domain, (BooleanDataPoint) dps.get("alarm"));
-		
-		IntegerDataPoint temperature = (IntegerDataPoint) dps.get("tempe");
-		if (temperature != null) {
-			setTemperature(temperature);
-		}
-		
-		IntegerDataPoint temperatureThreshold = (IntegerDataPoint) dps.get("temTd");
-		if (temperatureThreshold != null) {
-			setTemperatureThreshhold(temperatureThreshold);
-		}
+		this(name, domain, (BooleanDataPoint) dps.get(DatapointType.alarm.getShortName()));
+		IntegerDataPoint temperatureThreshhold = 
+				(IntegerDataPoint) dps.get(DatapointType.temperatureThreshhold.getShortName());
+		if (temperatureThreshhold != null)
+			setTemperatureThreshhold(temperatureThreshhold);
 	}
 
 	public void setTemperature(IntegerDataPoint dp) {
@@ -46,8 +41,6 @@ public class TemperatureAlarm extends AbstractAlarmSensor {
 		temperature.setOptional(true);
 		temperature.setWritable(false);
 		temperature.setDoc("To report the value of the temperature; the common unit is ºC");
-		temperature.setLongDefinitionType("temperature");
-		temperature.setShortDefinitionType("tempe");
 		addDataPoint(temperature);
 	}
 	
@@ -58,24 +51,22 @@ public class TemperatureAlarm extends AbstractAlarmSensor {
 	}
 
 	public void setTemperatureThreshhold(IntegerDataPoint dp) {
-		this.temperatureThreshold = dp;
-		temperatureThreshold.setOptional(true);
-		temperatureThreshold.setDoc("The threshhold to trigger the alarm.");
-		temperatureThreshold.setLongDefinitionType("temperatureThreshold");
-		temperatureThreshold.setShortDefinitionType("temTd");
-		addDataPoint(temperatureThreshold);
+		this.temperatureThreshhold = dp;
+		temperatureThreshhold.setOptional(true);
+		temperatureThreshhold.setDoc("The threshhold to trigger the alarm.");
+		addDataPoint(temperatureThreshhold);
 	}
 	
 	public int getTemperatureThreshhold() throws DataPointException, AccessException {
-		if (temperatureThreshold == null)
+		if (temperatureThreshhold == null)
 			throw new DataPointException("Not implemented");
-		return temperatureThreshold.getValue();
+		return temperatureThreshhold.getValue();
 	}
 	
 	public void setTemperatureThreshhold(int v) throws DataPointException, AccessException {
-		if (temperatureThreshold == null)
+		if (temperatureThreshhold == null)
 			throw new DataPointException("Not implemented");
-		temperatureThreshold.setValue(v);
+		temperatureThreshhold.setValue(v);
 	}
 
 }

@@ -321,7 +321,7 @@ public class Server {
 						Server.class);
 			}
 		} catch (IOException e) {
-			Activator.logger.error("unable to open connection", Server.class);
+			Activator.logger.warning("unable to open connection: " + e.getMessage(), Server.class);
 		}
 		return null;
 	}

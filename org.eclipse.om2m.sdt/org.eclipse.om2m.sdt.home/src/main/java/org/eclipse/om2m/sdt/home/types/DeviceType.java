@@ -7,7 +7,9 @@
  *******************************************************************************/
 package org.eclipse.om2m.sdt.home.types;
 
-public enum DeviceType {
+import org.eclipse.om2m.sdt.Identifiers;
+
+public enum DeviceType implements Identifiers {
 	
 	deviceAirConditioner(1, "deviceAirConditioner", "deviceAirConditioner", "deACr"),
 	deviceClothesWasher(2, "deviceClothesWasher", "deviceClothesWasher", "deCWr"),
@@ -71,18 +73,18 @@ public enum DeviceType {
     /**
 	 * @return the longDefinitionName
 	 */
-	public String getLongDefinitionName() {
+	@Override
+	public String getLongName() {
 		return longDefinitionName;
 	}
-
 
 	/**
 	 * @return the shortDefinitionName
 	 */
-	public String getShortDefinitionName() {
+	@Override
+	public String getShortName() {
 		return shortDefinitionName;
 	}
-
 
 	public static DeviceType fromValue(int v) {
         for (DeviceType c: DeviceType.values()) {

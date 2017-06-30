@@ -17,8 +17,10 @@ import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.devices.SmokeDetector;
 import org.eclipse.om2m.sdt.home.mocked.modules.MockedFaultDetection;
 import org.eclipse.om2m.sdt.home.modules.SmokeSensor;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 import org.osgi.framework.ServiceRegistration;
 
+@SuppressWarnings("rawtypes")
 public class MockedSmokeDetector extends SmokeDetector implements MockedDevice {
 
 	private List<ServiceRegistration> serviceRegistrations;
@@ -31,14 +33,14 @@ public class MockedSmokeDetector extends SmokeDetector implements MockedDevice {
 		super(id, serial, domain);
 		
 		smokeSensor = new SmokeSensor("smokeSensor_" + id, domain, 
-			new BooleanDataPoint("alarm") {
+			new BooleanDataPoint(DatapointType.alarm) {
 				@Override
 				public Boolean doGetValue() throws DataPointException {
 					return smokeAlarm;
 				}
 			});
 		
-		smokeSensor.setDetectedTime(new IntegerDataPoint("detectedTime") {
+		smokeSensor.setDetectedTime(new IntegerDataPoint(DatapointType.detectedTime) {
 			@Override
 			protected Integer doGetValue() throws DataPointException {
 				return detectedTime;

@@ -6,6 +6,7 @@ import org.eclipse.om2m.sdt.datapoints.BooleanDataPoint;
 import org.eclipse.om2m.sdt.datapoints.IntegerDataPoint;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 import org.eclipse.om2m.sdt.home.types.ModuleType;
 
 public class Boiling extends Module {
@@ -13,17 +14,27 @@ public class Boiling extends Module {
 	private BooleanDataPoint keepWarm;
 	private IntegerDataPoint status;
 	
-	
-	public Boiling(String name, Domain domain, BooleanDataPoint keepWarm, IntegerDataPoint status){
-		super(name, domain, ModuleType.boiling.getDefinition(), ModuleType.boiling.getLongDefinitionName(), ModuleType.boiling.getShortDefinitionName());
+	public Boiling(String name, Domain domain, 
+			BooleanDataPoint keepWarm, IntegerDataPoint status) {
+		super(name, domain, ModuleType.boiling);
 		
-		this.keepWarm = keepWarm;
-		this.keepWarm.setDoc("The current status of the keeping a drink warm after brewing enabling. “True” indicates enabled, and “False” indicates not enabled");
+		if ((status == null) ||
+				! status.getShortDefinitionType().equals(DatapointType.status.getShortName())) {
+			domain.removeDevice(name);
+			throw new IllegalArgumentException("Wrong status datapoint: " + status);
+		}
 		this.status = status;
 		this.status.setDoc("The current status of the machine which prepares the drinks. Status equals 1 means the boiling is ongoing, 0 means the boiling is not ongoing.");
 		status.setReadable(true);
-		addDataPoint(this.keepWarm);
 		addDataPoint(this.status);
+		
+//		if ((keepWarm == null) ||
+//				! keepWarm.getShortDefinitionType().equals(DatapointType.keepWarm.getShortName())) {
+//			throw new IllegalArgumentException("Wrong status datapoint: " + keepWarm);
+//		}
+		this.keepWarm = keepWarm;
+		this.keepWarm.setDoc("The current status of the keeping a drink warm after brewing enabling. “True” indicates enabled, and “False” indicates not enabled");
+		addDataPoint(this.keepWarm);
 	}
 
 	public Boolean getKeepWarm() throws DataPointException, AccessException{
@@ -42,6 +53,4 @@ public class Boiling extends Module {
 		status.setValue(v);
 	}
 
-	
-	
 }

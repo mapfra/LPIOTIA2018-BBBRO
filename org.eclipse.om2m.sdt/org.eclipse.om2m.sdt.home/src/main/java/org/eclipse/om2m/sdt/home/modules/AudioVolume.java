@@ -13,12 +13,16 @@ import org.eclipse.om2m.sdt.Action;
 import org.eclipse.om2m.sdt.DataPoint;
 import org.eclipse.om2m.sdt.Domain;
 import org.eclipse.om2m.sdt.Module;
+import org.eclipse.om2m.sdt.args.Command;
 import org.eclipse.om2m.sdt.datapoints.BooleanDataPoint;
 import org.eclipse.om2m.sdt.datapoints.IntegerDataPoint;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.ActionException;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
-import org.eclipse.om2m.sdt.home.actions.Volume;
+import org.eclipse.om2m.sdt.home.actions.DownVolume;
+import org.eclipse.om2m.sdt.home.actions.UpVolume;
+import org.eclipse.om2m.sdt.home.types.ActionType;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 import org.eclipse.om2m.sdt.home.types.ModuleType;
 
 public class AudioVolume extends Module {
@@ -28,59 +32,87 @@ public class AudioVolume extends Module {
 	private IntegerDataPoint stepValue;
 	private IntegerDataPoint maxValue;
 	
-	private Volume volume;
+	private Action upVolume;
+	private Action downVolume;
 	
 	public AudioVolume(final String name, final Domain domain, 
 			IntegerDataPoint volumePercentage, BooleanDataPoint muteEnabled) {
-		super(name, domain, ModuleType.audioVolume.getDefinition(),
-				ModuleType.audioVolume.getLongDefinitionName(), ModuleType.audioVolume.getShortDefinitionName());
+		super(name, domain, ModuleType.audioVolume);
 
+		if ((muteEnabled == null) ||
+				! muteEnabled.getShortDefinitionType().equals(DatapointType.muteEnabled.getShortName())) {
+			domain.removeDevice(name);
+			throw new IllegalArgumentException("Wrong muteEnabled datapoint: " + muteEnabled);
+		}
 		this.muteEnabled = muteEnabled;
 		this.muteEnabled.setDoc("The current status of the mute enablement. \"True\" indicates enabaled, and \"False\" indicates not enabled.");
-		this.muteEnabled.setLongDefinitionType("muteEnabled");
-		this.muteEnabled.setShortDefinitionType("mutEd");
 		addDataPoint(this.muteEnabled);
 		
+		if ((volumePercentage == null) ||
+				! volumePercentage.getShortDefinitionType().equals(DatapointType.volumePercentage.getShortName())) {
+			throw new IllegalArgumentException("Wrong volumePercentage datapoint: " + volumePercentage);
+		}
 		this.volumePercentage = volumePercentage;
 		this.volumePercentage.setDoc("The rounded percentage of the current volume in the range of [0, maxValue]. 0% shall mean no sound produced.");
-		this.volumePercentage.setLongDefinitionType("volumePercentage");
-		this.volumePercentage.setShortDefinitionType("volPe");
 		addDataPoint(this.volumePercentage);
 	}
 	
 	public AudioVolume(final String name, final Domain domain, Map<String, DataPoint> dps) {
 		this(name, domain, 
-			(IntegerDataPoint) dps.get("volPe"), 
-			(BooleanDataPoint) dps.get("mutEd"));
-		IntegerDataPoint stepValue = (IntegerDataPoint) dps.get("steVe");
+			(IntegerDataPoint) dps.get(DatapointType.volumePercentage.getShortName()), 
+			(BooleanDataPoint) dps.get(DatapointType.muteEnabled.getShortName()));
+		IntegerDataPoint stepValue = (IntegerDataPoint) dps.get(DatapointType.stepValue.getShortName());
 		if (stepValue != null)
 			setStepValue(stepValue);
-		IntegerDataPoint maxValue = (IntegerDataPoint) dps.get("maxVe");
+		IntegerDataPoint maxValue = (IntegerDataPoint) dps.get(DatapointType.maxValue.getShortName());
 		if (maxValue != null)
 			setMaxValue(maxValue);
 	}
 	
 	public void addAction(Action action) {
-		if (action instanceof Volume)
-			setVolume((Volume)action);
-		else
-			super.addAction(action);
+		if (action.getShortDefinitionName().equals(ActionType.upVolume.getShortName())) {
+			this.upVolume = action;
+			super.addAction(upVolume);
+		} else if (action.getShortDefinitionName().equals(ActionType.downVolume.getShortName())) {
+			this.downVolume = action;
+			super.addAction(downVolume);
+		} else {
+			throw new IllegalArgumentException("Wrong toggle action: " + action);
+		}
+//		if (action instanceof UpVolume)
+//			setUpVolume((UpVolume)action);
+//		else if (action instanceof DownVolume)
+//			setDownVolume((DownVolume)action);
+//		else
+//			super.addAction(action);
 	}
 
-	public Volume getVolume() {
-		return volume;
+	public void setUpVolume(UpVolume upVolume) {
+		addAction(upVolume);
 	}
 
-	public void setVolume(Volume volume) {
-		this.volume = volume;
-		super.addAction(volume);
+	public void setDownVolume(DownVolume downVolume) {
+		addAction(downVolume);
 	}
 	
-	public void upOrDown(final boolean up) throws ActionException, AccessException {
-		if (volume == null)
+	public void upVolume() throws ActionException, AccessException {
+		if (upVolume == null)
 			throw new ActionException("Not implemented");
-		volume.upOrDown(up);
+		((Command)upVolume).invoke(null);
 	}
+	
+	public void downVolume() throws ActionException, AccessException {
+		if (downVolume == null)
+			throw new ActionException("Not implemented");
+//		downVolume.downVolume();
+		((Command)downVolume).invoke(null);
+	}
+	
+//	public void upOrDown(final boolean up) throws ActionException, AccessException {
+//		if (volume == null)
+//			throw new ActionException("Not implemented");
+//		volume.upOrDown(up);
+//	}
 
 	public boolean getMuteEnabled() throws DataPointException, AccessException {
 		return muteEnabled.getValue();
@@ -103,8 +135,6 @@ public class AudioVolume extends Module {
 		stepValue.setWritable(false);
 		stepValue.setOptional(true);
 		stepValue.setDoc("Step value used by UpVolume and DownVolume.");
-		stepValue.setLongDefinitionType("stepValue");
-		stepValue.setShortDefinitionType("steVe");
 		addDataPoint(stepValue);
 	}
 
@@ -118,9 +148,7 @@ public class AudioVolume extends Module {
 		maxValue = mv;
 		maxValue.setWritable(false);
 		maxValue.setOptional(true);
-		maxValue.setDoc("Maximum value allowed for Volume.");
-		maxValue.setLongDefinitionType("maxValue");
-		maxValue.setShortDefinitionType("maxVe");
+		maxValue.setDoc("Maximum value allowed for UpVolume.");
 		addDataPoint(maxValue);
 	}
 

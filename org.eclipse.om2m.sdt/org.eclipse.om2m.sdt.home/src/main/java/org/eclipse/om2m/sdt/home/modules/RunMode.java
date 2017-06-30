@@ -17,8 +17,10 @@ import org.eclipse.om2m.sdt.Module;
 import org.eclipse.om2m.sdt.datapoints.ArrayDataPoint;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 import org.eclipse.om2m.sdt.home.types.ModuleType;
 
+@SuppressWarnings("unchecked")
 public class RunMode extends Module {
 	
 	private ArrayDataPoint<String> operationMode;
@@ -27,27 +29,31 @@ public class RunMode extends Module {
 	public RunMode(final String name, final Domain domain,
 			ArrayDataPoint<String> operationMode,
 			ArrayDataPoint<String> supportedModes) {
-		super(name, domain, ModuleType.runMode.getDefinition(),
-				ModuleType.runMode.getLongDefinitionName(), 
-				ModuleType.runMode.getShortDefinitionName());
+		super(name, domain, ModuleType.runMode);
 		
+		if ((operationMode == null) ||
+				! operationMode.getShortDefinitionType().equals(DatapointType.operationMode.getShortName())) {
+			domain.removeDevice(name);
+			throw new IllegalArgumentException("Wrong operationMode datapoint: " + operationMode);
+		}
 		this.operationMode = operationMode;
 		this.operationMode.setDoc("Comma separated list of the currently active mode(s)");
-		this.operationMode.setLongDefinitionType("operationMode");
-		this.operationMode.setShortDefinitionType("opeMe");
 		addDataPoint(this.operationMode);
 		
+		if ((supportedModes == null) ||
+				! supportedModes.getShortDefinitionType().equals(DatapointType.supportedModes.getShortName())) {
+			domain.removeDevice(name);
+			throw new IllegalArgumentException("Wrong supportedModes datapoint: " + supportedModes);
+		}
 		this.supportedModes = supportedModes;
 		this.supportedModes.setDoc("Comma separated list of possible modes the device supports");
-		this.supportedModes.setLongDefinitionType("supportedModes");
-		this.supportedModes.setShortDefinitionType("supMs");
 		addDataPoint(this.supportedModes);
 	}
 	
 	public RunMode(final String name, final Domain domain, Map<String, DataPoint> dps) {
 		this(name, domain, 
-			(ArrayDataPoint<String>) dps.get("opeMe"),
-			(ArrayDataPoint<String>) dps.get("supMs"));
+			(ArrayDataPoint<String>) dps.get(DatapointType.operationMode.getShortName()),
+			(ArrayDataPoint<String>) dps.get(DatapointType.supportedModes.getShortName()));
 	}
 
 	public List<String> getOperationMode() throws DataPointException, AccessException {

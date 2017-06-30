@@ -13,11 +13,11 @@ import java.util.Map;
 import org.eclipse.om2m.sdt.DataPoint;
 import org.eclipse.om2m.sdt.Domain;
 import org.eclipse.om2m.sdt.Module;
-import org.eclipse.om2m.sdt.datapoints.BooleanDataPoint;
 import org.eclipse.om2m.sdt.datapoints.IntegerDataPoint;
 import org.eclipse.om2m.sdt.datapoints.TimeDataPoint;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 import org.eclipse.om2m.sdt.home.types.ModuleType;
 
 public class Timer extends Module {
@@ -30,42 +30,42 @@ public class Timer extends Module {
 	private IntegerDataPoint targetDuration;
 	private TimeDataPoint absoluteStartTime;
 	private TimeDataPoint absoluteStopTime;
-	private BooleanDataPoint activated;
 	
 	public Timer(final String name, final Domain domain) {
-		super(name, domain, ModuleType.timer.getDefinition(), ModuleType.timer.getLongDefinitionName(), ModuleType.timer.getShortDefinitionName());
+		super(name, domain, ModuleType.timer);
 	}
 
 	public Timer(final String name, final Domain domain, Map<String, DataPoint> dps) {
 		this(name, domain);
-		IntegerDataPoint referenceTimer = (IntegerDataPoint) dps.get("refTr");
-		if (referenceTimer != null) {
+		IntegerDataPoint referenceTimer = 
+				(IntegerDataPoint) dps.get(DatapointType.referenceTimer.getShortName());
+		if (referenceTimer != null)
 			setReferenceTimer(referenceTimer);
-		}
-		IntegerDataPoint targetTimeToStart = (IntegerDataPoint) dps.get("tTTSt");
-		if (targetTimeToStart != null) {
+		
+		IntegerDataPoint targetTimeToStart = 
+				(IntegerDataPoint) dps.get(DatapointType.targetTimeToStart.getShortName());
+		if (targetTimeToStart != null)
 			setTargetTimeToStart(targetTimeToStart);
-		}
-		IntegerDataPoint targetTimeToStop = (IntegerDataPoint) dps.get("tTTSp");
-		if (targetTimeToStop != null) {
+		
+		IntegerDataPoint targetTimeToStop = 
+				(IntegerDataPoint) dps.get(DatapointType.targetTimeToStop.getShortName());
+		if (targetTimeToStop != null)
 			setTargetTimeToStop(targetTimeToStop);
-		}
-		IntegerDataPoint estimatedTimeToEnd = (IntegerDataPoint) dps.get("eTTEd");
-		if (estimatedTimeToEnd != null) {
+		
+		IntegerDataPoint estimatedTimeToEnd = 
+				(IntegerDataPoint) dps.get(DatapointType.estimatedTimeToEnd.getShortName());
+		if (estimatedTimeToEnd != null)
 			setEstimatedTimeToEnd(estimatedTimeToEnd);
-		}
-		IntegerDataPoint runningTime = (IntegerDataPoint) dps.get("runTe");
-		if (runningTime != null) {
+		
+		IntegerDataPoint runningTime = 
+				(IntegerDataPoint) dps.get(DatapointType.runningTime.getShortName());
+		if (runningTime != null)
 			setRunningTime(runningTime);
-		}
-		IntegerDataPoint targetDuration = (IntegerDataPoint) dps.get("tarDn");
-		if (targetDuration != null) {
+		
+		IntegerDataPoint targetDuration = 
+				(IntegerDataPoint) dps.get(DatapointType.targetDuration.getShortName());
+		if (targetDuration != null)
 			setTargetDuration(targetDuration);
-		}
-		BooleanDataPoint activated = (BooleanDataPoint) dps.get("activ");
-		if (activated != null) {
-			setActivated(activated);
-		}
 	}
 
 	public void setReferenceTimer(IntegerDataPoint dp) {
@@ -73,8 +73,6 @@ public class Timer extends Module {
 		referenceTimer.setOptional(true);
 		referenceTimer.setWritable(false);
 		referenceTimer.setDoc("...");
-		referenceTimer.setLongDefinitionType("referenceTimer");
-		referenceTimer.setShortDefinitionType("refTr");
 		addDataPoint(referenceTimer);
 	}
 
@@ -88,8 +86,6 @@ public class Timer extends Module {
 		this.targetTimeToStart = dp;
 		this.targetTimeToStart.setOptional(true);
 		this.targetTimeToStart.setDoc("...");
-		this.targetTimeToStart.setLongDefinitionType("targetTimeToStart");
-		this.targetTimeToStart.setShortDefinitionType("tTTSt");
 		addDataPoint(targetTimeToStart);
 	}
 
@@ -109,8 +105,6 @@ public class Timer extends Module {
 		this.targetTimeToStop = dp;
 		this.targetTimeToStop.setOptional(true);
 		this.targetTimeToStop.setDoc("...");
-		this.targetTimeToStop.setLongDefinitionType("targetTimeToStop");
-		this.targetTimeToStart.setShortDefinitionType("tTTSp");
 		addDataPoint(targetTimeToStop);
 	}
 
@@ -131,8 +125,6 @@ public class Timer extends Module {
 		this.estimatedTimeToEnd.setOptional(true);
 		this.estimatedTimeToEnd.setWritable(false);
 		this.estimatedTimeToEnd.setDoc("...");
-		this.estimatedTimeToEnd.setLongDefinitionType("estimatedTimeToEnd");
-		this.estimatedTimeToEnd.setShortDefinitionType("eTTEd");
 		addDataPoint(estimatedTimeToEnd);
 	}
 
@@ -147,8 +139,6 @@ public class Timer extends Module {
 		this.runningTime.setOptional(true);
 		this.runningTime.setWritable(false);
 		this.runningTime.setDoc("...");
-		this.runningTime.setLongDefinitionType("runningTime");
-		this.runningTime.setShortDefinitionType("runTe");
 		addDataPoint(runningTime);
 	}
 
@@ -163,8 +153,6 @@ public class Timer extends Module {
 		this.targetDuration.setOptional(true);
 		this.targetDuration.setWritable(false);
 		this.targetDuration.setDoc("...");
-		this.targetDuration.setLongDefinitionType("targetDuration");
-		this.targetDuration.setShortDefinitionType("tarDn");
 		addDataPoint(targetDuration);
 	}
 
@@ -234,27 +222,6 @@ public class Timer extends Module {
 		if (absoluteStopTime == null)
 			throw new DataPointException("Not implemented");
 		absoluteStopTime.setValue(d);
-	}
-
-	public void setActivated(BooleanDataPoint dp) {
-		this.activated = dp;
-		this.activated.setOptional(true);
-		this.activated.setDoc("...");
-		this.activated.setLongDefinitionType("activated");
-		this.activated.setShortDefinitionType("activ");
-		addDataPoint(activated);
-	}
-
-	public boolean isActivated() throws DataPointException, AccessException {
-		if (activated == null)
-			throw new DataPointException("Not implemented");
-		return activated.getValue();
-	}
-
-	public void setActivated(boolean b) throws DataPointException, AccessException {
-		if (activated == null)
-			throw new DataPointException("Not implemented");
-		activated.setValue(b);
 	}
 
 }

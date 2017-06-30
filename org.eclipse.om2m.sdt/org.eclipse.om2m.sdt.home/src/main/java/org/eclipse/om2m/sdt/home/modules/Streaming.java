@@ -8,6 +8,7 @@ import org.eclipse.om2m.sdt.Module;
 import org.eclipse.om2m.sdt.datapoints.StringDataPoint;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 import org.eclipse.om2m.sdt.home.types.ModuleType;
 
 public class Streaming extends Module {
@@ -17,43 +18,52 @@ public class Streaming extends Module {
 	private final StringDataPoint password;
 	private final StringDataPoint format;
 
-	public Streaming(String name, Domain domain, final StringDataPoint urlDP,
-			final StringDataPoint loginDP, final StringDataPoint passwordDP, 
-			final StringDataPoint formatDP) {
-		super(name, domain, ModuleType.streaming.getDefinition(),
-				ModuleType.streaming.getLongDefinitionName(),
-				ModuleType.streaming.getShortDefinitionName());
-		this.url = urlDP;
-		this.url.setLongDefinitionType("url");
-		this.url.setShortDefinitionType("url");
+	public Streaming(String name, Domain domain, 
+			final StringDataPoint url, final StringDataPoint login, 
+			final StringDataPoint password, final StringDataPoint format) {
+		super(name, domain, ModuleType.streaming);
+		if ((url == null) ||
+				! url.getShortDefinitionType().equals(DatapointType.url.getShortName())) {
+			domain.removeDevice(name);
+			throw new IllegalArgumentException("Wrong url datapoint: " + url);
+		}
+		this.url = url;
 		this.url.setWritable(false);
-		addDataPoint(url);
+		addDataPoint(this.url);
 		
-		this.login = loginDP;
-		this.login.setLongDefinitionType("login");
-		this.login.setShortDefinitionType("login");
+		if ((login == null) ||
+				! login.getShortDefinitionType().equals(DatapointType.login.getShortName())) {
+			domain.removeDevice(name);
+			throw new IllegalArgumentException("Wrong login datapoint: " + login);
+		}
+		this.login = login;
 		this.login.setWritable(false);
-		addDataPoint(login);
+		addDataPoint(this.login);
 		
-		this.password = passwordDP;
-		this.password.setLongDefinitionType("password");
-		this.password.setShortDefinitionType("passd");
+		if ((password == null) ||
+				! password.getShortDefinitionType().equals(DatapointType.password.getShortName())) {
+			domain.removeDevice(name);
+			throw new IllegalArgumentException("Wrong password datapoint: " + password);
+		}
+		this.password = password;
 		this.password.setWritable(false);
-		addDataPoint(password);
+		addDataPoint(this.password);
 		
-		this.format = formatDP;
-		this.format.setLongDefinitionType("format");
-		this.format.setShortDefinitionType("format");
+		if ((format == null) ||
+				! format.getShortDefinitionType().equals(DatapointType.format.getShortName())) {
+			domain.removeDevice(name);
+			throw new IllegalArgumentException("Wrong format datapoint: " + format);
+		}
+		this.format = format;
 		this.format.setWritable(false);
-		addDataPoint(format);
-		
+		addDataPoint(this.format);
 	}
 
 	public Streaming(final String name, final Domain domain, Map<String, DataPoint> dps) {
-		this(name, domain, (StringDataPoint) dps.get("url"),
-				(StringDataPoint) dps.get("login"),
-				(StringDataPoint) dps.get("passd"),
-				(StringDataPoint) dps.get("format"));
+		this(name, domain, (StringDataPoint) dps.get(DatapointType.url.getShortName()),
+				(StringDataPoint) dps.get(DatapointType.login.getShortName()),
+				(StringDataPoint) dps.get(DatapointType.password.getShortName()),
+				(StringDataPoint) dps.get(DatapointType.format.getShortName()));
 	}
 	
 	public String getUrlValue() throws DataPointException, AccessException {

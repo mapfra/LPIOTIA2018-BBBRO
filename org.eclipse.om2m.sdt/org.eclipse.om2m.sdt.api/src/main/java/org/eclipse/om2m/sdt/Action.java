@@ -29,22 +29,19 @@ public class Action extends Element {
 
 	private Module parent;
 
-	public Action(final String name, final String definition, 
-			final String longDefinitionName, final String shortDefinitionName) {
-		super(definition + "__" + name);
+	public Action(final String id, final Identifiers identifiers) {
+		super(identifiers.getDefinition() + "__" + id);
 		optional = false;
 		this.args = new HashMap<String, Arg>();
-		this.definition = definition;
-		this.longDefinitionName = longDefinitionName;
-		this.shortDefinitionName = shortDefinitionName;
+		this.definition = identifiers.getDefinition();
+		this.longDefinitionName = identifiers.getLongName();
+		this.shortDefinitionName = identifiers.getShortName();
 	}
 	
 	public String getDefinition() {
 		return definition;
 	}
 	
-	
-
 	/**
 	 * @return the longDefinitionName
 	 */

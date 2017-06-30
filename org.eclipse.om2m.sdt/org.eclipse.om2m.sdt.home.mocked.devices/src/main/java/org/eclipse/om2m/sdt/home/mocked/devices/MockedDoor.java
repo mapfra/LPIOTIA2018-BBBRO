@@ -11,11 +11,12 @@ import java.util.List;
 
 import org.eclipse.om2m.sdt.Domain;
 import org.eclipse.om2m.sdt.home.devices.Door;
+import org.eclipse.om2m.sdt.home.mocked.modules.MockedBattery;
 import org.eclipse.om2m.sdt.home.mocked.modules.MockedDoorStatus;
-import org.eclipse.om2m.sdt.home.mocked.modules.MockedFaultDetection;
 import org.eclipse.om2m.sdt.home.mocked.modules.MockedLock;
 import org.osgi.framework.ServiceRegistration;
 
+@SuppressWarnings("rawtypes")
 public class MockedDoor extends Door implements MockedDevice {
 
 	private List<ServiceRegistration> serviceRegistrations;
@@ -23,13 +24,13 @@ public class MockedDoor extends Door implements MockedDevice {
 	public MockedDoor(String id, String serial, Domain domain) {
 		super(id, serial, domain);
 
-		// Module FaultDetection
-		addModule(new MockedFaultDetection("faultDetection_" + id, domain));
+		// Module Battery
+		addModule(new MockedBattery("battery_" + id, domain));
 
 		// Module DoorStatus
 		addModule(new MockedDoorStatus("doorStatus_" + id, domain));
 
-		// Module Lock
+		// Module Door
 		addModule(new MockedLock("lock_" + id, domain));
 		
 		setLocation("Porte d\'entree");

@@ -17,7 +17,7 @@ public class Element {
 
 	public Element(final String name) {
 		if ((name == null) || name.equals(""))
-			throw new IllegalArgumentException("Name cannot be null or empty");
+			throw new IllegalArgumentException("Name cannot be null or empty: " + name);
 		this.name = name;
 	}
 

@@ -23,10 +23,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import org.eclipse.om2m.sdt.home.lifx.impl.Discovery;
+import org.eclipse.om2m.sdt.home.lifx.impl.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 public class DiscoveryCloud extends Discovery {
 
@@ -50,23 +50,19 @@ public class DiscoveryCloud extends Discovery {
 	public DiscoveryCloud(final String pAuthenticationToken) {
 		authenticationToken = pAuthenticationToken;
 		timerTask = new TimerTask() {
-
 			@Override
 			public void run() {
 				retrieveLIFXDevices();
-
 			}
 		};
 	}
 
+	@SuppressWarnings("rawtypes")
 	public void retrieveLIFXDevices() {
 		JSONArray jsonArray = retrieveLIFXDevice(null, authenticationToken);
-
 		if (jsonArray != null) {
-
 			for (Iterator it = jsonArray.iterator(); it.hasNext();) {
 				JSONObject jsonLifxDevice = (JSONObject) it.next();
-
 				LIFXDeviceCloud lifxDeviceCloud = LIFXDeviceCloud.fromJson(jsonLifxDevice, this.authenticationToken);
 				addOrRemoveLIFXDevice(lifxDeviceCloud);
 			}
@@ -102,24 +98,11 @@ public class DiscoveryCloud extends Discovery {
 				String finalLine = "";
 				while ((line = br.readLine()) != null) {
 					finalLine += line;
-
 				}
-				JSONParser parser = new JSONParser();
-				JSONArray jsonObject = (JSONArray) parser.parse(finalLine);
-
-				return jsonObject;
-
+				return (JSONArray) new JSONParser().parse(finalLine);
 			}
-
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (Exception e) {
+			Logger.getInstance().warning(DiscoveryCloud.class, e.toString());
 		}
 		return null;
 	}
@@ -156,17 +139,18 @@ public class DiscoveryCloud extends Discovery {
 
 	@Override
 	public void startDiscoveryTask() {
+		Logger.getInstance().info(DiscoveryCloud.class, "Start discovery");
 		timer = new Timer();
 		timer.schedule(timerTask, 0, 30000);
 	}
 
 	@Override
 	public void stopDiscoveryTask() {
+		Logger.getInstance().info(DiscoveryCloud.class, "Stop discovery");
 		if (timer != null) {
 			timer.cancel();
 			timer = null;
 		}
-		
 	}
 
 	public static void updateLightState(LIFXDeviceCloud lifxDevice) {
@@ -213,7 +197,6 @@ public class DiscoveryCloud extends Discovery {
 		}
 		data += "}";
 		
-
 		httpUrlConnection.setDoOutput(true);
 		httpUrlConnection.setDoInput(true);
 
@@ -230,7 +213,6 @@ public class DiscoveryCloud extends Discovery {
 		synchronized (devices) {
 			toBeReturned.addAll(devices.values());
 		}
-
 		return toBeReturned;
 	}
 

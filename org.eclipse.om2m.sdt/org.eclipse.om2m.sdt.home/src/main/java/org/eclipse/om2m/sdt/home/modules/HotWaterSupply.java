@@ -15,6 +15,7 @@ import org.eclipse.om2m.sdt.Module;
 import org.eclipse.om2m.sdt.datapoints.BooleanDataPoint;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 import org.eclipse.om2m.sdt.home.types.ModuleType;
 
 public class HotWaterSupply extends Module {
@@ -23,21 +24,22 @@ public class HotWaterSupply extends Module {
 	private BooleanDataPoint bath;
 
 	public HotWaterSupply(final String name, final Domain domain, BooleanDataPoint status) {
-		super(name, domain, ModuleType.hotWaterSupply.getDefinition(),
-				ModuleType.hotWaterSupply.getLongDefinitionName(),
-				ModuleType.hotWaterSupply.getShortDefinitionName());
+		super(name, domain, ModuleType.hotWaterSupply);
 		
+		if ((status == null) ||
+				! status.getShortDefinitionType().equals(DatapointType.status.getShortName())) {
+			domain.removeDevice(name);
+			throw new IllegalArgumentException("Wrong status datapoint: " + status);
+		}
 		this.status = status;
 		this.status.setWritable(false);
 		this.status.setDoc("The status of watering operation");
-		this.status.setLongDefinitionType("status");
-		this.status.setShortDefinitionType("stats");
 		addDataPoint(this.status);
 	}
 
 	public HotWaterSupply(final String name, final Domain domain, Map<String, DataPoint> dps) {
-		this(name, domain, (BooleanDataPoint) dps.get("stats"));
-		BooleanDataPoint bath = (BooleanDataPoint) dps.get("bath");
+		this(name, domain, (BooleanDataPoint) dps.get(DatapointType.status.getShortName()));
+		BooleanDataPoint bath = (BooleanDataPoint) dps.get(DatapointType.bath.getShortName());
 		if (bath != null)
 			setBath(bath);
 	}
@@ -50,8 +52,6 @@ public class HotWaterSupply extends Module {
 		bath = dp;
 		bath.setDoc("The status of filling bath tub");
 		bath.setOptional(true);
-		this.bath.setLongDefinitionType("bath");
-		this.bath.setShortDefinitionType("bath");
 		addDataPoint(bath);
 	}
 

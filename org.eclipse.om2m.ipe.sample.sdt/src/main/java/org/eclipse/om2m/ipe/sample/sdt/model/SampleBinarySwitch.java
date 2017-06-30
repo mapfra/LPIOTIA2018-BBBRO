@@ -15,14 +15,13 @@ import org.eclipse.om2m.sdt.exceptions.ActionException;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.actions.Toggle;
 import org.eclipse.om2m.sdt.home.modules.BinarySwitch;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 
 public class SampleBinarySwitch extends BinarySwitch {
-	
-//	priva
 
 	public SampleBinarySwitch(String name, Domain domain) {
 		super(name, domain,
-			new BooleanDataPoint("powerState") {
+			new BooleanDataPoint(DatapointType.powerState) {
 				private Boolean powerState = Boolean.FALSE;
 				@Override
 				public void doSetValue(Boolean value) throws DataPointException {
@@ -52,7 +51,7 @@ public class SampleBinarySwitch extends BinarySwitch {
 	public void setPowerState(boolean v) throws DataPointException, AccessException {
 		super.setPowerState(v);
 		Event evt = new Event("SWITCH " + getOwner().getId());
-		evt.addDataPoint(getDataPoint("powerState"));
+		evt.addDataPoint(getDataPointByShortName(DatapointType.powerState.getShortName()));
 		evt.setValue(v);
 		addEvent(evt);
 	}

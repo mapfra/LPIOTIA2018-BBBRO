@@ -43,6 +43,7 @@ public class FlexContainerFactory {
 			return new DeviceWaterValveFlexContainer();
 		case DeviceWeatherStationFlexContainer.SHORT_NAME:
 			return new DeviceWeatherStationFlexContainer();
+			
 		case ModuleAlarmSpeakerFlexContainer.SHORT_NAME:
 			return new ModuleAlarmSpeakerFlexContainer();
 		case ModuleAudioVolumeFlexContainer.SHORT_NAME:
@@ -71,6 +72,8 @@ public class FlexContainerFactory {
 			return new ModuleRelativeHumidityFlexContainer();
 		case ModuleRunModeFlexContainer.SHORT_NAME:
 			return new ModuleRunModeFlexContainer();
+		case ModuleRunStateFlexContainer.SHORT_NAME:
+			return new ModuleRunStateFlexContainer();
 		case ModuleSmokeSensorFlexContainer.SHORT_NAME:
 			return new ModuleSmokeSensorFlexContainer();
 		case ModuleTemperatureFlexContainer.SHORT_NAME:
@@ -109,6 +112,11 @@ public class FlexContainerFactory {
 			return new ModuleTimerFlexContainer();
 		case ModuleLockFlexContainer.SHORT_NAME:
 			return new ModuleLockFlexContainer();
+		case ModuleLiquidLevelFlexContainer.SHORT_NAME:
+			return new ModuleLiquidLevelFlexContainer();
+		case ModuleBatteryFlexContainer.SHORT_NAME:
+			return new ModuleBatteryFlexContainer();
+			
 		case ActionToggleFlexContainer.SHORT_NAME:
 			return new ActionToggleFlexContainer();
 		}

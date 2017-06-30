@@ -16,6 +16,7 @@ import org.eclipse.om2m.sdt.datapoints.FloatDataPoint;
 import org.eclipse.om2m.sdt.datapoints.StringDataPoint;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 import org.eclipse.om2m.sdt.home.types.ModuleType;
 
 public class Temperature extends Module {
@@ -25,64 +26,44 @@ public class Temperature extends Module {
 	private FloatDataPoint minValue;
 	private FloatDataPoint maxValue;
 	private FloatDataPoint stepValue;
-	private StringDataPoint units;
+	private StringDataPoint unit;
 	
-	public Temperature(final String name, final Domain domain, FloatDataPoint dp) {
-		super(name, domain, ModuleType.temperature.getDefinition(), 
-				ModuleType.temperature.getLongDefinitionName(),
-				ModuleType.temperature.getShortDefinitionName());
+	public Temperature(final String name, final Domain domain, FloatDataPoint currentTemperature) {
+		super(name, domain, ModuleType.temperature);
 
-		currentTemperature = dp;
-		currentTemperature.setWritable(false);
-		currentTemperature.setDoc("The current currentTemperature");
-		currentTemperature.setLongDefinitionType("currentTemperature");
-		currentTemperature.setShortDefinitionType("curT0");
-		addDataPoint(currentTemperature);
+		if ((currentTemperature == null) ||
+				! currentTemperature.getShortDefinitionType().equals(DatapointType.currentTemperature.getShortName())) {
+			domain.removeDevice(name);
+			throw new IllegalArgumentException("Wrong currentTemperature datapoint: " + currentTemperature);
+		}
+		this.currentTemperature = currentTemperature;
+		this.currentTemperature.setWritable(false);
+		this.currentTemperature.setDoc("The current currentTemperature");
+		addDataPoint(this.currentTemperature);
 	}
 
 	public Temperature(final String name, final Domain domain, Map<String, DataPoint> dps) {
-		this(name, domain, (FloatDataPoint) dps.get("curT0"));
-		FloatDataPoint targetTemperature = (FloatDataPoint) dps.get("tarTe");
-		if (targetTemperature != null){
+		this(name, domain, (FloatDataPoint) dps.get(DatapointType.currentTemperature.getShortName()));
+		
+		FloatDataPoint targetTemperature = (FloatDataPoint) dps.get(DatapointType.targetTemperature.getShortName());
+		if (targetTemperature != null)
 			setTargetTemperature(targetTemperature);
-			targetTemperature.setWritable(true);
-		}
 			
-		FloatDataPoint minValue = (FloatDataPoint) dps.get("minVe");
+		FloatDataPoint minValue = (FloatDataPoint) dps.get(DatapointType.minValue.getShortName());
 		if (minValue != null)
 			setMinValue(minValue);
-		FloatDataPoint maxValue = (FloatDataPoint) dps.get("maxVe");
+		
+		FloatDataPoint maxValue = (FloatDataPoint) dps.get(DatapointType.maxValue.getShortName());
 		if (maxValue != null)
 			setMaxValue(maxValue);
-		FloatDataPoint stepValue = (FloatDataPoint) dps.get("steVe");
+		
+		FloatDataPoint stepValue = (FloatDataPoint) dps.get(DatapointType.stepValue.getShortName());
 		if (stepValue != null)
 			setStepValue(stepValue);
-		StringDataPoint units = (StringDataPoint) dps.get("unit");
-		if (units != null)
-			setUnits(units);
-	}
-
-
-
-	public Temperature(String name, Domain domain, FloatDataPoint currentTemperature, FloatDataPoint targetTemperature,
-			StringDataPoint unit, FloatDataPoint minValue, FloatDataPoint maxValue,
-			FloatDataPoint stepValue) {
-		// TODO Auto-generated constructor stub
-		this(name, domain, (FloatDataPoint) currentTemperature);
 		
-		
-		if(targetTemperature!=null)
-			setTargetTemperature(targetTemperature);
-		if(unit!=null)
-			setUnits(unit);
-		if(minValue!=null)
-			setMinValue(minValue);
-		if(maxValue!=null)
-			setMaxValue(maxValue);
-		if(stepValue!=null)
-			setStepValue(stepValue);
-		
-		
+		StringDataPoint unit = (StringDataPoint) dps.get(DatapointType.unit.getShortName());
+		if (unit != null)
+			setUnit(unit);
 	}
 
 	public float getCurrentTemperature() throws DataPointException, AccessException {
@@ -91,10 +72,9 @@ public class Temperature extends Module {
 
 	public void setTargetTemperature(FloatDataPoint dp) {
 		this.targetTemperature = dp;
+		this.targetTemperature.setWritable(true);
 		this.targetTemperature.setOptional(true);
 		this.targetTemperature.setDoc("The desired temperature to reach.");
-		this.targetTemperature.setLongDefinitionType("targetTemperature");
-		this.targetTemperature.setShortDefinitionType("tarTe");
 		addDataPoint(targetTemperature);
 	}
 
@@ -105,16 +85,9 @@ public class Temperature extends Module {
 	}
 
 	public void setTargetTemperature(float b) throws DataPointException, AccessException {
-		System.out.println("Korzysta z funkcji setTargetTemperature(float b) --- " + b);
-
-		if(targetTemperature == null)
-			System.out.println("WYJATEK");
-		
 		if (targetTemperature == null)
 			throw new DataPointException("Not implemented");
-		
 		targetTemperature.setValue(b);
-		
 	}
 
 	public void setMinValue(FloatDataPoint dp) {
@@ -122,8 +95,6 @@ public class Temperature extends Module {
 		this.minValue.setOptional(true);
 		this.minValue.setWritable(false);
 		this.minValue.setDoc("Minimum value of targetTemperature.");
-		this.minValue.setLongDefinitionType("minValue");
-		this.minValue.setShortDefinitionType("minVe");
 		addDataPoint(minValue);
 	}
 
@@ -138,8 +109,6 @@ public class Temperature extends Module {
 		this.maxValue.setOptional(true);
 		this.maxValue.setWritable(false);
 		this.maxValue.setDoc("Maximum value of targetTemperature.");
-		this.maxValue.setLongDefinitionType("maxValue");
-		this.maxValue.setShortDefinitionType("maxVe");
 		addDataPoint(maxValue);
 	}
 
@@ -154,8 +123,6 @@ public class Temperature extends Module {
 		this.stepValue.setOptional(true);
 		this.stepValue.setWritable(false);
 		this.stepValue.setDoc("Step value allowed for targetTemperature.");
-		this.stepValue.setLongDefinitionType("stepValue");
-		this.stepValue.setShortDefinitionType("steVe");
 		addDataPoint(stepValue);
 	}
 
@@ -165,20 +132,18 @@ public class Temperature extends Module {
 		return stepValue.getValue();
 	}
 
-	public void setUnits(StringDataPoint dp) {
-		this.units = dp;
-		this.units.setOptional(true);
-		this.units.setWritable(false);
-		this.units.setDoc("The list of units for the temperature values. The default is Celsius only [C].");
-		this.units.setLongDefinitionType("unit");
-		this.units.setShortDefinitionType("unit");
-		addDataPoint(units);
+	public void setUnit(StringDataPoint dp) {
+		this.unit = dp;
+		this.unit.setOptional(true);
+		this.unit.setWritable(false);
+		this.unit.setDoc("The list of units for the temperature values. The default is Celsius only [C].");
+		addDataPoint(unit);
 	}
 
-	public String getUnits() throws DataPointException, AccessException {
-		if (units == null)
+	public String getUnit() throws DataPointException, AccessException {
+		if (unit == null)
 			throw new DataPointException("Not implemented");
-		return units.getValue();
+		return unit.getValue();
 	}
 
 }

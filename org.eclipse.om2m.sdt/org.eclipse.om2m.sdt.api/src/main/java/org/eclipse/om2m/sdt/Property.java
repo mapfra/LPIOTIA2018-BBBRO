@@ -19,17 +19,16 @@ public class Property extends Element {
 	
 	private SimpleType type;
 
-	public Property(final String name, final String shortName) {
-		super(name);
+	public Property(final Identifiers name) {
+		super(name.getLongName());
 		optional = false;
 		type = SimpleType.String;
-		this.shortName = shortName;
+		this.shortName = name.getShortName();
 	}
 
-	public Property(final String name, final String shortName, final String value) {
-		this(name, shortName);
+	public Property(final Identifiers name, final String value) {
+		this(name);
 		setValue(value);
-		
 	}
 
 	public String getName() {
@@ -73,8 +72,8 @@ public class Property extends Element {
 	
 	@Override
 	public String toString() {
-		return "<" + getClass().getSimpleName() + " \"" + name + "\"="
-			+ ((value == null) ? value : "\"" + value + "\"") + "/>";
+		return "<" + getClass().getSimpleName() + " \"" + name + "/" + shortName
+			+ "\"=" + ((value == null) ? value : "\"" + value + "\"") + "/>";
 	}
 
 }

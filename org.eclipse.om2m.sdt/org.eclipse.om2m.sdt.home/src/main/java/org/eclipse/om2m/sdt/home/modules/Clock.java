@@ -17,6 +17,7 @@ import org.eclipse.om2m.sdt.datapoints.DateDataPoint;
 import org.eclipse.om2m.sdt.datapoints.TimeDataPoint;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 import org.eclipse.om2m.sdt.home.types.ModuleType;
 
 public class Clock extends Module {
@@ -26,27 +27,31 @@ public class Clock extends Module {
 
 	public Clock(final String name, final Domain domain, TimeDataPoint currentTime,
 			DateDataPoint currentDate) {
-		super(name, domain, ModuleType.clock.getDefinition(),
-				ModuleType.clock.getLongDefinitionName(), 
-				ModuleType.clock.getShortDefinitionName());
+		super(name, domain, ModuleType.clock);
 		
+		if ((currentDate == null) ||
+				! currentDate.getShortDefinitionType().equals(DatapointType.currentDate.getShortName())) {
+			domain.removeDevice(name);
+			throw new IllegalArgumentException("Wrong currentDate datapoint: " + currentDate);
+		}
 		this.currentDate = currentDate;
 		currentDate.setDoc("Information of the current date");
-		this.currentDate.setLongDefinitionType("currentDate");
-		this.currentDate.setShortDefinitionType("curDe");
 		addDataPoint(currentDate);
 		
+		if ((currentTime == null) ||
+				! currentTime.getShortDefinitionType().equals(DatapointType.currentTime.getShortName())) {
+			domain.removeDevice(name);
+			throw new IllegalArgumentException("Wrong currentTime datapoint: " + currentTime);
+		}
 		this.currentTime = currentTime;
 		currentTime.setDoc("Information of the current time");
-		this.currentTime.setLongDefinitionType("currentTime");
-		this.currentTime.setShortDefinitionType("curTe");
 		addDataPoint(currentTime);
 	}
 
 	public Clock(final String name, final Domain domain, Map<String, DataPoint> dps) {
 		this(name, domain, 
-				(TimeDataPoint) dps.get("curTe"), 
-				(DateDataPoint) dps.get("curDe"));
+				(TimeDataPoint) dps.get(DatapointType.currentTime.getShortName()), 
+				(DateDataPoint) dps.get(DatapointType.currentDate.getShortName()));
 	}
 
 	public Date getCurrentTime() throws DataPointException, AccessException {

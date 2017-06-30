@@ -13,19 +13,12 @@ public class SmarterCoffeeCommands {
 	//HashMap<Integer, String> cupNum = new HashMap<Integer, String>();
 	
 	public static final int MAX_NUMBER_OF_CUPS = 12;
-	
 	public static final int MIN_NUMBER_OF_CUPS = 1;
-	
-	
 
 	public static final byte HEADER_STATUS = 		50; // TODO Add to doc: The status message is periodically sending after establish a connection with the machine
-	
 	public static final byte HEADER_START =			51; //Starts brewing coffee as specified by parameter values
-	
 	public static final byte HEADER_STARTX =		55; // Starts brewing coffee using parameter values set on the machine.
-	
 	public static final byte HEADER_STOP =			52;
-	
 	public static final byte HEADER_SETSTR =		53; //Sets brew strength. Doesn't start brewing.
 	public static final byte HEADER_SETCUPS =		54; //Sets number of cups. Doesn't start brewing.
 	public static final byte HEADER_GRINDTGGL =		60; //Toggles grinder use on and off. The coffee maker LCD shows Beans/Filter respectively. There are no separate 'set grinder on' and 'set grinder off' commands
@@ -39,7 +32,6 @@ public class SmarterCoffeeCommands {
 	
 	public static final byte HEADER_ACK = 			3;
 	
-	
 	public static final byte STATUS_FLAGS_MASK_SCHEDULE_7 = 		(byte) 0x80;
 	public static final byte STATUS_FLAGS_MASK_KEEP_WARM_6 = 		(byte) 0x40;
 	public static final byte STATUS_FLAGS_MASK_CYCLE_COMPLETE_5 = 	(byte) 0x20;
@@ -48,7 +40,6 @@ public class SmarterCoffeeCommands {
 	public static final byte STATUS_FLAGS_MASK_MACHINE_READY_2 = 	(byte) 0x04;
 	public static final byte STATUS_FLAGS_MASK_USE_GRIDNER_1 = 		(byte) 0x02;
 	public static final byte STATUS_FLAGS_CARAFE_DETECTED_0 = 		(byte) 0x01;
-	
 	
 	public static final byte WATER_LEVEL_EMPTY = 	0;
 	public static final byte WATER_LEVEL_LOW = 		1;
@@ -60,6 +51,5 @@ public class SmarterCoffeeCommands {
 	public static final byte BREW_STRENGTH_2 = 		2;
 	
 	public static final byte END_OF_MESSAGE = 		126;
-	
 	
 }

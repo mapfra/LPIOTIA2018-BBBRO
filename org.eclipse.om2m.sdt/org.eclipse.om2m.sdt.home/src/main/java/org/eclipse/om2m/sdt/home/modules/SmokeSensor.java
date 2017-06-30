@@ -15,6 +15,7 @@ import org.eclipse.om2m.sdt.datapoints.BooleanDataPoint;
 import org.eclipse.om2m.sdt.datapoints.IntegerDataPoint;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 import org.eclipse.om2m.sdt.home.types.ModuleType;
 
 public class SmokeSensor extends AbstractAlarmSensor {
@@ -22,13 +23,12 @@ public class SmokeSensor extends AbstractAlarmSensor {
 	private IntegerDataPoint detectedTime;
 	
 	public SmokeSensor(final String name, final Domain domain, BooleanDataPoint alarm) {
-		super(name, domain, alarm, ModuleType.smokeSensor,
-				"The detection of smoke.");
+		super(name, domain, alarm, ModuleType.smokeSensor, "The detection of smoke.");
 	}
 	
 	public SmokeSensor(final String name, final Domain domain, Map<String, DataPoint> dps) {
-		this(name, domain, (BooleanDataPoint) dps.get("alarm"));
-		IntegerDataPoint detectedTime = (IntegerDataPoint) dps.get("detTe");
+		this(name, domain, (BooleanDataPoint) dps.get(DatapointType.alarm.getShortName()));
+		IntegerDataPoint detectedTime = (IntegerDataPoint) dps.get(DatapointType.detectedTime.getShortName());
 		if (detectedTime != null)
 			setDetectedTime(detectedTime);
 	}
@@ -37,8 +37,6 @@ public class SmokeSensor extends AbstractAlarmSensor {
 		detectedTime = dp;
 		detectedTime.setOptional(true);
 		detectedTime.setDoc("The time the smoke is detected.");
-		detectedTime.setLongDefinitionType("detectedTime");
-		detectedTime.setShortDefinitionType("detTe");
 		addDataPoint(detectedTime);
 	}
 	

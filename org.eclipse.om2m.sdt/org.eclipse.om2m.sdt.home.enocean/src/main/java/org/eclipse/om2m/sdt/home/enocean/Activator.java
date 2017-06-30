@@ -30,6 +30,7 @@ import org.osgi.service.event.EventHandler;
 import org.osgi.service.log.LogService;
 import org.osgi.util.tracker.ServiceTracker;
 
+@SuppressWarnings({ "unchecked", "rawtypes" })
 public class Activator implements BundleActivator, EventHandler {
 	
 	static private final String PROTOCOL = "EnOcean";
@@ -99,7 +100,7 @@ public class Activator implements BundleActivator, EventHandler {
 
 	private void initDevicesTracker() {
 		enOceanDeviceTracker = new ServiceTracker(context, EnOceanDevice.class.getName(), null) {
-            public void removedService(ServiceReference ref, Object service) {
+			public void removedService(ServiceReference ref, Object service) {
             	EnOceanDevice device = (EnOceanDevice) service;
         		logger.info("Removed EnOcean device " + device);
         		EnOceanSDTDevice dev = sdtDevices.remove(device.getChipId());
@@ -148,7 +149,7 @@ public class Activator implements BundleActivator, EventHandler {
 		}
 	}
 
-	private EnOceanSDTDevice createSDTDevice(ServiceReference ref) {
+	private EnOceanSDTDevice createSDTDevice(ServiceReference<?> ref) {
 		logger.info("Added EnOcean ref " + ref);
 		for (String key : ref.getPropertyKeys()) {
 			Object prop = ref.getProperty(key);

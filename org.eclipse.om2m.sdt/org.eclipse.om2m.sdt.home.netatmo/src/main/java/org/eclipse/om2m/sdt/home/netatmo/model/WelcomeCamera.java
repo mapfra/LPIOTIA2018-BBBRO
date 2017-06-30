@@ -18,7 +18,6 @@ public class WelcomeCamera {
 	public static final String ALIM_STATUS = "alim_status";
 	public static final String NAME = "name";
 	
-
 	private final String id;
 	private final String type;
 	private final String name;

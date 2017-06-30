@@ -135,6 +135,10 @@ public class ObjectFactory {
 		return new ModuleRunModeFlexContainer();
 	}
 	
+	public AbstractFlexContainer createRunSe() {
+		return new ModuleRunStateFlexContainer();
+	}
+	
 	public AbstractFlexContainer createSmoSr() {
 		return new ModuleSmokeSensorFlexContainer();
 	}
@@ -209,6 +213,14 @@ public class ObjectFactory {
 	
 	public AbstractFlexContainer createTimer() {
 		return new ModuleTimerFlexContainer();
+	}
+
+	public AbstractFlexContainer createBatty() {
+		return new ModuleBatteryFlexContainer();
+	}
+
+	public AbstractFlexContainer createLiqLl() {
+		return new ModuleLiquidLevelFlexContainer();
 	}
 	
 	public AbstractFlexContainer createTogge() {

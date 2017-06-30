@@ -16,8 +16,10 @@ import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.devices.Camera;
 import org.eclipse.om2m.sdt.home.mocked.modules.MockedStreaming;
 import org.eclipse.om2m.sdt.home.modules.PersonSensor;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 import org.osgi.framework.ServiceRegistration;
 
+@SuppressWarnings("rawtypes")
 public class MockedCamera extends Camera implements MockedDevice {
 
 	private List<ServiceRegistration> serviceRegistrations;
@@ -26,10 +28,10 @@ public class MockedCamera extends Camera implements MockedDevice {
 		super(id, serial, domain);
 
 		// Module FaultDetection
-		addModule(new MockedStreaming("mockedStreaming-" + id, domain));
+		addModule(new MockedStreaming("streaming_" + id, domain));
 
 		addModule(new PersonSensor("personSensor_" + id, domain, 
-			new ArrayDataPoint<String>("detectedPersons") {
+			new ArrayDataPoint<String>(DatapointType.detectedPersons) {
 				@Override
 				public List<String> doGetValue() throws DataPointException {
 					return Arrays.asList("admin", "Phil");

@@ -18,6 +18,7 @@ import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.util.tracker.ServiceTracker;
 
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class Activator implements BundleActivator {
 
 	static private BundleContext context;

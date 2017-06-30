@@ -14,11 +14,12 @@ import org.eclipse.om2m.sdt.Event;
 import org.eclipse.om2m.sdt.datapoints.FloatDataPoint;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.devices.TemperatureDetector;
-import org.eclipse.om2m.sdt.home.devices.Thermostat;
 import org.eclipse.om2m.sdt.home.mocked.modules.MockedTemperature;
 import org.eclipse.om2m.sdt.home.modules.Temperature;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 import org.osgi.framework.ServiceRegistration;
 
+@SuppressWarnings("rawtypes")
 public class MockedThermometer extends TemperatureDetector implements MockedDevice {
 	
 	static private final int MIN = 15;
@@ -34,7 +35,7 @@ public class MockedThermometer extends TemperatureDetector implements MockedDevi
 		super(id, serial, domain);
 		
 		temperature = new MockedTemperature("temperature_" + id, domain, 
-				new FloatDataPoint("currentTemperature") {
+			new FloatDataPoint(DatapointType.currentTemperature) {
 				@Override
 				public Float doGetValue() throws DataPointException {
 					return temp;
@@ -52,7 +53,6 @@ public class MockedThermometer extends TemperatureDetector implements MockedDevi
 		serviceRegistrations = Activator.register(this);
 	}
 
-	@SuppressWarnings("rawtypes")
 	public void unregisterDevice() {
 		running = false;
 		if (serviceRegistrations == null)

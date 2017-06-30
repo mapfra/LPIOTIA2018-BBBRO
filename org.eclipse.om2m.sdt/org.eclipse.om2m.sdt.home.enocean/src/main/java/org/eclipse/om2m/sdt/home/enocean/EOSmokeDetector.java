@@ -19,11 +19,13 @@ import org.eclipse.om2m.sdt.home.driver.Utils;
 import org.eclipse.om2m.sdt.home.enocean.Activator.EnOceanSDTDevice;
 import org.eclipse.om2m.sdt.home.modules.FaultDetection;
 import org.eclipse.om2m.sdt.home.modules.SmokeSensor;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.enocean.EnOceanDevice;
 import org.osgi.service.enocean.EnOceanMessage;
 
+@SuppressWarnings("rawtypes")
 public class EOSmokeDetector extends SmokeDetector implements EnOceanSDTDevice {
 	
 	static private final String[] NU1_MODES = new String[] {
@@ -118,7 +120,7 @@ public class EOSmokeDetector extends SmokeDetector implements EnOceanSDTDevice {
 
 	private void addFaultDetection() {
 		faultDetection = new FaultDetection("FaultDetection_" + eoDevice.getChipId(), domain, 
-				new BooleanDataPoint("status") {
+				new BooleanDataPoint(DatapointType.status) {
 			@Override
 			public Boolean doGetValue() throws DataPointException {
 				return false;
@@ -128,7 +130,7 @@ public class EOSmokeDetector extends SmokeDetector implements EnOceanSDTDevice {
 	}
 	
 	private void addSmokeSensor() {
-		status = new BooleanDataPoint("alarm") {
+		status = new BooleanDataPoint(DatapointType.alarm) {
 			@Override
 			public Boolean doGetValue() throws DataPointException {
 				Activator.logger.info("alarm: " + val);
@@ -138,7 +140,7 @@ public class EOSmokeDetector extends SmokeDetector implements EnOceanSDTDevice {
 		smokeSensor = new SmokeSensor("SmokeSensor_" + eoDevice.getChipId(), domain, status);
 		addModule(smokeSensor);
 		
-		smokeSensor.setDetectedTime(new IntegerDataPoint("detectedTime") {
+		smokeSensor.setDetectedTime(new IntegerDataPoint(DatapointType.detectedTime) {
 			@Override
 			protected Integer doGetValue() throws DataPointException {
 				return detectedTime;

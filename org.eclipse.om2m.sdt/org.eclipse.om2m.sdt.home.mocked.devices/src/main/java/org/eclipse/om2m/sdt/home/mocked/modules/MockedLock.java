@@ -8,22 +8,23 @@
 package org.eclipse.om2m.sdt.home.mocked.modules;
 
 import org.eclipse.om2m.sdt.Domain;
+import org.eclipse.om2m.sdt.datapoints.BooleanDataPoint;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.modules.Lock;
-import org.eclipse.om2m.sdt.home.types.LockState;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 
 public class MockedLock extends Lock {
 	
 	public MockedLock(String name, Domain domain) {
 		super(name, domain,
-			new LockState("lockState") {
-				private int state = LockState.Locked;
+			new BooleanDataPoint(DatapointType.doorLock) {
+				private boolean state = true;
 				@Override
-				public Integer doGetValue() throws DataPointException {
+				public Boolean doGetValue() throws DataPointException {
 					return state;
 				}
 				@Override
-				public void doSetValue(Integer v) throws DataPointException {
+				public void doSetValue(Boolean v) throws DataPointException {
 					state = v;
 				}
 			}

@@ -15,6 +15,7 @@ import org.eclipse.om2m.sdt.Module;
 import org.eclipse.om2m.sdt.datapoints.FloatDataPoint;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 import org.eclipse.om2m.sdt.home.types.ModuleType;
 
 public class AtmosphericPressureSensor extends Module {
@@ -23,22 +24,23 @@ public class AtmosphericPressureSensor extends Module {
 
 	public AtmosphericPressureSensor(final String name, final Domain domain, 
 			FloatDataPoint atmosphericPressure) {
-		super(name, domain, ModuleType.atmosphericPressureSensor.getDefinition(),
-				ModuleType.atmosphericPressureSensor.getLongDefinitionName(), 
-				ModuleType.atmosphericPressureSensor.getShortDefinitionName());
+		super(name, domain, ModuleType.atmosphericPressureSensor);
 		
+		if ((atmosphericPressure == null) ||
+				! atmosphericPressure.getShortDefinitionType().equals(DatapointType.atmosphericPressure.getShortName())) {
+			domain.removeDevice(name);
+			throw new IllegalArgumentException("Wrong atmosphericPressure datapoint: " + atmosphericPressure);
+		}
 		this.atmosphericPressure = atmosphericPressure;
 		this.atmosphericPressure.setWritable(false);
 		this.atmosphericPressure.getDataType().setUnitOfMeasure("Mbar");
 		this.atmosphericPressure.setDoc("Current Atmospheric Pressure In Mbar");
-		this.atmosphericPressure.setLongDefinitionType("atmosphericPressure");
-		this.atmosphericPressure.setShortDefinitionType("atmPe");
 		addDataPoint(this.atmosphericPressure);
 	}
 	
 	public AtmosphericPressureSensor(final String name, final Domain domain, 
 			Map<String, DataPoint> dps) {
-		this(name, domain, (FloatDataPoint) dps.get("atmPe"));
+		this(name, domain, (FloatDataPoint) dps.get(DatapointType.atmosphericPressure.getShortName()));
 	}
 
 	public float getAtmosphericPressure() throws DataPointException, AccessException {

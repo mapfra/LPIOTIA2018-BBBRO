@@ -12,27 +12,28 @@ import org.eclipse.om2m.sdt.datapoints.FloatDataPoint;
 import org.eclipse.om2m.sdt.datapoints.IntegerDataPoint;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.modules.EnergyGeneration;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 
 public class MockedEnergyGeneration extends EnergyGeneration {
 
 	public MockedEnergyGeneration(String name, Domain domain) {
 		super(name, domain);
 
-		setPowerGenerationData(new FloatDataPoint("powerGenerationData") {
+		setPowerGenerationData(new FloatDataPoint(DatapointType.powerGenerationData) {
 			@Override
 			public Float doGetValue() throws DataPointException {
 				return new Float(Math.random() * 1000);
 			}
 		});
 		
-		setRoundingEnergyGeneration(new IntegerDataPoint("roundingEnergyGeneration") {
+		setRoundingEnergyGeneration(new IntegerDataPoint(DatapointType.roundingEnergyGeneration) {
 			@Override
 			public Integer doGetValue() throws DataPointException {
 				return new Integer((int)(Math.random() * 1000));
 			}
 		});
 		
-		setSignificantDigits(new IntegerDataPoint("significantDigits") {
+		setSignificantDigits(new IntegerDataPoint(DatapointType.significantDigits) {
 			private Integer significantDigits = new Integer(1);
 			@Override
 			public void doSetValue(Integer value) throws DataPointException {
@@ -44,7 +45,7 @@ public class MockedEnergyGeneration extends EnergyGeneration {
 			}
 		});
 		
-		setMultiplyingFactors(new IntegerDataPoint("multiplyingFactors") {
+		setMultiplyingFactors(new IntegerDataPoint(DatapointType.multiplyingFactors) {
 			Integer multiplyingFactors = new Integer(2);
 			@Override
 			public void doSetValue(Integer value) throws DataPointException {

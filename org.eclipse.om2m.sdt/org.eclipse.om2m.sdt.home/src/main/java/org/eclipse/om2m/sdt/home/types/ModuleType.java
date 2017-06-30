@@ -7,7 +7,9 @@
  *******************************************************************************/
 package org.eclipse.om2m.sdt.home.types;
 
-public enum ModuleType {
+import org.eclipse.om2m.sdt.Identifiers;
+
+public enum ModuleType implements Identifiers {
 	
 	alarmSpeaker(1, "alarmSpeaker", "alarmSpeaker", "alaSr"),
 	audioVideoInput(2, "audioVideoInput", "audioVideoInput","auVIt"),
@@ -36,6 +38,7 @@ public enum ModuleType {
 	refrigeration(25, "refrigeration", "refrigeration", "refrn"),
 	relativeHumidity(26, "relativeHumidity", "relativeHumidity", "relHy"),
 	//rinseLevel(27, "rinseLevel"),
+	runState(27, "runState", "runState", "runSt"),
 	runMode(28, "runMode", "runMode", "runMe"),
 	signalStrength(29, "signalStrength", "signalStrength", "sigSh"),
 	smokeSensor(30, "smokeSensor", "smokeSensor", "smoSr"),
@@ -46,8 +49,7 @@ public enum ModuleType {
 	timer(35, "timer", "timer", "timer"),
 	turbo(36, "turbo", "turbo", "turbo"),
 	waterFlow(37, "waterFlow", "waterFlow", "watFw"),
-	//waterLevel(38, "waterLevel"), //COMMENTED by Maciek
-	level(38, "level", "waterLevel", "watLl"), // ADDED by Maciek
+	liquidLevel(38, "liquidLevel", "liquidLevel", "liqLl"),
 	waterSensor(39, "waterSensor", "waterSensor", "watSr"),
 	weight(40, "weight", "weight", "weigt"),
 	wind(41, "wind", "wind", "wind"),
@@ -59,7 +61,6 @@ public enum ModuleType {
 	brewing(44, "brewing", "brewing", "brwng"),
 	boiling(45, "boiling", "boiling", "bling"),
 	keepWarm(46, "keepwarm", "keepwarm", "kWarm"),
-	
 	
 	/***********************/
 
@@ -103,20 +104,20 @@ public enum ModuleType {
     public String getDefinition() {
     	return PATH + def;
     }
-    
-    
 
     /**
 	 * @return the longDefinitionName
 	 */
-	public String getLongDefinitionName() {
+	@Override
+	public String getLongName() {
 		return longDefinitionName;
 	}
 
 	/**
 	 * @return the shortDefinitionName
 	 */
-	public String getShortDefinitionName() {
+	@Override
+	public String getShortName() {
 		return shortDefinitionName;
 	}
 

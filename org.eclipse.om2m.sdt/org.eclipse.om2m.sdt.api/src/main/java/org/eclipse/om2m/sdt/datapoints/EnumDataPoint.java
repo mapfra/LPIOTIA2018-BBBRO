@@ -12,21 +12,36 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import org.eclipse.om2m.sdt.Identifiers;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.types.DataType;
 
 public abstract class EnumDataPoint<T> extends ValuedDataPoint<T> {
 	
+	static final private Identifiers anon = new Identifiers() {
+		@Override
+		public String getShortName() {
+			return "enum";
+		}
+		@Override
+		public String getLongName() {
+			return "enumDataPoint";
+		}
+		@Override
+		public String getDefinition() {
+			return "enum";
+		}
+	};
+
 	private List<T> values;
 
-	public EnumDataPoint(String name) {
-		super(name, DataType.Enum);
-		values = new ArrayList<T>();
+	public EnumDataPoint(Identifiers name) {
+		this(name, DataType.Enum);
 	}
 	
-	public EnumDataPoint(String name, DataType type) {
-		super(name, type);
+	public EnumDataPoint(Identifiers name, DataType type) {
+		super((name == null) ? anon : name, type);
 		values = new ArrayList<T>();
 	}
 	

@@ -11,7 +11,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.om2m.sdt.types.SimpleType;
 import org.eclipse.om2m.sdt.utils.Logger;
 
 public class Device extends Element {
@@ -27,21 +26,20 @@ public class Device extends Element {
 	private String longDefinitionName;
 	private String shortDefinitionName;
 
-	public Device(final String id, final Domain domain, final String definition, 
-			final String longDefinitionName, final String shortDefinitionName) {
-		super(definition + "__" + id);
+	public Device(final String id, final Domain domain, final Identifiers identifiers) {
+		super(identifiers.getDefinition() + "__" + id);
 		if (domain.getDevice(getName()) != null)
 			throw new IllegalArgumentException("Already a device with name " 
 					+ getName() + " in domain " + domain);
-		this.definition = definition;
-		this.longDefinitionName = longDefinitionName;
-		this.shortDefinitionName = shortDefinitionName;
+		this.definition = identifiers.getDefinition();
+		this.longDefinitionName = identifiers.getLongName();
+		this.shortDefinitionName = identifiers.getShortName();
 		modules = new HashMap<String, Module>();
 		properties = new HashMap<String, Property>();
 		devices = new HashMap<String, SubDevice>();
 		domain.addDevice(this);
 	}
-
+	
 	public String getId() {
 		return getName();
 	}
@@ -98,23 +96,18 @@ public class Device extends Element {
 	public Property getProperty(final String name) {
 		return properties.get(name);
 	}
+	
+	public Property getProperty(final String name, boolean shortName) {
+		if (shortName)
+			return properties.get(name);
+		for (Property prop : properties.values())
+			if (prop.getName().equals(name))
+				return prop;
+		return null;
+	}
 
 	public void addProperty(Property property) {
 		this.properties.put(property.getName(), property);
-	}
-
-	public void setProperty(String name, String shortName, String value) {
-		setProperty(name, shortName, value, null);
-	}
-
-	public void setProperty(String name, String shortName, String value, String type) {
-		Property prop = getProperty(name);
-		if (prop == null) {
-			prop = new Property(name, shortName);
-			if (type != null)
-				prop.setType(SimpleType.getSimpleType(type));
-		}
-		prop.setValue(value);
 	}
 
 	public void removeProperty(final String name) {

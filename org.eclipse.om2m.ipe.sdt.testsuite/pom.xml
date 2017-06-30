@@ -20,6 +20,7 @@
 	</parent>
   
 	<artifactId>org.eclipse.om2m.ipe.sdt.testsuite</artifactId>
+	<name>org.eclipse.om2m :: IPE SDT Test Suite</name>
 	<description>SDT IPE Test Suite</description>
 	<packaging>eclipse-plugin</packaging>
 

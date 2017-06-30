@@ -18,6 +18,21 @@ import org.eclipse.om2m.sdt.utils.Logger;
 
 public abstract class ModuleClass extends Element {
 	
+	static private final Identifiers OWNER = new Identifiers() {
+		@Override
+		public String getShortName() {
+			return "owner";
+		}
+		@Override
+		public String getLongName() {
+			return "owner";
+		}
+		@Override
+		public String getDefinition() {
+			return "owner";
+		}
+	};
+	
 	private Extended extended;
 	
 	private boolean optional;
@@ -33,10 +48,10 @@ public abstract class ModuleClass extends Element {
 	
 	private Device owner;
 	
-	ModuleClass(final String name, final Domain domain) {
-		super(name);
-		if (domain.getModule(name) != null) {
-			String msg = "Already a module with name " + name + " in domain " + domain;
+	ModuleClass(final String id, final Domain domain) {
+		super(id);
+		if (domain.getModule(id) != null) {
+			String msg = "Already a module with name " + id + " in domain " + domain;
 			Logger.warning(msg);
 			throw new IllegalArgumentException(msg);
 		}
@@ -101,7 +116,7 @@ public abstract class ModuleClass extends Element {
 		return dataPoints.get(name);
 	}
 	
-	public DataPoint getDataPointByShortDefinitionType(final String shortDefinitionType) {
+	public DataPoint getDataPointByShortName(final String shortDefinitionType) {
 		return dataPointsByShortDefinitionType.get(shortDefinitionType);
 	}
 
@@ -198,19 +213,19 @@ public abstract class ModuleClass extends Element {
 	}
 
 	public void addProperty(final Property arg) {
-		if (properties.get(arg.getName()) != null)
-			throw new IllegalArgumentException();
+//		if (properties.get(arg.getName()) != null)
+//			throw new IllegalArgumentException();
 		properties.put(arg.getName(), arg);
 	}
-
-	public void setProperty(String name, String shortName, String value) {
-		Property prop = getProperty(name);
-		if (prop == null) {
-			prop = new Property(name, shortName);
-			properties.put(name, prop);
-		}
-		prop.setValue(value);
-	}
+//
+//	public void setProperty(String name, String shortName, String value) {
+//		Property prop = getProperty(name);
+//		if (prop == null) {
+//			prop = new Property(name, shortName);
+//			properties.put(name, prop);
+//		}
+//		prop.setValue(value);
+//	}
 
 	public void removeProperty(final String name) {
 		properties.remove(name);
@@ -239,7 +254,7 @@ public abstract class ModuleClass extends Element {
 	
 	void setOwner(Device owner) {
 		this.owner = owner;
-		setProperty("propOwner", "propOwner", owner.getPid());
+		addProperty(new Property(OWNER, owner.getPid()));
 		for (DataPoint dp : dataPoints.values()) {
 			dp.setOwner(owner);
 		}

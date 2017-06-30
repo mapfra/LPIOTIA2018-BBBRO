@@ -30,14 +30,6 @@ public class SDTUtil {
 		switch (type) {
 		case "xs:string": return value;
 		case "xs:integer": 
-		case "hd:alertColourCode":
-		case "hd:doorState":
-		case "hd:level":
-		case "hd:lockState":
-		case "hd:supportedMode":
-		case "hd:tone":
-		case "hd:foamStrength":
-		case "hd:tasteStrength":
 			return Integer.parseInt(value);
 		case "xs:float": return Float.parseFloat(value);
 		case "xs:boolean": return Boolean.parseBoolean(value);
@@ -60,7 +52,7 @@ public class SDTUtil {
 		case "xs:uri": return new URI(value);
 		case "xs:blob": return value;
 		default:
-			return value;
+			return type.startsWith("hd:") ? Integer.parseInt(value) : value;
 		}
 	}
 	

@@ -10,11 +10,12 @@ package org.eclipse.om2m.sdt.home.actions;
 import org.eclipse.om2m.sdt.args.Command;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.ActionException;
+import org.eclipse.om2m.sdt.home.types.ActionType;
 
 public abstract class Toggle extends Command {
 
 	public Toggle(String name) {
-		super(name, "org.onem2m.home.actions.toggle", "toggle", "togge");
+		super(name, ActionType.toggle);
 		setDoc("Toggle the switch.");
 	}
 

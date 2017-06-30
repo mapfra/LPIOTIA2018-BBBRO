@@ -10,13 +10,14 @@ package org.eclipse.om2m.sdt.datapoints;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import org.eclipse.om2m.sdt.Identifiers;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.types.DataType;
 
 public abstract class UriDataPoint extends ValuedDataPoint<URI> {
 
-	public UriDataPoint(String name) {
+	public UriDataPoint(Identifiers name) {
 		super(name, DataType.Uri);
 	}
 	

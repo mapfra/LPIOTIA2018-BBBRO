@@ -17,6 +17,7 @@ import org.eclipse.om2m.sdt.home.modules.EnergyGeneration;
 import org.eclipse.om2m.sdt.home.modules.FaultDetection;
 import org.eclipse.om2m.sdt.home.modules.RunMode;
 import org.eclipse.om2m.sdt.home.types.DeviceType;
+import org.eclipse.om2m.sdt.home.types.PropertyType;
 import org.eclipse.om2m.sdt.types.SimpleType;
 
 public class SmartElectricMeter extends GenericDevice {
@@ -33,7 +34,7 @@ public class SmartElectricMeter extends GenericDevice {
 	public SmartElectricMeter(final String id, final String serial, final Domain domain) {
 		super(id, serial, DeviceType.deviceSmartElectricMeter, domain);
 		
-		measuringScope = new Property("propMeasuringScope", "meaSe");
+		measuringScope = new Property(PropertyType.measuringScope);
 		measuringScope.setType(SimpleType.String);
 		measuringScope.setOptional(true);
 		measuringScope.setDoc("Measuring scope of the meter (ex. Whole house, room, or device)");

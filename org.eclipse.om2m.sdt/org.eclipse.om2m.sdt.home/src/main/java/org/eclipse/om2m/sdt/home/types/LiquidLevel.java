@@ -7,9 +7,14 @@
  *******************************************************************************/
 package org.eclipse.om2m.sdt.home.types;
 
+import java.util.Arrays;
+import java.util.List;
+
+import org.eclipse.om2m.sdt.Identifiers;
+import org.eclipse.om2m.sdt.datapoints.ClonedEnum;
 import org.eclipse.om2m.sdt.datapoints.EnumDataPoint;
 
-public abstract class LevelType extends EnumDataPoint<Integer> {
+public class LiquidLevel extends ClonedEnum {
 	
 	static public final int zero = 1;
 	static public final int low = 2;
@@ -17,9 +22,17 @@ public abstract class LevelType extends EnumDataPoint<Integer> {
 	static public final int high = 4;
 	static public final int maximum = 5;
 	
-	public LevelType(String name) {
-		super(name, HomeDataType.Level);
-		setValidValues(new Integer[] { zero, low, medium, high, maximum });
-	}
+	static private List<Integer> values = Arrays.asList(
+			zero, low, medium, high, maximum
+	);
 
+	public LiquidLevel(EnumDataPoint<Integer> dp) {
+		this(DatapointType.liquidLevel, dp);
+	}
+	
+	public LiquidLevel(Identifiers names, EnumDataPoint<Integer> dp) {
+		super(names, HomeDataType.LiquidLevel, dp);
+		setValidValues(values);
+	}
+	
 }

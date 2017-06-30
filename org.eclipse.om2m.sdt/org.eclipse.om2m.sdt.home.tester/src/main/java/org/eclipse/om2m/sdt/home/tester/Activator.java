@@ -22,7 +22,6 @@ import org.eclipse.om2m.sdt.Action;
 import org.eclipse.om2m.sdt.DataPoint;
 import org.eclipse.om2m.sdt.Device;
 import org.eclipse.om2m.sdt.Module;
-import org.eclipse.om2m.sdt.args.Command;
 import org.eclipse.om2m.sdt.datapoints.AbstractDateDataPoint;
 import org.eclipse.om2m.sdt.datapoints.ArrayDataPoint;
 import org.eclipse.om2m.sdt.datapoints.EnumDataPoint;
@@ -34,15 +33,16 @@ import org.eclipse.om2m.sdt.home.devices.SmartElectricMeter;
 import org.eclipse.om2m.sdt.home.devices.WaterValve;
 import org.eclipse.om2m.sdt.home.modules.AlarmSpeaker;
 import org.eclipse.om2m.sdt.home.modules.AudioVolume;
-import org.eclipse.om2m.sdt.home.types.LevelType;
+import org.eclipse.om2m.sdt.home.types.LiquidLevel;
 import org.eclipse.om2m.sdt.types.Array;
-import org.eclipse.om2m.sdt.types.SimpleType;
 import org.eclipse.om2m.sdt.types.DataType.TypeChoice;
+import org.eclipse.om2m.sdt.types.SimpleType;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.ComponentContext;
 import org.osgi.service.log.LogService;
 
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class Activator implements SDTEventListener {
 
 	private List<Device> devices;
@@ -126,9 +126,8 @@ public class Activator implements SDTEventListener {
 			Logger.info("test light " + light);//.prettyPrint());
 			Logger.info("fault status: " + light.getFaultDetection().getStatus());
 			Logger.info("powered: " + light.getBinarySwitch().getPowerState());
-//			light.getBinarySwitch().toggle();
 			try {
-				((Command)light.getBinarySwitch().getAction("org.onem2m.home.actions.toggle__toggle")).invoke(null);
+				light.getBinarySwitch().toggle();
 			} catch (Exception e) {
 				Logger.warning("Error", e);
 			}
@@ -141,28 +140,38 @@ public class Activator implements SDTEventListener {
 				Thread.sleep(2000);
 				light.getColour().setBlue((int) Math.random() * 255);
 				Thread.sleep(2000);
-				light.getColourSaturation().setColourSaturation((int) Math.random() * 100);
+				light.getColourSaturation().setColourSat((int) Math.random() * 100);
 				List<String> modes = light.getRunMode().getSupportedModes();
 				if (! modes.isEmpty()) {
 					String mode = modes.get((int) (Math.random() * modes.size()));
 					Logger.info("set run mode: " + mode + " from supported " + modes);
 					light.getRunMode().setOperationMode(mode);
 				}
+//				List<Integer> states = light.getRunState().getJobStates();
+//				if (! states.isEmpty()) {
+//					Integer mode = states.get((int) (Math.random() * states.size()));
+//					Logger.info("set run state: " + mode + " from supported " + states);
+//					light.getRunState().setJobState(mode);
+//				}
 			}
 		}
 		Thread.sleep(1000);
 		for (Light light : lights) {
 			Logger.info("light color: r=" + light.getColour().getRed() + ", g=" + light.getColour().getGreen() + ", b="
 					+ light.getColour().getBlue());
-			Logger.info("light color saturation: " + light.getColourSaturation().getColourSaturation());
-			Logger.info("light modes: " + light.getRunMode().getOperationMode());
+			Logger.info("light color saturation: " + light.getColourSaturation().getColourSat());
+			Logger.info("light states: " + light.getRunMode().getSupportedModes());
 		}
 		Thread.sleep(1000);
 		for (Light light : lights) {
 			try {
 				for (Module mod : light.getModules()) {
 					if (mod instanceof AudioVolume) {
-						((AudioVolume) mod).upOrDown(up);
+						AudioVolume vol = (AudioVolume) mod;
+						if (up)
+							vol.upVolume();
+						else
+							vol.downVolume();
 					}
 				}
 			} catch (Exception e) {
@@ -172,7 +181,6 @@ public class Activator implements SDTEventListener {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	private void testDevices() throws Exception {
 		for (Device dev : devices) {
 			Logger.info("test device " + dev);//.prettyPrint());
@@ -303,16 +311,16 @@ public class Activator implements SDTEventListener {
 		if (valveTests == 0)
 			return;
 		try {
-			int on = LevelType.zero;
+			int on = LiquidLevel.zero;
 			try {
-				on = valve.getWaterLevel().getQuantity();
+				on = valve.getWaterLevel().getLiquidLevel();
 				Logger.info("test valve: " + on);
 			} catch (Exception e) {
 				Logger.warning("", e);
 			}
-			on = (on == LevelType.zero) ? LevelType.maximum
-					: LevelType.zero;
-			valve.getWaterLevel().setQuantity(on);
+			on = (on == LiquidLevel.zero) ? LiquidLevel.maximum
+					: LiquidLevel.zero;
+			valve.getWaterLevel().setLiquidLevel(on);
 			Logger.info("test valve: OK");
 		} catch (Exception e) {
 			Logger.warning("", e);

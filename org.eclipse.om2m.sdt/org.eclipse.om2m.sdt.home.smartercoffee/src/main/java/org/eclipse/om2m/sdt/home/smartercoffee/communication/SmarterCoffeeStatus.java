@@ -8,7 +8,7 @@
 package org.eclipse.om2m.sdt.home.smartercoffee.communication;
 
 import org.eclipse.om2m.sdt.home.smartercoffee.Activator;
-import org.eclipse.om2m.sdt.home.types.LevelType;
+import org.eclipse.om2m.sdt.home.types.LiquidLevel;
 
 public class SmarterCoffeeStatus {
 	
@@ -198,16 +198,16 @@ public class SmarterCoffeeStatus {
 		
 		System.out.println("raw water level=" + waterLevel);
 		if(waterLevel == 0){
-			return LevelType.low;
+			return LiquidLevel.low;
 		}
 		if(waterLevel == 17){		//about HALF -> from about level 7 on the right side of the tank			
-			return LevelType.medium;
+			return LiquidLevel.medium;
 		}
 		if(waterLevel == 18){	//from about level 7 to 10					
-			return LevelType.high;
+			return LiquidLevel.high;
 		}
 		if(waterLevel == 19){							//almost FULL -> from about level 10
-			return LevelType.maximum;
+			return LiquidLevel.maximum;
 		}
 		else{
 			return -1;

@@ -9,40 +9,65 @@ package org.eclipse.om2m.sdt.home.modules;
 
 import java.util.Map;
 
+import javax.xml.bind.PropertyException;
+
 import org.eclipse.om2m.sdt.DataPoint;
 import org.eclipse.om2m.sdt.Domain;
 import org.eclipse.om2m.sdt.Module;
+import org.eclipse.om2m.sdt.Property;
+import org.eclipse.om2m.sdt.datapoints.BooleanDataPoint;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
-import org.eclipse.om2m.sdt.home.types.LockState;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 import org.eclipse.om2m.sdt.home.types.ModuleType;
+import org.eclipse.om2m.sdt.home.types.PropertyType;
+import org.eclipse.om2m.sdt.types.SimpleType;
 
 public class Lock extends Module {
 	
-	private LockState lockState;
+	private BooleanDataPoint doorLock;
+	
+	private Property openOnly;
 
-	public Lock(final String name, final Domain domain, LockState lock) {
-		super(name, domain, ModuleType.lock.getDefinition(),
-				ModuleType.lock.getLongDefinitionName(),
-				ModuleType.lock.getShortDefinitionName());
+	public Lock(final String name, final Domain domain, BooleanDataPoint doorLock) {
+		super(name, domain, ModuleType.lock);
 		
-		this.lockState = lock;
-		this.lockState.setDoc("Status of the lock (Locked / Unlocked)");
-		this.lockState.setLongDefinitionType("lockState");
-		this.lockState.setShortDefinitionType("lokSe");
-		addDataPoint(this.lockState);
+		if ((doorLock == null) ||
+				! doorLock.getShortDefinitionType().equals(DatapointType.doorLock.getShortName())) {
+			domain.removeDevice(name);
+			throw new IllegalArgumentException("Wrong doorLock datapoint: " + doorLock);
+		}
+		this.doorLock = doorLock;
+		this.doorLock.setDoc("\"True\" indicates the door is locked, while \"False\" indicates the door is not locked");
+		addDataPoint(this.doorLock);
 	}
 	
 	public Lock(final String name, final Domain domain, Map<String, DataPoint> dps) {
-		this(name, domain, (LockState) dps.get("lokSe"));
+		this(name, domain, (BooleanDataPoint) dps.get(DatapointType.doorLock.getShortName()));
 	}
 
-	public void setLockState(int c) throws DataPointException, AccessException {
-		lockState.setValue(c);
+	public void setDoorLock(boolean c) throws DataPointException, AccessException {
+		doorLock.setValue(c);
 	}
 	
-	public int getLockState() throws DataPointException, AccessException {
-		return lockState.getValue();
+	public boolean getDoorLock() throws DataPointException, AccessException {
+		return doorLock.getValue();
+	}
+	
+	public void setOpenOnly(boolean v) {
+		if (openOnly == null) {
+			openOnly = new Property(PropertyType.openOnly);
+			openOnly.setType(SimpleType.Boolean);
+			openOnly.setDoc("Rated openOnly");
+			addProperty(openOnly);
+		}
+		openOnly.setValue(Boolean.toString(v));
+	}
+	
+	public boolean getOpenOnly() throws PropertyException {
+		if (openOnly == null)
+			throw new PropertyException("Not implemented");
+		return Boolean.parseBoolean(openOnly.getValue());
 	}
 
 }

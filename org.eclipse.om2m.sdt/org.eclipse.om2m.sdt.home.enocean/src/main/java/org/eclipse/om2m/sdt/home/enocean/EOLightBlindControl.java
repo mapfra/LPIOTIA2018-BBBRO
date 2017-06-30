@@ -19,11 +19,13 @@ import org.eclipse.om2m.sdt.home.enocean.Activator.EnOceanSDTDevice;
 import org.eclipse.om2m.sdt.home.modules.FaultDetection;
 import org.eclipse.om2m.sdt.home.modules.PushButton;
 import org.eclipse.om2m.sdt.home.modules.SmokeSensor;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.enocean.EnOceanDevice;
 import org.osgi.service.enocean.EnOceanMessage;
 
+@SuppressWarnings("rawtypes")
 public class EOLightBlindControl extends SwitchButton implements EnOceanSDTDevice {
 	
 	private final EnOceanDevice eoDevice;
@@ -116,7 +118,7 @@ public class EOLightBlindControl extends SwitchButton implements EnOceanSDTDevic
 	}
 	
 	private void addPushButton() {
-		pushed = new BooleanDataPoint("pushed") {
+		pushed = new BooleanDataPoint(DatapointType.pushed) {
 			@Override
 			public void doSetValue(Boolean v) throws DataPointException {
 				val = v;
@@ -132,7 +134,7 @@ public class EOLightBlindControl extends SwitchButton implements EnOceanSDTDevic
 
 	private void addFaultDetection() {
 		faultDetection = new FaultDetection("FaultDetection_" + eoDevice.getChipId(), domain, 
-				new BooleanDataPoint("status") {
+				new BooleanDataPoint(DatapointType.status) {
 			@Override
 			public Boolean doGetValue() throws DataPointException {
 				return false;
@@ -142,7 +144,7 @@ public class EOLightBlindControl extends SwitchButton implements EnOceanSDTDevic
 	}
 	
 	private void addSmokeSensor() {
-		status = new BooleanDataPoint("alarm") {
+		status = new BooleanDataPoint(DatapointType.alarm) {
 			@Override
 			public Boolean doGetValue() throws DataPointException {
 				Activator.logger.info("alarm: " + val);

@@ -23,9 +23,27 @@ public class Logger {
 		logService = pLogService;
 	}
 	
-	public void info(Class clazz, String msg) {
+	public void info(Class<?> clazz, String msg) {
 		if (logService != null) {
 			logService.log(LogService.LOG_INFO, "[" + clazz.getName() + "] " + msg);
+		} else {
+			System.out.println("INFO [" + clazz.getName() + "] " + msg);
+		}
+	}
+	
+	public void warning(Class<?> clazz, String msg) {
+		if (logService != null) {
+			logService.log(LogService.LOG_WARNING, "[" + clazz.getName() + "] " + msg);
+		} else {
+			System.out.println("WARNING [" + clazz.getName() + "] " + msg);
+		}
+	}
+	
+	public void error(Class<?> clazz, String msg) {
+		if (logService != null) {
+			logService.log(LogService.LOG_ERROR, "[" + clazz.getName() + "] " + msg);
+		} else {
+			System.out.println("ERROR [" + clazz.getName() + "] " + msg);
 		}
 	}
 	

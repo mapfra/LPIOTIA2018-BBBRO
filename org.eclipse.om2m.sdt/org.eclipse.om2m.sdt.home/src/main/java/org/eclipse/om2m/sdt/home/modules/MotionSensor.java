@@ -15,6 +15,7 @@ import org.eclipse.om2m.sdt.datapoints.BooleanDataPoint;
 import org.eclipse.om2m.sdt.datapoints.IntegerDataPoint;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 import org.eclipse.om2m.sdt.home.types.ModuleType;
 
 public class MotionSensor extends AbstractAlarmSensor {
@@ -29,10 +30,12 @@ public class MotionSensor extends AbstractAlarmSensor {
 
 	public MotionSensor(final String name, final Domain domain, Map<String, DataPoint> dps) {
 		this(name, domain, (BooleanDataPoint) dps.get("alarm"));
-		IntegerDataPoint silentTime = (IntegerDataPoint) dps.get("silTe");
+		IntegerDataPoint silentTime = 
+				(IntegerDataPoint) dps.get(DatapointType.silentTime.getShortName());
 		if (silentTime != null)
 			setSilentTime(silentTime);
-		IntegerDataPoint sensitivity = (IntegerDataPoint) dps.get("sensy");
+		IntegerDataPoint sensitivity = 
+				(IntegerDataPoint) dps.get(DatapointType.sensitivity.getShortName());
 		if (sensitivity != null)
 			setSensitivity(sensitivity);
 	}
@@ -41,8 +44,6 @@ public class MotionSensor extends AbstractAlarmSensor {
 		silentTime = dp;
 		silentTime.setOptional(true);
 		silentTime.setDoc("The time that the motionSensor restrains from sending an alarm in case continous motions are detected after one alarm is produced. This DataPoint can be used to avoid repeated alarm reports.");
-		silentTime.setLongDefinitionType("silentTime");
-		silentTime.setShortDefinitionType("silTe");
 		addDataPoint(silentTime);
 	}
 	
@@ -62,8 +63,6 @@ public class MotionSensor extends AbstractAlarmSensor {
 		sensitivity = dp;
 		sensitivity.setOptional(true);
 		sensitivity.setDoc("The level of the detection accuracy of the motion sensor. This DataPoint can be used to control the number of the report.");
-		sensitivity.setLongDefinitionType("sensitivity");
-		sensitivity.setShortDefinitionType("sensy");
 		addDataPoint(sensitivity);
 	}
 	

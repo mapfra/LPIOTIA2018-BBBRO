@@ -1,6 +1,5 @@
 package org.eclipse.om2m.sdt.home.devices;
 
-
 import java.util.Collection;
 
 import org.eclipse.om2m.sdt.Domain;
@@ -12,40 +11,28 @@ import org.eclipse.om2m.sdt.home.modules.FaultDetection;
 import org.eclipse.om2m.sdt.home.modules.Foaming;
 import org.eclipse.om2m.sdt.home.modules.Grinder;
 import org.eclipse.om2m.sdt.home.modules.KeepWarm;
-import org.eclipse.om2m.sdt.home.modules.Level;
+import org.eclipse.om2m.sdt.home.modules.LiquidLevel;
 import org.eclipse.om2m.sdt.home.modules.RunMode;
 import org.eclipse.om2m.sdt.home.types.DeviceType;
 
-public class CoffeeMachine extends GenericDevice{
-
+public class CoffeeMachine extends GenericDevice {
+	
+	private FaultDetection faultDetection;
+	private RunMode runMode;
+	private Clock clock;
+	private Brewing brewing;
+	private LiquidLevel waterStatus;
+	private LiquidLevel milkStatus;
+	private LiquidLevel beansStatus;
+	private Grinder grinder;
+	private Foaming foamedMilk;
+	private LiquidLevel milkQuantity;
+	private KeepWarm keepWarm;
+	private BinarySwitch brewingSwitch;
 	
 	public CoffeeMachine(final String id, final String serial, final Domain domain) {
 		super(id, serial, DeviceType.deviceCoffeeMachine, domain);
 	}
-	
-	private FaultDetection faultDetection;
-	
-	private RunMode runMode;
-	
-	private Clock clock;
-	
-	private Brewing brewing;
-	
-	private Level waterStatus;
-	
-	private Level milkStatus;
-	
-	private Level beansStatus;
-	
-	private Grinder grinder;
-	
-	private Foaming foamedMilk;
-	
-	private Level milkQuantity;
-	
-	private KeepWarm keepWarm;
-	
-	private BinarySwitch brewingSwitch;
 	
 	public void addModule(Module module) {
 		if (module instanceof FaultDetection)
@@ -56,19 +43,19 @@ public class CoffeeMachine extends GenericDevice{
 			addModule((Clock)module);
 		else if (module instanceof Brewing)
 			addModule((Brewing)module);
-		else if (module instanceof Level){
+		else if (module instanceof LiquidLevel){
 			Collection<String> col = module.getDataPointNames();
 			if(col.contains("waterStatus")){
-				addModuleWaterStatus((Level)module);
+				addModuleWaterStatus((LiquidLevel)module);
 			}
 			if(col.contains("milkStatus")){
-				addModuleMilkStatus((Level)module);
+				addModuleMilkStatus((LiquidLevel)module);
 			}
 			if(col.contains("beansStatus")){
-				addModuleBeansStatus((Level)module);
+				addModuleBeansStatus((LiquidLevel)module);
 			}
 			if(col.contains("milkQuantity")){
-				addModuleMilkQuantity((Level)module);
+				addModuleMilkQuantity((LiquidLevel)module);
 			}
 		}
 		else if (module instanceof Grinder)
@@ -125,23 +112,23 @@ public class CoffeeMachine extends GenericDevice{
 	}
 	
 	
-	public void addModuleWaterStatus(Level mod) {
+	public void addModuleWaterStatus(LiquidLevel mod) {
 		this.waterStatus = mod;
 		super.addModule(waterStatus);
 	}
 	
-	public void addModuleMilkStatus(Level mod) {
+	public void addModuleMilkStatus(LiquidLevel mod) {
 		this.milkStatus = mod;
 		super.addModule(milkStatus);
 	}
 	
-	public void addModuleBeansStatus(Level mod) {
+	public void addModuleBeansStatus(LiquidLevel mod) {
 		this.beansStatus = mod;
 		super.addModule(beansStatus);
 	}
 	
 	
-	public void addModuleMilkQuantity(Level mod) {
+	public void addModuleMilkQuantity(LiquidLevel mod) {
 		this.milkQuantity = mod;
 		super.addModule(milkQuantity);
 	}
@@ -162,15 +149,15 @@ public class CoffeeMachine extends GenericDevice{
 		return brewing;
 	}
 
-	public Level getWaterStatus() {
+	public LiquidLevel getWaterStatus() {
 		return waterStatus;
 	}
 
-	public Level getMilkStatus() {
+	public LiquidLevel getMilkStatus() {
 		return milkStatus;
 	}
 
-	public Level getBeansStatus() {
+	public LiquidLevel getBeansStatus() {
 		return beansStatus;
 	}
 
@@ -182,7 +169,7 @@ public class CoffeeMachine extends GenericDevice{
 		return foamedMilk;
 	}
 
-	public Level getMilkQuantity() {
+	public LiquidLevel getMilkQuantity() {
 		return milkQuantity;
 	}
 

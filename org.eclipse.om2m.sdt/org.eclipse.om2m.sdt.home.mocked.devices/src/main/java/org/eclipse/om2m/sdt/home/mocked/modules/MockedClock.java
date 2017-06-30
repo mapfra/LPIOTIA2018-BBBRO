@@ -14,12 +14,13 @@ import org.eclipse.om2m.sdt.datapoints.DateDataPoint;
 import org.eclipse.om2m.sdt.datapoints.TimeDataPoint;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.modules.Clock;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 
 public class MockedClock extends Clock {
 
 	public MockedClock(String name, Domain domain) {
 		super(name, domain,
-			new TimeDataPoint("currentTime") {
+			new TimeDataPoint(DatapointType.currentTime) {
 				private Date d = new Date();
 				@Override
 				public void doSetValue(Date value) throws DataPointException {
@@ -30,7 +31,7 @@ public class MockedClock extends Clock {
 					return d;
 				}
 			}, 
-			new DateDataPoint("currentDate") {
+			new DateDataPoint(DatapointType.currentDate) {
 				private Date d = new Date();
 				@Override
 				public void doSetValue(Date value) throws DataPointException {

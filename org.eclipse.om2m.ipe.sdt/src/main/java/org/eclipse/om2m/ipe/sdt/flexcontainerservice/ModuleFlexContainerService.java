@@ -67,7 +67,7 @@ public class ModuleFlexContainerService implements FlexContainerService {
 		}
 
 		// retrieve the DataPoint object based on customAttributeName input parameter
-		DataPoint dataPoint = module.getDataPointByShortDefinitionType(customAttributeName);
+		DataPoint dataPoint = module.getDataPointByShortName(customAttributeName);
 		if (dataPoint == null) {
 			throw new Om2mException("unknown custom attribute " + customAttributeName + " in " + module,
 					ResponseStatusCode.INTERNAL_SERVER_ERROR);
@@ -105,7 +105,7 @@ public class ModuleFlexContainerService implements FlexContainerService {
 		logger.debug("setCustomAttributeValue()");
 
 		for (CustomAttribute ca : customAttributes) {
-			DataPoint dataPoint = module.getDataPointByShortDefinitionType(ca.getCustomAttributeName());
+			DataPoint dataPoint = module.getDataPointByShortName(ca.getCustomAttributeName());
 			if (dataPoint != null) {
 				// the custom attribute is a dataPoint
 				ValuedDataPoint<Object> valuedDataPoint = (ValuedDataPoint<Object>) dataPoint;
@@ -125,10 +125,10 @@ public class ModuleFlexContainerService implements FlexContainerService {
 					valuedDataPoint.setValue(value);
 					logger.debug(msg + "OK");
 				} catch (AccessException e) {
-					logger.debug(msg + "KO: " + e.getMessage());
+					logger.warn(msg + "KO: " + e.getMessage());
 					throw new Om2mException(e.getMessage(), e, ResponseStatusCode.ACCESS_DENIED);
 				} catch (Exception e) {
-					logger.debug(msg + "KO: " + e.getMessage());
+					logger.warn(msg + "KO: " + e.getMessage());
 					throw new Om2mException(e.getMessage(), e, ResponseStatusCode.INTERNAL_SERVER_ERROR);
 				}
 			} else {

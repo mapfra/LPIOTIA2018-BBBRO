@@ -7,7 +7,6 @@
  *******************************************************************************/
 package org.eclipse.om2m.sdt.home.mocked.devices;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.om2m.sdt.DataPoint;
@@ -23,6 +22,7 @@ import org.eclipse.om2m.sdt.home.mocked.modules.MockedEnergyGeneration;
 import org.eclipse.om2m.sdt.home.mocked.modules.MockedFaultDetection;
 import org.eclipse.om2m.sdt.home.mocked.modules.MockedRunMode;
 import org.eclipse.om2m.sdt.home.modules.EnergyConsumption;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 import org.osgi.framework.ServiceRegistration;
 
 public class MockedSmartElectricMeter extends SmartElectricMeter implements MockedDevice {
@@ -40,7 +40,7 @@ public class MockedSmartElectricMeter extends SmartElectricMeter implements Mock
 
 		// EnergyConsumption
 		energyConsumption = new MockedEnergyConsumption("energyConsumption_" + id, domain, 
-			new FloatDataPoint("power") {
+			new FloatDataPoint(DatapointType.power) {
 				@Override
 				public Float doGetValue() throws DataPointException {
 					return power;
@@ -55,8 +55,9 @@ public class MockedSmartElectricMeter extends SmartElectricMeter implements Mock
 		addModule(new MockedClock("clock_" + id, domain));
 		
 		// runMode
+//		addModule(new MockedRunState("runState_" + id, domain));
 		addModule(new MockedRunMode("runMode_" + id, domain));
-		
+
 		// energyGeneration
 		addModule(new MockedEnergyGeneration("energyGeneration_" + id, domain));
 	}
@@ -68,12 +69,6 @@ public class MockedSmartElectricMeter extends SmartElectricMeter implements Mock
 			return;
 		}
 		serviceRegistrations = Activator.register(this);
-		try {
-			getRunMode().setSupportedModes(Arrays.asList("mode1", "mode2", "mode3", "mode4"));
-			getRunMode().setOperationMode(Arrays.asList("mode2", "mode3"));
-		} catch (Exception e) {
-			Activator.logger.warning("", e);
-		}
 
 		new Thread(new Runnable() {
 			@Override

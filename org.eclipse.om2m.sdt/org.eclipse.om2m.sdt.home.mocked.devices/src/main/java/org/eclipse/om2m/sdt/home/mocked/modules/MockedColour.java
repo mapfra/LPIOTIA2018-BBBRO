@@ -11,12 +11,13 @@ import org.eclipse.om2m.sdt.Domain;
 import org.eclipse.om2m.sdt.datapoints.IntegerDataPoint;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.modules.Colour;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 
 public class MockedColour extends Colour {
 
 	public MockedColour(String name, Domain domain) {
 		super(name, domain,
-			new IntegerDataPoint("red") {
+			new IntegerDataPoint(DatapointType.red) {
 				private Integer v = new Integer((int)(Math.random() * 255));
 				@Override
 				public void doSetValue(Integer value) throws DataPointException {
@@ -27,7 +28,7 @@ public class MockedColour extends Colour {
 					return v;
 				}
 			}, 
-			new IntegerDataPoint("green") {
+			new IntegerDataPoint(DatapointType.green) {
 				private Integer v = new Integer((int)(Math.random() * 255));
 				@Override
 				public void doSetValue(Integer value) throws DataPointException {
@@ -38,7 +39,7 @@ public class MockedColour extends Colour {
 					return v;
 				}
 			}, 
-			new IntegerDataPoint("blue") {
+			new IntegerDataPoint(DatapointType.blue) {
 				private Integer v = new Integer((int)(Math.random() * 255));
 				@Override
 				public void doSetValue(Integer value) throws DataPointException {

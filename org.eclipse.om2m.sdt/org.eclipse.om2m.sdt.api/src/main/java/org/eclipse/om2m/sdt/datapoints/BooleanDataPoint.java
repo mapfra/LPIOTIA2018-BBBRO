@@ -7,12 +7,13 @@
  *******************************************************************************/
 package org.eclipse.om2m.sdt.datapoints;
 
+import org.eclipse.om2m.sdt.Identifiers;
 import org.eclipse.om2m.sdt.types.DataType;
 
 public abstract class BooleanDataPoint extends ValuedDataPoint<Boolean> {
 
-	public BooleanDataPoint(String name) {
-		super(name, DataType.Boolean);
+	public BooleanDataPoint(Identifiers type) {
+		super(type, DataType.Boolean);
 	}
 
 }

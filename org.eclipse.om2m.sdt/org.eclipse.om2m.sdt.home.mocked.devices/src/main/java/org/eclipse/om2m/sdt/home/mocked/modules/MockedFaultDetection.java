@@ -11,12 +11,13 @@ import org.eclipse.om2m.sdt.Domain;
 import org.eclipse.om2m.sdt.datapoints.BooleanDataPoint;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.modules.FaultDetection;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 
 public class MockedFaultDetection extends FaultDetection {
 
 	public MockedFaultDetection(String name, Domain domain) {
 		super(name, domain, 
-			new BooleanDataPoint("status") {
+			new BooleanDataPoint(DatapointType.status) {
 				@Override
 				public Boolean doGetValue() throws DataPointException {
 					return (Math.random() * 100) == 1;

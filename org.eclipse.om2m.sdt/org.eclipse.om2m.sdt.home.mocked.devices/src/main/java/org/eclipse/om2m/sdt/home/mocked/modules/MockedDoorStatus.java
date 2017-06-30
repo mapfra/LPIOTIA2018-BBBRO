@@ -8,6 +8,7 @@
 package org.eclipse.om2m.sdt.home.mocked.modules;
 
 import org.eclipse.om2m.sdt.Domain;
+import org.eclipse.om2m.sdt.datapoints.EnumDataPoint;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.modules.DoorStatus;
 import org.eclipse.om2m.sdt.home.types.DoorState;
@@ -16,14 +17,14 @@ public class MockedDoorStatus extends DoorStatus {
 	
 	public MockedDoorStatus(String name, Domain domain) {
 		super(name, domain,
-			new DoorState("doorState") {
+			new DoorState(new EnumDataPoint<Integer>(null) {
 				private int state = DoorState.Closed;
 				@Override
 				public Integer doGetValue() throws DataPointException {
 					return state;
 				}
 			}
-		);
+		));
 	}
 
 }

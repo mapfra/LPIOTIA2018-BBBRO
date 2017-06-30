@@ -24,6 +24,7 @@ import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.log.LogService;
 import org.osgi.util.tracker.ServiceTracker;
 
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class Activator implements BundleActivator {
 
 	static private final String PROTOCOL = "Cloud";
@@ -97,7 +98,7 @@ public class Activator implements BundleActivator {
 		try {
 			newDevices.addAll(ResourceDiscovery.readDeviceURIs());
 		} catch (Throwable e) {
-			logger.error("Error reading remote devices: " + e.getMessage(), e);
+			logger.error("Error reading remote devices: " + e.getMessage());
 		}
 		logger.info("newDevices[size:" + newDevices.size() + "]");
 		
@@ -124,16 +125,16 @@ public class Activator implements BundleActivator {
 	private void install(String uri) {
 		try {
 			GenericDevice device = ResourceDiscovery.readDevice(uri);
-			logger.info("Install device " + device);
 			device.setProtocol(PROTOCOL + "." + device.getProtocol());
 			String name = device.getDeviceName();
-			if (Utilities.isEmpty(name))
+			if (isEmpty(name))
 				name = device.getDeviceAliasName();
-			if (Utilities.isEmpty(name))
+			if (isEmpty(name))
 				name = device.getName();
 			device.setDeviceAliasName("Cloud device " + name);
 			registrations.put(device.getId(), Utils.register(device, context));
 			devices.put(uri, device);
+			logger.info("Installed device " + device);
 		} catch (Throwable e) {
 			logger.error("Error installing remote device: " + uri, e);
 		}
@@ -169,6 +170,10 @@ public class Activator implements BundleActivator {
 		devices.clear();
 		registrations.clear();
 		context = null;
+	}
+
+	private static boolean isEmpty(final String str) {
+		return (str == null) || str.trim().equals("");
 	}
 
 }

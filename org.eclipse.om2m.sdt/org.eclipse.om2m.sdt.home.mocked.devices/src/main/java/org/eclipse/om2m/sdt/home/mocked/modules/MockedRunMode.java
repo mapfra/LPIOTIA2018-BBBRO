@@ -14,12 +14,13 @@ import org.eclipse.om2m.sdt.Domain;
 import org.eclipse.om2m.sdt.datapoints.ArrayDataPoint;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.modules.RunMode;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 
 public class MockedRunMode extends RunMode {
 	
 	public MockedRunMode(String name, Domain domain) {
 		super(name, domain,
-			new ArrayDataPoint<String>("operationMode") {
+			new ArrayDataPoint<String>(DatapointType.operationMode) {
 				private List<String> operationModes = Arrays.asList("mode1", "mode2", "mode3");
 				@Override
 				public List<String> doGetValue() throws DataPointException {
@@ -30,7 +31,7 @@ public class MockedRunMode extends RunMode {
 					operationModes = vals;
 				}
 			}, 
-			new ArrayDataPoint<String>("supportedModes") {
+			new ArrayDataPoint<String>(DatapointType.supportedModes) {
 				private List<String> supportedModes = Arrays.asList("mode1", "mode3");
 				@Override
 				public List<String> doGetValue() throws DataPointException {

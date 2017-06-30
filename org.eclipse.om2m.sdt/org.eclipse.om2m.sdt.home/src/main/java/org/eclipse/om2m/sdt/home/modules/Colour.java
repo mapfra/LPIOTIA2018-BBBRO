@@ -15,6 +15,7 @@ import org.eclipse.om2m.sdt.Module;
 import org.eclipse.om2m.sdt.datapoints.IntegerDataPoint;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 import org.eclipse.om2m.sdt.home.types.ModuleType;
 
 public class Colour extends Module {
@@ -25,35 +26,42 @@ public class Colour extends Module {
 
 	public Colour(final String name, final Domain domain, IntegerDataPoint red, 
 			IntegerDataPoint green, IntegerDataPoint blue) {
-		super(name, domain, ModuleType.colour.getDefinition(),
-				ModuleType.colour.getLongDefinitionName(),
-				ModuleType.colour.getShortDefinitionName());
+		super(name, domain, ModuleType.colour);
 		setExtends(domain.getName(), "Colour");
 		
+		if ((red == null) ||
+				! red.getShortDefinitionType().equals(DatapointType.red.getShortName())) {
+			domain.removeDevice(name);
+			throw new IllegalArgumentException("Wrong red datapoint: " + red);
+		}
 		this.red = red;
 		this.red.setDoc("The R value of RGB; the range is [0,255]");
-		this.red.setLongDefinitionType("red");
-		this.red.setShortDefinitionType("red");
 		addDataPoint(this.red);
 		
+		if ((green == null) ||
+				! green.getShortDefinitionType().equals(DatapointType.green.getShortName())) {
+			domain.removeDevice(name);
+			throw new IllegalArgumentException("Wrong green datapoint: " + green);
+		}
 		this.green = green;
 		this.green.setDoc("The G value of RGB; the range is [0,255]");
-		this.green.setLongDefinitionType("green");
-		this.green.setShortDefinitionType("green");
 		addDataPoint(this.green);
 		
+		if ((blue == null) ||
+				! blue.getShortDefinitionType().equals(DatapointType.blue.getShortName())) {
+			domain.removeDevice(name);
+			throw new IllegalArgumentException("Wrong blue datapoint: " + blue);
+		}
 		this.blue = blue;
 		this.blue.setDoc("The B value of RGB; the range is [0,255]");
-		this.blue.setLongDefinitionType("blue");
-		this.blue.setShortDefinitionType("blue");
 		addDataPoint(this.blue);
 	}
 
 	public Colour(final String name, final Domain domain, Map<String, DataPoint> dps) {
 		this(name, domain, 
-			(IntegerDataPoint) dps.get("red"),
-			(IntegerDataPoint) dps.get("green"),
-			(IntegerDataPoint) dps.get("blue"));
+			(IntegerDataPoint) dps.get(DatapointType.red.getShortName()),
+			(IntegerDataPoint) dps.get(DatapointType.green.getShortName()),
+			(IntegerDataPoint) dps.get(DatapointType.blue.getShortName()));
 	}
 
 	public int getRed() throws DataPointException, AccessException {

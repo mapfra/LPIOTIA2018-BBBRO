@@ -11,6 +11,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;
 
+import org.eclipse.om2m.sdt.Identifiers;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.types.DataType;
@@ -23,7 +24,7 @@ public abstract class AbstractDateDataPoint extends ValuedDataPoint<Date> {
 	
 	private DateFormat df;
 
-	protected AbstractDateDataPoint(String name, DataType type) {
+	protected AbstractDateDataPoint(Identifiers name, DataType type) {
 		super(name, type);
 		if (type.equals(DataType.Date)) {
 			df = dateFormat;

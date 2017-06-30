@@ -13,18 +13,19 @@ import java.util.Map.Entry;
 
 import org.eclipse.om2m.sdt.Action;
 import org.eclipse.om2m.sdt.Arg;
+import org.eclipse.om2m.sdt.Identifiers;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.ActionException;
 import org.eclipse.om2m.sdt.utils.Activator;
 
 public abstract class Command extends Action {
 
-	public Command(String name, String definition, final String longDefinitionName, final String shortDefinitionName) {
-		super(name, definition, longDefinitionName, shortDefinitionName);
+	public Command(String name, final Identifiers identifiers) {
+		super(name, identifiers);
 	}
 
-	public Command(String name, String definition, Collection<Arg> args, final String longDefinitionName, final String shortDefinitionName) {
-		super(name, definition, longDefinitionName, shortDefinitionName);
+	public Command(String name, Collection<Arg> args, final Identifiers identifiers) {
+		super(name, identifiers);
 		if (args != null)
 			for (Arg arg : args)
 				addArg(arg);

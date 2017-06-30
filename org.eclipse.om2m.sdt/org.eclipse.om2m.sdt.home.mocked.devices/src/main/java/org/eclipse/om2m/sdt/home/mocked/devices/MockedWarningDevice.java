@@ -15,6 +15,7 @@ import org.eclipse.om2m.sdt.home.mocked.modules.MockedAlarmSpeaker;
 import org.eclipse.om2m.sdt.home.mocked.modules.MockedFaultDetection;
 import org.osgi.framework.ServiceRegistration;
 
+@SuppressWarnings("rawtypes")
 public class MockedWarningDevice extends WarningDevice implements MockedDevice {
 
 	private List<ServiceRegistration> serviceRegistrations;

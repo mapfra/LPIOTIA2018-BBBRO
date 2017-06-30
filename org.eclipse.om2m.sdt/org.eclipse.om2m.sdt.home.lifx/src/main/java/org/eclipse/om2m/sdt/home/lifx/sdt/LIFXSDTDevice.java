@@ -15,6 +15,7 @@ import org.eclipse.om2m.sdt.home.devices.Light;
 import org.eclipse.om2m.sdt.home.lifx.LIFXDevice;
 import org.eclipse.om2m.sdt.home.modules.BinarySwitch;
 import org.eclipse.om2m.sdt.home.modules.Colour;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 
 public class LIFXSDTDevice extends Light {
 	
@@ -36,120 +37,94 @@ public class LIFXSDTDevice extends Light {
 		setProtocol("LIFX");
 		
 		// binary switch module
-		BinarySwitch binarySwitch = new BinarySwitch(getSerialNumber() + "_BinarySwitch", domain, new BooleanDataPoint("powerState") {
-			
-			@Override
-			protected Boolean doGetValue() throws DataPointException {
-				int lifxPower;
-				try {
-					lifxPower = lifxDevice.getPower(false);
-				} catch (Exception e) {
-					throw new DataPointException("Error when retrieving power state:" + e.getMessage());
-				}
-				// at this point, we are sure 
-				if (lifxPower == 0) {
-					// off
-					return false;
-				} else {
-					// on
-					return true;
+		BinarySwitch binarySwitch = new BinarySwitch(getSerialNumber() + "_BinarySwitch", domain,
+			new BooleanDataPoint(DatapointType.powerState) {
+				@Override
+				protected Boolean doGetValue() throws DataPointException {
+					try {
+						return lifxDevice.getPower(false) != 0;
+					} catch (Exception e) {
+						throw new DataPointException("Error when retrieving power state:" + e.getMessage());
+					}
 				}
 				
-			}
-			
-			@Override
-			protected void doSetValue(Boolean value) throws DataPointException {
-				try {
-					lifxDevice.setPower((value ? 65535 : 0), 0);
-				} catch (Exception e) {
-					throw new DataPointException("Error when setting power state:" + e.getMessage());
+				@Override
+				protected void doSetValue(Boolean value) throws DataPointException {
+					try {
+						lifxDevice.setPower((value ? 65535 : 0), 0);
+					} catch (Exception e) {
+						throw new DataPointException("Error when setting power state:" + e.getMessage());
+					}
 				}
-			}
-		});
+			});
 		addModule(binarySwitch);
 		
-		Colour colourModule = new Colour(getSerialNumber() + "_Colour", domain, new IntegerDataPoint("red") {
-			
-			@Override
-			protected Integer doGetValue() throws DataPointException {
-				int color;
-				try {
-					color = getColor(0);
-				} catch (Exception e) {
-					throw new DataPointException(e.getMessage());
+		Colour colourModule = new Colour(getSerialNumber() + "_Colour", domain, 
+			new IntegerDataPoint(DatapointType.red) {
+				@Override
+				protected Integer doGetValue() throws DataPointException {
+					try {
+						return getColor(0);
+					} catch (Exception e) {
+						throw new DataPointException(e.getMessage());
+					}
 				}
-				return color;
-			}
-			
-			@Override
-			protected void doSetValue(Integer value) throws DataPointException {
-				try {
-					setColor(0, value);
-				} catch (Exception e) {
-					throw new DataPointException(e.getMessage());
+				@Override
+				protected void doSetValue(Integer value) throws DataPointException {
+					try {
+						setColor(0, value);
+					} catch (Exception e) {
+						throw new DataPointException(e.getMessage());
+					}
 				}
-			}
-		},  new IntegerDataPoint("green") {
-			
-			@Override
-			protected Integer doGetValue() throws DataPointException {
-				int color;
-				try {
-					color = getColor(1);
-				} catch (Exception e) {
-					throw new DataPointException(e.getMessage());
+			},  
+			new IntegerDataPoint(DatapointType.green) {
+				@Override
+				protected Integer doGetValue() throws DataPointException {
+					try {
+						return getColor(1);
+					} catch (Exception e) {
+						throw new DataPointException(e.getMessage());
+					}
 				}
-				return color;
-			}
-			
-			@Override
-			protected void doSetValue(Integer value) throws DataPointException {
-				try {
-					setColor(1, value);
-				} catch (Exception e) {
-					throw new DataPointException(e.getMessage());
+				@Override
+				protected void doSetValue(Integer value) throws DataPointException {
+					try {
+						setColor(1, value);
+					} catch (Exception e) {
+						throw new DataPointException(e.getMessage());
+					}
 				}
-			}
-			
-		},  new IntegerDataPoint("blue") {
-			
-			@Override
-			protected Integer doGetValue() throws DataPointException {
-				int color;
-				try {
-					color = getColor(2);
-				} catch (Exception e) {
-					throw new DataPointException(e.getMessage());
+			},  
+			new IntegerDataPoint(DatapointType.blue) {
+				@Override
+				protected Integer doGetValue() throws DataPointException {
+					try {
+						return getColor(2);
+					} catch (Exception e) {
+						throw new DataPointException(e.getMessage());
+					}
 				}
-				return color;
-			}
-			
-			@Override
-			protected void doSetValue(Integer value) throws DataPointException {
-				try {
-					setColor(2, value);
-				} catch (Exception e) {
-					throw new DataPointException(e.getMessage());
+				@Override
+				protected void doSetValue(Integer value) throws DataPointException {
+					try {
+						setColor(2, value);
+					} catch (Exception e) {
+						throw new DataPointException(e.getMessage());
+					}
 				}
-			}
-		});
-		
+			});
 		addModule(colourModule);
-		
-		
 	}
-
 
 	private static String computeLifxDeviceId(LIFXDevice pLIFXDevice) {
 		return pLIFXDevice.getId().replaceAll(":", "_");
 	}
 
-
 	private static String computeLifxDeviceSerial(LIFXDevice pLIFXDevice) {
 		return pLIFXDevice.getId().replaceAll(":", "_");
 	}
 
-	
 	private void setColor(int colorIndex, int colorValue) throws Exception {
 		// get current state
 		int h = Math.round((float)(lifxDevice.getHue() / 65565d * 360d));
@@ -315,9 +290,4 @@ public class LIFXSDTDevice extends Light {
 		return out;
 	}
 	
-	
-
-	
-	
-
 }

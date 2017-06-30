@@ -16,6 +16,7 @@ import org.eclipse.om2m.sdt.datapoints.BooleanDataPoint;
 import org.eclipse.om2m.sdt.datapoints.StringDataPoint;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 import org.eclipse.om2m.sdt.home.types.DoorState;
 import org.eclipse.om2m.sdt.home.types.ModuleType;
 
@@ -29,24 +30,25 @@ public class DoorStatus extends Module {
 	
 	
 	public DoorStatus(final String name, final Domain domain, DoorState state) {
-		super(name, domain, ModuleType.doorStatus.getDefinition(),
-				ModuleType.doorStatus.getLongDefinitionName(),
-				ModuleType.doorStatus.getShortDefinitionName());
+		super(name, domain, ModuleType.doorStatus);
 
+		if ((state == null) ||
+				! state.getShortDefinitionType().equals(DatapointType.doorState.getShortName())) {
+			domain.removeDevice(name);
+			throw new IllegalArgumentException("Wrong doorState datapoint: " + state);
+		}
 		this.doorState = state;
 		this.doorState.setWritable(false);
 		this.doorState.setDoc("\"True\" indicates that door is closed, \"False\"indicates the door is open.");
-		this.doorState.setLongDefinitionType("doorState");
-		this.doorState.setShortDefinitionType("dooSe");
 		addDataPoint(this.doorState);
 	}
 	
 	public DoorStatus(final String name, final Domain domain, Map<String, DataPoint> dps) {
-		this(name, domain, (DoorState) dps.get("dooSe"));
-		StringDataPoint openDuration = (StringDataPoint) dps.get("opeDn");
+		this(name, domain, (DoorState) dps.get(DatapointType.doorState.getShortName()));
+		StringDataPoint openDuration = (StringDataPoint) dps.get(DatapointType.openDuration.getShortName());
 		if (openDuration != null)
 			setOpenDuration(openDuration);
-		BooleanDataPoint openAlarm = (BooleanDataPoint) dps.get("opeAm");
+		BooleanDataPoint openAlarm = (BooleanDataPoint) dps.get(DatapointType.openAlarm.getShortName());
 		if (openAlarm != null)
 			setOpenAlarm(openAlarm);
 	}
@@ -60,8 +62,6 @@ public class DoorStatus extends Module {
 		this.openDuration.setOptional(true);
 		this.openDuration.setWritable(false);
 		this.openDuration.setDoc("The time duration the door has been open. The type of openDuration is an ISO 8601 Time encoded string.");
-		this.openDuration.setLongDefinitionType("openDuration");
-		this.openDuration.setShortDefinitionType("opeDn");
 		addDataPoint(openDuration);
 	}
 
@@ -76,8 +76,6 @@ public class DoorStatus extends Module {
 		this.openAlarm.setOptional(true);
 		this.openAlarm.setWritable(true);
 		this.openAlarm.setDoc("The state of the door open alarm. True indicates that the open alarm is active. False indicates that open alarm is not active.");
-		this.openAlarm.setLongDefinitionType("openAlarm");
-		this.openAlarm.setShortDefinitionType("opeAm");
 		addDataPoint(openAlarm);
 	}
 

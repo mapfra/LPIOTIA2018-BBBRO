@@ -15,33 +15,36 @@ import org.eclipse.om2m.sdt.Module;
 import org.eclipse.om2m.sdt.datapoints.IntegerDataPoint;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 import org.eclipse.om2m.sdt.home.types.ModuleType;
 
 public class ColourSaturation extends Module {
 	
-	private IntegerDataPoint colourSaturation;
+	private IntegerDataPoint colourSat;
 
-	public ColourSaturation(final String name, final Domain domain, IntegerDataPoint colourSaturation) {
-		super(name, domain, ModuleType.colourSaturation.getDefinition(),
-				ModuleType.colourSaturation.getLongDefinitionName(),
-				ModuleType.colourSaturation.getShortDefinitionName());
+	public ColourSaturation(final String name, final Domain domain, IntegerDataPoint colourSat) {
+		super(name, domain, ModuleType.colourSaturation);
 		setExtends(domain.getName(), "ColourSaturation");
-		this.colourSaturation = colourSaturation;
-		this.colourSaturation.setLongDefinitionType("colourSaturation");
-		this.colourSaturation.setShortDefinitionType("colSn");
-		addDataPoint(this.colourSaturation);
+		
+		if ((colourSat == null) ||
+				! colourSat.getShortDefinitionType().equals(DatapointType.colourSat.getShortName())) {
+			domain.removeDevice(name);
+			throw new IllegalArgumentException("Wrong colourSat datapoint: " + colourSat);
+		}
+		this.colourSat = colourSat;
+		addDataPoint(this.colourSat);
 	}
 
 	public ColourSaturation(final String name, final Domain domain, Map<String, DataPoint> dps) {
-		this(name, domain, (IntegerDataPoint) dps.get("colSn"));
+		this(name, domain, (IntegerDataPoint) dps.get(DatapointType.colourSat.getShortName()));
 	}
 
-	public int getColourSaturation() throws DataPointException, AccessException {
-		return colourSaturation.getValue();
+	public int getColourSat() throws DataPointException, AccessException {
+		return colourSat.getValue();
 	}
 	
-	public void setColourSaturation(int value) throws DataPointException, AccessException {
-		colourSaturation.setValue(value);
+	public void setColourSat(int value) throws DataPointException, AccessException {
+		colourSat.setValue(value);
 	}
 	
 }

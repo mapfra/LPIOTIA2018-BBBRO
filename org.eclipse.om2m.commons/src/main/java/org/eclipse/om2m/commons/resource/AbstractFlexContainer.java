@@ -43,6 +43,7 @@ import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceWeatherStationF
 import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleAlarmSpeakerFlexContainer;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleAtmosphericPressureSensorFlexContainer;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleAudioVolumeFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleBatteryFlexContainer;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleBinarySwitchFlexContainer;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleBoilerFlexContainer;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleBrewingFlexContainer;
@@ -62,11 +63,13 @@ import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleExtendedCarbonD
 import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleFaultDetectionFlexContainer;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleFoamingFlexContainer;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleGrinderFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleLiquidLevelFlexContainer;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleLockFlexContainer;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleNoiseFlexContainer;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.ModulePersonSensorFlexContainer;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleRelativeHumidityFlexContainer;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleRunModeFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleRunStateFlexContainer;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleSmokeSensorFlexContainer;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleStreamingFlexContainer;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleTemperatureFlexContainer;
@@ -125,6 +128,8 @@ import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleWaterSensorFlex
 	DeviceTemperatureDetectorFlexContainer.class, DeviceThermostatFlexContainer.class,
 	DeviceWarningDeviceFlexContainer.class,
 	DeviceWaterValveFlexContainer.class, DeviceWeatherStationFlexContainer.class,
+	DeviceThermostatFlexContainer.class,
+	
 	ModuleAlarmSpeakerFlexContainer.class, ModuleAudioVolumeFlexContainer.class,
 	ModuleBinarySwitchFlexContainer.class, ModuleBoilerFlexContainer.class,
 	ModuleBrightnessFlexContainer.class, ModuleClockFlexContainer.class,
@@ -141,7 +146,9 @@ import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleWaterSensorFlex
 	ModuleFoamingFlexContainer.class, ModuleGrinderFlexContainer.class,
 	ModuleNoiseFlexContainer.class, ModulePersonSensorFlexContainer.class,
 	ModuleStreamingFlexContainer.class, ModuleLockFlexContainer.class,
-	ModuleTimerFlexContainer.class,	ActionToggleFlexContainer.class})
+	ModuleRunStateFlexContainer.class, ModuleBatteryFlexContainer.class,
+	ModuleLiquidLevelFlexContainer.class, ModuleTimerFlexContainer.class,
+	ActionToggleFlexContainer.class})
 public abstract class AbstractFlexContainer extends AnnounceableResource {
 	
 	@XmlTransient
@@ -184,6 +191,7 @@ public abstract class AbstractFlexContainer extends AnnounceableResource {
 			@XmlElement(name = DeviceWarningDeviceFlexContainer.SHORT_NAME, type = DeviceWarningDeviceFlexContainer.class),
 			@XmlElement(name = DeviceWaterValveFlexContainer.SHORT_NAME, type = DeviceWaterValveFlexContainer.class),
 			@XmlElement(name = DeviceWeatherStationFlexContainer.SHORT_NAME, type = DeviceWeatherStationFlexContainer.class),
+			@XmlElement(name = DeviceThermostatFlexContainer.SHORT_NAME, type = DeviceThermostatFlexContainer.class),
 			@XmlElement(name = ModuleAlarmSpeakerFlexContainer.SHORT_NAME, type = ModuleAlarmSpeakerFlexContainer.class),
 			@XmlElement(name = ModuleAudioVolumeFlexContainer.SHORT_NAME, type = ModuleAudioVolumeFlexContainer.class),
 			@XmlElement(name = ModuleBinarySwitchFlexContainer.SHORT_NAME, type = ModuleBinarySwitchFlexContainer.class),
@@ -216,11 +224,14 @@ public abstract class AbstractFlexContainer extends AnnounceableResource {
 			@XmlElement(name = ModulePersonSensorFlexContainer.SHORT_NAME, type = ModulePersonSensorFlexContainer.class),
 			@XmlElement(name = ModuleStreamingFlexContainer.SHORT_NAME, type = ModuleStreamingFlexContainer.class),
 			@XmlElement(name = ModuleLockFlexContainer.SHORT_NAME, type = ModuleLockFlexContainer.class),
+			@XmlElement(name = ModuleRunStateFlexContainer.SHORT_NAME, type = ModuleRunStateFlexContainer.class),
+			@XmlElement(name = ModuleBatteryFlexContainer.SHORT_NAME, type = ModuleBatteryFlexContainer.class),
+			@XmlElement(name = ModuleLiquidLevelFlexContainer.SHORT_NAME, type = ModuleLiquidLevelFlexContainer.class),
 			@XmlElement(name = ModuleTimerFlexContainer.SHORT_NAME, type = ModuleTimerFlexContainer.class),
 			@XmlElement(name = ActionToggleFlexContainer.SHORT_NAME, type = ActionToggleFlexContainer.class),
 			@XmlElement(name = ShortName.SUB, namespace = "http://www.onem2m.org/xml/protocols", type = Subscription.class) })
 	protected List<Resource> flexContainerOrContainerOrSubscription;
-	
+
 	@XmlAnyElement()
 	protected List<CustomAttribute> customAttributes;
 	

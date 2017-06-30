@@ -9,12 +9,12 @@ package org.eclipse.om2m.sdt.home.devices;
 
 import org.eclipse.om2m.sdt.Domain;
 import org.eclipse.om2m.sdt.Module;
-import org.eclipse.om2m.sdt.home.modules.Level;
+import org.eclipse.om2m.sdt.home.modules.LiquidLevel;
 import org.eclipse.om2m.sdt.home.types.DeviceType;
 
 public class WaterValve extends GenericActuator {
 	
-	private Level waterLevel;
+	private LiquidLevel waterLevel;
 
 	public WaterValve(final String id, final String serial, final Domain domain) {
 		super(id, serial, DeviceType.deviceWaterValve, domain);
@@ -22,18 +22,18 @@ public class WaterValve extends GenericActuator {
 	}
 	
 	public void addModule(Module module) {
-		if (module instanceof Level)
-			addModule((Level)module);
+		if (module instanceof LiquidLevel)
+			addModule((LiquidLevel)module);
 		else
 			super.addModule(module);
 	}
 
-	public void addModule(Level waterLevel) {
+	public void addModule(LiquidLevel waterLevel) {
 		this.waterLevel = waterLevel;
 		super.addModule(waterLevel);
 	}
 
-	public Level getWaterLevel() {
+	public LiquidLevel getWaterLevel() {
 		return waterLevel;
 	}
 

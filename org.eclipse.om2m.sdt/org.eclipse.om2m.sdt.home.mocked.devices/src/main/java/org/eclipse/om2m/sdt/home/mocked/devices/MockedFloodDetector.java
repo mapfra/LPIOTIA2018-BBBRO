@@ -16,8 +16,10 @@ import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.devices.FloodDetector;
 import org.eclipse.om2m.sdt.home.mocked.modules.MockedFaultDetection;
 import org.eclipse.om2m.sdt.home.modules.WaterSensor;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 import org.osgi.framework.ServiceRegistration;
 
+@SuppressWarnings("rawtypes")
 public class MockedFloodDetector extends FloodDetector implements MockedDevice {
 
 	private List<ServiceRegistration> serviceRegistrations;
@@ -30,7 +32,7 @@ public class MockedFloodDetector extends FloodDetector implements MockedDevice {
 		super(id, serial, domain);
 		
 		waterSensor = new WaterSensor("waterSensor_" + id, domain, 
-			new BooleanDataPoint("alarm") {
+			new BooleanDataPoint(DatapointType.alarm) {
 				@Override
 				public Boolean doGetValue() throws DataPointException {
 					return waterAlarm;

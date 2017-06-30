@@ -10,13 +10,14 @@
 
 	<property name="event.topics" value="org/eclipse/om2m/remoteCse" />
 
-		
-		
 	<reference name="cseService" cardinality="1..1"
         interface="org.eclipse.om2m.core.service.CseService"
         bind="setCseService" unbind="unsetCseService" policy="dynamic"/>
- <reference bind="setDevice" cardinality="0..n" interface="org.eclipse.om2m.sdt.Device" name="Device" policy="dynamic" target="(!(propProtocol=Cloud.*))" unbind="unsetDevice"/>
- <property name="configurationPid" type="String" value="sdt.ipe"/>
-		
+
+	<reference name="Device" cardinality="0..n" policy="dynamic" 
+	    bind="setDevice" unbind="unsetDevice" 
+	    interface="org.eclipse.om2m.sdt.Device" />
+ 
+ 	<property name="configurationPid" type="String" value="sdt.ipe"/>		
 	
 </scr:component>

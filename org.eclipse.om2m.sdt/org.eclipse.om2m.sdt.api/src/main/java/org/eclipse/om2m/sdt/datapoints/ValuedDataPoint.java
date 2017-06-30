@@ -8,6 +8,7 @@
 package org.eclipse.om2m.sdt.datapoints;
 
 import org.eclipse.om2m.sdt.DataPoint;
+import org.eclipse.om2m.sdt.Identifiers;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.types.DataType;
@@ -15,7 +16,7 @@ import org.eclipse.om2m.sdt.utils.Activator;
 
 public abstract class ValuedDataPoint<T> extends DataPoint {
 
-	public ValuedDataPoint(String name, DataType type) {
+	public ValuedDataPoint(Identifiers name, DataType type) {
 		super(name, type);
 	}
 

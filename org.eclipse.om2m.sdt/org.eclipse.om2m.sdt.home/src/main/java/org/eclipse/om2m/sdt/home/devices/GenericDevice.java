@@ -9,30 +9,33 @@ import org.eclipse.om2m.sdt.Domain;
 import org.eclipse.om2m.sdt.Property;
 import org.eclipse.om2m.sdt.exceptions.PropertyException;
 import org.eclipse.om2m.sdt.home.types.DeviceType;
+import org.eclipse.om2m.sdt.home.types.PropertyType;
 import org.eclipse.om2m.sdt.types.SimpleType;
 
 public class GenericDevice extends Device {
 
-	private Property propDeviceManufacturer;
-	private Property propDeviceSerialNum;
-	private Property propDeviceModelName;
+	private Property deviceManufacturer;
+	private Property deviceSerialNum;
+	private Property deviceModelName;
 
+	private Property deviceType;
 	private DeviceType type;
 
-	private Property propDeviceName;
-	private Property propDeviceSubModelName;
-	private Property propDeviceAliasName;
-	private Property propDeviceFirmwareVersion;
-	private Property propHardwareVersion;
-	private Property propOsVersion;
-	private Property propProtocol;
-	private Property propCountry;
-	private Property propLocation;
-	private Property propSystemTime;
-	private Property propManufacturerDetailsLink;
-	private Property propDateOfManufacture;
-	private Property propSupportURL;
-	private Property propPresentationURL;
+	private Property deviceName;
+	private Property deviceSubModelName;
+	private Property deviceAliasName;
+	private Property deviceFirmwareVersion;
+	private Property hardwareVersion;
+	private Property osVersion;
+	private Property protocol;
+	private Property country;
+	private Property location;
+	private Property systemTime;
+	private Property manufacturerDetailsLink;
+	private Property dateOfManufacture;
+	private Property supportURL;
+	private Property presentationURL;
+	private Property cloud;
 
 	public GenericDevice(final String id, final String serial, final Domain domain) {
 		this(id, serial, DeviceType.undefinedVendorExt, domain);
@@ -40,107 +43,58 @@ public class GenericDevice extends Device {
 
 	public GenericDevice(final String id, final String serial, 
 			final DeviceType type, final Domain domain) {
-		super(id, domain, type.getDefinition(), type.getLongDefinitionName(), type.getShortDefinitionName());
+		super(id, domain, type);
 		this.type = type;
+		deviceType = new Property(PropertyType.deviceType, Integer.toString(type.getValue()));
+		deviceType.setType(SimpleType.Integer);
+		deviceType.setDoc("Device type");
+		super.addProperty(deviceType);
 
-		propDeviceSerialNum = new Property("propDeviceSerialNum", "pDSNm", serial);
-		propDeviceSerialNum.setType(SimpleType.String);
-		propDeviceSerialNum.setDoc("Device serial number (assigned by manufacturer)");
-		addProperty(propDeviceSerialNum);
+		deviceSerialNum = new Property(PropertyType.deviceSerialNum, serial);
+		deviceSerialNum.setType(SimpleType.String);
+		deviceSerialNum.setDoc("Device serial number (assigned by manufacturer)");
+		super.addProperty(deviceSerialNum);
 
-		propDeviceManufacturer = new Property("propDeviceManufacturer", "prDMr");
-		propDeviceManufacturer.setType(SimpleType.String);
-		propDeviceManufacturer.setDoc("Manufacturer name of the device");
-		addProperty(propDeviceManufacturer);
+		deviceManufacturer = new Property(PropertyType.deviceManufacturer);
+		deviceManufacturer.setType(SimpleType.String);
+		deviceManufacturer.setDoc("Manufacturer name of the device");
+		super.addProperty(deviceManufacturer);
 
-		propDeviceModelName = new Property("propDeviceModelName", "pDMNe");
-		propDeviceModelName.setType(SimpleType.String);
-		propDeviceModelName.setDoc("Device Model Name");
-		addProperty(propDeviceModelName);
+		deviceModelName = new Property(PropertyType.deviceModelName);
+		deviceModelName.setType(SimpleType.String);
+		deviceModelName.setDoc("Device Model Name");
+		super.addProperty(deviceModelName);
+	}
 
-		propDeviceName = new Property("propDeviceName", "prDNe");
-		propDeviceName.setType(SimpleType.String);
-		propDeviceName.setOptional(true);
-		propDeviceName.setDoc("Device name");
-		addProperty(propDeviceName);
+	public void addProperty(Property property) {
+		PropertyType type = PropertyType.fromShortName(property.getShortName());
+//		if (type == null)
+//			throw new IllegalAccessException("");
+		addProperty(type, property.getValue());
+	}
 
-		propDeviceSubModelName = new Property("propDeviceSubModelName", "pDSMN");
-		propDeviceSubModelName.setType(SimpleType.String);
-		propDeviceSubModelName.setOptional(true);
-		propDeviceSubModelName.setDoc("Device sub-modelname");
-		addProperty(propDeviceSubModelName);
-
-		propDeviceAliasName = new Property("propDeviceAliasName", "pDANe");
-		propDeviceAliasName.setType(SimpleType.String);
-		propDeviceAliasName.setOptional(true);
-		propDeviceAliasName.setDoc("Device alias name");
-		addProperty(propDeviceAliasName);
-
-		propDeviceFirmwareVersion = new Property("propDeviceFirmwareVersion", "pDFVn");
-		propDeviceFirmwareVersion.setType(SimpleType.String);
-		propDeviceFirmwareVersion.setOptional(true);
-		propDeviceFirmwareVersion.setDoc("Device firmware version");
-		addProperty(propDeviceFirmwareVersion);
-
-		propHardwareVersion = new Property("propHardwareVersion", "prHVn");
-		propHardwareVersion.setType(SimpleType.String);
-		propHardwareVersion.setOptional(true);
-		propHardwareVersion.setDoc("Device hardware version");
-		addProperty(propHardwareVersion);
-
-		propOsVersion = new Property("propOsVersion", "prOVn");
-		propOsVersion.setType(SimpleType.String);
-		propOsVersion.setOptional(true);
-		propOsVersion.setDoc("Version of the operation system (defined by manufacturer)");
-		addProperty(propOsVersion);
-
-		propProtocol = new Property("propProtocol", "proPl");
-		propProtocol.setType(SimpleType.String);
-		propProtocol.setOptional(true);
-		propProtocol.setDoc("A comma separated list of MIME types for all supported communication protocol(s) of the device. Example: “application/x-alljoin;version=1.0,application/x-echonet-lite;version=1.0” indicates the device supports both AllJoyn v1.0 and Echonet Lite v1.0.");
-		addProperty(propProtocol);
-
-		propCountry = new Property("propCountry", "proCy");
-		propCountry.setType(SimpleType.String);
-		propCountry.setOptional(true);
-		propCountry.setDoc("Country code of the device");
-		addProperty(propCountry);
-
-		propLocation = new Property("propLocation", "proLn");
-		propLocation.setType(SimpleType.String);
-		propLocation.setOptional(true);
-		propLocation.setDoc("Location where the device is installed. It may be configured via the user interface provided by  the ‘presentationURL’ property or any other means.");
-		addProperty(propLocation);
-
-		propSystemTime = new Property("propSystemTime", "prSTe");
-		propSystemTime.setType(SimpleType.Datetime);
-		propSystemTime.setOptional(true);
-		propSystemTime.setDoc("Reference time for the device");
-		addProperty(propSystemTime);
-
-		propManufacturerDetailsLink = new Property("propManufacturerDetailsLink", "pMDLk");
-		propManufacturerDetailsLink.setType(SimpleType.String);
-		propManufacturerDetailsLink.setOptional(true);
-		propManufacturerDetailsLink.setDoc("URL to manufacturer’s website");
-		addProperty(propManufacturerDetailsLink);
-
-		propDateOfManufacture = new Property("propDateOfManufacture", "pDOMe");
-		propDateOfManufacture.setType(SimpleType.Datetime);
-		propDateOfManufacture.setOptional(true);
-		propDateOfManufacture.setDoc("Manufacturing date of device");
-		addProperty(propDateOfManufacture);
-
-		propSupportURL = new Property("propSupportURL", "pSURL");
-		propSupportURL.setType(SimpleType.String);
-		propSupportURL.setOptional(true);
-		propSupportURL.setDoc("URL that points to product support information of the device");
-		addProperty(propSupportURL);
-
-		propPresentationURL = new Property("propPresentationURL", "pPURL");
-		propPresentationURL.setType(SimpleType.String);
-		propPresentationURL.setOptional(true);
-		propPresentationURL.setDoc("To quote UPnP: “the control point can retrieve a page from this URL, load the page into a web browser, and depending on the capabilities of the page, allow a user to control the device and/or view device status. The degree to which each of these can be accomplished depends on the specific capabilities of the presentation page and device.”");
-		addProperty(propPresentationURL);
+	public void addProperty(PropertyType type, String val) {
+		switch (type) {
+		case deviceManufacturer: setDeviceManufacturer(val); return;
+		case deviceModelName: setDeviceModelName(val); return;
+		case deviceName: setDeviceName(val); return;
+		case deviceSubModelName: setDeviceSubModelName(val); return;
+		case deviceAliasName: setDeviceAliasName(val); return;
+		case deviceFirmwareVersion: setDeviceFirmwareVersion(val); return;
+		case hardwareVersion: setHardwareVersion(val); return;
+		case osVersion: setOsVersion(val); return;
+		case protocol: setProtocol(val); return;
+		case country: setCountry(val); return;
+		case location: setLocation(val); return;
+		case systemTime: setSystemTime(val); return;
+		case manufacturerDetailsLink: setManufacturerDetailsLink(val); return;
+		case dateOfManufacture: setDateOfManufacture(val); return;
+		case supportURL: setSupportURL(val); return;
+		case presentationURL: setPresentationURL(val); return;
+		case cloud: setCloud(val); return;
+		default:
+			super.addProperty(new Property(type, val)); return;
+		}
 	}
 
 	protected void setDeviceType(DeviceType type) {
@@ -152,102 +106,183 @@ public class GenericDevice extends Device {
 	}
 
 	public String getSerialNumber() {
-		return propDeviceSerialNum.getValue();
+		return deviceSerialNum.getValue();
 	}
 
 	public String getDeviceManufacturer() {
-		String s = propDeviceManufacturer.getValue();
-		return (s == null) ? "Undefined" : s;
+		return deviceManufacturer.getValue();
 	}
 
 	public void setDeviceManufacturer(final String s) {
-		propDeviceManufacturer.setValue(s);
+		deviceManufacturer.setValue(s);
 	}
 
 	public String getDeviceModelName() {
-		String s = propDeviceModelName.getValue();
-		return (s == null) ? "Undefined" : s;
+		return deviceModelName.getValue();
 	}
 
 	public void setDeviceModelName(String s) {
-		propDeviceModelName.setValue(s);
+		deviceModelName.setValue(s);
 	}
 	
-	public String getDeviceName() {
-		return propDeviceName.getValue();
+	public String getDeviceName() throws PropertyException {
+		if (deviceName == null)
+			throw new PropertyException("Not implemented");
+		return deviceName.getValue();
 	}
 	
 	public void setDeviceName(String s) {
-		propDeviceName.setValue(s);
+		if (deviceName == null) {
+			deviceName = new Property(PropertyType.deviceName);
+			deviceName.setType(SimpleType.String);
+			deviceName.setOptional(true);
+			deviceName.setDoc("Device name");
+			super.addProperty(deviceName);
+		}
+		deviceName.setValue(s);
 	}
 	
-	public String getDeviceSubModelName() {
-		return propDeviceSubModelName.getValue();
+	public String getDeviceSubModelName() throws PropertyException {
+		if (deviceSubModelName == null)
+			throw new PropertyException("Not implemented");
+		return deviceSubModelName.getValue();
 	}
 	
 	public void setDeviceSubModelName(String s) {
-		propDeviceSubModelName.setValue(s);
+		if (deviceSubModelName == null) {
+			deviceSubModelName = new Property(PropertyType.deviceSubModelName);
+			deviceSubModelName.setType(SimpleType.String);
+			deviceSubModelName.setOptional(true);
+			deviceSubModelName.setDoc("Device sub-modelname");
+			super.addProperty(deviceSubModelName);
+		}
+		deviceSubModelName.setValue(s);
 	}
 	
-	public String getDeviceAliasName() {
-		return propDeviceAliasName.getValue();
+	public String getDeviceAliasName() throws PropertyException {
+		if (deviceAliasName == null)
+			throw new PropertyException("Not implemented");
+		return deviceAliasName.getValue();
 	}
 	
 	public void setDeviceAliasName(String s) {
-		propDeviceAliasName.setValue(s);
+		if (deviceAliasName == null) {
+			deviceAliasName = new Property(PropertyType.deviceAliasName);
+			deviceAliasName.setType(SimpleType.String);
+			deviceAliasName.setOptional(true);
+			deviceAliasName.setDoc("Device alias name");
+			super.addProperty(deviceAliasName);
+		}
+		deviceAliasName.setValue(s);
 	}
 	
-	public String getDeviceFirmwareVersion() {
-		return propDeviceFirmwareVersion.getValue();
+	public String getDeviceFirmwareVersion() throws PropertyException {
+		if (deviceFirmwareVersion == null)
+			throw new PropertyException("Not implemented");
+		return deviceFirmwareVersion.getValue();
 	}
 	
 	public void setDeviceFirmwareVersion(String s) {
-		propDeviceFirmwareVersion.setValue(s);
+		if (deviceFirmwareVersion == null) {
+			deviceFirmwareVersion = new Property(PropertyType.deviceFirmwareVersion);
+			deviceFirmwareVersion.setType(SimpleType.String);
+			deviceFirmwareVersion.setOptional(true);
+			deviceFirmwareVersion.setDoc("Device firmware version");
+			super.addProperty(deviceFirmwareVersion);
+		}
+		deviceFirmwareVersion.setValue(s);
 	}
 	
-	public String getHardwareVersion() {
-		return propHardwareVersion.getValue();
+	public String getHardwareVersion() throws PropertyException {
+		if (hardwareVersion == null)
+			throw new PropertyException("Not implemented");
+		return hardwareVersion.getValue();
 	}
 	
 	public void setHardwareVersion(String s) {
-		propHardwareVersion.setValue(s);
+		if (hardwareVersion == null) {
+			hardwareVersion = new Property(PropertyType.hardwareVersion);
+			hardwareVersion.setType(SimpleType.String);
+			hardwareVersion.setOptional(true);
+			hardwareVersion.setDoc("Device hardware version");
+			super.addProperty(hardwareVersion);
+		}
+		hardwareVersion.setValue(s);
 	}
 	
-	public String getOsVersion() {
-		return propOsVersion.getValue();
+	public String getOsVersion() throws PropertyException {
+		if (osVersion == null)
+			throw new PropertyException("Not implemented");
+		return osVersion.getValue();
 	}
 	
 	public void setOsVersion(String s) {
-		propOsVersion.setValue(s);
+		if (osVersion == null) {
+			osVersion = new Property(PropertyType.osVersion);
+			osVersion.setType(SimpleType.String);
+			osVersion.setOptional(true);
+			osVersion.setDoc("Version of the operation system (defined by manufacturer)");
+			super.addProperty(osVersion);
+		}
+		osVersion.setValue(s);
 	}
 	
-	public String getProtocol() {
-		return propProtocol.getValue();
+	public String getProtocol() throws PropertyException {
+		if (protocol == null)
+			throw new PropertyException("Not implemented");
+		return protocol.getValue();
 	}
 	
 	public void setProtocol(String s) {
-		propProtocol.setValue(s);
+		if (protocol == null) {
+			protocol = new Property(PropertyType.protocol);
+			protocol.setType(SimpleType.String);
+			protocol.setOptional(true);
+			protocol.setDoc("A comma separated list of MIME types for all supported communication protocol(s) of the device. Example: “application/x-alljoin;version=1.0,application/x-echonet-lite;version=1.0” indicates the device supports both AllJoyn v1.0 and Echonet Lite v1.0.");
+			super.addProperty(protocol);
+		}
+		protocol.setValue(s);
 	}
 	
-	public String getCountry() {
-		return propCountry.getValue();
+	public String getCountry() throws PropertyException {
+		if (country == null)
+			throw new PropertyException("Not implemented");
+		return country.getValue();
 	}
 	
 	public void setCountry(String s) {
-		propCountry.setValue(s);
+		if (country == null) {
+			country = new Property(PropertyType.country);
+			country.setType(SimpleType.String);
+			country.setOptional(true);
+			country.setDoc("Country code of the device");
+			super.addProperty(country);
+		}
+		country.setValue(s);
 	}
 	
-	public String getLocation() {
-		return propLocation.getValue();
+	public String getLocation() throws PropertyException {
+		if (location == null)
+			throw new PropertyException("Not implemented");
+		return location.getValue();
 	}
 	
 	public void setLocation(String s) {
-		propLocation.setValue(s);
+		if (location == null) {
+			location = new Property(PropertyType.location);
+			location.setType(SimpleType.String);
+			location.setOptional(true);
+			location.setDoc("Location where the device is installed. It may be configured via the user interface provided by  the ‘presentationURL’ property or any other means.");
+			super.addProperty(location);
+		}
+		location.setValue(s);
 	}
-	
+
 	public Date getSystemTime() throws PropertyException {
+		if (systemTime == null)
+			throw new PropertyException("Not implemented");
 		try {
-			String s = propSystemTime.getValue();
+			String s = systemTime.getValue();
 			return (s == null) ? null : new Date(Long.parseLong(s));
 		} catch (NumberFormatException e) {
 			throw new PropertyException("Implementation Error");
@@ -255,12 +290,27 @@ public class GenericDevice extends Device {
 	}
 	
 	public void setSystemTime(Date s) {
-		propSystemTime.setValue((s == null) ? null : Long.toString(s.getTime()));
+		if (s != null)
+			setSystemTime(Long.toString(s.getTime()));
+	}
+	
+	private void setSystemTime(String s) {
+		if (systemTime == null) {
+			systemTime = new Property(PropertyType.systemTime);
+			systemTime.setType(SimpleType.Datetime);
+			systemTime.setOptional(true);
+			systemTime.setDoc("Reference time for the device");
+			super.addProperty(systemTime);
+		}
+		if (s != null)
+			systemTime.setValue(s);
 	}
 	
 	public URL getManufacturerDetailsLink() throws PropertyException {
+		if (manufacturerDetailsLink == null)
+			throw new PropertyException("Not implemented");
 		try {
-			String s = propManufacturerDetailsLink.getValue();
+			String s = manufacturerDetailsLink.getValue();
 			return (s == null) ? null : new URL(s);
 		} catch (MalformedURLException e) {
 			throw new PropertyException("Implementation Error");
@@ -268,12 +318,27 @@ public class GenericDevice extends Device {
 	}
 	
 	public void setManufacturerDetailsLink(URL s) {
-		propManufacturerDetailsLink.setValue((s == null) ? null : s.toString());
+		if (s != null)
+			setManufacturerDetailsLink(s.toString());
+	}
+	
+	private void setManufacturerDetailsLink(String s) {
+		if (manufacturerDetailsLink == null) {
+			manufacturerDetailsLink = new Property(PropertyType.manufacturerDetailsLink);
+			manufacturerDetailsLink.setType(SimpleType.String);
+			manufacturerDetailsLink.setOptional(true);
+			manufacturerDetailsLink.setDoc("URL to manufacturer’s website");
+			super.addProperty(manufacturerDetailsLink);
+		}
+		if (s != null)
+			manufacturerDetailsLink.setValue(s);
 	}
 	
 	public Date getDateOfManufacture() throws PropertyException {
+		if (dateOfManufacture == null)
+			throw new PropertyException("Not implemented");
 		try {
-			String s = propDateOfManufacture.getValue();
+			String s = dateOfManufacture.getValue();
 			return (s == null) ? null : new Date(Long.parseLong(s));
 		} catch (NumberFormatException e) {
 			throw new PropertyException("Implementation Error");
@@ -281,12 +346,27 @@ public class GenericDevice extends Device {
 	}
 	
 	public void setDateOfManufacture(Date s) {
-		propDateOfManufacture.setValue((s == null) ? null : Long.toString(s.getTime()));
+		if (s != null)
+			setDateOfManufacture(Long.toString(s.getTime()));
+	}
+	
+	private void setDateOfManufacture(String s) {
+		if (dateOfManufacture == null) {
+			dateOfManufacture = new Property(PropertyType.dateOfManufacture);
+			dateOfManufacture.setType(SimpleType.Datetime);
+			dateOfManufacture.setOptional(true);
+			dateOfManufacture.setDoc("Manufacturing date of device");
+			super.addProperty(dateOfManufacture);
+		}
+		if (s != null)
+			dateOfManufacture.setValue(s);
 	}
 	
 	public URL getSupportURL() throws PropertyException {
+		if (supportURL == null)
+			throw new PropertyException("Not implemented");
 		try {
-			String s = propSupportURL.getValue();
+			String s = supportURL.getValue();
 			return (s == null) ? null : new URL(s);
 		} catch (MalformedURLException e) {
 			throw new PropertyException("Implementation Error");
@@ -294,12 +374,27 @@ public class GenericDevice extends Device {
 	}
 	
 	public void setSupportURL(URL s) {
-		propSupportURL.setValue((s == null) ? null : s.toString());
+		if (s != null)
+			setSupportURL(s.toString());
+	}
+	
+	private void setSupportURL(String s) {
+		if (supportURL == null) {
+			supportURL = new Property(PropertyType.supportURL);
+			supportURL.setType(SimpleType.String);
+			supportURL.setOptional(true);
+			supportURL.setDoc("URL that points to product support information of the device");
+			super.addProperty(supportURL);
+		}
+		if (s != null)
+			supportURL.setValue(s);
 	}
 	
 	public URL getPresentationURL() throws PropertyException {
+		if (presentationURL == null)
+			throw new PropertyException("Not implemented");
 		try {
-			String s = propPresentationURL.getValue();
+			String s = presentationURL.getValue();
 			return (s == null) ? null : new URL(s);
 		} catch (MalformedURLException e) {
 			throw new PropertyException("Implementation Error");
@@ -307,7 +402,41 @@ public class GenericDevice extends Device {
 	}
 	
 	public void setPresentationURL(URL s) {
-		propPresentationURL.setValue((s == null) ? null : s.toString());
+		if (s != null)
+			setPresentationURL(s.toString());
+	}
+	
+	private void setPresentationURL(String s) {
+		if (presentationURL == null) {
+			presentationURL = new Property(PropertyType.presentationURL);
+			presentationURL.setType(SimpleType.String);
+			presentationURL.setOptional(true);
+			presentationURL.setDoc("To quote UPnP: “the control point can retrieve a page from this URL, load the page into a web browser, and depending on the capabilities of the page, allow a user to control the device and/or view device status. The degree to which each of these can be accomplished depends on the specific capabilities of the presentation page and device.”");
+			super.addProperty(presentationURL);
+		}
+		if (s != null)
+			presentationURL.setValue(s);
+	}
+	
+	public boolean getCloud() throws PropertyException {
+		if (cloud == null)
+			throw new PropertyException("Not implemented");
+		return Boolean.parseBoolean(cloud.getValue());
+	}
+	
+	public void setCloud(boolean s) {
+		setCloud(Boolean.toString(s));
+	}
+	
+	private void setCloud(String s) {
+		if (cloud == null) {
+			cloud = new Property(PropertyType.cloud);
+			cloud.setType(SimpleType.Boolean);
+			cloud.setOptional(true);
+			cloud.setDoc("Device managed from the cloud");
+			super.addProperty(cloud);
+		}
+		cloud.setValue(s);
 	}
 	
 }

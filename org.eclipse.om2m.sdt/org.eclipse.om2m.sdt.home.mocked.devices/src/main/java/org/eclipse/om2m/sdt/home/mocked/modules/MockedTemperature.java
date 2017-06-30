@@ -12,20 +12,21 @@ import org.eclipse.om2m.sdt.datapoints.FloatDataPoint;
 import org.eclipse.om2m.sdt.datapoints.StringDataPoint;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.modules.Temperature;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 
 public class MockedTemperature extends Temperature {
 
-	public MockedTemperature(String name, Domain domain, FloatDataPoint value) {
-		super(name, domain, value);
+	public MockedTemperature(String name, Domain domain, FloatDataPoint currentTemperature) {
+		super(name, domain, currentTemperature);
 		
-		setStepValue(new FloatDataPoint("stepValue") {
+		setStepValue(new FloatDataPoint(DatapointType.stepValue) {
 			@Override
 			public Float doGetValue() throws DataPointException {
 				return (float) 1;
 			}
 		});
 		
-		setUnits(new StringDataPoint("units") {
+		setUnit(new StringDataPoint(DatapointType.unit) {
 			@Override
 			protected String doGetValue() throws DataPointException {
 				return "°C";

@@ -12,6 +12,7 @@ import org.eclipse.om2m.sdt.datapoints.FloatDataPoint;
 import org.eclipse.om2m.sdt.datapoints.IntegerDataPoint;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.modules.EnergyConsumption;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 
 public class MockedEnergyConsumption extends EnergyConsumption {
 
@@ -19,7 +20,7 @@ public class MockedEnergyConsumption extends EnergyConsumption {
 		super(name, domain, value);
 		
 		// absolute energy consumption data
-		setAbsoluteEnergyConsumption(new FloatDataPoint("absoluteEnergyConsumption") {
+		setAbsoluteEnergyConsumption(new FloatDataPoint(DatapointType.absoluteEnergyConsumption) {
 			@Override
 			public Float doGetValue() throws DataPointException {
 				return new Float(Math.random() * 1000);
@@ -27,7 +28,7 @@ public class MockedEnergyConsumption extends EnergyConsumption {
 		});
 		
 		// rounding energy consumption data
-		setRoundingEnergyConsumption(new IntegerDataPoint("roundingEnergyConsumption") {
+		setRoundingEnergyConsumption(new IntegerDataPoint(DatapointType.roundingEnergyConsumption) {
 			@Override
 			public Integer doGetValue() throws DataPointException {
 				return new Integer((int)(Math.random() * 1000));
@@ -35,7 +36,7 @@ public class MockedEnergyConsumption extends EnergyConsumption {
 		});
 		
 		// significant figures
-		setSignificantDigits(new IntegerDataPoint("significantDigits") {
+		setSignificantDigits(new IntegerDataPoint(DatapointType.significantDigits) {
 			private Integer dataPointValue = 1;
 			@Override
 			public void doSetValue(Integer value) throws DataPointException {
@@ -48,7 +49,7 @@ public class MockedEnergyConsumption extends EnergyConsumption {
 		});
 		
 		// multiplying factors
-		setMultiplyingFactors(new IntegerDataPoint("multiplyingFactors") {
+		setMultiplyingFactors(new IntegerDataPoint(DatapointType.multiplyingFactors) {
 			private Integer dataPointValue = 2;
 			@Override
 			public void doSetValue(Integer value) throws DataPointException {
@@ -61,7 +62,7 @@ public class MockedEnergyConsumption extends EnergyConsumption {
 		});
 		
 		// voltage
-		setVoltage(new FloatDataPoint("voltage") {
+		setVoltage(new FloatDataPoint(DatapointType.voltage) {
 			private Float dataPointValue = (float) 220;
 			@Override
 			public Float doGetValue() throws DataPointException {
@@ -70,7 +71,7 @@ public class MockedEnergyConsumption extends EnergyConsumption {
 		});
 		
 		// current
-		setCurrent(new FloatDataPoint("current") {
+		setCurrent(new FloatDataPoint(DatapointType.current) {
 			private Float dataPointValue = (float) 0;
 			@Override
 			public Float doGetValue() throws DataPointException {
@@ -79,7 +80,7 @@ public class MockedEnergyConsumption extends EnergyConsumption {
 		});
 		
 		// frequency
-		setFrequency(new FloatDataPoint("frequency") {
+		setFrequency(new FloatDataPoint(DatapointType.frequency) {
 			private Float dataPointValue = (float) 50;
 			@Override
 			public Float doGetValue() throws DataPointException {

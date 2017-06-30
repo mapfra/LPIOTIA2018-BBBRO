@@ -19,15 +19,18 @@ import org.eclipse.om2m.sdt.home.enocean.Activator.EnOceanSDTDevice;
 import org.eclipse.om2m.sdt.home.modules.AbstractAlarmSensor;
 import org.eclipse.om2m.sdt.home.modules.FaultDetection;
 import org.eclipse.om2m.sdt.home.modules.WaterSensor;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.enocean.EnOceanDevice;
 import org.osgi.service.enocean.EnOceanMessage;
 
+@SuppressWarnings("rawtypes")
 public class EOFloodDetector extends FloodDetector implements EnOceanSDTDevice {
 
 	private final EnOceanDevice eoDevice;
 	private Domain domain;
+	
 	private List<ServiceRegistration> registrations;
 	private BundleContext context;
 
@@ -91,7 +94,7 @@ public class EOFloodDetector extends FloodDetector implements EnOceanSDTDevice {
 	}
 
 	private void addWaterSensor() {
-		alarm = new BooleanDataPoint("alarm") {
+		alarm = new BooleanDataPoint(DatapointType.alarm) {
 			@Override
 			public Boolean doGetValue() throws DataPointException {
 				return floodDetected;
@@ -108,7 +111,7 @@ public class EOFloodDetector extends FloodDetector implements EnOceanSDTDevice {
 
 	private void addFaultDetection() {
 		faultDetection = new FaultDetection("FaultDetection_" + eoDevice.getChipId(), domain,
-				new BooleanDataPoint("status") {
+				new BooleanDataPoint(DatapointType.status) {
 			@Override
 			public Boolean doGetValue() throws DataPointException {
 				return false;

@@ -37,6 +37,7 @@ import org.osgi.service.cm.ConfigurationException;
 import org.osgi.service.cm.ManagedService;
 import org.osgi.service.log.LogService;
 
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class Activator implements BundleActivator, ManagedService, LIFXDiscoveredDeviceListener {
 
 	private static final String MODE = "mode";
@@ -77,8 +78,8 @@ public class Activator implements BundleActivator, ManagedService, LIFXDiscovere
 
 		Dictionary properties = new Hashtable<>();
 		properties.put(Constants.SERVICE_PID, "lifx.basedriver");
-		managedServiceServiceRegistration = bundleContext.registerService(ManagedService.class.getName(), this,
-				properties);
+		managedServiceServiceRegistration = 
+			bundleContext.registerService(ManagedService.class.getName(), this, properties);
 
 		currentMode = NO_MODE;
 	}
@@ -87,7 +88,6 @@ public class Activator implements BundleActivator, ManagedService, LIFXDiscovere
 		try {
 			managedServiceServiceRegistration.unregister();
 			managedServiceServiceRegistration = null;
-
 			stopMode();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -98,10 +98,8 @@ public class Activator implements BundleActivator, ManagedService, LIFXDiscovere
 	public synchronized void updated(Dictionary properties) throws ConfigurationException {
 		try {
 			if (properties != null) {
-
 				// retrieve mode
 				String mode = (String) properties.get(MODE);
-
 				if (mode != null) {
 					if (CLOUD_MODE_NAME.equals(mode)) {
 						// cloud mode
@@ -112,23 +110,18 @@ public class Activator implements BundleActivator, ManagedService, LIFXDiscovere
 					} else {
 						System.out.println("invalid LIFX Basedriver mode -> nothing to do");
 					}
-
 				}
-
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	private void handleLanMode(Dictionary properties) {
 		String networkInterfaceName = (String) properties.get(NETWORK_INTERFACE_NAME);
 		if (networkInterfaceName != null) {
-
 			NetworkInterface ni;
 			InetAddress localInetAddress = null;
-
 			try {
 				ni = NetworkInterface.getByInetAddress(InetAddress.getByName(networkInterfaceName));
 				if (ni != null) {
@@ -145,21 +138,17 @@ public class Activator implements BundleActivator, ManagedService, LIFXDiscovere
 				System.out.println("localInetAddress=" + localInetAddress);
 			} catch (SocketException e) {
 			} catch (UnknownHostException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 			if (localInetAddress != null) {
 				// valid configuration
 				stopMode();
-
 				currentMode = LAN_MODE;
 				address = localInetAddress;
-
 				try {
 					startMode();
 				} catch (UnknownHostException e) {
 				}
-
 			}
 		}
 	}
@@ -181,11 +170,9 @@ public class Activator implements BundleActivator, ManagedService, LIFXDiscovere
 			try {
 				startMode();
 			} catch (UnknownHostException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-
 	}
 
 	@Override

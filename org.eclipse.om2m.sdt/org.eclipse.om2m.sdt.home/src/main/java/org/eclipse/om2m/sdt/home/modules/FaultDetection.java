@@ -17,6 +17,7 @@ import org.eclipse.om2m.sdt.datapoints.IntegerDataPoint;
 import org.eclipse.om2m.sdt.datapoints.StringDataPoint;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 import org.eclipse.om2m.sdt.home.types.ModuleType;
 
 public class FaultDetection extends Module {
@@ -26,49 +27,26 @@ public class FaultDetection extends Module {
 	private StringDataPoint description;
 
 	public FaultDetection(final String name, final Domain domain, BooleanDataPoint status) {
-		super(name, domain, ModuleType.faultDetection.getDefinition(),
-				ModuleType.faultDetection.getLongDefinitionName(),
-				ModuleType.faultDetection.getShortDefinitionName());
+		super(name, domain, ModuleType.faultDetection);
 		
+		if ((status == null) ||
+				! status.getShortDefinitionType().equals(DatapointType.status.getShortName())) {
+			domain.removeDevice(name);
+			throw new IllegalArgumentException("Wrong status datapoint: " + status);
+		}
 		this.status = status;
 		this.status.setWritable(false);
 		this.status.setDoc("Status of fault detection");
-		this.status.setLongDefinitionType("status");
-		this.status.setShortDefinitionType("stats");
 		addDataPoint(this.status);
 	}
-	
-//	public FaultDetection(final String name, final Domain domain, BooleanDataPoint status, IntegerDataPoint code, StringDataPoint description) {
-//		super(name, domain, ModuleType.faultDetection.getDefinition(),
-//				ModuleType.faultDetection.getLongDefinitionName(),
-//				ModuleType.faultDetection.getShortDefinitionName());
-//		
-//		this.status = status;
-//		this.status.setWritable(false);
-//		this.status.setDoc("Status of fault detection");
-//		addDataPoint(this.status);
-//		
-//		if(code!=null){
-//			this.code = code;
-//			this.code.setWritable(false);
-//			this.code.setDoc("Code of the fault.");
-//			addDataPoint(this.code);
-//		}
-//		if(description!= null){
-//			this.description = description;
-//			this.description.setWritable(false);
-//			this.description.setDoc("Message of the fault.");
-//			addDataPoint(this.description);
-//		}
-//	}
 
 	public FaultDetection(final String name, final Domain domain, Map<String, DataPoint> dps) {
-		this(name, domain, (BooleanDataPoint) dps.get("stats"));
+		this(name, domain, (BooleanDataPoint) dps.get(DatapointType.status.getShortName()));
 
-		IntegerDataPoint code = (IntegerDataPoint) dps.get("code");
+		IntegerDataPoint code = (IntegerDataPoint) dps.get(DatapointType.code.getShortName());
 		if (code != null)
 			setCode(code);
-		StringDataPoint description = (StringDataPoint) dps.get("descn");
+		StringDataPoint description = (StringDataPoint) dps.get(DatapointType.description.getShortName());
 		if (description != null)
 			setDescription(description);
 	}
@@ -88,8 +66,6 @@ public class FaultDetection extends Module {
 		this.code.setOptional(true);
 		this.code.setWritable(false);
 		this.code.setDoc("Code of the fault.");
-		this.code.setLongDefinitionType("code");
-		this.code.setShortDefinitionType("code");
 		addDataPoint(code);
 	}
 
@@ -104,8 +80,6 @@ public class FaultDetection extends Module {
 		this.description.setOptional(true);
 		this.description.setWritable(false);
 		this.description.setDoc("Message of the fault.");
-		this.description.setLongDefinitionType("description");
-		this.description.setShortDefinitionType("descn");
 		addDataPoint(description);
 	}
 

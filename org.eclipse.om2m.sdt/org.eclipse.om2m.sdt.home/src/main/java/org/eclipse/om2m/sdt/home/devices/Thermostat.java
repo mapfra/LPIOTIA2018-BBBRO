@@ -17,11 +17,8 @@ import org.eclipse.om2m.sdt.home.types.DeviceType;
 public class Thermostat extends GenericDevice {
 	
 	private RunMode runMode;
-	
 	private Temperature temperature;
-	
 	private Timer timer;
-
 	
 	public Thermostat(final String id, final String serial, final Domain domain) {
 		super(id, serial, DeviceType.deviceThermostat, domain);

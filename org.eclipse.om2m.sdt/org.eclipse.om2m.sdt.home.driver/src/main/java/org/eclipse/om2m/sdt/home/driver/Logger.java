@@ -38,7 +38,7 @@ public class Logger {
 		print(LogService.LOG_DEBUG, null, message);
 	}
 
-	public final void debug(final String message, final Class clazz) {
+	public final void debug(final String message, final Class<?> clazz) {
 		print(LogService.LOG_DEBUG, clazz, message);
 	}
 
@@ -46,7 +46,7 @@ public class Logger {
 		print(LogService.LOG_INFO, null, message);
 	}
 
-	public final void info(final String message, final Class clazz) {
+	public final void info(final String message, final Class<?> clazz) {
 		print(LogService.LOG_INFO, clazz, message);
 	}
 
@@ -58,11 +58,11 @@ public class Logger {
 		print(LogService.LOG_WARNING, null, message, e);
 	}
 
-	public final void warning(final String message, final Class clazz) {
+	public final void warning(final String message, final Class<?> clazz) {
 		print(LogService.LOG_WARNING, clazz, message);
 	}
 
-	public final void warning(final String message, final Class clazz, final Throwable e) {
+	public final void warning(final String message, final Class<?> clazz, final Throwable e) {
 		print(LogService.LOG_WARNING, clazz, message, e);
 	}
 
@@ -74,15 +74,15 @@ public class Logger {
 		print(LogService.LOG_ERROR, null, message, e);
 	}
 
-	public final void error(final String message, final Class clazz) {
+	public final void error(final String message, final Class<?> clazz) {
 		print(LogService.LOG_ERROR, clazz, message);
 	}
 
-	public final void error(final String message, final Class clazz, final Throwable e) {
+	public final void error(final String message, final Class<?> clazz, final Throwable e) {
 		print(LogService.LOG_ERROR, clazz, message, e);
 	}
 
-	private final void print(final int level, final Class clazz, final String message) {
+	private final void print(final int level, final Class<?> clazz, final String message) {
 		String msg = PREFIX + protocol + ((clazz == null) ? "] " : "." + clazz.getSimpleName() + "] ") + message;
 		if (logService != null)
 			logService.log(level, msg);
@@ -90,7 +90,7 @@ public class Logger {
 			System.out.println(LEVELS[level-1] + msg);
 	}
 
-	private final void print(final int level, final Class clazz, final String message, final Throwable e) {
+	private final void print(final int level, final Class<?> clazz, final String message, final Throwable e) {
 		String msg = PREFIX + protocol + ((clazz == null) ? "] " : "." + clazz.getSimpleName() + "] ") + message;
 		if (logService != null)
 			logService.log(level, msg, e);

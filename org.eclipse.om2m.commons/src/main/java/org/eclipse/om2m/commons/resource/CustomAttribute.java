@@ -54,6 +54,10 @@ public class CustomAttribute {
 		this.customAttributeType = customAttributeType;
 	}
 
-	
+	@Override
+	public String toString() {
+		return "<CustomAttribute " + customAttributeName + "/" +
+				customAttributeType + "/" + customAttributeValue + "/>";
+	}
 	
 }

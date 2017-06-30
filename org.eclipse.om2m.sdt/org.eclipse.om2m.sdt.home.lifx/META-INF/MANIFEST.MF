@@ -14,6 +14,7 @@ Import-Package: org.eclipse.om2m.sdt,
  org.eclipse.om2m.sdt.home.devices,
  org.eclipse.om2m.sdt.home.driver,
  org.eclipse.om2m.sdt.home.modules,
+ org.eclipse.om2m.sdt.home.types,
  org.osgi.framework,
  org.osgi.service.cm,
  org.osgi.service.log

@@ -36,6 +36,7 @@ import org.osgi.service.log.LogService;
 import org.osgi.util.tracker.ServiceTracker;
 import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class Activator implements BundleActivator, HomeListener, ManagedService  {
 	
 	public static final Domain NETATMO_DOMAIN = new Domain("Netatmo_Domain");
@@ -64,7 +65,6 @@ public class Activator implements BundleActivator, HomeListener, ManagedService 
 		sdtWeatherStations = new HashMap<>();
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void start(final BundleContext context) throws Exception {
 		// store bundleContext 
@@ -227,7 +227,6 @@ public class Activator implements BundleActivator, HomeListener, ManagedService 
 		return sdtWelcomeCamera;
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
 	public synchronized void updated(Dictionary properties) throws ConfigurationException {
 		logger.info("updated(properties=" + properties + ")");
@@ -255,7 +254,6 @@ public class Activator implements BundleActivator, HomeListener, ManagedService 
 	 * @param properties
 	 * @return true if all is ok
 	 */
-	@SuppressWarnings("rawtypes")
 	private static boolean checkParameters(Dictionary properties) {
 		logger.info("checkParameters");
 		if (properties == null) {

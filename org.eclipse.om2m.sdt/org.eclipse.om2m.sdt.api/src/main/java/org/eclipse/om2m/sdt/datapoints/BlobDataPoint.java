@@ -7,11 +7,12 @@
  *******************************************************************************/
 package org.eclipse.om2m.sdt.datapoints;
 
+import org.eclipse.om2m.sdt.Identifiers;
 import org.eclipse.om2m.sdt.types.DataType;
 
 public abstract class BlobDataPoint extends ValuedDataPoint<byte[]> {
 
-	public BlobDataPoint(String name) {
+	public BlobDataPoint(Identifiers name) {
 		super(name, DataType.Blob);
 	}
 	

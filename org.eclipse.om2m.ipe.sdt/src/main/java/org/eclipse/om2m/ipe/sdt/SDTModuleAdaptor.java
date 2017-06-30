@@ -134,10 +134,7 @@ public class SDTModuleAdaptor {
 			}
 			customAttribute.setCustomAttributeValue(value);
 
-			logger.info("add DataPoint customAttribute(name=" + customAttribute.getCustomAttributeName() 
-					+ ", type=" + customAttribute.getCustomAttributeType() 
-					+ ", value=" + customAttribute.getCustomAttributeValue() + ")");
-
+			logger.info("add DataPoint customAttribute(" + customAttribute + ")");
 			flexContainer.getCustomAttributes().add(customAttribute);
 		}
 
@@ -154,12 +151,10 @@ public class SDTModuleAdaptor {
 				caForSdtProperty.setCustomAttributeValue(sdtProperty.getValue());
 				caForSdtProperty.setCustomAttributeType(sdtProperty.getType().getOneM2MType());
 
-				logger.debug("create a new CustomAttribute (name=" 
-						+ caForSdtProperty.getCustomAttributeName()
-						+ ", value=" + caForSdtProperty.getCustomAttributeValue() 
-						+ ", type=" + caForSdtProperty.getCustomAttributeType() + ")");
+				logger.info("add Property customAttribute(" + caForSdtProperty + ")");
 				flexContainer.getCustomAttributes().add(caForSdtProperty);
 			}
+			logger.info("customAttributes: " + flexContainer.getCustomAttributes());
 		}
 
 		ResponsePrimitive resp = CseUtil.sendCreateFlexContainerRequest(cseService, flexContainer,

@@ -24,14 +24,16 @@ public class DataPoint extends Element {
 	private String longDefinitionType;
 	private String shortDefinitionType;
 
-	public DataPoint(final String name, final DataType type) {
-		super(name);
+	public DataPoint(final Identifiers name, final DataType type) {
+		super(name.getShortName());
 		if (type == null)
 			throw new IllegalArgumentException();
 		this.type = type;
 		optional = false;
 		readable = true;
 		writable = true;
+		longDefinitionType = name.getLongName();
+		shortDefinitionType = name.getShortName();
 	}
 
 	public DataType getDataType() {
@@ -96,24 +98,10 @@ public class DataPoint extends Element {
 	}
 
 	/**
-	 * @param longDefinitionType the longDefinitionType to set
-	 */
-	public void setLongDefinitionType(String longDefinitionType) {
-		this.longDefinitionType = longDefinitionType;
-	}
-
-	/**
 	 * @return the shortDefinitionType
 	 */
 	public String getShortDefinitionType() {
 		return shortDefinitionType;
-	}
-
-	/**
-	 * @param shortDefinitionType the shortDefinitionType to set
-	 */
-	public void setShortDefinitionType(String shortDefinitionType) {
-		this.shortDefinitionType = shortDefinitionType;
 	}
 
 }

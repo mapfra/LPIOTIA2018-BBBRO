@@ -9,16 +9,18 @@ package org.eclipse.om2m.sdt.home.mocked.modules;
 
 import org.eclipse.om2m.sdt.Domain;
 import org.eclipse.om2m.sdt.datapoints.BooleanDataPoint;
+import org.eclipse.om2m.sdt.datapoints.EnumDataPoint;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.mocked.devices.Activator;
 import org.eclipse.om2m.sdt.home.modules.AlarmSpeaker;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 import org.eclipse.om2m.sdt.home.types.Tone;
 
 public class MockedAlarmSpeaker extends AlarmSpeaker {
 	
 	public MockedAlarmSpeaker(String name, Domain domain) {
 		super(name, domain,
-			new BooleanDataPoint("alarmStatus") {
+			new BooleanDataPoint(DatapointType.alarmStatus) {
 				private boolean alarmStatus = false;
 				@Override
 				public void doSetValue(Boolean value) throws DataPointException {
@@ -32,7 +34,7 @@ public class MockedAlarmSpeaker extends AlarmSpeaker {
 			}
 		);
 
-		setTone(new Tone("tone") {
+		setTone(new Tone(new EnumDataPoint<Integer>(null) {
 			private Integer tone = Tone.Silent;
 			@Override
 			public void doSetValue(Integer value) throws DataPointException {
@@ -43,7 +45,7 @@ public class MockedAlarmSpeaker extends AlarmSpeaker {
 			public Integer doGetValue() throws DataPointException {
 				return tone;
 			}
-		});
+		}));
 	}
 
 }

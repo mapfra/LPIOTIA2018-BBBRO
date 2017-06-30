@@ -7,7 +7,6 @@
  *******************************************************************************/
 package org.eclipse.om2m.sdt.home.driver;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Dictionary;
@@ -18,6 +17,7 @@ import org.eclipse.om2m.sdt.Device;
 import org.eclipse.om2m.sdt.Element;
 import org.eclipse.om2m.sdt.Module;
 import org.eclipse.om2m.sdt.Property;
+import org.eclipse.om2m.sdt.exceptions.PropertyException;
 import org.eclipse.om2m.sdt.home.devices.GenericDevice;
 import org.eclipse.om2m.sdt.home.modules.GenericSensor;
 import org.osgi.framework.BundleContext;
@@ -27,6 +27,7 @@ import org.osgi.service.cm.Configuration;
 import org.osgi.service.cm.ConfigurationAdmin;
 import org.osgi.service.cm.ManagedService;
 
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class Utils {
 
 	static public final String SERVICE_PID = org.osgi.framework.Constants.SERVICE_PID;
@@ -51,7 +52,11 @@ public class Utils {
 
 	static public List<ServiceRegistration> register(GenericDevice device, 
 			BundleContext context) {
-		String protocol = device.getProtocol();
+		String protocol = null;
+		try { protocol = device.getProtocol(); }
+		catch(PropertyException e) {
+			protocol = "Unknown";
+		}
 		Logger log = new Logger(protocol);
 		List<ServiceRegistration> regs = new ArrayList<ServiceRegistration>();
 		regs.add(context.registerService(getSDTNames(device),
@@ -89,6 +94,8 @@ public class Utils {
 	}
 	
 	static public void setProperties(ServiceReference ref, GenericDevice device) {
+		String name = null;
+		String manuf = null;
 		for (String prop : ref.getPropertyKeys()) {
 			if (prop.equalsIgnoreCase(Utils.SERVICE_PID)
 					|| prop.equalsIgnoreCase(Utils.SERVICE_ID)
@@ -103,17 +110,15 @@ public class Utils {
 			if (prop.equals(Utils.DEVICE_DESCRIPTION))
 				device.setDeviceAliasName(val.toString());
 			else if (prop.equals(Utils.DEVICE_MANUFACTURER))
-				device.setDeviceManufacturer(val.toString());
+				manuf = val.toString();
 			else if (prop.equals(Utils.DEVICE_PRODUCT_CLASS))
 				device.setDeviceModelName(val.toString());
 			else if (prop.equals(Utils.DEVICE_FRIENDLY_NAME))
-				device.setDeviceName(val.toString());
-			else device.setProperty(prop, prop, val.toString());
+				name = val.toString();
+//			else device.setProperty(prop, Utils.DEVICE_FRIENDLY_NAME, val.toString());
 		}
-		if (device.getDeviceManufacturer() == null)
-			device.setDeviceManufacturer("Unknown");
-		if (device.getDeviceName() == null)
-			device.setDeviceModelName(device.getSerialNumber());
+		device.setDeviceManufacturer((manuf != null) ? manuf : "Unknown");
+		device.setDeviceName((name != null) ? name : device.getSerialNumber());
 	}
 	
 	static public final boolean equals(final String s1, final String s2) {
@@ -152,6 +157,14 @@ public class Utils {
 		if (elt instanceof Device) {
 			props.put(SDT_ID, elt.getName());
 			props.put(SERVICE_PID, ((Device)elt).getPid());
+			String desc = null;
+			try {
+				desc = ((GenericDevice)elt).getDeviceModelName();
+				if (desc == null) desc = ((GenericDevice)elt).getDeviceAliasName();
+				if (desc == null) desc = ((GenericDevice)elt).getDeviceName();
+			} catch(Exception ignored) {}
+			if (desc == null) desc = ((GenericDevice)elt).getSerialNumber();
+			props.put(DEVICE_DESCRIPTION, desc);
 			sdtProps = ((Device)elt).getProperties();
 		} else if (elt instanceof Module) {
 			props.put(SERVICE_PID, ((Module)elt).getPid());
@@ -175,13 +188,13 @@ public class Utils {
 		return cfgAdmin;
 	}
 	
-	static private final Configuration getConfiguration(BundleContext bc , String pid) throws IOException {
-		Configuration config = null;
-		ConfigurationAdmin configAdmin = getConfigurationAdmin(bc);
-		if (configAdmin != null) {
-			config = configAdmin.getConfiguration(pid);
-		}
-		return config;
-	}
+//	static private final Configuration getConfiguration(BundleContext bc , String pid) throws IOException {
+//		Configuration config = null;
+//		ConfigurationAdmin configAdmin = getConfigurationAdmin(bc);
+//		if (configAdmin != null) {
+//			config = configAdmin.getConfiguration(pid);
+//		}
+//		return config;
+//	}
 
 }

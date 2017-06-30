@@ -19,6 +19,7 @@ import org.eclipse.om2m.core.service.CseService;
 import org.eclipse.om2m.core.service.RemoteCseService;
 import org.eclipse.om2m.flexcontainer.service.FlexContainerService;
 import org.eclipse.om2m.sdt.Device;
+import org.eclipse.om2m.sdt.Property;
 import org.eclipse.om2m.sdt.events.SDTEventListener;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
@@ -33,7 +34,7 @@ public class Activator implements EventHandler {
 	private static final String CSE_NAME_TO_BE_ANNOUNCED = "cse.name.to.be.announced";
 	private static final String ANNOUNCEMENT_ENABLED = "announcement.enabled";
 	private static final String IPE_UNDER_ANNOUNCED_RESOURCE = "ipe.under.announced.resource";
-	private static final String PROP_PROTOCOL = "propProtocol";
+	private static final String PROP_PROTOCOL = "protl";//"propProtocol";
 	private static final String CLOUD_PROTOCOL = "Cloud.";
 
 	private String cseIdToBeAnnounced;
@@ -92,9 +93,15 @@ public class Activator implements EventHandler {
 		this.cseService = null;
 	}
 
-	protected void setDevice(Device pDevice) {
-		logger.info("setDevice(" + pDevice.getName() + ")");
-		DeviceList.getInstance().addDevice(pDevice);
+	protected void setDevice(Device device) {
+		logger.info("setDevice(" + device.getName() + ") " + device.getProperties());
+		Property protocol = device.getProperty(PROP_PROTOCOL, true);
+		logger.info("Found device, protocol " + protocol);
+		if ((protocol != null) && protocol.getValue().startsWith(CLOUD_PROTOCOL)) {
+			logger.info("Cloud device, ignore...");
+		} else {
+			DeviceList.getInstance().addDevice(device);
+		}
 	}
 
 	protected void unsetDevice(Device pDevice) {

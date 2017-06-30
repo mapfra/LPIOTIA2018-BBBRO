@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.eclipse.om2m.sdt.Domain;
 import org.eclipse.om2m.sdt.datapoints.BooleanDataPoint;
+import org.eclipse.om2m.sdt.datapoints.EnumDataPoint;
 import org.eclipse.om2m.sdt.datapoints.IntegerDataPoint;
 import org.eclipse.om2m.sdt.datapoints.StringDataPoint;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
@@ -22,14 +23,15 @@ import org.eclipse.om2m.sdt.home.modules.Brewing;
 import org.eclipse.om2m.sdt.home.modules.FaultDetection;
 import org.eclipse.om2m.sdt.home.modules.Grinder;
 import org.eclipse.om2m.sdt.home.modules.KeepWarm;
-import org.eclipse.om2m.sdt.home.modules.Level;
 import org.eclipse.om2m.sdt.home.smartercoffee.communication.SmarterCoffeeCommands;
 import org.eclipse.om2m.sdt.home.smartercoffee.communication.SmarterCoffeeCommunication;
-import org.eclipse.om2m.sdt.home.types.LevelType;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
+import org.eclipse.om2m.sdt.home.types.LiquidLevel;
 import org.eclipse.om2m.sdt.home.types.TasteStrength;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 
+@SuppressWarnings({ "rawtypes" })
 public class SmarterCoffeeMachine extends CoffeeMachine{
 	
 	private List<ServiceRegistration> registrations;
@@ -43,7 +45,6 @@ public class SmarterCoffeeMachine extends CoffeeMachine{
 	private BooleanDataPoint keepWarm;
 	private TasteStrength strength;
 	private IntegerDataPoint status;
-	
 	
 	/*
 	 * Paweł
@@ -95,12 +96,10 @@ public class SmarterCoffeeMachine extends CoffeeMachine{
 		} catch (Exception e) {
 			Activator.logger.warning("Error addKeepWarm", e);
 		}
-		
 				
 		setDeviceManufacturer("Smarter");
 		setDeviceModelName("IKTSMC10EUFR");
 		setDeviceName("Smarter coffee machine");
-		
 	}
 	
 	public void register(BundleContext context) {
@@ -120,196 +119,158 @@ public class SmarterCoffeeMachine extends CoffeeMachine{
 	
 	private void addFaultDetection() {
 		FaultDetection faultDetection = new FaultDetection("FaultDetection_" + getId(), domain,
-				new BooleanDataPoint("status") {
-			@Override
-			public Boolean doGetValue() throws DataPointException {
-				smarterCoffee.getStatus();
-				return smarterCoffee.getFaultDetection(); 
-			}
-		});
-		
-		IntegerDataPoint codeDp = new IntegerDataPoint("code") {
-			
+			new BooleanDataPoint(DatapointType.status) {
+				@Override
+				public Boolean doGetValue() throws DataPointException {
+					smarterCoffee.getStatus();
+					return smarterCoffee.getFaultDetection(); 
+				}
+			});
+		faultDetection.setCode(new IntegerDataPoint(DatapointType.code) {
 			@Override
 			protected Integer doGetValue() throws DataPointException {
 				return smarterCoffee.getCode();
 			}	
-		};
-		faultDetection.setCode(codeDp);
-		
-		StringDataPoint descriptionDP = new StringDataPoint("description") {
-			
+		});
+		faultDetection.setDescription(new StringDataPoint(DatapointType.description) {
 			@Override
 			protected String doGetValue() throws DataPointException {
 				return smarterCoffee.getDescription();
 			}
-		};
-		faultDetection.setDescription(descriptionDP);
+		});
 		
 		addModule(faultDetection);
 	}
 	
-		
 	private void addBrewing(){
-		
 		Activator.logger.info("add Brewing starting");
-		
-		Brewing brewing = new Brewing("Brewing_" + getId(), domain, new IntegerDataPoint("cupsNumber") {
-			
-			int cupNumber = 0;
-			
-			@Override
-			protected Integer doGetValue() throws DataPointException {
-				return cupNumber;
-			}
-			
-			@Override
-			protected void doSetValue(Integer value) throws DataPointException {
-				cupNumber = value;
-				smarterCoffee.setNumberOfCups(value);
-			}
-		},  new TasteStrength("strength") {
-			
-			int strength = TasteStrength.zero;
-
-			@Override
-			protected Integer doGetValue() throws DataPointException {
-				return strength;
-			}
-			
-			@Override
-			protected void doSetValue(Integer value) throws DataPointException {
-				strength = value;
-				if(value >= TasteStrength.zero && value < TasteStrength.medium){
-					smarterCoffee.setBrewStrength(SmarterCoffeeCommands.BREW_STRENGTH_0);
+		Brewing brewing = new Brewing("Brewing_" + getId(), domain, 
+			new IntegerDataPoint(DatapointType.cupsNumber) {
+				int cupNumber = 0;
+				@Override
+				protected Integer doGetValue() throws DataPointException {
+					return cupNumber;
 				}
-				else if(value == TasteStrength.medium){
-					smarterCoffee.setBrewStrength(SmarterCoffeeCommands.BREW_STRENGTH_1);
+				@Override
+				protected void doSetValue(Integer value) throws DataPointException {
+					cupNumber = value;
+					smarterCoffee.setNumberOfCups(value);
 				}
-				else if (value > TasteStrength.medium && value <= TasteStrength.maximum){
-					smarterCoffee.setBrewStrength(SmarterCoffeeCommands.BREW_STRENGTH_2);
+			},  
+			new TasteStrength(new EnumDataPoint<Integer>(null) {
+				int strength = TasteStrength.zero;
+				@Override
+				protected Integer doGetValue() throws DataPointException {
+					return strength;
 				}
-			}
-			
-			
-		});
+				@Override
+				protected void doSetValue(Integer value) throws DataPointException {
+					strength = value;
+					if (value >= TasteStrength.zero && value < TasteStrength.medium) {
+						smarterCoffee.setBrewStrength(SmarterCoffeeCommands.BREW_STRENGTH_0);
+					}
+					else if (value == TasteStrength.medium) {
+						smarterCoffee.setBrewStrength(SmarterCoffeeCommands.BREW_STRENGTH_1);
+					}
+					else if (value > TasteStrength.medium && value <= TasteStrength.maximum) {
+						smarterCoffee.setBrewStrength(SmarterCoffeeCommands.BREW_STRENGTH_2);
+					}
+				}
+		}));
 		
 		addModule(brewing);
-		
 	}
 	
 	public void addBrewingSwitch(){
-		BinarySwitch brewingSwitch = new BinarySwitch(IP, domain, new BooleanDataPoint("powerState") {
-			
-			@Override
-			protected Boolean doGetValue() throws DataPointException {
-				smarterCoffee.getStatus();
-				
-				if(smarterCoffee.getCoffeeReadyStatus() == 1)
-					return true;
-				else {
-					return false;
+		BinarySwitch brewingSwitch = new BinarySwitch(IP, domain, 
+			new BooleanDataPoint(DatapointType.powerState) {
+				@Override
+				protected Boolean doGetValue() throws DataPointException {
+					smarterCoffee.getStatus();
+					return (smarterCoffee.getCoffeeReadyStatus() == 1);
 				}
-				
-				//return smarterCoffee.getCoffeeReadyStatus();
-			}
-			@Override
-			protected void doSetValue(Boolean value) throws DataPointException {
-				if(value == true)
-					try {System.out.println("start brewing swtich");
-						smarterCoffee.start(getGrinder().getUseGrinder(), getBrewing().getCupsNumber(), getBrewing().getStrength(), getKeepWarm().getPowerState());//tu się powinno pojawić getKeepWarm();
-						//smarterCoffee.start(true, 1, getBrewing().getStrength(), false);
-					
-					} catch (AccessException e) {
-						throw new DataPointException(e.getMessage());
+				@Override
+				protected void doSetValue(Boolean value) throws DataPointException {
+					if (value) {
+						try {
+							System.out.println("start brewing swtich");
+							smarterCoffee.start(getGrinder().getUseGrinder(), 
+									getBrewing().getCupsNumber(), 
+									getBrewing().getStrength(), 
+									getKeepWarm().getPowerState());//tu się powinno pojawić getKeepWarm();
+							//smarterCoffee.start(true, 1, getBrewing().getStrength(), false);
+						} catch (AccessException e) {
+							throw new DataPointException(e.getMessage());
+						}
+					} else {
+						smarterCoffee.stop();
 					}
-				else 
-					smarterCoffee.stop();
-			}
-		});
+				}
+			});
 		
 		addModule(brewingSwitch);
 	}
 	
-	
 	private void addGrinder(){
-	
 		Activator.logger.info("add Grinder starting");
-		
-		Grinder grinder = new Grinder("Grinder_" + getId(), domain, new BooleanDataPoint("useGrinder") {
-			
-			boolean useGrinder = false;
-			
-			@Override
-			protected Boolean doGetValue() throws DataPointException {
-				return useGrinder;
-			}
-			
-			@Override
-			protected void doSetValue(Boolean value) throws DataPointException {
-				useGrinder = value.booleanValue();
-			}
-		}, new IntegerDataPoint("grindCoarsenes") {
-			
-			@Override
-			protected Integer doGetValue() throws DataPointException {
-				// set and get coarsenes of beans is NOT POSSIBLE through API in SmarterCoffee (is's setted via physical potentiometer on the device)
-				return null;
-			}
-		});
+		Grinder grinder = new Grinder("Grinder_" + getId(), domain, 
+			new BooleanDataPoint(DatapointType.useGrinder) {
+				boolean useGrinder = false;
+				@Override
+				protected Boolean doGetValue() throws DataPointException {
+					return useGrinder;
+				}
+				
+				@Override
+				protected void doSetValue(Boolean value) throws DataPointException {
+					useGrinder = value.booleanValue();
+				}
+			}, 
+			new IntegerDataPoint(DatapointType.coarseness) {
+				@Override
+				protected Integer doGetValue() throws DataPointException {
+					// set and get coarsenes of beans is NOT POSSIBLE through API in SmarterCoffee (is's setted via physical potentiometer on the device)
+					return null;
+				}
+			});
 	
 		addModule(grinder);
 	}
 	
 	private void addWaterStatus(){
-		
 		Activator.logger.info("add WaterStatus starting");
-		
-		Level waterStatus = new Level("waterStatus", domain, null, new LevelType("waterStatus") {
-			
-			@Override
-			protected Integer doGetValue() throws DataPointException {
-				smarterCoffee.getStatus();
-				return smarterCoffee.getWaterStatus();
-			}
-		});
-		
+		org.eclipse.om2m.sdt.home.modules.LiquidLevel waterStatus = new org.eclipse.om2m.sdt.home.modules.LiquidLevel("waterStatus", 
+			domain, 
+			new LiquidLevel(DatapointType.water, new EnumDataPoint<Integer>(null) {
+				@Override
+				protected Integer doGetValue() throws DataPointException {
+					smarterCoffee.getStatus();
+					return smarterCoffee.getWaterStatus();
+				}
+			}));
 		addModule(waterStatus);
-		
 	}
 	
 	private void addKeepWarm(){
-		
-	KeepWarm keepWarm = new KeepWarm(name, domain, new BooleanDataPoint("powerState") {
-			
-			@Override
-			protected Boolean doGetValue() throws DataPointException {
-				// TODO Auto-generated method stub
-				return smarterCoffee.getKeepWarmStatus();
-				
-			}
-			
-			protected void doSetValue(Boolean value){
-				boolean keepWarm = value;
-				if(value)
-					smarterCoffee.setHotPlateOn(5); // argument is a mintues user want to use hot plate
-				else 
-					smarterCoffee.setHotPlateOff();
-			}
-		});
-		
+		KeepWarm keepWarm = new KeepWarm(name, domain, 
+			new BooleanDataPoint(DatapointType.powerState) {
+				@Override
+				protected Boolean doGetValue() throws DataPointException {
+					return smarterCoffee.getKeepWarmStatus();
+				}
+				protected void doSetValue(Boolean value) {
+					if (value)
+						smarterCoffee.setHotPlateOn(5); // argument is a mintues user want to use hot plate
+					else 
+						smarterCoffee.setHotPlateOff();
+				}
+			});
 		addModule(keepWarm);
-		
-		
 	}
-
-	
 	
 	public void setProperties(){
 		
 	}
-	
-	
 	
 }
 

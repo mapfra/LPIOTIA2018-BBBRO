@@ -12,6 +12,7 @@ import org.eclipse.om2m.sdt.Module;
 import org.eclipse.om2m.sdt.datapoints.BooleanDataPoint;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 import org.eclipse.om2m.sdt.home.types.ModuleType;
 
 public class AbstractAlarmSensor extends Module {
@@ -29,13 +30,15 @@ public class AbstractAlarmSensor extends Module {
 
 	public AbstractAlarmSensor(final String name, final Domain domain, 
 			BooleanDataPoint alarm, ModuleType type, String doc) {
-		super(name, domain, type.getDefinition(), type.getLongDefinitionName(), type.getShortDefinitionName());
-
+		super(name, domain, type);
+		if ((alarm == null) ||
+				! alarm.getShortDefinitionType().equals(DatapointType.alarm.getShortName())) {
+			domain.removeDevice(name);
+			throw new IllegalArgumentException("Wrong alarm datapoint: " + alarm);
+		}
 		this.alarm = alarm;
 		this.alarm.setWritable(false);
 		this.alarm.setDoc(doc);
-		this.alarm.setLongDefinitionType("alarm");
-		this.alarm.setShortDefinitionType("alarm");
 		addDataPoint(this.alarm);
 	}
 

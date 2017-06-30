@@ -15,6 +15,7 @@ import org.eclipse.om2m.sdt.Module;
 import org.eclipse.om2m.sdt.datapoints.BooleanDataPoint;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 import org.eclipse.om2m.sdt.home.types.ModuleType;
 
 public class Boiler extends Module {
@@ -22,18 +23,20 @@ public class Boiler extends Module {
 	private BooleanDataPoint status;
 
 	public Boiler(final String name, final Domain domain, BooleanDataPoint status) {
-		super(name, domain, ModuleType.boiler.getDefinition(),
-				ModuleType.boiler.getLongDefinitionName(), ModuleType.boiler.getShortDefinitionName());
+		super(name, domain, ModuleType.boiler);
 		
+		if ((status == null) ||
+				! status.getShortDefinitionType().equals(DatapointType.status.getShortName())) {
+			domain.removeDevice(name);
+			throw new IllegalArgumentException("Wrong status datapoint: " + status);
+		}
 		this.status = status;
 		this.status.setDoc("The status of boiling");
-		this.status.setLongDefinitionType("status");
-		this.status.setShortDefinitionType("stats");
 		addDataPoint(status);
 	}
 
 	public Boiler(final String name, final Domain domain, Map<String, DataPoint> dps) {
-		this(name, domain, (BooleanDataPoint) dps.get("stats"));
+		this(name, domain, (BooleanDataPoint) dps.get(DatapointType.status.getShortName()));
 	}
 
 	public boolean getStatus() throws DataPointException, AccessException {

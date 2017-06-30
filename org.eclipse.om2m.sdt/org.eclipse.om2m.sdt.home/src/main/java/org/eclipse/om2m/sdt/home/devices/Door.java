@@ -9,14 +9,14 @@ package org.eclipse.om2m.sdt.home.devices;
 
 import org.eclipse.om2m.sdt.Domain;
 import org.eclipse.om2m.sdt.Module;
+import org.eclipse.om2m.sdt.home.modules.Battery;
 import org.eclipse.om2m.sdt.home.modules.DoorStatus;
-import org.eclipse.om2m.sdt.home.modules.FaultDetection;
 import org.eclipse.om2m.sdt.home.modules.Lock;
 import org.eclipse.om2m.sdt.home.types.DeviceType;
 
 public class Door extends GenericDevice {
 	
-	private FaultDetection faultDetection;
+	private Battery battery;
 	
 	private DoorStatus doorStatus;
 	
@@ -28,8 +28,8 @@ public class Door extends GenericDevice {
 	}
 	
 	public void addModule(Module module) {
-		if (module instanceof FaultDetection)
-			addModule((FaultDetection)module);
+		if (module instanceof Battery)
+			addModule((Battery)module);
 		else if (module instanceof DoorStatus)
 			addModule((DoorStatus)module);
 		else if (module instanceof Lock)
@@ -38,9 +38,9 @@ public class Door extends GenericDevice {
 			super.addModule(module);
 	}
 
-	public void addModule(FaultDetection faultDetection) {
-		this.faultDetection = faultDetection;
-		super.addModule(faultDetection);
+	public void addModule(Battery battery) {
+		this.battery = battery;
+		super.addModule(battery);
 	}
 
 	public void addModule(DoorStatus doorStatus) {
@@ -53,8 +53,8 @@ public class Door extends GenericDevice {
 		super.addModule(lock);
 	}
 
-	public FaultDetection getFaultDetection() {
-		return faultDetection;
+	public Battery getBattery() {
+		return battery;
 	}
 
 	public DoorStatus getDoorStatus() {

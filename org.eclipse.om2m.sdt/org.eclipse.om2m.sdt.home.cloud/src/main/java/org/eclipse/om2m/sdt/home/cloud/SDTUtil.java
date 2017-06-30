@@ -31,16 +31,7 @@ public class SDTUtil {
 			return null;
 		switch (type) {
 		case "xs:string": return value;
-		case "xs:integer": 
-		case "hd:alertColourCode":
-		case "hd:doorState":
-		case "hd:level":
-		case "hd:lockState":
-		case "hd:supportedMode":
-		case "hd:tone":
-		case "hd:foamStrength":
-		case "hd:tasteStrength":
-			return Integer.parseInt(value);
+		case "xs:integer": return Integer.parseInt(value);
 		case "xs:float": return Float.parseFloat(value);
 		case "xs:boolean": return Boolean.parseBoolean(value);
 		case "xs:datetime": return dateTimeFormat.parse(value);
@@ -62,7 +53,7 @@ public class SDTUtil {
 		case "xs:uri": return new URI(value);
 		case "xs:blob": return value;
 		default:
-			return null;
+			return type.startsWith("hd:") ? Integer.parseInt(value) : null;
 		}
 	}
 	
@@ -71,19 +62,14 @@ public class SDTUtil {
 			attr.setCustomAttributeValue(null);
 			return;
 		}
-		switch (attr.getCustomAttributeType()) {
-		case "xs:string": attr.setCustomAttributeValue((String)val); return;
+		String type = attr.getCustomAttributeType();
+		switch (type) {
+		case "xs:string":
 		case "xs:integer": 
 		case "xs:float":
 		case "xs:boolean":
 		case "xs:byte":
 		case "xs:uri":
-		case "hd:alertColourCode":
-		case "hd:doorState":
-		case "hd:liquidLevel":
-		case "hd:lockState":
-		case "hd:supportedMode":
-		case "hd:tone": 
 			attr.setCustomAttributeValue(val.toString()); return;
 		case "xs:datetime": attr.setCustomAttributeValue(dateTimeFormat.format((Date)val)); return;
 		case "xs:time": attr.setCustomAttributeValue(timeFormat.format((Date)val)); return;
@@ -97,19 +83,12 @@ public class SDTUtil {
 				ret += s.toString();
 			}
 			attr.setCustomAttributeValue(ret); return;
-		case "xs:blob": ;// TODO serialize byte array
+		case "xs:blob": return;// TODO serialize byte array
 		default:
+			if (type.startsWith("hd:")) 
+				attr.setCustomAttributeValue(val.toString());
 			return;
 		}
 	}
 
-//	public static void main(String[] args) {
-//		try {
-//			System.out.println(getValue("[mode1, mode2, mode3]", "xs:enum"));
-//			System.out.println(getValue(" [mode1, mode2 , mode3] ", "xs:enum"));
-//			System.out.println(getValue("  [ mode1,, mode2,  ,   mode3 ]  ", "xs:enum"));
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
 }

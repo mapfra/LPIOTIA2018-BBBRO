@@ -14,6 +14,7 @@ import org.eclipse.om2m.commons.constants.Operation;
 import org.eclipse.om2m.commons.constants.ResourceType;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.constants.ResultContent;
+import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
 import org.eclipse.om2m.commons.resource.ChildResourceRef;
 import org.eclipse.om2m.commons.resource.CustomAttribute;
 import org.eclipse.om2m.commons.resource.FilterCriteria;
@@ -27,6 +28,7 @@ import org.eclipse.om2m.sdt.Action;
 import org.eclipse.om2m.sdt.Arg;
 import org.eclipse.om2m.sdt.DataPoint;
 import org.eclipse.om2m.sdt.Domain;
+import org.eclipse.om2m.sdt.Identifiers;
 import org.eclipse.om2m.sdt.Module;
 import org.eclipse.om2m.sdt.Property;
 import org.eclipse.om2m.sdt.args.Command;
@@ -36,6 +38,7 @@ import org.eclipse.om2m.sdt.datapoints.BooleanDataPoint;
 import org.eclipse.om2m.sdt.datapoints.ByteDataPoint;
 import org.eclipse.om2m.sdt.datapoints.DateDataPoint;
 import org.eclipse.om2m.sdt.datapoints.DateTimeDataPoint;
+import org.eclipse.om2m.sdt.datapoints.EnumDataPoint;
 import org.eclipse.om2m.sdt.datapoints.FloatDataPoint;
 import org.eclipse.om2m.sdt.datapoints.IntegerDataPoint;
 import org.eclipse.om2m.sdt.datapoints.StringDataPoint;
@@ -44,14 +47,8 @@ import org.eclipse.om2m.sdt.exceptions.ActionException;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.devices.GenericDevice;
 import org.eclipse.om2m.sdt.home.modules.GenericSensor;
-import org.eclipse.om2m.sdt.home.types.AlertColourCode;
-import org.eclipse.om2m.sdt.home.types.DoorState;
-import org.eclipse.om2m.sdt.home.types.FoamStrength;
-import org.eclipse.om2m.sdt.home.types.LevelType;
-import org.eclipse.om2m.sdt.home.types.LockState;
-import org.eclipse.om2m.sdt.home.types.SupportedMode;
-import org.eclipse.om2m.sdt.home.types.TasteStrength;
-import org.eclipse.om2m.sdt.home.types.Tone;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
+import org.eclipse.om2m.sdt.home.types.PropertyType;
 import org.eclipse.om2m.sdt.home.utils.api.ISDTDiscovery;
 import org.eclipse.om2m.sdt.types.DataType;
 import org.eclipse.om2m.sdt.types.SimpleType;
@@ -60,10 +57,10 @@ public class SDTDiscovery implements ISDTDiscovery {
 
 	private static class MyFlexContainer {
 
-		private FlexContainer flex;
+		private AbstractFlexContainer flex;
 		private FlexContainerAnnc flexA;
 
-		public MyFlexContainer(FlexContainer flex) {
+		public MyFlexContainer(AbstractFlexContainer flex) {
 			this.flex = flex;
 		}
 
@@ -251,7 +248,8 @@ public class SDTDiscovery implements ISDTDiscovery {
 				labels.put(label.substring(0, idx), label.substring(idx+1));
 		}
 		String deviceId = labels.get("id");
-		CustomAttribute serialAttr = deviceFlex.getCustomAttribute("propDeviceSerialNum");
+		CustomAttribute serialAttr = 
+				deviceFlex.getCustomAttribute(PropertyType.deviceSerialNum.getShortName());
 		String serial = null;
 		if (serialAttr == null) {
 			Activator.LOGGER.info("No serial number property. Take id instead.");
@@ -277,9 +275,15 @@ public class SDTDiscovery implements ISDTDiscovery {
 			Activator.LOGGER.info("Created SDT device " + device);
 		}
 		for (CustomAttribute attr : deviceFlex.getCustomAttributes()) {
-			device.setProperty(attr.getCustomAttributeName(),
-					attr.getCustomAttributeValue(),
-					attr.getCustomAttributeType());
+			Activator.LOGGER.info("dev CustomAttribute: " + attr.getCustomAttributeName()
+					+ "/" + attr.getCustomAttributeType() + "/" + attr.getCustomAttributeValue());
+			PropertyType propType = PropertyType.fromShortName(attr.getCustomAttributeName());
+			if (propType != null) {
+				Property prop = new Property(propType, attr.getCustomAttributeValue());
+				prop.setType(SimpleType.getSimpleType(attr.getCustomAttributeType()));
+//				device.addProperty(prop);
+				device.addProperty(propType, attr.getCustomAttributeValue());
+			}
 		}
 		// Search children resources: modules
 		MyFlexContainer ctr = retrieveFlexContainer(uri, 
@@ -313,12 +317,17 @@ public class SDTDiscovery implements ISDTDiscovery {
 				labels.put(label.substring(0, idx), label.substring(idx+1));
 		}
 		List<Property> props = new ArrayList<Property>();
+		List<CustomAttribute> dpAttrs = new ArrayList<CustomAttribute>();
 		for (CustomAttribute attr : moduleFlex.getCustomAttributes()) {
-			if (attr.getCustomAttributeName().startsWith("prop")) {
-				Property prop = new Property(attr.getCustomAttributeName(), attr.getCustomAttributeName(),
-						attr.getCustomAttributeValue());
+			Activator.LOGGER.info("CustomAttribute(1): " + attr.getCustomAttributeName()
+					+ "/" + attr.getCustomAttributeType() + "/" + attr.getCustomAttributeValue());
+			PropertyType propType = PropertyType.fromShortName(attr.getCustomAttributeName());
+			if (propType != null) {
+				Property prop = new Property(propType, attr.getCustomAttributeValue());
 				prop.setType(SimpleType.getSimpleType(attr.getCustomAttributeType()));
 				props.add(prop);
+			} else {
+				dpAttrs.add(attr);
 			}
 		}
 		String modName = labels.get("name");
@@ -326,7 +335,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 		Module module = (Module) domain.getModule(modName);
 		if (module != null) {
 			for (Property prop : props) {
-				module.setProperty(prop.getName(), prop.getShortName(), prop.getValue());
+				module.addProperty(prop);
 			}
 			Activator.LOGGER.info("Full retrieved SDT module " + module);//.prettyPrint());
 			return module;
@@ -337,34 +346,34 @@ public class SDTDiscovery implements ISDTDiscovery {
 		String className = SDT_MODULE_PACKAGE + "." + Character.toUpperCase(cntDef.charAt(idx)) 
 				+ cntDef.substring(idx + 1);
 		List<DataPoint> dps = new ArrayList<DataPoint>();
-		for (CustomAttribute attr : moduleFlex.getCustomAttributes()) {
+		for (CustomAttribute attr : dpAttrs) {
+			if (DatapointType.fromShortName(attr.getCustomAttributeName()) == null) {
+				Activator.LOGGER.warn("Unknown custom attribute, neither property nor datapoint: " 
+						+ attr.getCustomAttributeName());
+				continue;
+			}
 			String type = attr.getCustomAttributeType();
-			if (! attr.getCustomAttributeName().startsWith("prop")) {
-				switch (type) {
-				case "xs:integer": dps.add(getIntegerDataPoint(attr, uri, cred)); break;
-				case "xs:boolean": dps.add(getBooleanDataPoint(attr, uri, cred)); break;
-				case "xs:string": dps.add(getStringDataPoint(attr, uri, cred)); break;
-				case "xs:byte": dps.add(getByteDataPoint(attr, uri, cred)); break;
-				case "xs:float": dps.add(getFloatDataPoint(attr, uri, cred)); break;
-				case "xs:datetime": dps.add(getDateTimeDataPoint(attr, uri, cred)); break;
-				case "xs:time": dps.add(getTimeDataPoint(attr, uri, cred)); break;
-				case "xs:date": dps.add(getDateDataPoint(attr, uri, cred)); break;
-				case "xs:enum": dps.add(getArrayDataPoint(attr, uri, cred)); break;
-				case "hd:alertColourCode": dps.add(getAlertColourCode(attr, uri, cred)); break;
-				case "hd:doorState": dps.add(getDoorState(attr, uri, cred)); break;
-				case "hd:foamStrength": dps.add(getFoamStrength(attr, uri, cred)); break;
-				case "hd:level": dps.add(getLevel(attr, uri, cred)); break;
-				case "hd:lockState": dps.add(getLockState(attr, uri, cred)); break;
-				case "hd:supportedMode": dps.add(getSupportedMode(attr, uri, cred)); break;
-				case "hd:tasteStrength": dps.add(getTasteStrength(attr, uri, cred)); break;
-				case "hd:tone": dps.add(getTone(attr, uri, cred)); break;
-				default: break;
+			switch (type) {
+			case "xs:integer": dps.add(getIntegerDataPoint(attr, uri, cred)); break;
+			case "xs:boolean": dps.add(getBooleanDataPoint(attr, uri, cred)); break;
+			case "xs:string": dps.add(getStringDataPoint(attr, uri, cred)); break;
+			case "xs:byte": dps.add(getByteDataPoint(attr, uri, cred)); break;
+			case "xs:float": dps.add(getFloatDataPoint(attr, uri, cred)); break;
+			case "xs:datetime": dps.add(getDateTimeDataPoint(attr, uri, cred)); break;
+			case "xs:time": dps.add(getTimeDataPoint(attr, uri, cred)); break;
+			case "xs:date": dps.add(getDateDataPoint(attr, uri, cred)); break;
+			case "xs:enum": dps.add(getArrayDataPoint(attr, uri, cred)); break;
+			default:
+				if (type.startsWith("hd:")) {
+					type = type.substring(3);
+					dps.add(getEnumDataPoint(type, attr, uri, cred));
 				}
-			} 
+				break;
+			}
 		}
 		Map<String, DataPoint> dpsMap = new HashMap<String, DataPoint>();
 		for (DataPoint dp : dps) {
-			dpsMap.put(dp.getName(), dp);
+			dpsMap.put(dp.getShortDefinitionType(), dp);
 		}
 		Class<?> clazz = Class.forName(className);
 		if (modName.startsWith(cntDef + "__")) {
@@ -403,7 +412,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 	private Action readAction(final String uri, final Module module, final String cred) 
 			throws Exception {
 		Activator.LOGGER.info("Get action " + uri);
-		MyFlexContainer actionFlexContainer = retrieveFlexContainer(uri, 
+		final MyFlexContainer actionFlexContainer = retrieveFlexContainer(uri, 
 				ResultContent.ORIGINAL_RES, cred);
 		Activator.LOGGER.info("Got action " + actionFlexContainer);
 		Map<String,String> labels = new HashMap<String,String>();
@@ -429,7 +438,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 			};
 			args.add(arg);
 		}
-		String cntDef = actionFlexContainer.getContainerDefinition();
+		final String cntDef = actionFlexContainer.getContainerDefinition();
 		String actionName = labels.get("name");
 		if (actionName == null)
 			actionName = cntDef.substring(cntDef.lastIndexOf('.') + 1);
@@ -438,7 +447,21 @@ public class SDTDiscovery implements ISDTDiscovery {
 			Activator.LOGGER.info("Full retrieved SDT action " + action);
 			return action;
 		}
-		action = new Command(actionName, cntDef, args, actionFlexContainer.getLongName(), actionFlexContainer.getShortName()) {
+		action = new Command(actionName, args,
+			new Identifiers() {
+				@Override
+				public String getShortName() {
+					return actionFlexContainer.getShortName();
+				}
+				@Override
+				public String getLongName() {
+					return actionFlexContainer.getLongName();
+				}
+				@Override
+				public String getDefinition() {
+					return cntDef;
+				}
+			}) {
 			@Override
 			protected Object doInvoke() throws ActionException {
 				Activator.LOGGER.info("invoke SDT action");
@@ -456,7 +479,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 
 	private IntegerDataPoint getIntegerDataPoint(final CustomAttribute attr,
 			final String uri, final String cred) {
-		return new IntegerDataPoint(attr.getCustomAttributeName()) {
+		return new IntegerDataPoint(DatapointType.fromShortName(attr.getCustomAttributeName())) {
 			@Override
 			public void doSetValue(Integer val) throws DataPointException {
 				try {
@@ -480,7 +503,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 
 	private BooleanDataPoint getBooleanDataPoint(final CustomAttribute attr, 
 			final String uri, final String cred) {
-		BooleanDataPoint ret = new BooleanDataPoint(attr.getCustomAttributeName()) {
+		BooleanDataPoint ret = new BooleanDataPoint(DatapointType.fromShortName(attr.getCustomAttributeName())) {
 			@Override
 			public void doSetValue(Boolean val) throws DataPointException {
 				try {
@@ -505,7 +528,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 
 	private StringDataPoint getStringDataPoint(final CustomAttribute attr, 
 			final String uri, final String cred) {
-		return new StringDataPoint(attr.getCustomAttributeName()) {
+		return new StringDataPoint(DatapointType.fromShortName(attr.getCustomAttributeName())) {
 			@Override
 			public void doSetValue(String val) throws DataPointException {
 				try {
@@ -529,7 +552,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 
 	private ByteDataPoint getByteDataPoint(final CustomAttribute attr, 
 			final String uri, final String cred) {
-		return new ByteDataPoint(attr.getCustomAttributeName()) {
+		return new ByteDataPoint(DatapointType.fromShortName(attr.getCustomAttributeName())) {
 			@Override
 			public void doSetValue(Byte val) throws DataPointException {
 				try {
@@ -553,7 +576,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 
 	private FloatDataPoint getFloatDataPoint(final CustomAttribute attr, 
 			final String uri, final String cred) {
-		return new FloatDataPoint(attr.getCustomAttributeName()) {
+		return new FloatDataPoint(DatapointType.fromShortName(attr.getCustomAttributeName())) {
 			@Override
 			public void doSetValue(Float val) throws DataPointException {
 				try {
@@ -577,7 +600,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 
 	private DateTimeDataPoint getDateTimeDataPoint(final CustomAttribute attr, 
 			final String uri, final String cred) {
-		return new DateTimeDataPoint(attr.getCustomAttributeName()) {
+		return new DateTimeDataPoint(DatapointType.fromShortName(attr.getCustomAttributeName())) {
 			@Override
 			public void doSetValue(Date val) throws DataPointException {
 				try {
@@ -601,7 +624,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 
 	private DateDataPoint getDateDataPoint(final CustomAttribute attr, 
 			final String uri, final String cred) {
-		return new DateDataPoint(attr.getCustomAttributeName()) {
+		return new DateDataPoint(DatapointType.fromShortName(attr.getCustomAttributeName())) {
 			@Override
 			public void doSetValue(Date val) throws DataPointException {
 				try {
@@ -625,7 +648,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 
 	private TimeDataPoint getTimeDataPoint(final CustomAttribute attr, 
 			final String uri, final String cred) {
-		return new TimeDataPoint(attr.getCustomAttributeName()) {
+		return new TimeDataPoint(DatapointType.fromShortName(attr.getCustomAttributeName())) {
 			@Override
 			public void doSetValue(Date val) throws DataPointException {
 				try {
@@ -649,7 +672,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 
 	private ArrayDataPoint<String> getArrayDataPoint(final CustomAttribute attr, 
 			final String uri, final String cred) {
-		return new ArrayDataPoint<String>(attr.getCustomAttributeName()) {
+		return new ArrayDataPoint<String>(DatapointType.fromShortName(attr.getCustomAttributeName())) {
 			@Override
 			public void doSetValue(List<String> val) throws DataPointException {
 				try {
@@ -671,196 +694,41 @@ public class SDTDiscovery implements ISDTDiscovery {
 			}
 		};
 	}
-
-	private AlertColourCode getAlertColourCode(final CustomAttribute attr, 
+	
+	@SuppressWarnings("unchecked")
+	private static EnumDataPoint<Integer> getEnumDataPoint(String type, final CustomAttribute attr,
 			final String uri, final String cred) {
-		return new AlertColourCode(attr.getCustomAttributeName()) {
-			@Override
-			public void doSetValue(Integer val) throws DataPointException {
-				try {
-					SDTUtil.setValue(attr, val);
-					updateAttribute(uri, attr, cred);
-				} catch (Exception e) {
-					throw new DataPointException(e);
-				}
-			}
-			@Override
-			public Integer doGetValue() throws DataPointException {
-				try {
-					return (Integer) retrieveAttribute(uri, 
-							attr.getCustomAttributeName(), cred);
-				} catch (Exception e) {
-					throw new DataPointException(e);
-				}
-			}
-		};
-	}
-
-	private DoorState getDoorState(final CustomAttribute attr, 
-			final String uri, final String cred) {
-		return new DoorState(attr.getCustomAttributeName()) {
-			@Override
-			public void doSetValue(Integer val) throws DataPointException {
-				try {
-					SDTUtil.setValue(attr, val);
-					updateAttribute(uri, attr, cred);
-				} catch (Exception e) {
-					throw new DataPointException(e);
-				}
-			}
-			@Override
-			public Integer doGetValue() throws DataPointException {
-				try {
-					return (Integer) retrieveAttribute(uri, 
-							attr.getCustomAttributeName(), cred);
-				} catch (Exception e) {
-					throw new DataPointException(e);
-				}
-			}
-		};
-	}
-
-	private LevelType getLevel(final CustomAttribute attr, 
-			final String uri, final String cred) {
-		return new LevelType(attr.getCustomAttributeName()) {
-			@Override
-			public void doSetValue(Integer val) throws DataPointException {
-				try {
-					SDTUtil.setValue(attr, val);
-					updateAttribute(uri, attr, cred);
-				} catch (Exception e) {
-					throw new DataPointException(e);
-				}
-			}
-			@Override
-			public Integer doGetValue() throws DataPointException {
-				try {
-					return (Integer) retrieveAttribute(uri, 
-							attr.getCustomAttributeName(), cred);
-				} catch (Exception e) {
-					throw new DataPointException(e);
-				}
-			}
-		};
-	}
-
-	private LockState getLockState(final CustomAttribute attr, 
-			final String uri, final String cred) {
-		return new LockState(attr.getCustomAttributeName()) {
-			@Override
-			public void doSetValue(Integer val) throws DataPointException {
-				try {
-					SDTUtil.setValue(attr, val);
-					updateAttribute(uri, attr, cred);
-				} catch (Exception e) {
-					throw new DataPointException(e);
-				}
-			}
-			@Override
-			public Integer doGetValue() throws DataPointException {
-				try {
-					return (Integer) retrieveAttribute(uri, 
-							attr.getCustomAttributeName(), cred);
-				} catch (Exception e) {
-					throw new DataPointException(e);
-				}
-			}
-		};
-	}
-
-	private SupportedMode getSupportedMode(final CustomAttribute attr, 
-			final String uri, final String cred) {
-		return new SupportedMode(attr.getCustomAttributeName()) {
-			@Override
-			public void doSetValue(Integer val) throws DataPointException {
-				try {
-					SDTUtil.setValue(attr, val);
-					updateAttribute(uri, attr, cred);
-				} catch (Exception e) {
-					throw new DataPointException(e);
-				}
-			}
-			@Override
-			public Integer doGetValue() throws DataPointException {
-				try {
-					return (Integer) retrieveAttribute(uri, 
-							attr.getCustomAttributeName(), cred);
-				} catch (Exception e) {
-					throw new DataPointException(e);
-				}
-			}
-		};
-	}
-
-	private Tone getTone(final CustomAttribute attr, final String uri, final String cred) {
-		return new Tone(attr.getCustomAttributeName()) {
-			@Override
-			public void doSetValue(Integer val) throws DataPointException {
-				try {
-					SDTUtil.setValue(attr, val);
-					updateAttribute(uri, attr, cred);
-				} catch (Exception e) {
-					throw new DataPointException(e);
-				}
-			}
-			@Override
-			public Integer doGetValue() throws DataPointException {
-				try {
-					return (Integer) retrieveAttribute(uri, 
-							attr.getCustomAttributeName(), cred);
-				} catch (Exception e) {
-					throw new DataPointException(e);
-				}
-			}
-		};
-	}
-
-	private FoamStrength getFoamStrength(final CustomAttribute attr, 
-			final String uri, final String cred) {
-		return new FoamStrength(attr.getCustomAttributeName()) {
-			@Override
-			public void doSetValue(Integer val) throws DataPointException {
-				try {
-					SDTUtil.setValue(attr, val);
-					updateAttribute(uri, attr, cred);
-				} catch (Exception e) {
-					throw new DataPointException(e);
-				}
-			}
-			@Override
-			public Integer doGetValue() throws DataPointException {
-				try {
-					return (Integer) retrieveAttribute(uri, 
-							attr.getCustomAttributeName(), cred);
-				} catch (Exception e) {
-					throw new DataPointException(e);
-				}
-			}
-		};
-	}
-
-	private TasteStrength getTasteStrength(final CustomAttribute attr, 
-			final String uri, final String cred) {
-		return new TasteStrength(attr.getCustomAttributeName()) {
-			@Override
-			public void doSetValue(Integer val) throws DataPointException {
-				try {
-					SDTUtil.setValue(attr, val);
-					updateAttribute(uri, attr, cred);
-				} catch (Exception e) {
-					throw new DataPointException(e);
-				}
-			}
-			@Override
-			public Integer doGetValue() throws DataPointException {
-				try {
-					return (Integer) retrieveAttribute(uri, 
-							attr.getCustomAttributeName(), cred);
-				} catch (Exception e) {
-					throw new DataPointException(e);
-				}
-			}
-		};
+		try {
+			String className = DatapointType.class.getPackage().getName() + "." 
+				+ type.substring(0, 1).toUpperCase() + type.substring(1);
+			Class<?> clazz = Class.forName(className);
+			return (EnumDataPoint<Integer>) 
+				clazz.getConstructor(Identifiers.class, EnumDataPoint.class)
+					.newInstance(DatapointType.fromShortName(attr.getCustomAttributeName()), 
+						new EnumDataPoint<Integer>(null) {
+							@Override
+							public void doSetValue(Integer val) throws DataPointException {
+								try {
+									SDTUtil.setValue(attr, val);
+									updateAttribute(uri, attr, cred);
+								} catch (Exception e) {
+									throw new DataPointException(e);
+								}
+							}
+							@Override
+							public Integer doGetValue() throws DataPointException {
+								try {
+									return (Integer) retrieveAttribute(uri, 
+											attr.getCustomAttributeName(), cred);
+								} catch (Exception e) {
+									throw new DataPointException(e);
+								}
+							}
+						});
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	private MyFlexContainer retrieveFlexContainer(final String uri, 
@@ -869,6 +737,8 @@ public class SDTDiscovery implements ISDTDiscovery {
 		request.setOperation(Operation.RETRIEVE);
 		request.setReturnContentType(MimeMediaType.OBJ);
 		request.setRequestContentType(MimeMediaType.OBJ);
+		request.setFilterCriteria(new FilterCriteria());
+		request.getFilterCriteria().setLevel(BigInteger.ONE);
 		request.setFrom(cred);
 		request.setTargetId(uri);
 		request.setResultContent(resultContent);
@@ -878,15 +748,15 @@ public class SDTDiscovery implements ISDTDiscovery {
 		if (! ResponseStatusCode.OK.equals(code))
 			throw new Exception("Error searching " + uri + ": " + code);
 		Object ret = resp.getContent();
-		if (ret instanceof FlexContainer)
-			return new MyFlexContainer((FlexContainer)ret);
+		if (ret instanceof AbstractFlexContainer)
+			return new MyFlexContainer((AbstractFlexContainer)ret);
 		else if (ret instanceof FlexContainerAnnc)
 			return new MyFlexContainer((FlexContainerAnnc)ret);
 		else 
 			throw new Exception("Error not a FlexContainer " + uri);
 	}
 
-	private Object retrieveAttribute(final String uri, final String attr,
+	static private Object retrieveAttribute(final String uri, final String attr,
 			final String cred) throws Exception {
 		RequestPrimitive request = new RequestPrimitive();
 		request.setOperation(Operation.RETRIEVE);
@@ -895,15 +765,15 @@ public class SDTDiscovery implements ISDTDiscovery {
 		request.setFrom(cred);
 		request.setTargetId(uri);
 		request.setResultContent(ResultContent.ORIGINAL_RES);
-		Activator.LOGGER.info("read " + attr + " -> " + request.toString());
 
 		ResponsePrimitive resp = cseService.doRequest(request);
+		Activator.LOGGER.info("read " + attr + " -> " + resp.getResponseStatusCode());
 		if (! ResponseStatusCode.OK.equals(resp.getResponseStatusCode()))
 			throw new Exception("Error reading cloud data: " + resp.getResponseStatusCode());
-		return SDTUtil.getValue(((FlexContainer) resp.getContent()).getCustomAttribute(attr));
+		return SDTUtil.getValue(((AbstractFlexContainer) resp.getContent()).getCustomAttribute(attr));
 	}
 
-	public void updateAttribute(final String uri, 
+	static public void updateAttribute(final String uri, 
 			final CustomAttribute customAttribute, final String cred) throws Exception {
 		FlexContainer flexContainer = new FlexContainer();
 		flexContainer.getCustomAttributes().add(customAttribute);
@@ -916,11 +786,9 @@ public class SDTDiscovery implements ISDTDiscovery {
 		request.setOperation(Operation.UPDATE);
 		request.setFrom(cred);
 		request.setTargetId(uri);
-		Activator.LOGGER.info("write " + customAttribute.getCustomAttributeName() 
-				+ " -> " + request.toString());
 
 		ResponsePrimitive resp = cseService.doRequest(request);
-		Activator.LOGGER.info(resp.toString());
+		Activator.LOGGER.info("write " + customAttribute + " -> " + resp.getResponseStatusCode());
 		if (! ResponseStatusCode.UPDATED.equals(resp.getResponseStatusCode()))
 			throw new Exception("Error writing cloud data: " + resp.getResponseStatusCode());
 	}
@@ -938,14 +806,12 @@ public class SDTDiscovery implements ISDTDiscovery {
 		request.setOperation(Operation.UPDATE);
 		request.setFrom(cred);
 		request.setTargetId(uri);
-		Activator.LOGGER.info("write " + customAttributes 
-				+ " -> " + request.toString());
 
 		ResponsePrimitive resp = cseService.doRequest(request);
-		Activator.LOGGER.info(resp.toString());
+		Activator.LOGGER.info("invoke " + customAttributes + " -> " + resp.getResponseStatusCode());
 		if (! ResponseStatusCode.UPDATED.equals(resp.getResponseStatusCode()))
 			throw new Exception("Error invoking cloud action: " + resp.getResponseStatusCode());
-		CustomAttribute ret = ((FlexContainer) resp.getContent()).getCustomAttribute("output");
+		CustomAttribute ret = ((AbstractFlexContainer) resp.getContent()).getCustomAttribute("output");
 		return (ret == null) ? null : ret.getCustomAttributeValue();
 	}
 
