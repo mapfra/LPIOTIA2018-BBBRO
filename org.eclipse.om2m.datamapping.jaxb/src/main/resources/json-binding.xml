@@ -48,7 +48,6 @@
 
 		<!-- CSE Descriptions -->
 		<java-type name="CSEBase">
-			<xml-root-element name="m2m:cb" />
 			<java-attributes>
 				<xml-element java-attribute="accessControlPolicyIDs"
 					name="acpi" />
@@ -61,7 +60,6 @@
 		</java-type>
 
 		<java-type name="RemoteCSE">
-			<xml-root-element name="m2m:csr" />
 			<java-attributes>
 				<xml-element java-attribute="pointOfAccess" name="poa" />
 			</java-attributes>
@@ -69,7 +67,6 @@
 
 		<!-- Access Control resources -->
 		<java-type name="AccessControlPolicy">
-			<xml-root-element name="m2m:acp" />
 		</java-type>
 		<java-type name="AccessControlRule">
 			<java-attributes>
@@ -80,20 +77,17 @@
 
 		<!-- Common resources -->
 		<java-type name="AE">
-			<xml-root-element name="m2m:ae" />
 			<java-attributes>
 				<xml-element java-attribute="pointOfAccess" name="poa" />
 			</java-attributes>
 		</java-type>
 		<java-type name="AEAnnc">
-			<xml-root-element name="m2m:aeA" />
 			<java-attributes>
 				<xml-element java-attribute="pointOfAccess" name="poa" />
 			</java-attributes>
 		</java-type>
 
 		<java-type name="Container">
-			<xml-root-element name="m2m:cnt" />
 		</java-type>
 		
 		<java-type name="AbstractFlexContainer">
@@ -107,7 +101,6 @@
 		</java-type>
 
 		<java-type name="Group">
-			<xml-root-element name="m2m:grp" />
 			<java-attributes>
 				<xml-element java-attribute="memberIDs" name="mid" />
 				<xml-element java-attribute="membersAccessControlPolicyIDs"
@@ -116,20 +109,17 @@
 		</java-type>
 
 		<java-type name="Node">
-			<xml-root-element name="m2m:nod" />
 		</java-type>
 
 		<!-- Subscription and notification handling -->
 
 		<java-type name="Subscription">
-			<xml-root-element name="m2m:sub" />
 			<java-attributes>
 				<xml-element java-attribute="notificationURI" name="nu" />
 			</java-attributes>
 		</java-type>
 
 		<java-type name="Notification">
-			<xml-root-element name="m2m:sgn" />
 		</java-type>
 
 		<!-- TODO Mgmt Objects -->
@@ -137,15 +127,12 @@
 		<!-- Other resources -->
 
         <java-type name="URIList">
-            <xml-root-element name="m2m:uril"/>
         </java-type>
 
 		<java-type name="PollingChannel">
-			<xml-root-element name="m2m:pch" />
 		</java-type>
 
 		<java-type name="Schedule">
-			<xml-root-element name="m2m:sch" />
 		</java-type>
 
 		<java-type name="LocationRegion">
@@ -156,7 +143,7 @@
 				<xml-element java-attribute="circRegion" />
 			</java-attributes>
 		</java-type>
-
+		
 	</java-types>
 
 </xml-bindings>

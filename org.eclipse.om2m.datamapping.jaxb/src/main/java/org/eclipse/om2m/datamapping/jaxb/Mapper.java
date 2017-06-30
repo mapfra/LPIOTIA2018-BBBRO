@@ -23,7 +23,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.xml.bind.JAXBContext;
@@ -49,7 +51,7 @@ public class Mapper implements DataMapperService {
 	private JAXBContext context;
 	/** Resource package name used for JAXBContext instantiation */
 	// org.eclipse.om2m.commons.resource:
-	private String resourcePackage = "org.eclipse.om2m.commons.resource.flexcontainerspec";
+	private String resourcePackage = "org.eclipse.om2m.commons.resource:org.eclipse.om2m.commons.resource.flexcontainerspec";
 	private String mediaType;
 
 	/**
@@ -62,9 +64,13 @@ public class Mapper implements DataMapperService {
 				if(mediaType.equals(MimeMediaType.JSON)){
 					// JSON
 					ClassLoader classLoader = Mapper.class.getClassLoader(); 
-					InputStream iStream = classLoader.getResourceAsStream("json-binding.xml"); 
+					InputStream iStreamJsonBinding = classLoader.getResourceAsStream("json-binding.xml");
+					InputStream iStreamJsonBindingFlexcontainer = classLoader.getResourceAsStream("json-binding-flexcontainer.xml");
+					List<Object> iStreamList = new ArrayList<>();
+					iStreamList.add(iStreamJsonBinding);
+					iStreamList.add(iStreamJsonBindingFlexcontainer);
 					Map<String, Object> properties = new HashMap<String, Object>(); 
-					properties.put(JAXBContextProperties.OXM_METADATA_SOURCE, iStream);
+					properties.put(JAXBContextProperties.OXM_METADATA_SOURCE, iStreamList);
 					context = JAXBContext.newInstance(resourcePackage, classLoader , properties);
 				} else if (mediaType.equals(MimeMediaType.XML)) {
 					// XML
@@ -78,7 +84,7 @@ public class Mapper implements DataMapperService {
 					context = JAXBContext.newInstance(resourcePackage, Mapper.class.getClassLoader());
 				}
 			}
-		} catch (JAXBException e) { 
+		} catch (Throwable e) { 
 			LOGGER.error("Create JAXBContext error", e);
 		}
 	}
@@ -101,6 +107,12 @@ public class Mapper implements DataMapperService {
 			marshaller.setProperty(MarshallerProperties.JSON_VALUE_WRAPPER, "val");
 			marshaller.setProperty(MarshallerProperties.JSON_REDUCE_ANY_ARRAYS, true);
 			marshaller.setProperty(MarshallerProperties.JSON_MARSHAL_EMPTY_COLLECTIONS, false);
+			
+			Map<String, String> namespaces = new HashMap<String, String>(); 
+			namespaces.put("http://www.onem2m.org/xml/protocols/homedomain", "hd"); 
+			namespaces.put("http://www.onem2m.org/xml/protocols", "m2m"); 
+			marshaller.setProperty(MarshallerProperties.NAMESPACE_PREFIX_MAPPER, namespaces);
+			marshaller.setProperty(MarshallerProperties.JSON_NAMESPACE_SEPARATOR, ':');
 			marshaller.marshal(obj, outputStream);
 			
 			return outputStream.toString();
