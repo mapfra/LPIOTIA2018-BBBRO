@@ -43,7 +43,13 @@ public interface DAOFactory {
 	
 	public abstract DAO<AeEntity> getAeDAO();
 	
+	public abstract DAO<AeEntity> getAeByAppIdDAO();
+	
 	public abstract DAO<ContainerEntity> getContainerDAO();
+	
+	public abstract DAO<ContainerEntity> getContainerByResourceNameDAO();
+	
+	public abstract DAO<ContainerEntity> getDescContainerByParentDAO();
 
 	public abstract DAO<ContentInstanceEntity> getContentInstanceDAO();
 

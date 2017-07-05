@@ -35,8 +35,11 @@ import org.eclipse.om2m.commons.entities.SubscriptionEntity;
 import org.eclipse.om2m.commons.entities.UriMapperEntity;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.AccessControlOriginatorDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.AccessControlPolicyDAO;
+import org.eclipse.om2m.persistence.eclipselink.internal.dao.AeByAppIdDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.AeDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.CSEBaseDAO;
+import org.eclipse.om2m.persistence.eclipselink.internal.dao.ContainerByNameDAO;
+import org.eclipse.om2m.persistence.eclipselink.internal.dao.DescContainerByParentDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.ContainerDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.ContentInstanceDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.GroupDAO;
@@ -69,11 +72,27 @@ public class DAOFactoryImpl implements DAOFactory {
 	public DAO<AeEntity> getAeDAO() {
 		return new AeDAO();
 	}
+	
+	@Override
+	public DAO<AeEntity> getAeByAppIdDAO() {
+		return new AeByAppIdDAO();
+	}
 
 	@Override
 	public DAO<ContainerEntity> getContainerDAO() {
 		return new ContainerDAO();
 	}
+	
+	@Override
+	public DAO<ContainerEntity> getContainerByResourceNameDAO() {
+		return new ContainerByNameDAO();
+	}
+	
+	@Override
+	public DAO<ContainerEntity> getDescContainerByParentDAO() {
+		return new DescContainerByParentDAO();
+	}
+	
 
 	@Override
 	public DAO<ContentInstanceEntity> getContentInstanceDAO() {
@@ -129,6 +148,8 @@ public class DAOFactoryImpl implements DAOFactory {
 	public DAO<AccessControlOriginatorEntity> getAccessControlOriginatorDAO() {
 		return new AccessControlOriginatorDAO();
 	}
+
+
 	
 	@Override
 	public DAO<ContentInstanceEntity> getOldestDAO() {
