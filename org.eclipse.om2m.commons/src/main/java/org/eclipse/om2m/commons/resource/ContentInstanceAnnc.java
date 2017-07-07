@@ -67,7 +67,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "contentInstanceAnnc")
 public class ContentInstanceAnnc extends AnnouncedSubordinateResource {
 
-	@XmlElement(required = true)
+	@XmlElement(required = true, namespace="")
 	@XmlSchemaType(name = "nonNegativeInteger")
 	protected BigInteger stateTag;
 	protected String contentInfo;

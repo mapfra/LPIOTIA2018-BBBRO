@@ -63,9 +63,9 @@ import javax.xml.bind.annotation.XmlType;
 		ScheduleAnnc.class })
 public class AnnouncedSubordinateResource extends Resource {
 
-	@XmlElement(required = true)
+	@XmlElement(required = true, namespace="")
 	protected String expirationTime;
-	@XmlElement(required = true)
+	@XmlElement(required = true, namespace="")
 	@XmlSchemaType(name = "anyURI")
 	protected String link;
 

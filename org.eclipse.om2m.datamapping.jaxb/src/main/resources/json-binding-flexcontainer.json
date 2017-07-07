@@ -5,6 +5,8 @@
     "namespace": "http:\/\/www.onem2m.org\/xml\/protocols\/homedomain"
   },
   "java-types": {
+  	"java-type": [
+      ]
   }
 }
 

@@ -20,18 +20,18 @@ import org.eclipse.om2m.commons.constants.ShortName;
 @XmlType(name = "")
 @XmlRootElement(name = ShortName.FCNTA)
 public class FlexContainerAnnc extends AnnouncedResource {
-	@XmlElement(name = ShortName.STATETAG, required = true)
+	@XmlElement(name = ShortName.STATETAG, required = true, namespace="")
 	@XmlSchemaType(name = "nonNegativeInteger")
 	protected BigInteger stateTag;
-	@XmlElement(name = ShortName.CREATOR, required = true)
+	@XmlElement(name = ShortName.CREATOR, required = true, namespace="")
 	protected String creator;
 	@XmlSchemaType(name = "anyURI")
-	@XmlElement(name = ShortName.ONTOLOGY_REF)
+	@XmlElement(name = ShortName.ONTOLOGY_REF, namespace="")
 	protected String ontologyRef;
 	@XmlSchemaType(name = "anyURI")
-	@XmlElement(name = ShortName.CONTAINER_DEFINITION)
+	@XmlElement(name = ShortName.CONTAINER_DEFINITION, namespace="")
 	protected String containerDefinition;
-	@XmlElement(name = ShortName.CHILD_RESOURCE)
+	@XmlElement(name = ShortName.CHILD_RESOURCE, namespace="")
 	protected List<ChildResourceRef> childResource;
 	@XmlElements({
 			@XmlElement(name = ShortName.CNT, namespace = "http://www.onem2m.org/xml/protocols", type = Container.class),

@@ -88,27 +88,27 @@ import org.eclipse.om2m.commons.constants.ShortName;
 @XmlType(name = "")
 @XmlRootElement(name = ShortName.REMOTE_CSE)
 public class RemoteCSE extends AnnounceableResource {
-	@XmlElement(name=ShortName.CSE_TYPE, required=false)
+	@XmlElement(name=ShortName.CSE_TYPE, required=false, namespace="")
 	protected BigInteger cseType;
 	@XmlList
-	@XmlElement(name=ShortName.POA, required=false)
+	@XmlElement(name=ShortName.POA, required=false, namespace="")
 	protected List<String> pointOfAccess;
-	@XmlElement(name = ShortName.REMOTE_CSE_CSEBASE, required = true)
+	@XmlElement(name = ShortName.REMOTE_CSE_CSEBASE, required = true, namespace="")
 	@XmlSchemaType(name = "anyURI")
 	protected String cseBase;
-	@XmlElement(name = ShortName.CSE_ID, required = true)
+	@XmlElement(name = ShortName.CSE_ID, required = true, namespace="")
 	protected String cseid;
-	@XmlElement(name = ShortName.M2M_EXT_ID, required=false)
+	@XmlElement(name = ShortName.M2M_EXT_ID, required=false, namespace="")
 	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
 	protected String m2MExtID;
-	@XmlElement(name = ShortName.TRIGGER_RECIPIENT_ID, required=false)
+	@XmlElement(name = ShortName.TRIGGER_RECIPIENT_ID, required=false, namespace="")
 	protected Long triggerRecipientID;
-	@XmlElement(name=ShortName.REQUEST_REACHABILITY, required=true)
+	@XmlElement(name=ShortName.REQUEST_REACHABILITY, required=true, namespace="")
 	protected Boolean requestReachability;
 	@XmlSchemaType(name = "anyURI")
-	@XmlElement(name=ShortName.NODE_LINK, required=false)
+	@XmlElement(name=ShortName.NODE_LINK, required=false, namespace="")
 	protected String nodeLink;
-	@XmlElement(name=ShortName.CHILD_RESOURCE)
+	@XmlElement(name=ShortName.CHILD_RESOURCE, namespace="")
 	protected List<ChildResourceRef> childResource;
 	@XmlElements({
 			@XmlElement(name = ShortName.AE, namespace = "http://www.onem2m.org/xml/protocols", type = AE.class),

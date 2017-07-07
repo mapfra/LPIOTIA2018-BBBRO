@@ -102,25 +102,25 @@ import org.eclipse.om2m.commons.constants.ShortName;
 public class CSEBase extends Resource {
 
 	@XmlList
-	@XmlElement(name=ShortName.ACP_IDS, required=false)
+	@XmlElement(name=ShortName.ACP_IDS, required=false, namespace="")
 	protected List<String> accessControlPolicyIDs;
 	@XmlList
-	@XmlElement(name=ShortName.DAC_IDS, required=false)
+	@XmlElement(name=ShortName.DAC_IDS, required=false, namespace="")
 	protected List<String> dynamicAuthorizationConsultationIDs;
-	@XmlElement(name=ShortName.CSE_TYPE, required=false)
+	@XmlElement(name=ShortName.CSE_TYPE, required=false, namespace="")
 	protected BigInteger cseType;
-	@XmlElement(name = ShortName.CSE_ID, required = true)
+	@XmlElement(name = ShortName.CSE_ID, required = true, namespace="")
 	protected String cseid;
 	@XmlList
-	@XmlElement(name=ShortName.SRT, required = true)
+	@XmlElement(name=ShortName.SRT, required = true, namespace="")
 	protected List<BigInteger> supportedResourceType;
 	@XmlList
-	@XmlElement(name=ShortName.POA, required = true)
+	@XmlElement(name=ShortName.POA, required = true, namespace="")
 	protected List<String> pointOfAccess;
 	@XmlSchemaType(name = "anyURI")
-	@XmlElement(name=ShortName.NODE_LINK, required=false)
+	@XmlElement(name=ShortName.NODE_LINK, required=false, namespace="")
 	protected String nodeLink;
-	@XmlElement(name=ShortName.CHILD_RESOURCE)
+	@XmlElement(name=ShortName.CHILD_RESOURCE, namespace="")
 	protected List<ChildResourceRef> childResource;
 
 	@XmlElements({

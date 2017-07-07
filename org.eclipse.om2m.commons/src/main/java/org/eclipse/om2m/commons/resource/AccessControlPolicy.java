@@ -68,11 +68,11 @@ import org.eclipse.om2m.commons.constants.ShortName;
 @XmlType(name = "")
 @XmlRootElement(name = ShortName.ACP)
 public class AccessControlPolicy extends AnnounceableSubordinateResource {
-	@XmlElement(name=ShortName.PRIVILEGES, required = true)
+	@XmlElement(name=ShortName.PRIVILEGES, required = true, namespace="")
 	protected SetOfAcrs privileges;
-	@XmlElement(name=ShortName.SELF_PRIVILEGES, required = true)
+	@XmlElement(name=ShortName.SELF_PRIVILEGES, required = true, namespace="")
 	protected SetOfAcrs selfPrivileges;
-	@XmlElement(name=ShortName.CHILD_RESOURCE)
+	@XmlElement(name=ShortName.CHILD_RESOURCE, namespace="")
 	protected List<ChildResourceRef> childResource;
 	@XmlElement(name=ShortName.SUB, namespace = "http://www.onem2m.org/xml/protocols")
 	protected List<Subscription> subscription;

@@ -12,7 +12,8 @@
           "xml-element": [
             {
               "java-attribute": "labels",
-              "name": "lbl"
+              "name": "lbl",
+              "namespace": ""
             }
           ]
         }
@@ -23,11 +24,13 @@
           "xml-element": [
             {
               "java-attribute": "accessControlPolicyIDs",
-              "name": "acpi"
+              "name": "acpi",
+              "namespace": ""
             },
             {
               "java-attribute": "dynamicAuthorizationConsultationIDs",
-              "name": "daci"
+              "name": "daci",
+              "namespace": ""
             }
           ]
         }
@@ -38,11 +41,13 @@
           "xml-element": [
             {
               "java-attribute": "announceTo",
-              "name": "at"
+              "name": "at",
+              "namespace": ""
             },
             {
               "java-attribute": "announcedAttribute",
-              "name": "aa"
+              "name": "aa",
+              "namespace": ""
             }
           ]
         }
@@ -53,11 +58,13 @@
           "xml-element": [
             {
               "java-attribute": "announceTo",
-              "name": "at"
+              "name": "at",
+              "namespace": ""
             },
             {
               "java-attribute": "announcedAttribute",
-              "name": "aa"
+              "name": "aa",
+              "namespace": ""
             }
           ]
         }
@@ -68,7 +75,8 @@
           "xml-element": [
             {
               "java-attribute": "accessControlPolicyIDs",
-              "name": "acpi"
+              "name": "acpi",
+              "namespace": ""
             }
           ]
         }
@@ -79,19 +87,23 @@
           "xml-element": [
             {
               "java-attribute": "accessControlPolicyIDs",
-              "name": "acpi"
+              "name": "acpi",
+              "namespace": ""
             },
             {
               "java-attribute": "dynamicAuthorizationConsultationIDs",
-              "name": "daci"
+              "name": "daci",
+              "namespace": ""
             },
             {
               "java-attribute": "supportedResourceType",
-              "name": "srt"
+              "name": "srt",
+              "namespace": ""
             },
             {
               "java-attribute": "pointOfAccess",
-              "name": "poa"
+              "name": "poa",
+              "namespace": ""
             }
           ]
         }
@@ -102,7 +114,8 @@
           "xml-element": [
             {
               "java-attribute": "pointOfAccess",
-              "name": "poa"
+              "name": "poa",
+              "namespace": ""
             }
           ]
         }
@@ -113,7 +126,8 @@
           "xml-element": [
             {
               "java-attribute": "accessControlOriginators",
-              "name": "acor"
+              "name": "acor",
+              "namespace": ""
             }
           ]
         }
@@ -124,7 +138,8 @@
           "xml-element": [
             {
               "java-attribute": "pointOfAccess",
-              "name": "poa"
+              "name": "poa",
+              "namespace": ""
             }
           ]
         }
@@ -135,7 +150,8 @@
           "xml-element": [
             {
               "java-attribute": "pointOfAccess",
-              "name": "poa"
+              "name": "poa",
+              "namespace": ""
             }
           ]
         }
@@ -146,11 +162,13 @@
           "xml-element": [
             {
               "java-attribute": "memberIDs",
-              "name": "mid"
+              "name": "mid",
+              "namespace": ""
             },
             {
               "java-attribute": "membersAccessControlPolicyIDs",
-              "name": "macp"
+              "name": "macp",
+              "namespace": ""
             }
           ]
         }
@@ -161,7 +179,8 @@
           "xml-element": [
             {
               "java-attribute": "notificationURI",
-              "name": "nu"
+              "name": "nu",
+              "namespace": ""
             }
           ]
         }
@@ -172,20 +191,8 @@
           "xml-element": [
             {
               "java-attribute": "listOfUri",
-              "name":"uril"
-            }
-          ]
-        }
-      },
-      {
-        "name": "Group",
-        "java-attributes": {
-          "xml-element": [
-            {
-              "java-attribute": "countryCode"
-            },
-            {
-              "java-attribute": "circRegion"
+              "name":"uril",
+              "namespace": ""
             }
           ]
         }

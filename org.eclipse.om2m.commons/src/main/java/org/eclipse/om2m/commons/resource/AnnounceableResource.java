@@ -74,10 +74,10 @@ import org.eclipse.om2m.commons.constants.ShortName;
 public class AnnounceableResource extends RegularResource {
 
 	@XmlList
-	@XmlElement(name=ShortName.ANNOUNCE_TO, required=false)
+	@XmlElement(name=ShortName.ANNOUNCE_TO, required=false, namespace="")
 	protected List<String> announceTo;
 	@XmlList
-	@XmlElement(name=ShortName.ANNOUNCED_ATTRIBUTE, required=false)
+	@XmlElement(name=ShortName.ANNOUNCED_ATTRIBUTE, required=false, namespace="")
 	protected List<String> announcedAttribute;
 
 	/**

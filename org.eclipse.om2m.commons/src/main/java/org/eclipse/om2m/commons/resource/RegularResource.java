@@ -75,12 +75,12 @@ import org.eclipse.om2m.commons.constants.ShortName;
 public class RegularResource extends Resource {
 
 	@XmlList
-	@XmlElement(name=ShortName.ACP_IDS, required=false)
+	@XmlElement(name=ShortName.ACP_IDS, required=false, namespace="")
 	protected List<String> accessControlPolicyIDs;
 	@XmlList
-	@XmlElement(name=ShortName.DAC_IDS, required=false)
+	@XmlElement(name=ShortName.DAC_IDS, required=false, namespace="")
 	protected List<String> dynamicAuthorizationConsultationIDs;
-	@XmlElement(name=ShortName.EXPIRATION_TIME, required = true)
+	@XmlElement(name=ShortName.EXPIRATION_TIME, required = true, namespace="")
 	protected String expirationTime;
 
 	/**

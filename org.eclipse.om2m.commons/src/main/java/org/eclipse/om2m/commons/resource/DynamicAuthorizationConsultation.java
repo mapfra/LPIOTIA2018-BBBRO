@@ -17,14 +17,14 @@ import org.eclipse.om2m.commons.constants.ShortName;
 @XmlType(name = "")
 public class DynamicAuthorizationConsultation extends RegularResource {
 
-	@XmlElement(name = ShortName.DYNAMIC_AUTHORIZATION_ENABLED)
+	@XmlElement(name = ShortName.DYNAMIC_AUTHORIZATION_ENABLED, namespace="")
 	private Boolean dynamicAuthorizationEnabled;
 	
 	@XmlList
-	@XmlElement(name = ShortName.DYNAMIC_AUTHORIZATION_PoA)
+	@XmlElement(name = ShortName.DYNAMIC_AUTHORIZATION_PoA, namespace="")
 	private List<String> dynamicAuthorisationPoA;
 	
-	@XmlElement(name = ShortName.DYNAMIC_AUTHORIZATION_LIFETIME)
+	@XmlElement(name = ShortName.DYNAMIC_AUTHORIZATION_LIFETIME, namespace="")
 	private String dynamicAuthorizationLifetime;
 
 	public Boolean getDynamicAuthorizationEnabled() {

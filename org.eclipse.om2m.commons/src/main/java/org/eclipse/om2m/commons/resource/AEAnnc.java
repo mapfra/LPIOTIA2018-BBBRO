@@ -84,22 +84,22 @@ import org.eclipse.om2m.commons.constants.ShortName;
 @XmlType(name = "")
 @XmlRootElement(name = ShortName.AEA)
 public class AEAnnc extends AnnouncedResource {
-	@XmlElement(name = ShortName.APP_NAME, required=false)
+	@XmlElement(name = ShortName.APP_NAME, required=false, namespace="")
 	protected String appName;
-	@XmlElement(name = ShortName.APP_ID, required = false)
+	@XmlElement(name = ShortName.APP_ID, required = false, namespace="")
 	protected String appID;
-	@XmlElement(name = ShortName.AE_ID, required = false)
+	@XmlElement(name = ShortName.AE_ID, required = false, namespace="")
 	protected String aeid;
 	@XmlList
-	@XmlElement(name = ShortName.POA, required=false)
+	@XmlElement(name = ShortName.POA, required=false, namespace="")
 	protected List<String> pointOfAccess;
 	@XmlSchemaType(name = "anyURI")
-	@XmlElement(name = ShortName.ONTOLOGY_REF, required=false)
+	@XmlElement(name = ShortName.ONTOLOGY_REF, required=false, namespace="")
 	protected String ontologyRef;
 	@XmlSchemaType(name = "anyURI")
-	@XmlElement(name = ShortName.NODE_LINK, required=false)
+	@XmlElement(name = ShortName.NODE_LINK, required=false, namespace="")
 	protected String nodeLink;
-	@XmlElement(name = ShortName.CHILD_RESOURCE)
+	@XmlElement(name = ShortName.CHILD_RESOURCE, namespace="")
 	protected List<ChildResourceRef> childResource;
 	@XmlElements({
 			@XmlElement(name = "container", namespace = "http://www.onem2m.org/xml/protocols", type = Container.class),

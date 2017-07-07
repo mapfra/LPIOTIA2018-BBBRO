@@ -84,31 +84,31 @@ import org.eclipse.om2m.commons.constants.ShortName;
 @XmlRootElement(name = ShortName.CNT_ANNC)
 public class ContainerAnnc extends AnnouncedResource {
 
-	@XmlElement(required = true, name = ShortName.STATETAG)
+	@XmlElement(required = true, name = ShortName.STATETAG, namespace="")
 	@XmlSchemaType(name = "nonNegativeInteger")
 	protected BigInteger stateTag;
 	@XmlSchemaType(name = "nonNegativeInteger")
-	@XmlElement(name = ShortName.MAX_NR_OF_INSTANCES)
+	@XmlElement(name = ShortName.MAX_NR_OF_INSTANCES, namespace="")
 	protected BigInteger maxNrOfInstances;
-	@XmlElement(name = ShortName.MAX_BYTE_SIZE)
+	@XmlElement(name = ShortName.MAX_BYTE_SIZE, namespace="")
 	@XmlSchemaType(name = "nonNegativeInteger")
 	protected BigInteger maxByteSize;
-	@XmlElement(name = ShortName.MAX_INSTANCE_AGE)
+	@XmlElement(name = ShortName.MAX_INSTANCE_AGE, namespace="")
 	@XmlSchemaType(name = "nonNegativeInteger")
 	protected BigInteger maxInstanceAge;
-	@XmlElement(required = true, name = ShortName.CURRENT_NUMBER_OF_INSTANCES)
+	@XmlElement(required = true, name = ShortName.CURRENT_NUMBER_OF_INSTANCES, namespace="")
 	@XmlSchemaType(name = "nonNegativeInteger")
 	protected BigInteger currentNrOfInstances;
-	@XmlElement(required = true, name = ShortName.CURRENT_BYTE_SIZE)
+	@XmlElement(required = true, name = ShortName.CURRENT_BYTE_SIZE, namespace="")
 	@XmlSchemaType(name = "nonNegativeInteger")
 	protected BigInteger currentByteSize;
 	@XmlSchemaType(name = "anyURI")
-	@XmlElement(name = ShortName.LOCATION_ID)
+	@XmlElement(name = ShortName.LOCATION_ID, namespace="")
 	protected String locationID;
 	@XmlSchemaType(name = "anyURI")
-	@XmlElement(name = ShortName.ONTOLOGY_REF)
+	@XmlElement(name = ShortName.ONTOLOGY_REF, namespace="")
 	protected String ontologyRef;
-	@XmlElement(name = ShortName.CHILD_RESOURCE)
+	@XmlElement(name = ShortName.CHILD_RESOURCE, namespace="")
 	protected List<ChildResourceRef> childResource;
 	@XmlElements({
 			@XmlElement(name = "contentInstance", namespace = "http://www.onem2m.org/xml/protocols", type = ContentInstance.class),

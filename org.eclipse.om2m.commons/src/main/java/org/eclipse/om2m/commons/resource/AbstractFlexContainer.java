@@ -156,18 +156,18 @@ public abstract class AbstractFlexContainer extends AnnounceableResource {
 	@XmlTransient
 	private String longName;
 	
-	@XmlElement(name = ShortName.STATETAG, required = true)
+	@XmlElement(name = ShortName.STATETAG, required = true, namespace="")
 	@XmlSchemaType(name = "nonNegativeInteger")
 	protected BigInteger stateTag;
-	@XmlElement(name = ShortName.CREATOR, required = false)
+	@XmlElement(name = ShortName.CREATOR, required = false, namespace="")
 	protected String creator;
 	@XmlSchemaType(name = "anyURI")
-	@XmlElement(name = ShortName.ONTOLOGY_REF, required = false)
+	@XmlElement(name = ShortName.ONTOLOGY_REF, required = false, namespace="")
 	protected String ontologyRef;
 	@XmlSchemaType(name="anyURI")
-	@XmlElement(name = ShortName.CONTAINER_DEFINITION, required=true)
+	@XmlElement(name = ShortName.CONTAINER_DEFINITION, required=true, namespace="")
 	protected String containerDefinition;
-	@XmlElement(name = ShortName.CHILD_RESOURCE)
+	@XmlElement(name = ShortName.CHILD_RESOURCE, namespace="")
 	protected List<ChildResourceRef> childResource;
 	@XmlElements({
 			@XmlElement(name = ShortName.CNT, namespace = "http://www.onem2m.org/xml/protocols", type = Container.class),
