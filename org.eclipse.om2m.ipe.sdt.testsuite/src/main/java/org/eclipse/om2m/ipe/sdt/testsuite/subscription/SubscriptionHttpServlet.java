@@ -17,8 +17,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
 import org.eclipse.om2m.commons.resource.CustomAttribute;
-import org.eclipse.om2m.commons.resource.FlexContainer;
 import org.eclipse.om2m.commons.resource.Notification;
 import org.eclipse.om2m.commons.resource.Notification.NotificationEvent;
 import org.eclipse.om2m.commons.resource.Notification.NotificationEvent.Representation;
@@ -101,8 +101,8 @@ public class SubscriptionHttpServlet extends HttpServlet {
 			NotificationEvent notifEvent = notification.getNotificationEvent();
 			Representation representation = notifEvent.getRepresentation();
 
-			if (representation.getResource() instanceof FlexContainer) {
-				FlexContainer notifiedFlexContainer = (FlexContainer) representation.getResource();
+			if (representation.getResource() instanceof AbstractFlexContainer) {
+				AbstractFlexContainer notifiedFlexContainer = (AbstractFlexContainer) representation.getResource();
 				ReceivedNotification receivedNotification = new ReceivedNotification(notifiedFlexContainer, new Date());
 				if (openToStoreNotification) {
 					this.notificationQueue.addNotificationFromOM2M(receivedNotification);

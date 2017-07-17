@@ -10,8 +10,8 @@ package org.eclipse.om2m.testsuite.flexcontainer;
 import org.eclipse.om2m.commons.constants.Constants;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.resource.CustomAttribute;
-import org.eclipse.om2m.commons.resource.FlexContainer;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceWaterValveFlexContainer;
 import org.eclipse.om2m.core.service.CseService;
 import org.eclipse.om2m.testsuite.flexcontainer.TestReport.Status;
 
@@ -31,51 +31,46 @@ public class WaterValveFlexContainerTest extends FlexContainerTestSuite {
 		String flexContainerName = "WaterValveFlexContainer_" + System.currentTimeMillis();
 		String flexContainerLocation = baseLocation + "/" + flexContainerName;
 
-		FlexContainer flexContainer = new FlexContainer();
-		flexContainer.setContainerDefinition("org.onem2m.home.device.devicewatervalve");
+		DeviceWaterValveFlexContainer  flexContainer = new DeviceWaterValveFlexContainer();
+		flexContainer.setName(flexContainerName);
 		flexContainer.setCreator("Greg");
 		flexContainer.setOntologyRef("OntologyRef");
 
 		CustomAttribute serialNumberCA = new CustomAttribute();
-		serialNumberCA.setCustomAttributeName("propDeviceSerialNum");
-		serialNumberCA.setCustomAttributeType("xs:string");
+		serialNumberCA.setCustomAttributeName("pDSNm");
 		serialNumberCA.setCustomAttributeValue("sn1");
 		flexContainer.getCustomAttributes().add(serialNumberCA);
 
 		CustomAttribute locationCA = new CustomAttribute();
-		locationCA.setCustomAttributeName("propLocation");
-		locationCA.setCustomAttributeType("xs:string");
+		locationCA.setCustomAttributeName("proLn");
 		locationCA.setCustomAttributeValue("kitchen");
 		flexContainer.getCustomAttributes().add(locationCA);
 
 		CustomAttribute deviceManufacturerCA = new CustomAttribute();
-		deviceManufacturerCA.setCustomAttributeName("propDeviceManufacturer");
-		deviceManufacturerCA.setCustomAttributeType("xs:string");
+		deviceManufacturerCA.setCustomAttributeName("prDMr");
 		deviceManufacturerCA.setCustomAttributeValue("Orange");
 		flexContainer.getCustomAttributes().add(deviceManufacturerCA);
 
 		CustomAttribute protocolCA = new CustomAttribute();
-		protocolCA.setCustomAttributeName("propProtocol");
-		protocolCA.setCustomAttributeType("xs:string");
+		protocolCA.setCustomAttributeName("proPl");
 		protocolCA.setCustomAttributeValue("ZigBee");
 		flexContainer.getCustomAttributes().add(protocolCA);
 
 		CustomAttribute deviceModelCA = new CustomAttribute();
-		deviceModelCA.setCustomAttributeName("propDeviceModelName");
-		deviceModelCA.setCustomAttributeType("xs:string");
+		deviceModelCA.setCustomAttributeName("pDMNe");
 		deviceModelCA.setCustomAttributeValue("Model1");
 		flexContainer.getCustomAttributes().add(deviceModelCA);
 
 		// send CREATE request
-		ResponsePrimitive response = sendCreateFlexContainerRequest(flexContainer, baseLocation, flexContainerName);
-		FlexContainer createdFlexContainer = null;
+		ResponsePrimitive response = sendCreateFlexContainerRequest(flexContainer, baseLocation, Constants.ADMIN_REQUESTING_ENTITY);
+		DeviceWaterValveFlexContainer createdFlexContainer = null;
 		if (!response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {
 			// KO
 			createTestReport("testCreateAndRetrieveWaterValveFlexContainer", Status.KO,
 					"unable to create WaterValve FlexContainer:" + response.getContent(), null);
 			return;
 		} else {
-			createdFlexContainer = (FlexContainer) response.getContent();
+			createdFlexContainer = (DeviceWaterValveFlexContainer) response.getContent();
 
 			if (!flexContainerName.equals(createdFlexContainer.getName())) {
 				createTestReport("testCreateAndRetrieveWaterValveFlexContainer", Status.KO,
@@ -103,7 +98,7 @@ public class WaterValveFlexContainerTest extends FlexContainerTestSuite {
 					"unable to retrieve WaterValve FlexContainer:" + response.getContent(), null);
 			return;
 		} else {
-			FlexContainer retrievedFlexContainer = (FlexContainer) response.getContent();
+			DeviceWaterValveFlexContainer retrievedFlexContainer = (DeviceWaterValveFlexContainer) response.getContent();
 			try {
 				checkFlexContainer(createdFlexContainer, retrievedFlexContainer);
 			} catch (Exception e) {
@@ -122,43 +117,38 @@ public class WaterValveFlexContainerTest extends FlexContainerTestSuite {
 		String flexContainerName = "WaterValveFlexContainer_" + System.currentTimeMillis();
 		String flexContainerLocation = baseLocation + "/" + flexContainerName;
 
-		FlexContainer flexContainer = new FlexContainer();
-		flexContainer.setContainerDefinition("org.onem2m.home.device.devicewatervalve");
+		DeviceWaterValveFlexContainer flexContainer = new DeviceWaterValveFlexContainer();
+		flexContainer.setName(flexContainerName);
 		flexContainer.setCreator("Greg");
 		flexContainer.setOntologyRef("OntologyRef");
 
 		CustomAttribute serialNumberCA = new CustomAttribute();
-		serialNumberCA.setCustomAttributeName("propDeviceSerialNum");
-		serialNumberCA.setCustomAttributeType("xs:string");
+		serialNumberCA.setCustomAttributeName("pDSNm");
 		serialNumberCA.setCustomAttributeValue("sn1");
 		flexContainer.getCustomAttributes().add(serialNumberCA);
 
 		CustomAttribute locationCA = new CustomAttribute();
-		locationCA.setCustomAttributeName("propLocation");
-		locationCA.setCustomAttributeType("xs:string");
+		locationCA.setCustomAttributeName("proLn");
 		locationCA.setCustomAttributeValue("kitchen");
 		flexContainer.getCustomAttributes().add(locationCA);
 
 		CustomAttribute deviceManufacturerCA = new CustomAttribute();
-		deviceManufacturerCA.setCustomAttributeName("propDeviceManufacturer");
-		deviceManufacturerCA.setCustomAttributeType("xs:string");
+		deviceManufacturerCA.setCustomAttributeName("prDMr");
 		deviceManufacturerCA.setCustomAttributeValue("Orange");
 		flexContainer.getCustomAttributes().add(deviceManufacturerCA);
 
 		CustomAttribute protocolCA = new CustomAttribute();
-		protocolCA.setCustomAttributeName("propProtocol");
-		protocolCA.setCustomAttributeType("xs:string");
+		protocolCA.setCustomAttributeName("proPl");
 		protocolCA.setCustomAttributeValue("ZigBee");
 		flexContainer.getCustomAttributes().add(protocolCA);
 
 		CustomAttribute deviceModelCA = new CustomAttribute();
-		deviceModelCA.setCustomAttributeName("propDeviceModelName");
-		deviceModelCA.setCustomAttributeType("xs:string");
+		deviceModelCA.setCustomAttributeName("pDMNe");
 		deviceModelCA.setCustomAttributeValue("Model1");
 		flexContainer.getCustomAttributes().add(deviceModelCA);
 
 		// send CREATE request
-		ResponsePrimitive response = sendCreateFlexContainerRequest(flexContainer, baseLocation, flexContainerName);
+		ResponsePrimitive response = sendCreateFlexContainerRequest(flexContainer, baseLocation, Constants.ADMIN_REQUESTING_ENTITY);
 		if (!response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {
 			// KO
 			createTestReport("testDeleteWaterValveFlexContainer", Status.KO,

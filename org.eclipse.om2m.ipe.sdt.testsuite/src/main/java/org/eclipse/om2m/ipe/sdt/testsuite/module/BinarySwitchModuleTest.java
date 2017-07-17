@@ -9,8 +9,8 @@ package org.eclipse.om2m.ipe.sdt.testsuite.module;
 
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.resource.CustomAttribute;
-import org.eclipse.om2m.commons.resource.FlexContainer;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.BinarySwitchFlexContainer;
 import org.eclipse.om2m.core.service.CseService;
 import org.eclipse.om2m.ipe.sdt.testsuite.CSEUtil;
 import org.eclipse.om2m.ipe.sdt.testsuite.TestReport;
@@ -20,6 +20,7 @@ import org.eclipse.om2m.sdt.Module;
 import org.eclipse.om2m.sdt.datapoints.BooleanDataPoint;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 
 public class BinarySwitchModuleTest extends AbstractModuleTest {
 
@@ -50,14 +51,14 @@ public class BinarySwitchModuleTest extends AbstractModuleTest {
 			return report;
 		}
 		// get powerState value
-		FlexContainer retrievedFlexContainer = (FlexContainer) response.getContent();
-		CustomAttribute powerStateCA = retrievedFlexContainer.getCustomAttribute("powerState");
+		BinarySwitchFlexContainer retrievedFlexContainer = (BinarySwitchFlexContainer) response.getContent();
+		CustomAttribute powerStateCA = retrievedFlexContainer.getCustomAttribute(DatapointType.powerState.getShortName());
 		Boolean powerState = Boolean.parseBoolean(powerStateCA.getCustomAttributeValue());
 		System.out.println("powerState=" + powerState);
 		
 		
 		// set powerState value
-		FlexContainer toBeUpdatedFlexContainer = new FlexContainer();
+		BinarySwitchFlexContainer toBeUpdatedFlexContainer = new BinarySwitchFlexContainer();
 		Boolean newPowerState = new Boolean(!powerState.booleanValue());
 		powerStateCA.setCustomAttributeValue(newPowerState.toString());
 		toBeUpdatedFlexContainer.getCustomAttributes().add(powerStateCA);
@@ -69,7 +70,7 @@ public class BinarySwitchModuleTest extends AbstractModuleTest {
 		}
 		
 		// check new value from Module object
-		BooleanDataPoint powerStateDP = (BooleanDataPoint) getModule().getDataPoint("powerState");
+		BooleanDataPoint powerStateDP = (BooleanDataPoint) getModule().getDataPoint(DatapointType.powerState.getShortName());
 		try {
 			Boolean valueFromModule = powerStateDP.getValue();
 			if (!newPowerState.equals(valueFromModule)) {
@@ -88,8 +89,8 @@ public class BinarySwitchModuleTest extends AbstractModuleTest {
 		}
 		
 		// then retrieve from OM2M tree
-		retrievedFlexContainer = (FlexContainer) response.getContent();
-		powerStateCA = retrievedFlexContainer.getCustomAttribute("powerState");
+		retrievedFlexContainer = (BinarySwitchFlexContainer) response.getContent();
+		powerStateCA = retrievedFlexContainer.getCustomAttribute(DatapointType.powerState.getShortName());
 		Boolean currentPowerStateValue = Boolean.parseBoolean(powerStateCA.getCustomAttributeValue());
 		if (!currentPowerStateValue.equals(newPowerState)) {
 			System.out.println("value from flexContainer (" + currentPowerStateValue + ") is the same as the one set (" + newPowerState +")");

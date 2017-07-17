@@ -63,9 +63,13 @@ public class FlexContainerMapper extends EntityMapper<FlexContainerEntity, Abstr
 		for(CustomAttributeEntity cae : entity.getCustomAttributes()) {
 			CustomAttribute ca = new CustomAttribute();
 			ca.setCustomAttributeName(cae.getCustomAttributeName());
-			ca.setCustomAttributeType(cae.getCustomAttributeType());
 			if (fcs != null) {
-				ca.setCustomAttributeValue(fcs.getCustomAttributeValue(ca.getCustomAttributeName()));
+				try {
+					ca.setCustomAttributeValue(fcs.getCustomAttributeValue(ca.getCustomAttributeName()));
+				} catch (Exception e) {
+					// silently
+					continue;
+				}
 			} else {
 				ca.setCustomAttributeValue(cae.getCustomAttributeValue());
 			}

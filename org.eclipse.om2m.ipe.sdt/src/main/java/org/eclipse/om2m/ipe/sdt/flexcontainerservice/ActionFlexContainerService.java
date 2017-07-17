@@ -78,7 +78,7 @@ public class ActionFlexContainerService implements FlexContainerService {
 					for (String argName : action.getArgNames()) {
 						CustomAttribute ca = getCustomAttribute(customAttributes, argName);
 						if (ca != null) {
-							args.put(argName, SDTUtil.getValue(ca));
+							args.put(argName, SDTUtil.getValue(ca, "string"));
 						}
 					}
 				} catch (Exception e) {
@@ -98,7 +98,6 @@ public class ActionFlexContainerService implements FlexContainerService {
 				if (response != null) {
 					CustomAttribute output = new CustomAttribute();
 					output.setCustomAttributeName("output");
-					output.setCustomAttributeType("xs:string");
 					output.setCustomAttributeValue(response.toString());
 					customAttributes.add(output);
 				}

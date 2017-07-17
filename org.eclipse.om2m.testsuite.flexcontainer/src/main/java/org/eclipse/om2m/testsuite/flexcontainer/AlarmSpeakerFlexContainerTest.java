@@ -10,8 +10,8 @@ package org.eclipse.om2m.testsuite.flexcontainer;
 import org.eclipse.om2m.commons.constants.Constants;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.resource.CustomAttribute;
-import org.eclipse.om2m.commons.resource.FlexContainer;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.AlarmSpeakerFlexContainer;
 import org.eclipse.om2m.core.service.CseService;
 import org.eclipse.om2m.testsuite.flexcontainer.TestReport.Status;
 
@@ -32,33 +32,31 @@ public class AlarmSpeakerFlexContainerTest extends FlexContainerTestSuite {
 		String flexContainerName = "AlarmSpeakerFlexContainer_" + System.currentTimeMillis();
 		String flexContainerLocation = baseLocation + "/" + flexContainerName;
 
-		FlexContainer flexContainer = new FlexContainer();
-		flexContainer.setContainerDefinition("org.onem2m.home.moduleclass.alarmspeaker");
+		AlarmSpeakerFlexContainer flexContainer = new AlarmSpeakerFlexContainer();
+		flexContainer.setName(flexContainerName);
 		flexContainer.setOntologyRef("OrangeOntology");
 		flexContainer.setCreator("Greg");
 
 		CustomAttribute toneCustomAttribute = new CustomAttribute();
 		toneCustomAttribute.setCustomAttributeName("tone");
-		toneCustomAttribute.setCustomAttributeType("hd:tone");
 		toneCustomAttribute.setCustomAttributeValue("1");
 		flexContainer.getCustomAttributes().add(toneCustomAttribute);
 
 		CustomAttribute alarmStatusCustomAttribute = new CustomAttribute();
-		alarmStatusCustomAttribute.setCustomAttributeName("alarmStatus");
-		alarmStatusCustomAttribute.setCustomAttributeType("xs:boolean");
+		alarmStatusCustomAttribute.setCustomAttributeName("alaSs");
 		alarmStatusCustomAttribute.setCustomAttributeValue("true");
 		flexContainer.getCustomAttributes().add(alarmStatusCustomAttribute);
 
 		// send CREATE request
-		ResponsePrimitive response = sendCreateFlexContainerRequest(flexContainer, baseLocation, flexContainerName);
-		FlexContainer createdFlexContainer = null;
+		ResponsePrimitive response = sendCreateFlexContainerRequest(flexContainer, baseLocation, Constants.ADMIN_REQUESTING_ENTITY);
+		AlarmSpeakerFlexContainer createdFlexContainer = null;
 		if (!response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {
 			// KO
 			createTestReport("testCreateAndRetrieveAlarmSpeakerFlexContainer", Status.KO,
 					"unable to create AlarmSpeaker FlexContainer:" + response.getContent(), null);
 			return;
 		} else {
-			createdFlexContainer = (FlexContainer) response.getContent();
+			createdFlexContainer = (AlarmSpeakerFlexContainer) response.getContent();
 
 			if (!flexContainerName.equals(createdFlexContainer.getName())) {
 				createTestReport("testCreateAndRetrieveAlarmSpeakerFlexContainer", Status.KO,
@@ -87,7 +85,7 @@ public class AlarmSpeakerFlexContainerTest extends FlexContainerTestSuite {
 					"unable to retrieve AlarmSpeaker FlexContainer:" + response.getContent(), null);
 			return;
 		} else {
-			FlexContainer retrievedFlexContainer = (FlexContainer) response.getContent();
+			AlarmSpeakerFlexContainer retrievedFlexContainer = (AlarmSpeakerFlexContainer) response.getContent();
 			try {
 				checkFlexContainer(createdFlexContainer, retrievedFlexContainer);
 			} catch (Exception e) {
@@ -104,26 +102,24 @@ public class AlarmSpeakerFlexContainerTest extends FlexContainerTestSuite {
 		String flexContainerName = "AlarmSpeakerFlexContainer_" + System.currentTimeMillis();
 		String flexContainerLocation = baseLocation + "/" + flexContainerName;
 
-		FlexContainer flexContainer = new FlexContainer();
-		flexContainer.setContainerDefinition("org.onem2m.home.moduleclass.alarmspeaker");
+		AlarmSpeakerFlexContainer flexContainer = new AlarmSpeakerFlexContainer();
+		flexContainer.setName(flexContainerName);
 		flexContainer.setOntologyRef("OrangeOntology");
 		flexContainer.setCreator("Greg");
 
 		CustomAttribute toneCustomAttribute = new CustomAttribute();
 		toneCustomAttribute.setCustomAttributeName("tone");
-		toneCustomAttribute.setCustomAttributeType("hd:tone");
 		toneCustomAttribute.setCustomAttributeValue("1");
 		flexContainer.getCustomAttributes().add(toneCustomAttribute);
 
 		CustomAttribute alarmStatusCustomAttribute = new CustomAttribute();
-		alarmStatusCustomAttribute.setCustomAttributeName("alarmStatus");
-		alarmStatusCustomAttribute.setCustomAttributeType("xs:boolean");
+		alarmStatusCustomAttribute.setCustomAttributeName("alaSs");
 		alarmStatusCustomAttribute.setCustomAttributeValue("true");
 		flexContainer.getCustomAttributes().add(alarmStatusCustomAttribute);
 
 		// send CREATE request
-		ResponsePrimitive response = sendCreateFlexContainerRequest(flexContainer, baseLocation, flexContainerName);
-		FlexContainer createdFlexContainer = null;
+		ResponsePrimitive response = sendCreateFlexContainerRequest(flexContainer, baseLocation, Constants.ADMIN_REQUESTING_ENTITY);
+		AlarmSpeakerFlexContainer createdFlexContainer = null;
 		if (!response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {
 			// KO
 			createTestReport("testDeleteAlarmSpeakerFlexContainer", Status.KO,
@@ -159,41 +155,38 @@ public class AlarmSpeakerFlexContainerTest extends FlexContainerTestSuite {
 		String flexContainerName = "AlarmSpeakerFlexContainer_" + System.currentTimeMillis();
 		String flexContainerLocation = baseLocation + "/" + flexContainerName;
 
-		FlexContainer flexContainer = new FlexContainer();
-		flexContainer.setContainerDefinition("org.onem2m.home.moduleclass.alarmspeaker");
+		AlarmSpeakerFlexContainer flexContainer = new AlarmSpeakerFlexContainer();
+		flexContainer.setName(flexContainerName);
 		flexContainer.setOntologyRef("OrangeOntology");
 		flexContainer.setCreator("Greg");
 
 		CustomAttribute toneCustomAttribute = new CustomAttribute();
 		toneCustomAttribute.setCustomAttributeName("tone");
-		toneCustomAttribute.setCustomAttributeType("hd:tone");
 		toneCustomAttribute.setCustomAttributeValue("1");
 		flexContainer.getCustomAttributes().add(toneCustomAttribute);
 
 		CustomAttribute alarmStatusCustomAttribute = new CustomAttribute();
-		alarmStatusCustomAttribute.setCustomAttributeName("alarmStatus");
-		alarmStatusCustomAttribute.setCustomAttributeType("xs:boolean");
+		alarmStatusCustomAttribute.setCustomAttributeName("alaSs");
 		alarmStatusCustomAttribute.setCustomAttributeValue("true");
 		flexContainer.getCustomAttributes().add(alarmStatusCustomAttribute);
 
 		// send CREATE request
-		ResponsePrimitive response = sendCreateFlexContainerRequest(flexContainer, baseLocation, flexContainerName);
-		FlexContainer createdFlexContainer = null;
+		ResponsePrimitive response = sendCreateFlexContainerRequest(flexContainer, baseLocation, Constants.ADMIN_REQUESTING_ENTITY);
+		AlarmSpeakerFlexContainer createdFlexContainer = null;
 		if (!response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {
 			// KO
 			createTestReport("testUpdateAlarmSpeakerFlexContainer", Status.KO,
 					"unable to create AlarmSpeaker FlexContainer:" + response.getContent(), null);
 			return;
 		} else {
-			createdFlexContainer = (FlexContainer) response.getContent();
+			createdFlexContainer = (AlarmSpeakerFlexContainer) response.getContent();
 		}
 
 		// prepare update
-		FlexContainer toBeUpdated = new FlexContainer();
+		AlarmSpeakerFlexContainer toBeUpdated = new AlarmSpeakerFlexContainer();
 
 		CustomAttribute updatedTone = new CustomAttribute();
 		updatedTone.setCustomAttributeName("tone");
-		updatedTone.setCustomAttributeType("hd:tone");
 		updatedTone.setCustomAttributeValue("1");
 		toBeUpdated.getCustomAttributes().add(updatedTone);
 
@@ -205,7 +198,7 @@ public class AlarmSpeakerFlexContainerTest extends FlexContainerTestSuite {
 					"unable to update AlarmSpeaker FlexContainer:" + response.getContent(), null);
 			return;
 		} else {
-			FlexContainer updatedFlexContainer = (FlexContainer) response.getContent();
+			AlarmSpeakerFlexContainer updatedFlexContainer = (AlarmSpeakerFlexContainer) response.getContent();
 
 			if (updatedFlexContainer.getCustomAttributes().size() != 1) {
 				createTestReport("testUpdateAlarmSpeakerFlexContainer", Status.KO, "Expecting 1 customAttribute, found "
@@ -232,7 +225,7 @@ public class AlarmSpeakerFlexContainerTest extends FlexContainerTestSuite {
 			return;
 		} else {
 			// OK
-			FlexContainer retrievedFlexContainer = (FlexContainer) response.getContent();
+			AlarmSpeakerFlexContainer retrievedFlexContainer = (AlarmSpeakerFlexContainer) response.getContent();
 			
 			// update createdFlexContainer with new tone value
 			createdFlexContainer.getCustomAttribute("tone")

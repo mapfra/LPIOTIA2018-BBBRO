@@ -12,9 +12,10 @@ import java.util.List;
 import java.util.Random;
 
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
+import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
 import org.eclipse.om2m.commons.resource.CustomAttribute;
-import org.eclipse.om2m.commons.resource.FlexContainer;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.FlexContainerFactory;
 import org.eclipse.om2m.core.service.CseService;
 import org.eclipse.om2m.sdt.Action;
 import org.eclipse.om2m.sdt.DataPoint;
@@ -98,7 +99,7 @@ public class DeviceDiscoveryTestSuite {
 			return;
 		}
 
-		FlexContainer deviceFlexContainer = (FlexContainer) response.getContent();
+		AbstractFlexContainer deviceFlexContainer = (AbstractFlexContainer) response.getContent();
 
 		if (!checkName(deviceFlexContainer, DEVICE_PREFIX + device.getId())) {
 			System.out.println("invalid name");
@@ -135,7 +136,7 @@ public class DeviceDiscoveryTestSuite {
 		System.out.println("checkDevice(" + device.getId() + "," + device.getName() + "): OK");
 	}
 
-	private boolean checkName(FlexContainer flexContainer, String expectedName) {
+	private boolean checkName(AbstractFlexContainer flexContainer, String expectedName) {
 		System.out.println("checkName(expectedName=" + expectedName + ", currentName=" + flexContainer.getName() + ")");
 		if ((expectedName == null) && (flexContainer.getName() != null)) {
 			return false;
@@ -144,7 +145,7 @@ public class DeviceDiscoveryTestSuite {
 		return expectedName.equals(flexContainer.getName());
 	}
 
-	private boolean checkContainerDefinition(FlexContainer flexContainer, String expectedContainerDefinition) {
+	private boolean checkContainerDefinition(AbstractFlexContainer flexContainer, String expectedContainerDefinition) {
 		System.out.println("checkContainerDefinition(expectedContainerDefinition=" + expectedContainerDefinition
 				+ ", currentContainerDefinition=" + flexContainer.getContainerDefinition() + ")");
 		if ((expectedContainerDefinition == null) && (flexContainer.getContainerDefinition() != null)) {
@@ -154,7 +155,7 @@ public class DeviceDiscoveryTestSuite {
 		return expectedContainerDefinition.equals(flexContainer.getContainerDefinition());
 	}
 
-	private boolean checkCustomAttribute(FlexContainer flexContainer, String attributeName, String attributeValue) {
+	private boolean checkCustomAttribute(AbstractFlexContainer flexContainer, String attributeName, String attributeValue) {
 		System.out.println("checkCustomAttribute(name=" + attributeName + ", expectedValue=" + attributeValue + ")");
 
 		CustomAttribute customAttribute = flexContainer.getCustomAttribute(attributeName);
@@ -194,7 +195,7 @@ public class DeviceDiscoveryTestSuite {
 			return false;
 		}
 
-		FlexContainer moduleFlexContainer = (FlexContainer) response.getContent();
+		AbstractFlexContainer moduleFlexContainer = (AbstractFlexContainer) response.getContent();
 
 		if (!checkName(moduleFlexContainer, module.getName())) {
 			System.out.println("invalid module name");
@@ -208,7 +209,7 @@ public class DeviceDiscoveryTestSuite {
 
 		// check module properties
 
-		FlexContainer moduleClassPropertyFlexContainer = (FlexContainer) response.getContent();
+		AbstractFlexContainer moduleClassPropertyFlexContainer = (AbstractFlexContainer) response.getContent();
 		for (Property property : module.getProperties()) {
 			if (!checkCustomAttribute(moduleClassPropertyFlexContainer, property.getName(), property.getValue())) {
 				System.out.println("invalid customProperty (" + property.getName() + ")");
@@ -295,11 +296,9 @@ public class DeviceDiscoveryTestSuite {
 
 		if (newValue != null) {
 			// set new value through the ipe
-			FlexContainer updateFc = new FlexContainer();
+			AbstractFlexContainer updateFc = FlexContainerFactory.getSpecializationFlexContainer(module.getShortDefinitionName());
 			CustomAttribute dataPointCA = new CustomAttribute();
 			dataPointCA.setCustomAttributeName(dataPoint.getName());
-			dataPointCA
-					.setCustomAttributeType("xs:" + ((SimpleType) dataPoint.getDataType().getTypeChoice()).getType());
 			dataPointCA.setCustomAttributeValue(newValue);
 			updateFc.getCustomAttributes().add(dataPointCA);
 
@@ -349,7 +348,7 @@ public class DeviceDiscoveryTestSuite {
 			System.out.println("invalid response status code: " + response.getResponseStatusCode());
 			return false;
 		}
-		FlexContainer actionFlexContainer = (FlexContainer) response.getContent();
+		AbstractFlexContainer actionFlexContainer = (AbstractFlexContainer) response.getContent();
 
 		if (!checkContainerDefinition(actionFlexContainer, action.getDefinition())) {
 			System.out.println("invalid container definition, expected:" + action.getDefinition() + ", found:"
@@ -371,12 +370,11 @@ public class DeviceDiscoveryTestSuite {
 		}
 
 		// execute action
-		FlexContainer executionFlexContainer = new FlexContainer();
+		AbstractFlexContainer executionFlexContainer = FlexContainerFactory.getSpecializationFlexContainer(actionFlexContainer.getShortName());
 		for (String name : action.getArgNames()) {
 			CustomAttribute ca = new CustomAttribute();
 			executionFlexContainer.getCustomAttributes().add(ca);
 			ca.setCustomAttributeName(name);
-			ca.setCustomAttributeType("xs:" + action.getArg(name).getDataType().getName());
 			ca.setCustomAttributeValue("12");
 		}
 		response = CSEUtil.updateFlexContainerEntity(cseService, actionLocation, executionFlexContainer);
@@ -400,7 +398,7 @@ public class DeviceDiscoveryTestSuite {
 			System.out.println("invalid response status code: " + response.getResponseStatusCode());
 			return false;
 		}
-		FlexContainer dataPointFlexContainer = (FlexContainer) response.getContent();
+		AbstractFlexContainer dataPointFlexContainer = (AbstractFlexContainer) response.getContent();
 
 		if (!checkContainerDefinition(dataPointFlexContainer, "org.onem2m.home.datapoint")) {
 			System.out.println("invalid container definition");
@@ -436,10 +434,9 @@ public class DeviceDiscoveryTestSuite {
 		}
 
 		// update
-		FlexContainer flexContainerToBeUpdated = new FlexContainer();
+		AbstractFlexContainer flexContainerToBeUpdated = FlexContainerFactory.getSpecializationFlexContainer(dataPointFlexContainer.getShortName());
 		CustomAttribute value = new CustomAttribute();
 		value.setCustomAttributeName("value");
-		value.setCustomAttributeType("xs:string");
 		String typedRandomValue = randomValue(dataPoint.getDataType().getName());
 		value.setCustomAttributeValue(typedRandomValue);
 		flexContainerToBeUpdated.getCustomAttributes().add(value);

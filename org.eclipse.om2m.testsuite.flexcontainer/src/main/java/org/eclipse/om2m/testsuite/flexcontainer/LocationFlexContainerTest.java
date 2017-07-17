@@ -16,9 +16,9 @@ import org.eclipse.om2m.commons.constants.ResourceType;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.resource.Container;
 import org.eclipse.om2m.commons.resource.CustomAttribute;
-import org.eclipse.om2m.commons.resource.FlexContainer;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.BinarySwitchFlexContainer;
 import org.eclipse.om2m.core.service.CseService;
 import org.eclipse.om2m.testsuite.flexcontainer.TestReport.Status;
 
@@ -46,16 +46,16 @@ public class LocationFlexContainerTest extends FlexContainerTestSuite {
 	public void testUnderFlexContainer() {
 		
 		// create a FlexContainer
-		FlexContainer parentFlexContainer = new FlexContainer();
-		parentFlexContainer.setContainerDefinition("org.onem2m.home.moduleclass.binaryswitch");
+		BinarySwitchFlexContainer parentFlexContainer = new BinarySwitchFlexContainer();
+		String parentFlexContainerName = "parentFlexContainer_" + System.currentTimeMillis();
+		parentFlexContainer.setName(parentFlexContainerName);
 		CustomAttribute ca = new CustomAttribute();
-		ca.setCustomAttributeName("powerState");
-		ca.setCustomAttributeType("xs:boolean");
+		ca.setCustomAttributeName("powSe");
 		ca.setCustomAttributeValue("true");
 		parentFlexContainer.getCustomAttributes().add(ca);
 		
-		String parentFlexContainerName = "parentFlexContainer_" + System.currentTimeMillis();
-		sendCreateFlexContainerRequest(parentFlexContainer, "/" + Constants.CSE_ID + "/" + Constants.CSE_NAME, parentFlexContainerName);
+		
+		sendCreateFlexContainerRequest(parentFlexContainer, "/" + Constants.CSE_ID + "/" + Constants.CSE_NAME, Constants.ADMIN_REQUESTING_ENTITY);
 		
 		genericTest("/" + Constants.CSE_ID + "/" + Constants.CSE_NAME + "/" + parentFlexContainerName, "testUnderFlexContainer");
 	
@@ -92,27 +92,26 @@ public class LocationFlexContainerTest extends FlexContainerTestSuite {
 	private void genericTest(String location, String methodName) {
 
 		// set a new flexContainer
-		FlexContainer flexContainer = new FlexContainer();
-		flexContainer.setContainerDefinition("org.onem2m.home.moduleclass.binaryswitch");
+		BinarySwitchFlexContainer flexContainer = new BinarySwitchFlexContainer();
 		CustomAttribute ca = new CustomAttribute();
-		ca.setCustomAttributeName("powerState");
-		ca.setCustomAttributeType("xs:boolean");
+		ca.setCustomAttributeName("powSe");
 		ca.setCustomAttributeValue("true");
 		flexContainer.getCustomAttributes().add(ca);
 
 		String flexContainerName = "FLEXCONTAINER_" + System.currentTimeMillis();
+		flexContainer.setName(flexContainerName);
 		
 		String baseLocation =  location;
 		String flexContainerLocation = baseLocation + "/" + flexContainerName;
 		
-		FlexContainer createdFlexContainer = null;
+		BinarySwitchFlexContainer createdFlexContainer = null;
 
 		// send create request
 		ResponsePrimitive response = sendCreateFlexContainerRequest(flexContainer, baseLocation,
-				flexContainerName);
+				Constants.ADMIN_REQUESTING_ENTITY);
 		if (response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {
 			// OK
-			createdFlexContainer = (FlexContainer) response.getContent();
+			createdFlexContainer = (BinarySwitchFlexContainer) response.getContent();
 			try {
 				checkFlexContainerOntologyRef(flexContainer, createdFlexContainer);
 				checkFlexContainerCustomAttribute(flexContainer, createdFlexContainer);
@@ -138,7 +137,7 @@ public class LocationFlexContainerTest extends FlexContainerTestSuite {
 		response = sendRetrieveRequest(flexContainerLocation);
 		if (response.getResponseStatusCode().equals(ResponseStatusCode.OK)) {
 			// OK
-			FlexContainer retrievedFlexContainer = (FlexContainer) response.getContent();
+			BinarySwitchFlexContainer retrievedFlexContainer = (BinarySwitchFlexContainer) response.getContent();
 			try {
 				checkFlexContainer(createdFlexContainer, retrievedFlexContainer);
 			} catch (Exception e) {

@@ -77,7 +77,6 @@ public class DASServiceTest_FlexContainer extends AbstractDASServiceTest {
 		FlexContainer toBeUpdated = new FlexContainer();
 		CustomAttribute customAttribute = new CustomAttribute();
 		customAttribute.setCustomAttributeName("test");
-		customAttribute.setCustomAttributeType("xs:string");
 		customAttribute.setCustomAttributeValue("value");
 		createdFlexContainer.getCustomAttributes().add(customAttribute);
 

@@ -273,7 +273,7 @@ public class FlexContainerController extends Controller {
 				+ (flexContainer.getCustomAttributes() != null ? flexContainer.getCustomAttributes().size() : "0"));
 		for (CustomAttribute ca : flexContainer.getCustomAttributes()) {
 
-			flexContainerEntity.createOrUpdateCustomAttribute(ca.getCustomAttributeName(), ca.getCustomAttributeType(),
+			flexContainerEntity.createOrUpdateCustomAttribute(ca.getCustomAttributeName(),
 					ca.getCustomAttributeValue());
 		}
 
@@ -516,7 +516,7 @@ public class FlexContainerController extends Controller {
 			if (!flexContainer.getCustomAttributes().isEmpty()) {
 				for (CustomAttribute ca : flexContainer.getCustomAttributes()) {
 					flexContainerEntity.createOrUpdateCustomAttribute(ca.getCustomAttributeName(),
-							ca.getCustomAttributeType(), ca.getCustomAttributeValue());
+							ca.getCustomAttributeValue());
 				}
 				modifiedAttributes.setCustomAttributes(flexContainer.getCustomAttributes());
 			}

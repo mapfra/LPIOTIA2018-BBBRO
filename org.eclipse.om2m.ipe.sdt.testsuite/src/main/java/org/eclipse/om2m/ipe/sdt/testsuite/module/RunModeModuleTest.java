@@ -12,8 +12,8 @@ import java.util.List;
 
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.resource.CustomAttribute;
-import org.eclipse.om2m.commons.resource.FlexContainer;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.RunModeFlexContainer;
 import org.eclipse.om2m.core.service.CseService;
 import org.eclipse.om2m.ipe.sdt.testsuite.CSEUtil;
 import org.eclipse.om2m.ipe.sdt.testsuite.TestReport;
@@ -23,6 +23,7 @@ import org.eclipse.om2m.sdt.Module;
 import org.eclipse.om2m.sdt.datapoints.ArrayDataPoint;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 
 public class RunModeModuleTest extends AbstractModuleTest {
 
@@ -54,10 +55,10 @@ public class RunModeModuleTest extends AbstractModuleTest {
 			report.setState(State.KO);
 			return report;
 		}
-		FlexContainer retrievedFlexContainer = (FlexContainer) response.getContent();
+		RunModeFlexContainer retrievedFlexContainer = (RunModeFlexContainer) response.getContent();
 
 		// get operationMode customAttribute
-		CustomAttribute operationModeCA = retrievedFlexContainer.getCustomAttribute("operationMode");
+		CustomAttribute operationModeCA = retrievedFlexContainer.getCustomAttribute(DatapointType.operationMode.getShortName());
 		if (operationModeCA == null) {
 			report.setErrorMessage("operationMode customAttribute does not exist");
 			report.setState(State.KO);
@@ -68,7 +69,7 @@ public class RunModeModuleTest extends AbstractModuleTest {
 		List<String> operationModeFromFlexContainer = getListFromStringArray(operationModeCA.getCustomAttributeValue());
 
 		// get operationMode value from Datapoint
-		ArrayDataPoint<String> operationModeDP = (ArrayDataPoint<String>) getModule().getDataPoint("operationMode");
+		ArrayDataPoint<String> operationModeDP = (ArrayDataPoint<String>) getModule().getDataPoint(DatapointType.operationMode.getShortName());
 		List<String> operationModeFromDP = null;
 		try {
 			operationModeFromDP = operationModeDP.getValue();
@@ -79,7 +80,7 @@ public class RunModeModuleTest extends AbstractModuleTest {
 		}
 
 		// check value from flexContainer and from Datapoint
-		if (!checkObject(operationModeFromFlexContainer, operationModeFromDP, report, "operationMode")) {
+		if (!checkObject(operationModeFromFlexContainer, operationModeFromDP, report, DatapointType.operationMode.getShortName())) {
 			return report;
 		}
 
@@ -99,7 +100,7 @@ public class RunModeModuleTest extends AbstractModuleTest {
 		// at this point, we are sure the Module Flexcontainer exist
 
 		// get possible values from supportedMode datapoint
-		ArrayDataPoint<String> supportedModesDP = (ArrayDataPoint<String>) getModule().getDataPoint("supportedModes");
+		ArrayDataPoint<String> supportedModesDP = (ArrayDataPoint<String>) getModule().getDataPoint(DatapointType.supportedModes.getShortName());
 		List<String> supportedModesFromDP;
 		try {
 			supportedModesFromDP = supportedModesDP.getValue();
@@ -110,7 +111,7 @@ public class RunModeModuleTest extends AbstractModuleTest {
 		}
 
 		// get current operationMode
-		ArrayDataPoint<String> operationModeDP = (ArrayDataPoint<String>) getModule().getDataPoint("operationMode");
+		ArrayDataPoint<String> operationModeDP = (ArrayDataPoint<String>) getModule().getDataPoint(DatapointType.operationMode.getShortName());
 		List<String> currentOperationModeValue = null;
 		try {
 			currentOperationModeValue = operationModeDP.getValue();
@@ -131,10 +132,9 @@ public class RunModeModuleTest extends AbstractModuleTest {
 		newOperationModeValue += "";
 
 		// set operationMode value
-		FlexContainer toBeUpdated = new FlexContainer();
+		RunModeFlexContainer toBeUpdated = new RunModeFlexContainer();
 		CustomAttribute customAttribute = new CustomAttribute();
-		customAttribute.setCustomAttributeName("operationMode");
-		customAttribute.setCustomAttributeType("xs:enum");
+		customAttribute.setCustomAttributeName(DatapointType.operationMode.getShortName());
 		customAttribute.setCustomAttributeValue(newOperationModeValue.toString());
 		toBeUpdated.getCustomAttributes().add(customAttribute);
 
@@ -149,23 +149,22 @@ public class RunModeModuleTest extends AbstractModuleTest {
 
 		// perform RETRIEVE request and check value
 		response = CSEUtil.retrieveEntity(getCseService(), moduleUrl);
-		FlexContainer retrievedFlexContainer = (FlexContainer) response.getContent();
+		RunModeFlexContainer retrievedFlexContainer = (RunModeFlexContainer) response.getContent();
 
 		// get operationMode customAttribute and value
-		CustomAttribute operationModeCA = retrievedFlexContainer.getCustomAttribute("operationMode");
+		CustomAttribute operationModeCA = retrievedFlexContainer.getCustomAttribute(DatapointType.operationMode.getShortName());
 		String operationModeFromFlexContainer = operationModeCA.getCustomAttributeValue();
 		// remove first character and last character "[]"
 		operationModeFromFlexContainer = operationModeFromFlexContainer.substring(1,
 				operationModeFromFlexContainer.length() - 1);
-		if (!checkObject(newOperationModeValue, operationModeFromFlexContainer, report, "operationMode")) {
+		if (!checkObject(newOperationModeValue, operationModeFromFlexContainer, report, DatapointType.operationMode.getShortName())) {
 			return report;
 		}
 
 		// set an unknow value
 		String newOperationModeWrongValue = "unknownValue_" + System.currentTimeMillis();
-		toBeUpdated = new FlexContainer();
-		customAttribute.setCustomAttributeName("operationMode");
-		customAttribute.setCustomAttributeType("xs:enum");
+		toBeUpdated = new RunModeFlexContainer();
+		customAttribute.setCustomAttributeName(DatapointType.operationMode.getShortName());
 		customAttribute.setCustomAttributeValue(newOperationModeWrongValue);
 		toBeUpdated.getCustomAttributes().add(customAttribute);
 
@@ -179,15 +178,15 @@ public class RunModeModuleTest extends AbstractModuleTest {
 
 		// perform RETRIEVE request and check value did not change
 		response = CSEUtil.retrieveEntity(getCseService(), moduleUrl);
-		retrievedFlexContainer = (FlexContainer) response.getContent();
+		retrievedFlexContainer = (RunModeFlexContainer) response.getContent();
 
 		// get operationMode customAttribute and value
-		operationModeCA = retrievedFlexContainer.getCustomAttribute("operationMode");
+		operationModeCA = retrievedFlexContainer.getCustomAttribute(DatapointType.operationMode.getShortName());
 		operationModeFromFlexContainer = operationModeCA.getCustomAttributeValue();
 		// remove first character and last character "[]"
 		operationModeFromFlexContainer = operationModeFromFlexContainer.substring(1,
 				operationModeFromFlexContainer.length() - 1);
-		if (!checkObject(newOperationModeValue, operationModeFromFlexContainer, report, "operationMode")) {
+		if (!checkObject(newOperationModeValue, operationModeFromFlexContainer, report, DatapointType.operationMode.getShortName())) {
 			return report;
 		}
 
@@ -212,10 +211,10 @@ public class RunModeModuleTest extends AbstractModuleTest {
 			report.setState(State.KO);
 			return report;
 		}
-		FlexContainer retrievedFlexContainer = (FlexContainer) response.getContent();
+		RunModeFlexContainer retrievedFlexContainer = (RunModeFlexContainer) response.getContent();
 
 		// check supportedModes customAttribute exist
-		CustomAttribute supportedModesCA = retrievedFlexContainer.getCustomAttribute("supportedModes");
+		CustomAttribute supportedModesCA = retrievedFlexContainer.getCustomAttribute(DatapointType.supportedModes.getShortName());
 		if (supportedModesCA == null) {
 			report.setErrorMessage("supportedModes customAttribute does not exist");
 			report.setState(State.KO);
@@ -227,7 +226,7 @@ public class RunModeModuleTest extends AbstractModuleTest {
 				supportedModesCA.getCustomAttributeValue());
 
 		// get value from datapoint
-		ArrayDataPoint<String> supportedModesDP = (ArrayDataPoint<String>) getModule().getDataPoint("supportedModes");
+		ArrayDataPoint<String> supportedModesDP = (ArrayDataPoint<String>) getModule().getDataPoint(DatapointType.supportedModes.getShortName());
 		List<String> supportedModesListFromDP = null;
 		try {
 			supportedModesListFromDP = supportedModesDP.getValue();
@@ -267,11 +266,10 @@ public class RunModeModuleTest extends AbstractModuleTest {
 		// at this point, we are sure the Module Flexcontainer exist
 		
 		CustomAttribute supportedModesCA = new CustomAttribute();
-		supportedModesCA.setCustomAttributeName("supportedModes");
-		supportedModesCA.setCustomAttributeType("xs:enum");
+		supportedModesCA.setCustomAttributeName(DatapointType.supportedModes.getShortName());
 		supportedModesCA.setCustomAttributeValue("mode2,mode3,mode6,mode7");
 		
-		FlexContainer toBeUpdated = new FlexContainer();
+		RunModeFlexContainer toBeUpdated = new RunModeFlexContainer();
 		toBeUpdated.getCustomAttributes().add(supportedModesCA);
 		
 		// perform UPDATE request
@@ -283,7 +281,7 @@ public class RunModeModuleTest extends AbstractModuleTest {
 		}
 		
 		// retrieve value from datapoint
-		ArrayDataPoint<String> supportedModesDP = (ArrayDataPoint<String>) getModule().getDataPoint("supportedModes");
+		ArrayDataPoint<String> supportedModesDP = (ArrayDataPoint<String>) getModule().getDataPoint(DatapointType.supportedModes.getShortName());
 		List<String> supportedModesFromDP = null;
 		try {
 			supportedModesFromDP = supportedModesDP.getValue();
@@ -299,7 +297,7 @@ public class RunModeModuleTest extends AbstractModuleTest {
 		List<String> supportedModesValueFromFlexContainer_list = Arrays.asList(supportedModesValueFromFlexContainer_array);
 		
 		// check value
-		if (!checkObject(supportedModesValueFromFlexContainer_list, supportedModesFromDP, report, "supportedModes")) {
+		if (!checkObject(supportedModesValueFromFlexContainer_list, supportedModesFromDP, report, DatapointType.supportedModes.getShortName())) {
 			return report;
 		}
 		

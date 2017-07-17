@@ -9,13 +9,14 @@ package org.eclipse.om2m.ipe.sdt.testsuite.module;
 
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.resource.CustomAttribute;
-import org.eclipse.om2m.commons.resource.FlexContainer;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.LiquidLevelFlexContainer;
 import org.eclipse.om2m.core.service.CseService;
 import org.eclipse.om2m.ipe.sdt.testsuite.CSEUtil;
 import org.eclipse.om2m.ipe.sdt.testsuite.TestReport;
 import org.eclipse.om2m.ipe.sdt.testsuite.TestReport.State;
 import org.eclipse.om2m.sdt.Module;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 import org.eclipse.om2m.sdt.home.types.LiquidLevel;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
@@ -42,10 +43,10 @@ public class WaterLevelModuleTest extends AbstractModuleTest {
 			report.setState(State.KO);
 			return report;
 		}
-		FlexContainer retrievedFlexContainer =  (FlexContainer) response.getContent();
+		LiquidLevelFlexContainer retrievedFlexContainer =  (LiquidLevelFlexContainer) response.getContent();
 		
 		// retrieve liquidLevel custom attribute
-		CustomAttribute liquidLevelCA = retrievedFlexContainer.getCustomAttribute("liquidLevel");
+		CustomAttribute liquidLevelCA = retrievedFlexContainer.getCustomAttribute(DatapointType.liquidLevel.getShortName());
 		if (liquidLevelCA == null) {
 			// customAttribute does not exist
 			report.setErrorMessage("liquidLevel customAttribute does not exist");
@@ -54,7 +55,7 @@ public class WaterLevelModuleTest extends AbstractModuleTest {
 		}
 
 		// retrieve liquidLevel datapoint
-		LiquidLevel liquidLevelDP = (LiquidLevel) getModule().getDataPoint("liquidLevel");
+		LiquidLevel liquidLevelDP = (LiquidLevel) getModule().getDataPoint(DatapointType.liquidLevel.getShortName());
 		
 		// retrieve liquidLevel value from datapoint
 		Integer liquidLevelValueFromDP = null;
@@ -77,7 +78,7 @@ public class WaterLevelModuleTest extends AbstractModuleTest {
 			return report;
 		}
 		
-		if (!checkObject(liquidLevelFromFlexContainer, liquidLevelValueFromDP, report, "liquidLevel")) {
+		if (!checkObject(liquidLevelFromFlexContainer, liquidLevelValueFromDP, report, DatapointType.liquidLevel.getShortName())) {
 			return report;
 		}
 		
@@ -94,7 +95,7 @@ public class WaterLevelModuleTest extends AbstractModuleTest {
 		}
 		
 		// retrieve liquidLevel datapoint
-		LiquidLevel liquidLevelDP = (LiquidLevel) getModule().getDataPoint("liquidLevel");
+		LiquidLevel liquidLevelDP = (LiquidLevel) getModule().getDataPoint(DatapointType.liquidLevel.getShortName());
 		Integer liquidLevelFromDP = null;
 		try {
 			liquidLevelFromDP = liquidLevelDP.getValue();
@@ -109,10 +110,9 @@ public class WaterLevelModuleTest extends AbstractModuleTest {
 		Integer newLiquidLevelValue = (liquidLevelFromDP.intValue() == 1 ? 5 : 1);
 		
 		// prepare FlexContainer + customAttribute
-		FlexContainer toBeUpdated = new FlexContainer();
+		LiquidLevelFlexContainer toBeUpdated = new LiquidLevelFlexContainer();
 		CustomAttribute liquidLevelCA = new CustomAttribute();
-		liquidLevelCA.setCustomAttributeName("liquidLevel");
-		liquidLevelCA.setCustomAttributeType("hd:liquidLevel");
+		liquidLevelCA.setCustomAttributeName(DatapointType.liquidLevel.getShortName());
 		liquidLevelCA.setCustomAttributeValue(newLiquidLevelValue.toString());
 		toBeUpdated.getCustomAttributes().add(liquidLevelCA);
 		
@@ -142,7 +142,7 @@ public class WaterLevelModuleTest extends AbstractModuleTest {
 		}
 		
 		// check value 
-		if (!checkObject(newLiquidLevelValue, liquidLevelFromDP, report, "liquidLevel")) {
+		if (!checkObject(newLiquidLevelValue, liquidLevelFromDP, report, DatapointType.liquidLevel.getShortName())) {
 			return report;
 		}
 		

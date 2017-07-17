@@ -9,7 +9,7 @@ package org.eclipse.om2m.ipe.sdt.testsuite.subscription;
 
 import java.util.Date;
 
-import org.eclipse.om2m.commons.resource.FlexContainer;
+import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
 import org.eclipse.om2m.sdt.DataPoint;
 
 public class ReceivedNotification {
@@ -17,14 +17,14 @@ public class ReceivedNotification {
 	private Date date;
 	
 	// case FlexContainer
-	private FlexContainer flexContainer;
+	private AbstractFlexContainer abstractFlexContainer;
 	
 	// case SDT
 	private DataPoint dataPoint;
 	private Object value;
 
-	public ReceivedNotification(final FlexContainer pFlexContainer, final Date pDate) {
-		this.flexContainer = pFlexContainer;
+	public ReceivedNotification(final AbstractFlexContainer pAbstractFlexContainer, final Date pDate) {
+		this.abstractFlexContainer = pAbstractFlexContainer;
 		this.date = pDate;
 	}
 	
@@ -34,8 +34,8 @@ public class ReceivedNotification {
 		this.date = pDate;
 	}
 
-	public FlexContainer getFlexContainer() {
-		return flexContainer;
+	public AbstractFlexContainer getFlexContainer() {
+		return abstractFlexContainer;
 	}
 
 	public DataPoint getDataPoint() {

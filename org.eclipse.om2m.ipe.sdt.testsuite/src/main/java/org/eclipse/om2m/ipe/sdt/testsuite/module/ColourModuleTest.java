@@ -9,8 +9,8 @@ package org.eclipse.om2m.ipe.sdt.testsuite.module;
 
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.resource.CustomAttribute;
-import org.eclipse.om2m.commons.resource.FlexContainer;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.ColourFlexContainer;
 import org.eclipse.om2m.core.service.CseService;
 import org.eclipse.om2m.ipe.sdt.testsuite.CSEUtil;
 import org.eclipse.om2m.ipe.sdt.testsuite.TestReport;
@@ -22,6 +22,8 @@ import org.eclipse.om2m.sdt.datapoints.BooleanDataPoint;
 import org.eclipse.om2m.sdt.datapoints.IntegerDataPoint;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
+import org.eclipse.om2m.sdt.home.types.ModuleType;
 
 public class ColourModuleTest extends AbstractModuleTest {
 
@@ -32,7 +34,7 @@ public class ColourModuleTest extends AbstractModuleTest {
 		Device device = getModule().getOwner();
 		String binarySwitchModuleName = null;
 		for(String moduleName : device.getModuleNames()) {
-			if (moduleName.toLowerCase().contains("binaryswitch")) {
+			if (moduleName.toLowerCase().contains(ModuleType.binarySwitch.getShortName())) {
 				binarySwitchModuleName = moduleName;
 				break;
 			}
@@ -40,7 +42,7 @@ public class ColourModuleTest extends AbstractModuleTest {
 		
 		if (binarySwitchModuleName != null) {
 			BooleanDataPoint powerStateDP = (BooleanDataPoint) getModule().getOwner().getModule(binarySwitchModuleName)
-					.getDataPoint("powerState");
+					.getDataPoint(DatapointType.powerState.getShortName());
 			try {
 				powerStateDP.setValue(Boolean.TRUE);
 			} catch (DataPointException | AccessException e) {
@@ -70,18 +72,18 @@ public class ColourModuleTest extends AbstractModuleTest {
 			report.setState(State.KO);
 			return report;
 		}
-		FlexContainer retrievedFlexContainer = (FlexContainer) response.getContent();
-		CustomAttribute redCA = retrievedFlexContainer.getCustomAttribute("red");
-		CustomAttribute greenCA = retrievedFlexContainer.getCustomAttribute("green");
-		CustomAttribute blueCA = retrievedFlexContainer.getCustomAttribute("blue");
+		ColourFlexContainer retrievedFlexContainer = (ColourFlexContainer) response.getContent();
+		CustomAttribute redCA = retrievedFlexContainer.getCustomAttribute(DatapointType.red.getShortName());
+		CustomAttribute greenCA = retrievedFlexContainer.getCustomAttribute(DatapointType.green.getShortName());
+		CustomAttribute blueCA = retrievedFlexContainer.getCustomAttribute(DatapointType.blue.getShortName());
 		Integer redValueFromFlexContainer = Integer.valueOf(redCA.getCustomAttributeValue());
 		Integer greenValueFromFlexContainer = Integer.valueOf(greenCA.getCustomAttributeValue());
 		Integer blueValueFromFlexContainer = Integer.valueOf(blueCA.getCustomAttributeValue());
 
 		// get value from DataPoint
-		IntegerDataPoint redDP = (IntegerDataPoint) getModule().getDataPoint("red");
-		IntegerDataPoint greenDP = (IntegerDataPoint) getModule().getDataPoint("green");
-		IntegerDataPoint blueDP = (IntegerDataPoint) getModule().getDataPoint("blue");
+		IntegerDataPoint redDP = (IntegerDataPoint) getModule().getDataPoint(DatapointType.red.getShortName());
+		IntegerDataPoint greenDP = (IntegerDataPoint) getModule().getDataPoint(DatapointType.green.getShortName());
+		IntegerDataPoint blueDP = (IntegerDataPoint) getModule().getDataPoint(DatapointType.blue.getShortName());
 
 		Integer redValueFromDP = null;
 		Integer greenValueFromDP = null;
@@ -120,7 +122,7 @@ public class ColourModuleTest extends AbstractModuleTest {
 		Integer newRedValue = (int) (Math.random()*255d);
 		Integer newGreenValue = (int) (Math.random()*255d);
 		Integer newBlueValue = (int) (Math.random()*255d);
-		FlexContainer toBeUpdated = new FlexContainer();
+		ColourFlexContainer toBeUpdated = new ColourFlexContainer();
 		redCA.setCustomAttributeValue(newRedValue.toString());
 		greenCA.setCustomAttributeValue(newGreenValue.toString());
 		blueCA.setCustomAttributeValue(newBlueValue.toString());
@@ -173,10 +175,10 @@ public class ColourModuleTest extends AbstractModuleTest {
 			report.setState(State.KO);
 			return report;
 		}
-		retrievedFlexContainer = (FlexContainer) response.getContent();
-		redCA = retrievedFlexContainer.getCustomAttribute("red");
-		greenCA = retrievedFlexContainer.getCustomAttribute("green");
-		blueCA = retrievedFlexContainer.getCustomAttribute("blue");
+		retrievedFlexContainer = (ColourFlexContainer) response.getContent();
+		redCA = retrievedFlexContainer.getCustomAttribute(DatapointType.red.getShortName());
+		greenCA = retrievedFlexContainer.getCustomAttribute(DatapointType.green.getShortName());
+		blueCA = retrievedFlexContainer.getCustomAttribute(DatapointType.blue.getShortName());
 		redValueFromFlexContainer = Integer.valueOf(redCA.getCustomAttributeValue());
 		greenValueFromFlexContainer = Integer.valueOf(greenCA.getCustomAttributeValue());
 		blueValueFromFlexContainer = Integer.valueOf(blueCA.getCustomAttributeValue());

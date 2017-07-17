@@ -15,8 +15,8 @@ import org.eclipse.om2m.commons.constants.FilterUsage;
 import org.eclipse.om2m.commons.constants.MimeMediaType;
 import org.eclipse.om2m.commons.constants.Operation;
 import org.eclipse.om2m.commons.constants.ResourceType;
+import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
 import org.eclipse.om2m.commons.resource.FilterCriteria;
-import org.eclipse.om2m.commons.resource.FlexContainer;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
 import org.eclipse.om2m.commons.resource.Subscription;
@@ -37,7 +37,7 @@ public class CSEUtil {
 		
 	}
 	
-	public static ResponsePrimitive updateFlexContainerEntity(CseService cseService, String flexContainerLocation, FlexContainer flexContainer) {
+	public static ResponsePrimitive updateFlexContainerEntity(CseService cseService, String flexContainerLocation, AbstractFlexContainer flexContainer) {
 		RequestPrimitive request = new RequestPrimitive();
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 		request.setRequestContentType(MimeMediaType.OBJ);

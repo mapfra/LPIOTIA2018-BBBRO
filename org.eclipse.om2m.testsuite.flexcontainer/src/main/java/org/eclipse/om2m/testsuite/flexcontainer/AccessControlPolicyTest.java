@@ -13,9 +13,9 @@ import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.resource.AccessControlPolicy;
 import org.eclipse.om2m.commons.resource.AccessControlRule;
 import org.eclipse.om2m.commons.resource.CustomAttribute;
-import org.eclipse.om2m.commons.resource.FlexContainer;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
 import org.eclipse.om2m.commons.resource.SetOfAcrs;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.BinarySwitchFlexContainer;
 import org.eclipse.om2m.core.service.CseService;
 import org.eclipse.om2m.testsuite.flexcontainer.TestReport.Status;
 
@@ -64,28 +64,27 @@ public class AccessControlPolicyTest extends FlexContainerTestSuite {
 		AccessControlPolicy returnedAcp = (AccessControlPolicy) response.getContent();
 
 		// init a new FlexContainer
-		FlexContainer flexContainer = new FlexContainer();
-		flexContainer.setContainerDefinition("org.onem2m.home.moduleclass.binaryswitch");
+		BinarySwitchFlexContainer flexContainer = new BinarySwitchFlexContainer();
 		CustomAttribute ca = new CustomAttribute();
-		ca.setCustomAttributeName("powerState");
-		ca.setCustomAttributeType("xs:boolean");
+		ca.setCustomAttributeName("powSe");
 		ca.setCustomAttributeValue("false");
 		flexContainer.getCustomAttributes().add(ca);
 		String flexContainerName = "flexContainerACPTest_" + System.currentTimeMillis();
+		flexContainer.setName(flexContainerName);
 		String flexContainerLocation = baseLocation + "/" + flexContainerName;
 
 		// set acp
 		flexContainer.getAccessControlPolicyIDs().add(returnedAcp.getResourceID());
 
 		// send create FlexContainer request
-		response = sendCreateFlexContainerRequest(flexContainer, baseLocation, flexContainerName);
-		FlexContainer createdFlexContainer = null;
+		response = sendCreateFlexContainerRequest(flexContainer, baseLocation, Constants.ADMIN_REQUESTING_ENTITY);
+		BinarySwitchFlexContainer createdFlexContainer = null;
 		if (!response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {
 			// KO
 			createTestReport("testAccessControlPolicy", Status.KO, "unable to create a FlexContainer", null);
 			return;
 		} else {
-			createdFlexContainer = (FlexContainer) response.getContent();
+			createdFlexContainer = (BinarySwitchFlexContainer) response.getContent();
 		}
 
 		// retrieve the flexContainer with greg:greg credentials
@@ -95,7 +94,7 @@ public class AccessControlPolicyTest extends FlexContainerTestSuite {
 			createTestReport("testAccessControlPolicy", Status.KO, "unable to retrieve the FlexContainer", null);
 			return;
 		} else {
-			FlexContainer toBeRetrieved = (FlexContainer) response.getContent();
+			BinarySwitchFlexContainer toBeRetrieved = (BinarySwitchFlexContainer) response.getContent();
 			try {
 				checkFlexContainer(createdFlexContainer, toBeRetrieved);
 			} catch (Exception e) {
@@ -154,12 +153,10 @@ public class AccessControlPolicyTest extends FlexContainerTestSuite {
 
 		// init a new FlexContainer
 		String flexContainerName = "flexContainerACPTest_" + System.currentTimeMillis();
-		FlexContainer flexContainer = new FlexContainer();
+		BinarySwitchFlexContainer flexContainer = new BinarySwitchFlexContainer();
 		flexContainer.setName(flexContainerName);
-		flexContainer.setContainerDefinition("org.onem2m.home.moduleclass.binaryswitch");
 		CustomAttribute ca = new CustomAttribute();
-		ca.setCustomAttributeName("powerState");
-		ca.setCustomAttributeType("xs:boolean");
+		ca.setCustomAttributeName("powSe");
 		ca.setCustomAttributeValue("false");
 		flexContainer.getCustomAttributes().add(ca);
 		
@@ -215,19 +212,18 @@ public class AccessControlPolicyTest extends FlexContainerTestSuite {
 
 		// init a new FlexContainer
 		String flexContainerName = "flexContainerACPTest_" + System.currentTimeMillis();
-		FlexContainer flexContainer = new FlexContainer();
+		BinarySwitchFlexContainer flexContainer = new BinarySwitchFlexContainer();
 		flexContainer.setName(flexContainerName);
 		flexContainer.setContainerDefinition("org.onem2m.home.moduleclass.binaryswitch");
 		CustomAttribute ca = new CustomAttribute();
-		ca.setCustomAttributeName("powerState");
-		ca.setCustomAttributeType("xs:boolean");
+		ca.setCustomAttributeName("powSe");
 		ca.setCustomAttributeValue("false");
 		flexContainer.getCustomAttributes().add(ca);
 		
 		String flexContainerLocation = baseLocation + "/" + flexContainerName;
 
 		// try to create a FlexContainer using admin:admin credentials
-		FlexContainer createdFlexContainer = null;
+		BinarySwitchFlexContainer createdFlexContainer = null;
 		response = sendCreateFlexContainerRequest(flexContainer, baseLocation,
 				Constants.ADMIN_REQUESTING_ENTITY);
 		if (!response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {
@@ -237,7 +233,7 @@ public class AccessControlPolicyTest extends FlexContainerTestSuite {
 					null);
 			return;
 		} else {
-			createdFlexContainer = (FlexContainer) response.getContent();
+			createdFlexContainer = (BinarySwitchFlexContainer) response.getContent();
 		}
 
 		// try to delete the flexContainer with greg:greg ==> expect
@@ -260,7 +256,7 @@ public class AccessControlPolicyTest extends FlexContainerTestSuite {
 			return;
 		} else {
 			try {
-				checkFlexContainer(createdFlexContainer, (FlexContainer) response.getContent());
+				checkFlexContainer(createdFlexContainer, (BinarySwitchFlexContainer) response.getContent());
 			} catch (Exception e) {
 				// KO
 				createTestReport("testDeleteFlexContainerWithNoRight", Status.KO,

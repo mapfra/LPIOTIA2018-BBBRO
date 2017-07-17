@@ -9,8 +9,8 @@ package org.eclipse.om2m.ipe.sdt.testsuite.module;
 
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.resource.CustomAttribute;
-import org.eclipse.om2m.commons.resource.FlexContainer;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.SmokeSensorFlexContainer;
 import org.eclipse.om2m.core.service.CseService;
 import org.eclipse.om2m.ipe.sdt.testsuite.CSEUtil;
 import org.eclipse.om2m.ipe.sdt.testsuite.TestReport;
@@ -21,6 +21,7 @@ import org.eclipse.om2m.sdt.datapoints.BooleanDataPoint;
 import org.eclipse.om2m.sdt.datapoints.IntegerDataPoint;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 
 public class SmokeSensorModuleTest extends AbstractModuleTest {
 
@@ -50,10 +51,10 @@ public class SmokeSensorModuleTest extends AbstractModuleTest {
 			report.setState(State.KO);
 			return report;
 		}
-		FlexContainer retrievedFlexContainer = (FlexContainer) response.getContent();
+		SmokeSensorFlexContainer retrievedFlexContainer = (SmokeSensorFlexContainer) response.getContent();
 		
 		// check alarm
-		CustomAttribute alarmCA = retrievedFlexContainer.getCustomAttribute("alarm");
+		CustomAttribute alarmCA = retrievedFlexContainer.getCustomAttribute(DatapointType.alarm.getShortName());
 		if (alarmCA == null) {
 			report.setErrorMessage("ERROR : no alarm customAttribute");
 			report.setState(State.KO);
@@ -62,7 +63,7 @@ public class SmokeSensorModuleTest extends AbstractModuleTest {
 		Boolean alarm = Boolean.parseBoolean(alarmCA.getCustomAttributeValue());
 		
 		// alarm from module
-		BooleanDataPoint alarmDP = (BooleanDataPoint) getModule().getDataPoint("alarm");
+		BooleanDataPoint alarmDP = (BooleanDataPoint) getModule().getDataPoint(DatapointType.alarm.getShortName());
 		Boolean currentValueFromModule = null;
 		try {
 			currentValueFromModule = alarmDP.getValue();
@@ -79,7 +80,7 @@ public class SmokeSensorModuleTest extends AbstractModuleTest {
 		}
 	
 		// try to set value
-		FlexContainer toBeUpdated = new FlexContainer();
+		SmokeSensorFlexContainer toBeUpdated = new SmokeSensorFlexContainer();
 		alarmCA.setCustomAttributeValue("true");
 		toBeUpdated.getCustomAttributes().add(alarmCA);
 		response = CSEUtil.updateFlexContainerEntity(getCseService(), moduleUrl, toBeUpdated);
@@ -98,15 +99,15 @@ public class SmokeSensorModuleTest extends AbstractModuleTest {
 			report.setState(State.KO);
 			return report;
 		}
-		retrievedFlexContainer = (FlexContainer) response.getContent();
-		CustomAttribute detectedTimeCA = retrievedFlexContainer.getCustomAttribute("detectedTime");
+		retrievedFlexContainer = (SmokeSensorFlexContainer) response.getContent();
+		CustomAttribute detectedTimeCA = retrievedFlexContainer.getCustomAttribute(DatapointType.detectedTime.getShortName());
 		if (detectedTimeCA != null) {
 			// detectedTime is optional
 			
 			Integer detectedTime = new Integer(detectedTimeCA.getCustomAttributeValue());
 			
 			// get detectedTime from module
-			IntegerDataPoint detectedTimeDP = (IntegerDataPoint) getModule().getDataPoint("detectedTime");
+			IntegerDataPoint detectedTimeDP = (IntegerDataPoint) getModule().getDataPoint(DatapointType.detectedTime.getShortName());
 			Integer detectedTimeFromModule = null;
 			try {
 				detectedTimeFromModule = detectedTimeDP.getValue();

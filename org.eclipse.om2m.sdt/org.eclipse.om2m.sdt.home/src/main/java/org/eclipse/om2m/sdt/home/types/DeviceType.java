@@ -30,15 +30,15 @@ public enum DeviceType implements Identifiers {
 	deviceDoor(100, "deviceDoor", "deviceDoor", "devDr"),
 	deviceSmokeExtractor(101, "deviceSmokeExtractor", "deviceSmokeExtractor", "dSeEr"),
 	deviceSwitchButton(102, "deviceSwitchButton", "deviceSwitchButton", "dShBn"),
-	deviceWarningDevice(103, "deviceWarningDevice", "deviceWarningDevice", "dWgDe"),
+	deviceWarningDevice(103, "deviceWarningDevice", "deviceWarningDevice", "deWDe"),
 	
 	deviceGasValve(200, "deviceGasValve", "deviceGasValve", "dGsVe"),
-	deviceWaterValve(201, "deviceWaterValve", "deviceWaterValve", "devWV"),
+	deviceWaterValve(201, "deviceWaterValve", "deviceWaterValve", "deWVe"),
 	
-	deviceFloodDetector(300, "deviceFloodDetector", "deviceFloodDetector", "dFdDr"),
+	deviceFloodDetector(300, "deviceFloodDetector", "deviceFloodDetector", "deFDr"),
 	deviceMotionDetector(301, "deviceMotionDetector", "deviceMotionDetector", "dMnDr"),
-	deviceSmokeDetector(302, "deviceSmokeDetector", "deviceSmokeDetector", "dSeDr"),
-	deviceTemperatureDetector(303, "deviceTemperatureDetector", "deviceTemperatureDetector", "dTeDr"),
+	deviceSmokeDetector(302, "deviceSmokeDetector", "deviceSmokeDetector", "deSDr"),
+	deviceTemperatureDetector(303, "deviceTemperatureDetector", "deviceTemperatureDetector", "deTDr"),
 	deviceContactDetector(304, "deviceContactDetector", "deviceContactDetector", "dCtDr"),
 	
 	deviceCamera(400, "deviceCamera", "deviceCamera", "devCa"),

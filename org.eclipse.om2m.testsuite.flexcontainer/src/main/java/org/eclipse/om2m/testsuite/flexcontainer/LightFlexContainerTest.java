@@ -10,8 +10,8 @@ package org.eclipse.om2m.testsuite.flexcontainer;
 import org.eclipse.om2m.commons.constants.Constants;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.resource.CustomAttribute;
-import org.eclipse.om2m.commons.resource.FlexContainer;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceLightFlexContainer;
 import org.eclipse.om2m.core.service.CseService;
 import org.eclipse.om2m.testsuite.flexcontainer.TestReport.Status;
 
@@ -32,38 +32,33 @@ public class LightFlexContainerTest extends FlexContainerTestSuite {
 		String flexContainerName = "LightFlexContainer_" + System.currentTimeMillis();
 		String flexContainerLocation = baseLocation + "/" + flexContainerName;
 
-		FlexContainer flexContainer = new FlexContainer();
-		flexContainer.setContainerDefinition("org.onem2m.home.moduleclass.light");
+		DeviceLightFlexContainer flexContainer = new DeviceLightFlexContainer();
 		flexContainer.setCreator("Greg");
 		flexContainer.setOntologyRef("Orange");
 
 		CustomAttribute illuminanceLevelCustomAttribute = new CustomAttribute();
 		illuminanceLevelCustomAttribute.setCustomAttributeName("illuminanceLevel");
-		illuminanceLevelCustomAttribute.setCustomAttributeType("xs:integer");
 		illuminanceLevelCustomAttribute.setCustomAttributeValue("90");
 		flexContainer.getCustomAttributes().add(illuminanceLevelCustomAttribute);
 
 		CustomAttribute illuminanceStepLevelCustomAttribute = new CustomAttribute();
 		illuminanceStepLevelCustomAttribute.setCustomAttributeName("illuminanceStepLevel");
-		illuminanceStepLevelCustomAttribute.setCustomAttributeType("xs:integer");
 		illuminanceStepLevelCustomAttribute.setCustomAttributeValue("1");
 		flexContainer.getCustomAttributes().add(illuminanceStepLevelCustomAttribute);
 
 		CustomAttribute modeCustomAttribute = new CustomAttribute();
 		modeCustomAttribute.setCustomAttributeName("mode");
-		modeCustomAttribute.setCustomAttributeType("xs:string");
 		modeCustomAttribute.setCustomAttributeValue("normal");
 		flexContainer.getCustomAttributes().add(modeCustomAttribute);
 
 		CustomAttribute rgbColorSettingCustomAttribute = new CustomAttribute();
 		rgbColorSettingCustomAttribute.setCustomAttributeName("rgbColorSetting");
-		rgbColorSettingCustomAttribute.setCustomAttributeType("xs:integer");
 		rgbColorSettingCustomAttribute.setCustomAttributeValue(new Integer(0x222222).toString());
 		flexContainer.getCustomAttributes().add(rgbColorSettingCustomAttribute);
 
 		// send CREATE request
 		ResponsePrimitive response = sendCreateFlexContainerRequest(flexContainer, baseLocation, flexContainerName);
-		FlexContainer createdFlexContainer = null;
+		DeviceLightFlexContainer createdFlexContainer = null;
 		if (!response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {
 			// KO
 			createTestReport("testCreateAndRetrieveLightFlexContainer", Status.KO,
@@ -71,7 +66,7 @@ public class LightFlexContainerTest extends FlexContainerTestSuite {
 			return;
 		} else {
 			// OK
-			createdFlexContainer = (FlexContainer) response.getContent();
+			createdFlexContainer = (DeviceLightFlexContainer) response.getContent();
 
 			if (!createdFlexContainer.getName().equals(flexContainerName)) {
 				createTestReport("testCreateAndRetrieveLightFlexContainer", Status.KO,
@@ -123,7 +118,7 @@ public class LightFlexContainerTest extends FlexContainerTestSuite {
 			return;
 		} else {
 			// OK
-			FlexContainer retrievedFlexContainer = (FlexContainer) response.getContent();
+			DeviceLightFlexContainer retrievedFlexContainer = (DeviceLightFlexContainer) response.getContent();
 			try {
 				checkFlexContainer(createdFlexContainer, retrievedFlexContainer);
 			} catch (Exception e) {
@@ -142,32 +137,27 @@ public class LightFlexContainerTest extends FlexContainerTestSuite {
 		String flexContainerName = "LightFlexContainer_" + System.currentTimeMillis();
 		String flexContainerLocation = baseLocation + "/" + flexContainerName;
 
-		FlexContainer flexContainer = new FlexContainer();
-		flexContainer.setContainerDefinition("org.onem2m.home.moduleclass.light");
+		DeviceLightFlexContainer flexContainer = new DeviceLightFlexContainer();
 		flexContainer.setCreator("Greg");
 		flexContainer.setOntologyRef("Orange");
 
 		CustomAttribute illuminanceLevelCustomAttribute = new CustomAttribute();
 		illuminanceLevelCustomAttribute.setCustomAttributeName("illuminanceLevel");
-		illuminanceLevelCustomAttribute.setCustomAttributeType("xs:integer");
 		illuminanceLevelCustomAttribute.setCustomAttributeValue("90");
 		flexContainer.getCustomAttributes().add(illuminanceLevelCustomAttribute);
 
 		CustomAttribute illuminanceStepLevelCustomAttribute = new CustomAttribute();
 		illuminanceStepLevelCustomAttribute.setCustomAttributeName("illuminanceStepLevel");
-		illuminanceStepLevelCustomAttribute.setCustomAttributeType("xs:integer");
 		illuminanceStepLevelCustomAttribute.setCustomAttributeValue("1");
 		flexContainer.getCustomAttributes().add(illuminanceStepLevelCustomAttribute);
 
 		CustomAttribute modeCustomAttribute = new CustomAttribute();
 		modeCustomAttribute.setCustomAttributeName("mode");
-		modeCustomAttribute.setCustomAttributeType("xs:string");
 		modeCustomAttribute.setCustomAttributeValue("normal");
 		flexContainer.getCustomAttributes().add(modeCustomAttribute);
 
 		CustomAttribute rgbColorSettingCustomAttribute = new CustomAttribute();
 		rgbColorSettingCustomAttribute.setCustomAttributeName("rgbColorSetting");
-		rgbColorSettingCustomAttribute.setCustomAttributeType("xs:integer");
 		rgbColorSettingCustomAttribute.setCustomAttributeValue(new Integer(0x222222).toString());
 		flexContainer.getCustomAttributes().add(rgbColorSettingCustomAttribute);
 
@@ -208,52 +198,46 @@ public class LightFlexContainerTest extends FlexContainerTestSuite {
 		String flexContainerName = "LightFlexContainer_" + System.currentTimeMillis();
 		String flexContainerLocation = baseLocation + "/" + flexContainerName;
 
-		FlexContainer flexContainer = new FlexContainer();
-		flexContainer.setContainerDefinition("org.onem2m.home.moduleclass.light");
+		DeviceLightFlexContainer flexContainer = new DeviceLightFlexContainer();
 		flexContainer.setCreator("Greg");
 		flexContainer.setOntologyRef("Orange");
 
 		CustomAttribute illuminanceLevelCustomAttribute = new CustomAttribute();
 		illuminanceLevelCustomAttribute.setCustomAttributeName("illuminanceLevel");
-		illuminanceLevelCustomAttribute.setCustomAttributeType("xs:integer");
 		illuminanceLevelCustomAttribute.setCustomAttributeValue("90");
 		flexContainer.getCustomAttributes().add(illuminanceLevelCustomAttribute);
 
 		CustomAttribute illuminanceStepLevelCustomAttribute = new CustomAttribute();
 		illuminanceStepLevelCustomAttribute.setCustomAttributeName("illuminanceStepLevel");
-		illuminanceStepLevelCustomAttribute.setCustomAttributeType("xs:integer");
 		illuminanceStepLevelCustomAttribute.setCustomAttributeValue("1");
 		flexContainer.getCustomAttributes().add(illuminanceStepLevelCustomAttribute);
 
 		CustomAttribute modeCustomAttribute = new CustomAttribute();
 		modeCustomAttribute.setCustomAttributeName("mode");
-		modeCustomAttribute.setCustomAttributeType("xs:string");
 		modeCustomAttribute.setCustomAttributeValue("normal");
 		flexContainer.getCustomAttributes().add(modeCustomAttribute);
 
 		CustomAttribute rgbColorSettingCustomAttribute = new CustomAttribute();
 		rgbColorSettingCustomAttribute.setCustomAttributeName("rgbColorSetting");
-		rgbColorSettingCustomAttribute.setCustomAttributeType("xs:integer");
 		rgbColorSettingCustomAttribute.setCustomAttributeValue(new Integer(0x222222).toString());
 		flexContainer.getCustomAttributes().add(rgbColorSettingCustomAttribute);
 
 		// send CREATE request
 		ResponsePrimitive response = sendCreateFlexContainerRequest(flexContainer, baseLocation, flexContainerName);
-		FlexContainer createdFlexContainer = null;
+		DeviceLightFlexContainer createdFlexContainer = null;
 		if (!response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {
 			// KO
 			createTestReport("testUpdateLightFlexContainer", Status.KO,
 					"unable to create LightFlexContainer:" + response.getContent(), null);
 			return;
 		} else {
-			createdFlexContainer = (FlexContainer) response.getContent();
+			createdFlexContainer = (DeviceLightFlexContainer) response.getContent();
 		}
 
 		// prepare a FlexContainer for update
-		FlexContainer toBeUpdated = new FlexContainer();
+		DeviceLightFlexContainer toBeUpdated = new DeviceLightFlexContainer();
 		CustomAttribute illuminanceToBeUpdated = new CustomAttribute();
 		illuminanceToBeUpdated.setCustomAttributeName("illuminanceLevel");
-		illuminanceToBeUpdated.setCustomAttributeType("xs:integer");
 		illuminanceToBeUpdated.setCustomAttributeValue("85");
 		toBeUpdated.getCustomAttributes().add(illuminanceToBeUpdated);
 
@@ -266,7 +250,7 @@ public class LightFlexContainerTest extends FlexContainerTestSuite {
 			return;
 		} else {
 			// OK
-			FlexContainer updatedFlexContainer = (FlexContainer) response.getContent();
+			DeviceLightFlexContainer updatedFlexContainer = (DeviceLightFlexContainer) response.getContent();
 			if (updatedFlexContainer.getCustomAttributes().size() != 1) {
 				createTestReport("testUpdateLightFlexContainer", Status.KO, "expecting 1 CustomAttribute, found "
 						+ updatedFlexContainer.getCustomAttributes().size() + " CustomAttribute", null);
@@ -293,7 +277,7 @@ public class LightFlexContainerTest extends FlexContainerTestSuite {
 			return;
 		} else {
 			// OK
-			FlexContainer retrievedFlexContainer = (FlexContainer) response.getContent();
+			DeviceLightFlexContainer retrievedFlexContainer = (DeviceLightFlexContainer) response.getContent();
 			createdFlexContainer.getCustomAttribute("illuminanceLevel").setCustomAttributeValue("85");
 			try {
 				checkFlexContainer(createdFlexContainer, retrievedFlexContainer);

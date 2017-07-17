@@ -9,8 +9,8 @@ package org.eclipse.om2m.ipe.sdt.testsuite.module;
 
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.resource.CustomAttribute;
-import org.eclipse.om2m.commons.resource.FlexContainer;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.AlarmSpeakerFlexContainer;
 import org.eclipse.om2m.core.service.CseService;
 import org.eclipse.om2m.ipe.sdt.testsuite.CSEUtil;
 import org.eclipse.om2m.ipe.sdt.testsuite.TestReport;
@@ -19,6 +19,7 @@ import org.eclipse.om2m.sdt.Module;
 import org.eclipse.om2m.sdt.datapoints.BooleanDataPoint;
 import org.eclipse.om2m.sdt.datapoints.EnumDataPoint;
 import org.eclipse.om2m.sdt.home.types.AlertColourCode;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
 
@@ -44,15 +45,15 @@ public class AlarmSpeakerModuleTest extends AbstractModuleTest {
 			report.setState(State.KO);
 			return report;
 		}
-		FlexContainer retrievedFlexContainer = (FlexContainer) response.getContent();
+		AlarmSpeakerFlexContainer retrievedFlexContainer = (AlarmSpeakerFlexContainer) response.getContent();
 
 		// retrieve tone customAttribute
-		CustomAttribute toneCA = retrievedFlexContainer.getCustomAttribute("tone");
+		CustomAttribute toneCA = retrievedFlexContainer.getCustomAttribute(DatapointType.tone.getShortName());
 
 		// tone is optional
 		if (toneCA == null) {
 			// tone datapoint should not exist
-			if (getModule().getDataPoint("tone") != null) {
+			if (getModule().getDataPoint(DatapointType.tone.getShortName()) != null) {
 				report.setErrorMessage("tone customAttribute does not exist whereas tone Datapoint exists");
 				report.setState(State.KO);
 				return report;
@@ -70,7 +71,7 @@ public class AlarmSpeakerModuleTest extends AbstractModuleTest {
 				return report;
 			}
 
-			EnumDataPoint<Integer> toneDP = (EnumDataPoint<Integer>) getModule().getDataPoint("tone");
+			EnumDataPoint<Integer> toneDP = (EnumDataPoint<Integer>) getModule().getDataPoint(DatapointType.tone.getShortName());
 			Integer toneValueFromDP = null;
 			try {
 				toneValueFromDP = toneDP.getValue();
@@ -81,7 +82,7 @@ public class AlarmSpeakerModuleTest extends AbstractModuleTest {
 			}
 
 			// check value between flexContainer and DP
-			if (!checkObject(toneValueFromFlexContainer, toneValueFromDP, report, "tone")) {
+			if (!checkObject(toneValueFromFlexContainer, toneValueFromDP, report, DatapointType.tone.getShortName())) {
 				report.setErrorMessage("tone value from DataPoint and tone value from FlexContainer are different");
 				report.setState(State.KO);
 				return report;
@@ -101,11 +102,11 @@ public class AlarmSpeakerModuleTest extends AbstractModuleTest {
 		}
 
 		CustomAttribute toneCA;
-		FlexContainer toBeUpdated;
+		AlarmSpeakerFlexContainer toBeUpdated;
 		ResponsePrimitive response;
 
 		// retrieve tone datapoint
-		EnumDataPoint<Integer> toneDP = (EnumDataPoint<Integer>) getModule().getDataPoint("tone");
+		EnumDataPoint<Integer> toneDP = (EnumDataPoint<Integer>) getModule().getDataPoint(DatapointType.tone.getShortName());
 		if (toneDP != null) {
 			// tone datapoint exist
 
@@ -131,12 +132,11 @@ public class AlarmSpeakerModuleTest extends AbstractModuleTest {
 
 			// set toneCA
 			toneCA = new CustomAttribute();
-			toneCA.setCustomAttributeName("tone");
-			toneCA.setCustomAttributeType("hd:tone");
+			toneCA.setCustomAttributeName(DatapointType.tone.getShortName());
 			toneCA.setCustomAttributeValue(possibleValue.toString());
 
 			// flexcontainer
-			toBeUpdated = new FlexContainer();
+			toBeUpdated = new AlarmSpeakerFlexContainer();
 			toBeUpdated.getCustomAttributes().add(toneCA);
 
 			// perform UPDATE request
@@ -167,12 +167,11 @@ public class AlarmSpeakerModuleTest extends AbstractModuleTest {
 
 			// set toneCA
 			toneCA = new CustomAttribute();
-			toneCA.setCustomAttributeName("tone");
-			toneCA.setCustomAttributeType("hd:tone");
+			toneCA.setCustomAttributeName(DatapointType.tone.getShortName());
 			toneCA.setCustomAttributeValue("1"); // fire
 
 			// flexcontainer
-			toBeUpdated = new FlexContainer();
+			toBeUpdated = new AlarmSpeakerFlexContainer();
 			toBeUpdated.getCustomAttributes().add(toneCA);
 
 			// perform UPDATE request
@@ -204,10 +203,10 @@ public class AlarmSpeakerModuleTest extends AbstractModuleTest {
 			report.setState(State.KO);
 			return report;
 		}
-		FlexContainer retrievedFlexContainer = (FlexContainer) response.getContent();
+		AlarmSpeakerFlexContainer retrievedFlexContainer = (AlarmSpeakerFlexContainer) response.getContent();
 
 		// get alarmStatus customAttribute
-		CustomAttribute alarmStatusCA = retrievedFlexContainer.getCustomAttribute("alarmStatus");
+		CustomAttribute alarmStatusCA = retrievedFlexContainer.getCustomAttribute(DatapointType.alarmStatus.getShortName());
 
 		if (alarmStatusCA == null) {
 			if (getModule().getDataPoint("alarmStatus") != null) {
@@ -219,7 +218,7 @@ public class AlarmSpeakerModuleTest extends AbstractModuleTest {
 			}
 		} else {
 			// retrieve alarmStatus datapoint value
-			BooleanDataPoint alarmStatusDP = (BooleanDataPoint) getModule().getDataPoint("alarmStatus");
+			BooleanDataPoint alarmStatusDP = (BooleanDataPoint) getModule().getDataPoint(DatapointType.alarmStatus.getShortName());
 			Boolean alarmStatusValueFromDP = null;
 			try {
 				alarmStatusValueFromDP = alarmStatusDP.getValue();
@@ -232,7 +231,7 @@ public class AlarmSpeakerModuleTest extends AbstractModuleTest {
 			// retrieve alarmStatus value from FlexContainer
 			Boolean alarmStatusValueFromFlexContainer = Boolean.valueOf(alarmStatusCA.getCustomAttributeValue());
 
-			if (!checkObject(alarmStatusValueFromDP, alarmStatusValueFromFlexContainer, report, "alarmStatus")) {
+			if (!checkObject(alarmStatusValueFromDP, alarmStatusValueFromFlexContainer, report, DatapointType.alarmStatus.getShortName())) {
 				return report;
 			}
 
@@ -251,7 +250,7 @@ public class AlarmSpeakerModuleTest extends AbstractModuleTest {
 		// at this point, we are sure the module FlexContainer exist
 
 		// retrieve alarmStatus datapoint
-		BooleanDataPoint alarmStatusDP = (BooleanDataPoint) getModule().getDataPoint("alarmStatus");
+		BooleanDataPoint alarmStatusDP = (BooleanDataPoint) getModule().getDataPoint(DatapointType.alarmStatus.getShortName());
 
 		// retrieve current alarmStatus value from datapoint
 		Boolean alarmStatusValueFromDP = null;
@@ -268,10 +267,9 @@ public class AlarmSpeakerModuleTest extends AbstractModuleTest {
 
 		// prepare request
 		CustomAttribute alarmStatusCA = new CustomAttribute();
-		alarmStatusCA.setCustomAttributeName("alarmStatus");
-		alarmStatusCA.setCustomAttributeType("xs:boolean");
+		alarmStatusCA.setCustomAttributeName(DatapointType.alarmStatus.getShortName());
 		alarmStatusCA.setCustomAttributeValue(newAlarmStatusValue.toString());
-		FlexContainer toBeUpdated = new FlexContainer();
+		AlarmSpeakerFlexContainer toBeUpdated = new AlarmSpeakerFlexContainer();
 		toBeUpdated.getCustomAttributes().add(alarmStatusCA);
 
 		// send UPDATE request
@@ -292,7 +290,7 @@ public class AlarmSpeakerModuleTest extends AbstractModuleTest {
 		}
 
 		// check value
-		if (!checkObject(alarmStatusValueFromDP, newAlarmStatusValue, report, "alarmStatus")) {
+		if (!checkObject(alarmStatusValueFromDP, newAlarmStatusValue, report, DatapointType.alarmStatus.getShortName())) {
 			return report;
 		}
 
@@ -310,7 +308,7 @@ public class AlarmSpeakerModuleTest extends AbstractModuleTest {
 		// at this point, we are sure the module FlexContainer exist
 
 		// retrieve light datapoint
-		AlertColourCode lightDP = (AlertColourCode) getModule().getDataPoint("light");
+		AlertColourCode lightDP = (AlertColourCode) getModule().getDataPoint(DatapointType.light.getShortName());
 		if (lightDP != null) {
 
 			Integer lightValueFromDP = null;
@@ -329,10 +327,10 @@ public class AlarmSpeakerModuleTest extends AbstractModuleTest {
 				report.setState(State.KO);
 				return report;
 			}
-			FlexContainer retrievedFlexContainer = (FlexContainer) response.getContent();
+			AlarmSpeakerFlexContainer retrievedFlexContainer = (AlarmSpeakerFlexContainer) response.getContent();
 
 			// retrieve light customAttribute
-			CustomAttribute lightCA = retrievedFlexContainer.getCustomAttribute("light");
+			CustomAttribute lightCA = retrievedFlexContainer.getCustomAttribute(DatapointType.light.getShortName());
 			if (lightCA == null) {
 				report.setErrorMessage("no light customAttribute but light datapoint exists");
 				report.setState(State.KO);
@@ -350,7 +348,7 @@ public class AlarmSpeakerModuleTest extends AbstractModuleTest {
 				return report;
 			}
 
-			if (!checkObject(lightValueFromDP, lightValueFromFlexContainer, report, "light")) {
+			if (!checkObject(lightValueFromDP, lightValueFromFlexContainer, report, DatapointType.light.getShortName())) {
 				return report;
 			}
 
@@ -364,10 +362,10 @@ public class AlarmSpeakerModuleTest extends AbstractModuleTest {
 				report.setState(State.KO);
 				return report;
 			}
-			FlexContainer retrievedFlexContainer = (FlexContainer) response.getContent();
+			AlarmSpeakerFlexContainer retrievedFlexContainer = (AlarmSpeakerFlexContainer) response.getContent();
 
 			// retrieve light customAttribute
-			CustomAttribute lightCA = retrievedFlexContainer.getCustomAttribute("light");
+			CustomAttribute lightCA = retrievedFlexContainer.getCustomAttribute(DatapointType.light.getShortName());
 			if (lightCA != null) {
 				report.setErrorMessage("no light datapoint but light customAttribute exists");
 				report.setState(State.KO);
@@ -389,7 +387,7 @@ public class AlarmSpeakerModuleTest extends AbstractModuleTest {
 		// at this point, we are sure the module FlexContainer exist
 
 		// retrieve light datapoint
-		AlertColourCode lightDP = (AlertColourCode) getModule().getDataPoint("light");
+		AlertColourCode lightDP = (AlertColourCode) getModule().getDataPoint(DatapointType.light.getShortName());
 		if (lightDP != null) {
 			// light datapoint exist
 
@@ -408,10 +406,9 @@ public class AlarmSpeakerModuleTest extends AbstractModuleTest {
 			Integer newLightValue = (lightValueFromDP.intValue() == 1 ? 2 : 1);
 
 			// prepare request
-			FlexContainer toBeUpdated = new FlexContainer();
+			AlarmSpeakerFlexContainer toBeUpdated = new AlarmSpeakerFlexContainer();
 			CustomAttribute lightCA = new CustomAttribute();
-			lightCA.setCustomAttributeName("light");
-			lightCA.setCustomAttributeType("xs:enum");
+			lightCA.setCustomAttributeName(DatapointType.light.getShortName());
 			lightCA.setCustomAttributeValue(newLightValue.toString());
 			toBeUpdated.getCustomAttributes().add(lightCA);
 
@@ -434,7 +431,7 @@ public class AlarmSpeakerModuleTest extends AbstractModuleTest {
 				return report;
 			}
 
-			if (!checkObject(lightValueFromDP, newLightValue, report, "light")) {
+			if (!checkObject(lightValueFromDP, newLightValue, report, DatapointType.light.getShortName())) {
 				return report;
 			}
 
@@ -442,10 +439,9 @@ public class AlarmSpeakerModuleTest extends AbstractModuleTest {
 			// light datapoint does not exist
 			
 			// prepare request
-			FlexContainer toBeUpdated = new FlexContainer();
+			AlarmSpeakerFlexContainer toBeUpdated = new AlarmSpeakerFlexContainer();
 			CustomAttribute lightCA = new CustomAttribute();
-			lightCA.setCustomAttributeName("light");
-			lightCA.setCustomAttributeType("xs:enum");
+			lightCA.setCustomAttributeName(DatapointType.light.getShortName());
 			lightCA.setCustomAttributeValue(Integer.valueOf(AlertColourCode.Red).toString());
 			toBeUpdated.getCustomAttributes().add(lightCA);
 

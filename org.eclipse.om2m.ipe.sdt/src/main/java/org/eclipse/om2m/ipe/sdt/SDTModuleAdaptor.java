@@ -97,7 +97,6 @@ public class SDTModuleAdaptor {
 				customAttributeName = dp.getName();
 			}
 			customAttribute.setCustomAttributeName(customAttributeName);
-			customAttribute.setCustomAttributeType(dp.getDataType().getTypeChoice().getOneM2MType());
 			String value = null;
 			try {
 				if (dp instanceof AbstractDateDataPoint) {
@@ -149,7 +148,6 @@ public class SDTModuleAdaptor {
 				CustomAttribute caForSdtProperty = new CustomAttribute();
 				caForSdtProperty.setCustomAttributeName(sdtProperty.getShortName());
 				caForSdtProperty.setCustomAttributeValue(sdtProperty.getValue());
-				caForSdtProperty.setCustomAttributeType(sdtProperty.getType().getOneM2MType());
 
 				logger.info("add Property customAttribute(" + caForSdtProperty + ")");
 				flexContainer.getCustomAttributes().add(caForSdtProperty);

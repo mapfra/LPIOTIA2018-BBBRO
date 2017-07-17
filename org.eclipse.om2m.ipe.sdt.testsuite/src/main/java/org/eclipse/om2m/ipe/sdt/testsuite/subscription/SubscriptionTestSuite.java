@@ -23,9 +23,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.eclipse.om2m.commons.constants.Constants;
 import org.eclipse.om2m.commons.constants.NotificationContentType;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
+import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
 import org.eclipse.om2m.commons.resource.CustomAttribute;
 import org.eclipse.om2m.commons.resource.DiscoveryResult;
-import org.eclipse.om2m.commons.resource.FlexContainer;
 import org.eclipse.om2m.commons.resource.Notification;
 import org.eclipse.om2m.commons.resource.Notification.NotificationEvent;
 import org.eclipse.om2m.commons.resource.Notification.NotificationEvent.Representation;
@@ -212,7 +212,7 @@ public class SubscriptionTestSuite extends HttpServlet {
 					Object value = receivedNotificationSDT.getValue();
 					
 					// OM2M
-					FlexContainer fc = receivedNotificationOM2M.getFlexContainer();
+					AbstractFlexContainer fc = receivedNotificationOM2M.getFlexContainer();
 					Date dateOM2M = receivedNotificationOM2M.getDate();
 					CustomAttribute ca = fc.getCustomAttribute(dp.getName());
 					

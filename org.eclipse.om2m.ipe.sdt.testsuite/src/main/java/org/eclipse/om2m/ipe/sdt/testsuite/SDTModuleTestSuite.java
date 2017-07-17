@@ -85,11 +85,9 @@ public class SDTModuleTestSuite {
 		switch (moduleDefinition) {
 		case "org.onem2m.home.moduleclass.binarySwitch":
 			amt = new BinarySwitchModuleTest(cseService, module);
-			
 			break;
 		case "org.onem2m.home.moduleclass.smokeSensor":
 			amt = new SmokeSensorModuleTest(cseService, module);
-			
 			break;
 		case "org.onem2m.home.moduleclass.colourSaturation":
 			amt = new ColourSaturationModuleTest(cseService, module);
@@ -121,11 +119,12 @@ public class SDTModuleTestSuite {
 			List<TestReport> tests = amt.launchTests();
 			testReports.addAll(tests);
 		} else {
-			TestReport report = null;
-			report = new TestReport("missing ModuleTest");
-			report.setErrorMessage("missing TestModule for module " + module.getDefinition());
-			report.setState(State.KO);
-			testReports.add(report);
+			return;
+//			TestReport report = null;
+//			report = new TestReport("missing ModuleTest");
+//			report.setErrorMessage("missing TestModule for module " + module.getDefinition());
+//			report.setState(State.KO);
+//			testReports.add(report);
 		}
 		
 

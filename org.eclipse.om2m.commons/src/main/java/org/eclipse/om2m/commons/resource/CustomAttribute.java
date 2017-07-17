@@ -28,8 +28,6 @@ public class CustomAttribute {
 	
 	private String customAttributeValue;
 	
-	private String customAttributeType;
-
 	public String getCustomAttributeName() {
 		return customAttributeName;
 	}
@@ -46,18 +44,11 @@ public class CustomAttribute {
 		this.customAttributeValue = customAttributeValue;
 	}
 
-	public String getCustomAttributeType() {
-		return customAttributeType;
-	}
-
-	public void setCustomAttributeType(String customAttributeType) {
-		this.customAttributeType = customAttributeType;
-	}
 
 	@Override
 	public String toString() {
 		return "<CustomAttribute " + customAttributeName + "/" +
-				customAttributeType + "/" + customAttributeValue + "/>";
+				customAttributeValue + "/>";
 	}
 	
 }

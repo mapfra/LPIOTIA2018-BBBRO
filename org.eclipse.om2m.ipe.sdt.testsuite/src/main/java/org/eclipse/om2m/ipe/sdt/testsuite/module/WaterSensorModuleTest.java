@@ -9,8 +9,8 @@ package org.eclipse.om2m.ipe.sdt.testsuite.module;
 
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.resource.CustomAttribute;
-import org.eclipse.om2m.commons.resource.FlexContainer;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.WaterSensorFlexContainer;
 import org.eclipse.om2m.core.service.CseService;
 import org.eclipse.om2m.ipe.sdt.testsuite.CSEUtil;
 import org.eclipse.om2m.ipe.sdt.testsuite.TestReport;
@@ -19,6 +19,7 @@ import org.eclipse.om2m.sdt.Module;
 import org.eclipse.om2m.sdt.datapoints.BooleanDataPoint;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 
 public class WaterSensorModuleTest extends AbstractModuleTest {
 
@@ -44,10 +45,10 @@ public class WaterSensorModuleTest extends AbstractModuleTest {
 			report.setState(State.KO);
 			return report;
 		}
-		FlexContainer retrievedFlexContainer = (FlexContainer) response.getContent();
+		WaterSensorFlexContainer retrievedFlexContainer = (WaterSensorFlexContainer) response.getContent();
 		
 		// retrieve alarm customAttribute
-		CustomAttribute alarmCA = retrievedFlexContainer.getCustomAttribute("alarm");
+		CustomAttribute alarmCA = retrievedFlexContainer.getCustomAttribute(DatapointType.alarm.getShortName());
 		if (alarmCA == null) {
 			report.setErrorMessage("alarm customAttribute is missing but it is mandatory");
 			report.setState(State.KO);
@@ -71,7 +72,7 @@ public class WaterSensorModuleTest extends AbstractModuleTest {
 		// at this point, alarmValueFromFlexContainer contains the alarm value (as a boolean) 
 		
 		// retrieve alarm datapoint
-		BooleanDataPoint alarmDP = (BooleanDataPoint) getModule().getDataPoint("alarm");
+		BooleanDataPoint alarmDP = (BooleanDataPoint) getModule().getDataPoint(DatapointType.alarm.getShortName());
 		
 		// retrieve alarm value from datapoint
 		Boolean alarmValueFromDP = null;
@@ -84,7 +85,7 @@ public class WaterSensorModuleTest extends AbstractModuleTest {
 		}
 		
 		// check value from datapoint and flexcontainer
-		if (!checkObject(alarmValueFromFlexContainer, alarmValueFromDP, report, "alarm")) {
+		if (!checkObject(alarmValueFromFlexContainer, alarmValueFromDP, report, DatapointType.alarm.getShortName())) {
 			return report;
 		}
 		
@@ -104,7 +105,7 @@ public class WaterSensorModuleTest extends AbstractModuleTest {
 		// at this point, we are sure the module flexContainer exists
 		
 		// retrieve current value from datapoint
-		BooleanDataPoint alarmDP = (BooleanDataPoint) getModule().getDataPoint("alarm");
+		BooleanDataPoint alarmDP = (BooleanDataPoint) getModule().getDataPoint(DatapointType.alarm.getShortName());
 		Boolean alarmValueFromDP = null;
 		try {
 			alarmValueFromDP = alarmDP.getValue();
@@ -115,10 +116,9 @@ public class WaterSensorModuleTest extends AbstractModuleTest {
 		}
 		
 		// prepare update
-		FlexContainer toBeUpdated = new FlexContainer();
+		WaterSensorFlexContainer toBeUpdated = new WaterSensorFlexContainer();
 		CustomAttribute alarmCA = new CustomAttribute();
-		alarmCA.setCustomAttributeName("alarm");
-		alarmCA.setCustomAttributeType("xs:boolean");
+		alarmCA.setCustomAttributeName(DatapointType.alarm.getShortName());
 		alarmCA.setCustomAttributeValue(Boolean.valueOf(!alarmValueFromDP.booleanValue()).toString());
 		toBeUpdated.getCustomAttributes().add(alarmCA);
 		
@@ -139,8 +139,8 @@ public class WaterSensorModuleTest extends AbstractModuleTest {
 			report.setState(State.KO);
 			return report;
 		}
-		FlexContainer retrievedFlexContainer = (FlexContainer) response.getContent();
-		CustomAttribute ca = retrievedFlexContainer.getCustomAttribute("alarm");
+		WaterSensorFlexContainer retrievedFlexContainer = (WaterSensorFlexContainer) response.getContent();
+		CustomAttribute ca = retrievedFlexContainer.getCustomAttribute(DatapointType.alarm.getShortName());
 		try {
 			currentValueFromDP = Boolean.parseBoolean(ca.getCustomAttributeValue());
 		} catch (Exception e) {
@@ -150,7 +150,7 @@ public class WaterSensorModuleTest extends AbstractModuleTest {
 		}
 		
 		// check current value is the same value as the value retrieved before UPDATE request
-		if (!checkObject(alarmValueFromDP, currentValueFromDP, report, "alarm")) {
+		if (!checkObject(alarmValueFromDP, currentValueFromDP, report, DatapointType.alarm.getShortName())) {
 			return report;
 		}
 		

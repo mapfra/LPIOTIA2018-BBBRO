@@ -26,9 +26,6 @@ public class CustomAttributeEntity {
 	@Column(name= ShortName.CUSTOM_ATTRIBUTE_NAME)
 	protected String customAttributeName;
 	
-	@Column(name = ShortName.CUSTOM_ATTRIBUTE_TYPE)
-	protected String customAttributeType;
-	
 	@Column(name = ShortName.CUSTOM_ATTRIBUTE_VALUE)
 	protected String customAttributeValue;
 	
@@ -44,14 +41,6 @@ public class CustomAttributeEntity {
 
 	public void setCustomAttributeName(String customAttributeName) {
 		this.customAttributeName = customAttributeName;
-	}
-
-	public String getCustomAttributeType() {
-		return customAttributeType;
-	}
-
-	public void setCustomAttributeType(String customAttributeType) {
-		this.customAttributeType = customAttributeType;
 	}
 
 	public String getCustomAttributeValue() {

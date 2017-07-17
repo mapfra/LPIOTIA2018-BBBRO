@@ -10,14 +10,10 @@ package org.eclipse.om2m.testsuite.flexcontainer;
 import java.math.BigInteger;
 
 import org.eclipse.om2m.commons.constants.Constants;
-import org.eclipse.om2m.commons.constants.MimeMediaType;
-import org.eclipse.om2m.commons.constants.Operation;
-import org.eclipse.om2m.commons.constants.ResourceType;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.resource.CustomAttribute;
-import org.eclipse.om2m.commons.resource.FlexContainer;
-import org.eclipse.om2m.commons.resource.RequestPrimitive;
-import org.eclipse.om2m.commons.resource.ResponsePrimitive;
+import org.eclipse.om2m.commons.resource.ResponsePrimitive;  
+import org.eclipse.om2m.commons.resource.flexcontainerspec.BinarySwitchFlexContainer;
 import org.eclipse.om2m.core.service.CseService;
 import org.eclipse.om2m.testsuite.flexcontainer.TestReport.Status;
 
@@ -38,27 +34,23 @@ public class BinarySwitchFlexContainerTest extends FlexContainerTestSuite {
 	}
 
 	public void testCreateValidBinarySwitchFlexContainer() {
-		FlexContainer initialFlexContainer = new FlexContainer();
-		initialFlexContainer.setContainerDefinition("org.onem2m.home.moduleclass.binaryswitch");
+		BinarySwitchFlexContainer initialFlexContainer = new BinarySwitchFlexContainer();
 		initialFlexContainer.setOntologyRef("OrangeOntologyRef");
 		initialFlexContainer.setCreator("Greg");
+		initialFlexContainer.setName("GregFirstBinaryFlexContainer" + System.currentTimeMillis());
 		CustomAttribute ca = new CustomAttribute();
-		ca.setCustomAttributeName("powerState");
-		ca.setCustomAttributeType("xs:boolean");
+		ca.setCustomAttributeName("powSe");
 		ca.setCustomAttributeValue("true");
 		initialFlexContainer.getCustomAttributes().add(ca);
 
-		FlexContainer responseCreatedFlexContainer = null;
+		BinarySwitchFlexContainer responseCreatedFlexContainer = null;
 
 		// send CREATE request
 		ResponsePrimitive response = sendCreateFlexContainerRequest(initialFlexContainer, "/" + Constants.CSE_ID,
-				"GregFirstBinaryFlexContainer");
+				"admin:admin");
 		if (response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {
 			// OK
-			responseCreatedFlexContainer = (FlexContainer) response.getContent();
-
-			// set name of the FlexContainer
-			initialFlexContainer.setName("GregFirstBinaryFlexContainer");
+			responseCreatedFlexContainer = (BinarySwitchFlexContainer) response.getContent();
 
 			try {
 				checkFlexContainerName(initialFlexContainer, responseCreatedFlexContainer);
@@ -86,10 +78,10 @@ public class BinarySwitchFlexContainerTest extends FlexContainerTestSuite {
 
 		// send RETRIEVE request
 		response = sendRetrieveRequest(
-				"/" + Constants.CSE_ID + "/" + Constants.CSE_NAME + "/GregFirstBinaryFlexContainer");
+				"/" + Constants.CSE_ID + "/" + Constants.CSE_NAME + "/" + responseCreatedFlexContainer.getName());
 		if (response.getResponseStatusCode().equals(ResponseStatusCode.OK)) {
 			// retrieve FlexContainer is in Content as a FlexContainer object
-			FlexContainer retrievedFlexContainer = (FlexContainer) response.getContent();
+			BinarySwitchFlexContainer retrievedFlexContainer = (BinarySwitchFlexContainer) response.getContent();
 
 			try {
 				checkFlexContainer(responseCreatedFlexContainer, retrievedFlexContainer);
@@ -115,21 +107,20 @@ public class BinarySwitchFlexContainerTest extends FlexContainerTestSuite {
 	}
 
 	public void testCreateInvalidBinarySwitchFlexContainer() {
-		FlexContainer initialFlexContainer = new FlexContainer();
-		initialFlexContainer.setContainerDefinition("org.onem2m.home.moduleclass.binaryswitch");
+		BinarySwitchFlexContainer initialFlexContainer = new BinarySwitchFlexContainer();
 		initialFlexContainer.setOntologyRef("OrangeOntologyRef");
 		initialFlexContainer.setCreator("Greg");
+		initialFlexContainer.setName("GregFirstBinaryFlexContainer" + System.currentTimeMillis());
 		CustomAttribute ca = new CustomAttribute();
 		ca.setCustomAttributeName("powerStateFake");
-		ca.setCustomAttributeType("xs:boolean");
 		ca.setCustomAttributeValue("true");
 		initialFlexContainer.getCustomAttributes().add(ca);
 
-		FlexContainer responseCreatedFlexContainer = null;
+		BinarySwitchFlexContainer responseCreatedFlexContainer = null;
 
 		// send CREATE request
 		ResponsePrimitive response = sendCreateFlexContainerRequest(initialFlexContainer, "/" + Constants.CSE_ID,
-				"GregFirstBinaryFlexContainer" + System.currentTimeMillis());
+				Constants.ADMIN_REQUESTING_ENTITY);
 		if (response.getResponseStatusCode().equals(ResponseStatusCode.BAD_REQUEST)) {
 			// expected BadRequest
 
@@ -151,21 +142,20 @@ public class BinarySwitchFlexContainerTest extends FlexContainerTestSuite {
 	public void testUpdateBinarySwitchFlexContainer() {
 
 		// create a binary switch flex container
-		FlexContainer initialFlexContainer = new FlexContainer();
-		initialFlexContainer.setContainerDefinition("org.onem2m.home.moduleclass.binaryswitch");
+		BinarySwitchFlexContainer initialFlexContainer = new BinarySwitchFlexContainer();
 		initialFlexContainer.setOntologyRef("OrangeOntologyRef");
 		initialFlexContainer.setCreator("Greg");
+		initialFlexContainer.setName("GregFirstBinaryFlexContainer" + System.currentTimeMillis());
 		CustomAttribute ca = new CustomAttribute();
-		ca.setCustomAttributeName("powerState");
-		ca.setCustomAttributeType("xs:boolean");
+		ca.setCustomAttributeName("powSe");
 		ca.setCustomAttributeValue("true");
 		initialFlexContainer.getCustomAttributes().add(ca);
 
-		FlexContainer responseCreatedFlexContainer = null;
+		BinarySwitchFlexContainer responseCreatedFlexContainer = null;
 
 		// send CREATE request
 		ResponsePrimitive response = sendCreateFlexContainerRequest(initialFlexContainer, "/" + Constants.CSE_ID,
-				"GregFirstBinaryFlexContainer" + System.currentTimeMillis());
+				Constants.ADMIN_REQUESTING_ENTITY);
 		if (!response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {
 			// KO
 			createTestReport(
@@ -176,11 +166,11 @@ public class BinarySwitchFlexContainerTest extends FlexContainerTestSuite {
 			return;
 		} else {
 			// OK
-			responseCreatedFlexContainer = (FlexContainer) response.getContent();
+			responseCreatedFlexContainer = (BinarySwitchFlexContainer) response.getContent();
 		}
 
 		// update the flexContainer powerState custom attribute
-		FlexContainer toBeUpdated = new FlexContainer();
+		BinarySwitchFlexContainer toBeUpdated = new BinarySwitchFlexContainer();
 		ca.setCustomAttributeValue("false");
 		toBeUpdated.getCustomAttributes().add(ca);
 
@@ -188,13 +178,13 @@ public class BinarySwitchFlexContainerTest extends FlexContainerTestSuite {
 		response = sendUpdateFlexContainerRequest(
 				"/" + Constants.CSE_ID + "/" + Constants.CSE_NAME + "/" + responseCreatedFlexContainer.getName(),
 				toBeUpdated);
-		FlexContainer updatedFlexContainer = null;
+		BinarySwitchFlexContainer updatedFlexContainer = null;
 		if (response.getResponseStatusCode().equals(ResponseStatusCode.UPDATED)) {
 			// OK
-			updatedFlexContainer = (FlexContainer) response.getContent();
+			updatedFlexContainer = (BinarySwitchFlexContainer) response.getContent();
 
 			// check powerState has been updated
-			if (!updatedFlexContainer.getCustomAttribute("powerState").getCustomAttributeValue().equals("false")) {
+			if (!updatedFlexContainer.getCustomAttribute("powSe").getCustomAttributeValue().equals("false")) {
 				createTestReport("testUpdateBinarySwitchFlexContainer", Status.KO,
 						"unable to update powerState value to false", null);
 				return;
@@ -214,9 +204,9 @@ public class BinarySwitchFlexContainerTest extends FlexContainerTestSuite {
 				"/" + Constants.CSE_ID + "/" + Constants.CSE_NAME + "/" + responseCreatedFlexContainer.getName());
 		if (response.getResponseStatusCode().equals(ResponseStatusCode.OK)) {
 			// OK
-			FlexContainer retrievedFlexContainer = (FlexContainer) response.getContent();
+			BinarySwitchFlexContainer retrievedFlexContainer = (BinarySwitchFlexContainer) response.getContent();
 
-			responseCreatedFlexContainer.getCustomAttribute("powerState").setCustomAttributeValue("false");
+			responseCreatedFlexContainer.getCustomAttribute("powSe").setCustomAttributeValue("false");
 
 			try {
 				checkFlexContainer(responseCreatedFlexContainer, retrievedFlexContainer);
@@ -240,21 +230,21 @@ public class BinarySwitchFlexContainerTest extends FlexContainerTestSuite {
 
 	public void testDeleteBinarySwitchFlexContainer() {
 		// create a binary switch flex container
-		FlexContainer initialFlexContainer = new FlexContainer();
+		BinarySwitchFlexContainer initialFlexContainer = new BinarySwitchFlexContainer();
 		initialFlexContainer.setContainerDefinition("org.onem2m.home.moduleclass.binaryswitch");
 		initialFlexContainer.setOntologyRef("OrangeOntologyRef");
 		initialFlexContainer.setCreator("Greg");
+		initialFlexContainer.setName("GregFirstBinaryFlexContainer" + System.currentTimeMillis());
 		CustomAttribute ca = new CustomAttribute();
-		ca.setCustomAttributeName("powerState");
-		ca.setCustomAttributeType("xs:boolean");
+		ca.setCustomAttributeName("powSe");
 		ca.setCustomAttributeValue("true");
 		initialFlexContainer.getCustomAttributes().add(ca);
 
-		FlexContainer responseCreatedFlexContainer = null;
+		BinarySwitchFlexContainer responseCreatedFlexContainer = null;
 
 		// send CREATE request
 		ResponsePrimitive response = sendCreateFlexContainerRequest(initialFlexContainer, "/" + Constants.CSE_ID,
-				"GregFirstBinaryFlexContainer" + System.currentTimeMillis());
+				Constants.ADMIN_REQUESTING_ENTITY);
 		if (!response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {
 			// KO
 			createTestReport(
@@ -265,7 +255,7 @@ public class BinarySwitchFlexContainerTest extends FlexContainerTestSuite {
 			return;
 		} else {
 			// OK
-			responseCreatedFlexContainer = (FlexContainer) response.getContent();
+			responseCreatedFlexContainer = (BinarySwitchFlexContainer) response.getContent();
 		}
 
 		// delete the flexContainer

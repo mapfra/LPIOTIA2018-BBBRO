@@ -18,13 +18,12 @@ import org.eclipse.om2m.commons.constants.MimeMediaType;
 import org.eclipse.om2m.commons.constants.Operation;
 import org.eclipse.om2m.commons.constants.ResourceType;
 import org.eclipse.om2m.commons.constants.ResultContent;
+import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
 import org.eclipse.om2m.commons.resource.AccessControlPolicy;
 import org.eclipse.om2m.commons.resource.CustomAttribute;
-import org.eclipse.om2m.commons.resource.FlexContainer;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.Resource;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
-import org.eclipse.om2m.commons.resource.ResponseTypeInfo;
 import org.eclipse.om2m.commons.resource.Subscription;
 import org.eclipse.om2m.core.service.CseService;
 import org.eclipse.om2m.testsuite.flexcontainer.TestReport.Status;
@@ -71,7 +70,7 @@ public abstract class FlexContainerTestSuite {
 		printTestReports();
 	}
 
-	protected ResponsePrimitive sendCreateFlexContainerRequest(FlexContainer flexContainer, String resourceLocation,
+	protected ResponsePrimitive sendCreateFlexContainerRequest(AbstractFlexContainer flexContainer, String resourceLocation,
 			String from) {
 		return sendCreateRequest(resourceLocation, ResourceType.FLEXCONTAINER, flexContainer, from);
 	}
@@ -84,7 +83,7 @@ public abstract class FlexContainerTestSuite {
 	 * @param resourceLocation
 	 * @param resourceName
 	 */
-	protected ResponsePrimitive sendCreateFlexContainerRequest(FlexContainer flexContainer, String resourceLocation) {
+	protected ResponsePrimitive sendCreateFlexContainerRequest(AbstractFlexContainer flexContainer, String resourceLocation) {
 		return sendCreateRequest(resourceLocation, ResourceType.FLEXCONTAINER, flexContainer,
 				Constants.ADMIN_REQUESTING_ENTITY);
 	}
@@ -122,7 +121,7 @@ public abstract class FlexContainerTestSuite {
 	 *            flexContainer to be created
 	 * @param resourceLocation
 	 */
-	protected ResponsePrimitive sendUpdateFlexContainerRequest(String resourceLocation, FlexContainer flexContainer) {
+	protected ResponsePrimitive sendUpdateFlexContainerRequest(String resourceLocation, AbstractFlexContainer flexContainer) {
 		return sendUpdateRequest(resourceLocation, ResourceType.FLEXCONTAINER, flexContainer);
 	}
 
@@ -215,7 +214,7 @@ public abstract class FlexContainerTestSuite {
 		return response;
 	}
 
-	protected void checkFlexContainer(FlexContainer initial, FlexContainer toBeCompared) throws Exception {
+	protected void checkFlexContainer(AbstractFlexContainer initial, AbstractFlexContainer toBeCompared) throws Exception {
 
 		checkFlexContainerName(initial, toBeCompared);
 		checkFlexContainerDefinition(initial, toBeCompared);
@@ -225,19 +224,19 @@ public abstract class FlexContainerTestSuite {
 
 	}
 
-	protected void checkFlexContainerName(FlexContainer initial, FlexContainer toBeCompared) throws Exception {
+	protected void checkFlexContainerName(AbstractFlexContainer initial, AbstractFlexContainer toBeCompared) throws Exception {
 		if (!initial.getName().equals(toBeCompared.getName())) {
 			throw new Exception("name are not equal");
 		}
 	}
 
-	protected void checkFlexContainerDefinition(FlexContainer initial, FlexContainer toBeCompared) throws Exception {
+	protected void checkFlexContainerDefinition(AbstractFlexContainer initial, AbstractFlexContainer toBeCompared) throws Exception {
 		if (!initial.getContainerDefinition().equals(toBeCompared.getContainerDefinition())) {
 			throw new Exception("containerDefinition are not equal");
 		}
 	}
 
-	protected void checkFlexContainerOntologyRef(FlexContainer initial, FlexContainer toBeCompared) throws Exception {
+	protected void checkFlexContainerOntologyRef(AbstractFlexContainer initial, AbstractFlexContainer toBeCompared) throws Exception {
 
 		if ((initial.getOntologyRef() == null) && (toBeCompared.getOntologyRef() != null)) {
 			throw new Exception("ontologyRef are not equal");
@@ -247,7 +246,7 @@ public abstract class FlexContainerTestSuite {
 		}
 	}
 
-	protected void checkFlexContainerCreator(FlexContainer initial, FlexContainer toBeCompared) throws Exception {
+	protected void checkFlexContainerCreator(AbstractFlexContainer initial, AbstractFlexContainer toBeCompared) throws Exception {
 
 		if ((initial.getCreator() == null) && (toBeCompared.getCreator() != null)) {
 			throw new Exception("creator are not equal");
@@ -258,7 +257,7 @@ public abstract class FlexContainerTestSuite {
 		}
 	}
 
-	protected void checkFlexContainerCustomAttribute(FlexContainer initial, FlexContainer toBeCompared)
+	protected void checkFlexContainerCustomAttribute(AbstractFlexContainer initial, AbstractFlexContainer toBeCompared)
 			throws Exception {
 		if (initial.getCustomAttributes().size() != toBeCompared.getCustomAttributes().size()) {
 			throw new Exception("customAttributes list size are not equal");
@@ -287,15 +286,6 @@ public abstract class FlexContainerTestSuite {
 							+ ", toBeComparedCaName=" + toBeComparedCa.getCustomAttributeName());
 		}
 
-		// type may be null
-		if ((initialCa.getCustomAttributeType() == null) && (toBeComparedCa.getCustomAttributeType() != null)) {
-			throw new Exception("initialCa type is null but toBeComparedCa type is not null");
-		}
-		if (!initialCa.getCustomAttributeType().equals(toBeComparedCa.getCustomAttributeType())) {
-			throw new Exception(
-					"customAttributeType are differents (initialCaType=" + initialCa.getCustomAttributeType()
-							+ ", toBeComparedCaType=" + toBeComparedCa.getCustomAttributeType());
-		}
 
 		// value may be null
 		if ((initialCa.getCustomAttributeValue() == null) && (toBeComparedCa.getCustomAttributeValue() != null)) {

@@ -276,11 +276,10 @@ public class SDTDiscovery implements ISDTDiscovery {
 		}
 		for (CustomAttribute attr : deviceFlex.getCustomAttributes()) {
 			Activator.LOGGER.info("dev CustomAttribute: " + attr.getCustomAttributeName()
-					+ "/" + attr.getCustomAttributeType() + "/" + attr.getCustomAttributeValue());
+				 + "/" + attr.getCustomAttributeValue());
 			PropertyType propType = PropertyType.fromShortName(attr.getCustomAttributeName());
 			if (propType != null) {
 				Property prop = new Property(propType, attr.getCustomAttributeValue());
-				prop.setType(SimpleType.getSimpleType(attr.getCustomAttributeType()));
 //				device.addProperty(prop);
 				device.addProperty(propType, attr.getCustomAttributeValue());
 			}
@@ -320,11 +319,10 @@ public class SDTDiscovery implements ISDTDiscovery {
 		List<CustomAttribute> dpAttrs = new ArrayList<CustomAttribute>();
 		for (CustomAttribute attr : moduleFlex.getCustomAttributes()) {
 			Activator.LOGGER.info("CustomAttribute(1): " + attr.getCustomAttributeName()
-					+ "/" + attr.getCustomAttributeType() + "/" + attr.getCustomAttributeValue());
+					+ "/" + attr.getCustomAttributeValue());
 			PropertyType propType = PropertyType.fromShortName(attr.getCustomAttributeName());
 			if (propType != null) {
 				Property prop = new Property(propType, attr.getCustomAttributeValue());
-				prop.setType(SimpleType.getSimpleType(attr.getCustomAttributeType()));
 				props.add(prop);
 			} else {
 				dpAttrs.add(attr);
@@ -347,12 +345,13 @@ public class SDTDiscovery implements ISDTDiscovery {
 				+ cntDef.substring(idx + 1);
 		List<DataPoint> dps = new ArrayList<DataPoint>();
 		for (CustomAttribute attr : dpAttrs) {
-			if (DatapointType.fromShortName(attr.getCustomAttributeName()) == null) {
+			DatapointType datapointType = DatapointType.fromShortName(attr.getCustomAttributeName());
+			if (datapointType == null) {
 				Activator.LOGGER.warn("Unknown custom attribute, neither property nor datapoint: " 
 						+ attr.getCustomAttributeName());
 				continue;
 			}
-			String type = attr.getCustomAttributeType();
+			String type = datapointType.getDataType().getTypeChoice().getOneM2MType();
 			switch (type) {
 			case "xs:integer": dps.add(getIntegerDataPoint(attr, uri, cred)); break;
 			case "xs:boolean": dps.add(getBooleanDataPoint(attr, uri, cred)); break;
@@ -423,21 +422,25 @@ public class SDTDiscovery implements ISDTDiscovery {
 		}
 		List<Arg> args = new ArrayList<Arg>();
 		final List<CustomAttribute> attributes = actionFlexContainer.getCustomAttributes();
-		for (final CustomAttribute attr : attributes) {
-			String type = attr.getCustomAttributeType();
-			Arg arg = new ValuedArg<Object>(attr.getCustomAttributeName(), 
-					new DataType(type, SimpleType.getSimpleType(type))) {
-				public void setValue(Object value) {
-					try {
-						SDTUtil.setValue(attr, value);
-						updateAttribute(uri, attr, cred);
-					} catch (Exception e) {
-						Activator.LOGGER.warn("Could not set arg", e);
-					}
-				}
-			};
-			args.add(arg);
-		}
+		// 2017 07 17 - BONNARDEL Gregory
+		// I commented out the next piece of code because there is no way
+		// to retrieve Arg type with current SDT apis.
+		// As we have only no-args action, this is not a problem.
+//		for (final CustomAttribute attr : attributes) {
+//			String type = attr.getCustomAttributeType();
+//			Arg arg = new ValuedArg<Object>(attr.getCustomAttributeName(), 
+//					new DataType(type, SimpleType.getSimpleType(type))) {
+//				public void setValue(Object value) {
+//					try {
+//						SDTUtil.setValue(attr, value);
+//						updateAttribute(uri, attr, cred);
+//					} catch (Exception e) {
+//						Activator.LOGGER.warn("Could not set arg", e);
+//					}
+//				}
+//			};
+//			args.add(arg);
+//		}
 		final String cntDef = actionFlexContainer.getContainerDefinition();
 		String actionName = labels.get("name");
 		if (actionName == null)
@@ -483,7 +486,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 			@Override
 			public void doSetValue(Integer val) throws DataPointException {
 				try {
-					SDTUtil.setValue(attr, val);
+					SDTUtil.setValue(attr, val, "xs:integer");
 					updateAttribute(uri, attr, cred);
 				} catch (Exception e) {
 					throw new DataPointException(e);
@@ -507,7 +510,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 			@Override
 			public void doSetValue(Boolean val) throws DataPointException {
 				try {
-					SDTUtil.setValue(attr, val);
+					SDTUtil.setValue(attr, val, "xs:boolean");
 					updateAttribute(uri, attr, cred);
 				} catch (Exception e) {
 					throw new DataPointException(e);
@@ -532,7 +535,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 			@Override
 			public void doSetValue(String val) throws DataPointException {
 				try {
-					SDTUtil.setValue(attr, val);
+					SDTUtil.setValue(attr, val, "xs:string");
 					updateAttribute(uri, attr, cred);
 				} catch (Exception e) {
 					throw new DataPointException(e);
@@ -556,7 +559,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 			@Override
 			public void doSetValue(Byte val) throws DataPointException {
 				try {
-					SDTUtil.setValue(attr, val);
+					SDTUtil.setValue(attr, val, "xs:byte");
 					updateAttribute(uri, attr, cred);
 				} catch (Exception e) {
 					throw new DataPointException(e);
@@ -580,7 +583,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 			@Override
 			public void doSetValue(Float val) throws DataPointException {
 				try {
-					SDTUtil.setValue(attr, val);
+					SDTUtil.setValue(attr, val, "xs:float");
 					updateAttribute(uri, attr, cred);
 				} catch (Exception e) {
 					throw new DataPointException(e);
@@ -604,7 +607,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 			@Override
 			public void doSetValue(Date val) throws DataPointException {
 				try {
-					SDTUtil.setValue(attr, val);
+					SDTUtil.setValue(attr, val, "xs:datetime");
 					updateAttribute(uri, attr, cred);
 				} catch (Exception e) {
 					throw new DataPointException(e);
@@ -628,7 +631,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 			@Override
 			public void doSetValue(Date val) throws DataPointException {
 				try {
-					SDTUtil.setValue(attr, val);
+					SDTUtil.setValue(attr, val, "xs:date");
 					updateAttribute(uri, attr, cred);
 				} catch (Exception e) {
 					throw new DataPointException(e);
@@ -652,7 +655,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 			@Override
 			public void doSetValue(Date val) throws DataPointException {
 				try {
-					SDTUtil.setValue(attr, val);
+					SDTUtil.setValue(attr, val, "xs:time");
 					updateAttribute(uri, attr, cred);
 				} catch (Exception e) {
 					throw new DataPointException(e);
@@ -676,7 +679,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 			@Override
 			public void doSetValue(List<String> val) throws DataPointException {
 				try {
-					SDTUtil.setValue(attr, val);
+					SDTUtil.setValue(attr, val, "xs:enum");
 					updateAttribute(uri, attr, cred);
 				} catch (Exception e) {
 					throw new DataPointException(e);
@@ -709,7 +712,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 							@Override
 							public void doSetValue(Integer val) throws DataPointException {
 								try {
-									SDTUtil.setValue(attr, val);
+									SDTUtil.setValue(attr, val, "xs:enum");
 									updateAttribute(uri, attr, cred);
 								} catch (Exception e) {
 									throw new DataPointException(e);
@@ -758,6 +761,12 @@ public class SDTDiscovery implements ISDTDiscovery {
 
 	static private Object retrieveAttribute(final String uri, final String attr,
 			final String cred) throws Exception {
+		
+		DatapointType datapointType = DatapointType.fromShortName(attr);
+		
+		if (datapointType == null) {
+			return null;
+		}
 		RequestPrimitive request = new RequestPrimitive();
 		request.setOperation(Operation.RETRIEVE);
 		request.setReturnContentType(MimeMediaType.OBJ);
@@ -770,7 +779,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 		Activator.LOGGER.info("read " + attr + " -> " + resp.getResponseStatusCode());
 		if (! ResponseStatusCode.OK.equals(resp.getResponseStatusCode()))
 			throw new Exception("Error reading cloud data: " + resp.getResponseStatusCode());
-		return SDTUtil.getValue(((AbstractFlexContainer) resp.getContent()).getCustomAttribute(attr));
+		return SDTUtil.getValue(((AbstractFlexContainer) resp.getContent()).getCustomAttribute(attr), datapointType.getDataType().getTypeChoice().getOneM2MType());
 	}
 
 	static public void updateAttribute(final String uri, 

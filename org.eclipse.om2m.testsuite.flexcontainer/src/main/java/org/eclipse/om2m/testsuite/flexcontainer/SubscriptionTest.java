@@ -13,17 +13,14 @@ import javax.servlet.ServletException;
 
 import org.eclipse.om2m.commons.constants.Constants;
 import org.eclipse.om2m.commons.constants.NotificationContentType;
-import org.eclipse.om2m.commons.constants.ResourceStatus;
 import org.eclipse.om2m.commons.constants.ResourceType;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.resource.ChildResourceRef;
 import org.eclipse.om2m.commons.resource.CustomAttribute;
-import org.eclipse.om2m.commons.resource.EventNotificationCriteria;
-import org.eclipse.om2m.commons.resource.FlexContainer;
 import org.eclipse.om2m.commons.resource.Notification;
-import org.eclipse.om2m.commons.resource.Resource;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
 import org.eclipse.om2m.commons.resource.Subscription;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.BinarySwitchFlexContainer;
 import org.eclipse.om2m.core.service.CseService;
 import org.eclipse.om2m.datamapping.service.DataMapperService;
 import org.eclipse.om2m.testsuite.flexcontainer.TestReport.Status;
@@ -74,9 +71,9 @@ public class SubscriptionTest extends FlexContainerTestSuite {
 		}
 
 		// create a FlexContainer
-		FlexContainer flexContainer = null;
+		BinarySwitchFlexContainer flexContainer = null;
 		try {
-			flexContainer = createFlexContainer();
+			flexContainer = createBinarySwitchFlexContainer();
 		} catch (Exception e) {
 			createTestReport("testCreateSubscription", Status.KO, e.getMessage(), e);
 			return;
@@ -135,7 +132,7 @@ public class SubscriptionTest extends FlexContainerTestSuite {
 		response = sendRetrieveRequest(flexContainerLocation);
 		if (response.getResponseStatusCode().equals(ResponseStatusCode.OK)) {
 			// OK
-			FlexContainer retrievedFlexContainer = (FlexContainer) response.getContent();
+			BinarySwitchFlexContainer retrievedFlexContainer = (BinarySwitchFlexContainer) response.getContent();
 			List<ChildResourceRef> childs = retrievedFlexContainer.getChildResource();
 
 			if ((childs != null) && (!childs.isEmpty())) {
@@ -168,11 +165,10 @@ public class SubscriptionTest extends FlexContainerTestSuite {
 		}
 
 		// update the value of the custom attribute
-		FlexContainer toBeUpdated = new FlexContainer();
+		BinarySwitchFlexContainer toBeUpdated = new BinarySwitchFlexContainer();
 		CustomAttribute ca = new CustomAttribute();
-		ca.setCustomAttributeName("powerState");
+		ca.setCustomAttributeName("powSe");
 		ca.setCustomAttributeValue("false");
-		ca.setCustomAttributeType("xs:boolean");
 		toBeUpdated.getCustomAttributes().add(ca);
 		response = sendUpdateFlexContainerRequest(flexContainerLocation, toBeUpdated);
 		if (!response.getResponseStatusCode().equals(ResponseStatusCode.UPDATED)) {
@@ -190,10 +186,10 @@ public class SubscriptionTest extends FlexContainerTestSuite {
 			// check received notification
 			// power state should be false
 
-			FlexContainer notifiedFlexContainer = (FlexContainer) notification.getNotificationEvent()
+			BinarySwitchFlexContainer notifiedFlexContainer = (BinarySwitchFlexContainer) notification.getNotificationEvent()
 					.getRepresentation().getResource();
 
-			ca = notifiedFlexContainer.getCustomAttribute("powerState");
+			ca = notifiedFlexContainer.getCustomAttribute("powSe");
 			if (ca != null) {
 				if (!ca.getCustomAttributeValue().equals("false")) {
 					createTestReport("testCreateSubscription", Status.KO, "CustomAttribute powerState value is wrong",
@@ -223,9 +219,9 @@ public class SubscriptionTest extends FlexContainerTestSuite {
 		}
 
 		// create a FlexContainer
-		FlexContainer flexContainer = null;
+		BinarySwitchFlexContainer flexContainer = null;
 		try {
-			flexContainer = createFlexContainer();
+			flexContainer = createBinarySwitchFlexContainer();
 		} catch (Exception e) {
 			createTestReport("testCreateSubscription", Status.KO, e.getMessage(), e);
 			return;
@@ -317,11 +313,10 @@ public class SubscriptionTest extends FlexContainerTestSuite {
 
 		// update the flexContainer value
 		// update the value of the custom attribute
-		FlexContainer toBeUpdated = new FlexContainer();
+		BinarySwitchFlexContainer toBeUpdated = new BinarySwitchFlexContainer();
 		CustomAttribute ca = new CustomAttribute();
-		ca.setCustomAttributeName("powerState");
+		ca.setCustomAttributeName("powSe");
 		ca.setCustomAttributeValue("false");
-		ca.setCustomAttributeType("xs:boolean");
 		toBeUpdated.getCustomAttributes().add(ca);
 		response = sendUpdateFlexContainerRequest(flexContainerLocation, toBeUpdated);
 		if (!response.getResponseStatusCode().equals(ResponseStatusCode.UPDATED)) {
@@ -354,9 +349,9 @@ public class SubscriptionTest extends FlexContainerTestSuite {
 		}
 
 		// create a FlexContainer
-		FlexContainer flexContainer = null;
+		BinarySwitchFlexContainer flexContainer = null;
 		try {
-			flexContainer = createFlexContainer();
+			flexContainer = createBinarySwitchFlexContainer();
 		} catch (Exception e) {
 			createTestReport("testUpdateSubscription", Status.KO, e.getMessage(), e);
 			return;
@@ -413,11 +408,10 @@ public class SubscriptionTest extends FlexContainerTestSuite {
 		}
 
 		// update the value of the custom attribute
-		FlexContainer toBeUpdated = new FlexContainer();
+		BinarySwitchFlexContainer toBeUpdated = new BinarySwitchFlexContainer();
 		CustomAttribute ca = new CustomAttribute();
-		ca.setCustomAttributeName("powerState");
+		ca.setCustomAttributeName("powSe");
 		ca.setCustomAttributeValue("false");
-		ca.setCustomAttributeType("xs:boolean");
 		toBeUpdated.getCustomAttributes().add(ca);
 		response = sendUpdateFlexContainerRequest(flexContainerLocation, toBeUpdated);
 		if (!response.getResponseStatusCode().equals(ResponseStatusCode.UPDATED)) {
@@ -435,10 +429,10 @@ public class SubscriptionTest extends FlexContainerTestSuite {
 			// check received notification
 			// power state should be false
 
-			FlexContainer notifiedFlexContainer = (FlexContainer) notification.getNotificationEvent()
+			BinarySwitchFlexContainer notifiedFlexContainer = (BinarySwitchFlexContainer) notification.getNotificationEvent()
 					.getRepresentation().getResource();
 
-			ca = notifiedFlexContainer.getCustomAttribute("powerState");
+			ca = notifiedFlexContainer.getCustomAttribute("powSe");
 			if (ca != null) {
 				if (!ca.getCustomAttributeValue().equals("false")) {
 					createTestReport("testUpdateSubscription", Status.KO, "CustomAttribute powerState value is wrong",
@@ -465,6 +459,7 @@ public class SubscriptionTest extends FlexContainerTestSuite {
 		} catch (NamespaceException e) {
 			createTestReport("testUpdateSubscription", Status.KO, "unable to register servlet for notification", e);
 		}
+		subscription.setName(null);
 		subscription.getNotificationURI().clear();
 		subscription.getNotificationURI().add(servlet2.getServletUrl());
 		subscription.setSubscriberURI(null);
@@ -483,11 +478,10 @@ public class SubscriptionTest extends FlexContainerTestSuite {
 
 		// send an update of the FlexContainer
 		// update the value of the custom attribut
-		toBeUpdated = new FlexContainer();
+		toBeUpdated = new BinarySwitchFlexContainer();
 		ca = new CustomAttribute();
-		ca.setCustomAttributeName("powerState");
+		ca.setCustomAttributeName("powSe");
 		ca.setCustomAttributeValue("false");
-		ca.setCustomAttributeType("xs:boolean");
 		toBeUpdated.getCustomAttributes().add(ca);
 		response = sendUpdateFlexContainerRequest(flexContainerLocation, toBeUpdated);
 		if (!response.getResponseStatusCode().equals(ResponseStatusCode.UPDATED)) {
@@ -505,10 +499,10 @@ public class SubscriptionTest extends FlexContainerTestSuite {
 			// check received notification
 			// power state should be false
 
-			FlexContainer notifiedFlexContainer = (FlexContainer) notification.getNotificationEvent()
+			BinarySwitchFlexContainer notifiedFlexContainer = (BinarySwitchFlexContainer) notification.getNotificationEvent()
 					.getRepresentation().getResource();
 
-			ca = notifiedFlexContainer.getCustomAttribute("powerState");
+			ca = notifiedFlexContainer.getCustomAttribute("powSe");
 			if (ca != null) {
 				if (!ca.getCustomAttributeValue().equals("false")) {
 					createTestReport("testUpdateSubscription", Status.KO, "CustomAttribute powerState value is wrong",
@@ -538,19 +532,18 @@ public class SubscriptionTest extends FlexContainerTestSuite {
 		createTestReport("testUpdateSubscription", Status.OK, null, null);
 	}
 
-	private FlexContainer createFlexContainer() throws Exception {
-		FlexContainer flexContainer = new FlexContainer();
-		flexContainer.setContainerDefinition("org.onem2m.home.moduleclass.binaryswitch");
+	private BinarySwitchFlexContainer createBinarySwitchFlexContainer() throws Exception {
+		BinarySwitchFlexContainer flexContainer = new BinarySwitchFlexContainer();
+		flexContainer.setName("FlexContainer_" + System.currentTimeMillis());
 		CustomAttribute ca = new CustomAttribute();
-		ca.setCustomAttributeName("powerState");
-		ca.setCustomAttributeType("xs:boolean");
+		ca.setCustomAttributeName("powSe");
 		ca.setCustomAttributeValue("true");
 		flexContainer.getCustomAttributes().add(ca);
 
 		ResponsePrimitive response = sendCreateFlexContainerRequest(flexContainer,
-				"/" + Constants.CSE_ID + "/" + Constants.CSE_NAME, "FlexContainer_" + System.currentTimeMillis());
+				"/" + Constants.CSE_ID + "/" + Constants.CSE_NAME, Constants.ADMIN_REQUESTING_ENTITY);
 		if (response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {
-			return (FlexContainer) response.getContent();
+			return (BinarySwitchFlexContainer) response.getContent();
 		} else {
 			// KO
 			throw new Exception(

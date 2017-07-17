@@ -21,9 +21,9 @@ public class SDTUtil {
 	static final private DateFormat dateFormat = DateFormat.getDateInstance();
 	static final private DateFormat timeFormat = DateFormat.getTimeInstance();
 
-	public static Object getValue(CustomAttribute attr) throws Exception {
+	public static Object getValue(CustomAttribute attr, String type) throws Exception {
 		return (attr == null) ? null
-			: getValue(attr.getCustomAttributeValue(), attr.getCustomAttributeType());
+			: getValue(attr.getCustomAttributeValue(), type);
 	}
 	
 	public static Object getValue(String value, String type) throws Exception {
@@ -57,12 +57,11 @@ public class SDTUtil {
 		}
 	}
 	
-	public static void setValue(CustomAttribute attr, Object val) throws Exception {
+	public static void setValue(CustomAttribute attr, String type, Object val) throws Exception {
 		if (val == null) {
 			attr.setCustomAttributeValue(null);
 			return;
 		}
-		String type = attr.getCustomAttributeType();
 		switch (type) {
 		case "xs:string":
 		case "xs:integer": 

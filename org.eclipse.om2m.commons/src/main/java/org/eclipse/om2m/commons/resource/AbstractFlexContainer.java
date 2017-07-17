@@ -21,61 +21,7 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.eclipse.om2m.commons.constants.ShortName;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.ActionToggleFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceCameraFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceCoffeeMachineFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceContactDetectorFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceDoorFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceFloodDetectorFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceGasValveFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceLightFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceMotionDetectorFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceSmartElectricMeterFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceSmokeDetectorFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceSmokeExtractorFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceSwitchButtonFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceTemperatureDetectorFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceThermostatFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceWarningDeviceFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceWaterHeaterFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceWaterValveFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceWeatherStationFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleAlarmSpeakerFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleAtmosphericPressureSensorFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleAudioVolumeFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleBatteryFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleBinarySwitchFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleBoilerFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleBrewingFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleBrightnessFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleCarbonDioxideSensorFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleCarbonMonoxideSensorFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleClockFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleColourFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleColourSaturationFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleContactSensorFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleDimmingFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleDoorStatusFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleEnergyConsumptionFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleEnergyGenerationFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleEnergyOverloadCircuitBreakerFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleExtendedCarbonDioxideSensorFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleFaultDetectionFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleFoamingFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleGrinderFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleLiquidLevelFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleLockFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleNoiseFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.ModulePersonSensorFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleRelativeHumidityFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleRunModeFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleRunStateFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleSmokeSensorFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleStreamingFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleTemperatureFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleTimerFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleWaterLevelFlexContainer;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleWaterSensorFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.*;
 
 /**
  * <p>
@@ -129,25 +75,23 @@ import org.eclipse.om2m.commons.resource.flexcontainerspec.ModuleWaterSensorFlex
 	DeviceWarningDeviceFlexContainer.class,
 	DeviceWaterValveFlexContainer.class, DeviceWeatherStationFlexContainer.class,
 	DeviceThermostatFlexContainer.class,
-	ModuleAlarmSpeakerFlexContainer.class, ModuleAudioVolumeFlexContainer.class,
-	ModuleBinarySwitchFlexContainer.class, ModuleBoilerFlexContainer.class,
-	ModuleBrightnessFlexContainer.class, ModuleClockFlexContainer.class,
-	ModuleColourFlexContainer.class, ModuleColourSaturationFlexContainer.class,
-	ModuleDoorStatusFlexContainer.class, ModuleEnergyConsumptionFlexContainer.class,
-	ModuleEnergyGenerationFlexContainer.class, ModuleFaultDetectionFlexContainer.class,
-	ModuleRelativeHumidityFlexContainer.class, ModuleRunModeFlexContainer.class,
-	ModuleSmokeSensorFlexContainer.class, ModuleTemperatureFlexContainer.class,
-	ModuleWaterLevelFlexContainer.class, ModuleWaterSensorFlexContainer.class,
-	ModuleAtmosphericPressureSensorFlexContainer.class, ModuleBrewingFlexContainer.class,
-	ModuleCarbonDioxideSensorFlexContainer.class, ModuleCarbonMonoxideSensorFlexContainer.class,
-	ModuleContactSensorFlexContainer.class, ModuleDimmingFlexContainer.class,
-	ModuleEnergyOverloadCircuitBreakerFlexContainer.class, ModuleExtendedCarbonDioxideSensorFlexContainer.class,
-	ModuleFoamingFlexContainer.class, ModuleGrinderFlexContainer.class,
-	ModuleNoiseFlexContainer.class, ModulePersonSensorFlexContainer.class,
-	ModuleStreamingFlexContainer.class, ModuleLockFlexContainer.class,
-	ModuleRunStateFlexContainer.class, ModuleBatteryFlexContainer.class,
-	ModuleLiquidLevelFlexContainer.class, ModuleTimerFlexContainer.class,
-	ActionToggleFlexContainer.class})
+	AlarmSpeakerFlexContainer.class, AudioVolumeFlexContainer.class,
+	BinarySwitchFlexContainer.class, BoilerFlexContainer.class,
+	BrightnessFlexContainer.class, ClockFlexContainer.class,
+	ColourFlexContainer.class, ColourSaturationFlexContainer.class,
+	DoorStatusFlexContainer.class, EnergyConsumptionFlexContainer.class,
+	EnergyGenerationFlexContainer.class, FaultDetectionFlexContainer.class,
+	RelativeHumidityFlexContainer.class, RunModeFlexContainer.class,
+	SmokeSensorFlexContainer.class, TemperatureFlexContainer.class,
+	WaterLevelFlexContainer.class, WaterSensorFlexContainer.class,
+	AtmosphericPressureSensorFlexContainer.class, BrewingFlexContainer.class,
+	ContactSensorFlexContainer.class, ExtendedCarbonDioxideSensorFlexContainer.class,
+	FoamingFlexContainer.class, GrinderFlexContainer.class,
+	NoiseFlexContainer.class, PersonSensorFlexContainer.class,
+	StreamingFlexContainer.class, LockFlexContainer.class,
+	BatteryFlexContainer.class,
+	LiquidLevelFlexContainer.class, TimerFlexContainer.class,
+	ToggleFlexContainer.class})
 public abstract class AbstractFlexContainer extends AnnounceableResource {
 	
 	@XmlTransient

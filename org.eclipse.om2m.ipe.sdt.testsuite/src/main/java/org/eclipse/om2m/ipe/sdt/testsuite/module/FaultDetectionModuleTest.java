@@ -9,8 +9,8 @@ package org.eclipse.om2m.ipe.sdt.testsuite.module;
 
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.resource.CustomAttribute;
-import org.eclipse.om2m.commons.resource.FlexContainer;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.FaultDetectionFlexContainer;
 import org.eclipse.om2m.core.service.CseService;
 import org.eclipse.om2m.ipe.sdt.testsuite.CSEUtil;
 import org.eclipse.om2m.ipe.sdt.testsuite.TestReport;
@@ -22,6 +22,7 @@ import org.eclipse.om2m.sdt.datapoints.IntegerDataPoint;
 import org.eclipse.om2m.sdt.datapoints.StringDataPoint;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 
 public class FaultDetectionModuleTest extends AbstractModuleTest {
 
@@ -50,19 +51,19 @@ public class FaultDetectionModuleTest extends AbstractModuleTest {
 			report.setState(State.KO);
 			return report;
 		}
-		FlexContainer retrievedFlexContainer = (FlexContainer) response.getContent();
-		CustomAttribute statusCA = retrievedFlexContainer.getCustomAttribute("status");
-		CustomAttribute codeCA = retrievedFlexContainer.getCustomAttribute("code"); // optional
-		CustomAttribute descriptionCA = retrievedFlexContainer.getCustomAttribute("description"); // optional
+		FaultDetectionFlexContainer retrievedFlexContainer = (FaultDetectionFlexContainer) response.getContent();
+		CustomAttribute statusCA = retrievedFlexContainer.getCustomAttribute(DatapointType.status.getShortName());
+		CustomAttribute codeCA = retrievedFlexContainer.getCustomAttribute(DatapointType.code.getShortName()); // optional
+		CustomAttribute descriptionCA = retrievedFlexContainer.getCustomAttribute(DatapointType.description.getShortName()); // optional
 		Boolean statusValueFromFlexContainer = Boolean.parseBoolean(statusCA.getCustomAttributeValue());
 		Integer codeValueFromFlexContainer = (codeCA != null ? Integer.valueOf(codeCA.getCustomAttributeValue()) :null);
 		String descriptionValueFromFlexContainer = (descriptionCA != null ? descriptionCA.getCustomAttributeValue() : null);
 		
 		
 		// retrieve Datapoint 
-		BooleanDataPoint statusDP = (BooleanDataPoint) getModule().getDataPoint("status");
-		IntegerDataPoint codeDP = (IntegerDataPoint) getModule().getDataPoint("code");
-		StringDataPoint descriptionDP = (StringDataPoint) getModule().getDataPoint("description");
+		BooleanDataPoint statusDP = (BooleanDataPoint) getModule().getDataPoint(DatapointType.status.getShortName());
+		IntegerDataPoint codeDP = (IntegerDataPoint) getModule().getDataPoint(DatapointType.code.getShortName());
+		StringDataPoint descriptionDP = (StringDataPoint) getModule().getDataPoint(DatapointType.description.getShortName());
 		Boolean statusValueFromDP = null;
 		Integer codeValueFromDP = null;
 		String descriptionValueFromDP = null;
@@ -88,7 +89,7 @@ public class FaultDetectionModuleTest extends AbstractModuleTest {
 				report.setState(State.KO);
 				return report;
 			}
-			if (!checkObject(codeValueFromDP, codeValueFromFlexContainer, report, "code")) {
+			if (!checkObject(codeValueFromDP, codeValueFromFlexContainer, report, DatapointType.code.getShortName())) {
 				// ko
 				return report;
 			}
@@ -124,7 +125,7 @@ public class FaultDetectionModuleTest extends AbstractModuleTest {
 		}
 		
 		// set status customAttribute value
-		FlexContainer toBeUpdated = new FlexContainer();
+		FaultDetectionFlexContainer toBeUpdated = new FaultDetectionFlexContainer();
 		Boolean newStatusValue = (statusValueFromDP.booleanValue() ? Boolean.FALSE : Boolean.TRUE);
 		statusCA.setCustomAttributeValue(newStatusValue.toString());
 		toBeUpdated.getCustomAttributes().add(statusCA);
@@ -143,7 +144,7 @@ public class FaultDetectionModuleTest extends AbstractModuleTest {
 			report.setState(State.KO);
 			return report;
 		}
-		if (checkObject(statusValueFromDP, newStatusValue, report, "status")) {
+		if (checkObject(statusValueFromDP, newStatusValue, report, DatapointType.status.getShortName())) {
 			// statusValueFromDP should not be equal to newStatusValue
 			report.setErrorMessage("status should not be writable");
 			report.setState(State.KO);
@@ -154,11 +155,10 @@ public class FaultDetectionModuleTest extends AbstractModuleTest {
 		}
 		
 		// set code customAttribute
-		toBeUpdated = new FlexContainer();
+		toBeUpdated = new FaultDetectionFlexContainer();
 		if(codeCA == null) {
 			codeCA = new CustomAttribute();
-			codeCA.setCustomAttributeName("code");
-			codeCA.setCustomAttributeType("xs:integer");
+			codeCA.setCustomAttributeName(DatapointType.code.getShortName());
 		}
 		codeCA.setCustomAttributeValue("1");
 		toBeUpdated.getCustomAttributes().add(codeCA);
@@ -176,8 +176,8 @@ public class FaultDetectionModuleTest extends AbstractModuleTest {
 			report.setState(State.KO);
 			return report;
 		}
-		retrievedFlexContainer = (FlexContainer) response.getContent();
-		codeCA = retrievedFlexContainer.getCustomAttribute("code");
+		retrievedFlexContainer = (FaultDetectionFlexContainer) response.getContent();
+		codeCA = retrievedFlexContainer.getCustomAttribute(DatapointType.code.getShortName());
 		if (codeDP == null) {
 			if (codeCA != null) {
 				report.setErrorMessage("code DataPoint does not exist but code customAttribute exist!");
@@ -194,11 +194,10 @@ public class FaultDetectionModuleTest extends AbstractModuleTest {
 		
 		
 		// set description customAttribute
-		toBeUpdated = new FlexContainer();
+		toBeUpdated = new FaultDetectionFlexContainer();
 		if (descriptionCA == null) {
 			descriptionCA = new CustomAttribute();
-			descriptionCA.setCustomAttributeName("description");
-			descriptionCA.setCustomAttributeType("xs:string");
+			descriptionCA.setCustomAttributeName(DatapointType.description.getShortName());
 		}
 		String newDescriptionValue = "A fake description value " + System.currentTimeMillis();
 		descriptionCA.setCustomAttributeValue(newDescriptionValue);
@@ -217,8 +216,8 @@ public class FaultDetectionModuleTest extends AbstractModuleTest {
 			report.setState(State.KO);
 			return report;
 		}
-		retrievedFlexContainer = (FlexContainer) response.getContent();
-		descriptionCA = retrievedFlexContainer.getCustomAttribute("description");
+		retrievedFlexContainer = (FaultDetectionFlexContainer) response.getContent();
+		descriptionCA = retrievedFlexContainer.getCustomAttribute(DatapointType.description.getShortName());
 		
 		if (descriptionDP == null) {
 			// description custom attribute must be null

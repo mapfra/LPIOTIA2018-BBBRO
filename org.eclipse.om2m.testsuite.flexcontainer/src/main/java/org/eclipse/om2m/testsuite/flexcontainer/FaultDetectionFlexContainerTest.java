@@ -10,8 +10,8 @@ package org.eclipse.om2m.testsuite.flexcontainer;
 import org.eclipse.om2m.commons.constants.Constants;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.resource.CustomAttribute;
-import org.eclipse.om2m.commons.resource.FlexContainer;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.FaultDetectionFlexContainer;
 import org.eclipse.om2m.core.service.CseService;
 import org.eclipse.om2m.testsuite.flexcontainer.TestReport.Status;
 
@@ -35,39 +35,36 @@ public class FaultDetectionFlexContainerTest extends FlexContainerTestSuite {
 		String flexContainerName = "FaultDetectionFlexContainer_" + System.currentTimeMillis();
 		String flexContainerLocation = baseLocation + "/" + flexContainerName;
 
-		FlexContainer flexContainer = new FlexContainer();
-		flexContainer.setContainerDefinition("org.onem2m.home.moduleclass.faultdetection");
+		FaultDetectionFlexContainer flexContainer = new FaultDetectionFlexContainer();
+		flexContainer.setName(flexContainerName);
 		flexContainer.setOntologyRef("OrangeOntology");
 		flexContainer.setCreator("Greg");
 
 		CustomAttribute statusCustomAttribute = new CustomAttribute();
-		statusCustomAttribute.setCustomAttributeName("status");
-		statusCustomAttribute.setCustomAttributeType("xs:boolean");
+		statusCustomAttribute.setCustomAttributeName("stats");
 		statusCustomAttribute.setCustomAttributeValue("false");
 		flexContainer.getCustomAttributes().add(statusCustomAttribute);
 
 		CustomAttribute codeCustomAttribute = new CustomAttribute();
 		codeCustomAttribute.setCustomAttributeName("code");
-		codeCustomAttribute.setCustomAttributeType("xs:integer");
 		codeCustomAttribute.setCustomAttributeValue("123");
 		flexContainer.getCustomAttributes().add(codeCustomAttribute);
 
 		CustomAttribute descriptionCustomAttribute = new CustomAttribute();
-		descriptionCustomAttribute.setCustomAttributeName("description");
-		descriptionCustomAttribute.setCustomAttributeType("xs:string");
+		descriptionCustomAttribute.setCustomAttributeName("descn");
 		descriptionCustomAttribute.setCustomAttributeValue("My description");
 		flexContainer.getCustomAttributes().add(descriptionCustomAttribute);
 
 		// send create Request
-		ResponsePrimitive response = sendCreateFlexContainerRequest(flexContainer, baseLocation, flexContainerName);
-		FlexContainer createdFlexContainer = null;
+		ResponsePrimitive response = sendCreateFlexContainerRequest(flexContainer, baseLocation, Constants.ADMIN_REQUESTING_ENTITY);
+		FaultDetectionFlexContainer createdFlexContainer = null;
 		if (!response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {
 			// KO
 			createTestReport("testCreateFaultDetectionFlexContainer", Status.KO,
 					"unable to create FaultDetectionFlexContainer", null);
 			return;
 		} else {
-			createdFlexContainer = (FlexContainer) response.getContent();
+			createdFlexContainer = (FaultDetectionFlexContainer) response.getContent();
 
 			if (!flexContainerName.equals(createdFlexContainer.getName())) {
 				createTestReport("testCreateFaultDetectionFlexContainer", Status.KO,
@@ -125,7 +122,7 @@ public class FaultDetectionFlexContainerTest extends FlexContainerTestSuite {
 					null);
 			return;
 		} else {
-			FlexContainer retrievedFlexContainer = (FlexContainer) response.getContent();
+			FaultDetectionFlexContainer retrievedFlexContainer = (FaultDetectionFlexContainer) response.getContent();
 			try {
 				checkFlexContainer(createdFlexContainer, retrievedFlexContainer);
 			} catch (Exception e) {
@@ -145,31 +142,28 @@ public class FaultDetectionFlexContainerTest extends FlexContainerTestSuite {
 		String flexContainerName = "FaultDetectionFlexContainer_" + System.currentTimeMillis();
 		String flexContainerLocation = baseLocation + "/" + flexContainerName;
 
-		FlexContainer flexContainer = new FlexContainer();
-		flexContainer.setContainerDefinition("org.onem2m.home.moduleclass.faultdetection");
+		FaultDetectionFlexContainer flexContainer = new FaultDetectionFlexContainer();
+		flexContainer.setName(flexContainerName);
 		flexContainer.setOntologyRef("OrangeOntology");
 		flexContainer.setCreator("Greg");
 
 		CustomAttribute statusCustomAttribute = new CustomAttribute();
-		statusCustomAttribute.setCustomAttributeName("status");
-		statusCustomAttribute.setCustomAttributeType("xs:boolean");
+		statusCustomAttribute.setCustomAttributeName("stats");
 		statusCustomAttribute.setCustomAttributeValue("false");
 		flexContainer.getCustomAttributes().add(statusCustomAttribute);
 
 		CustomAttribute codeCustomAttribute = new CustomAttribute();
 		codeCustomAttribute.setCustomAttributeName("code");
-		codeCustomAttribute.setCustomAttributeType("xs:integer");
 		codeCustomAttribute.setCustomAttributeValue("123");
 		flexContainer.getCustomAttributes().add(codeCustomAttribute);
 
 		CustomAttribute descriptionCustomAttribute = new CustomAttribute();
-		descriptionCustomAttribute.setCustomAttributeName("description");
-		descriptionCustomAttribute.setCustomAttributeType("xs:string");
+		descriptionCustomAttribute.setCustomAttributeName("descn");
 		descriptionCustomAttribute.setCustomAttributeValue("My description");
 		flexContainer.getCustomAttributes().add(descriptionCustomAttribute);
 
 		// send create Request
-		ResponsePrimitive response = sendCreateFlexContainerRequest(flexContainer, baseLocation, flexContainerName);
+		ResponsePrimitive response = sendCreateFlexContainerRequest(flexContainer, baseLocation, Constants.ADMIN_REQUESTING_ENTITY);
 		if (!response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {
 			// KO
 			createTestReport("testUpdateFaultDetectionFlexContainer", Status.KO,
@@ -178,25 +172,23 @@ public class FaultDetectionFlexContainerTest extends FlexContainerTestSuite {
 		}
 
 		// update the status value
-		FlexContainer flexContainerToBeUpdated = new FlexContainer();
-		flexContainerToBeUpdated.setContainerDefinition("org.onem2m.home.moduleclass.faultdetection");
+		FaultDetectionFlexContainer flexContainerToBeUpdated = new FaultDetectionFlexContainer();
 		CustomAttribute statusCustomAttributeToBeUpdated = new CustomAttribute();
-		statusCustomAttributeToBeUpdated.setCustomAttributeName("status");
-		statusCustomAttributeToBeUpdated.setCustomAttributeType("xs:boolean");
+		statusCustomAttributeToBeUpdated.setCustomAttributeName("stats");
 		statusCustomAttributeToBeUpdated.setCustomAttributeValue("true");
 		flexContainerToBeUpdated.getCustomAttributes().add(statusCustomAttributeToBeUpdated);
 
 		// send UPDATE request
 		response = sendUpdateFlexContainerRequest(flexContainerLocation, flexContainerToBeUpdated);
-		FlexContainer updatedFlexContainer = null;
+		FaultDetectionFlexContainer updatedFlexContainer = null;
 		if (!response.getResponseStatusCode().equals(ResponseStatusCode.UPDATED)) {
 			// KO
 			createTestReport("testUpdateFaultDetectionFlexContainer", Status.KO,
 					"unable to update FaultDetectionFlexContainer", null);
 			return;
 		} else {
-			updatedFlexContainer = (FlexContainer) response.getContent();
-			if (!updatedFlexContainer.getCustomAttribute("status").getCustomAttributeValue().equals("true")) {
+			updatedFlexContainer = (FaultDetectionFlexContainer) response.getContent();
+			if (!updatedFlexContainer.getCustomAttribute("stats").getCustomAttributeValue().equals("true")) {
 				createTestReport("testUpdateFaultDetectionFlexContainer", Status.KO,
 						"expected \"true\" value for status custom attribute", null);
 				return;
@@ -211,31 +203,28 @@ public class FaultDetectionFlexContainerTest extends FlexContainerTestSuite {
 		String flexContainerName = "FaultDetectionFlexContainer_" + System.currentTimeMillis();
 		String flexContainerLocation = baseLocation + "/" + flexContainerName;
 
-		FlexContainer flexContainer = new FlexContainer();
-		flexContainer.setContainerDefinition("org.onem2m.home.moduleclass.faultdetection");
+		FaultDetectionFlexContainer flexContainer = new FaultDetectionFlexContainer();
+		flexContainer.setName(flexContainerName);
 		flexContainer.setOntologyRef("OrangeOntology");
 		flexContainer.setCreator("Greg");
 
 		CustomAttribute statusCustomAttribute = new CustomAttribute();
-		statusCustomAttribute.setCustomAttributeName("status");
-		statusCustomAttribute.setCustomAttributeType("xs:boolean");
+		statusCustomAttribute.setCustomAttributeName("stats");
 		statusCustomAttribute.setCustomAttributeValue("false");
 		flexContainer.getCustomAttributes().add(statusCustomAttribute);
 
 		CustomAttribute codeCustomAttribute = new CustomAttribute();
 		codeCustomAttribute.setCustomAttributeName("code");
-		codeCustomAttribute.setCustomAttributeType("xs:integer");
 		codeCustomAttribute.setCustomAttributeValue("123");
 		flexContainer.getCustomAttributes().add(codeCustomAttribute);
 
 		CustomAttribute descriptionCustomAttribute = new CustomAttribute();
-		descriptionCustomAttribute.setCustomAttributeName("description");
-		descriptionCustomAttribute.setCustomAttributeType("xs:string");
+		descriptionCustomAttribute.setCustomAttributeName("descn");
 		descriptionCustomAttribute.setCustomAttributeValue("My description");
 		flexContainer.getCustomAttributes().add(descriptionCustomAttribute);
 
 		// send create Request
-		ResponsePrimitive response = sendCreateFlexContainerRequest(flexContainer, baseLocation, flexContainerName);
+		ResponsePrimitive response = sendCreateFlexContainerRequest(flexContainer, baseLocation, Constants.ADMIN_REQUESTING_ENTITY);
 		if (!response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {
 			// KO
 			createTestReport("testDeleteFaultDetectionFlexContainer", Status.KO,

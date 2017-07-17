@@ -7,6 +7,9 @@
  *******************************************************************************/
 package org.eclipse.om2m.testsuite.flexcontainer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.om2m.core.service.CseService;
 import org.eclipse.om2m.datamapping.service.DataMapperService;
 import org.osgi.framework.BundleActivator;
@@ -145,13 +148,17 @@ public class Activator implements BundleActivator {
 
 	private void setCseServiceAndStartTesting(CseService cseService) {
 
+		List<FlexContainerTestSuite> tests = new ArrayList<>();
+		
 		currentCseService = cseService;
 		try {
 			BinarySwitchFlexContainerTest test1 = new BinarySwitchFlexContainerTest(currentCseService);
 			test1.executeTestsAndPrintReports();
+			tests.add(test1);
 
 			LocationFlexContainerTest test2 = new LocationFlexContainerTest(currentCseService);
 			test2.executeTestsAndPrintReports();
+			tests.add(test2);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -164,48 +171,73 @@ public class Activator implements BundleActivator {
 		
 		AccessControlPolicyTest acpTest = new AccessControlPolicyTest(currentCseService);
 		acpTest.executeTestsAndPrintReports();
+		tests.add(acpTest);
 		
 		FaultDetectionFlexContainerTest faultDetectionTest = new FaultDetectionFlexContainerTest(currentCseService);
 		faultDetectionTest.executeTestsAndPrintReports();
+		tests.add(faultDetectionTest);
 		
 		RunModeFlexContainerTest runModeTest = new RunModeFlexContainerTest(cseService);
 		runModeTest.executeTestsAndPrintReports();
+		tests.add(runModeTest);
 		
-		LightFlexContainerTest light = new LightFlexContainerTest(currentCseService);
-		light.executeTestsAndPrintReports();
+		// 2017 07 17 - BONNARDEL Gregory
+		// Light module does not exist anymore
+		// should be replaced by Color ?
+//		LightFlexContainerTest light = new LightFlexContainerTest(currentCseService);
+//		light.executeTestsAndPrintReports();
+//		tests.add(light);
 		
 		EnergyConsumptionFlexContainerTest energyConsumptionTest = new EnergyConsumptionFlexContainerTest(currentCseService);
 		energyConsumptionTest.executeTestsAndPrintReports();
+		tests.add(energyConsumptionTest);
 		
 		WaterSensorFlexContainerTest waterSensorTest = new WaterSensorFlexContainerTest(currentCseService);
 		waterSensorTest.executeTestsAndPrintReports();
+		tests.add(waterSensorTest);
 		
 		AlarmSpeakerFlexContainerTest alarmSpeakerTest = new AlarmSpeakerFlexContainerTest(currentCseService);
 		alarmSpeakerTest.executeTestsAndPrintReports();
+		tests.add(alarmSpeakerTest);
 		
 		LightDeviceFlexContainerTest lightDeviceTest = new LightDeviceFlexContainerTest(currentCseService);
 		lightDeviceTest.executeTestsAndPrintReports();
+		tests.add(lightDeviceTest);
 		
 		SmartElectricMeterFlexContainerTest smartElectricMeterTest = new SmartElectricMeterFlexContainerTest(currentCseService);
 		smartElectricMeterTest.executeTestsAndPrintReports();
+		tests.add(smartElectricMeterTest);
 		
 		FloodDetectorFlexContainerTest floodDetectorTest = new FloodDetectorFlexContainerTest(currentCseService);
 		floodDetectorTest.executeTestsAndPrintReports();
+		tests.add(floodDetectorTest);
 		
 		GasValveFlexContainerTest gasValveTest = new GasValveFlexContainerTest(currentCseService);
 		gasValveTest.executeTestsAndPrintReports();
+		tests.add(gasValveTest);
 		
 		WarningDeviceFlexContainerTest warningDeviceTest = new WarningDeviceFlexContainerTest(currentCseService);
 		warningDeviceTest.executeTestsAndPrintReports();
+		tests.add(warningDeviceTest);
 		
 		SmokeDetectorFlexContainerTest smokeDetectorTest = new SmokeDetectorFlexContainerTest(currentCseService);
 		smokeDetectorTest.executeTestsAndPrintReports();
+		tests.add(smokeDetectorTest);
 		
 		WaterValveFlexContainerTest waterValveTest = new WaterValveFlexContainerTest(currentCseService);
 		waterValveTest.executeTestsAndPrintReports();
+		tests.add(waterValveTest);
 		
 		CallbackTest callbackTest = new CallbackTest(currentCseService, bundleContext);
 		callbackTest.executeTestsAndPrintReports();
+		tests.add(callbackTest);
+		
+		
+		System.out.println("");
+		System.out.println("#####################################################################################");
+		for(FlexContainerTestSuite test : tests) {
+			test.printTestReports();
+		}
 	}
 
 	private void unsetCseServiceAndStopTesting() {

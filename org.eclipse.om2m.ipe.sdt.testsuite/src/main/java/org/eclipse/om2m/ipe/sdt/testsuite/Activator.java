@@ -75,7 +75,7 @@ public class Activator implements BundleActivator {
 		try {
 //			DeviceDiscoveryTestSuite deviceDiscoveryTestSuite = new DeviceDiscoveryTestSuite(bundleContext, cseService);
 			
-			SDTModuleTestSuite moduleTestSuite = new SDTModuleTestSuite(bundleContext, cseService);
+//			SDTModuleTestSuite moduleTestSuite = new SDTModuleTestSuite(bundleContext, cseService);
 			
 			subscriptionTestSuite = new SubscriptionTestSuite(bundleContext, cseService);
 		} catch (Exception e) {

@@ -83,8 +83,6 @@ public class ModuleSDTListener implements SDTEventListener {
 		AbstractFlexContainer toBeUpdated = new FlexContainer();
 		CustomAttribute ca = new CustomAttribute();
 		ca.setCustomAttributeName(notif.getDataPoint().getName());
-		ca.setCustomAttributeType(
-				notif.getDataPoint().getDataType().getTypeChoice().getOneM2MType());
 		Object value = notif.getValue();
 		ca.setCustomAttributeValue((value != null ? value.toString() : null));
 		toBeUpdated.getCustomAttributes().add(ca);

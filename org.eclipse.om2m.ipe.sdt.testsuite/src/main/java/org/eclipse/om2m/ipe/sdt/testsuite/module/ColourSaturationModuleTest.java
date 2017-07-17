@@ -9,8 +9,8 @@ package org.eclipse.om2m.ipe.sdt.testsuite.module;
 
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.resource.CustomAttribute;
-import org.eclipse.om2m.commons.resource.FlexContainer;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.ColourSaturationFlexContainer;
 import org.eclipse.om2m.core.service.CseService;
 import org.eclipse.om2m.ipe.sdt.testsuite.CSEUtil;
 import org.eclipse.om2m.ipe.sdt.testsuite.TestReport;
@@ -22,6 +22,8 @@ import org.eclipse.om2m.sdt.datapoints.BooleanDataPoint;
 import org.eclipse.om2m.sdt.datapoints.IntegerDataPoint;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
+import org.eclipse.om2m.sdt.home.types.ModuleType;
 
 public class ColourSaturationModuleTest extends AbstractModuleTest {
 
@@ -31,7 +33,7 @@ public class ColourSaturationModuleTest extends AbstractModuleTest {
 		Device device = getModule().getOwner();
 		String binarySwitchModuleName = null;
 		for (String moduleName : device.getModuleNames()) {
-			if (moduleName.toLowerCase().contains("binaryswitch")) {
+			if (moduleName.toLowerCase().contains(ModuleType.binarySwitch.getShortName())) {
 				binarySwitchModuleName = moduleName;
 				break;
 			}
@@ -39,7 +41,7 @@ public class ColourSaturationModuleTest extends AbstractModuleTest {
 
 		if (binarySwitchModuleName != null) {
 			BooleanDataPoint powerStateDP = (BooleanDataPoint) getModule().getOwner().getModule(binarySwitchModuleName)
-					.getDataPoint("powerState");
+					.getDataPoint(DatapointType.powerState.getShortName());
 			try {
 				powerStateDP.setValue(Boolean.TRUE);
 			} catch (DataPointException | AccessException e) {
@@ -70,14 +72,14 @@ public class ColourSaturationModuleTest extends AbstractModuleTest {
 			report.setState(State.KO);
 			return report;
 		}
-		FlexContainer retrievedFlexContainer = (FlexContainer) response.getContent();
+		ColourSaturationFlexContainer retrievedFlexContainer = (ColourSaturationFlexContainer) response.getContent();
 
 		// get colourSaturation custom attribute
-		CustomAttribute colourSaturationCA = retrievedFlexContainer.getCustomAttribute("colourSaturation");
+		CustomAttribute colourSaturationCA = retrievedFlexContainer.getCustomAttribute(DatapointType.colourSat.getShortName());
 		Integer colourSaturationFromFlexContainer = Integer.valueOf(colourSaturationCA.getCustomAttributeValue());
 
 		// get colourSaturation from module
-		IntegerDataPoint colourSaturationDP = (IntegerDataPoint) getModule().getDataPoint("colourSaturation");
+		IntegerDataPoint colourSaturationDP = (IntegerDataPoint) getModule().getDataPoint(DatapointType.colourSat.getShortName());
 		Integer colourSaturationFromDP = null;
 		try {
 			colourSaturationFromDP = colourSaturationDP.getValue();
@@ -99,7 +101,7 @@ public class ColourSaturationModuleTest extends AbstractModuleTest {
 		}
 
 		// set colourSaturation
-		FlexContainer toBeUpdated = new FlexContainer();
+		ColourSaturationFlexContainer toBeUpdated = new ColourSaturationFlexContainer();
 		Integer newColourSaturation = new Integer((int) (Math.random() * 100d));
 		colourSaturationCA.setCustomAttributeValue(newColourSaturation.toString());
 		toBeUpdated.getCustomAttributes().add(colourSaturationCA);
@@ -135,10 +137,10 @@ public class ColourSaturationModuleTest extends AbstractModuleTest {
 			report.setState(State.KO);
 			return report;
 		}
-		retrievedFlexContainer = (FlexContainer) response.getContent();
+		retrievedFlexContainer = (ColourSaturationFlexContainer) response.getContent();
 
 		// get colourSaturation custom attribute
-		colourSaturationCA = retrievedFlexContainer.getCustomAttribute("colourSaturation");
+		colourSaturationCA = retrievedFlexContainer.getCustomAttribute(DatapointType.colourSat.getShortName());
 		colourSaturationFromFlexContainer = Integer.valueOf(colourSaturationCA.getCustomAttributeValue());
 		// check value between flexContainer and newValue
 		if (Math.abs(colourSaturationFromFlexContainer - newColourSaturation) > 2) {

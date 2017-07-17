@@ -165,7 +165,6 @@ public class ResourceDiscovery {
 			PropertyType propType = PropertyType.fromShortName(attr.getCustomAttributeName());
 			if (propType != null) {
 				Property prop = new Property(propType, attr.getCustomAttributeValue());
-				prop.setType(SimpleType.getSimpleType(attr.getCustomAttributeType()));
 //				device.addProperty(prop);
 				device.addProperty(propType, attr.getCustomAttributeValue());
 			} else {
@@ -211,7 +210,6 @@ public class ResourceDiscovery {
 			PropertyType propType = PropertyType.fromShortName(attr.getCustomAttributeName());
 			if (propType != null) {
 				Property prop = new Property(propType, attr.getCustomAttributeValue());
-				prop.setType(SimpleType.getSimpleType(attr.getCustomAttributeType()));
 				props.add(prop);
 			} else {
 				dpAttrs.add(attr);
@@ -236,12 +234,13 @@ public class ResourceDiscovery {
 		List<DataPoint> dps = new ArrayList<DataPoint>();
 		for (CustomAttribute attr : dpAttrs) {
 			Activator.logger.info("mod CustomAttribute(2): " + attr);
-			if (DatapointType.fromShortName(attr.getCustomAttributeName()) == null) {
+			DatapointType datapointType = DatapointType.fromShortName(attr.getCustomAttributeName());
+			if (datapointType == null) {
 				Activator.logger.warning("Unknown custom attribute, neither property nor datapoint: " 
 						+ attr.getCustomAttributeName());
 				continue;
 			}
-			String type = attr.getCustomAttributeType();
+			String type = datapointType.getDataType().getTypeChoice().getOneM2MType();
 			switch (type) {
 			case "xs:integer": dps.add(getIntegerDataPoint(attr, uri)); break;
 			case "xs:boolean": dps.add(getBooleanDataPoint(attr, uri)); break;
@@ -313,21 +312,25 @@ public class ResourceDiscovery {
 		}
 		List<Arg> args = new ArrayList<Arg>();
 		final List<CustomAttribute> attributes = actionFlexContainer.getCustomAttributes();
-		for (final CustomAttribute attr : attributes) {
-			String type = attr.getCustomAttributeType();
-			Arg arg = new ValuedArg<Object>(attr.getCustomAttributeName(), 
-					new DataType(type, SimpleType.getSimpleType(type))) {
-				public void setValue(Object value) {
-					try {
-						SDTUtil.setValue(attr, value);
-						updateAttribute(uri, attr);
-					} catch (Exception e) {
-						Activator.logger.warning("Could not set arg", e);
-					}
-				}
-			};
-			args.add(arg);
-		}
+		// 2017 07 17 - Grégory BONNARDEL
+		// I commented the next piece of code because we don't have information
+		// about argument type 
+		// as we have only no-arg action, this is not a problem
+//		for (final CustomAttribute attr : attributes) {
+//			String type = attr.getCustomAttributeType();
+//			Arg arg = new ValuedArg<Object>(attr.getCustomAttributeName(), 
+//					new DataType(type, SimpleType.getSimpleType(type))) {
+//				public void setValue(Object value) {
+//					try {
+//						SDTUtil.setValue(attr, value);
+//						updateAttribute(uri, attr);
+//					} catch (Exception e) {
+//						Activator.logger.warning("Could not set arg", e);
+//					}
+//				}
+//			};
+//			args.add(arg);
+//		}
 		final String cntDef = actionFlexContainer.getContainerDefinition();
 		String actionName = labels.get("name");
 		if (actionName == null)
@@ -374,7 +377,7 @@ public class ResourceDiscovery {
 			@Override
 			public void doSetValue(Integer val) throws DataPointException {
 				try {
-					SDTUtil.setValue(attr, val);
+					SDTUtil.setValue(attr, "xs:integer", val);
 					updateAttribute(uri, attr);
 				} catch (Exception e) {
 					throw new DataPointException(e);
@@ -383,7 +386,7 @@ public class ResourceDiscovery {
 			@Override
 			public Integer doGetValue() throws DataPointException {
 				try {
-					return (Integer) retrieveAttribute(uri, attr.getCustomAttributeName());
+					return (Integer) retrieveAttribute(uri, attr.getCustomAttributeName(), "xs:integer");
 				} catch (Exception e) {
 					throw new DataPointException(e);
 				}
@@ -397,7 +400,7 @@ public class ResourceDiscovery {
 			@Override
 			public void doSetValue(Boolean val) throws DataPointException {
 				try {
-					SDTUtil.setValue(attr, val);
+					SDTUtil.setValue(attr, "xs:boolean", val);
 					updateAttribute(uri, attr);
 				} catch (Exception e) {
 					throw new DataPointException(e);
@@ -406,7 +409,7 @@ public class ResourceDiscovery {
 			@Override
 			public Boolean doGetValue() throws DataPointException {
 				try {
-					return (Boolean) retrieveAttribute(uri, attr.getCustomAttributeName());
+					return (Boolean) retrieveAttribute(uri, attr.getCustomAttributeName(), "xs:boolean");
 				} catch (Exception e) {
 					throw new DataPointException(e);
 				}
@@ -421,7 +424,7 @@ public class ResourceDiscovery {
 			@Override
 			public void doSetValue(String val) throws DataPointException {
 				try {
-					SDTUtil.setValue(attr, val);
+					SDTUtil.setValue(attr, "xs:string", val);
 					updateAttribute(uri, attr);
 				} catch (Exception e) {
 					throw new DataPointException(e);
@@ -430,7 +433,7 @@ public class ResourceDiscovery {
 			@Override
 			public String doGetValue() throws DataPointException {
 				try {
-					return (String) retrieveAttribute(uri, attr.getCustomAttributeName());
+					return (String) retrieveAttribute(uri, attr.getCustomAttributeName(), "xs:string");
 				} catch (Exception e) {
 					throw new DataPointException(e);
 				}
@@ -444,7 +447,7 @@ public class ResourceDiscovery {
 			@Override
 			public void doSetValue(Byte val) throws DataPointException {
 				try {
-					SDTUtil.setValue(attr, val);
+					SDTUtil.setValue(attr, "xs:byte", val);
 					updateAttribute(uri, attr);
 				} catch (Exception e) {
 					throw new DataPointException(e);
@@ -453,7 +456,7 @@ public class ResourceDiscovery {
 			@Override
 			public Byte doGetValue() throws DataPointException {
 				try {
-					return (Byte) retrieveAttribute(uri, attr.getCustomAttributeName());
+					return (Byte) retrieveAttribute(uri, attr.getCustomAttributeName(), "xs:byte");
 				} catch (Exception e) {
 					throw new DataPointException(e);
 				}
@@ -467,7 +470,7 @@ public class ResourceDiscovery {
 			@Override
 			public void doSetValue(Float val) throws DataPointException {
 				try {
-					SDTUtil.setValue(attr, val);
+					SDTUtil.setValue(attr, "xs:float", val);
 					updateAttribute(uri, attr);
 				} catch (Exception e) {
 					throw new DataPointException(e);
@@ -476,7 +479,7 @@ public class ResourceDiscovery {
 			@Override
 			public Float doGetValue() throws DataPointException {
 				try {
-					return (Float) retrieveAttribute(uri, attr.getCustomAttributeName());
+					return (Float) retrieveAttribute(uri, attr.getCustomAttributeName(), "xs:float");
 				} catch (Exception e) {
 					throw new DataPointException(e);
 				}
@@ -490,7 +493,7 @@ public class ResourceDiscovery {
 			@Override
 			public void doSetValue(Date val) throws DataPointException {
 				try {
-					SDTUtil.setValue(attr, val);
+					SDTUtil.setValue(attr, "xs:datetime", val);
 					updateAttribute(uri, attr);
 				} catch (Exception e) {
 					throw new DataPointException(e);
@@ -499,7 +502,7 @@ public class ResourceDiscovery {
 			@Override
 			public Date doGetValue() throws DataPointException {
 				try {
-					return (Date) retrieveAttribute(uri, attr.getCustomAttributeName());
+					return (Date) retrieveAttribute(uri, attr.getCustomAttributeName(), "xs:datetime");
 				} catch (Exception e) {
 					throw new DataPointException(e);
 				}
@@ -513,7 +516,7 @@ public class ResourceDiscovery {
 			@Override
 			public void doSetValue(Date val) throws DataPointException {
 				try {
-					SDTUtil.setValue(attr, val);
+					SDTUtil.setValue(attr, "xs:date", val);
 					updateAttribute(uri, attr);
 				} catch (Exception e) {
 					throw new DataPointException(e);
@@ -522,7 +525,7 @@ public class ResourceDiscovery {
 			@Override
 			public Date doGetValue() throws DataPointException {
 				try {
-					return (Date) retrieveAttribute(uri, attr.getCustomAttributeName());
+					return (Date) retrieveAttribute(uri, attr.getCustomAttributeName(), "xs:date");
 				} catch (Exception e) {
 					throw new DataPointException(e);
 				}
@@ -536,7 +539,7 @@ public class ResourceDiscovery {
 			@Override
 			public void doSetValue(Date val) throws DataPointException {
 				try {
-					SDTUtil.setValue(attr, val);
+					SDTUtil.setValue(attr, "xs:time", val);
 					updateAttribute(uri, attr);
 				} catch (Exception e) {
 					throw new DataPointException(e);
@@ -545,7 +548,7 @@ public class ResourceDiscovery {
 			@Override
 			public Date doGetValue() throws DataPointException {
 				try {
-					return (Date) retrieveAttribute(uri, attr.getCustomAttributeName());
+					return (Date) retrieveAttribute(uri, attr.getCustomAttributeName(), "xs:time");
 				} catch (Exception e) {
 					throw new DataPointException(e);
 				}
@@ -559,7 +562,7 @@ public class ResourceDiscovery {
 			@Override
 			public void doSetValue(List<String> val) throws DataPointException {
 				try {
-					SDTUtil.setValue(attr, val);
+					SDTUtil.setValue(attr, "xs:array", val);
 					updateAttribute(uri, attr);
 				} catch (Exception e) {
 					throw new DataPointException(e);
@@ -569,7 +572,7 @@ public class ResourceDiscovery {
 			@Override
 			public List<String> doGetValue() throws DataPointException {
 				try {
-					return (List<String>) retrieveAttribute(uri, attr.getCustomAttributeName());
+					return (List<String>) retrieveAttribute(uri, attr.getCustomAttributeName(), "xs:array");
 				} catch (Exception e) {
 					throw new DataPointException(e);
 				}
@@ -591,7 +594,7 @@ public class ResourceDiscovery {
 							@Override
 							public void doSetValue(Integer val) throws DataPointException {
 								try {
-									SDTUtil.setValue(attr, val);
+									SDTUtil.setValue(attr, "xs:enum", val);
 									updateAttribute(uri, attr);
 								} catch (Exception e) {
 									throw new DataPointException(e);
@@ -600,7 +603,7 @@ public class ResourceDiscovery {
 							@Override
 							public Integer doGetValue() throws DataPointException {
 								try {
-									return (Integer) retrieveAttribute(uri, attr.getCustomAttributeName());
+									return (Integer) retrieveAttribute(uri, attr.getCustomAttributeName(), "xs:integer");
 								} catch (Exception e) {
 									throw new DataPointException(e);
 								}
@@ -631,7 +634,7 @@ public class ResourceDiscovery {
 				? response.getContent() : null;
 	}
 
-	private static Object retrieveAttribute(String uri, String attr) throws Exception {
+	private static Object retrieveAttribute(String uri, String attr, String type) throws Exception {
 		RequestPrimitive request = new RequestPrimitive();
 		request.setOperation(Operation.RETRIEVE);
 		request.setReturnContentType(MimeMediaType.OBJ);
@@ -644,7 +647,7 @@ public class ResourceDiscovery {
 		Activator.logger.info("read " + attr + " -> " + response.getResponseStatusCode());
 		if (! ResponseStatusCode.OK.equals(response.getResponseStatusCode()))
 			throw new Exception("Error reading cloud data: " + response.getResponseStatusCode());
-		return SDTUtil.getValue(((AbstractFlexContainer) response.getContent()).getCustomAttribute(attr));
+		return SDTUtil.getValue(((AbstractFlexContainer) response.getContent()).getCustomAttribute(attr), type);
 	}
 
 	public static void updateAttribute(final String uri, 

@@ -20,8 +20,8 @@ public class SDTUtil {
 	static final private DateFormat dateFormat = DateFormat.getDateInstance();
 	static final private DateFormat timeFormat = DateFormat.getTimeInstance();
 
-	public static Object getValue(CustomAttribute attr) throws Exception {
-		return getValue(attr.getCustomAttributeValue(), attr.getCustomAttributeType());
+	public static Object getValue(CustomAttribute attr, String type) throws Exception {
+		return getValue(attr.getCustomAttributeValue(), type);
 	}
 
 	public static Object getValue(String value, String type) throws Exception {

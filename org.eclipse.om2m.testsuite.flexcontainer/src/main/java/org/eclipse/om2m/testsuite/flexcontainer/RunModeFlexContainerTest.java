@@ -10,9 +10,8 @@ package org.eclipse.om2m.testsuite.flexcontainer;
 import org.eclipse.om2m.commons.constants.Constants;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.resource.CustomAttribute;
-import org.eclipse.om2m.commons.resource.FlexContainer;
-import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.RunModeFlexContainer;
 import org.eclipse.om2m.core.service.CseService;
 import org.eclipse.om2m.testsuite.flexcontainer.TestReport.Status;
 
@@ -32,26 +31,24 @@ public class RunModeFlexContainerTest extends FlexContainerTestSuite {
 		String flexContainerName = "RunModeFlexContainer_" + System.currentTimeMillis();
 		String flexContainerLocation = baseLocation + "/" + flexContainerName;
 
-		FlexContainer flexContainer = new FlexContainer();
-		flexContainer.setContainerDefinition("org.onem2m.home.moduleclass.runmode");
+		RunModeFlexContainer flexContainer = new RunModeFlexContainer();
+		flexContainer.setName(flexContainerName);
 		flexContainer.setCreator("Greg");
 		flexContainer.setOntologyRef("OrangeOntology");
 
 		CustomAttribute operationModeCustomAttribute = new CustomAttribute();
-		operationModeCustomAttribute.setCustomAttributeName("operationMode");
-		operationModeCustomAttribute.setCustomAttributeType("xs:enum");
+		operationModeCustomAttribute.setCustomAttributeName("opeMe");
 		operationModeCustomAttribute.setCustomAttributeValue("ON");
 		flexContainer.getCustomAttributes().add(operationModeCustomAttribute);
 
 		CustomAttribute supportedModesCustomAttribute = new CustomAttribute();
-		supportedModesCustomAttribute.setCustomAttributeName("supportedModes");
-		supportedModesCustomAttribute.setCustomAttributeType("xs:enum");
+		supportedModesCustomAttribute.setCustomAttributeName("supMs");
 		supportedModesCustomAttribute.setCustomAttributeValue("ON,OFF,UNKNOWN");
 		flexContainer.getCustomAttributes().add(supportedModesCustomAttribute);
 
 		// send CREATE request
-		ResponsePrimitive response = sendCreateFlexContainerRequest(flexContainer, baseLocation, flexContainerName);
-		FlexContainer createdFlexContainer = null;
+		ResponsePrimitive response = sendCreateFlexContainerRequest(flexContainer, baseLocation, Constants.ADMIN_REQUESTING_ENTITY);
+		RunModeFlexContainer createdFlexContainer = null;
 		if (!response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {
 			// KO
 			createTestReport("testCreateAndRetrieveRunModeFlexContainer", Status.KO,
@@ -59,7 +56,7 @@ public class RunModeFlexContainerTest extends FlexContainerTestSuite {
 			return;
 		} else {
 			// OK
-			createdFlexContainer = (FlexContainer) response.getContent();
+			createdFlexContainer = (RunModeFlexContainer) response.getContent();
 
 			if (!flexContainerName.equals(createdFlexContainer.getName())) {
 				createTestReport("testCreateAndRetrieveRunModeFlexContainer", Status.KO,
@@ -120,7 +117,7 @@ public class RunModeFlexContainerTest extends FlexContainerTestSuite {
 					null);
 		} else {
 			// OK
-			FlexContainer retrievedFlexContainer = (FlexContainer) response.getContent();
+			RunModeFlexContainer retrievedFlexContainer = (RunModeFlexContainer) response.getContent();
 			try {
 				checkFlexContainer(createdFlexContainer, retrievedFlexContainer);
 			} catch (Exception e) {
@@ -140,26 +137,24 @@ public class RunModeFlexContainerTest extends FlexContainerTestSuite {
 		String flexContainerName = "RunModeFlexContainer_" + System.currentTimeMillis();
 		String flexContainerLocation = baseLocation + "/" + flexContainerName;
 
-		FlexContainer flexContainer = new FlexContainer();
-		flexContainer.setContainerDefinition("org.onem2m.home.moduleclass.runmode");
+		RunModeFlexContainer flexContainer = new RunModeFlexContainer();
+		flexContainer.setName(flexContainerName);
 		flexContainer.setCreator("Greg");
 		flexContainer.setOntologyRef("OrangeOntology");
 
 		CustomAttribute operationModeCustomAttribute = new CustomAttribute();
-		operationModeCustomAttribute.setCustomAttributeName("operationMode");
-		operationModeCustomAttribute.setCustomAttributeType("xs:enum");
+		operationModeCustomAttribute.setCustomAttributeName("opeMe");
 		operationModeCustomAttribute.setCustomAttributeValue("ON");
 		flexContainer.getCustomAttributes().add(operationModeCustomAttribute);
 
 		CustomAttribute supportedModesCustomAttribute = new CustomAttribute();
-		supportedModesCustomAttribute.setCustomAttributeName("supportedModes");
-		supportedModesCustomAttribute.setCustomAttributeType("xs:enum");
+		supportedModesCustomAttribute.setCustomAttributeName("supMs");
 		supportedModesCustomAttribute.setCustomAttributeValue("ON,OFF,UNKNOWN");
 		flexContainer.getCustomAttributes().add(supportedModesCustomAttribute);
 
 		// send CREATE request
-		ResponsePrimitive response = sendCreateFlexContainerRequest(flexContainer, baseLocation, flexContainerName);
-		FlexContainer createdFlexContainer = null;
+		ResponsePrimitive response = sendCreateFlexContainerRequest(flexContainer, baseLocation, Constants.ADMIN_REQUESTING_ENTITY);
+		RunModeFlexContainer createdFlexContainer = null;
 		if (!response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {
 			// KO
 			createTestReport("testUpdateRunModeFlexContainer", Status.KO,
@@ -168,17 +163,15 @@ public class RunModeFlexContainerTest extends FlexContainerTestSuite {
 		} 
 
 		// update Flexcontainer
-		FlexContainer toBeUpdated = new FlexContainer();
-		toBeUpdated.setContainerDefinition("org.onem2m.home.moduleclass.runmode");
+		RunModeFlexContainer toBeUpdated = new RunModeFlexContainer();
 
 		CustomAttribute operationModeToBeUpdated = new CustomAttribute();
 		operationModeToBeUpdated.setCustomAttributeValue("OFF");
-		operationModeToBeUpdated.setCustomAttributeName("operationMode");
-		operationModeToBeUpdated.setCustomAttributeType("xs:enum");
+		operationModeToBeUpdated.setCustomAttributeName("opeMe");
 		toBeUpdated.getCustomAttributes().add(operationModeToBeUpdated);
 
 		response = sendUpdateFlexContainerRequest(flexContainerLocation, toBeUpdated);
-		FlexContainer updatedFlexContainer = null;
+		RunModeFlexContainer updatedFlexContainer = null;
 		if (!response.getResponseStatusCode().equals(ResponseStatusCode.UPDATED)) {
 			// KO
 			createTestReport(
@@ -188,7 +181,7 @@ public class RunModeFlexContainerTest extends FlexContainerTestSuite {
 			return;
 		} else {
 			
-			updatedFlexContainer = (FlexContainer) response.getContent();
+			updatedFlexContainer = (RunModeFlexContainer) response.getContent();
 			if (updatedFlexContainer.getCustomAttributes().size() != 1) {
 				createTestReport("testUpdateRunModeFlexContainer", Status.KO,
 						"expecting 1 custom attribute, found " + updatedFlexContainer.getCustomAttributes().size(),
@@ -196,10 +189,10 @@ public class RunModeFlexContainerTest extends FlexContainerTestSuite {
 				return;
 			}
 			
-			if (!updatedFlexContainer.getCustomAttribute("operationMode").getCustomAttributeValue().equals("OFF")) {
+			if (!updatedFlexContainer.getCustomAttribute("opeMe").getCustomAttributeValue().equals("OFF")) {
 				createTestReport("testUpdateRunModeFlexContainer", Status.KO,
 						"invalid operationMode customAttribute value (expected: OFF, received: "
-								+ updatedFlexContainer.getCustomAttribute("operationMode").getCustomAttributeValue()
+								+ updatedFlexContainer.getCustomAttribute("opeMe").getCustomAttributeValue()
 								+ ")",
 						null);
 				return;
@@ -219,7 +212,7 @@ public class RunModeFlexContainerTest extends FlexContainerTestSuite {
 			return;
 		} else {
 			// OK
-			FlexContainer retrievedFlexContainer = (FlexContainer) response.getContent();
+			RunModeFlexContainer retrievedFlexContainer = (RunModeFlexContainer) response.getContent();
 			if (retrievedFlexContainer.getCustomAttributes().size() != 2) {
 				createTestReport("testUpdateRunModeFlexContainer", Status.KO,
 						"expecting 2 custom attribute, found " + updatedFlexContainer.getCustomAttributes().size(),
@@ -227,19 +220,19 @@ public class RunModeFlexContainerTest extends FlexContainerTestSuite {
 				return;
 			}
 			
-			if (!retrievedFlexContainer.getCustomAttribute("operationMode").getCustomAttributeValue().equals("OFF")) {
+			if (!retrievedFlexContainer.getCustomAttribute("opeMe").getCustomAttributeValue().equals("OFF")) {
 				createTestReport("testUpdateRunModeFlexContainer", Status.KO,
 						"invalid operationMode customAttribute value (expected: OFF, received: "
-								+ retrievedFlexContainer.getCustomAttribute("operationMode").getCustomAttributeValue()
+								+ retrievedFlexContainer.getCustomAttribute("opeMe").getCustomAttributeValue()
 								+ ")",
 						null);
 				return;
 			}
 			
-			if (!retrievedFlexContainer.getCustomAttribute("supportedModes").getCustomAttributeValue().equals("ON,OFF,UNKNOWN")) {
+			if (!retrievedFlexContainer.getCustomAttribute("supMs").getCustomAttributeValue().equals("ON,OFF,UNKNOWN")) {
 				createTestReport("testUpdateRunModeFlexContainer", Status.KO,
 						"invalid supportedModes customAttribute value (expected: ON,OFF,UNKNOWN, received: "
-								+ retrievedFlexContainer.getCustomAttribute("supportedModes").getCustomAttributeValue()
+								+ retrievedFlexContainer.getCustomAttribute("supMs").getCustomAttributeValue()
 								+ ")",
 						null);
 				return;
@@ -255,26 +248,24 @@ public class RunModeFlexContainerTest extends FlexContainerTestSuite {
 		String flexContainerName = "RunModeFlexContainer_" + System.currentTimeMillis();
 		String flexContainerLocation = baseLocation + "/" + flexContainerName;
 
-		FlexContainer flexContainer = new FlexContainer();
-		flexContainer.setContainerDefinition("org.onem2m.home.moduleclass.runmode");
+		RunModeFlexContainer flexContainer = new RunModeFlexContainer();
+		flexContainer.setName(flexContainerName);
 		flexContainer.setCreator("Greg");
 		flexContainer.setOntologyRef("OrangeOntology");
 
 		CustomAttribute operationModeCustomAttribute = new CustomAttribute();
-		operationModeCustomAttribute.setCustomAttributeName("operationMode");
-		operationModeCustomAttribute.setCustomAttributeType("xs:enum");
+		operationModeCustomAttribute.setCustomAttributeName("opeMe");
 		operationModeCustomAttribute.setCustomAttributeValue("ON");
 		flexContainer.getCustomAttributes().add(operationModeCustomAttribute);
 
 		CustomAttribute supportedModesCustomAttribute = new CustomAttribute();
-		supportedModesCustomAttribute.setCustomAttributeName("supportedModes");
-		supportedModesCustomAttribute.setCustomAttributeType("xs:enum");
+		supportedModesCustomAttribute.setCustomAttributeName("supMs");
 		supportedModesCustomAttribute.setCustomAttributeValue("ON,OFF,UNKNOWN");
 		flexContainer.getCustomAttributes().add(supportedModesCustomAttribute);
 
 		// send CREATE request
-		ResponsePrimitive response = sendCreateFlexContainerRequest(flexContainer, baseLocation, flexContainerName);
-		FlexContainer createdFlexContainer = null;
+		ResponsePrimitive response = sendCreateFlexContainerRequest(flexContainer, baseLocation, Constants.ADMIN_REQUESTING_ENTITY);
+		RunModeFlexContainer createdFlexContainer = null;
 		if (!response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {
 			// KO
 			createTestReport("testDeleteRunModeFlexContainer", Status.KO,

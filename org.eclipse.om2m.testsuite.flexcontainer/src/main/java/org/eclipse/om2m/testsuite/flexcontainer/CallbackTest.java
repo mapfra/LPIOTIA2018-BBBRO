@@ -13,9 +13,9 @@ import org.eclipse.om2m.commons.constants.Constants;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.exceptions.Om2mException;
 import org.eclipse.om2m.commons.resource.CustomAttribute;
-import org.eclipse.om2m.commons.resource.FlexContainer;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.BinarySwitchFlexContainer;
 import org.eclipse.om2m.core.service.CseService;
 import org.eclipse.om2m.flexcontainer.service.FlexContainerService;
 import org.eclipse.om2m.testsuite.flexcontainer.TestReport.Status;
@@ -27,7 +27,7 @@ public class CallbackTest extends FlexContainerTestSuite {
 	private String parentLocation = "/" + Constants.CSE_ID + "/" + Constants.CSE_NAME;
 	private String flexContainerName = "BinarySwitch_" + System.currentTimeMillis();
 	private String flexContainerLocation = parentLocation + "/" + flexContainerName;
-	private FlexContainer flexContainer;
+	private BinarySwitchFlexContainer flexContainer;
 	private BundleContext bundleContext;
 	private ServiceRegistration flexContainerServiceRegistration;
 
@@ -37,16 +37,15 @@ public class CallbackTest extends FlexContainerTestSuite {
 		super(pCseService);
 		bundleContext = pBundleContext;
 
-		flexContainer = new FlexContainer();
-		flexContainer.setContainerDefinition("org.onem2m.home.moduleclass.binaryswitch");
+		flexContainer = new BinarySwitchFlexContainer();
+		flexContainer.setName(flexContainerName);
 		CustomAttribute powerState = new CustomAttribute();
-		powerState.setCustomAttributeType("xs:boolean");
 		powerState.setCustomAttributeValue("false");
-		powerState.setCustomAttributeName("powerState");
+		powerState.setCustomAttributeName("powSe");
 		flexContainer.getCustomAttributes().add(powerState);
 
-		ResponsePrimitive response = sendCreateFlexContainerRequest(flexContainer, parentLocation, flexContainerName);
-		flexContainer = (FlexContainer) response.getContent();
+		ResponsePrimitive response = sendCreateFlexContainerRequest(flexContainer, parentLocation, Constants.ADMIN_REQUESTING_ENTITY);
+		flexContainer = (BinarySwitchFlexContainer) response.getContent();
 	}
 
 	@Override
@@ -74,7 +73,7 @@ public class CallbackTest extends FlexContainerTestSuite {
 
 			@Override
 			public String getCustomAttributeValue(String customAttributeName) throws Om2mException {
-				if (!customAttributeName.equals("powerState")) {
+				if (!customAttributeName.equals("powSe")) {
 					throw new Om2mException(
 							"unexpected getCustomAttributeValue for attributeName=" + customAttributeName,
 							ResponseStatusCode.NOT_IMPLEMENTED);
@@ -91,9 +90,9 @@ public class CallbackTest extends FlexContainerTestSuite {
 		// retrieve the FlexContainer
 		ResponsePrimitive response = sendRetrieveRequest(flexContainerLocation);
 		if (!response.getResponseStatusCode().equals(ResponseStatusCode.OK)) {
-			FlexContainer retrievedFlexContainer = (FlexContainer) response.getContent();
+			BinarySwitchFlexContainer retrievedFlexContainer = (BinarySwitchFlexContainer) response.getContent();
 
-			if (!retrievedFlexContainer.getCustomAttribute("powerState").getCustomAttributeValue()
+			if (!retrievedFlexContainer.getCustomAttribute("powSe").getCustomAttributeValue()
 					.equals(Boolean.TRUE.toString())) {
 				createTestReport("testCallback", Status.KO, "invalid powerState value, expecting true", null);
 				return;
@@ -113,9 +112,9 @@ public class CallbackTest extends FlexContainerTestSuite {
 		// retrieve the flexContainer again
 		response = sendRetrieveRequest(flexContainerLocation);
 		if (!response.getResponseStatusCode().equals(ResponseStatusCode.OK)) {
-			FlexContainer retrievedFlexContainer = (FlexContainer) response.getContent();
+			BinarySwitchFlexContainer retrievedFlexContainer = (BinarySwitchFlexContainer) response.getContent();
 
-			if (!retrievedFlexContainer.getCustomAttribute("powerState").getCustomAttributeValue()
+			if (!retrievedFlexContainer.getCustomAttribute("powSe").getCustomAttributeValue()
 					.equals(Boolean.TRUE.toString())) {
 				createTestReport("testCallback", Status.KO, "invalid powerState value, expecting true", null);
 				return;
@@ -149,7 +148,7 @@ public class CallbackTest extends FlexContainerTestSuite {
 					throw new Om2mException("not allowed. Invalid size of CustomAttribute", ResponseStatusCode.INVALID_ARGUMENTS);
 				}
 				CustomAttribute powerStateCA = customAttributes.get(0);
-				if (!"powerState".equals(powerStateCA.getCustomAttributeName())) {
+				if (!"powSe".equals(powerStateCA.getCustomAttributeName())) {
 					throw new Om2mException("not allowed", ResponseStatusCode.INVALID_ARGUMENTS);
 				}
 
@@ -172,7 +171,7 @@ public class CallbackTest extends FlexContainerTestSuite {
 
 			@Override
 			public String getCustomAttributeValue(String customAttributeName) throws Om2mException {
-				if (!customAttributeName.equals("powerState")) {
+				if (!customAttributeName.equals("powSe")) {
 					throw new Om2mException(
 							"unexpected getCustomAttributeValue for attributeName=" + customAttributeName,
 							ResponseStatusCode.NOT_IMPLEMENTED);
@@ -186,12 +185,10 @@ public class CallbackTest extends FlexContainerTestSuite {
 		// register FlexContainerService
 		flexContainerServiceRegistration = bundleContext.registerService(FlexContainerService.class, fcs, null);
 
-		FlexContainer toBeUpdated = new FlexContainer();
-		toBeUpdated.setContainerDefinition("org.onem2m.home.moduleclass.binaryswitch");
+		BinarySwitchFlexContainer toBeUpdated = new BinarySwitchFlexContainer();
 		CustomAttribute powerState = new CustomAttribute();
-		powerState.setCustomAttributeType("xs:boolean");
 		powerState.setCustomAttributeValue("true");
-		powerState.setCustomAttributeName("powerState");
+		powerState.setCustomAttributeName("powSe");
 		toBeUpdated.getCustomAttributes().add(powerState);
 
 		ResponsePrimitive response = sendUpdateFlexContainerRequest(flexContainerLocation, toBeUpdated);
@@ -201,20 +198,20 @@ public class CallbackTest extends FlexContainerTestSuite {
 			return;
 		}
 
-		FlexContainer updatedFlexContainer = (FlexContainer) response.getContent();
-		if (!updatedFlexContainer.getCustomAttribute("powerState").getCustomAttributeValue()
+		BinarySwitchFlexContainer updatedFlexContainer = (BinarySwitchFlexContainer) response.getContent();
+		if (!updatedFlexContainer.getCustomAttribute("powSe").getCustomAttributeValue()
 				.equals(Boolean.TRUE.toString())) {
 			createTestReport("testCallback_update", Status.KO, "invalid for powerState, expecting TRUE, found"
-					+ updatedFlexContainer.getCustomAttribute("powerState").getCustomAttributeValue(), null);
+					+ updatedFlexContainer.getCustomAttribute("powSe").getCustomAttributeValue(), null);
 			return;
 		}
 		
 		// retrieve the flexContainer
 		response = sendRetrieveRequest(flexContainerLocation);
 		if (!response.getResponseStatusCode().equals(ResponseStatusCode.OK)) {
-			FlexContainer retrievedFlexContainer = (FlexContainer) response.getContent();
+			BinarySwitchFlexContainer retrievedFlexContainer = (BinarySwitchFlexContainer) response.getContent();
 
-			if (!retrievedFlexContainer.getCustomAttribute("powerState").getCustomAttributeValue()
+			if (!retrievedFlexContainer.getCustomAttribute("powSe").getCustomAttributeValue()
 					.equals(Boolean.TRUE.toString())) {
 				createTestReport("testCallback", Status.KO, "invalid powerState value, expecting true", null);
 				return;

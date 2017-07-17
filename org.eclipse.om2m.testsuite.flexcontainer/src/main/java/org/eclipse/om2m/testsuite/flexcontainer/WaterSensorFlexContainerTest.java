@@ -10,8 +10,8 @@ package org.eclipse.om2m.testsuite.flexcontainer;
 import org.eclipse.om2m.commons.constants.Constants;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.resource.CustomAttribute;
-import org.eclipse.om2m.commons.resource.FlexContainer;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.WaterSensorFlexContainer;
 import org.eclipse.om2m.core.service.CseService;
 import org.eclipse.om2m.testsuite.flexcontainer.TestReport.Status;
 
@@ -32,27 +32,26 @@ public class WaterSensorFlexContainerTest extends FlexContainerTestSuite {
 		String flexContainerName = "WaterSensorFlexContainer_" + System.currentTimeMillis();
 		String flexContainerLocation = baseLocation + "/" + flexContainerName;
 
-		FlexContainer flexContainer = new FlexContainer();
-		flexContainer.setContainerDefinition("org.onem2m.home.moduleclass.watersensor");
+		WaterSensorFlexContainer flexContainer = new WaterSensorFlexContainer();
+		flexContainer.setName(flexContainerName);
 		flexContainer.setCreator("Greg");
 		flexContainer.setOntologyRef("OntologyOrange");
 
 		CustomAttribute alarmCustomAttribute = new CustomAttribute();
 		alarmCustomAttribute.setCustomAttributeName("alarm");
-		alarmCustomAttribute.setCustomAttributeType("xs:boolean");
 		alarmCustomAttribute.setCustomAttributeValue("true");
 		flexContainer.getCustomAttributes().add(alarmCustomAttribute);
 
 		// send CREATE request
-		ResponsePrimitive response = sendCreateFlexContainerRequest(flexContainer, baseLocation, flexContainerName);
-		FlexContainer createdFlexContainer = null;
+		ResponsePrimitive response = sendCreateFlexContainerRequest(flexContainer, baseLocation, Constants.ADMIN_REQUESTING_ENTITY);
+		WaterSensorFlexContainer createdFlexContainer = null;
 		if (!response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {
 			// KO
 			createTestReport("testCreateAndRetrieveWaterSensorFlexContainer", Status.KO,
 					"unable to create WaterSensor flexContainer:" + response.getContent(), null);
 			return;
 		} else {
-			createdFlexContainer = (FlexContainer) response.getContent();
+			createdFlexContainer = (WaterSensorFlexContainer) response.getContent();
 
 			if (!flexContainerName.equals(createdFlexContainer.getName())) {
 				createTestReport("testCreateAndRetrieveWaterSensorFlexContainer", Status.KO,
@@ -80,7 +79,7 @@ public class WaterSensorFlexContainerTest extends FlexContainerTestSuite {
 					"unable to retrieve WaterSensor flexContainer:" + response.getContent(), null);
 			return;
 		} else {
-			FlexContainer retrievedFlexContainer = (FlexContainer) response.getContent();
+			WaterSensorFlexContainer retrievedFlexContainer = (WaterSensorFlexContainer) response.getContent();
 			try {
 				checkFlexContainer(createdFlexContainer, retrievedFlexContainer);
 			} catch (Exception e) {
@@ -98,19 +97,18 @@ public class WaterSensorFlexContainerTest extends FlexContainerTestSuite {
 		String flexContainerName = "WaterSensorFlexContainer_" + System.currentTimeMillis();
 		String flexContainerLocation = baseLocation + "/" + flexContainerName;
 
-		FlexContainer flexContainer = new FlexContainer();
-		flexContainer.setContainerDefinition("org.onem2m.home.moduleclass.watersensor");
+		WaterSensorFlexContainer flexContainer = new WaterSensorFlexContainer();
+		flexContainer.setName(flexContainerName);
 		flexContainer.setCreator("Greg");
 		flexContainer.setOntologyRef("OntologyOrange");
 
 		CustomAttribute alarmCustomAttribute = new CustomAttribute();
 		alarmCustomAttribute.setCustomAttributeName("alarm");
-		alarmCustomAttribute.setCustomAttributeType("xs:boolean");
 		alarmCustomAttribute.setCustomAttributeValue("true");
 		flexContainer.getCustomAttributes().add(alarmCustomAttribute);
 
 		// send CREATE request
-		ResponsePrimitive response = sendCreateFlexContainerRequest(flexContainer, baseLocation, flexContainerName);
+		ResponsePrimitive response = sendCreateFlexContainerRequest(flexContainer, baseLocation, Constants.ADMIN_REQUESTING_ENTITY);
 		if (!response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {
 			// KO
 			createTestReport("testDeleteWaterSensorFlexContainer", Status.KO,
@@ -146,34 +144,32 @@ public class WaterSensorFlexContainerTest extends FlexContainerTestSuite {
 		String flexContainerName = "WaterSensorFlexContainer_" + System.currentTimeMillis();
 		String flexContainerLocation = baseLocation + "/" + flexContainerName;
 
-		FlexContainer flexContainer = new FlexContainer();
-		flexContainer.setContainerDefinition("org.onem2m.home.moduleclass.watersensor");
+		WaterSensorFlexContainer flexContainer = new WaterSensorFlexContainer();
+		flexContainer.setName(flexContainerName);
 		flexContainer.setCreator("Greg");
 		flexContainer.setOntologyRef("OntologyOrange");
 
 		CustomAttribute alarmCustomAttribute = new CustomAttribute();
 		alarmCustomAttribute.setCustomAttributeName("alarm");
-		alarmCustomAttribute.setCustomAttributeType("xs:boolean");
 		alarmCustomAttribute.setCustomAttributeValue("true");
 		flexContainer.getCustomAttributes().add(alarmCustomAttribute);
 
 		// send CREATE request
-		ResponsePrimitive response = sendCreateFlexContainerRequest(flexContainer, baseLocation, flexContainerName);
-		FlexContainer createdFlexContainer = null;
+		ResponsePrimitive response = sendCreateFlexContainerRequest(flexContainer, baseLocation, Constants.ADMIN_REQUESTING_ENTITY);
+		WaterSensorFlexContainer createdFlexContainer = null;
 		if (!response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {
 			// KO
 			createTestReport("testUpdateWaterSensorFlexContainer", Status.KO,
 					"unable to create WaterSensor flexContainer:" + response.getContent(), null);
 			return;
 		} else {
-			createdFlexContainer = (FlexContainer) response.getContent();
+			createdFlexContainer = (WaterSensorFlexContainer) response.getContent();
 		}
 
 		// prepare UPDATE request
-		FlexContainer toBeUpdated = new FlexContainer();
+		WaterSensorFlexContainer toBeUpdated = new WaterSensorFlexContainer();
 		CustomAttribute alarmToBeUpdated = new CustomAttribute();
 		alarmToBeUpdated.setCustomAttributeName("alarm");
-		alarmToBeUpdated.setCustomAttributeType("xs:boolean");
 		alarmToBeUpdated.setCustomAttributeValue("false");
 		toBeUpdated.getCustomAttributes().add(alarmToBeUpdated);
 
@@ -185,7 +181,7 @@ public class WaterSensorFlexContainerTest extends FlexContainerTestSuite {
 					"unable to update WaterSensor flexContainer:" + response.getContent(), null);
 			return;
 		} else {
-			FlexContainer updatedFlexContainer = (FlexContainer) response.getContent();
+			WaterSensorFlexContainer updatedFlexContainer = (WaterSensorFlexContainer) response.getContent();
 
 			if (updatedFlexContainer.getCustomAttributes().size() != 1) {
 				createTestReport("testUpdateWaterSensorFlexContainer", Status.KO, "Expecting 1 customAttribute, found "
@@ -212,7 +208,7 @@ public class WaterSensorFlexContainerTest extends FlexContainerTestSuite {
 					"unable to retrieve WaterSensor flexContainer:" + response.getContent(), null);
 			return;
 		} else {
-			FlexContainer retrievedFlexContainer = (FlexContainer) response.getContent();
+			WaterSensorFlexContainer retrievedFlexContainer = (WaterSensorFlexContainer) response.getContent();
 			
 			// apply update on createdFlexContainer
 			createdFlexContainer.getCustomAttribute("alarm").setCustomAttributeValue("false");

@@ -1,16 +1,168 @@
+/*
+FlexContainerFactory : FlexContainerFactory
+
+
+
+
+
+Created: 2017-07-17 15:25:54
+*/
+
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
 
-import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
 import org.eclipse.om2m.commons.resource.FlexContainer;
+import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
 
 public class FlexContainerFactory {
 	
 	public static AbstractFlexContainer getSpecializationFlexContainer(String shortName) {
-		switch (shortName) {
+		switch(shortName) {
+		case AlarmSpeakerFlexContainer.SHORT_NAME:
+			return new AlarmSpeakerFlexContainer();
+		case AudioVideoInputFlexContainer.SHORT_NAME:
+			return new AudioVideoInputFlexContainer();
+		case AudioVolumeFlexContainer.SHORT_NAME:
+			return new AudioVolumeFlexContainer();
+		case UpVolumeFlexContainer.SHORT_NAME:
+			return new UpVolumeFlexContainer();
+		case DownVolumeFlexContainer.SHORT_NAME:
+			return new DownVolumeFlexContainer();
+		case BatteryFlexContainer.SHORT_NAME:
+			return new BatteryFlexContainer();
+		case BinarySwitchFlexContainer.SHORT_NAME:
+			return new BinarySwitchFlexContainer();
+		case ToggleFlexContainer.SHORT_NAME:
+			return new ToggleFlexContainer();
+		case BioElectricalImpedanceAnalysisFlexContainer.SHORT_NAME:
+			return new BioElectricalImpedanceAnalysisFlexContainer();
+		case BoilerFlexContainer.SHORT_NAME:
+			return new BoilerFlexContainer();
+		case BrightnessFlexContainer.SHORT_NAME:
+			return new BrightnessFlexContainer();
+		case ClockFlexContainer.SHORT_NAME:
+			return new ClockFlexContainer();
+		case ColourFlexContainer.SHORT_NAME:
+			return new ColourFlexContainer();
+		case ColourSaturationFlexContainer.SHORT_NAME:
+			return new ColourSaturationFlexContainer();
+		case DoorStatusFlexContainer.SHORT_NAME:
+			return new DoorStatusFlexContainer();
+		case ElectricVehicleConnectorFlexContainer.SHORT_NAME:
+			return new ElectricVehicleConnectorFlexContainer();
+		case EnergyConsumptionFlexContainer.SHORT_NAME:
+			return new EnergyConsumptionFlexContainer();
+		case EnergyGenerationFlexContainer.SHORT_NAME:
+			return new EnergyGenerationFlexContainer();
+		case FaultDetectionFlexContainer.SHORT_NAME:
+			return new FaultDetectionFlexContainer();
+		case HeightFlexContainer.SHORT_NAME:
+			return new HeightFlexContainer();
+		case HotWaterSupplyFlexContainer.SHORT_NAME:
+			return new HotWaterSupplyFlexContainer();
+		case KeypadFlexContainer.SHORT_NAME:
+			return new KeypadFlexContainer();
+		case MotionSensorFlexContainer.SHORT_NAME:
+			return new MotionSensorFlexContainer();
+		case OximeterFlexContainer.SHORT_NAME:
+			return new OximeterFlexContainer();
+		case PowerSaveFlexContainer.SHORT_NAME:
+			return new PowerSaveFlexContainer();
+		case PushButtonFlexContainer.SHORT_NAME:
+			return new PushButtonFlexContainer();
+		case RecorderFlexContainer.SHORT_NAME:
+			return new RecorderFlexContainer();
+		case RefrigerationFlexContainer.SHORT_NAME:
+			return new RefrigerationFlexContainer();
+		case RelativeHumidityFlexContainer.SHORT_NAME:
+			return new RelativeHumidityFlexContainer();
+		case RinseLevelFlexContainer.SHORT_NAME:
+			return new RinseLevelFlexContainer();
+		case RunModeFlexContainer.SHORT_NAME:
+			return new RunModeFlexContainer();
+		case SignalStrengthFlexContainer.SHORT_NAME:
+			return new SignalStrengthFlexContainer();
+		case SmokeSensorFlexContainer.SHORT_NAME:
+			return new SmokeSensorFlexContainer();
+		case SpinLevelFlexContainer.SHORT_NAME:
+			return new SpinLevelFlexContainer();
+		case TelevisionChannelFlexContainer.SHORT_NAME:
+			return new TelevisionChannelFlexContainer();
+		case UpChannelFlexContainer.SHORT_NAME:
+			return new UpChannelFlexContainer();
+		case DownChannelFlexContainer.SHORT_NAME:
+			return new DownChannelFlexContainer();
+		case TemperatureFlexContainer.SHORT_NAME:
+			return new TemperatureFlexContainer();
+		case TemperatureAlarmFlexContainer.SHORT_NAME:
+			return new TemperatureAlarmFlexContainer();
+		case TimerFlexContainer.SHORT_NAME:
+			return new TimerFlexContainer();
+		case ActivateClockTimerFlexContainer.SHORT_NAME:
+			return new ActivateClockTimerFlexContainer();
+		case DeactivateClockTimerFlexContainer.SHORT_NAME:
+			return new DeactivateClockTimerFlexContainer();
+		case TurboFlexContainer.SHORT_NAME:
+			return new TurboFlexContainer();
+		case WaterFlowFlexContainer.SHORT_NAME:
+			return new WaterFlowFlexContainer();
+		case WaterLevelFlexContainer.SHORT_NAME:
+			return new WaterLevelFlexContainer();
+		case WaterSensorFlexContainer.SHORT_NAME:
+			return new WaterSensorFlexContainer();
+		case WeightFlexContainer.SHORT_NAME:
+			return new WeightFlexContainer();
+		case WindFlexContainer.SHORT_NAME:
+			return new WindFlexContainer();
+		case StreamingFlexContainer.SHORT_NAME:
+			return new StreamingFlexContainer();
+		case PersonSensorFlexContainer.SHORT_NAME:
+			return new PersonSensorFlexContainer();
+		case BrewingFlexContainer.SHORT_NAME:
+			return new BrewingFlexContainer();
+		case LiquidLevelFlexContainer.SHORT_NAME:
+			return new LiquidLevelFlexContainer();
+		case GrinderFlexContainer.SHORT_NAME:
+			return new GrinderFlexContainer();
+		case FoamingFlexContainer.SHORT_NAME:
+			return new FoamingFlexContainer();
+		case KeepWarmFlexContainer.SHORT_NAME:
+			return new KeepWarmFlexContainer();
+		case ContactSensorFlexContainer.SHORT_NAME:
+			return new ContactSensorFlexContainer();
+		case AlarmSensorFlexContainer.SHORT_NAME:
+			return new AlarmSensorFlexContainer();
+		case LockFlexContainer.SHORT_NAME:
+			return new LockFlexContainer();
+		case AtmosphericPressureSensorFlexContainer.SHORT_NAME:
+			return new AtmosphericPressureSensorFlexContainer();
+		case NoiseFlexContainer.SHORT_NAME:
+			return new NoiseFlexContainer();
+		case ExtendedCarbonDioxideSensorFlexContainer.SHORT_NAME:
+			return new ExtendedCarbonDioxideSensorFlexContainer();
+		case DeviceAirConditionerFlexContainer.SHORT_NAME:
+			return new DeviceAirConditionerFlexContainer();
+		case DeviceClothesWasherFlexContainer.SHORT_NAME:
+			return new DeviceClothesWasherFlexContainer();
+		case DeviceElectricVehicleChargerFlexContainer.SHORT_NAME:
+			return new DeviceElectricVehicleChargerFlexContainer();
 		case DeviceLightFlexContainer.SHORT_NAME:
 			return new DeviceLightFlexContainer();
+		case DeviceMicrogenerationFlexContainer.SHORT_NAME:
+			return new DeviceMicrogenerationFlexContainer();
+		case DeviceOvenFlexContainer.SHORT_NAME:
+			return new DeviceOvenFlexContainer();
+		case DeviceRefrigeratorFlexContainer.SHORT_NAME:
+			return new DeviceRefrigeratorFlexContainer();
+		case DeviceRobotCleanerFlexContainer.SHORT_NAME:
+			return new DeviceRobotCleanerFlexContainer();
 		case DeviceSmartElectricMeterFlexContainer.SHORT_NAME:
 			return new DeviceSmartElectricMeterFlexContainer();
+		case DeviceStorageBatteryFlexContainer.SHORT_NAME:
+			return new DeviceStorageBatteryFlexContainer();
+		case DeviceTelevisionFlexContainer.SHORT_NAME:
+			return new DeviceTelevisionFlexContainer();
+		case DeviceThermostatFlexContainer.SHORT_NAME:
+			return new DeviceThermostatFlexContainer();
 		case DeviceWaterHeaterFlexContainer.SHORT_NAME:
 			return new DeviceWaterHeaterFlexContainer();
 		case DeviceCameraFlexContainer.SHORT_NAME:
@@ -35,93 +187,13 @@ public class FlexContainerFactory {
 			return new DeviceSwitchButtonFlexContainer();
 		case DeviceTemperatureDetectorFlexContainer.SHORT_NAME:
 			return new DeviceTemperatureDetectorFlexContainer();
-		case DeviceThermostatFlexContainer.SHORT_NAME:
-			return new DeviceThermostatFlexContainer();
 		case DeviceWarningDeviceFlexContainer.SHORT_NAME:
 			return new DeviceWarningDeviceFlexContainer();
 		case DeviceWaterValveFlexContainer.SHORT_NAME:
 			return new DeviceWaterValveFlexContainer();
 		case DeviceWeatherStationFlexContainer.SHORT_NAME:
 			return new DeviceWeatherStationFlexContainer();
-			
-		case ModuleAlarmSpeakerFlexContainer.SHORT_NAME:
-			return new ModuleAlarmSpeakerFlexContainer();
-		case ModuleAudioVolumeFlexContainer.SHORT_NAME:
-			return new ModuleAudioVolumeFlexContainer();
-		case ModuleBinarySwitchFlexContainer.SHORT_NAME:
-			return new ModuleBinarySwitchFlexContainer();
-		case ModuleBoilerFlexContainer.SHORT_NAME:
-			return new ModuleBoilerFlexContainer();
-		case ModuleBrightnessFlexContainer.SHORT_NAME:
-			return new ModuleBrightnessFlexContainer();
-		case ModuleClockFlexContainer.SHORT_NAME:
-			return new ModuleClockFlexContainer();
-		case ModuleColourFlexContainer.SHORT_NAME:
-			return new ModuleColourFlexContainer();
-		case ModuleColourSaturationFlexContainer.SHORT_NAME:
-			return new ModuleColourSaturationFlexContainer();
-		case ModuleDoorStatusFlexContainer.SHORT_NAME:
-			return new ModuleDoorStatusFlexContainer();
-		case ModuleEnergyConsumptionFlexContainer.SHORT_NAME:
-			return new ModuleEnergyConsumptionFlexContainer();
-		case ModuleEnergyGenerationFlexContainer.SHORT_NAME:
-			return new ModuleEnergyGenerationFlexContainer();
-		case ModuleFaultDetectionFlexContainer.SHORT_NAME:
-			return new ModuleFaultDetectionFlexContainer();
-		case ModuleRelativeHumidityFlexContainer.SHORT_NAME:
-			return new ModuleRelativeHumidityFlexContainer();
-		case ModuleRunModeFlexContainer.SHORT_NAME:
-			return new ModuleRunModeFlexContainer();
-		case ModuleRunStateFlexContainer.SHORT_NAME:
-			return new ModuleRunStateFlexContainer();
-		case ModuleSmokeSensorFlexContainer.SHORT_NAME:
-			return new ModuleSmokeSensorFlexContainer();
-		case ModuleTemperatureFlexContainer.SHORT_NAME:
-			return new ModuleTemperatureFlexContainer();
-		case ModuleWaterLevelFlexContainer.SHORT_NAME:
-			return new ModuleWaterLevelFlexContainer();
-		case ModuleWaterSensorFlexContainer.SHORT_NAME:
-			return new ModuleWaterSensorFlexContainer();
-		case ModuleAtmosphericPressureSensorFlexContainer.SHORT_NAME:
-			return new ModuleAtmosphericPressureSensorFlexContainer();
-		case ModuleBrewingFlexContainer.SHORT_NAME:
-			return new ModuleBrewingFlexContainer();
-		case ModuleCarbonDioxideSensorFlexContainer.SHORT_NAME:
-			return new ModuleCarbonDioxideSensorFlexContainer();
-		case ModuleCarbonMonoxideSensorFlexContainer.SHORT_NAME:
-			return new ModuleCarbonMonoxideSensorFlexContainer();
-		case ModuleContactSensorFlexContainer.SHORT_NAME:
-			return new ModuleContactSensorFlexContainer();
-		case ModuleDimmingFlexContainer.SHORT_NAME:
-			return new ModuleDimmingFlexContainer();
-		case ModuleEnergyOverloadCircuitBreakerFlexContainer.SHORT_NAME:
-			return new ModuleEnergyOverloadCircuitBreakerFlexContainer();
-		case ModuleExtendedCarbonDioxideSensorFlexContainer.SHORT_NAME:
-			return new ModuleExtendedCarbonDioxideSensorFlexContainer();
-		case ModuleFoamingFlexContainer.SHORT_NAME:
-			return new ModuleFoamingFlexContainer();
-		case ModuleGrinderFlexContainer.SHORT_NAME:
-			return new ModuleGrinderFlexContainer();
-		case ModuleNoiseFlexContainer.SHORT_NAME:
-			return new ModuleNoiseFlexContainer();
-		case ModulePersonSensorFlexContainer.SHORT_NAME:
-			return new ModulePersonSensorFlexContainer();
-		case ModuleStreamingFlexContainer.SHORT_NAME:
-			return new ModuleStreamingFlexContainer();
-		case ModuleTimerFlexContainer.SHORT_NAME:
-			return new ModuleTimerFlexContainer();
-		case ModuleLockFlexContainer.SHORT_NAME:
-			return new ModuleLockFlexContainer();
-		case ModuleLiquidLevelFlexContainer.SHORT_NAME:
-			return new ModuleLiquidLevelFlexContainer();
-		case ModuleBatteryFlexContainer.SHORT_NAME:
-			return new ModuleBatteryFlexContainer();
-			
-		case ActionToggleFlexContainer.SHORT_NAME:
-			return new ActionToggleFlexContainer();
 		}
 		return new FlexContainer();
-		
 	}
-
 }

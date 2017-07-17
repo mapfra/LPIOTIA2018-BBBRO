@@ -1,0 +1,98 @@
+/*
+Device : DeviceOven
+
+
+
+An oven is a home appliance used to roast and heat food in a complete stove. This information model is applicable to different types of ovens: gas ovens, electrical ovens, steam ovens, microwave ovens, etc. This information model provides capabilities to interact with specific functions and resources of ovens.
+
+Created: 2017-07-17 15:25:54
+*/
+
+package org.eclipse.om2m.commons.resource.flexcontainerspec;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
+
+
+@XmlRootElement(name = DeviceOvenFlexContainer.SHORT_NAME, namespace = "http://www.onem2m.org/xml/protocols/homedomain")
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = DeviceOvenFlexContainer.SHORT_NAME, namespace = "http://www.onem2m.org/xml/protocols/homedomain")
+public class DeviceOvenFlexContainer extends AbstractFlexContainer {
+	
+	public static final String LONG_NAME = "deviceOven";
+	public static final String SHORT_NAME = "devOn";
+	
+	public DeviceOvenFlexContainer () {
+		setContainerDefinition("org.onem2m.home.device." + LONG_NAME);
+		setLongName(LONG_NAME);
+		setShortName(SHORT_NAME);
+	}
+	
+	public void finalizeSerialization() {
+		getBinarySwitch();
+		getRunMode();
+		getTimer();
+		getTemperature();
+	}
+	
+	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainer.class)
+	private BinarySwitchFlexContainer binarySwitch;
+	
+	
+	public void setBinarySwitch(BinarySwitchFlexContainer binarySwitch) {
+		this.binarySwitch = binarySwitch;
+		getFlexContainerOrContainerOrSubscription().add(binarySwitch);
+	}
+	
+	public BinarySwitchFlexContainer getBinarySwitch() {
+		this.binarySwitch = (BinarySwitchFlexContainer) getResourceByName(BinarySwitchFlexContainer.SHORT_NAME);
+		return binarySwitch;
+	}
+	
+	@XmlElement(name="runMe", required=true, type=RunModeFlexContainer.class)
+	private RunModeFlexContainer runMode;
+	
+	
+	public void setRunMode(RunModeFlexContainer runMode) {
+		this.runMode = runMode;
+		getFlexContainerOrContainerOrSubscription().add(runMode);
+	}
+	
+	public RunModeFlexContainer getRunMode() {
+		this.runMode = (RunModeFlexContainer) getResourceByName(RunModeFlexContainer.SHORT_NAME);
+		return runMode;
+	}
+	
+	@XmlElement(name="timer", required=true, type=TimerFlexContainer.class)
+	private TimerFlexContainer timer;
+	
+	
+	public void setTimer(TimerFlexContainer timer) {
+		this.timer = timer;
+		getFlexContainerOrContainerOrSubscription().add(timer);
+	}
+	
+	public TimerFlexContainer getTimer() {
+		this.timer = (TimerFlexContainer) getResourceByName(TimerFlexContainer.SHORT_NAME);
+		return timer;
+	}
+	
+	@XmlElement(name="tempe", required=true, type=TemperatureFlexContainer.class)
+	private TemperatureFlexContainer temperature;
+	
+	
+	public void setTemperature(TemperatureFlexContainer temperature) {
+		this.temperature = temperature;
+		getFlexContainerOrContainerOrSubscription().add(temperature);
+	}
+	
+	public TemperatureFlexContainer getTemperature() {
+		this.temperature = (TemperatureFlexContainer) getResourceByName(TemperatureFlexContainer.SHORT_NAME);
+		return temperature;
+	}
+	
+}
