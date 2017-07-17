@@ -42,7 +42,7 @@ public enum DeviceType implements Identifiers {
 	deviceContactDetector(304, "deviceContactDetector", "deviceContactDetector", "dCtDr"),
 	
 	deviceCamera(400, "deviceCamera", "deviceCamera", "devCa"),
-	deviceWeatherStation(500, "deviceWeatherStation", "deviceWeatherStation", "dWrSn"),
+	deviceWeatherStation(500, "deviceWeatherStation", "deviceWeatherStation", "deWSn"),
 	
 	undefinedVendorExt(0, "undefinedVendorExt", "", "");
 	
