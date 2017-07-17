@@ -146,6 +146,8 @@ public class FlexContainerMapper extends EntityMapper<FlexContainerEntity, Abstr
 			Container cnt = new ContainerMapper().mapEntityToResource(childCont, ResultContent.ATTRIBUTES_AND_CHILD_RES, level - 1, offset - 1);
 			resource.getFlexContainerOrContainerOrSubscription().add(cnt);
 		}
+		
+		resource.finalizeSerialization();
 	}
 
 	

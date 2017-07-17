@@ -35,8 +35,6 @@ public class CustomAttributeAdapter extends XmlAdapter<Element, CustomAttribute>
 		}
 		customAttribute.setCustomAttributeName(v.getTagName());
 		customAttribute.setCustomAttributeValue(value);
-		customAttribute.setCustomAttributeType(v.getAttribute("typ"));
-		
 
 		return customAttribute;
 	}
@@ -55,7 +53,6 @@ public class CustomAttributeAdapter extends XmlAdapter<Element, CustomAttribute>
 			Document document = getDocumentBuilder().newDocument();
 			e = document.createElement(v.getCustomAttributeName());
 			e.setTextContent((value != null ? value.toString() : ""));
-			e.setAttribute("typ", v.getCustomAttributeType());
 			
 		} catch (Throwable t) {
 			t.printStackTrace();

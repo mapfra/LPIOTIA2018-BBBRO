@@ -149,7 +149,12 @@ public class Mapper implements DataMapperService {
 			unmarshaller.setProperty(UnmarshallerProperties.MEDIA_TYPE, mediaType);
 			unmarshaller.setProperty(UnmarshallerProperties.JSON_INCLUDE_ROOT, true);
 			unmarshaller.setProperty(UnmarshallerProperties.JSON_WRAPPER_AS_ARRAY_NAME , true);
-			unmarshaller.setProperty(UnmarshallerProperties.JSON_VALUE_WRAPPER , "value");
+			unmarshaller.setProperty(UnmarshallerProperties.JSON_VALUE_WRAPPER , "val");
+			Map<String, String> namespaces = new HashMap<String, String>(); 
+			namespaces.put("http://www.onem2m.org/xml/protocols/homedomain", "hd"); 
+			namespaces.put("http://www.onem2m.org/xml/protocols", "m2m"); 
+			unmarshaller.setProperty(MarshallerProperties.NAMESPACE_PREFIX_MAPPER, namespaces);
+			unmarshaller.setProperty(MarshallerProperties.JSON_NAMESPACE_SEPARATOR, ':');
 			
 			Object unmarshaledObject = unmarshaller.unmarshal(stringReader);
 			Object toBeReturned = null;
