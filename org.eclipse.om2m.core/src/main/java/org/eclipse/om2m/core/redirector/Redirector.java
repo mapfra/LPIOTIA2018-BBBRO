@@ -136,9 +136,8 @@ public class Redirector {
 				String initialRequestContentType = request.getRequestContentType();
 				String initialReturnContentType = request.getReturnContentType();
 				if ((MimeMediaType.OBJ.equals(initialRequestContentType))) {
-
+					// forward payload using XML
 					request.setRequestContentType(MimeMediaType.XML);
-					request.setReturnContentType(MimeMediaType.XML);
 
 					if ((Operation.CREATE.equals(request.getOperation()))
 							|| (Operation.UPDATE.equals(request.getOperation()))) {
@@ -148,6 +147,11 @@ public class Redirector {
 						request.setContent(xmlPayload);
 					}
 
+				}
+				
+				// if returnType=OBJ, change it to XML
+				if ((MimeMediaType.OBJ.equals(initialReturnContentType))) {
+					request.setReturnContentType(MimeMediaType.XML);
 				}
 
 				ResponsePrimitive response = RestClient.sendRequest(request);

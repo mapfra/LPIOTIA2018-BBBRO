@@ -288,7 +288,7 @@ public class FlexContainerAnncController extends Controller {
 			originalResourceRequest.setOperation(Operation.RETRIEVE);
 			originalResourceRequest.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 			originalResourceRequest.setTargetId(flexContainerAnncEntity.getLink());
-			originalResourceRequest.setReturnContentType(MimeMediaType.OBJ);
+			originalResourceRequest.setReturnContentType(request.getReturnContentType());
 			return Redirector.retarget(originalResourceRequest);
 		} else {
 			// Mapping the entity with the exchange resource
@@ -330,7 +330,7 @@ public class FlexContainerAnncController extends Controller {
 			originalResourceRequest.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 			originalResourceRequest.setTargetId(flexContainerAnncEntity.getLink());
 			originalResourceRequest.setRequestContentType(request.getRequestContentType());
-			originalResourceRequest.setReturnContentType(MimeMediaType.OBJ);
+			originalResourceRequest.setReturnContentType(request.getReturnContentType());
 			originalResourceRequest.setContent(request.getContent());
 			return Redirector.retarget(originalResourceRequest);
 		} else {

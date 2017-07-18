@@ -339,7 +339,7 @@ public class AEAnncController extends Controller {
 			originalResourceRequest.setOperation(Operation.RETRIEVE);
 			originalResourceRequest.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 			originalResourceRequest.setTargetId(aeAnncEntity.getLink());
-			originalResourceRequest.setReturnContentType(MimeMediaType.OBJ);
+			originalResourceRequest.setReturnContentType(request.getReturnContentType());
 			return Redirector.retarget(originalResourceRequest );
 		} else {
 			// Create the object used to create the representation of the resource
