@@ -166,7 +166,7 @@ public class LIFXDeviceCloud extends LIFXDevice {
 		double hue = getDoubleValue(colorJsonObject.get(HUE));
 		double saturation = getDoubleValue(colorJsonObject.get(SATURATION));
 		double kelvin = getDoubleValue(colorJsonObject.get(KELVIN));
-		double brightness = (double) json.get(BRIGHTNESS);
+		double brightness = getDoubleValue(json.get(BRIGHTNESS));
 
 		// convert cloud value to lan value
 		// hue (0 to 360) -> (0 to 65535)
@@ -190,7 +190,7 @@ public class LIFXDeviceCloud extends LIFXDevice {
 		double hue = getDoubleValue(colorJsonObject.get(HUE));
 		double saturation = getDoubleValue(colorJsonObject.get(SATURATION));
 		double kelvin = getDoubleValue(colorJsonObject.get(KELVIN));
-		double brightness = (double) json.get(BRIGHTNESS);
+		double brightness = getDoubleValue(json.get(BRIGHTNESS));
 		
 		// convert cloud value to lan value
 		// hue (0 to 360) -> (0 to 65535)
