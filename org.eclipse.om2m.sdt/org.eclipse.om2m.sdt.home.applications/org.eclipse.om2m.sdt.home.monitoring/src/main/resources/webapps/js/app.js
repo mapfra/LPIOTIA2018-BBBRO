@@ -295,49 +295,29 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 	// called when the user clicks on the witch widget in the HMI
 	$scope.changeState = function(device,switchModule) {
 		var req;
-		var openOnly = $scope.getPropValueFromDevice(device, "opeOy");
-		console.log("openOnly: " + openOnly);
 		switchModule.hideSpinning = false;
 
 		if (switchModule.name === 'lock') {
-			if (switchModule.state == true) {
-				switchModule.newState = true;
-				// switch on
+			var openOnly = $scope.getValueFromModule(switchModule, "opeOy");
+			console.log("openOnly: " + openOnly);
+			if (switchModule.state || (openOnly == null) || (openOnly === 'false')) {
+				switchModule.newState = switchModule.state;
+				var lk = ! switchModule.state;
+				// switch on/off
 				req = {
 						method : 'PUT',
 						url : switchModule.url,
-						data : '{\"hd:lock\": {\"dooLk\": \"false\"}}',
+						data : '{\"hd:lock\": {\"dooLk\": \"' + lk + '\"}}',
 						headers : {
 							'Content-Type' : 'application/json',
 							'X-M2M-Origin' : $scope.credentials
 						}
 				};
-				$http(req).success(
-						function(response, status, headers, config) {
-							console.log("binary lock state changed to opened");
-						}).error(
-								function(response, status, headers, config) {
-									console.log("error on lock state change action");
-								});
-			} else if ((openOnly == null) || (openOnly === 'false')) {
-				switchModule.newState = false;
-				// switch off
-				req = {
-						method : 'PUT',
-						url : switchModule.url,
-						data : '{\"hd:lock\": {\"dooLk\": \"true\"}}',
-						headers : {
-							'Content-Type' : 'application/json',
-							'X-M2M-Origin' : $scope.credentials
-						}
-				};
-				$http(req).success(
-						function(response, status, headers, config) {
-							console.log("binary lock state changed to closed");
-						}).error(
-								function(response, status, headers, config) {
-									console.log("error on lock state change action");
-								});
+				$http(req).success(function(response, status, headers, config) {
+						console.log("binary lock state changed");
+					}).error(function(response, status, headers, config) {
+						console.log("error on lock state change action");
+					});
 			}			
 		} else if (switchModule.name === 'binarySwitch') {
 			req = {
@@ -436,14 +416,12 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 	}
 	
 	$scope.getPropValueFromDevice = function (device, propName) {
-		var result = null;
 		for (var i = 0; i< device.properties.length; i++) {
 			if (device.properties[i].name == propName) {
-				result = device.properties[i].value;
-				break;
+				return device.properties[i].value;
 			}					
 		}
-		return result;
+		return null;
 	}
 
 	$scope.getNewDevices = function(deviceList) {
@@ -542,9 +520,9 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 		}
 		cam.btnClass = 'selectedCam';
 		if ($scope.cams.length != 0) {
-			var url = $scope.getUrlFromStreamModule(cam);
-			var format = $scope.getFormatFromStreamModule(cam);
-			console.log("url/format " + url + "/" + format);
+			var url = $scope.getValueFromModule(cam, "url");
+			var format = $scope.getValueFromModule(cam, "frmt");
+			console.log("url/format: " + url + "/" + format);
 			if (format === "HLS") {
 //				$scope.camera = "";
 				if ($scope.hls != null) {
@@ -590,28 +568,14 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 			}
 		}
 	}
-
-	$scope.getUrlFromStreamModule = function (module) {
-		var datapoints = module.datapoints;
-		for (i=0; i<datapoints.length; i++) {
-			var datapoint = datapoints[i];
-			if (datapoint.name === 'url') {
-				return datapoint.value;
-			} 
+	
+	$scope.getValueFromModule = function (module, propName) {
+		for (var i = 0; i < module.datapoints.length; i++) {
+			if (module.datapoints[i].name == propName) {
+				return module.datapoints[i].value;
+			}					
 		}
-		return null;		
-	}
-
-//	return the format value (HLS / MJPEG ) of a streaming module
-	$scope.getFormatFromStreamModule = function (module) {
-		var datapoints = module.datapoints;
-		for (i=0; i<datapoints.length; i++) {
-			var datapoint = datapoints[i];
-			if (datapoint.name === 'frmt') {
-				return datapoint.value;
-			}
-		}
-		return null;		
+		return null;
 	}
 
 	$scope.getCamModuleIndex = function (moduleId) {
