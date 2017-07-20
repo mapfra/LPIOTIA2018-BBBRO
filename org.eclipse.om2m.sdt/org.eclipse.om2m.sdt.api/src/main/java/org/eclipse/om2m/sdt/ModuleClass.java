@@ -211,6 +211,15 @@ public abstract class ModuleClass extends Element {
 	public Property getProperty(final String name) {
 		return properties.get(name);
 	}
+	
+	public Property getPropertyByShortName(final String shortDefinitionType) {
+		for(Property property : properties.values()) {
+			if (property.getShortName().equals(shortDefinitionType)) {
+				return property;
+			}
+		}
+		return null;
+	}
 
 	public void addProperty(final Property arg) {
 		properties.put(arg.getName(), arg);

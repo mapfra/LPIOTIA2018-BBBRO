@@ -60,7 +60,7 @@ public class ModuleFlexContainerService implements FlexContainerService {
 	public String getCustomAttributeValue(String customAttributeName) throws Om2mException {
 		logger.debug("DataPointFlexContainerService - getCustomAttributeValue(customAttributeName=" 
 						+ customAttributeName + ")");
-		Property prop = module.getProperty(customAttributeName);
+		Property prop = module.getPropertyByShortName(customAttributeName);
 		if (prop != null) {
 			logger.debug("CustomAttribute is a property, not a datapoint");
 			return prop.getValue();
