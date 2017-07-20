@@ -15,7 +15,7 @@ import org.eclipse.om2m.sdt.home.types.DatapointType;
 
 public class MockedLock extends Lock {
 	
-	public MockedLock(String name, Domain domain) {
+	public MockedLock(String name, Domain domain, boolean openOnly) {
 		super(name, domain,
 			new BooleanDataPoint(DatapointType.doorLock) {
 				private boolean state = true;
@@ -29,6 +29,7 @@ public class MockedLock extends Lock {
 				}
 			}
 		);
+		setOpenOnly(openOnly);
 	}
 
 }

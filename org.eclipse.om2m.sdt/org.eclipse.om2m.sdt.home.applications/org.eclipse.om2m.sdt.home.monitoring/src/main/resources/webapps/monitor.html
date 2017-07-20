@@ -1,0 +1,97 @@
+<!doctype html>
+<html ng-app="app">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Smart Home | main page</title>
+		
+		<link rel="stylesheet" href="../webapps/css/style.css">
+		<link rel="stylesheet" href="../webapps/css/angular-ui-switch.css">
+		<link rel="stylesheet" href="../webapps/css/bootstrap-3.0.1.min.css">
+		
+		<script src="../webapps/js/angular.min.js"></script>
+		<script src="../webapps/js/angular-ui-switch.js"></script>
+		<!-- <script src="../webapps/js/angular-load.js"></script> -->
+		<script src="../webapps/js/xml2json.min.js"></script>
+		<!-- <script src="../webapps/js/1_hls.min.js"></script> -->
+		<script src="https://cdn.jsdelivr.net/clappr/latest/clappr.min.js"></script>
+		<script src="../webapps/js/mjpeg.js"></script>
+		<script src="../webapps/js/app.js"></script>
+		<script>
+			function listHeight(){
+				var bodyHeight = document.getElementById('page-wrap').clientHeight - 180;
+				  document.getElementById("list").style.minHeight = bodyHeight +"px";
+			}
+		</script>
+	</head>
+
+	<body onLoad="listHeight()" onResize="listHeight()">
+		<div class="page-wrap" id="page-wrap">
+			<script src="{{camera}}"></script>
+			<!-- main page -->
+			<header class="top_bar">
+				<div class="container">
+					<figure>
+						<a href="#"><img src="../webapps/images/logo.png" alt=""></a>
+						<figcaption>Home Monitoring Application</figcaption>
+					</figure>
+					<div class="user">
+						<span>hello, </span> 
+							<a href="#">%USERNAME%</a> 
+							<a href="../security/logout" class="logout">Logout</a>
+					</div>
+				</div>
+			</header>
+			<div class="container" data-ng-controller="MainController">
+				<div id="videoPart" class="left_side">
+					<h3>Video from monitoring camera</h3>
+					<div class="btn-group-horizontal" role="group"
+						aria-label="coffee strength">
+						<label ng-repeat="cam in cams" class="btn btn-default classButton"
+							ng-class="cam.btnClass" ng-click="loadWebcam(cam)">
+							{{cam.deviceName}} 
+						</label>
+					</div>
+					<div>
+						<canvas id="player" width="480" height="360"
+							style="background: #000;" ng-hide="hideMjpegVideo">
+	      				</canvas>
+					</div>
+					<!-- <img width="320" height="240" ng-src="{{camera}}" ng-hide="hideMjpegVideo"/> -->
+					<div id="clappr" ng-hide="hideHlsVideo"></div>
+					<!-- 				<video id="video" ng-hide="hideHlsVideo"></video>		 -->
+					<!-- <button ng-click="test()">stop MJPEG</button> -->
+				</div>
+				<div class="right_side" id="list">
+					<h3>Device</h3>
+					<form>
+						<ul>
+							<li ng-repeat='device in devices | filter: deviceFilter'>
+								<div>{{device.name}}</div>
+								<table width="100%">
+									<tr>
+										<td ng-repeat="module in device.modules | filter: moduleFilter">
+											<img ng-src="../webapps/{{module.img}}" />
+											{{module.value}}
+										</td>
+										<td class="tdSmall" 
+												ng-repeat="module in device.modules | filter: switchFilter">
+											<div ng-hide="module.hideSpinning" class="spinner"></div>
+										</td>
+										<td class="tdSmall"
+												ng-repeat="module in device.modules | filter: switchFilter">
+											<switch class="adjustSwitch" name="enabled"
+												val="{{module.state}}" ng-model="module.state"
+												ng-change="changeState(device,module)">
+											</switch>
+										</td>
+									</tr>
+								</table>
+							</li>
+						</ul>
+				</div>
+			</div>
+		</div>
+		<footer class="site-footer"> &copy; Orange 2016 </footer>
+	</body>
+</html>

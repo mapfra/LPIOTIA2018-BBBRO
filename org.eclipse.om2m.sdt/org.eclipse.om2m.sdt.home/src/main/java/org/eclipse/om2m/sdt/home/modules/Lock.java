@@ -40,6 +40,11 @@ public class Lock extends Module {
 		this.doorLock = doorLock;
 		this.doorLock.setDoc("\"True\" indicates the door is locked, while \"False\" indicates the door is not locked");
 		addDataPoint(this.doorLock);
+
+		openOnly = new Property(PropertyType.openOnly);
+		openOnly.setType(SimpleType.Boolean);
+		openOnly.setOptional(true);
+		addProperty(openOnly);
 	}
 	
 	public Lock(final String name, final Domain domain, Map<String, DataPoint> dps) {
@@ -55,17 +60,11 @@ public class Lock extends Module {
 	}
 	
 	public void setOpenOnly(boolean v) {
-		if (openOnly == null) {
-			openOnly = new Property(PropertyType.openOnly);
-			openOnly.setType(SimpleType.Boolean);
-			openOnly.setDoc("Rated openOnly");
-			addProperty(openOnly);
-		}
 		openOnly.setValue(Boolean.toString(v));
 	}
 	
 	public boolean getOpenOnly() throws PropertyException {
-		if (openOnly == null)
+		if (openOnly.getValue() == null)
 			throw new PropertyException("Not implemented");
 		return Boolean.parseBoolean(openOnly.getValue());
 	}

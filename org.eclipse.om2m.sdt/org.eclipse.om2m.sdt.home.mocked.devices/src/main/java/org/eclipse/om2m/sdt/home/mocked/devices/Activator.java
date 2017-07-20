@@ -54,16 +54,18 @@ public class Activator implements BundleActivator {
 			running = true;
 			devices = new ArrayList<GenericDevice>();
 			
-			devices.add(new MockedWaterValve(getId(), getSerial(), domain));
-			devices.add(new MockedSmokeDetector(getId(), getSerial(), domain));
-			devices.add(new MockedWarningDevice(getId(), getSerial(), domain));
-			devices.add(new MockedFloodDetector(getId(), getSerial(), domain));
-			devices.add(new MockedSmartElectricMeter(getId(), getSerial(), domain));
+//			devices.add(new MockedWaterValve(getId(), getSerial(), domain));
+//			devices.add(new MockedSmokeDetector(getId(), getSerial(), domain));
+//			devices.add(new MockedWarningDevice(getId(), getSerial(), domain));
+//			devices.add(new MockedFloodDetector(getId(), getSerial(), domain));
+//			devices.add(new MockedSmartElectricMeter(getId(), getSerial(), domain));
 			devices.add(new MockedLight(getId(), getSerial(), domain));
-			devices.add(new MockedDoor(getId(), getSerial(), domain));
+			devices.add(new MockedDoor(getId(), getSerial(), domain, true));
+			devices.add(new MockedDoor(getId(), getSerial(), domain, false));
 			devices.add(new MockedCamera(getId(), getSerial(), domain));
-			devices.add(new MockedThermometer(getId(), getSerial(), domain));
-			devices.add(new MockedThermostat(getId(), getSerial(), domain));
+			devices.add(new MockedWeatherStation(getId(), getSerial(), domain));
+//			devices.add(new MockedThermometer(getId(), getSerial(), domain));
+//			devices.add(new MockedThermostat(getId(), getSerial(), domain));
 //			devices.add(new MockedDoor(getId(), getSerial(), domain));
 //			devices.add(new MockedCamera(getId(), getSerial(), domain));
 			

@@ -22,7 +22,7 @@ public enum ModuleType implements Identifiers {
 	clock(9, "clock", "clock", "clock"),
 	colour(10, "colour", "colour", "color"),
 	colourSaturation(11, "colourSaturation", "colourSaturation", "colSn"),
-	doorStatus(12, "doorStatus", "doorStatus", "dooSe"),
+	doorStatus(12, "doorStatus", "doorStatus", "dooSs"),
 	electricVehicleConnector(13, "electricVehicleConnector", "electricVehicleConnector", "elVCr"),
 	energyConsumption(14, "energyConsumption", "energyConsumption", "eneCn"),
 	energyGeneration(15, "energyGeneration", "energyGeneration", "eneGn"),
@@ -77,7 +77,7 @@ public enum ModuleType implements Identifiers {
 	lock(110, "lock", "lock", "lock"),
 
 	personSensor(150, "personSensor", "personSensor", "perSr"),
-	streaming(151, "streaming", "streaming", "strem"),
+	streaming(151, "streaming", "streaming", "streg"),
 	noise(152, "noise", "noise", "noise"),
 	extendedCarbonDioxideSensor(153, "extendedCarbonDioxideSensor", "extendedCarbonDioxideSensor", "eCDSr"),
 	

@@ -152,8 +152,8 @@ public class SDTModuleAdaptor {
 				logger.info("add Property customAttribute(" + caForSdtProperty + ")");
 				flexContainer.getCustomAttributes().add(caForSdtProperty);
 			}
-			logger.info("customAttributes: " + flexContainer.getCustomAttributes());
 		}
+		logger.info("customAttributes: " + flexContainer.getCustomAttributes());
 
 		ResponsePrimitive resp = CseUtil.sendCreateFlexContainerRequest(cseService, flexContainer,
 				parentLocation);

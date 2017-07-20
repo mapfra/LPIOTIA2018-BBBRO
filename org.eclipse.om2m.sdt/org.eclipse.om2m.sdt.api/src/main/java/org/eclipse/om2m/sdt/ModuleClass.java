@@ -213,19 +213,8 @@ public abstract class ModuleClass extends Element {
 	}
 
 	public void addProperty(final Property arg) {
-//		if (properties.get(arg.getName()) != null)
-//			throw new IllegalArgumentException();
 		properties.put(arg.getName(), arg);
 	}
-//
-//	public void setProperty(String name, String shortName, String value) {
-//		Property prop = getProperty(name);
-//		if (prop == null) {
-//			prop = new Property(name, shortName);
-//			properties.put(name, prop);
-//		}
-//		prop.setValue(value);
-//	}
 
 	public void removeProperty(final String name) {
 		properties.remove(name);

@@ -10,6 +10,7 @@ package org.eclipse.om2m.sdt.home.mocked.devices;
 import java.util.List;
 
 import org.eclipse.om2m.sdt.Domain;
+import org.eclipse.om2m.sdt.datapoints.BooleanDataPoint;
 import org.eclipse.om2m.sdt.home.devices.Door;
 import org.eclipse.om2m.sdt.home.mocked.modules.MockedBattery;
 import org.eclipse.om2m.sdt.home.mocked.modules.MockedDoorStatus;
@@ -21,7 +22,7 @@ public class MockedDoor extends Door implements MockedDevice {
 
 	private List<ServiceRegistration> serviceRegistrations;
 
-	public MockedDoor(String id, String serial, Domain domain) {
+	public MockedDoor(String id, String serial, Domain domain, boolean openOnly) {
 		super(id, serial, domain);
 
 		// Module Battery
@@ -31,7 +32,7 @@ public class MockedDoor extends Door implements MockedDevice {
 		addModule(new MockedDoorStatus("doorStatus_" + id, domain));
 
 		// Module Door
-		addModule(new MockedLock("lock_" + id, domain));
+		addModule(new MockedLock("lock_" + id, domain, openOnly));
 		
 		setLocation("Porte d\'entree");
 	}
