@@ -36,10 +36,10 @@ public enum DeviceType implements Identifiers {
 	deviceWaterValve(201, "deviceWaterValve", "deviceWaterValve", "deWVe"),
 	
 	deviceFloodDetector(300, "deviceFloodDetector", "deviceFloodDetector", "deFDr"),
-	deviceMotionDetector(301, "deviceMotionDetector", "deviceMotionDetector", "dMnDr"),
+	deviceMotionDetector(301, "deviceMotionDetector", "deviceMotionDetector", "deMDr"),
 	deviceSmokeDetector(302, "deviceSmokeDetector", "deviceSmokeDetector", "deSDr"),
 	deviceTemperatureDetector(303, "deviceTemperatureDetector", "deviceTemperatureDetector", "deTDr"),
-	deviceContactDetector(304, "deviceContactDetector", "deviceContactDetector", "dCtDr"),
+	deviceContactDetector(304, "deviceContactDetector", "deviceContactDetector", "deCDr"),
 	
 	deviceCamera(400, "deviceCamera", "deviceCamera", "devCa"),
 	deviceWeatherStation(500, "deviceWeatherStation", "deviceWeatherStation", "deWSn"),
