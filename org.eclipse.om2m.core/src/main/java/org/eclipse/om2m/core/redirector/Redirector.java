@@ -125,16 +125,32 @@ public class Redirector {
 					url = url.substring(0, url.length() - 1);
 				}
 
-				if (request.getTo().startsWith("//")) {
-					url += request.getTo().replaceFirst("//", "/_/");
-				} else if (request.getTo().startsWith("/")) {
-					url += request.getTo().replaceFirst("/", "/~/");
-
+				if(url.startsWith("mqtt://")){
+					url += request.getTo();
+					Pattern mqttUriPattern = Pattern.compile("(mqtt://[^:/]*(:[0-9]{1,5})?)(/.*)");
+					Matcher matcher = mqttUriPattern.matcher(url);
+					if(matcher.matches()){
+						// FIXME we need a response but not yet implemented in MQTT binding
+						request.setMqttResponseExpected(true);
+						// TODO Format type can be enhanced
+						request.setMqttTopic("/oneM2M/req/" + Constants.CSE_ID + "/" + csrEntity.getRemoteCseId().replaceAll("/", "") + "/xml");
+						request.setMqttUri(matcher.group(1));
+					} else {
+						LOGGER.warn("Incorrect MQTT URI specified in remoteCSE: " + url);
+						i++;
+						continue;
+					}
 				} else {
-					url += "/" + request.getTo();
-
+					if(request.getTo().startsWith("//")){
+						url += request.getTo().replaceFirst("//", "/_/");
+					} else if(request.getTo().startsWith("/")){
+						url += request.getTo().replaceFirst("/", "/~/");
+					} else {
+						url+= "/" + request.getTo();
+					}
 				}
-
+				
+				
 				request.setTo(url);
 
 				// modify the request if content type is OBJ.
