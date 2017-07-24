@@ -127,6 +127,7 @@
 		<module>org.eclipse.om2m.commons.logging</module>
 		<module>org.eclipse.om2m.binding.http</module>
 		<module>org.eclipse.om2m.binding.coap</module>
+		<module>org.eclipse.om2m.binding.mqtt</module>
 		<module>org.eclipse.om2m.binding.service</module>
 		<module>org.eclipse.om2m.core.service</module>
 		<module>org.eclipse.om2m.datamapping.jaxb</module>

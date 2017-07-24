@@ -158,7 +158,7 @@ public class FanOutPointController extends Controller {
 		public ResponsePrimitive call() throws Exception {
 			ResponsePrimitive resp = new Router().doRequest(request);
 			resp.setPrimitiveContent(new PrimitiveContent());
-			resp.getPritimitiveContent().getAny().add(resp.getContent());
+			resp.getPrimitiveContent().getAny().add(resp.getContent());
 			return resp;
 		}
 		

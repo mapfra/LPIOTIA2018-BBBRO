@@ -19,6 +19,9 @@
  *******************************************************************************/
 package org.eclipse.om2m.core.redirector;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.om2m.commons.constants.CSEType;
@@ -126,8 +129,10 @@ public class Redirector {
 					url += request.getTo().replaceFirst("//", "/_/");
 				} else if (request.getTo().startsWith("/")) {
 					url += request.getTo().replaceFirst("/", "/~/");
+
 				} else {
 					url += "/" + request.getTo();
+
 				}
 
 				request.setTo(url);
@@ -226,6 +231,26 @@ public class Redirector {
 					done = true;
 				} else {
 					request.setTo(poa);
+					if(poa.startsWith("mqtt://")){
+						Pattern mqttUriPattern = Pattern.compile("(mqtt://[^:/]*(:[0-9]{1,5})?)(/.*)?");
+						Matcher matcher = mqttUriPattern.matcher(poa);
+						if(matcher.matches()){
+							String topic = matcher.group(3);
+							String aeId = ae.getAeid();
+							if(topic != null){
+								request.setMqttTopic(topic);
+								request.setMqttResponseExpected(false);
+							} else {
+								request.setMqttTopic("/oneM2M/req/" + Constants.CSE_ID + "/" + aeId + "/xml");
+								request.setMqttResponseExpected(true);
+							}
+							request.setMqttUri(matcher.group(1));
+						} else {
+							LOGGER.warn("POA is incorrect for MQTT: " + poa);
+							i++;
+							continue;
+						}
+					}
 					response = RestClient.sendRequest(request);
 					if (!response.getResponseStatusCode().equals(ResponseStatusCode.TARGET_NOT_REACHABLE)) {
 						done = true;

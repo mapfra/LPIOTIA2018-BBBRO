@@ -135,7 +135,15 @@ public class RequestPrimitive {
 	protected String requestContentType;
 	@XmlTransient
 	protected Map<String,List<String>> queryStrings;
-	
+	@XmlTransient
+	protected String targetId;
+	@XmlTransient
+	protected String mqttTopic;
+	@XmlTransient
+	protected String mqttUri;
+	@XmlTransient
+	protected boolean mqttResponseExpected = true;
+
 	/**
 	 * @return the queryStrings
 	 */
@@ -558,7 +566,7 @@ public class RequestPrimitive {
 	 * @return the targetId
 	 */
 	public String getTargetId() {
-		return this.getTo();
+		return this.targetId;
 	}
 
 	/**
@@ -566,7 +574,7 @@ public class RequestPrimitive {
 	 *            the targetId to set
 	 */
 	public void setTargetId(String targetId) {
-		this.setTo(targetId);
+		this.targetId= targetId;
 	}
 
 	/**
@@ -595,6 +603,38 @@ public class RequestPrimitive {
 	 */
 	public void setRequestContentType(String requestContentType) {
 		this.requestContentType = requestContentType;
+	}
+
+	public PrimitiveContent getPrimitiveContent() {
+		return primitiveContent;
+	}
+
+	public void setPrimitiveContent(PrimitiveContent primitiveContent) {
+		this.primitiveContent = primitiveContent;
+	}
+
+	public String getMqttTopic() {
+		return mqttTopic;
+	}
+
+	public void setMqttTopic(String mqttTopic) {
+		this.mqttTopic = mqttTopic;
+	}
+
+	public String getMqttUri() {
+		return mqttUri;
+	}
+
+	public void setMqttUri(String mqttUri) {
+		this.mqttUri = mqttUri;
+	}
+	
+	public boolean isMqttResponseExpected() {
+		return mqttResponseExpected;
+	}
+
+	public void setMqttResponseExpected(boolean mqttResponseExpected) {
+		this.mqttResponseExpected = mqttResponseExpected;
 	}
 
 	/* (non-Javadoc)
@@ -675,5 +715,5 @@ public class RequestPrimitive {
 		result.to = this.to;
 		return result;
 	}
-	
+
 }

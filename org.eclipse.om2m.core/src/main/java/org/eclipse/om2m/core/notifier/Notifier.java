@@ -22,6 +22,8 @@ package org.eclipse.om2m.core.notifier;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -121,12 +123,13 @@ public class Notifier {
 				notification.setSubscriptionReference(subscriptionEntity.getHierarchicalURI());
 				notification.setSubscriptionDeletion(false);
 				RequestPrimitive notifRequest = new RequestPrimitive();
-				notifRequest.setContent(DataMapperSelector.getDataMapperList().get(MimeMediaType.XML).objToString(notification));
+				notifRequest.setContent(DataMapperSelector.getDataMapperList().get(Constants.NOTIFICATION_MMT).objToString(notification));
 				notifRequest.setFrom("/" + Constants.CSE_ID);
 				notifRequest.setTo(uri);
 				notifRequest.setOperation(Operation.NOTIFY);
-				notifRequest.setRequestContentType(MimeMediaType.XML);
-				notifRequest.setReturnContentType(MimeMediaType.XML);
+				notifRequest.setRequestContentType(Constants.NOTIFICATION_MMT);
+				notifRequest.setReturnContentType(Constants.NOTIFICATION_MMT);
+				
 				ResponsePrimitive resp = notify(notifRequest, uri);
 				if(resp.getResponseStatusCode().equals(ResponseStatusCode.TARGET_NOT_REACHABLE)){
 					throw new Om2mException("Error during the verification request", 
@@ -145,9 +148,29 @@ public class Notifier {
 		LOGGER.info("Sending notify request to: " + contact);
 		if(contact.matches(".*://.*")){ 
 			// Contact = protocol-dependent -> direct notification using the rest client.
+			// In case of MQTT, the URI of the broker and the Topic has to be handled separatly
+			if(contact.startsWith("mqtt://")){
+				Pattern mqttUriPattern = Pattern.compile("(mqtt://[^:/]*(:[0-9]{1,5})?)(/.*)");
+				Matcher matcher = mqttUriPattern.matcher(contact);
+				if(matcher.matches()){
+					String uri = matcher.group(1);
+					String topic = matcher.group(3) == null ? "" : matcher.group(3).substring(1);
+					request.setMqttTopic(topic);
+					request.setMqttUri(uri);
+					// We do not want to wait for a response on AE topic
+					request.setMqttResponseExpected(false);
+				} else {
+					ResponsePrimitive resp = new ResponsePrimitive(request);
+					resp.setResponseStatusCode(ResponseStatusCode.BAD_REQUEST);
+					resp.setContent("Error in mqtt URI");
+					resp.setContentType(MimeMediaType.TEXT_PLAIN);
+					return resp;
+				}
+			}
 			request.setTo(contact);
 			return RestClient.sendRequest(request);
 		}else{
+			request.setTo(contact);
 			request.setTargetId(contact);
 			LOGGER.info("Sending notify request...");
 			return new Router().doRequest(request);
@@ -245,7 +268,8 @@ public class Notifier {
 
 			// Set request parameters
 			request.setOperation(Operation.NOTIFY);
-			request.setFrom("/" + Constants.CSE_ID);
+			//request.setFrom("/" + Constants.CSE_ID);
+			request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 
 			if(resourceStatus == ResourceStatus.DELETED){
 				notification.setSubscriptionDeletion(true);
@@ -266,6 +290,7 @@ public class Notifier {
 							getMapperFromResourceType(resource.getResourceType().intValue());
 				}
 				if(sub.getNotificationContentType().equals(NotificationContentType.MODIFIED_ATTRIBUTES)){
+
 					Representation representation = new Representation();
 					if (modifiedOnlyResource != null) {
 						// Gregory BONNARDEL - 26 Avril 2016
@@ -281,21 +306,24 @@ public class Notifier {
 					}
 					notification.getNotificationEvent().setRepresentation(representation);
 					request.setRequestContentType(MimeMediaType.XML);
+
 				} else if(sub.getNotificationContentType().equals(NotificationContentType.WHOLE_RESOURCE)){
 					serializableResource = (Resource) mapper.mapEntityToResource(resource, ResultContent.ATTRIBUTES);
+
 					Representation representation = new Representation();
 					representation.setResource(serializableResource);
 					notification.getNotificationEvent().setRepresentation(representation);
 					request.setRequestContentType(MimeMediaType.XML);
+
 				} 
 			} 
 			// Set the content
-			request.setContent(DataMapperSelector.getDataMapperList().get(MimeMediaType.XML).objToString(notification));
+			request.setContent(DataMapperSelector.getDataMapperList().get(Constants.NOTIFICATION_MMT).objToString(notification));
 			// For each notification URI: send the notify request
 			for(final String uri : sub.getNotificationURI()){
 				CoreExecutor.postThread(new Runnable(){
 					public void run() {
-						Notifier.notify(request, uri);    					
+						Notifier.notify(request, uri);			
 					};
 				});
 			}

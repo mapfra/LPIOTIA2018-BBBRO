@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>org.eclipse.om2m.binding.coap</name>
+	<name>org.eclipse.om2m.binding.mqtt</name>
 	<comment></comment>
 	<projects>
 	</projects>
