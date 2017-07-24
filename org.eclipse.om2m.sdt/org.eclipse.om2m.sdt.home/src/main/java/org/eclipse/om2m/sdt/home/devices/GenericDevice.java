@@ -99,6 +99,7 @@ public class GenericDevice extends Device {
 
 	protected void setDeviceType(DeviceType type) {
 		this.type = type;
+		this.deviceType.setValue(Integer.toString(type.getValue()));
 	}
 
 	public DeviceType getDeviceType() {
