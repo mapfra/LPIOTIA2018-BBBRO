@@ -79,9 +79,6 @@ public class LabelEntity {
 	@ManyToMany(targetEntity = AccessControlPolicyEntity.class, mappedBy = "labelsEntities")
 	protected List<AccessControlPolicyEntity> linkedACP;
 	
-	@ManyToMany(targetEntity = AccessControlPolicyEntity.class, mappedBy = "labelsEntities")
-	protected List<AccessControlPolicyEntity> linkedACP;
-	
 	@ManyToMany(targetEntity = NodeEntity.class, mappedBy = "labelsEntities")
 	protected List<NodeEntity> linkedNodes;
 	
@@ -194,16 +191,6 @@ public class LabelEntity {
 		return linkedAe;
 	}
 
-	public void setLinkedACP(List<AccessControlPolicyEntity> pLinkedACPs) {
-		this.linkedACP = pLinkedACPs;
-	}
-	
-	public List<AccessControlPolicyEntity> getLinkedACP() {
-		if (this.linkedACP == null) {
-			this.linkedACP = new ArrayList<>();
-		}
-		return this.linkedACP;
-	}
 
 	/**
 	 * @param linkedAe the linkedAe to set

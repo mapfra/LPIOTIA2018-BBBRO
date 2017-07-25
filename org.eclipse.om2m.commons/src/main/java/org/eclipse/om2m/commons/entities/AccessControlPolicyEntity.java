@@ -499,14 +499,7 @@ public class AccessControlPolicyEntity extends AnnounceableSubordinateEntity {
 		this.linkedDynamicAuthorizationConsultation = linkedDynamicAuthorizationConsultation;
 	}
 
-	@Override
-	public List<AccessControlPolicyEntity> getAccessControlPolicies() {
-		return new ArrayList<>();
-	}
-
-	@Override
-	public void setAccessControlPolicies(List<AccessControlPolicyEntity> accessControlPolicies) {
-	}
+	
 	
 	@Override
 	public List<DynamicAuthorizationConsultationEntity> getDynamicAuthorizationConsultations() {
@@ -519,6 +512,16 @@ public class AccessControlPolicyEntity extends AnnounceableSubordinateEntity {
 	@Override
 	public void setDynamicAuthorizationConsultations(List<DynamicAuthorizationConsultationEntity> list) {
 		dynamicConsultationAuthorizations = list;
+	}
+
+	@Override
+	public List<AccessControlPolicyEntity> getAccessControlPolicies() {
+		return null;
+	}
+
+	@Override
+	public void setAccessControlPolicies(
+			List<AccessControlPolicyEntity> accessControlPolicies) {
 	}
 	
 	
