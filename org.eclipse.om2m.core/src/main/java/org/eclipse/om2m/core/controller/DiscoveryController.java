@@ -294,6 +294,9 @@ public class DiscoveryController extends Controller {
 				result.addAll(labelEntity.getLinkedAni());
 				result.addAll(labelEntity.getLinkedAndi());
 				break;
+			case(ResourceType.SUBSCRIPTION):
+				result.addAll(labelEntity.getLinkedSub());
+				break;
 			default:
 				break;
 			}
@@ -311,6 +314,7 @@ public class DiscoveryController extends Controller {
 			result.addAll(labelEntity.getLinkedNodes());
 			result.addAll(labelEntity.getLinkedAni());
 			result.addAll(labelEntity.getLinkedAndi());
+			result.addAll(labelEntity.getLinkedSub());
 		}
 		return result;
 	}
