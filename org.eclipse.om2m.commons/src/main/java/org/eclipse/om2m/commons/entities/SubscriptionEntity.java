@@ -93,6 +93,14 @@ public class SubscriptionEntity extends RegularResourceEntity {
 	/* either xml or json */
 	protected String notificationPayloadContentType;
 	
+	/*
+	 * 2017 07 25 - BONNARDEL Gregory (Thales)
+	 * nbOfFailedNotifications keep track of the number of notifications that 
+	 * have not been successfully delivered.
+	 */
+	@Column(name="nbOfFailedNotifications")
+	protected Integer nbOfFailedNotifications;
+	
 	protected String subscriberURI;
 	
 	// links to parents
@@ -590,6 +598,20 @@ public class SubscriptionEntity extends RegularResourceEntity {
 	 */
 	public void setNotificationPayloadContentType(String notificationPayloadContentType) {
 		this.notificationPayloadContentType = notificationPayloadContentType;
+	}
+
+	/**
+	 * @return the nbOfFailedNotifications
+	 */
+	public Integer getNbOfFailedNotifications() {
+		return nbOfFailedNotifications;
+	}
+
+	/**
+	 * @param nbOfFailedNotifications the nbOfFailedNotifications to set
+	 */
+	public void setNbOfFailedNotifications(Integer nbOfFailedNotifications) {
+		this.nbOfFailedNotifications = nbOfFailedNotifications;
 	}
 	
 	

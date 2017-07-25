@@ -128,6 +128,7 @@
       <property name="org.eclipse.om2m.guestRequestingEntity" value="guest:guest" />
       <property name="org.eclipse.om2m.m2mSpId" value="om2m.org" />
       <property name="org.eclipse.om2m.resource.idseparator" value="-" />
+      <property name="org.eclipse.om2m.subscriptions.nbOfFailedNotificationsBeforeDeletion" value="3" />
       <property name="org.eclipse.om2m.webInterfaceContext" value="/webpage" />
    </configurations>
 

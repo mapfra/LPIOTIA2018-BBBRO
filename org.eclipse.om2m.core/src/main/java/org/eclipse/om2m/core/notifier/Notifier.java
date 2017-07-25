@@ -69,6 +69,8 @@ import org.eclipse.om2m.persistence.service.DBTransaction;
 public class Notifier {
 	/** Logger */
 	private static Log LOGGER = LogFactory.getLog(Notifier.class);
+	
+	private static final Integer NB_OF_FAILED_NOTIFS_BEFORE_DELETION = Integer.valueOf(System.getProperty("org.eclipse.om2m.subscriptions.nbOfFailedNotificationsBeforeDeletion", "5"));
 
 	/**
 	 * Finds all resource subscribers and notifies them.
@@ -295,11 +297,51 @@ public class Notifier {
 			for(final String uri : sub.getNotificationURI()){
 				CoreExecutor.postThread(new Runnable(){
 					public void run() {
-						Notifier.notify(request, uri);    					
+						ResponsePrimitive response = Notifier.notify(request, uri);  
+						if (ResponseStatusCode.OK.equals(response.getResponseStatusCode())) {
+							// notify ok
+							updateSubscription(sub.getResourceID(), 0);
+							LOGGER.debug("notify OK for subscription " + sub.getResourceID());
+						} else {
+							// notify KO
+							Integer nbOfFailed = sub.getNbOfFailedNotifications();
+							if (nbOfFailed == null) {
+								nbOfFailed = 0;
+							}
+							if (nbOfFailed > NB_OF_FAILED_NOTIFS_BEFORE_DELETION) {
+								// delete notification
+								deleteSubscription(sub.getResourceID());
+								LOGGER.error("Reach the limit of failed notifs --> delete subscription " + sub.getResourceID());
+							} else {
+								updateSubscription(sub.getResourceID(), nbOfFailed+1);
+								LOGGER.warn("unable to notify, increase failed notifs(" + nbOfFailed +") for subscription " + sub.getResourceID());
+							}
+						}
 					};
 				});
 			}
 		}
+	}
+	
+	private static void deleteSubscription(String resourceId) {
+		DBService dbs = PersistenceService.getInstance().getDbService();
+		DBTransaction dbTransaction = dbs.getDbTransaction();
+		dbTransaction.open();
+		SubscriptionEntity subscriptionEntityToBeDeleted = dbs.getDAOFactory().getSubsciptionDAO().find(dbTransaction, resourceId);
+		dbs.getDAOFactory().getSubsciptionDAO().delete(dbTransaction, subscriptionEntityToBeDeleted);
+		dbTransaction.commit();
+		dbTransaction.close();
+	}
+	
+	private static void updateSubscription(String resourceId, Integer nbOfFailedNotification) {
+		DBService dbs = PersistenceService.getInstance().getDbService();
+		DBTransaction dbTransaction = dbs.getDbTransaction();
+		dbTransaction.open();
+		SubscriptionEntity subscriptionEntityToBeUpdated = dbs.getDAOFactory().getSubsciptionDAO().find(dbTransaction, resourceId);
+		subscriptionEntityToBeUpdated.setNbOfFailedNotifications(nbOfFailedNotification);
+		dbs.getDAOFactory().getSubsciptionDAO().update(dbTransaction, subscriptionEntityToBeUpdated);
+		dbTransaction.commit();
+		dbTransaction.close();
 	}
 
 }

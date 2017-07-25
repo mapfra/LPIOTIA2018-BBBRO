@@ -265,6 +265,7 @@ public class SubscriptionController extends Controller{
 		subscriptionEntity.setParentID(parentEntity.getResourceID());
 		subscriptionEntity.setResourceType(ResourceType.SUBSCRIPTION);
 		subscriptionEntity.setNotificationPayloadContentType(request.getReturnContentType());
+		subscriptionEntity.setNbOfFailedNotifications(new Integer(0));
 
 		if (subscription.getName() != null){
 			if (!Patterns.checkResourceName(subscription.getName())){
