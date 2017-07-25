@@ -87,6 +87,12 @@ public class SubscriptionEntity extends RegularResourceEntity {
 	@Column(name = ShortName.CREATOR)
 	protected String creator;
 	
+	/* 2017 07 25 - BONNARDEL Gregory */
+	/* notificationPayloadContentType contains the type of representation */
+	/* to be used when sending a notification */
+	/* either xml or json */
+	protected String notificationPayloadContentType;
+	
 	protected String subscriberURI;
 	
 	// links to parents
@@ -571,5 +577,21 @@ public class SubscriptionEntity extends RegularResourceEntity {
 	public void setDynamicAuthorizationConsultations(List<DynamicAuthorizationConsultationEntity> list) {
 		this.dynamicAuthorizationConsultations = list;
 	}
+
+	/**
+	 * @return the notificationPayloadContentType
+	 */
+	public String getNotificationPayloadContentType() {
+		return notificationPayloadContentType;
+	}
+
+	/**
+	 * @param notificationPayloadContentType the notificationPayloadContentType to set
+	 */
+	public void setNotificationPayloadContentType(String notificationPayloadContentType) {
+		this.notificationPayloadContentType = notificationPayloadContentType;
+	}
+	
+	
 	
 }

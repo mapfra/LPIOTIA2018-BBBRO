@@ -264,6 +264,7 @@ public class SubscriptionController extends Controller{
 		subscriptionEntity.setLastModifiedTime(DateUtil.now());
 		subscriptionEntity.setParentID(parentEntity.getResourceID());
 		subscriptionEntity.setResourceType(ResourceType.SUBSCRIPTION);
+		subscriptionEntity.setNotificationPayloadContentType(request.getReturnContentType());
 
 		if (subscription.getName() != null){
 			if (!Patterns.checkResourceName(subscription.getName())){
