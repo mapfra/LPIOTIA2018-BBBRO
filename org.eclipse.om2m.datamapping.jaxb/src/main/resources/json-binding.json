@@ -181,6 +181,11 @@
               "java-attribute": "notificationURI",
               "name": "nu",
               "namespace": ""
+            },
+            {
+              "java-attribute": "notificationContentType",
+              "name": "nct",
+              "namespace": ""
             }
           ]
         }
