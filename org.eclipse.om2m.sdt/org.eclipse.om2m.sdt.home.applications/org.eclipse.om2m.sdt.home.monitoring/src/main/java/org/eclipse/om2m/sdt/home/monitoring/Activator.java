@@ -6,6 +6,7 @@ import java.util.Hashtable;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.om2m.core.service.CseService;
+import org.eclipse.om2m.interworking.service.InterworkingService;
 import org.eclipse.om2m.sdt.home.monitoring.servlet.CredentialsServlet;
 import org.eclipse.om2m.sdt.home.monitoring.servlet.HomeServlet;
 import org.eclipse.om2m.sdt.home.monitoring.servlet.InCseContextServlet;
@@ -18,6 +19,7 @@ import org.eclipse.om2m.sdt.home.monitoring.util.ResourceDiscovery;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
+import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.cm.ConfigurationException;
 import org.osgi.service.cm.ManagedService;
 import org.osgi.service.http.HttpService;
@@ -92,15 +94,24 @@ public class Activator implements BundleActivator , ManagedService {
 
 	@Override
 	public void stop(BundleContext context) throws Exception {
-		sclServiceTracker.close();
-		httpServiceTracker.close();
+		try {
+			sclServiceTracker.close();
+			httpServiceTracker.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
-	private void initCseServiceTracker(BundleContext bundleContext) {
+	private void initCseServiceTracker(final BundleContext bundleContext) {
 		sclServiceTracker = new ServiceTracker(bundleContext, CseService.class.getName(), null) {
+			private ServiceRegistration sr;
+			
 			public void removedService(ServiceReference reference, Object service) {
-            	AeRegistration.getInstance().deleteAe();
+            	
+				sr.unregister();
+				AeRegistration.getInstance().deleteAe();
 				AeRegistration.getInstance().setCseService(null);
+				
 				LOGGER.info("CSEService removed");
 			}
 			public Object addingService(ServiceReference reference) {
@@ -108,6 +119,7 @@ public class Activator implements BundleActivator , ManagedService {
 				CseService cseService = (CseService) this.context.getService(reference); 
 				AeRegistration.getInstance().setCseService(cseService);
             	AeRegistration.getInstance().createAe();
+            	sr = bundleContext.registerService(InterworkingService.class, AeRegistration.getInstance(), null);
 				ResourceDiscovery.initCseService(cseService);
 				return cseService;
 			}

@@ -1,24 +1,33 @@
 package org.eclipse.om2m.sdt.home.monitoring.util;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.om2m.commons.constants.AccessControl;
 import org.eclipse.om2m.commons.constants.Constants;
 import org.eclipse.om2m.commons.constants.MimeMediaType;
+import org.eclipse.om2m.commons.constants.NotificationContentType;
 import org.eclipse.om2m.commons.constants.Operation;
 import org.eclipse.om2m.commons.constants.ResourceType;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.resource.AE;
 import org.eclipse.om2m.commons.resource.AccessControlPolicy;
 import org.eclipse.om2m.commons.resource.AccessControlRule;
+import org.eclipse.om2m.commons.resource.Notification;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
 import org.eclipse.om2m.commons.resource.SetOfAcrs;
+import org.eclipse.om2m.commons.resource.Subscription;
 import org.eclipse.om2m.core.service.CseService;
+import org.eclipse.om2m.interworking.service.InterworkingService;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
-public class AeRegistration {
+public class AeRegistration implements InterworkingService {
 	
 	private static Log LOGGER = LogFactory.getLog(AeRegistration.class);
 
@@ -26,12 +35,16 @@ public class AeRegistration {
 	private static final String ACP_HOME_MONITORING_NAME = HOME_MONITORING_NAME + "_ACP";
 	private static final String HOME_MONITORING_RESOURCE_ID = "ResourceID/SDT_Home_Monitoring_Application";
 	private static final String RESOURCE_TYPE = "ResourceType/Application";
+	private static final String POA = "HomeMonitoringPOA";
 	
 	private static final AeRegistration INSTANCE = new AeRegistration();
 	
 	private CseService cseService;
 	private AE registeredApplication;
 	private AccessControlPolicy registeredAcp;
+	
+	private List<JSONObject> notifications;
+	private List<String> subscriptions;
 
 	/**
 	 * Retrieves instance
@@ -45,6 +58,8 @@ public class AeRegistration {
 	 * Make private the default constructor
 	 */
 	private AeRegistration() {
+		notifications = new ArrayList<>();
+		subscriptions = new ArrayList<>();
 	}
 	
 	/**
@@ -74,10 +89,11 @@ public class AeRegistration {
 		ae.setName(HOME_MONITORING_NAME);
 		ae.setAppName(HOME_MONITORING_NAME);
 		ae.setAppID(HOME_MONITORING_NAME);
-		ae.setRequestReachability(Boolean.FALSE);
+		ae.setRequestReachability(Boolean.TRUE);
 		ae.getLabels().add(HOME_MONITORING_RESOURCE_ID);
 		ae.getLabels().add(RESOURCE_TYPE);
 		ae.getAccessControlPolicyIDs().add(registeredAcp.getResourceID());
+		ae.getPointOfAccess().add(POA);
 		
 		request.setOperation(Operation.CREATE);
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
@@ -107,6 +123,8 @@ public class AeRegistration {
 	}
 	
 	public void deleteAe() {
+		deleteAllSubscriptions();
+		
 		if (registeredApplication == null) {
 			return;
 		}
@@ -179,4 +197,121 @@ public class AeRegistration {
 		cseService.doRequest(request);
 	}
 
+	@Override
+	public ResponsePrimitive doExecute(RequestPrimitive request) {
+		ResponsePrimitive response = new ResponsePrimitive(request);
+
+		if (!request.getOperation().equals(Operation.NOTIFY)) {
+			response.setResponseStatusCode(ResponseStatusCode.NOT_IMPLEMENTED);
+			return response;
+		}
+		
+		// store notifications
+		String content = null;
+		JSONParser parser = new JSONParser();
+		JSONObject notification = null;
+		try {
+			content = (String) request.getContent();
+			notification = (JSONObject) parser.parse(content);
+		} catch (ClassCastException | ParseException e) {
+			response.setResponseStatusCode(ResponseStatusCode.BAD_REQUEST);
+			return response;
+		}
+		
+		// add in list
+		addNotification(notification);
+		
+		response.setResponseStatusCode(ResponseStatusCode.OK);
+		return response;
+	}
+
+	@Override
+	public String getAPOCPath() {
+		return POA;
+	}
+
+	public List<JSONObject> getNotificationsAndClears() {
+		List<JSONObject> notificationsToBeReturned = new ArrayList<>();
+		synchronized (notifications) {
+			notificationsToBeReturned.addAll(notifications);
+			notifications.clear();
+		}
+		return notificationsToBeReturned;
+	}
+	
+	public void addNotification(JSONObject notification) {
+		LOGGER.debug("add notification from subscription ");
+		synchronized (notifications) {
+			notifications.add(notification);
+		}
+	}
+	
+	
+	public boolean createSubscription(String resourceId) {
+		Subscription subscription = new Subscription();
+		subscription.setNotificationContentType(NotificationContentType.WHOLE_RESOURCE);
+		subscription.getNotificationURI().add(registeredApplication.getResourceID());
+		
+		RequestPrimitive request = new RequestPrimitive();
+		request.setOperation(Operation.CREATE);
+		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
+		request.setTargetId(resourceId);
+		request.setResourceType(ResourceType.SUBSCRIPTION);
+		request.setReturnContentType(MimeMediaType.JSON);
+		request.setRequestContentType(MimeMediaType.OBJ);
+		request.setContent(subscription);
+		
+		ResponsePrimitive response = cseService.doRequest(request);
+		
+		// check response status code
+		if (! ResponseStatusCode.CREATED.equals(response.getResponseStatusCode())) {
+			// KO
+			return false;
+		} else {
+			String content = (String) response.getContent();
+			JSONParser parser = new JSONParser();
+			try {
+				JSONObject createdSubscription = (JSONObject) parser.parse(content);
+				String subscriptionId = (String) ((JSONObject) createdSubscription.get("m2m:sub")).get("ri");
+				addSubscription(subscriptionId);
+			} catch (ParseException e) {
+				LOGGER.error("unable to parse subscription json payload", e);
+				return false;
+			} catch(NullPointerException e) {
+				LOGGER.error("unable to retrieve subscription object", e);
+				return false;
+			} catch (ClassCastException e) {
+				LOGGER.error("unable to cast subscription object", e);
+				return false;
+			}
+			return true;
+		}
+	}
+	
+	private void deleteSubscription(String subscriptionId) {
+		RequestPrimitive request = new RequestPrimitive();
+		request.setOperation(Operation.DELETE);
+		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
+		request.setTargetId(subscriptionId);
+		request.setResourceType(ResourceType.SUBSCRIPTION);
+		request.setReturnContentType(MimeMediaType.OBJ);
+		request.setRequestContentType(MimeMediaType.OBJ);
+		
+		ResponsePrimitive response = cseService.doRequest(request);
+	}
+	
+	private void addSubscription(String subscriptionId) {
+		synchronized (subscriptions) {
+			subscriptions.add(subscriptionId);
+		}
+	}
+	
+	private void deleteAllSubscriptions() {
+		synchronized (subscriptions) {
+			for(String subId: subscriptions) {
+				deleteSubscription(subId);
+			}
+			subscriptions.clear();
+		}
+	}
 }

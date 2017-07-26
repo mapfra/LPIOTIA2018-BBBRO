@@ -5,7 +5,8 @@ Bundle-SymbolicName: org.eclipse.om2m.sdt.home.monitoring
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-Activator: org.eclipse.om2m.sdt.home.monitoring.Activator
-Bundle-ClassPath: .
+Bundle-ClassPath: .,
+ lib/json-simple-1.1.1.jar
 Import-Package: javax.servlet,
  javax.servlet.http,
  org.apache.commons.codec.binary,
@@ -13,6 +14,7 @@ Import-Package: javax.servlet,
  org.eclipse.om2m.commons.constants,
  org.eclipse.om2m.commons.resource,
  org.eclipse.om2m.core.service,
+ org.eclipse.om2m.interworking.service,
  org.eclipse.om2m.sdt,
  org.eclipse.om2m.sdt.args,
  org.eclipse.om2m.sdt.datapoints,

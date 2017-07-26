@@ -6,6 +6,7 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 	var canceler = $q.defer();
 	var cameraCanceler = $q.defer();
 	var timerForDevicesUpdate = null;
+	var timerForNotifications = null;
 
 	$scope.devices = [];
 	$scope.cams = [];
@@ -53,6 +54,9 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 	};
 
 	$scope.switchFilter = function (module) {
+		if (!((module.name === 'binarySwitch') || (module.name === 'doorLock'))) {
+			return false;
+		}
 		var datapoints = module.datapoints;
 		$scope.count = $scope.count+1;
 		if (datapoints.length != 0) {
@@ -92,17 +96,18 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 				url: $scope.urlBase + '/' + $scope.cseContext 
 					+ '?fu=1&lbl=object.type/device',
 				headers: {
-					'Content-Type': 'application/xml',
+					'Content-Type': 'application/json',
+					'Accept': 'application/json',
 					'X-M2M-Origin': $scope.credentials
 				}
 		};
 		$http(req).success(function (response, status, headers, config)  {
-			var x2js = new X2JS();
-			var jsonData = x2js.xml_str2json(response);
+			
+			var jsonData = response;
 			var key = $scope.getRootKey(jsonData);
 			var devices;
 			if (jsonData[key].__text != undefined || jsonData[key].__text != '' ) {
-				devices = jsonData[key].__text.split(" ");
+				devices = jsonData[key];
 			}
 			$scope.removeOldDevices(devices);
 
@@ -118,8 +123,8 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 				req.url = $scope.urlBase + '/~' + myDevice + '?rcn=7';
 				req.data = device;
 				$http(req).success(function (response, status, headers, config)  {
-					var x2js = new X2JS();
-					var jsonData = x2js.xml_str2json(response);
+					
+					var jsonData = response;
 					var key = $scope.getRootKey(jsonData);
 
 					var label = jsonData[key].lbl;
@@ -131,17 +136,16 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 					var tags = jsonData[key];
 					for (tagKey in tags) {
 						// starts with prop
-//						if (tagKey.lastIndexOf('prop', 0) === 0) {
-							if (typeof tags[tagKey].__text !== "undefined") {
-								// override name if there is a propDeviceName
-								if (tagKey === 'devNe') {
-									config.data.name = tags[tagKey].__text;
-								}
-								var propName = tagKey;
-								config.data.properties.push({'name':propName,
-									'value':tags[tagKey].__text});
+						var tagValue = tags[tagKey];
+						if (typeof tagValue !== "undefined") {
+							// override name if there is a propDeviceName
+							if (tagKey === 'devNe') {
+								config.data.name = tagValue;
 							}
-//						}
+							var propName = tagKey;
+							config.data.properties.push({'name':propName,
+								'value':tagValue});
+						}
 					}
 
 					req.url = $scope.urlBase + '/' + $scope.cseContext 
@@ -163,42 +167,35 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 
 	$scope.getModules = function (req) {
 		$http(req).success(function (response, status, headers, config)  {
-			var x2js = new X2JS();
-			var jsonData = x2js.xml_str2json(response);	
+			var jsonData = response;	
 			var key = $scope.getRootKey(jsonData);
-			var modules = [];
+			var modules = jsonData[key];
 			if (config.data.desc == 'org.onem2m.home.device.deviceCamera') {
-				if (typeof jsonData[key].__text !== 'undefined') {
-					modules = jsonData[key].__text.split(" ");
-					if ((modules.length > 1) || modules[0].contains('org.onem2m.home.moduleclass.streaming')) {
-						for (i=0; i<modules.length; i++) {
-							// create the module object and push it in the device array
-							var url = $scope.urlBase + '/~' + modules[i] + '?rcn=7';
-							var module= {'id':'','name':'','colorClass':'',
-									'datapoints':[],'actions':[],'img':'','value':'',
-									'interval': {},'started':false,'url':url,
-									'deviceName':config.data.name,'hideSpinning':true};
-							config.data.modules.push(module);
-							var moduleReq = {
-									method: 'GET',
-									url: '',
-									headers: {
-										'Content-Type': 'application/xml',
-										'X-M2M-Origin':$scope.credentials
-									}
-							};
-							moduleReq.url = url;
-							moduleReq.data = module;
-							$scope.getModule(moduleReq);
-						}						
-					} else {
-						$interval(function() { $scope.getModules(req); }, 2000, 1);
-					}
+				if ((modules.length > 1) || modules[0].contains('org.onem2m.home.moduleclass.streaming')) {
+					for (i=0; i<modules.length; i++) {
+						// create the module object and push it in the device array
+						var url = $scope.urlBase + '/~' + modules[i] + '?rcn=7';
+						var module= {'id':'','name':'','colorClass':'',
+								'datapoints':[],'actions':[],'img':'','value':'',
+								'interval': {},'started':false,'url':url,
+								'deviceName':config.data.name,'hideSpinning':true};
+						config.data.modules.push(module);
+						var moduleReq = {
+								method: 'GET',
+								url: '',
+								headers: {
+									'Content-Type': 'application/xml',
+									'X-M2M-Origin':$scope.credentials
+								}
+						};
+						moduleReq.url = url;
+						moduleReq.data = module;
+						$scope.getModule(moduleReq);
+					}						
 				} else {
-					$interval(function() { $scope.getModules(req); }, 2000, 1);
+					//$interval(function() { $scope.getModules(req); }, 2000, 1);
 				}
-			} else if (jsonData[key].__text != undefined || jsonData[key].__text != '' ) {
-				modules = jsonData[key].__text.split(" ");
+			} else {
 				for (i=0; i<modules.length; i++) {
 					// create the module object and push it in the device array
 					var url = $scope.urlBase + '/~' + modules[i] + '?rcn=7';
@@ -210,7 +207,8 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 							method: 'GET',
 							url: '',
 							headers: {
-								'Content-Type': 'application/xml',
+								'Content-Type': 'application/json',
+								'Accept': 'application/json',
 								'X-M2M-Origin':$scope.credentials
 							}
 					};
@@ -218,9 +216,7 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 					moduleReq.data = module;
 					$scope.getModule(moduleReq);
 				}
-			} else {
-				$interval(function() { $scope.getModules(req); }, 3000, 1);
-			}
+			} 
 		}).error(function (response, status, headers, config)  {
 			console.log("error getModules " + response);
 		});
@@ -228,8 +224,7 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 
 	$scope.getModule = function (req) {
 		$http(req).success(function (response, status, headers, config)  {
-			var x2js = new X2JS();
-			var jsonData = x2js.xml_str2json(response);
+			var jsonData = response;
 			var key = $scope.getRootKey(jsonData);
 			var root = jsonData[key];
 
@@ -240,6 +235,7 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 			var label = root.lbl;
 			var id = $scope.getPidFromLabel (label);
 			module.id = id;
+			module.ri = root.ri;
 			module.name = moduleName;
 			module.img = 'images/'+$scope.getImageModule(moduleName);
 			// fill the class with the module name to define the text color. see css file.
@@ -270,26 +266,108 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 					$scope.loadWebcam(config.data);
 				}
 			}
-			if (!module.started && ! $scope.arrayContains(blModules,module.name)) {
-				var intervalPolling = defaultModulePolling;
-				if ($scope.arrayContains(fastModules,module.name)) {
-					intervalPolling = fastModulePolling;
-				} 
-				var moduleReq = {
-						method: 'GET',
-						url: config.url,
-						headers: {
-							'Content-Type': 'application/xml',
-							'X-M2M-Origin':$scope.credentials
-						}
-				};
-				moduleReq.data = module;
-				module.interval = $interval(function() { $scope.getModule(moduleReq); }, intervalPolling);
-				module.started = true;
-			}
+			
+			$scope.createSubscription(root.ri);
+//			if (!module.started && ! $scope.arrayContains(blModules,module.name)) {
+//				var intervalPolling = defaultModulePolling;
+//				if ($scope.arrayContains(fastModules,module.name)) {
+//					intervalPolling = fastModulePolling;
+//				} 
+//				var moduleReq = {
+//						method: 'GET',
+//						url: config.url,
+//						headers: {
+//							'Content-Type': 'application/xml',
+//							'X-M2M-Origin':$scope.credentials
+//						}
+//				};
+//				moduleReq.data = module;
+//				module.interval = $interval(function() { $scope.getModule(moduleReq); }, intervalPolling);
+//				module.started = true;
+//			}
 		}).error(function (response, status, headers, config)  {
 			console.log("error getModule " + response);
 		});
+	}
+	
+	$scope.createSubscription = function(toBeSubscribedResource) {
+		req = {
+				method : 'POST',
+				url : $scope.urlBase + '/Home_Monitoring_Application/in-cse/context',
+				data : {resourceId:toBeSubscribedResource},
+				headers : {
+					'Content-Type' : 'application/json'
+				}
+		};
+		// don't care about response
+		$http(req);
+		
+	}
+	
+	$scope.getNotifications = function() {
+		req = {
+				method : 'GET',
+				url : $scope.urlBase + '/Home_Monitoring_Application/in-cse/context/notifications',
+				headers : {
+					'Accept' : 'application/json'
+				}
+		};
+		
+		$http(req).success(
+				function(response, status, headers, config) {
+					// for each notification --> update device & module model
+					 var notifications = response;
+					 // notifications is an array
+					notifications.forEach(
+							function(notification) {
+								console.log(notification);
+								var sgn = notification["m2m:sgn"];
+								var nev = null;
+								if (sgn !== null) {
+									nev = sgn["m2m:nev"];
+								}
+								var rep = null;
+								if (nev != null) {
+									rep = nev["m2m:rep"];
+								}
+								
+								var moduleRep = null;
+								if (rep != null) {
+									var key = $scope.getRootKey(rep);
+									moduleRep = rep[key];
+								}
+								
+								if (moduleRep != null) {
+									var internalModule = $scope.getModuleByRi(moduleRep.ri);
+									console.log(internalModule);
+									
+									
+									var propValueModule = $scope.getPropValueModule(internalModule.name);
+									if (propValueModule) {
+										var value = moduleRep[propValueModule];
+										if (internalModule.value) {
+											internalModule.value = value;
+										}
+									}
+									
+									if (moduleRep.powSe) {
+										console.log('powSe value:' + moduleRep.powSe);
+										var datapoints = internalModule.datapoints;
+										if (datapoints.length != 0) {
+											for (i=0; i<datapoints.length; i++) {
+												if (datapoints[i].name === 'powSe') {
+													datapoints[i].value = moduleRep.powSe;
+												}
+											}
+										}
+										
+										console.log('powSe updated!!!!!!!!!!!!!!!!!');
+									}
+								}
+							}
+						);
+				}
+		);
 	}
 	
 	// called when the user clicks on the witch widget in the HMI
@@ -356,33 +434,33 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 		}
 	}
 
-	$scope.getIdFromLabel = function(label) {
-		var tab = label.split(' ');
-		for (i=0; i<tab.length; i++) {
-			if (tab[i].contains('id/')) {
-				return tab[i].replace('id/','');
+	$scope.getIdFromLabel = function(labels) {
+		for(label in labels) {
+			var labelValue = labels[label];
+			if (labelValue.contains('id/')) {
+				return labelValue.replace('id/','');
 			}
 		}		
 		return null;
 	}
 
-	$scope.getPidFromLabel = function(label) {
-		var tab = label.split(' ');
-		for (i=0; i<tab.length; i++) {
-			if (tab[i].contains('pid/')) {
-				return tab[i].replace('pid/','');
+	$scope.getPidFromLabel = function(labels) {
+		for(label in labels) {
+			var labelValue = labels[label];
+			if (labelValue.contains('pid/')) {
+				return labelValue.replace('pid/','');
 			}
-		}		
+		}
 		return null;
 	}
 
-	$scope.getNameFromLabel = function(label) {
-		var tab = label.split(' ');
-		for (i=0; i<tab.length; i++) {
-			if (tab[i].contains('name/')) {
-				return tab[i].replace('name/','');
+	$scope.getNameFromLabel = function(labels) {
+		for(label in labels) {
+			var labelValue = labels[label];
+			if (labelValue.contains('name/')) {
+				return labelValue.replace('name/','');
 			}
-		}		
+		}
 		return null;
 	}
 
@@ -399,7 +477,11 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 				'noise':'noise.jpg',
 				'relativeHumidity':'humidity.png',
 				'atmosphericPressureSensor':'pressure.jpg',
-				'extendedCarbonDioxideSensor':'co2.png'
+				'extendedCarbonDioxideSensor':'co2.png',
+				'contactSensor':'open_door_35.png',
+				'motionSensor':'motion_sensor.png',
+				'energyConsumption': 'power_consumption.png'
+					
 		}
 		return imgModules[moduleName];
 	}
@@ -410,7 +492,10 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 				'noise':'noise',
 				'relativeHumidity':'relHy',
 				'atmosphericPressureSensor':'atmPe',
-				'extendedCarbonDioxideSensor':'cDeVe'
+				'extendedCarbonDioxideSensor':'cDeVe',
+				'contactSensor':'alarm',
+				'motionSensor':'alarm',
+				'energyConsumption':'power'
 		}
 		return moduleFilter[moduleName];
 	}
@@ -595,6 +680,18 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 		$scope.hide=true;
 	}
 	
+	$scope.getModuleByRi = function(moduleResourceId) {
+		for(deviceId in $scope.devices) {
+			var device = $scope.devices[deviceId];
+			for(moduleId in device.modules) {
+				var module = device.modules[moduleId];
+				if (module.ri === moduleResourceId) {
+					return module;
+				}
+			}
+		}
+	}
+	
 	var init = function () {
 		var req = {
 				method: 'GET',
@@ -607,6 +704,7 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 			$scope.credentials = response;
 			$scope.getDevices();
 			timerForDevicesUpdate = $interval(function() { $scope.getDevices(); }, devicePolling);
+			timerForNotifications = $interval(function() { $scope.getNotifications(); }, 3000);
 		});
 	};
 
