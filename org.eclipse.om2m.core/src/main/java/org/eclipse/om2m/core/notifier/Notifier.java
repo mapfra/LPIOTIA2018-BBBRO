@@ -115,6 +115,7 @@ public class Notifier {
 
 	public static void performVerificationRequest(RequestPrimitive request,
 			SubscriptionEntity subscriptionEntity) {
+		String notificationPayloadContentType = subscriptionEntity.getNotificationPayloadContentType();
 		for(String uri : subscriptionEntity.getNotificationURI()){
 			if(!uri.equals(request.getFrom())){
 				Notification notification = new Notification();
@@ -123,12 +124,16 @@ public class Notifier {
 				notification.setSubscriptionReference(subscriptionEntity.getHierarchicalURI());
 				notification.setSubscriptionDeletion(false);
 				RequestPrimitive notifRequest = new RequestPrimitive();
-				notifRequest.setContent(DataMapperSelector.getDataMapperList().get(subscriptionEntity.getNotificationPayloadContentType()).objToString(notification));
+				if (!MimeMediaType.OBJ.equals(notificationPayloadContentType)) {
+					notifRequest.setContent(DataMapperSelector.getDataMapperList().get(notificationPayloadContentType).objToString(notification));
+				} else {
+					notifRequest.setContent(notification);
+				}
 				notifRequest.setFrom("/" + Constants.CSE_ID);
 				notifRequest.setTo(uri);
 				notifRequest.setOperation(Operation.NOTIFY);
-				notifRequest.setRequestContentType(subscriptionEntity.getNotificationPayloadContentType());
-				notifRequest.setReturnContentType(subscriptionEntity.getNotificationPayloadContentType());
+				notifRequest.setRequestContentType(notificationPayloadContentType);
+				notifRequest.setReturnContentType(notificationPayloadContentType);
 				ResponsePrimitive resp = notify(notifRequest, uri);
 				if(resp.getResponseStatusCode().equals(ResponseStatusCode.TARGET_NOT_REACHABLE)){
 					throw new Om2mException("Error during the verification request", 
