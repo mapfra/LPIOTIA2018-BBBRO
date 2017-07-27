@@ -19,6 +19,7 @@ import org.eclipse.om2m.sdt.home.netatmo.model.Event;
 import org.eclipse.om2m.sdt.home.netatmo.model.Home;
 import org.eclipse.om2m.sdt.home.netatmo.model.HomeListener;
 import org.eclipse.om2m.sdt.home.netatmo.model.Person;
+import org.eclipse.om2m.sdt.home.netatmo.model.Token;
 import org.eclipse.om2m.sdt.home.netatmo.model.WeatherStation;
 import org.eclipse.om2m.sdt.home.netatmo.model.WeatherStationModule;
 import org.eclipse.om2m.sdt.home.netatmo.model.WelcomeCamera;
@@ -187,6 +188,10 @@ public class Discovery {
 			discoveryWeatherStationTimer.cancel();
 			discoveryWeatherStationTimer = null;
 		}
+	}
+	
+	public Token checkConnectivity() {
+		return server.getToken();
 	}
 
 	public Home getCurrentHome() {

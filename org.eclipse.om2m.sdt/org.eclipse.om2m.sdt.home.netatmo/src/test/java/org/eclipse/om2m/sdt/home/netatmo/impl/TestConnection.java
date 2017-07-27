@@ -31,18 +31,39 @@ public class TestConnection extends TestCase {
 		Server server = new Server(properties.getProperty(Discovery.CONFIG_CLIENT_ID),
 				properties.getProperty(Discovery.CONFIG_CLIENT_SECRET),
 				properties.getProperty(Discovery.CONFIG_USERNAME), properties.getProperty(Discovery.CONFIG_PASSWORD));
-		server.getHomeData(null, null);
+		
+		if (server.getToken() != null) {
+			server.getHomeData(null, null);
+		} else {
+			printWarningMessage();
+		}
 	}
 
 	public void testWeatherStationConnection() throws Exception {
 		Server server = new Server(properties.getProperty(Discovery.CONFIG_CLIENT_ID),
 				properties.getProperty(Discovery.CONFIG_CLIENT_SECRET),
 				properties.getProperty(Discovery.CONFIG_USERNAME), properties.getProperty(Discovery.CONFIG_PASSWORD));
-		List<WeatherStation> wss = server.getStationsData();
-
-		for (WeatherStation ws : wss) {
-			System.out.println(ws.toString());
+		
+		if (server.getToken() != null) {
+		
+			List<WeatherStation> wss = server.getStationsData();
+	
+			for (WeatherStation ws : wss) {
+				System.out.println(ws.toString());
+			}
+			
+		} else {
+			printWarningMessage();
 		}
+	}
+	
+	
+	private void printWarningMessage() {
+		System.out.println("--------------------------------------------------------------------------------");
+		System.out.println("#                                                                              #");
+		System.out.println("# Please configure properly src/test/resources/netatmo.sdt.driver.properties   #");
+		System.out.println("#                                                                              #");
+		System.out.println("--------------------------------------------------------------------------------");
 	}
 
 }
