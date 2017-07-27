@@ -11,6 +11,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.ConnectException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -58,12 +59,11 @@ public class TCPConnection {
 			}
 			
 		} catch (UnknownHostException e) {
-
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		} catch (IOException e) {
-	
-			e.printStackTrace();
-		}
+			System.out.println(e.getMessage());
+		} 
+		
 		return toRet;
 	}
 
