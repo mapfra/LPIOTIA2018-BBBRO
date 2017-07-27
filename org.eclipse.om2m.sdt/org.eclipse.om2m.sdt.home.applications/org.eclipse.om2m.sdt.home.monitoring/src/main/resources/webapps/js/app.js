@@ -139,7 +139,7 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 						var tagValue = tags[tagKey];
 						if (typeof tagValue !== "undefined") {
 							// override name if there is a propDeviceName
-							if (tagKey === 'devNe') {
+							if (tagKey === 'prDNe') {
 								config.data.name = tagValue;
 							}
 							var propName = tagKey;
@@ -184,7 +184,7 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 								method: 'GET',
 								url: '',
 								headers: {
-									'Content-Type': 'application/xml',
+									'Accept': 'application/json',
 									'X-M2M-Origin':$scope.credentials
 								}
 						};
@@ -268,23 +268,6 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 			}
 			
 			$scope.createSubscription(root.ri);
-//			if (!module.started && ! $scope.arrayContains(blModules,module.name)) {
-//				var intervalPolling = defaultModulePolling;
-//				if ($scope.arrayContains(fastModules,module.name)) {
-//					intervalPolling = fastModulePolling;
-//				} 
-//				var moduleReq = {
-//						method: 'GET',
-//						url: config.url,
-//						headers: {
-//							'Content-Type': 'application/xml',
-//							'X-M2M-Origin':$scope.credentials
-//						}
-//				};
-//				moduleReq.data = module;
-//				module.interval = $interval(function() { $scope.getModule(moduleReq); }, intervalPolling);
-//				module.started = true;
-//			}
 		}).error(function (response, status, headers, config)  {
 			console.log("error getModule " + response);
 		});
@@ -398,6 +381,7 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 					});
 			}			
 		} else if (switchModule.name === 'binarySwitch') {
+			switchModule.newState = switchModule.state;
 			req = {
 					method : 'PUT',
 					url : switchModule.url,
