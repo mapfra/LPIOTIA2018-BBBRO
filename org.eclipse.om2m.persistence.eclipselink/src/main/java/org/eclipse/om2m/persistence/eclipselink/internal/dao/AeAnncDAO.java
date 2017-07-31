@@ -45,10 +45,14 @@ public class AeAnncDAO extends AbstractDAO<AeAnncEntity> {
 		for (LabelEntity label : labels) {
 			label.getLinkedFcnt().remove(resource);
 		}
+		
+		if (resource.getParentCsr() != null) {
+			resource.getParentCsr().getChildAeAnncs().remove(resource);
+		}
 
 		transaction.getEm().remove(resource);
-		transaction.getEm().getEntityManagerFactory().getCache().evict(CSEBaseEntity.class);
-		transaction.getEm().getEntityManagerFactory().getCache().evict(RemoteCSEEntity.class);
+//		transaction.getEm().getEntityManagerFactory().getCache().evict(CSEBaseEntity.class);
+//		transaction.getEm().getEntityManagerFactory().getCache().evict(RemoteCSEEntity.class);
 	}
 
 }

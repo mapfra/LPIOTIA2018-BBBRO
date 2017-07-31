@@ -50,11 +50,19 @@ public class AeDAO extends AbstractDAO<AeEntity> {
 		for (LabelEntity label : labels) {
 			label.getLinkedFcnt().remove(resource);
 		}
+		
+		if (resource.getParentCse() != null) {
+			resource.getParentCse().getAes().remove(resource);
+		}
+		
+		if (resource.getParentCsr() != null) {
+			resource.getParentCsr().getChildAes().remove(resource);
+		}
 
 		transaction.getEm().remove(resource);
-		transaction.getEm().getEntityManagerFactory().getCache().evict(CSEBaseEntity.class);
-		transaction.getEm().getEntityManagerFactory().getCache().evict(RemoteCSEEntity.class);
-		transaction.getEm().getEntityManagerFactory().getCache().evict(RemoteCseAnncEntity.class);
+//		transaction.getEm().getEntityManagerFactory().getCache().evict(CSEBaseEntity.class);
+//		transaction.getEm().getEntityManagerFactory().getCache().evict(RemoteCSEEntity.class);
+//		transaction.getEm().getEntityManagerFactory().getCache().evict(RemoteCseAnncEntity.class);
 	}
 
 	@Override

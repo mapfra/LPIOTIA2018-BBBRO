@@ -45,7 +45,7 @@ import org.eclipse.om2m.commons.constants.ShortName;
 public class AccessControlPolicyEntity extends AnnounceableSubordinateEntity {
 	
 	// Database link to selfPrivilege
-	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL }, orphanRemoval=true)
+	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL }, orphanRemoval=true, mappedBy="selfAccessControlPolicy")
 	@JoinTable(
 			name=DBEntities.ACPACR_SEFPRIVILEGES,
 			joinColumns={@JoinColumn(name=DBEntities.ACPID_COLUMN,referencedColumnName=ShortName.RESOURCE_ID)},
@@ -54,7 +54,7 @@ public class AccessControlPolicyEntity extends AnnounceableSubordinateEntity {
 	protected List<AccessControlRuleEntity> selfPrivileges;
 
 	// Database link to privileges
-	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL }, orphanRemoval=true)
+	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL }, orphanRemoval=true, mappedBy="accessControlPolicy")
 	@JoinTable(
 			name=DBEntities.ACPACR_PRIVILEGES,
 			joinColumns={@JoinColumn(name=DBEntities.ACP_JOIN_ID,referencedColumnName=ShortName.RESOURCE_ID)},

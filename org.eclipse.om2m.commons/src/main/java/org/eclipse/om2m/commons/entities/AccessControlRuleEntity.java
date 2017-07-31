@@ -79,14 +79,30 @@ public class AccessControlRuleEntity {
 			inverseJoinColumns={@JoinColumn(name=DBEntities.ACP_JOIN_ID,referencedColumnName=ShortName.RESOURCE_ID)},
 			joinColumns={@JoinColumn(name=DBEntities.ACRID_COLUMN,referencedColumnName=DBEntities.ACCESSCONTROLRULE_ID)}
 			)
-	protected List<AccessControlPolicyEntity> accessControlPolicies;
-
-	public List<AccessControlPolicyEntity> getAccessControlPolicies() {
-		return accessControlPolicies;
+	protected AccessControlPolicyEntity accessControlPolicy;
+	
+	@ManyToOne(targetEntity=AccessControlPolicyEntity.class)
+	@JoinTable(
+			name=DBEntities.ACPACR_SEFPRIVILEGES,
+			inverseJoinColumns={@JoinColumn(name=DBEntities.ACP_JOIN_ID,referencedColumnName=ShortName.RESOURCE_ID)},
+			joinColumns={@JoinColumn(name=DBEntities.ACRID_COLUMN,referencedColumnName=DBEntities.ACCESSCONTROLRULE_ID)}
+			)
+	protected AccessControlPolicyEntity selfAccessControlPolicy;
+	
+	public AccessControlPolicyEntity getSelfAccessControlPolicy() {
+		return selfAccessControlPolicy;
 	}
 
-	public void setAccessControlPolicies(List<AccessControlPolicyEntity> accessControlPolicies) {
-		this.accessControlPolicies = accessControlPolicies;
+	public void setSelfAccessControlPolicy(AccessControlPolicyEntity selfAccessControlPolicy) {
+		this.selfAccessControlPolicy = selfAccessControlPolicy;
+	}
+
+	public AccessControlPolicyEntity getAccessControlPolicy() {
+		return accessControlPolicy;
+	}
+
+	public void setAccessControlPolicy(AccessControlPolicyEntity accessControlPolicy) {
+		this.accessControlPolicy = accessControlPolicy;
 	}
 
 	/**
