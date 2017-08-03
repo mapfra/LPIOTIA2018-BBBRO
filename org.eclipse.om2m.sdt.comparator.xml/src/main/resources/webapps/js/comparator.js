@@ -4,7 +4,7 @@ String.prototype.contains = function(it) { return this.indexOf(it) != -1; };
 //angular module & controller
 var gemDelegate = angular.module('gemDelegate', ['angularBootstrapNavTree','ngAnimate']);
 
-gemDelegate.controller('delegationController', function($scope, $http) {
+gemDelegate.controller('delegationController', function($scope, $http, $window) {
 
 	var tree;
 
@@ -22,6 +22,8 @@ gemDelegate.controller('delegationController', function($scope, $http) {
 	$scope.my_data = [];
 
 	$scope.my_data2 = [];
+	
+	$scope.context = $window.context;
 
 	$scope.my_tree_handler1 = function(branch) {
 		//alert(branch.label);
@@ -48,9 +50,9 @@ gemDelegate.controller('delegationController', function($scope, $http) {
 
 		var req = {
 				method: 'GET',
-				url: $scope.urlBase+'/~/in-cse?fu=1&lbl=object.type/device',
+				url: $scope.urlBase+'/~' + $scope.context + '/?fu=1&lbl=object.type/device',
 				headers: {
-					'Content-Type': 'application/xml',
+					'Accept': 'application/xml',
 					'X-M2M-Origin':'admin:admin'
 				}
 		};
@@ -96,7 +98,7 @@ gemDelegate.controller('delegationController', function($scope, $http) {
 						}
 					}
 					
-					req.url = $scope.urlBase+'/~/in-cse?fu=1&lbl=object.type/module&lbl=device.id/'+id;
+					req.url = $scope.urlBase+'/~' + $scope.context +'/?fu=1&lbl=object.type/module&lbl=device.id/'+id;
 					req.data = config.data;
 					
 					//get all the modules for the given device
@@ -253,6 +255,10 @@ gemDelegate.controller('delegationController', function($scope, $http) {
 			return key;
 		}		
 		return null;
+	}
+	
+	$scope.initContext = function(newContext) {
+		console.log(newContext);
 	}
 	
 	var init = function () {

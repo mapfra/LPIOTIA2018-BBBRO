@@ -28,56 +28,60 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.http.HttpService;
 import org.osgi.util.tracker.ServiceTracker;
+
 /**
- *  Manages the starting and stopping of the bundle.
- *  
+ * Manages the starting and stopping of the bundle.
+ * 
  */
 public class Activator implements BundleActivator {
 	/** logger */
 	private static Log LOGGER = LogFactory.getLog(Activator.class);
-	public static String uri = "comparator";
+	public static String CONTEXT_URI = "comparator";
+	public static String RESOURCES_URI = "webpage";
 
-	public static String sep ="/";
+	public static String SEP = "/";
+
 	/** HTTP service tracker */
 	private ServiceTracker<Object, Object> httpServiceTracker;
-	
+
+	private WelcomeServlet welcomeServlet;
+
 	@Override
 	public void start(BundleContext context) throws Exception {
 
-		
+		welcomeServlet = new WelcomeServlet();
+
 		httpServiceTracker = new ServiceTracker<Object, Object>(context, HttpService.class.getName(), null) {
-	      public void removedService(ServiceReference<Object> reference, Object service) {
-			LOGGER.info("HttpService removed");
-	        try {
-//				LOGGER.info("Unregister "+uiContext+sep+" http context");
-//	        	((HttpService) service).unregister(uiContext+sep);
-				LOGGER.info("Unregister "+sep + uri+" http context");
-	           ((HttpService) service).unregister(sep + uri);
-	        } catch (IllegalArgumentException e) {
-		        LOGGER.error("Error unregistring webapp servlet",e);
-	        }
-	      }
+			public void removedService(ServiceReference<Object> reference, Object service) {
+				LOGGER.info("HttpService removed");
+				try {
+					LOGGER.info("Unregister " + SEP + CONTEXT_URI + SEP + RESOURCES_URI + " http context");
+					((HttpService) service).unregister(SEP + CONTEXT_URI + SEP + RESOURCES_URI);
+					LOGGER.info("Unregister " + SEP + CONTEXT_URI + " http context");
+					((HttpService) service).unregister(SEP + CONTEXT_URI);
+				} catch (IllegalArgumentException e) {
+					LOGGER.error("Error unregistring webapp servlet", e);
+				}
+			}
 
-	      public Object addingService(ServiceReference<Object> reference) {
-			LOGGER.info("HttpService discovered");
-	        HttpService httpService = (HttpService) context.getService(reference);
-	        try{
-			LOGGER.info("Register "+sep + uri+" http context");
+			public Object addingService(ServiceReference<Object> reference) {
+				LOGGER.info("HttpService discovered");
+				HttpService httpService = (HttpService) context.getService(reference);
+				try {
+					LOGGER.info("Register " + SEP + CONTEXT_URI + " http context");
+					httpService.registerServlet(SEP + CONTEXT_URI, welcomeServlet, null, null);
+					httpService.registerResources(SEP + CONTEXT_URI + SEP + RESOURCES_URI, "/webapps", null);
 
-			  httpService.registerResources(sep + uri, "/webapps", null);
+				} catch (Exception e) {
+					LOGGER.error("Error registring webapp servlet", e);
+				}
+				return httpService;
+			}
+		};
+		httpServiceTracker.open();
+	}
 
-	        } catch (Exception e) {
-	          LOGGER.error("Error registring webapp servlet",e);
-	        }
-	        return httpService;
-	      }
-	    };
-	    httpServiceTracker.open();
-	  }
-	
 	@Override
 	public void stop(BundleContext context) throws Exception {
 	}
 }
-
-

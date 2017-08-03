@@ -8,6 +8,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: javax.servlet,
  javax.servlet.http,
  org.apache.commons.logging,
+ org.eclipse.om2m.commons.constants,
  org.osgi.framework,
  org.osgi.service.http,
  org.osgi.util.tracker

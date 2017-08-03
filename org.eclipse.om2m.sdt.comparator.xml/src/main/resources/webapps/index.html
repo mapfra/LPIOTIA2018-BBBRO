@@ -13,13 +13,33 @@
 <script type="text/javascript" src="js/comparator.js"></script>
 </head>
 <body>
+
+	<script type="text/javascript">
+	
+		function getContext() {
+			var url = new URL(window.location);
+			var context = url.searchParams.get("context");
+			return context;
+		}
+		
+		// this script checks if context http parameter is valued in the url
+		// if not, it redirects automatically to the /comparator root url
+		context = getContext();
+		if (context == undefined) {
+			window.location = "/comparator";
+		}
+	
+	</script>
+	
+	
 	<div class="cont">
 		<figure>
 			<a href="#"><img src="images/logo.png" alt=""></a>
 		</figure>
 		<h2>oneM2M Smart Device Template Viewer</h2>
 		<br />
-		<div ng-app="gemDelegate" ng-controller="delegationController">
+		<div ng-app="gemDelegate" ng-controller="delegationController" ng-init="initContext(context)" >
+		
 
 			<table width="100%">
 				<tr>
