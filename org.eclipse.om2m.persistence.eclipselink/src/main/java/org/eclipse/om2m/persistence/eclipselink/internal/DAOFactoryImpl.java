@@ -48,8 +48,10 @@ import org.eclipse.om2m.persistence.eclipselink.internal.dao.RemoteCSEDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.RequestEntityDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.SubscriptionDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.UriMapperDAO;
+import org.eclipse.om2m.persistence.eclipselink.internal.dao.OldestDAO;
 import org.eclipse.om2m.persistence.service.DAO;
 import org.eclipse.om2m.persistence.service.DAOFactory;
+
 
 public class DAOFactoryImpl implements DAOFactory {
 
@@ -126,6 +128,11 @@ public class DAOFactoryImpl implements DAOFactory {
 	@Override
 	public DAO<AccessControlOriginatorEntity> getAccessControlOriginatorDAO() {
 		return new AccessControlOriginatorDAO();
+	}
+	
+	@Override
+	public DAO<ContentInstanceEntity> getOldestDAO() {
+		return new OldestDAO();
 	}
 	
 }

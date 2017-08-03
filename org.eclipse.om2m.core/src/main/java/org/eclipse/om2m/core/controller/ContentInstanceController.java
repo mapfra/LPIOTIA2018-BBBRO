@@ -218,25 +218,20 @@ public class ContentInstanceController extends Controller {
 		// case parent is Container
 		if (parentEntity.getResourceType().intValue() == (ResourceType.CONTAINER)) {
 			ContainerEntity container = (ContainerEntity) parentEntity;
-			List<ContentInstanceEntity> cinList = container.getChildContentInstances();
-			if (container.getMaxNrOfInstances() != null && (cinList.size() == container.getMaxNrOfInstances().intValue())) {
-				LOGGER.info("Deleting oldest content instance due to container size limit: " + 
-						container.getChildContentInstances().get(0).getHierarchicalURI());
-				String hierarchicalUriToDelete = container.getChildContentInstances().get(0).getHierarchicalURI();
-				dbs.getDAOFactory().getContentInstanceDAO().delete(transaction, container.getChildContentInstances().get(0));
-				transaction.commit();
-				transaction.close();
-				UriMapper.deleteUri(hierarchicalUriToDelete);
-				transaction = dbs.getDbTransaction();
-				transaction.open();
-				container = (ContainerEntity)dao.find(transaction, request.getTargetId());
-			}
+					if (container.getMaxNrOfInstances()!= null ){
+						if (container.getCurrentNrOfInstances().intValue() >= container.getMaxNrOfInstances().intValue()) {
+							LOGGER.info("Deleting oldest content instance due to container size limit");
+							dbs.getDAOFactory().getContentInstanceDAO().delete(transaction, dbs.getDAOFactory().getOldestDAO().find(transaction, request.getTargetId()));	
+						}else{
+							container.setCurrentNrOfInstances(BigInteger.valueOf(container.getCurrentNrOfInstances().intValue()+1));
+						}
+					}
 			cinEntity.setParentContainer(container);
 			if(container.getStateTag() != null){
 				container.setStateTag(BigInteger.valueOf(container.getStateTag().intValue() + 1));
-				dbs.getDAOFactory().getContainerDAO().update(transaction, container);
 			}
-		}
+		}	
+		
 		// case parent is ContainerAnnc
 		if (parentEntity.getResourceType().intValue() == (ResourceType.CONTAINER_ANNC)) {
 			//TODO set parent containerAnnc when implemented
@@ -322,6 +317,14 @@ public class ContentInstanceController extends Controller {
 				request.getFrom(), request.getOperation());		
 
 		UriMapper.deleteUri(cin.getHierarchicalURI());
+		
+		DAO<?> dao = (DAO<?>) Patterns.getDAO(cin.getParentID(), dbs);
+		ResourceEntity parentEntity = (ResourceEntity)dao.find(transaction, cin.getParentID());
+		ContainerEntity container = (ContainerEntity) parentEntity;
+
+		container.setCurrentNrOfInstances(BigInteger.valueOf(container.getCurrentNrOfInstances().intValue()-1));
+		dbs.getDAOFactory().getContainerDAO().update(transaction, container);
+		
 		Notifier.notifyDeletion(null, cin);
 
 		// delete the resource

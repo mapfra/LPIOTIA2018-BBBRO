@@ -69,4 +69,6 @@ public interface DAOFactory {
 
 	public abstract DAO<AccessControlOriginatorEntity> getAccessControlOriginatorDAO();
 	
+	public abstract DAO<ContentInstanceEntity> getOldestDAO();
+	
 }

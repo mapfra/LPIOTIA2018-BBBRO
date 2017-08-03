@@ -214,7 +214,8 @@ public class ContainerController extends Controller {
 		containerEntity.setHierarchicalURI(parentEntity.getHierarchicalURI() + "/" + containerEntity.getName());
 		containerEntity.setParentID(parentEntity.getResourceID());
 		containerEntity.setResourceType(ResourceType.CONTAINER);
-
+		containerEntity.setCurrentNrOfInstances(BigInteger.valueOf(0));
+		
 		// accessControlPolicyIDs	O
 		if (!container.getAccessControlPolicyIDs().isEmpty()){
 			containerEntity.setAccessControlPolicies(

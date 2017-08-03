@@ -44,7 +44,7 @@ public class ContainerMapper extends EntityMapper<ContainerEntity, Container>{
 	protected void mapAttributes(ContainerEntity entity, Container resource) {
 		resource.setCreator(entity.getCreator());
 		resource.setCurrentByteSize(BigInteger.valueOf(entity.getCurrentByteSize()));
-		resource.setCurrentNrOfInstances(BigInteger.valueOf(entity.getChildContentInstances().size()));
+		resource.setCurrentNrOfInstances(entity.getCurrentNrOfInstances());
 		resource.setLocationID(entity.getLocationID());
 		resource.setMaxByteSize(entity.getMaxByteSize());
 		resource.setMaxInstanceAge(entity.getMaxInstanceAge());

@@ -19,12 +19,14 @@
  *******************************************************************************/
 package org.eclipse.om2m.core.controller;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
 import org.eclipse.om2m.commons.entities.ContainerEntity;
 import org.eclipse.om2m.commons.entities.ContentInstanceEntity;
+import org.eclipse.om2m.commons.entities.ResourceEntity;
 import org.eclipse.om2m.commons.exceptions.OperationNotAllowed;
 import org.eclipse.om2m.commons.exceptions.ResourceNotFoundException;
 import org.eclipse.om2m.commons.resource.ContentInstance;
@@ -32,7 +34,9 @@ import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
 import org.eclipse.om2m.core.entitymapper.EntityMapperFactory;
 import org.eclipse.om2m.core.notifier.Notifier;
+import org.eclipse.om2m.core.router.Patterns;
 import org.eclipse.om2m.core.urimapper.UriMapper;
+import org.eclipse.om2m.persistence.service.DAO;
 
 /**
  * Controller for latest/oldest virtual resources
@@ -82,7 +86,7 @@ public class LatestOldestController extends Controller{
 					containerEntity.getChildContentInstances().size()-1);
 			break;
 		case OLDEST:
-			cinEntity = containerEntity.getChildContentInstances().get(0);
+			cinEntity = dbs.getDAOFactory().getOldestDAO().find(transaction, request.getTargetId());
 			break;
 		default:
 			break;
@@ -132,11 +136,21 @@ public class LatestOldestController extends Controller{
 			break;
 		}
 		UriMapper.deleteUri(cinEntity.getHierarchicalURI());
-		
+		DAO<?> dao = (DAO<?>) Patterns.getDAO(cinEntity.getParentID(), dbs);
+		ResourceEntity parentEntity = (ResourceEntity)dao.find(transaction, cinEntity.getParentID());
+
+		ContainerEntity container = (ContainerEntity) parentEntity;
+
+		container.setCurrentNrOfInstances(BigInteger.valueOf(container.getCurrentNrOfInstances().intValue()-1));
+
+		dbs.getDAOFactory().getContainerDAO().update(transaction, container);
+
 		Notifier.notifyDeletion(null, cinEntity);
 		
 		dbs.getDAOFactory().getContentInstanceDAO().delete(transaction, cinEntity);
 		transaction.commit();
+		
+		
 		response.setResponseStatusCode(ResponseStatusCode.DELETED);
 		return response;
 	}
