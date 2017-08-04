@@ -80,8 +80,8 @@
 										</td>
 										<td class="tdSmall"
 												ng-repeat="module in device.modules | filter: switchFilter">
-											<switch class="adjustSwitch" name="enabled"
-												val="{{module.state}}" ng-model="module.state"
+											<switch class="adjustSwitch" name="moduleSwitch_{{module.id}}" id="moduleSwitch_{{module.id}}"
+												 ng-model="module.state"
 												ng-change="changeState(device,module)">
 											</switch>
 										</td>

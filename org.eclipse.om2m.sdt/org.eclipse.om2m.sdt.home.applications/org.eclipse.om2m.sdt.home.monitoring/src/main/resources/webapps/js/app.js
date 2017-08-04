@@ -62,16 +62,18 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 		if (datapoints.length != 0) {
 			for (i=0; i<datapoints.length; i++) {
 				if (datapoints[i].name === 'powSe') {
-					module.state = !(datapoints[i].value === 'false');
-					if (module.state == module.newState) {
-						module.hideSpinning = true;
-					}
+//					module.state = datapoints[i].value;
+					
+//					module.state = !(datapoints[i].value === 'false');
+//					if (module.state == module.newState) {
+//						module.hideSpinning = true;
+//					}
 					return true;
 				} else if (datapoints[i].name === 'dooLk') {
-					module.state = !(datapoints[i].value === 'true');
-					if (module.state == module.newState) {
-						module.hideSpinning = true;
-					}
+//					module.state = !(datapoints[i].value === 'true');
+//					if (module.state == module.newState) {
+//						module.hideSpinning = true;
+//					}
 					return true;
 				}
 			}
@@ -180,6 +182,8 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 								'interval': {},'started':false,'url':url,
 								'deviceName':config.data.name,'hideSpinning':true};
 						config.data.modules.push(module);
+						
+						
 						var moduleReq = {
 								method: 'GET',
 								url: '',
@@ -201,7 +205,19 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 					var url = $scope.urlBase + '/~' + modules[i] + '?rcn=7';
 					var module = {'id':'','name':'','colorClass':'','datapoints':[],
 							'actions':[],'img':'','value':'','interval': {},'started':false,
-							'url':url,'deviceName':config.data.name,'hideSpinning':true};
+							'url':url,'deviceName':config.data.name,'hideSpinning':true, 'state':false};
+					
+					Object.defineProperty(module, 'state', {
+					    get: function () {
+					        return module._someProp;
+					    },
+
+					    set: function (value) {
+					        //debugger; // sets breakpoint
+					        module._someProp = value;
+					    }
+					});
+					
 					config.data.modules.push(module);
 					var moduleReq = {
 							method: 'GET',
@@ -265,6 +281,16 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 				if ($scope.cams.length == 1) {
 					$scope.loadWebcam(config.data);
 				}
+			}
+			
+			if (module.name === 'binarySwitch') {
+				module.datapoints.forEach(
+					function(dp) {
+						if (dp.name === 'powSe') {
+							module.state = (dp.value === 'true');
+						}
+					}
+				);
 			}
 			
 			$scope.createSubscription(root.ri);
@@ -339,7 +365,11 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 										if (datapoints.length != 0) {
 											for (i=0; i<datapoints.length; i++) {
 												if (datapoints[i].name === 'powSe') {
-													datapoints[i].value = moduleRep.powSe;
+													var powSeValue = (moduleRep.powSe == 'true');
+													if (internalModule.state != powSeValue) {
+														internalModule.state = powSeValue;
+													}
+													datapoints[i].value = powSeValue;
 												}
 											}
 										}
@@ -372,12 +402,22 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 						headers : {
 							'Content-Type' : 'application/json',
 							'X-M2M-Origin' : $scope.credentials
-						}
+						},
+						valueToBeSet: lk,
+						currentSwitch: switchModule
 				};
 				$http(req).success(function(response, status, headers, config) {
 						console.log("binary lock state changed");
+						
+						// config = switchModule
+						config.currentSwitch.hideSpinning = true;
+						config.currentSwitch.state = config.valueToBeSet;
+						
 					}).error(function(response, status, headers, config) {
 						console.log("error on lock state change action");
+						config.currentSwitch.hideSpinning = true;
+						config.currentSwitch.state = !config.valueToBeSet;
+						
 					});
 			}			
 		} else if (switchModule.name === 'binarySwitch') {
@@ -389,30 +429,32 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 					headers : {
 						'Content-Type' : 'application/json',
 						'X-M2M-Origin' : $scope.credentials
-					}
+					}, 
+					valueToBeSet : switchModule.state,
+					currentSwitch : switchModule
+					
 			};
 			$http(req).success(
 					function(response, status, headers, config) {
 						// binarySwitchModule.state = !binarySwitchModule.state;
-						var datapoints = switchModule.datapoints;
+						config.currentSwitch.hideSpinning = true;
+						config.currentSwitch.state = config.valueToBeSet;
+						
+						var datapoints = config.currentSwitch.datapoints;
 						if (datapoints.length != 0) {
 							for (i=0; i<datapoints.length; i++) {
 								var datapoint = datapoints[i];
 								if (datapoint.name ==='powSe') {
 									// update switch state
-									switchModule.state = !(datapoint.value === 'false');
-									if (datapoint.value === 'false') {
-										datapoint.value = 'true';
-									} else {
-										datapoint.value = 'false';
-									}
+//									config.currentSwitch.state = !(datapoint.value === 'false');
+									datapoint.value = config.valueToBeSet;
 								} 
 							}
 						}
-						switchModule.hideSpinning = true;
 						console.log("binary switch state changed");
 					}).error(function(response, status, headers, config) {
-							switchModule.hideSpinning = true;
+							config.currentSwitch.hideSpinning = true;
+							config.currentSwitch.state = !config.valueToBeSet;
 							console.log("error on binary switch state change action");
 						});
 		}
