@@ -7,8 +7,45 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 	var cameraCanceler = $q.defer();
 	var timerForDevicesUpdate = null;
 	var timerForNotifications = null;
+	
+	$scope.imgModules = {
+			'temperature':'temp.jpg',
+			'noise':'noise.jpg',
+			'relativeHumidity':'humidity.png',
+			'atmosphericPressureSensor':'pressure.jpg',
+			'extendedCarbonDioxideSensor':'co2.png',
+			'contactSensor':'open_door_35.png',
+			'motionSensor':'motion_sensor.png',
+			'energyConsumption': 'power_consumption.png'
+	};
+	
+	$scope.moduleFilterDefinition = {
+			'temperature':'curT0',
+			'noise':'noise',
+			'relativeHumidity':'relHy',
+			'atmosphericPressureSensor':'atmPe',
+			'extendedCarbonDioxideSensor':'cDeVe',
+			'contactSensor':'alarm',
+			'motionSensor':'alarm',
+			'energyConsumption':'power'
+	};
+	
+	$scope.datapointsNamePerModule = {
+		"binarySwitch" : ["powSe"],
+		"temperature" : ["minVe", "unit", "curT0", "maxVe"],
+		"noise" : ["noise"],
+		"extendedCarbonDioxideSensor" : ["cDeVe", "alarm"],
+		"atmosphericPressureSensor" : ["atmPe"],
+		"relativeHumidity" : ["relHy"],
+		"contactSensor" : ["alarm"],
+		"streaming" : ["frmt", "psWd", "login", "url"], 
+		"personSensor" : ["detPs"],
+		"motionSensor" : ["alarm"],
+		"colour" : ["colour"],
+		"energyConsumption" : ["volte", "currt", "power"]
+	};
 
-	$scope.devices = [];
+	$scope.devices = {};
 	$scope.cams = [];
 	$scope.hideHlsVideo = true;
 	$scope.hideMjpegVideo = false;
@@ -48,6 +85,15 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 	// fast polling interval in ms
 	var fastModulePolling = 3000;
 	var fastModules = ["binarySwitch","energyConsumption","lock"];
+	
+	$scope.getDevicesAsArray = function() {
+		return Object.values($scope.devices);
+	};
+	
+	$scope.getModulesFromDevice = function(device) {
+		console.log("getModules called");
+		return Object.values(device.modules);
+	};
 
 	$scope.moduleFilter = function (module) { 
 		return module.value !== ''; 
@@ -57,38 +103,15 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 		if (!((module.name === 'binarySwitch') || (module.name === 'doorLock'))) {
 			return false;
 		}
-		var datapoints = module.datapoints;
-		$scope.count = $scope.count+1;
-		if (datapoints.length != 0) {
-			for (i=0; i<datapoints.length; i++) {
-				if (datapoints[i].name === 'powSe') {
-//					module.state = datapoints[i].value;
-					
-//					module.state = !(datapoints[i].value === 'false');
-//					if (module.state == module.newState) {
-//						module.hideSpinning = true;
-//					}
-					return true;
-				} else if (datapoints[i].name === 'dooLk') {
-//					module.state = !(datapoints[i].value === 'true');
-//					if (module.state == module.newState) {
-//						module.hideSpinning = true;
-//					}
-					return true;
-				}
-			}
-		}
-		return false; 
+		return true; 
 	};
 
 	//filter to remove any device which contains a streaming module from the display device list
 	$scope.deviceFilter = function (device) { 
-		for (i = 0; i<device.modules.length; i++) {
-			if (device.modules[i].name === 'streaming') {
-				return false;
-			}
+		if (device.desc === '') {
+			return false;
 		}
-		return true;
+		return !(device.desc === 'org.onem2m.home.device.deviceCamera');
 	};
 
 	/*************************************************/
@@ -96,7 +119,7 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 		var req = {
 				method: 'GET',
 				url: $scope.urlBase + '/' + $scope.cseContext 
-					+ '?fu=1&lbl=object.type/device',
+					+ '?fu=1&drt=2&lbl=object.type/device',
 				headers: {
 					'Content-Type': 'application/json',
 					'Accept': 'application/json',
@@ -108,54 +131,62 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 			var jsonData = response;
 			var key = $scope.getRootKey(jsonData);
 			var devices;
-			if (jsonData[key].__text != undefined || jsonData[key].__text != '' ) {
-				devices = jsonData[key];
-			}
+			devices = jsonData[key];
+			// devices is an array containing device FlexContainer resourceId
+			
+			// remove old devices 
 			$scope.removeOldDevices(devices);
 
-			// get devices 			
+			// treat new discovered devices			
 			var newDevices = $scope.getNewDevices(devices);
+			// newDevices is an array containg new-device FlexContainer resourceId
 			for (i=0; i<newDevices.length; i++) {
-				var myDevice = newDevices[i];
-				var device = {'id':'', 'name':'','desc':'','link':myDevice,
-						'modules':[],'properties':[]};
-				// fill device list
-				$scope.devices.push (device);
+				var deviceRi = newDevices[i];
+				
+				var getDeviceReq = {
+						method: 'GET',
+						url: $scope.urlBase + '/~' + deviceRi + '?rcn=7',
+						headers: {
+							'Content-Type': 'application/json',
+							'Accept': 'application/json',
+							'X-M2M-Origin': $scope.credentials
+						}
+				};
 
-				req.url = $scope.urlBase + '/~' + myDevice + '?rcn=7';
-				req.data = device;
-				$http(req).success(function (response, status, headers, config)  {
+				$http(getDeviceReq).success(function (response, status, headers, config)  {
 					
+					var device = {'id':'', 'name':'','desc':'',
+							'modules':{},'properties':[]};
 					var jsonData = response;
 					var key = $scope.getRootKey(jsonData);
+					var jsonDevice = jsonData[key];
 
-					var label = jsonData[key].lbl;
-					var id = $scope.getIdFromLabel (label);
-					config.data.id = id;
-					config.data.name = $scope.getNameFromLabel(label);
-					config.data.desc = jsonData[key].cnd;
+					var labels = jsonDevice.lbl;
+					var id = $scope.getIdFromLabel (labels);
+					device.id = id;
+					device.name = $scope.getNameFromLabel(labels);
+					device.desc = jsonDevice.cnd;
 
-					var tags = jsonData[key];
-					for (tagKey in tags) {
+					for (key in jsonDevice) {
 						// starts with prop
-						var tagValue = tags[tagKey];
-						if (typeof tagValue !== "undefined") {
+						var value = jsonDevice[key];
+						if (typeof value !== "undefined") {
 							// override name if there is a propDeviceName
-							if (tagKey === 'prDNe') {
-								config.data.name = tagValue;
+							if (key === 'prDNe') {
+								device.name = value;
 							}
-							var propName = tagKey;
-							config.data.properties.push({'name':propName,
-								'value':tagValue});
+							var propName = key;
+							device.properties.push({'name':propName,
+								'value':value});
 						}
 					}
+					
+					// add new device in devices list
+					$scope.devices[jsonDevice.ri] = device;
 
-					req.url = $scope.urlBase + '/' + $scope.cseContext 
-						+ '?fu=1&lbl=object.type/module&lbl=device.id/' + id;
-					req.data = config.data;
 
 					// get all the modules for the given device
-					$scope.getModules(req);
+					$scope.getModules(device);
 				}).error(function (response, status, headers, config) {
 					console.log("error getNewDevices " + response);
 				});
@@ -164,90 +195,72 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 			console.log("error getDevices " + response);
 			// called asynchronously if an error occurs
 			// or server returns response with an error status.
+			
+			// this is not a big issue here 
+			// as the device will be detected again as a new device
 		});
 	};
 
-	$scope.getModules = function (req) {
-		$http(req).success(function (response, status, headers, config)  {
+	$scope.getModules = function (device) {
+		
+		var getModulesRiReq = {
+				method: 'GET',
+				url: $scope.urlBase + '/' + $scope.cseContext 
+				+ '?fu=1&drt=2&lbl=object.type/module&lbl=device.id/' + device.id,
+				headers: {
+					'Content-Type': 'application/json',
+					'Accept': 'application/json',
+					'X-M2M-Origin': $scope.credentials
+				},
+				device: device
+		};
+		
+		$http(getModulesRiReq).success(function (response, status, headers, config)  {
 			var jsonData = response;	
 			var key = $scope.getRootKey(jsonData);
 			var modules = jsonData[key];
-			if (config.data.desc == 'org.onem2m.home.device.deviceCamera') {
-				if ((modules.length > 1) || modules[0].contains('org.onem2m.home.moduleclass.streaming')) {
-					for (i=0; i<modules.length; i++) {
-						// create the module object and push it in the device array
-						var url = $scope.urlBase + '/~' + modules[i] + '?rcn=7';
-						var module= {'id':'','name':'','colorClass':'',
-								'datapoints':[],'actions':[],'img':'','value':'',
-								'interval': {},'started':false,'url':url,
-								'deviceName':config.data.name,'hideSpinning':true};
-						config.data.modules.push(module);
-						
-						
-						var moduleReq = {
-								method: 'GET',
-								url: '',
-								headers: {
-									'Accept': 'application/json',
-									'X-M2M-Origin':$scope.credentials
-								}
-						};
-						moduleReq.url = url;
-						moduleReq.data = module;
-						$scope.getModule(moduleReq);
-					}						
-				} else {
-					//$interval(function() { $scope.getModules(req); }, 2000, 1);
-				}
-			} else {
-				for (i=0; i<modules.length; i++) {
-					// create the module object and push it in the device array
-					var url = $scope.urlBase + '/~' + modules[i] + '?rcn=7';
-					var module = {'id':'','name':'','colorClass':'','datapoints':[],
-							'actions':[],'img':'','value':'','interval': {},'started':false,
-							'url':url,'deviceName':config.data.name,'hideSpinning':true, 'state':false};
-					
-					Object.defineProperty(module, 'state', {
-					    get: function () {
-					        return module._someProp;
-					    },
-
-					    set: function (value) {
-					        //debugger; // sets breakpoint
-					        module._someProp = value;
-					    }
-					});
-					
-					config.data.modules.push(module);
-					var moduleReq = {
-							method: 'GET',
-							url: '',
-							headers: {
-								'Content-Type': 'application/json',
-								'Accept': 'application/json',
-								'X-M2M-Origin':$scope.credentials
-							}
-					};
-					moduleReq.url = url;
-					moduleReq.data = module;
-					$scope.getModule(moduleReq);
-				}
-			} 
+			// modules is an array. It contains module resource id
+			
+			// TODO : fix issue related to missing modules
+			// in some cases (access right), some modules take time to become available.
+			
+			modules.forEach(
+				function(moduleRi) {
+					// retrieve module data
+					$scope.getModule(config.device, moduleRi);
+				}	
+			);
+			
 		}).error(function (response, status, headers, config)  {
 			console.log("error getModules " + response);
 		});
 	}
 
-	$scope.getModule = function (req) {
-		$http(req).success(function (response, status, headers, config)  {
+	$scope.getModule = function (device, moduleRi) {
+		
+		var getModuleReq = {
+				method: 'GET',
+				url: $scope.urlBase + '/~' + moduleRi + '?rcn=7',
+				headers: {
+					'Content-Type': 'application/json',
+					'Accept': 'application/json',
+					'X-M2M-Origin':$scope.credentials
+				},
+				device: device
+		};
+		
+		$http(getModuleReq).success(function (response, status, headers, config)  {
 			var jsonData = response;
 			var key = $scope.getRootKey(jsonData);
 			var root = jsonData[key];
+			
+			var module = {'id':'','name':'','colorClass':'','datapoints':{},
+					'actions':[],'img':'','value':'','interval': {},'started':false,
+					'url':config.url,'deviceName':config.device.name,'hideSpinning':true, 'state':false};
 
 			// fill the module name
 			var tab = root.cnd.split(".");
 			var moduleName = tab[tab.length -1];
-			var module = config.data;
 			var label = root.lbl;
 			var id = $scope.getPidFromLabel (label);
 			module.id = id;
@@ -257,21 +270,23 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 			// fill the class with the module name to define the text color. see css file.
 			module.colorClass = tab[tab.length -1];
 
-			module.datapoints = [];
+			module.datapoints = {};
 			module.actions = [];
 
 			// create the attributes
-			for (var childKey in root) {
-				var datapoint = {'name':childKey,'value':root[childKey]};
-				module.datapoints.push(datapoint);
-				if (childKey === $scope.getPropValueModule(module.name)) {
-					module.value =	root[childKey];
+			var dpNames = $scope.datapointsNamePerModule[module.name];
+			dpNames.forEach(
+				function(dpName) {
+					module.datapoints[dpName] = {"name": dpName, "value":root[dpName]};
 				}
-				if (root[childKey]._ty != null) {
-					var action = {'name':root[childKey]._rn,'value':''};
-					module.actions.push(action);
-				}
+			);
+
+			var propName = $scope.getPropValueModule(moduleName);
+			if (propName) {
+				module.value = module.datapoints[propName].value;	
 			}
+			 
+
 
 			if (module.name === 'streaming') {
 				var index = $scope.getCamModuleIndex(module.id);
@@ -279,19 +294,16 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 					$scope.cams.push(module);
 				}
 				if ($scope.cams.length == 1) {
-					$scope.loadWebcam(config.data);
+					$scope.loadWebcam(module);
 				}
 			}
 			
 			if (module.name === 'binarySwitch') {
-				module.datapoints.forEach(
-					function(dp) {
-						if (dp.name === 'powSe') {
-							module.state = (dp.value === 'true');
-						}
-					}
-				);
+				module.state = (module.datapoints.powSe.value === 'true') ;
 			}
+
+			// add module in device
+			config.device.modules[module.ri] = module;
 			
 			$scope.createSubscription(root.ri);
 		}).error(function (response, status, headers, config)  {
@@ -347,7 +359,7 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 								}
 								
 								if (moduleRep != null) {
-									var internalModule = $scope.getModuleByRi(moduleRep.ri);
+									var internalModule = $scope.getModuleByRi(moduleRep.ri, moduleRep.pi);
 									console.log(internalModule);
 									
 									
@@ -362,16 +374,10 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 									if (moduleRep.powSe) {
 										console.log('powSe value:' + moduleRep.powSe);
 										var datapoints = internalModule.datapoints;
-										if (datapoints.length != 0) {
-											for (i=0; i<datapoints.length; i++) {
-												if (datapoints[i].name === 'powSe') {
-													var powSeValue = (moduleRep.powSe == 'true');
-													if (internalModule.state != powSeValue) {
-														internalModule.state = powSeValue;
-													}
-													datapoints[i].value = powSeValue;
-												}
-											}
+										var powSeValue = (moduleRep.powSe == 'true');
+										datapoints.powSe.value = powSeValue;
+										if (internalModule.state != powSeValue) {
+											internalModule.state = powSeValue;
 										}
 										
 										console.log('powSe updated!!!!!!!!!!!!!!!!!');
@@ -441,16 +447,7 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 						config.currentSwitch.state = config.valueToBeSet;
 						
 						var datapoints = config.currentSwitch.datapoints;
-						if (datapoints.length != 0) {
-							for (i=0; i<datapoints.length; i++) {
-								var datapoint = datapoints[i];
-								if (datapoint.name ==='powSe') {
-									// update switch state
-//									config.currentSwitch.state = !(datapoint.value === 'false');
-									datapoint.value = config.valueToBeSet;
-								} 
-							}
-						}
+						datapoints.powSe.value = config.valueToBeSet;
 						console.log("binary switch state changed");
 					}).error(function(response, status, headers, config) {
 							config.currentSwitch.hideSpinning = true;
@@ -498,32 +495,12 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 	}
 
 	$scope.getImageModule = function(moduleName) {
-		var imgModules = {
-				'temperature':'temp.jpg',
-				'noise':'noise.jpg',
-				'relativeHumidity':'humidity.png',
-				'atmosphericPressureSensor':'pressure.jpg',
-				'extendedCarbonDioxideSensor':'co2.png',
-				'contactSensor':'open_door_35.png',
-				'motionSensor':'motion_sensor.png',
-				'energyConsumption': 'power_consumption.png'
-					
-		}
-		return imgModules[moduleName];
+		return $scope.imgModules[moduleName];
 	}
 
 	$scope.getPropValueModule = function(moduleName) {
-		var moduleFilter = {
-				'temperature':'curT0',
-				'noise':'noise',
-				'relativeHumidity':'relHy',
-				'atmosphericPressureSensor':'atmPe',
-				'extendedCarbonDioxideSensor':'cDeVe',
-				'contactSensor':'alarm',
-				'motionSensor':'alarm',
-				'energyConsumption':'power'
-		}
-		return moduleFilter[moduleName];
+		var propName = $scope.moduleFilterDefinition[moduleName];
+		return propName;
 	}
 	
 	$scope.getPropValueFromDevice = function (device, propName) {
@@ -536,84 +513,81 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 	}
 
 	$scope.getNewDevices = function(deviceList) {
-		var registeredDevice,returnDevice,returnDeviceId;
-		var newDeviceList = [];
-		var found;
-		for (i=0; i<deviceList.length; i++) {
-			found = false;
-			returnDevice = deviceList[i];
-			for (j=0; j<$scope.devices.length; j++) {
-				registeredDevice = $scope.devices[j];
-				if (registeredDevice.link == returnDevice) {
-					found = true;
-					break;
-				}
-			}			
-			if (!found) {
-				newDeviceList.push(returnDevice);
+		var newDevices = [];
+		deviceList.forEach(function (device) {
+			// device = device resource id
+			if (!$scope.devices[device]) {
+				newDevices.push(device);
 			}
-		}		
-		return newDeviceList;		
+		});
+		
+		return newDevices;
 	}
 
 	$scope.removeOldDevices = function(deviceList) {
-		var registeredDevice,returnDevice,returnDeviceId;
-		var sortedDeviceList = [];
-		var found;
-		for (i=0; i<$scope.devices.length; i++) {
-			found = false;
-			registeredDevice = $scope.devices[i];
-			for (j=0; j<deviceList.length; j++) {
-				returnDevice = deviceList[j];
-				if (returnDevice === registeredDevice.link) {
-					found = true;
-					break;
-				}
-			}			
-			if (found) {
-				sortedDeviceList.push(registeredDevice);
-			} else {
-				// stop requests of old modules
-				for (k = 0; k<registeredDevice.modules.length; k++) {
-					var module = registeredDevice.modules[k];
-					if (module.interval != {}) {
-						$interval.cancel(module.interval);
-					}
-					var index = $scope.getCamModuleIndex(module.id);
-					if (index != -1) {
-						var newCams = [];
-						for(var i = 0; i< $scope.cams.length;i++) {
-							if (i != index) {
-								newCams.push($scope.cams[i]);
-							}
-						}
-						var selectedCamDestroyed = $scope.cams[index].btnClass == 'selectedCam';
-						$scope.cams = newCams;
-						if (selectedCamDestroyed) {
-							if ($scope.cams.length != 0) {
-								// load the first cam in the array
-								$scope.loadWebcam($scope.cams[0]);
-							} else {
-								// no more cams, stop everything
-								if ($scope.mjpegPlayer != null) {
-									$scope.mjpegPlayer.stop();
-									$scope.mjpegPlayer = null;
-								}
-								if ($scope.hls != null) {
-									$scope.hls.destroy();
-									$scope.hls = null;
-								}
-								$scope.hideHlsVideo = false;
-								$scope.hideMjpegVideo = false;
-							}
-						}
-					}
-					module = null;
-				}
-				registeredDevice = null;
+		
+		for(deviceRi in $scope.devices) {
+			if (!deviceList.includes(deviceRi)) {
+				// the device must be removed from the $scope.devices object
+				// as this device does not exist anymore.
+				delete $scope.devices[deviceRi];
 			}
 		}
-		$scope.devices = sortedDeviceList;
+		
+//		var registeredDevice,returnDevice,returnDeviceId;
+//		var sortedDeviceList = [];
+//		var found;
+//		for (i=0; i<$scope.devices.length; i++) {
+//			found = false;
+//			registeredDevice = $scope.devices[i];
+//			for (j=0; j<deviceList.length; j++) {
+//				returnDevice = deviceList[j];
+//				if (returnDevice === registeredDevice.link) {
+//					found = true;
+//					break;
+//				}
+//			}			
+//			if (found) {
+//				sortedDeviceList.push(registeredDevice);
+//			} else {
+//				// stop requests of old modules
+//				for (k = 0; k<registeredDevice.modules.length; k++) {
+//					var module = registeredDevice.modules[k];
+//					var index = $scope.getCamModuleIndex(module.id);
+//					if (index != -1) {
+//						var newCams = [];
+//						for(var i = 0; i< $scope.cams.length;i++) {
+//							if (i != index) {
+//								newCams.push($scope.cams[i]);
+//							}
+//						}
+//						var selectedCamDestroyed = $scope.cams[index].btnClass == 'selectedCam';
+//						$scope.cams = newCams;
+//						if (selectedCamDestroyed) {
+//							if ($scope.cams.length != 0) {
+//								// load the first cam in the array
+//								$scope.loadWebcam($scope.cams[0]);
+//							} else {
+//								// no more cams, stop everything
+//								if ($scope.mjpegPlayer != null) {
+//									$scope.mjpegPlayer.stop();
+//									$scope.mjpegPlayer = null;
+//								}
+//								if ($scope.hls != null) {
+//									$scope.hls.destroy();
+//									$scope.hls = null;
+//								}
+//								$scope.hideHlsVideo = false;
+//								$scope.hideMjpegVideo = false;
+//							}
+//						}
+//					}
+//					module = null;
+//				}
+//				registeredDevice = null;
+//			}
+//		}
+//		$scope.devices = sortedDeviceList;
 	}
 
 	$scope.arrayContains = function (array, label) {
@@ -681,12 +655,7 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 	}
 	
 	$scope.getValueFromModule = function (module, propName) {
-		for (var i = 0; i < module.datapoints.length; i++) {
-			if (module.datapoints[i].name == propName) {
-				return module.datapoints[i].value;
-			}					
-		}
-		return null;
+		return module.datapoints[propName].value;
 	}
 
 	$scope.getCamModuleIndex = function (moduleId) {
@@ -706,16 +675,8 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 		$scope.hide=true;
 	}
 	
-	$scope.getModuleByRi = function(moduleResourceId) {
-		for(deviceId in $scope.devices) {
-			var device = $scope.devices[deviceId];
-			for(moduleId in device.modules) {
-				var module = device.modules[moduleId];
-				if (module.ri === moduleResourceId) {
-					return module;
-				}
-			}
-		}
+	$scope.getModuleByRi = function(moduleResourceId, deviceResourceId) {
+		return $scope.devices[deviceResourceId].modules[moduleResourceId];
 	}
 	
 	var init = function () {

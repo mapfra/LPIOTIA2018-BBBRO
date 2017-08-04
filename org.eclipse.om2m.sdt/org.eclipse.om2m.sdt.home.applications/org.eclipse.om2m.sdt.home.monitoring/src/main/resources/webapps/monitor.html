@@ -66,24 +66,23 @@
 					<h3>Device</h3>
 					<form>
 						<ul>
-							<li ng-repeat='device in devices | filter: deviceFilter'>
+							<li ng-repeat='device in getDevicesAsArray() | filter: deviceFilter'>
 								<div>{{device.name}}</div>
 								<table width="100%">
 									<tr>
-										<td ng-repeat="module in device.modules | filter: moduleFilter">
+										<td ng-repeat="module in getModulesFromDevice(device) | filter: moduleFilter">
 											<img ng-src="../webapps/{{module.img}}" />
 											{{module.value}}
 										</td>
 										<td class="tdSmall" 
-												ng-repeat="module in device.modules | filter: switchFilter">
+												ng-repeat="module in getModulesFromDevice(device) | filter: switchFilter">
 											<div ng-hide="module.hideSpinning" class="spinner"></div>
 										</td>
 										<td class="tdSmall"
-												ng-repeat="module in device.modules | filter: switchFilter">
+												ng-repeat="module in getModulesFromDevice(device) | filter: switchFilter">
 											<switch class="adjustSwitch" name="moduleSwitch_{{module.id}}" id="moduleSwitch_{{module.id}}"
 												 ng-model="module.state"
-												ng-change="changeState(device,module)">
-											</switch>
+												ng-change="changeState(device,module)"></switch>
 										</td>
 									</tr>
 								</table>
@@ -93,6 +92,6 @@
 				</div>
 			</div>
 		</div>
-		<footer class="site-footer"> &copy; Orange 2016 </footer>
+		<footer class="site-footer"> &copy; Orange 2017 </footer>
 	</body>
 </html>
