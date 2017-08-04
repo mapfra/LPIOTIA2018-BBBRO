@@ -66,7 +66,8 @@
 					<h3>Device</h3>
 					<form>
 						<ul>
-							<li ng-repeat='device in getDevicesAsArray() | filter: deviceFilter'>
+							<li ng-repeat='device in getDevicesAsArray() | filter: deviceFilter' 
+									ng-class="{'backgroundRed' : device.isUpdated}">
 								<div>{{device.name}}</div>
 								<table width="100%">
 									<tr>

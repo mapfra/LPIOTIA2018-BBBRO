@@ -166,6 +166,7 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 					device.id = id;
 					device.name = $scope.getNameFromLabel(labels);
 					device.desc = jsonDevice.cnd;
+					device.isUpdated = false;
 
 					for (key in jsonDevice) {
 						// starts with prop
@@ -374,7 +375,7 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 									if (moduleRep.powSe) {
 										console.log('powSe value:' + moduleRep.powSe);
 										var datapoints = internalModule.datapoints;
-										var powSeValue = (moduleRep.powSe == 'true');
+										var powSeValue = (moduleRep.powSe === 'true');
 										datapoints.powSe.value = powSeValue;
 										if (internalModule.state != powSeValue) {
 											internalModule.state = powSeValue;
@@ -382,6 +383,14 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 										
 										console.log('powSe updated!!!!!!!!!!!!!!!!!');
 									}
+									
+									// put background red
+									$scope.devices[moduleRep.pi].isUpdated = true;
+									// remove background after 1,5s
+									$interval(function() {
+										$scope.devices[moduleRep.pi].isUpdated = false;
+									}, 1500,1);
+									
 								}
 							}
 						);
