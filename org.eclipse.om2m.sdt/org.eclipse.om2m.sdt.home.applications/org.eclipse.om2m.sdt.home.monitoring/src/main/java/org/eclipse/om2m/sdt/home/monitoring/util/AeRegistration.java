@@ -2,7 +2,9 @@ package org.eclipse.om2m.sdt.home.monitoring.util;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -45,6 +47,8 @@ public class AeRegistration implements InterworkingService {
 	
 	private List<JSONObject> notifications;
 	private List<String> subscriptions;
+	
+	private Set<String> subscribedToResourcesSet;
 
 	/**
 	 * Retrieves instance
@@ -60,6 +64,7 @@ public class AeRegistration implements InterworkingService {
 	private AeRegistration() {
 		notifications = new ArrayList<>();
 		subscriptions = new ArrayList<>();
+		subscribedToResourcesSet = new HashSet<>();
 	}
 	
 	/**
@@ -248,6 +253,12 @@ public class AeRegistration implements InterworkingService {
 	
 	
 	public boolean createSubscription(String resourceId) {
+		
+		// check if a subscription exists for this device
+		if (checkIfSubscriptionExists(resourceId)) {
+			return true;
+		}
+		
 		Subscription subscription = new Subscription();
 		subscription.setNotificationContentType(NotificationContentType.WHOLE_RESOURCE);
 		subscription.getNotificationURI().add(registeredApplication.getResourceID());
@@ -273,7 +284,7 @@ public class AeRegistration implements InterworkingService {
 			try {
 				JSONObject createdSubscription = (JSONObject) parser.parse(content);
 				String subscriptionId = (String) ((JSONObject) createdSubscription.get("m2m:sub")).get("ri");
-				addSubscription(subscriptionId);
+				addSubscription(subscriptionId, resourceId);
 			} catch (ParseException e) {
 				LOGGER.error("unable to parse subscription json payload", e);
 				return false;
@@ -300,9 +311,13 @@ public class AeRegistration implements InterworkingService {
 		ResponsePrimitive response = cseService.doRequest(request);
 	}
 	
-	private void addSubscription(String subscriptionId) {
+	private void addSubscription(String subscriptionId, String resourceId) {
 		synchronized (subscriptions) {
 			subscriptions.add(subscriptionId);
+		}
+		
+		synchronized (subscribedToResourcesSet) {
+			subscribedToResourcesSet.add(resourceId);
 		}
 	}
 	
@@ -312,6 +327,16 @@ public class AeRegistration implements InterworkingService {
 				deleteSubscription(subId);
 			}
 			subscriptions.clear();
+		}
+		
+		synchronized (subscribedToResourcesSet) {
+			subscribedToResourcesSet.clear();
+		}
+	}
+	
+	private boolean checkIfSubscriptionExists(String subscribedToResourceId) {
+		synchronized (subscribedToResourcesSet) {
+			return subscribedToResourcesSet.contains(subscribedToResourceId);
 		}
 	}
 }

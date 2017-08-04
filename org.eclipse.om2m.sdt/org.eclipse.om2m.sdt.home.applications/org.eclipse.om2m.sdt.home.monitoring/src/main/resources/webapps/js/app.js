@@ -444,7 +444,9 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 					function(response, status, headers, config) {
 						// binarySwitchModule.state = !binarySwitchModule.state;
 						config.currentSwitch.hideSpinning = true;
-						config.currentSwitch.state = config.valueToBeSet;
+						if (config.currentSwitch.state !== config.valueToBeSet) {
+							config.currentSwitch.state = config.valueToBeSet;	
+						}
 						
 						var datapoints = config.currentSwitch.datapoints;
 						datapoints.powSe.value = config.valueToBeSet;
