@@ -29,6 +29,9 @@ public class CSEBaseDAO extends AbstractDAO<CSEBaseEntity>{
 	public CSEBaseEntity find(DBTransaction dbTransaction, Object id) {
 		DBTransactionJPAImpl transaction = (DBTransactionJPAImpl) dbTransaction;
 		CSEBaseEntity entity = transaction.getEm().find(CSEBaseEntity.class, id);
+		if(entity!=null){
+			transaction.getEm().refresh(entity);
+		}
 		return entity;
 	}
 

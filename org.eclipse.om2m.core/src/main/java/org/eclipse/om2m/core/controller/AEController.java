@@ -110,14 +110,14 @@ public class AEController extends Controller {
 		if(parentEntity.getResourceType().intValue() == (ResourceType.CSE_BASE)){
 			CSEBaseEntity cseBase = (CSEBaseEntity) parentEntity;
 			acpsToCheck = cseBase.getAccessControlPolicies();
-			childAes = cseBase.getAes();
+			//childAes = cseBase.getAes();
 			subs = cseBase.getSubscriptions();
 		}
 		// Case of remoteCSE
 		if(parentEntity.getResourceType().intValue() == (ResourceType.REMOTE_CSE)){
 			RemoteCSEEntity csr = (RemoteCSEEntity) parentEntity;
 			acpsToCheck = csr.getAccessControlPolicies();
-			childAes = csr.getChildAes();
+			//childAes = csr.getChildAes();
 			subs = csr.getSubscriptions();
 		}
 		// Case of remoteCSEAnnc
@@ -210,17 +210,18 @@ public class AEController extends Controller {
 		if (dbs.getDAOFactory().getAeDAO().find(transaction, aeEntity.getResourceID()) != null) {
 			throw new ConflictException("Already registered");
 		}
-
+		
+	
 		// accessControlPolicyIDs	O
-		if (!ae.getAccessControlPolicyIDs().isEmpty()){
+		//if (!ae.getAccessControlPolicyIDs().isEmpty()){
 			aeEntity.setAccessControlPolicies(
 					ControllerUtil.buildAcpEntityList(ae.getAccessControlPolicyIDs(), transaction));
-		}
+		//}
 
-		// FIXME [0001] Creation of AE with an acpi provided
-		//		} else {
+
 		// Create the acp corresponding to the AE_ID 
-		AccessControlPolicyEntity acpEntity = new AccessControlPolicyEntity();
+		
+		/*AccessControlPolicyEntity acpEntity = new AccessControlPolicyEntity();
 		acpEntity.setCreationTime(DateUtil.now());
 		acpEntity.setLastModifiedTime(DateUtil.now());
 		acpEntity.setParentID("/" + Constants.CSE_ID);
@@ -259,8 +260,8 @@ public class AEController extends Controller {
 		// adding new acp to the acp list
 		aeEntity.getAccessControlPolicies().add(acpDB);
 		// direct link to the generated acp
-		aeEntity.setGeneratedAcp(acpDB);
-		//		}
+		aeEntity.setGeneratedAcp(acpDB);*/
+
 
 		// appName					O
 		if (ae.getAppName() != null){
@@ -295,16 +296,18 @@ public class AEController extends Controller {
 		if (!UriMapper.addNewUri(aeEntity.getHierarchicalURI(), aeEntity.getResourceID(), ResourceType.AE)){
 			throw new ConflictException("Name already present in the parent collection.");
 		}
-
+		
+		aeEntity.setParentCse((CSEBaseEntity)parentEntity);
+		
 		// Create AE in database
 		dbs.getDAOFactory().getAeDAO().create(transaction, aeEntity);
 
 		// Get the managed object from db
-		AeEntity aeDB = dbs.getDAOFactory().getAeDAO().find(transaction, aeEntity.getResourceID());
+		//AeEntity aeDB = dbs.getDAOFactory().getAeDAO().find(transaction, aeEntity.getResourceID());
 
 		// Add the AE to the parentEntity list
-		childAes.add(aeDB);
-		dao.update(transaction, parentEntity);
+		//childAes.add(aeEntity);
+		//dao.update(transaction, parentEntity);
 
 		// Commit the DB transaction
 		transaction.commit();
@@ -312,9 +315,9 @@ public class AEController extends Controller {
 		// Create the response
 		response.setResponseStatusCode(ResponseStatusCode.CREATED);
 		// Set the location of the resource
-		setLocationAndCreationContent(request, response, aeDB);
+		setLocationAndCreationContent(request, response, aeEntity);
 
-		Notifier.notify(subs, aeDB, ResourceStatus.CHILD_CREATED);
+		Notifier.notify(subs, aeEntity, ResourceStatus.CHILD_CREATED);
 
 		return response;
 	}

@@ -307,25 +307,35 @@ public class ResponsePrimitive {
 	 */
 	@Override
 	public String toString() {
-		return "ResponsePrimitive ["
+		int max =1000;
+		String content="";
+		if(objContent!=null){
+			if(objContent.toString().length()>max){
+				content = objContent.toString().substring(0,max)+" (...)";
+			}else{
+				content = objContent.toString();
+			}
+		}
+		return "ResponsePrimitive [\n "
 				+ (responseStatusCode != null ? "responseStatusCode="
-						+ responseStatusCode + ",\n " : "")
+						+ responseStatusCode + "\n " : "")
 				+ (requestIdentifier != null ? "requestIdentifier="
-						+ requestIdentifier + ",\n " : "")
-				+ (objContent != null ? "content=" + objContent + ",\n " : "")
-				+ (to != null ? "to=" + to + ",\n " : "")
-				+ (from != null ? "from=" + from + ",\n " : "")
+						+ requestIdentifier + "\n " : "")
+				+ (to != null ? "to=" + to + "\n " : "")
+				+ (from != null ? "from=" + from + "\n " : "")
 				+ (originatingTimestamp != null ? "originatingTimestamp="
-						+ originatingTimestamp + ",\n " : "")
+						+ originatingTimestamp + "\n " : "")
 				+ (resultExpirationTimestamp != null ? "resultExpirationTimestamp="
-						+ resultExpirationTimestamp + ",\n "
+						+ resultExpirationTimestamp + "\n "
 						: "")
 				+ (eventCategory != null ? "eventCategory=" + eventCategory
 						+ ",\n " : "")
 				+ (location != null ? "location=" + location + ",\n " : "")
-				+ (contentType != null ? "contentType=" + contentType + ",\n" : "")
+				+ (contentType != null ? "contentType=" + contentType + ",\n " : "")
+				+ (objContent != null ? "content (Only first "+max+" caracters)=\n " + content + "\n" : "")
 				+ "]";
 	}
+	
 
 	public void setPrimitiveContent(PrimitiveContent content){
 		this.content = content;
