@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONObject;
 import org.osgi.framework.BundleContext;
 
 public class CredentialsServlet extends HttpServlet {
@@ -19,19 +20,34 @@ public class CredentialsServlet extends HttpServlet {
 	}
 
 	@Override
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession();
-		String name = (String)session.getAttribute("name");
-		String password = (String)session.getAttribute("password");
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		String sessionId = request.getParameter(SessionManager.SESSION_ID_PARAMETER);
+
+		if ((sessionId == null) || (!SessionManager.getInstance().checkTokenExists(sessionId))) {
+			// no valid session =>
+			response.sendError(HttpServletResponse.SC_FORBIDDEN);
+			return;
+		}
+
+		SessionManager.Session session = SessionManager.getInstance().getSession(sessionId);
+		if (session == null) {
+			// no valid session =>
+						response.sendError(HttpServletResponse.SC_FORBIDDEN);
+						return;
+		}
+
+		String name = session.getName();
+		String password = session.getPassword();
 		String cred = name + ':' + password;
 
 		response.setContentType("application/json");
-		PrintWriter out = response.getWriter();	
-		StringBuilder json= new StringBuilder();
-		json.append(cred);
+		PrintWriter out = response.getWriter();
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("name", name);
+		jsonObject.put("credentials", cred);
 
-		out.write(json.toString());	
+		out.write(jsonObject.toJSONString());
 	}
 
 }

@@ -30,6 +30,12 @@ public class InCseContextServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String sessionId = req.getParameter(SessionManager.SESSION_ID_PARAMETER);
+		if (!SessionManager.getInstance().checkTokenExists(sessionId)) {
+			resp.sendError(HttpServletResponse.SC_FORBIDDEN);
+			return;
+		}
+		
 		String pathInfo = req.getPathInfo();
 		if (pathInfo == null) {
 			String cseId = Constants.CSE_ID;
@@ -38,7 +44,7 @@ public class InCseContextServlet extends HttpServlet {
 			resp.getWriter().print("~/" + cseId + "/" + cseName);
 		} else if (GET_NOTIFICATIONS.equals(pathInfo)) {
 			// retrieve notifications
-			List<JSONObject> notifications = AeRegistration.getInstance().getNotificationsAndClears();
+			List<JSONObject> notifications = AeRegistration.getInstance().getNotificationsAndClears(sessionId);
 			JSONArray globalJson = new JSONArray();
 			for(JSONObject notification : notifications) {
 				globalJson.add(notification);
@@ -69,9 +75,11 @@ public class InCseContextServlet extends HttpServlet {
 		}
 		
 		String resourceId = null;
+		String sessionId = null;
 		try {
 			resourceId = (String) jsonObject.get(RESOURCE_ID);
-			if (!AeRegistration.getInstance().createSubscription(resourceId)) {
+			sessionId = (String) jsonObject.get(SessionManager.SESSION_ID_PARAMETER);
+			if (!AeRegistration.getInstance().createSubscription(resourceId, sessionId)) {
 				resp.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE,
 						"unable to create subscription");
 				return;

@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.eclipse.om2m.sdt.home.monitoring.util.AeRegistration;
 import org.eclipse.om2m.sdt.home.monitoring.util.Constants;
 import org.osgi.framework.BundleContext;
 
@@ -22,9 +23,15 @@ public class LogoutServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
-		HttpSession session = request.getSession();
-		session.removeAttribute("name");
-		session.removeAttribute("password");
+		
+		String sessionId = request.getParameter(SessionManager.SESSION_ID_PARAMETER);
+		
+		SessionManager.Session session = null;
+		if (sessionId != null) {
+			session = SessionManager.getInstance().removeSession(sessionId);
+			AeRegistration.getInstance().deassociateSubscriptionAndSessions(session.getId());
+		}
+		
 		response.sendRedirect("/" + Constants.APPNAME + "/webapps/login.html");
 	}
 	

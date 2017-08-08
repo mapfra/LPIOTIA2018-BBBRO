@@ -59,10 +59,16 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 	
 	$scope.cseContext = "~/in-cse/in-name";
 	
+	$scope.name="";
+	
+	$scope.currentUrl = new URL(window.location);
+	$scope.sessionId = $scope.currentUrl.searchParams.get("sessionId");
+	
 	$scope.load = function() {
 		var req = {
 				method: 'GET',
 				url: $scope.urlBase + '/Home_Monitoring_Application/in-cse/context',
+				params: {sessionId: $scope.sessionId}
 		};
 		$http(req).success(function (response, status, headers, config)  {
 			$scope.cseContext = response;
@@ -316,7 +322,10 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 		req = {
 				method : 'POST',
 				url : $scope.urlBase + '/Home_Monitoring_Application/in-cse/context',
-				data : {resourceId:toBeSubscribedResource},
+				data : {
+							resourceId:toBeSubscribedResource,
+							sessionId: $scope.sessionId
+						},
 				headers : {
 					'Content-Type' : 'application/json'
 				}
@@ -330,6 +339,7 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 		req = {
 				method : 'GET',
 				url : $scope.urlBase + '/Home_Monitoring_Application/in-cse/context/notifications',
+				params: {sessionId: $scope.sessionId},
 				headers : {
 					'Accept' : 'application/json'
 				}
@@ -694,12 +704,14 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 		var req = {
 				method: 'GET',
 				url: '../security/cred',
+				params : {sessionId: $scope.sessionId},
 				headers: {
 					'Content-Type': 'application/json'
 				}
 		};
 		$http(req).success(function (response, status, headers, config)  {
-			$scope.credentials = response;
+			$scope.credentials = response.credentials;
+			$scope.name = response.name;
 			$scope.getDevices();
 			timerForDevicesUpdate = $interval(function() { $scope.getDevices(); }, devicePolling);
 			timerForNotifications = $interval(function() { $scope.getNotifications(); }, 3000);

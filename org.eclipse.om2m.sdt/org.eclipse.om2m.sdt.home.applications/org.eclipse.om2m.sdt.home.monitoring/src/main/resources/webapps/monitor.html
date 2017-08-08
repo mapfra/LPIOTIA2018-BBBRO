@@ -25,7 +25,7 @@
 		</script>
 	</head>
 
-	<body onLoad="listHeight()" onResize="listHeight()">
+	<body onLoad="listHeight()" onResize="listHeight()" data-ng-controller="MainController">
 		<div class="page-wrap" id="page-wrap">
 			<script src="{{camera}}"></script>
 			<!-- main page -->
@@ -37,12 +37,12 @@
 					</figure>
 					<div class="user">
 						<span>hello, </span> 
-							<a href="#">%USERNAME%</a> 
+							<label>{{name}}</label> 
 							<a href="../security/logout" class="logout">Logout</a>
 					</div>
 				</div>
 			</header>
-			<div class="container" data-ng-controller="MainController">
+			<div class="container" >
 				<div id="videoPart" class="left_side">
 					<h3>Video from monitoring camera</h3>
 					<div class="btn-group-horizontal" role="group"

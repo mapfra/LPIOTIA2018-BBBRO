@@ -25,6 +25,10 @@ var message = params.message;
 		  
 		if(message)document.getElementById("error").style.display ="inline";
 	}
+	
+	function updateFormAction(form) {
+		form.action = form.action + "?sessionId=" + Date.now();
+	}
 
 </script>
 </head>
@@ -34,7 +38,7 @@ var message = params.message;
 <div class="page-wrap" id="page-wrap">
 <div class="login-strip clearfix" id="loginArea">
     	<div class="loginBox">
-    	<form method="POST" action="../security/login">
+    	<form method="POST" action="../security/login" id="loginForm" name="loginForm" onsubmit="updateFormAction(this)">
         	<figure>
             	<img src="images/logo.png">
                 <figcaption>Monitoring Application </figcaption>

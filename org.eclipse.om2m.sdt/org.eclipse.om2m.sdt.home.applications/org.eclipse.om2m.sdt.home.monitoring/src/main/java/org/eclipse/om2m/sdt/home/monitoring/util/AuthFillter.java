@@ -9,13 +9,13 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.eclipse.om2m.sdt.home.monitoring.servlet.SessionManager;
 
 public class AuthFillter {
 	
 	private static Log LOGGER = LogFactory.getLog(AuthFillter.class);
 
-	public static boolean validateUserCredentials(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		HttpSession session = request.getSession();
+	public static SessionManager.Session validateUserCredentials(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		boolean isValid=false;
 		String name = "";
 		String password = "";
@@ -23,10 +23,6 @@ public class AuthFillter {
 			name = request.getParameter("name");
 			password = request.getParameter("password");
 			LOGGER.debug("parameters " + name + "/" + password);
-		} else if (session.getAttribute("name") != null && session.getAttribute("password") != null) {
-			name = session.getAttribute("name").toString();
-			password = session.getAttribute("password").toString();
-			LOGGER.debug("attributes " + name + "/" + password);
 		} else if (request.getHeader("Authorization") != null) {
 			LOGGER.debug("Headers Authorization " + request.getHeader("Authorization") 
 					+ "/X-Requested-With " + request.getHeader("X-Requested-With"));
@@ -42,9 +38,9 @@ public class AuthFillter {
 		}
 		String result = ResourceDiscovery.validateUserCredentials(name, password);
 		if (result != null) {
-			isValid = true;
-			session.setAttribute("name", name);
-			session.setAttribute("password", password);
+			
+			// create new session
+			return SessionManager.getInstance().createNewSession(name, password);
 		}
 
 		if (! isValid && request.getHeader("X-Requested-With") != null) {
@@ -53,7 +49,7 @@ public class AuthFillter {
 			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, null);
 		}
 		LOGGER.debug(name + "/" + password + " auth=" + isValid);
-		return isValid;
+		return null;
 	}
 	
 }

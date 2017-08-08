@@ -8,11 +8,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.eclipse.om2m.sdt.home.monitoring.util.AuthFillter;
 import org.eclipse.om2m.sdt.home.monitoring.util.Constants;
 import org.eclipse.om2m.sdt.home.monitoring.util.FileUtil;
 import org.osgi.framework.BundleContext;
-
 
 public class MonitorHomeServlet extends HttpServlet {
 	/**
@@ -26,16 +24,27 @@ public class MonitorHomeServlet extends HttpServlet {
 	}
 
 	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if (AuthFillter.validateUserCredentials(request, response)) {			
-			String monitorHome = FileUtil.getFileAsString("webapps/monitor.html", context);
-			monitorHome = monitorHome.replace("%USERNAME%", 
-					request.getSession().getAttribute("name").toString());
-			response.setContentType("text/html");
-			PrintWriter out = response.getWriter();
-			out.println(monitorHome);		
-		} else if (request.getHeader("X-Requested-With") == null)
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		String sessionId = request.getParameter(SessionManager.SESSION_ID_PARAMETER);
+
+		if ((sessionId == null) || (!SessionManager.getInstance().checkTokenExists(sessionId))) {
 			response.sendRedirect("/" + Constants.APPNAME + "/webapps/login.html");
+			return;
+		}
+		
+		SessionManager.Session currentSession = SessionManager.getInstance().getSession(sessionId);
+		if (currentSession == null) {
+			response.sendRedirect("/" + Constants.APPNAME + "/webapps/login.html");
+			return;
+		}
+		
+		String monitorHome = FileUtil.getFileAsString("webapps/monitor.html", context);
+		monitorHome = monitorHome.replace("%USERNAME%", currentSession.getName());
+		response.setContentType("text/html");
+		PrintWriter out = response.getWriter();
+		out.println(monitorHome);
+
 	}
 
 }

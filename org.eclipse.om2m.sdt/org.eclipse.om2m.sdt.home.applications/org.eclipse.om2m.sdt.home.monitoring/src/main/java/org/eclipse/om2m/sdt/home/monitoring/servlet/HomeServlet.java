@@ -26,7 +26,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.eclipse.om2m.sdt.home.monitoring.util.AuthFillter;
 import org.eclipse.om2m.sdt.home.monitoring.util.Constants;
 import org.osgi.framework.BundleContext;
 
@@ -40,9 +39,12 @@ public class HomeServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {		
-		if (AuthFillter.validateUserCredentials(request, response)) {			
-			response.sendRedirect("/" + Constants.APPNAME + "/monitor/home");	
+			HttpServletResponse response) throws ServletException, IOException {
+		// check session
+		String sessionId = request.getParameter(SessionManager.SESSION_ID_PARAMETER);
+		
+		if ((sessionId != null) && SessionManager.getInstance().checkTokenExists(sessionId)) {
+			response.sendRedirect("/" + Constants.APPNAME + "/monitor/home");
 		} else {
 			response.sendRedirect("/" + Constants.APPNAME + "/webapps/login.html");	
 		}
