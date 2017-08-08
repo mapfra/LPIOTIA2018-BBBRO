@@ -261,7 +261,7 @@ public class Notifier {
 				notification.setSubscriptionDeletion(false);
 			}
 
-			notification.setSubscriptionReference(sub.getHierarchicalURI());
+			notification.setSubscriptionReference(sub.getResourceID());
 
 			// Get the representation of the content
 			Resource serializableResource;
