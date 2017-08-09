@@ -10,10 +10,10 @@ import org.eclipse.om2m.commons.constants.ResourceType;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.resource.AEAnnc;
 import org.eclipse.om2m.commons.resource.DynamicAuthorizationConsultation;
-import org.eclipse.om2m.commons.resource.FlexContainerAnnc;
 import org.eclipse.om2m.commons.resource.RemoteCSE;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.BinarySwitchFlexContainerAnnc;
 import org.eclipse.om2m.core.service.CseService;
 import org.eclipse.om2m.das.testsuite.Test;
 
@@ -59,9 +59,8 @@ public class FlexContainerAnncDacisTest extends Test {
 		
 
 		// create a FlexContainerAnnc with a dynamicAuthorizationConsultationsId
-		FlexContainerAnnc toBeCreatedFlexContainerAnnc = new FlexContainerAnnc();
+		BinarySwitchFlexContainerAnnc toBeCreatedFlexContainerAnnc = new BinarySwitchFlexContainerAnnc();
 		toBeCreatedFlexContainerAnnc.getDynamicAuthorizationConsultationIDs().add(dac.getResourceID());
-		toBeCreatedFlexContainerAnnc.setContainerDefinition("myDef");
 		toBeCreatedFlexContainerAnnc.setLink("/FlexContainerAnnc" + UUID.randomUUID());
 		toBeCreatedFlexContainerAnnc.setName("FlexContainerAnnc_" + UUID.randomUUID());
 
@@ -91,9 +90,9 @@ public class FlexContainerAnncDacisTest extends Test {
 			return;
 		}
 
-		FlexContainerAnnc createdFlexContainerAnnc = null;
+		BinarySwitchFlexContainerAnnc createdFlexContainerAnnc = null;
 		try {
-			createdFlexContainerAnnc = (FlexContainerAnnc) createResponse.getContent();
+			createdFlexContainerAnnc = (BinarySwitchFlexContainerAnnc) createResponse.getContent();
 		} catch (ClassCastException e) {
 			setState(State.KO);
 			setMessage("expected response content is not a FlexContainerAnnc");
@@ -123,9 +122,9 @@ public class FlexContainerAnncDacisTest extends Test {
 			return;
 		}
 
-		FlexContainerAnnc retrievedFlexContainerAnnc = null;
+		BinarySwitchFlexContainerAnnc retrievedFlexContainerAnnc = null;
 		try {
-			retrievedFlexContainerAnnc = (FlexContainerAnnc) retrieveResponse.getContent();
+			retrievedFlexContainerAnnc = (BinarySwitchFlexContainerAnnc) retrieveResponse.getContent();
 		} catch (ClassCastException e) {
 			setState(State.KO);
 			setMessage("expected response content is not a FlexContainerAnnc");
@@ -170,7 +169,7 @@ public class FlexContainerAnncDacisTest extends Test {
 
 		retrievedFlexContainerAnnc = null;
 		try {
-			retrievedFlexContainerAnnc = (FlexContainerAnnc) retrieveResponse.getContent();
+			retrievedFlexContainerAnnc = (BinarySwitchFlexContainerAnnc) retrieveResponse.getContent();
 		} catch (ClassCastException e) {
 			setState(State.KO);
 			setMessage("expected response content is not a FlexContainerAnnc");

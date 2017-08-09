@@ -69,7 +69,7 @@ import org.eclipse.om2m.commons.constants.ShortName;
 		"expirationTime", "link", "dynamicAuthorizationConsultationIDs" })
 @XmlSeeAlso({ LocationPolicyAnnc.class, RemoteCSEAnnc.class,
 		AnnouncedMgmtResource.class, GroupAnnc.class, ContainerAnnc.class,
-		AEAnnc.class, FlexContainerAnnc.class })
+		AEAnnc.class, AbstractFlexContainerAnnc.class })
 public class AnnouncedResource extends Resource {
 
 	@XmlList

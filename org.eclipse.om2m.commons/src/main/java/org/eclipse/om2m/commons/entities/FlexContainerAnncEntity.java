@@ -23,6 +23,11 @@ import org.eclipse.om2m.commons.constants.ShortName;
 @Entity(name = DBEntities.FLEXCONTAINER_ANNC_ENTITY)
 @Inheritance(strategy = InheritanceType.JOINED)
 public class FlexContainerAnncEntity extends AnnouncedResourceEntity {
+	@Column(name="longName")
+	protected String longName;
+	@Column(name="shortName")
+	protected String shortName;
+	
 
 	@Column(name = ShortName.STATETAG)
 	protected BigInteger stateTag;
@@ -81,6 +86,34 @@ public class FlexContainerAnncEntity extends AnnouncedResourceEntity {
 			joinColumns={@JoinColumn(name=DBEntities.FCNTA_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)}
 			)
 	protected AeAnncEntity parentAeAnnc;
+	
+	/**
+	 * @return the longName
+	 */
+	public String getLongName() {
+		return longName;
+	}
+
+	/**
+	 * @param longName the longName to set
+	 */
+	public void setLongName(String longName) {
+		this.longName = longName;
+	}
+
+	/**
+	 * @return the shortName
+	 */
+	public String getShortName() {
+		return shortName;
+	}
+
+	/**
+	 * @param shortName the shortName to set
+	 */
+	public void setShortName(String shortName) {
+		this.shortName = shortName;
+	}
 
 	/**
 	 * @return the stateTag

@@ -92,14 +92,14 @@ public class SubscriptionTest extends FlexContainerTestSuite {
 				+ flexContainer.getName();
 		
 
-		ResponsePrimitive response = sendCreateSubscriptionRequest(subscription, flexContainerLocation);
+		ResponsePrimitive response = sendCreateSubscriptionRequest(subscription, flexContainerLocation, dataMapperService.getServiceDataType());
 		Subscription returnedSubscription = null;
 		if (!response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {
 			// KO
 			createTestReport("testCreateSubscription", Status.KO, "unable to create the subscription", null);
 			return;
 		} else {
-			returnedSubscription = (Subscription) response.getContent();
+			returnedSubscription = (Subscription) dataMapperService.stringToObj((String) response.getContent());
 
 			if (!returnedSubscription.getNotificationURI().contains(subscriptionServlet.getServletUrl())) {
 				createTestReport("testCreateSubscription", Status.KO, "invalid notification URI", null);
@@ -241,14 +241,14 @@ public class SubscriptionTest extends FlexContainerTestSuite {
 		
 		String subscriptionLocation = flexContainerLocation + "/" + subscriptionName;
 
-		ResponsePrimitive response = sendCreateSubscriptionRequest(subscription, flexContainerLocation);
+		ResponsePrimitive response = sendCreateSubscriptionRequest(subscription, flexContainerLocation, dataMapperService.getServiceDataType());
 		Subscription returnedSubscription = null;
 		if (!response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {
 			// KO
 			createTestReport("testCreateSubscription", Status.KO, "unable to create the subscription", null);
 			return;
 		} else {
-			returnedSubscription = (Subscription) response.getContent();
+			returnedSubscription = (Subscription) dataMapperService.stringToObj((String) response.getContent());
 
 			if (!returnedSubscription.getNotificationURI().contains(subscriptionServlet.getServletUrl())) {
 				createTestReport("testCreateSubscription", Status.KO, "invalid notification URI", null);
@@ -371,14 +371,14 @@ public class SubscriptionTest extends FlexContainerTestSuite {
 		
 		String subscriptionLocation = flexContainerLocation + "/" + subscriptionName;
 
-		ResponsePrimitive response = sendCreateSubscriptionRequest(subscription, flexContainerLocation);
+		ResponsePrimitive response = sendCreateSubscriptionRequest(subscription, flexContainerLocation, dataMapperService.getServiceDataType());
 		Subscription returnedSubscription = null;
 		if (!response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {
 			// KO
 			createTestReport("testUpdateSubscription", Status.KO, "unable to create the subscription", null);
 			return;
 		} else {
-			returnedSubscription = (Subscription) response.getContent();
+			returnedSubscription = (Subscription) dataMapperService.stringToObj((String) response.getContent());
 
 			if (!returnedSubscription.getNotificationURI().contains(subscriptionServlet.getServletUrl())) {
 				createTestReport("testUpdateSubscription", Status.KO, "invalid notification URI", null);

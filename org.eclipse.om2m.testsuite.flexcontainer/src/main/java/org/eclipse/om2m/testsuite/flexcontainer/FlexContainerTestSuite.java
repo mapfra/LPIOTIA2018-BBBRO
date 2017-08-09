@@ -88,9 +88,9 @@ public abstract class FlexContainerTestSuite {
 				Constants.ADMIN_REQUESTING_ENTITY);
 	}
 
-	protected ResponsePrimitive sendCreateSubscriptionRequest(Subscription subscription, String resourceLocation) {
+	protected ResponsePrimitive sendCreateSubscriptionRequest(Subscription subscription, String resourceLocation, String returnContentType) {
 		return sendCreateRequest(resourceLocation, ResourceType.SUBSCRIPTION, subscription,
-				Constants.ADMIN_REQUESTING_ENTITY);
+				Constants.ADMIN_REQUESTING_ENTITY, MimeMediaType.OBJ, returnContentType);
 	}
 
 	protected ResponsePrimitive sendCreateAccessControlPolicyRequest(AccessControlPolicy policy,
@@ -101,14 +101,19 @@ public abstract class FlexContainerTestSuite {
 
 	private ResponsePrimitive sendCreateRequest(String resourceLocation, int resourceType,
 			Resource resource, String from) {
+		return sendCreateRequest(resourceLocation, resourceType, resource, from, MimeMediaType.OBJ, MimeMediaType.OBJ);
+	}
+	
+	private ResponsePrimitive sendCreateRequest(String resourceLocation, int resourceType,
+			Resource resource, String from, String requestContentType, String returnContentType) {
 		RequestPrimitive request = new RequestPrimitive();
 		request.setContent(resource);
 		request.setFrom(from);
 		request.setTargetId(resourceLocation);
 		request.setTo(resourceLocation);
 		request.setResourceType(BigInteger.valueOf(resourceType));
-		request.setRequestContentType(MimeMediaType.OBJ);
-		request.setReturnContentType(MimeMediaType.OBJ);
+		request.setRequestContentType(requestContentType);
+		request.setReturnContentType(returnContentType);
 		request.setOperation(Operation.CREATE);
 		ResponsePrimitive response = cseService.doRequest(request);
 		return response;

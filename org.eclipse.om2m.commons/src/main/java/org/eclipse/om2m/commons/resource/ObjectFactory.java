@@ -231,11 +231,11 @@ public class ObjectFactory {
 //	}
 	
 	/**
-	 * Create an instance of {@link FlexContainerAnnc}
+	 * Create an instance of {@link AbstractFlexContainerAnnc}
 	 * 
 	 */
-	public FlexContainerAnnc createFlexContainerAnnc() {
-		return new FlexContainerAnnc();
+	public AbstractFlexContainerAnnc createFlexContainerAnnc() {
+		return new AbstractFlexContainerAnnc();
 	}
 
 	/**

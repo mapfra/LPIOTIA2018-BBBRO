@@ -5,7 +5,7 @@ Device : DeviceClothesWasher
 
 A clothes washer is a home appliance that is used to wash laundry, such as clothing and sheets. This information model provides capabilities to interact with specific functions and resources of clothes washers.
 
-Created: 2017-07-17 15:25:54
+Created: 2017-08-09 15:38:05
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -16,6 +16,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
+import org.eclipse.om2m.commons.resource.AbstractFlexContainerAnnc;
 
 
 @XmlRootElement(name = DeviceClothesWasherFlexContainer.SHORT_NAME, namespace = "http://www.onem2m.org/xml/protocols/homedomain")
@@ -27,7 +28,7 @@ public class DeviceClothesWasherFlexContainer extends AbstractFlexContainer {
 	public static final String SHORT_NAME = "deCWr";
 	
 	public DeviceClothesWasherFlexContainer () {
-		setContainerDefinition("org.onem2m.home.device." + LONG_NAME);
+		setContainerDefinition("org.onem2m.home.device." + DeviceClothesWasherFlexContainer.LONG_NAME);
 		setLongName(LONG_NAME);
 		setShortName(SHORT_NAME);
 	}

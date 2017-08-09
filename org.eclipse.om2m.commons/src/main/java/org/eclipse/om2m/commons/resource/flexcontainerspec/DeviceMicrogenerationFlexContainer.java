@@ -5,7 +5,7 @@ Device : DeviceMicrogeneration
 
 A microgeneration is a Home Energy Management System (HEMS) device that is used to create energy. Examples of microgeneration devices are photovoltaics device or fuel cells.
 
-Created: 2017-07-17 15:25:54
+Created: 2017-08-09 15:38:05
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -16,6 +16,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
+import org.eclipse.om2m.commons.resource.AbstractFlexContainerAnnc;
 
 
 @XmlRootElement(name = DeviceMicrogenerationFlexContainer.SHORT_NAME, namespace = "http://www.onem2m.org/xml/protocols/homedomain")
@@ -27,7 +28,7 @@ public class DeviceMicrogenerationFlexContainer extends AbstractFlexContainer {
 	public static final String SHORT_NAME = "devMn";
 	
 	public DeviceMicrogenerationFlexContainer () {
-		setContainerDefinition("org.onem2m.home.device." + LONG_NAME);
+		setContainerDefinition("org.onem2m.home.device." + DeviceMicrogenerationFlexContainer.LONG_NAME);
 		setLongName(LONG_NAME);
 		setShortName(SHORT_NAME);
 	}

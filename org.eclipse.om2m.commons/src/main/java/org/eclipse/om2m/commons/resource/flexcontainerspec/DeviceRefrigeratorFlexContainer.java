@@ -5,7 +5,7 @@ Device : DeviceRefrigerator
 
 A refrigerator is a home appliance used to store food at temperatures which are a few degrees above the freezing point of water. This information model provides capabilities to interact with specific functions and resource of refrigerators.
 
-Created: 2017-07-17 15:25:54
+Created: 2017-08-09 15:38:05
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -16,6 +16,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
+import org.eclipse.om2m.commons.resource.AbstractFlexContainerAnnc;
 
 
 @XmlRootElement(name = DeviceRefrigeratorFlexContainer.SHORT_NAME, namespace = "http://www.onem2m.org/xml/protocols/homedomain")
@@ -27,7 +28,7 @@ public class DeviceRefrigeratorFlexContainer extends AbstractFlexContainer {
 	public static final String SHORT_NAME = "devRr";
 	
 	public DeviceRefrigeratorFlexContainer () {
-		setContainerDefinition("org.onem2m.home.device." + LONG_NAME);
+		setContainerDefinition("org.onem2m.home.device." + DeviceRefrigeratorFlexContainer.LONG_NAME);
 		setLongName(LONG_NAME);
 		setShortName(SHORT_NAME);
 	}

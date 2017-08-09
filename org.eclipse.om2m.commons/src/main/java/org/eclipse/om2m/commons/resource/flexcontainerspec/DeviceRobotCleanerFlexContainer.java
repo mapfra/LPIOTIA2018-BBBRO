@@ -5,7 +5,7 @@ Device : DeviceRobotCleaner
 
 A robot cleaner is an autonomous robotic vacuum cleaner that has intelligent programming and a limited vacuum cleaning system. This robot cleaner information model provides capabilities to control and monitor robot cleaner specific functions and resources.
 
-Created: 2017-07-17 15:25:54
+Created: 2017-08-09 15:38:05
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -16,6 +16,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
+import org.eclipse.om2m.commons.resource.AbstractFlexContainerAnnc;
 
 
 @XmlRootElement(name = DeviceRobotCleanerFlexContainer.SHORT_NAME, namespace = "http://www.onem2m.org/xml/protocols/homedomain")
@@ -27,7 +28,7 @@ public class DeviceRobotCleanerFlexContainer extends AbstractFlexContainer {
 	public static final String SHORT_NAME = "deRCr";
 	
 	public DeviceRobotCleanerFlexContainer () {
-		setContainerDefinition("org.onem2m.home.device." + LONG_NAME);
+		setContainerDefinition("org.onem2m.home.device." + DeviceRobotCleanerFlexContainer.LONG_NAME);
 		setLongName(LONG_NAME);
 		setShortName(SHORT_NAME);
 	}

@@ -16,18 +16,24 @@ import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
 import org.eclipse.om2m.commons.entities.FlexContainerAnncEntity;
 import org.eclipse.om2m.commons.entities.SubscriptionEntity;
 import org.eclipse.om2m.commons.resource.ChildResourceRef;
-import org.eclipse.om2m.commons.resource.FlexContainerAnnc;
+import org.eclipse.om2m.commons.resource.AbstractFlexContainerAnnc;
 import org.eclipse.om2m.commons.resource.Subscription;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.FlexContainerFactory;
 
-public class FlexContainerAnncMapper extends EntityMapper<FlexContainerAnncEntity, FlexContainerAnnc>{
+public class FlexContainerAnncMapper extends EntityMapper<FlexContainerAnncEntity, AbstractFlexContainerAnnc>{
 
 	@Override
-	protected FlexContainerAnnc createResource() {
-		return new FlexContainerAnnc();
+	protected AbstractFlexContainerAnnc createResource() {
+		return new AbstractFlexContainerAnnc();
+	}
+	
+	@Override
+	protected AbstractFlexContainerAnnc createResource(FlexContainerAnncEntity flexContainerAnncEntity) {
+		return FlexContainerFactory.getSpecializationFlexContainerAnnc(flexContainerAnncEntity.getShortName());
 	}
 
 	@Override
-	protected void mapAttributes(FlexContainerAnncEntity entity, FlexContainerAnnc resource, int level, int offset) {
+	protected void mapAttributes(FlexContainerAnncEntity entity, AbstractFlexContainerAnnc resource, int level, int offset) {
 		if (level < 0) {
 			return;
 		}
@@ -77,19 +83,19 @@ public class FlexContainerAnncMapper extends EntityMapper<FlexContainerAnncEntit
 
 	@Override
 	protected void mapChildResourceRef(FlexContainerAnncEntity entity,
-			FlexContainerAnnc resource, int level, int offset) {
+			AbstractFlexContainerAnnc resource, int level, int offset) {
 		resource.getChildResource().addAll(getChildResourceRef(entity, level, offset));
 	}
 
 	@Override
-	protected void mapChildResources(FlexContainerAnncEntity entity, FlexContainerAnnc resource, int level, int offset) {
+	protected void mapChildResources(FlexContainerAnncEntity entity, AbstractFlexContainerAnnc resource, int level, int offset) {
 		if (level == 0) {
 			return;
 		}
 		
 		// add child ref flexContainer
 		for (FlexContainerAnncEntity flexContainerAnncEntity : entity.getChildFlexContainerAnncs()) {
-			FlexContainerAnnc flexContainerAnncRes = new FlexContainerAnncMapper().mapEntityToResource(flexContainerAnncEntity, ResultContent.ATTRIBUTES_AND_CHILD_RES, level - 1, offset - 1);
+			AbstractFlexContainerAnnc flexContainerAnncRes = new FlexContainerAnncMapper().mapEntityToResource(flexContainerAnncEntity, ResultContent.ATTRIBUTES_AND_CHILD_RES, level - 1, offset - 1);
 			resource.getFlexContainerOrContainerOrSubscription().add(flexContainerAnncRes);
 		}
 
@@ -101,6 +107,8 @@ public class FlexContainerAnncMapper extends EntityMapper<FlexContainerAnncEntit
 		
 		
 		// add child ref with containers
+		
+		resource.finalizeSerialization();
 	}
 
 	

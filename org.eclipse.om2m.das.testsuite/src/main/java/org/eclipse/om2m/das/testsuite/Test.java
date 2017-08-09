@@ -17,11 +17,12 @@ import org.eclipse.om2m.commons.resource.AccessControlPolicy;
 import org.eclipse.om2m.commons.resource.AccessControlRule;
 import org.eclipse.om2m.commons.resource.DynamicAuthorizationConsultation;
 import org.eclipse.om2m.commons.resource.FlexContainer;
-import org.eclipse.om2m.commons.resource.FlexContainerAnnc;
+import org.eclipse.om2m.commons.resource.AbstractFlexContainerAnnc;
 import org.eclipse.om2m.commons.resource.RemoteCSE;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
 import org.eclipse.om2m.commons.resource.SetOfAcrs;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.BinarySwitchFlexContainerAnnc;
 import org.eclipse.om2m.core.service.CseService;
 
 public abstract class Test {
@@ -440,7 +441,7 @@ public abstract class Test {
 		return null;
 	}
 
-	protected FlexContainerAnnc createFlexContainerAnnc(String resourceUrl, List<String> dacis) {
+	protected BinarySwitchFlexContainerAnnc createFlexContainerAnnc(String resourceUrl, List<String> dacis) {
 
 		AccessControlPolicy createdAcp = createAcp();
 		if (createdAcp == null) {
@@ -448,9 +449,8 @@ public abstract class Test {
 			return null;
 		}
 
-		FlexContainerAnnc flexContainerAnnc = new FlexContainerAnnc();
+		BinarySwitchFlexContainerAnnc flexContainerAnnc = new BinarySwitchFlexContainerAnnc();
 		flexContainerAnnc.setName("FlexContainer_" + UUID.randomUUID());
-		flexContainerAnnc.setContainerDefinition("myDef");
 		flexContainerAnnc.getAccessControlPolicyIDs().add(createdAcp.getResourceID());
 		flexContainerAnnc.setLink("/link" + UUID.randomUUID());
 		if (dacis != null) {
@@ -469,7 +469,7 @@ public abstract class Test {
 		// execute
 		ResponsePrimitive response = getCseService().doRequest(request);
 		if ((response != null) && (ResponseStatusCode.CREATED.equals(response.getResponseStatusCode()))) {
-			return (FlexContainerAnnc) response.getContent();
+			return (BinarySwitchFlexContainerAnnc) response.getContent();
 		}
 
 		return null;

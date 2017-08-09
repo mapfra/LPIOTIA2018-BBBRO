@@ -1,0 +1,99 @@
+/*
+Device : DeviceTemperatureDetectorAnnc
+
+
+
+A SwitchButton is a device that provides button.
+
+Created: 2017-08-09 15:38:06
+*/
+
+package org.eclipse.om2m.commons.resource.flexcontainerspec;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
+import org.eclipse.om2m.commons.resource.AbstractFlexContainerAnnc;
+
+
+@XmlRootElement(name = DeviceTemperatureDetectorFlexContainerAnnc.SHORT_NAME, namespace = "http://www.onem2m.org/xml/protocols/homedomain")
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = DeviceTemperatureDetectorFlexContainerAnnc.SHORT_NAME, namespace = "http://www.onem2m.org/xml/protocols/homedomain")
+public class DeviceTemperatureDetectorFlexContainerAnnc extends AbstractFlexContainerAnnc {
+	
+	public static final String LONG_NAME = "deviceTemperatureDetectorAnnc";
+	public static final String SHORT_NAME = "deTDrAnnc";
+	
+	public DeviceTemperatureDetectorFlexContainerAnnc () {
+		setContainerDefinition("org.onem2m.home.device." + DeviceTemperatureDetectorFlexContainer.LONG_NAME);
+		setLongName(LONG_NAME);
+		setShortName(SHORT_NAME);
+	}
+	
+	public void finalizeSerialization() {
+		getAlarmSensor();
+		getAlarmSensorAnnc();
+		getTemperature();
+		getTemperatureAnnc();
+	}
+	
+	@XmlElement(name="alSer", required=true, type=AlarmSensorFlexContainerAnnc.class)
+	private AlarmSensorFlexContainer alarmSensor;
+	
+	
+	public void setAlarmSensor(AlarmSensorFlexContainer alarmSensor) {
+		this.alarmSensor = alarmSensor;
+		getFlexContainerOrContainerOrSubscription().add(alarmSensor);
+	}
+	
+	public AlarmSensorFlexContainer getAlarmSensor() {
+		this.alarmSensor = (AlarmSensorFlexContainer) getResourceByName(AlarmSensorFlexContainer.SHORT_NAME);
+		return alarmSensor;
+	}
+	
+	@XmlElement(name="alSerAnnc", required=true, type=AlarmSensorFlexContainerAnnc.class)
+	private AlarmSensorFlexContainerAnnc alarmSensorAnnc;
+	
+	
+	public void setAlarmSensor(AlarmSensorFlexContainerAnnc alarmSensorAnnc) {
+		this.alarmSensorAnnc = alarmSensorAnnc;
+		getFlexContainerOrContainerOrSubscription().add(alarmSensorAnnc);
+	}
+	
+	public AlarmSensorFlexContainerAnnc getAlarmSensorAnnc() {
+		this.alarmSensorAnnc = (AlarmSensorFlexContainerAnnc) getResourceByName(AlarmSensorFlexContainerAnnc.SHORT_NAME);
+		return alarmSensorAnnc;
+	}
+	
+	@XmlElement(name="tempe", required=true, type=TemperatureFlexContainerAnnc.class)
+	private TemperatureFlexContainer temperature;
+	
+	
+	public void setTemperature(TemperatureFlexContainer temperature) {
+		this.temperature = temperature;
+		getFlexContainerOrContainerOrSubscription().add(temperature);
+	}
+	
+	public TemperatureFlexContainer getTemperature() {
+		this.temperature = (TemperatureFlexContainer) getResourceByName(TemperatureFlexContainer.SHORT_NAME);
+		return temperature;
+	}
+	
+	@XmlElement(name="tempeAnnc", required=true, type=TemperatureFlexContainerAnnc.class)
+	private TemperatureFlexContainerAnnc temperatureAnnc;
+	
+	
+	public void setTemperature(TemperatureFlexContainerAnnc temperatureAnnc) {
+		this.temperatureAnnc = temperatureAnnc;
+		getFlexContainerOrContainerOrSubscription().add(temperatureAnnc);
+	}
+	
+	public TemperatureFlexContainerAnnc getTemperatureAnnc() {
+		this.temperatureAnnc = (TemperatureFlexContainerAnnc) getResourceByName(TemperatureFlexContainerAnnc.SHORT_NAME);
+		return temperatureAnnc;
+	}
+	
+}

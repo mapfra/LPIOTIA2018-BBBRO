@@ -11,10 +11,11 @@ import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.resource.AEAnnc;
 import org.eclipse.om2m.commons.resource.CustomAttribute;
 import org.eclipse.om2m.commons.resource.DynamicAuthorizationConsultation;
-import org.eclipse.om2m.commons.resource.FlexContainerAnnc;
 import org.eclipse.om2m.commons.resource.RemoteCSE;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.BinarySwitchFlexContainerAnnc;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.ToggleFlexContainerAnnc;
 import org.eclipse.om2m.core.service.CseService;
 import org.eclipse.om2m.interworking.service.InterworkingService;
 import org.osgi.framework.ServiceRegistration;
@@ -67,7 +68,7 @@ public class DASServiceTest_FlexContainerAnnc extends AbstractDASServiceTest {
 		// create flexContainerAnnc (with DynamicAuthorizationConsultationIDs)
 		List<String> dacis = new ArrayList<>();
 		dacis.add(dac.getResourceID());
-		FlexContainerAnnc createdFlexContainerAnnc = createFlexContainerAnnc(aeAnnc.getResourceID(), dacis);
+		BinarySwitchFlexContainerAnnc createdFlexContainerAnnc = createFlexContainerAnnc(aeAnnc.getResourceID(), dacis);
 		if (createdFlexContainerAnnc == null) {
 			setState(State.KO);
 			setMessage("unable to create FlexContainerAnnc");
@@ -92,10 +93,10 @@ public class DASServiceTest_FlexContainerAnnc extends AbstractDASServiceTest {
 		clearCalls();
 
 		// update FlexContainer
-		FlexContainerAnnc toBeUpdated = new FlexContainerAnnc();
+		BinarySwitchFlexContainerAnnc toBeUpdated = new BinarySwitchFlexContainerAnnc();
 		CustomAttribute customAttribute = new CustomAttribute();
-		customAttribute.setCustomAttributeName("test");
-		customAttribute.setCustomAttributeValue("value");
+		customAttribute.setCustomAttributeName("powSe");
+		customAttribute.setCustomAttributeValue("true");
 		createdFlexContainerAnnc.getCustomAttributes().add(customAttribute);
 
 		// prepare update request
@@ -131,8 +132,7 @@ public class DASServiceTest_FlexContainerAnnc extends AbstractDASServiceTest {
 		clearCalls();
 
 		// create a new childFlexContainer
-		FlexContainerAnnc flexContainerAnncChildToBeCreated = new FlexContainerAnnc();
-		flexContainerAnncChildToBeCreated.setContainerDefinition("tototto");
+		ToggleFlexContainerAnnc flexContainerAnncChildToBeCreated = new ToggleFlexContainerAnnc();
 		flexContainerAnncChildToBeCreated.setLink("/link" + UUID.randomUUID());
 		flexContainerAnncChildToBeCreated.setName("FlexContainer_" + UUID.randomUUID());
 		

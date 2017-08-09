@@ -26,7 +26,7 @@ import org.eclipse.om2m.commons.resource.ChildResourceRef;
 import org.eclipse.om2m.commons.resource.CustomAttribute;
 import org.eclipse.om2m.commons.resource.FilterCriteria;
 import org.eclipse.om2m.commons.resource.FlexContainer;
-import org.eclipse.om2m.commons.resource.FlexContainerAnnc;
+import org.eclipse.om2m.commons.resource.AbstractFlexContainerAnnc;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
 import org.eclipse.om2m.commons.resource.URIList;
@@ -173,7 +173,7 @@ public class ResourceDiscovery {
 			}
 		}
 		// Search children resources: modules
-		FlexContainerAnnc ctr = (FlexContainerAnnc)retrieveFlexContainer(uri, ResultContent.ATTRIBUTES_AND_CHILD_REF);
+		AbstractFlexContainerAnnc ctr = (AbstractFlexContainerAnnc)retrieveFlexContainer(uri, ResultContent.ATTRIBUTES_AND_CHILD_REF);
 		for (ChildResourceRef ref : ctr.getChildResource()) {
 			if (ref.getType().equals(BigInteger.valueOf(ResourceType.FLEXCONTAINER_ANNC))) {
 				Module module = readModule(ref.getValue());
@@ -276,7 +276,7 @@ public class ResourceDiscovery {
 		}
 		Activator.logger.info("Full new SDT module " + module);//.prettyPrint());
 		// Search children resources: modules
-		FlexContainerAnnc ctr = (FlexContainerAnnc)retrieveFlexContainer(uri, ResultContent.ATTRIBUTES_AND_CHILD_REF);
+		AbstractFlexContainerAnnc ctr = (AbstractFlexContainerAnnc)retrieveFlexContainer(uri, ResultContent.ATTRIBUTES_AND_CHILD_REF);
 		Activator.logger.info("Children " + ctr.getChildResource());
 		for (ChildResourceRef ref : ctr.getChildResource()) {
 			if (ref.getType().equals(BigInteger.valueOf(ResourceType.FLEXCONTAINER_ANNC))) {

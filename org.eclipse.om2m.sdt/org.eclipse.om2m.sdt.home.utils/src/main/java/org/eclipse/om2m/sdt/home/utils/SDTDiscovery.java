@@ -19,7 +19,7 @@ import org.eclipse.om2m.commons.resource.ChildResourceRef;
 import org.eclipse.om2m.commons.resource.CustomAttribute;
 import org.eclipse.om2m.commons.resource.FilterCriteria;
 import org.eclipse.om2m.commons.resource.FlexContainer;
-import org.eclipse.om2m.commons.resource.FlexContainerAnnc;
+import org.eclipse.om2m.commons.resource.AbstractFlexContainerAnnc;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
 import org.eclipse.om2m.commons.resource.URIList;
@@ -58,13 +58,13 @@ public class SDTDiscovery implements ISDTDiscovery {
 	private static class MyFlexContainer {
 
 		private AbstractFlexContainer flex;
-		private FlexContainerAnnc flexA;
+		private AbstractFlexContainerAnnc flexA;
 
 		public MyFlexContainer(AbstractFlexContainer flex) {
 			this.flex = flex;
 		}
 
-		public MyFlexContainer(FlexContainerAnnc flex) {
+		public MyFlexContainer(AbstractFlexContainerAnnc flex) {
 			this.flexA = flex;
 		}
 
@@ -753,8 +753,8 @@ public class SDTDiscovery implements ISDTDiscovery {
 		Object ret = resp.getContent();
 		if (ret instanceof AbstractFlexContainer)
 			return new MyFlexContainer((AbstractFlexContainer)ret);
-		else if (ret instanceof FlexContainerAnnc)
-			return new MyFlexContainer((FlexContainerAnnc)ret);
+		else if (ret instanceof AbstractFlexContainerAnnc)
+			return new MyFlexContainer((AbstractFlexContainerAnnc)ret);
 		else 
 			throw new Exception("Error not a FlexContainer " + uri);
 	}

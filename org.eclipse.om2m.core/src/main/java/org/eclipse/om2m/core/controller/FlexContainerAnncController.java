@@ -29,7 +29,7 @@ import org.eclipse.om2m.commons.exceptions.Om2mException;
 import org.eclipse.om2m.commons.exceptions.ResourceNotFoundException;
 import org.eclipse.om2m.commons.resource.CustomAttribute;
 import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
-import org.eclipse.om2m.commons.resource.FlexContainerAnnc;
+import org.eclipse.om2m.commons.resource.AbstractFlexContainerAnnc;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
 import org.eclipse.om2m.commons.utils.Util.DateUtil;
@@ -115,12 +115,12 @@ public class FlexContainerAnncController extends Controller {
 			throw new BadRequestException("A content is requiered for FlexContainer creation");
 		}
 		// get the object from the representation
-		FlexContainerAnnc flexContainerAnnc = null;
+		AbstractFlexContainerAnnc flexContainerAnnc = null;
 		try {
 			if (request.getRequestContentType().equals(MimeMediaType.OBJ)) {
-				flexContainerAnnc = (FlexContainerAnnc) request.getContent();
+				flexContainerAnnc = (AbstractFlexContainerAnnc) request.getContent();
 			} else {
-				flexContainerAnnc = (FlexContainerAnnc) DataMapperSelector.getDataMapperList()
+				flexContainerAnnc = (AbstractFlexContainerAnnc) DataMapperSelector.getDataMapperList()
 						.get(request.getRequestContentType()).stringToObj((String) request.getContent());
 			}
 
@@ -186,6 +186,8 @@ public class FlexContainerAnncController extends Controller {
 		} else {
 			flexContainerAnncEntity.setName(ShortName.FCNTA + "_" + generatedId);
 		}
+		flexContainerAnncEntity.setLongName(flexContainerAnnc.getLongName());
+		flexContainerAnncEntity.setShortName(flexContainerAnnc.getShortName());
 		flexContainerAnncEntity.setResourceID(
 				"/" + Constants.CSE_ID + "/" + ShortName.FCNTA + Constants.PREFIX_SEPERATOR + generatedId);
 		flexContainerAnncEntity
@@ -292,7 +294,7 @@ public class FlexContainerAnncController extends Controller {
 			return Redirector.retarget(originalResourceRequest);
 		} else {
 			// Mapping the entity with the exchange resource
-			FlexContainerAnnc flexContainerAnncResource = EntityMapperFactory.getFlexContainerAnncMapper()
+			AbstractFlexContainerAnnc flexContainerAnncResource = EntityMapperFactory.getFlexContainerAnncMapper()
 					.mapEntityToResource(flexContainerAnncEntity, request);
 			response.setContent(flexContainerAnncResource);
 		}
@@ -337,17 +339,17 @@ public class FlexContainerAnncController extends Controller {
 			// create the response base
 			ResponsePrimitive response = new ResponsePrimitive(request);
 
-			FlexContainerAnnc modifiedAttributes = new FlexContainerAnnc();
+			AbstractFlexContainerAnnc modifiedAttributes = new AbstractFlexContainerAnnc();
 			// check if content is present
 			if (request.getContent() != null) {
 				// create the java object from the resource representation
 				// get the object from the representation
-				FlexContainerAnnc flexContainerAnnc = null;
+				AbstractFlexContainerAnnc flexContainerAnnc = null;
 				try {
 					if (request.getRequestContentType().equals(MimeMediaType.OBJ)) {
-						flexContainerAnnc = (FlexContainerAnnc) request.getContent();
+						flexContainerAnnc = (AbstractFlexContainerAnnc) request.getContent();
 					} else {
-						flexContainerAnnc = (FlexContainerAnnc) DataMapperSelector.getDataMapperList()
+						flexContainerAnnc = (AbstractFlexContainerAnnc) DataMapperSelector.getDataMapperList()
 								.get(request.getRequestContentType()).stringToObj((String) request.getContent());
 					}
 

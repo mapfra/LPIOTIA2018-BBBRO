@@ -17,7 +17,7 @@ import org.eclipse.om2m.commons.resource.AccessControlPolicy;
 import org.eclipse.om2m.commons.resource.ChildResourceRef;
 import org.eclipse.om2m.commons.resource.Container;
 import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
-import org.eclipse.om2m.commons.resource.FlexContainerAnnc;
+import org.eclipse.om2m.commons.resource.AbstractFlexContainerAnnc;
 import org.eclipse.om2m.commons.resource.Subscription;
 
 public class AeAnncMapper extends EntityMapper<AeAnncEntity, AEAnnc> {
@@ -91,7 +91,7 @@ public class AeAnncMapper extends EntityMapper<AeAnncEntity, AEAnnc> {
 		
 		// ChildResourceRef FlexContainerAnnc
 		for (FlexContainerAnncEntity flexContainerEntity : entity.getFlexContainerAnncs()) {
-			FlexContainerAnnc fcnt = new FlexContainerAnncMapper().mapEntityToResource(flexContainerEntity,
+			AbstractFlexContainerAnnc fcnt = new FlexContainerAnncMapper().mapEntityToResource(flexContainerEntity,
 					ResultContent.ATTRIBUTES_AND_CHILD_RES, level - 1, offset - 1);
 			resource.getContainerOrContainerAnncOrGroup().add(fcnt);
 		}

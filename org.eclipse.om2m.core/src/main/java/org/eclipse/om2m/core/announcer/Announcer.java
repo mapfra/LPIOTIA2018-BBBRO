@@ -37,9 +37,10 @@ import org.eclipse.om2m.commons.resource.AEAnnc;
 import org.eclipse.om2m.commons.resource.AnnounceableResource;
 import org.eclipse.om2m.commons.resource.AnnouncedResource;
 import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
-import org.eclipse.om2m.commons.resource.FlexContainerAnnc;
+import org.eclipse.om2m.commons.resource.AbstractFlexContainerAnnc;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.FlexContainerFactory;
 import org.eclipse.om2m.core.persistence.PersistenceService;
 import org.eclipse.om2m.core.redirector.Redirector;
 import org.eclipse.om2m.persistence.service.DBService;
@@ -81,8 +82,8 @@ public class Announcer {
 			announcedResource = aeAnnc;
 			break;
 		case ResourceType.FLEXCONTAINER:
-			FlexContainerAnnc flexContainerAnnc = new FlexContainerAnnc();
-			flexContainerAnnc.setContainerDefinition(((AbstractFlexContainer) toBeAnnounced).getContainerDefinition());
+			AbstractFlexContainer afc = (AbstractFlexContainer) toBeAnnounced;
+			AbstractFlexContainerAnnc flexContainerAnnc = FlexContainerFactory.getSpecializationFlexContainerAnnc(afc.getShortName() + "Annc");
 			announcedResource = flexContainerAnnc;
 		default:
 		}

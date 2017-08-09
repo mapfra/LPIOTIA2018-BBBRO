@@ -1,0 +1,189 @@
+/*
+Device : DeviceWeatherStationAnnc
+
+
+
+A WeatherStation is a device that provides weather information.
+
+Created: 2017-08-09 15:38:06
+*/
+
+package org.eclipse.om2m.commons.resource.flexcontainerspec;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
+import org.eclipse.om2m.commons.resource.AbstractFlexContainerAnnc;
+
+
+@XmlRootElement(name = DeviceWeatherStationFlexContainerAnnc.SHORT_NAME, namespace = "http://www.onem2m.org/xml/protocols/homedomain")
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = DeviceWeatherStationFlexContainerAnnc.SHORT_NAME, namespace = "http://www.onem2m.org/xml/protocols/homedomain")
+public class DeviceWeatherStationFlexContainerAnnc extends AbstractFlexContainerAnnc {
+	
+	public static final String LONG_NAME = "deviceWeatherStationAnnc";
+	public static final String SHORT_NAME = "deWSnAnnc";
+	
+	public DeviceWeatherStationFlexContainerAnnc () {
+		setContainerDefinition("org.onem2m.home.device." + DeviceWeatherStationFlexContainer.LONG_NAME);
+		setLongName(LONG_NAME);
+		setShortName(SHORT_NAME);
+	}
+	
+	public void finalizeSerialization() {
+		getTemperature();
+		getTemperatureAnnc();
+		getRelativeHumidity();
+		getRelativeHumidityAnnc();
+		getAtmosphericPressureSensor();
+		getAtmosphericPressureSensorAnnc();
+		getNoise();
+		getNoiseAnnc();
+		getExtendedCarbonDioxideSensor();
+		getExtendedCarbonDioxideSensorAnnc();
+	}
+	
+	@XmlElement(name="tempe", required=true, type=TemperatureFlexContainerAnnc.class)
+	private TemperatureFlexContainer temperature;
+	
+	
+	public void setTemperature(TemperatureFlexContainer temperature) {
+		this.temperature = temperature;
+		getFlexContainerOrContainerOrSubscription().add(temperature);
+	}
+	
+	public TemperatureFlexContainer getTemperature() {
+		this.temperature = (TemperatureFlexContainer) getResourceByName(TemperatureFlexContainer.SHORT_NAME);
+		return temperature;
+	}
+	
+	@XmlElement(name="tempeAnnc", required=true, type=TemperatureFlexContainerAnnc.class)
+	private TemperatureFlexContainerAnnc temperatureAnnc;
+	
+	
+	public void setTemperature(TemperatureFlexContainerAnnc temperatureAnnc) {
+		this.temperatureAnnc = temperatureAnnc;
+		getFlexContainerOrContainerOrSubscription().add(temperatureAnnc);
+	}
+	
+	public TemperatureFlexContainerAnnc getTemperatureAnnc() {
+		this.temperatureAnnc = (TemperatureFlexContainerAnnc) getResourceByName(TemperatureFlexContainerAnnc.SHORT_NAME);
+		return temperatureAnnc;
+	}
+	
+	@XmlElement(name="relHy", required=true, type=RelativeHumidityFlexContainerAnnc.class)
+	private RelativeHumidityFlexContainer relativeHumidity;
+	
+	
+	public void setRelativeHumidity(RelativeHumidityFlexContainer relativeHumidity) {
+		this.relativeHumidity = relativeHumidity;
+		getFlexContainerOrContainerOrSubscription().add(relativeHumidity);
+	}
+	
+	public RelativeHumidityFlexContainer getRelativeHumidity() {
+		this.relativeHumidity = (RelativeHumidityFlexContainer) getResourceByName(RelativeHumidityFlexContainer.SHORT_NAME);
+		return relativeHumidity;
+	}
+	
+	@XmlElement(name="relHyAnnc", required=true, type=RelativeHumidityFlexContainerAnnc.class)
+	private RelativeHumidityFlexContainerAnnc relativeHumidityAnnc;
+	
+	
+	public void setRelativeHumidity(RelativeHumidityFlexContainerAnnc relativeHumidityAnnc) {
+		this.relativeHumidityAnnc = relativeHumidityAnnc;
+		getFlexContainerOrContainerOrSubscription().add(relativeHumidityAnnc);
+	}
+	
+	public RelativeHumidityFlexContainerAnnc getRelativeHumidityAnnc() {
+		this.relativeHumidityAnnc = (RelativeHumidityFlexContainerAnnc) getResourceByName(RelativeHumidityFlexContainerAnnc.SHORT_NAME);
+		return relativeHumidityAnnc;
+	}
+	
+	@XmlElement(name="atPSr", required=true, type=AtmosphericPressureSensorFlexContainerAnnc.class)
+	private AtmosphericPressureSensorFlexContainer atmosphericPressureSensor;
+	
+	
+	public void setAtmosphericPressureSensor(AtmosphericPressureSensorFlexContainer atmosphericPressureSensor) {
+		this.atmosphericPressureSensor = atmosphericPressureSensor;
+		getFlexContainerOrContainerOrSubscription().add(atmosphericPressureSensor);
+	}
+	
+	public AtmosphericPressureSensorFlexContainer getAtmosphericPressureSensor() {
+		this.atmosphericPressureSensor = (AtmosphericPressureSensorFlexContainer) getResourceByName(AtmosphericPressureSensorFlexContainer.SHORT_NAME);
+		return atmosphericPressureSensor;
+	}
+	
+	@XmlElement(name="atPSrAnnc", required=true, type=AtmosphericPressureSensorFlexContainerAnnc.class)
+	private AtmosphericPressureSensorFlexContainerAnnc atmosphericPressureSensorAnnc;
+	
+	
+	public void setAtmosphericPressureSensor(AtmosphericPressureSensorFlexContainerAnnc atmosphericPressureSensorAnnc) {
+		this.atmosphericPressureSensorAnnc = atmosphericPressureSensorAnnc;
+		getFlexContainerOrContainerOrSubscription().add(atmosphericPressureSensorAnnc);
+	}
+	
+	public AtmosphericPressureSensorFlexContainerAnnc getAtmosphericPressureSensorAnnc() {
+		this.atmosphericPressureSensorAnnc = (AtmosphericPressureSensorFlexContainerAnnc) getResourceByName(AtmosphericPressureSensorFlexContainerAnnc.SHORT_NAME);
+		return atmosphericPressureSensorAnnc;
+	}
+	
+	@XmlElement(name="noise", required=true, type=NoiseFlexContainerAnnc.class)
+	private NoiseFlexContainer noise;
+	
+	
+	public void setNoise(NoiseFlexContainer noise) {
+		this.noise = noise;
+		getFlexContainerOrContainerOrSubscription().add(noise);
+	}
+	
+	public NoiseFlexContainer getNoise() {
+		this.noise = (NoiseFlexContainer) getResourceByName(NoiseFlexContainer.SHORT_NAME);
+		return noise;
+	}
+	
+	@XmlElement(name="noiseAnnc", required=true, type=NoiseFlexContainerAnnc.class)
+	private NoiseFlexContainerAnnc noiseAnnc;
+	
+	
+	public void setNoise(NoiseFlexContainerAnnc noiseAnnc) {
+		this.noiseAnnc = noiseAnnc;
+		getFlexContainerOrContainerOrSubscription().add(noiseAnnc);
+	}
+	
+	public NoiseFlexContainerAnnc getNoiseAnnc() {
+		this.noiseAnnc = (NoiseFlexContainerAnnc) getResourceByName(NoiseFlexContainerAnnc.SHORT_NAME);
+		return noiseAnnc;
+	}
+	
+	@XmlElement(name="eCDSr", required=true, type=ExtendedCarbonDioxideSensorFlexContainerAnnc.class)
+	private ExtendedCarbonDioxideSensorFlexContainer extendedCarbonDioxideSensor;
+	
+	
+	public void setExtendedCarbonDioxideSensor(ExtendedCarbonDioxideSensorFlexContainer extendedCarbonDioxideSensor) {
+		this.extendedCarbonDioxideSensor = extendedCarbonDioxideSensor;
+		getFlexContainerOrContainerOrSubscription().add(extendedCarbonDioxideSensor);
+	}
+	
+	public ExtendedCarbonDioxideSensorFlexContainer getExtendedCarbonDioxideSensor() {
+		this.extendedCarbonDioxideSensor = (ExtendedCarbonDioxideSensorFlexContainer) getResourceByName(ExtendedCarbonDioxideSensorFlexContainer.SHORT_NAME);
+		return extendedCarbonDioxideSensor;
+	}
+	
+	@XmlElement(name="eCDSrAnnc", required=true, type=ExtendedCarbonDioxideSensorFlexContainerAnnc.class)
+	private ExtendedCarbonDioxideSensorFlexContainerAnnc extendedCarbonDioxideSensorAnnc;
+	
+	
+	public void setExtendedCarbonDioxideSensor(ExtendedCarbonDioxideSensorFlexContainerAnnc extendedCarbonDioxideSensorAnnc) {
+		this.extendedCarbonDioxideSensorAnnc = extendedCarbonDioxideSensorAnnc;
+		getFlexContainerOrContainerOrSubscription().add(extendedCarbonDioxideSensorAnnc);
+	}
+	
+	public ExtendedCarbonDioxideSensorFlexContainerAnnc getExtendedCarbonDioxideSensorAnnc() {
+		this.extendedCarbonDioxideSensorAnnc = (ExtendedCarbonDioxideSensorFlexContainerAnnc) getResourceByName(ExtendedCarbonDioxideSensorFlexContainerAnnc.SHORT_NAME);
+		return extendedCarbonDioxideSensorAnnc;
+	}
+	
+}

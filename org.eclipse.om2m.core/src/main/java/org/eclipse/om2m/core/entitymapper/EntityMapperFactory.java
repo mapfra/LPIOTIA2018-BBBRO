@@ -54,7 +54,7 @@ import org.eclipse.om2m.commons.resource.Container;
 import org.eclipse.om2m.commons.resource.ContentInstance;
 import org.eclipse.om2m.commons.resource.DynamicAuthorizationConsultation;
 import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
-import org.eclipse.om2m.commons.resource.FlexContainerAnnc;
+import org.eclipse.om2m.commons.resource.AbstractFlexContainerAnnc;
 import org.eclipse.om2m.commons.resource.Group;
 import org.eclipse.om2m.commons.resource.Node;
 import org.eclipse.om2m.commons.resource.PollingChannel;
@@ -100,7 +100,7 @@ public class EntityMapperFactory {
 		return new FlexContainerMapper();
 	}
 	/** Get the FlexContainerAnnc mapper */
-	public static EntityMapper<FlexContainerAnncEntity, FlexContainerAnnc> getFlexContainerAnncMapper(){
+	public static EntityMapper<FlexContainerAnncEntity, AbstractFlexContainerAnnc> getFlexContainerAnncMapper(){
 		return new FlexContainerAnncMapper();
 	}
 	
