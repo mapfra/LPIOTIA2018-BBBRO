@@ -140,7 +140,7 @@ html, body {
 	color: #666;
 }
 .user a {
-	color: #ff7c00;
+	color: #005C3E;
 }
 a.logout {
 	background: url('../images/icons.png') no-repeat -7px -26px;
@@ -150,26 +150,26 @@ a.logout {
 	color: #666;
 }
 a.logout:hover {
-	    color: #FF7C00;
+	    color: #005C3E;
     text-decoration: underline;
 }
 
 
 .selectedCam {
-	background-color: #FF7C00 !important;
-    border-color: #FF7C00 !important;
+	background-color: #005C3E !important;
+    border-color: #005C3E !important;
     color: white !important;
 
 	}
 .selectedCam:hover {	
-    background-color: #FF7C00 !important;
-    border-color: #FF7C00 !important;
+    background-color: #005C3E !important;
+    border-color: #005C3E !important;
     color: white !important;
 }
 
 h3 {
 	font-size: 24px; 
-	color: #ff7c00; 
+	color: #005C3E; 
 	border-bottom: 1px solid #cecece;
 	padding-bottom: 15px;
 	margin-bottom: 20px;	
@@ -216,7 +216,7 @@ h3 {
 }
 .loginBox input[type=submit] {
 	float: right;
-    background-color: #ff7c00;
+    background-color: #005C3E;
     padding: 7px 20px;
     border: 0;
     color: #FFF;
@@ -250,7 +250,7 @@ h3 {
 }
 .right_side li {
 	border-bottom: 1px dashed #DDD;
-	color: #ff7c00;
+	color: #005C3E;
 	padding: 10px 0;
 	font-size: 18px;
 	overflow: hidden;
@@ -367,9 +367,9 @@ and (orientation : portrait) {
   margin: 0 0 0 0;
   border: 4px solid #f3f3f3;
   border-radius: 50%;
-  border-top: 4px solid #ff7c00;
-/*   border-left: 4px solid #ff7c00;
-  border-bottom: 4px solid #ff7c00; */
+  border-top: 4px solid #005C3E;
+/*   border-left: 4px solid #005C3E;
+  border-bottom: 4px solid #005C3E; */
   width: 25px;
   height: 25px;
   -webkit-animation: spin 2s linear infinite;
