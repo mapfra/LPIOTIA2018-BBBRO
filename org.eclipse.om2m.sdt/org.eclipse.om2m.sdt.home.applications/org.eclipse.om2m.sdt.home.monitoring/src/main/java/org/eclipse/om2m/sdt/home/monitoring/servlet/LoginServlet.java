@@ -27,7 +27,7 @@ public class LoginServlet extends HttpServlet {
 		
 		SessionManager.Session session = null;
 		if ((session = AuthFillter.validateUserCredentials(request, response)) != null) {	
-			response.sendRedirect("/" + Constants.APPNAME + "/monitor/home?" + SessionManager.SESSION_ID_PARAMETER + "=" + session.getId());
+			response.sendRedirect("/" + Constants.APPNAME + "/webapps/monitor.html?" + SessionManager.SESSION_ID_PARAMETER + "=" + session.getId());
 		} else {
 			response.sendRedirect("/" + Constants.APPNAME + "/webapps/login.html?message=error");
 		}

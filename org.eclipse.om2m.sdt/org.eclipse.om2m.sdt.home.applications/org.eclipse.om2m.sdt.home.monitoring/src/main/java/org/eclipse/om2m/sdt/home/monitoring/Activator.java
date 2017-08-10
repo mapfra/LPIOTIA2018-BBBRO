@@ -1,12 +1,7 @@
 package org.eclipse.om2m.sdt.home.monitoring;
 
-import java.io.IOException;
-import java.net.URL;
 import java.util.Dictionary;
 import java.util.Hashtable;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -17,7 +12,6 @@ import org.eclipse.om2m.sdt.home.monitoring.servlet.HomeServlet;
 import org.eclipse.om2m.sdt.home.monitoring.servlet.InCseContextServlet;
 import org.eclipse.om2m.sdt.home.monitoring.servlet.LoginServlet;
 import org.eclipse.om2m.sdt.home.monitoring.servlet.LogoutServlet;
-import org.eclipse.om2m.sdt.home.monitoring.servlet.MonitorHomeServlet;
 import org.eclipse.om2m.sdt.home.monitoring.util.AeRegistration;
 import org.eclipse.om2m.sdt.home.monitoring.util.Constants;
 import org.eclipse.om2m.sdt.home.monitoring.util.ResourceDiscovery;
@@ -27,7 +21,6 @@ import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.cm.ConfigurationException;
 import org.osgi.service.cm.ManagedService;
-import org.osgi.service.http.HttpContext;
 import org.osgi.service.http.HttpService;
 import org.osgi.util.tracker.ServiceTracker;
 
@@ -70,12 +63,6 @@ public class Activator implements BundleActivator , ManagedService {
 					LOGGER.info("Register test " + uiContext + sep + "Home_Monitoring_Application http context");
 					httpService.registerServlet(uiContext + sep + Constants.APPNAME, 
 							new HomeServlet(context), null, null);
-					httpService.registerServlet(uiContext + sep + Constants.APPNAME + "/monitor/home", 
-							new MonitorHomeServlet(context), null, null);
-//					httpService.registerServlet(uiContext + sep + Constants.APPNAME + "/monitor/control/device", 
-//							new DeviceControlServlet(context), null, null);
-//					httpService.registerServlet(uiContext + sep + Constants.APPNAME + "/monitor/devices", 
-//							new DevicesServlet(context), null, null);
 					httpService.registerServlet(uiContext + sep + Constants.APPNAME + "/in-cse/context", 
 							new InCseContextServlet(), null, null);
 					httpService.registerServlet(uiContext + sep + Constants.APPNAME + "/security/login", 
