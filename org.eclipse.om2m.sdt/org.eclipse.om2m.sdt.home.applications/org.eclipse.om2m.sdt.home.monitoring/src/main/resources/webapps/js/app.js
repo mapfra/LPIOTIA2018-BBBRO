@@ -42,7 +42,10 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 		"personSensor" : ["detPs"],
 		"motionSensor" : ["alarm"],
 		"colour" : ["colour"],
-		"energyConsumption" : ["volte", "currt", "power"]
+		"energyConsumption" : ["volte", "currt", "power"],
+		"lock" : ["dooLk", "opeOy"],
+		"battery" : ["discg", "charg", "level", "capay"],
+		"doorStatus": ["dooSt"]
 	};
 
 	$scope.devices = {};
@@ -106,7 +109,7 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 	};
 
 	$scope.switchFilter = function (module) {
-		if (!((module.name === 'binarySwitch') || (module.name === 'doorLock'))) {
+		if (!((module.name === 'binarySwitch') || (module.name === 'lock'))) {
 			return false;
 		}
 		return true; 
@@ -156,7 +159,8 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 							'Content-Type': 'application/json',
 							'Accept': 'application/json',
 							'X-M2M-Origin': $scope.credentials
-						}
+						}, 
+						deviceRi: deviceRi // add device ri in request
 				};
 
 				$http(getDeviceReq).success(function (response, status, headers, config)  {
@@ -173,6 +177,12 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 					device.name = $scope.getNameFromLabel(labels);
 					device.desc = jsonDevice.cnd;
 					device.isUpdated = false;
+					device.fcntRi = jsonDevice.ri;
+					device.fcntaRi = config.deviceRi;
+					deviceRi = config.deviceRi; // deviceRi is the address of the device in the context of INCSE
+					// so it could be the "true" device ri if the device is hosted by the CSE
+					// or it could be the ri of the FlexContainerAnnc object representing the device
+					// In this latter case, the device is hosted somewhere else.
 
 					for (key in jsonDevice) {
 						// starts with prop
@@ -189,7 +199,7 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 					}
 					
 					// add new device in devices list
-					$scope.devices[jsonDevice.ri] = device;
+					$scope.devices[deviceRi] = device;
 
 
 					// get all the modules for the given device
@@ -282,11 +292,14 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 
 			// create the attributes
 			var dpNames = $scope.datapointsNamePerModule[module.name];
-			dpNames.forEach(
-				function(dpName) {
-					module.datapoints[dpName] = {"name": dpName, "value":root[dpName]};
-				}
-			);
+			if (dpNames) {
+				dpNames.forEach(
+					function(dpName) {
+						module.datapoints[dpName] = {"name": dpName, "value":root[dpName]};
+					}
+				);
+			}
+			
 
 			var propName = $scope.getPropValueModule(moduleName);
 			if (propName) {
@@ -307,6 +320,10 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 			
 			if (module.name === 'binarySwitch') {
 				module.state = (module.datapoints.powSe.value === 'true') ;
+			}
+			
+			if (module.name === 'lock') {
+				module.state = (module.datapoints.dooLk.value === 'true')
 			}
 
 			// add module in device
@@ -394,11 +411,26 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 										console.log('powSe updated!!!!!!!!!!!!!!!!!');
 									}
 									
+									if (moduleRep.dooLk) {
+										console.log('dooLk value:' + moduleRep.dooLk);
+										var datapoints = internalModule.datapoints;
+										var dooLkValue = (moduleRep.dooLk ==='true');
+										datapoints.dooLk.value = dooLkValue;
+										if (internalModule.state != dooLkValue) {
+											internalModule.state = dooLkValue;
+										}
+									}
+									
 									// put background red
-									$scope.devices[moduleRep.pi].isUpdated = true;
+									// here we need to be carefull with device = moduleRep.pi
+									// as we have announced device.
+									device = $scope.getDeviceByRi(moduleRep.pi);
+									if (device) {
+										device.isUpdated=true;
+									}
 									// remove background after 1,5s
 									$interval(function() {
-										$scope.devices[moduleRep.pi].isUpdated = false;
+										device.isUpdated = false;
 									}, 1500,1);
 									
 								}
@@ -418,7 +450,7 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 			console.log("openOnly: " + openOnly);
 			if (switchModule.state || (openOnly == null) || (openOnly === 'false')) {
 				switchModule.newState = switchModule.state;
-				var lk = ! switchModule.state;
+				var lk = switchModule.state;
 				// switch on/off
 				req = {
 						method : 'PUT',
@@ -436,7 +468,13 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 						
 						// config = switchModule
 						config.currentSwitch.hideSpinning = true;
-						config.currentSwitch.state = config.valueToBeSet;
+						if (config.currentSwitch.state !== config.valueToBeSet) {
+							config.currentSwitch.state = config.valueToBeSet;	
+						}
+						
+						var datapoints = config.currentSwitch.datapoints;
+						datapoints.dooLk.value = config.valueToBeSet;
+						console.log("door lock state changed");
 						
 					}).error(function(response, status, headers, config) {
 						console.log("error on lock state change action");
@@ -697,7 +735,28 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 	}
 	
 	$scope.getModuleByRi = function(moduleResourceId, deviceResourceId) {
-		return $scope.devices[deviceResourceId].modules[moduleResourceId];
+		device = $scope.getDeviceByRi(deviceResourceId);
+		module = null;
+		if (device) {
+			module = device.modules[moduleResourceId]
+		}
+		return module;
+	}
+	
+	$scope.getDeviceByRi = function (deviceResourceId) {
+		device =  $scope.devices[deviceResourceId];
+		if (!device) {
+			// try to find device by trueRi
+			for(dri in $scope.devices) {
+				currentDevice = $scope.devices[dri];
+				if (currentDevice.fcntRi === deviceResourceId) {
+					device = currentDevice;
+					break;
+				}
+			}
+		}
+		
+		return device;
 	}
 	
 	var init = function () {
