@@ -211,24 +211,6 @@ public class ObjectFactory {
 		return new DynamicAuthorizationConsultation();
 	}
 	
-//	/**
-//	 * Create an instance of {@link FlexContainer}
-//	 * 
-//	 */
-//	private FlexContainer createFlexContainer(String longName, String shortName) {
-//		FlexContainer fc = new FlexContainer();
-//		fc.setLongName(longName);
-//		fc.setShortName(shortName);
-//		return fc;
-//	}
-	
-//	public FlexContainer createFlexContainer() {
-//		return new FlexContainer();
-//	}
-	
-//	public FlexContainer createmyDef2() {
-//		return createFlexContainer("myDef2", "myDef2");
-//	}
 	
 	/**
 	 * Create an instance of {@link AbstractFlexContainerAnnc}
@@ -1427,17 +1409,9 @@ public class ObjectFactory {
 	}
 	
 	
-//	@XmlElementDecl(namespace = "http://www.onem2m.org/xml/protocols", name = "myDef2"/*, scope = FlexContainer.class*/)
-//	public JAXBElement<FlexContainer> createmyDef2(FlexContainer value) {
-//		return new JAXBElement<FlexContainer>(_MyDef2_QNAME, FlexContainer.class,
-//				null, value);
-//	}
-	
-//	@XmlElementDecl(namespace = "", name = "fcnt"/*, scope = FlexContainer.class*/)
-//	public JAXBElement<FlexContainer> createFlexContainer(FlexContainer value) {
-//		return new JAXBElement<FlexContainer>(_FlexContainer_QNAME, FlexContainer.class,
-//				null, value);
-//	}
+	public FlexContainer createFcnt() {
+		return new FlexContainer();
+	}
 
 
 }
