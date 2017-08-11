@@ -197,10 +197,15 @@
             {
               "java-attribute": "listOfUri",
               "name":"uril",
-              "namespace": "http://www.onem2m.org/xml/protocols"
+              "namespace":"http://www.onem2m.org/xml/protocols"
             }
-          ]
+           ]
         }
+      },
+      {
+        "name": "ChildResourceRef",
+        "java-attributes": {
+         }
       }
     ]
   }

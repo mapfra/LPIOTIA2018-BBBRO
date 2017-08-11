@@ -26,6 +26,7 @@
 
 package org.eclipse.om2m.commons.resource;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.JAXBElement;
@@ -974,9 +975,7 @@ public class ObjectFactory {
 		return new MetaInformation.EventCategory();
 	}
 	
-	public URIList createURIList(){
-		return new URIList();
-	}
+	
 	
 	/**
 	 * Create an instance of {@link JAXBElement }{@code <}{@link AttributeList }
@@ -994,11 +993,11 @@ public class ObjectFactory {
 	 * {@link String }{@code >}{@code >}
 	 * 
 	 */
-	@XmlElementDecl(namespace = "http://www.onem2m.org/xml/protocols", name = "URIlist")
-	public JAXBElement<List<String>> createURIlist(List<String> value) {
-		return new JAXBElement<List<String>>(_URIlist_QNAME,
-				((Class) List.class), null, ((List<String>) value));
-	}
+//	@XmlElementDecl(namespace = "http://www.onem2m.org/xml/protocols", name = "URIlist")
+//	public JAXBElement<List<String>> createURIlist(List<String> value) {
+//		return new JAXBElement<List<String>>(_URIlist_QNAME,
+//				((Class) List.class), null, ((List<String>) value));
+//	}
 
 	/**
 	 * Create an instance of {@link JAXBElement }{@code <}
@@ -1411,6 +1410,10 @@ public class ObjectFactory {
 	
 	public FlexContainer createFcnt() {
 		return new FlexContainer();
+	}
+	
+	public List<String> createuril() {
+		return new ArrayList<String>();
 	}
 
 

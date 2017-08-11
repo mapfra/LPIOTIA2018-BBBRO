@@ -14,3 +14,4 @@ Import-Package: org.apache.commons.logging,
  org.osgi.util.tracker
 Bundle-ClassPath: .,
  eclipselink.jar
+Require-Bundle: org.junit

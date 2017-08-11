@@ -147,8 +147,13 @@ public class Mapper implements DataMapperService {
 		try {
 			Unmarshaller unmarshaller = context.createUnmarshaller();
 			unmarshaller.setProperty(UnmarshallerProperties.MEDIA_TYPE, mediaType);
-			unmarshaller.setProperty(UnmarshallerProperties.JSON_INCLUDE_ROOT, true);
-			unmarshaller.setProperty(UnmarshallerProperties.JSON_WRAPPER_AS_ARRAY_NAME , true);
+			if (representation.contains("m2m:uril")) {
+				unmarshaller.setProperty(UnmarshallerProperties.JSON_INCLUDE_ROOT, true);
+				unmarshaller.setProperty(UnmarshallerProperties.JSON_WRAPPER_AS_ARRAY_NAME , true);
+			} else {
+				unmarshaller.setProperty(UnmarshallerProperties.JSON_INCLUDE_ROOT, true);
+				unmarshaller.setProperty(UnmarshallerProperties.JSON_WRAPPER_AS_ARRAY_NAME , false);
+			}
 			unmarshaller.setProperty(UnmarshallerProperties.JSON_VALUE_WRAPPER , "val");
 			Map<String, String> namespaces = new HashMap<String, String>(); 
 			namespaces.put("http://www.onem2m.org/xml/protocols/homedomain", "hd"); 

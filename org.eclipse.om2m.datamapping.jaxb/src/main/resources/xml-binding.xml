@@ -126,9 +126,15 @@
 		<!-- Other resources -->
 
         <java-type name="URIList">
-       		<!-- <xml-root-element name="uril" /> -->
+       		<xml-root-element name="uril" /> 
        		<java-attributes>
-       			<xml-value java-attribute="listOfUri" name="uril" xml-list="true"/>
+       			<xml-value java-attribute="listOfUri" xml-list="true"/> 
+       		</java-attributes>
+        </java-type>
+        
+         <java-type name="ChildResourceRef">
+       		<java-attributes>
+       			<xml-value java-attribute="value"  />
        		</java-attributes>
         </java-type>
 
