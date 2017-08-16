@@ -101,9 +101,9 @@
 
 		<java-type name="Group">
 			<java-attributes>
-				<xml-element java-attribute="memberIDs" name="mid" />
+				<xml-element java-attribute="memberIDs" name="mid" xml-list="true"/>
 				<xml-element java-attribute="membersAccessControlPolicyIDs"
-					name="macp" />
+					name="macp" xml-list="true"/>
 			</java-attributes>
 		</java-type>
 
