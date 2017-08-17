@@ -99,7 +99,7 @@ function get(targetId){
                             for(var index in resource[attribute]['acr']){
                                 var acr = resource[attribute]['acr'][index] ;
                                 var acor = '<table class="bordered"><tbody>'
-                                var acors = acr['acor'].split(" ");
+                                var acors = acr['acor'];
                                 for (var indexJ in acors){
                                     acor += "<tr><td>"+ acors[indexJ] +"</td></tr>";
                                 }
@@ -113,6 +113,14 @@ function get(targetId){
                             var poas = resource[attribute];
                             for (var index in poas){
                                 table += '<tr><td>'+ poas[index] +'</td></tr>' 
+                            }
+                            table += "</tbody></table>";
+                            value = table ;
+                        } else if (attribute == "srt") {
+                        	var table = '<table class="bordered"><thead><th>Supported resource types</th></thead><tbody>' ;
+                            var srts = resource[attribute];
+                            for (var index in srts){
+                                table += '<tr><td>'+ srts[index] +'</td></tr>' 
                             }
                             table += "</tbody></table>";
                             value = table ;
