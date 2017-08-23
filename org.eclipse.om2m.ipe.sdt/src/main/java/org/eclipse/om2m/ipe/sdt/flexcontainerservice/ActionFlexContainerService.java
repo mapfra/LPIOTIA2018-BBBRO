@@ -7,6 +7,7 @@
  *******************************************************************************/
 package org.eclipse.om2m.ipe.sdt.flexcontainerservice;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,6 +58,13 @@ public class ActionFlexContainerService implements FlexContainerService {
 	public String getCustomAttributeValue(String customAttributeName) throws Om2mException {
 		// no value
 		return null;
+	}
+
+	@Override
+	public Map<String, String> getCustomAttributeValues(List<String> customAttributeNames) 
+			throws Om2mException {
+		// no value
+		return Collections.emptyMap();
 	}
 
 	@Override
@@ -137,4 +145,5 @@ public class ActionFlexContainerService implements FlexContainerService {
 		}
 		return null;
 	}
+
 }

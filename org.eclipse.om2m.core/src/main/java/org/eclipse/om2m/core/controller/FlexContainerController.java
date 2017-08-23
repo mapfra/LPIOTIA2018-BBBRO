@@ -269,8 +269,6 @@ public class FlexContainerController extends Controller {
 		}
 
 		// custom attributes
-		LOGGER.debug("nb of customAttributes: "
-				+ (flexContainer.getCustomAttributes() != null ? flexContainer.getCustomAttributes().size() : "0"));
 		for (CustomAttribute ca : flexContainer.getCustomAttributes()) {
 
 			flexContainerEntity.createOrUpdateCustomAttribute(ca.getCustomAttributeName(),

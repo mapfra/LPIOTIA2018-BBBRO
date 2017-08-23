@@ -10,6 +10,7 @@ package org.eclipse.om2m.ipe.sdt;
 import java.net.URI;
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.eclipse.om2m.commons.resource.CustomAttribute;
@@ -56,4 +57,37 @@ public class SDTUtil {
 		}
 	}
 	
+	public static String getStringValue(String type, Object val) throws Exception {
+		if (val == null) {
+			return null;
+		}
+		switch (type) {
+		case "xs:string":
+			return val.toString();//"\"" + val.toString() + "\"";
+		case "xs:integer": 
+		case "xs:float":
+		case "xs:boolean":
+		case "xs:byte":
+		case "xs:uri":
+			return val.toString();
+		case "xs:datetime": return dateTimeFormat.format((Date)val);
+		case "xs:time": return timeFormat.format((Date)val);
+		case "xs:date": return dateFormat.format((Date)val);
+		case "xs:enum":
+			String ret = "";
+			boolean first = true;
+			for (Object s : (List<?>)val) {
+				if (first) ret += ",";
+				else first = false;
+				ret += s.toString();
+			}
+			return ret;
+		case "xs:blob": return null;// TODO serialize byte array
+		default:
+			if (type.startsWith("hd:")) 
+				return val.toString();
+			return null;
+		}
+	}
+
 }

@@ -8,6 +8,7 @@
 package org.eclipse.om2m.flexcontainer.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.om2m.commons.exceptions.Om2mException;
 import org.eclipse.om2m.commons.resource.CustomAttribute;
@@ -23,6 +24,15 @@ public interface FlexContainerService {
 	 * @return the most updated value of the custom attribute
 	 */
 	public String getCustomAttributeValue(String customAttributeName) throws Om2mException;
+
+	/**
+	 * Get the most updated values of a list of custom attributes
+	 * 
+	 * @param customAttributeNames
+	 *            name of the custom attributes
+	 * @return the most updated values of the custom attributes
+	 */
+	public Map<String, String> getCustomAttributeValues(List<String> customAttributeNames) throws Om2mException;
 
 	/**
 	 * Set a new value for a customAttribute

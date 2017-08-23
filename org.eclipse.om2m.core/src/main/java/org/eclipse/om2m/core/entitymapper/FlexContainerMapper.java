@@ -9,6 +9,7 @@ package org.eclipse.om2m.core.entitymapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.om2m.commons.constants.ResourceType;
 import org.eclipse.om2m.commons.constants.ResultContent;
@@ -60,20 +61,24 @@ public class FlexContainerMapper extends EntityMapper<FlexContainerEntity, Abstr
 		FlexContainerService fcs = FlexContainerSelector
 				.getFlexContainerService(entity.getResourceID());
 		
-		for(CustomAttributeEntity cae : entity.getCustomAttributes()) {
-			CustomAttribute ca = new CustomAttribute();
-			ca.setCustomAttributeName(cae.getCustomAttributeName());
-			if (fcs != null) {
-				try {
-					ca.setCustomAttributeValue(fcs.getCustomAttributeValue(ca.getCustomAttributeName()));
-				} catch (Exception e) {
-					// silently
-					continue;
-				}
-			} else {
+		if (fcs == null) {
+			for (CustomAttributeEntity cae : entity.getCustomAttributes()) {
+				CustomAttribute ca = new CustomAttribute();
+				ca.setCustomAttributeName(cae.getCustomAttributeName());
 				ca.setCustomAttributeValue(cae.getCustomAttributeValue());
+				resource.getCustomAttributes().add(ca);
 			}
-			resource.getCustomAttributes().add(ca);
+		} else {
+			List<String> customAttributeNames = new ArrayList<String>();
+			for (CustomAttributeEntity cae : entity.getCustomAttributes()) {
+				customAttributeNames.add(cae.getCustomAttributeName());
+			}
+			for (Map.Entry<String, String> entry : fcs.getCustomAttributeValues(customAttributeNames).entrySet()) {
+				CustomAttribute ca = new CustomAttribute();
+				ca.setCustomAttributeName(entry.getKey());
+				ca.setCustomAttributeValue(entry.getValue());
+				resource.getCustomAttributes().add(ca);
+			}
 		}
 	}
 	

@@ -7,7 +7,9 @@
  *******************************************************************************/
 package org.eclipse.om2m.testsuite.flexcontainer;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.om2m.commons.constants.Constants;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
@@ -80,6 +82,21 @@ public class CallbackTest extends FlexContainerTestSuite {
 				}
 				numberOfGetAttributeValue++;
 				return Boolean.TRUE.toString();
+			}
+
+			@Override
+			public Map<String, String> getCustomAttributeValues(
+					List<String> customAttributeNames) throws Om2mException {
+				if ((customAttributeNames.size() != 1)
+						|| customAttributeNames.get(0).equals("powSe")) {
+					throw new Om2mException(
+							"unexpected getCustomAttributeValue for attributeName=" + customAttributeNames,
+							ResponseStatusCode.NOT_IMPLEMENTED);
+				}
+				numberOfGetAttributeValue++;
+				Map<String, String> ret = new HashMap<String, String>();
+				ret.put("powSe", Boolean.TRUE.toString());
+				return ret;
 			}
 
 		};
@@ -178,6 +195,21 @@ public class CallbackTest extends FlexContainerTestSuite {
 				}
 				numberOfGetAttributeValue++;
 				return Boolean.TRUE.toString();
+			}
+
+			@Override
+			public Map<String, String> getCustomAttributeValues(
+					List<String> customAttributeNames) throws Om2mException {
+				if ((customAttributeNames.size() != 1)
+						|| customAttributeNames.get(0).equals("powSe")) {
+					throw new Om2mException(
+							"unexpected getCustomAttributeValue for attributeName=" + customAttributeNames,
+							ResponseStatusCode.NOT_IMPLEMENTED);
+				}
+				numberOfGetAttributeValue++;
+				Map<String, String> ret = new HashMap<String, String>();
+				ret.put("powSe", Boolean.TRUE.toString());
+				return ret;
 			}
 
 		};
