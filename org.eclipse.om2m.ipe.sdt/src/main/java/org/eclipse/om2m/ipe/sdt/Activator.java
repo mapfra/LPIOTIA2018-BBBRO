@@ -34,7 +34,7 @@ public class Activator implements EventHandler {
 	private static final String CSE_NAME_TO_BE_ANNOUNCED = "cse.name.to.be.announced";
 	private static final String ANNOUNCEMENT_ENABLED = "announcement.enabled";
 	private static final String IPE_UNDER_ANNOUNCED_RESOURCE = "ipe.under.announced.resource";
-	private static final String PROP_PROTOCOL = "protl";//"propProtocol";
+	private static final String PROP_PROTOCOL = "proPl";//"propProtocol";
 	private static final String CLOUD_PROTOCOL = "Cloud.";
 
 	private String cseIdToBeAnnounced;
