@@ -11,7 +11,6 @@ import java.util.Dictionary;
 import java.util.Enumeration;
 
 import org.eclipse.om2m.sdt.Property;
-import org.eclipse.om2m.sdt.exceptions.PropertyException;
 import org.eclipse.om2m.sdt.home.devices.GenericDevice;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.cm.ConfigurationException;
@@ -26,11 +25,8 @@ public class PersistedDevice implements ManagedService {
 	
 	PersistedDevice(GenericDevice device) {
 		this.device = device;
-		try {
-			logger = new Logger(device.getProtocol());
-		} catch (PropertyException e) {
-			logger = new Logger("Driver");
-		}
+		String protocol = device.getProtocol();
+		logger = new Logger((protocol == null) ? "Driver" : protocol);
 	}
 	
 	void setRegistration(ServiceRegistration<?> registration) {

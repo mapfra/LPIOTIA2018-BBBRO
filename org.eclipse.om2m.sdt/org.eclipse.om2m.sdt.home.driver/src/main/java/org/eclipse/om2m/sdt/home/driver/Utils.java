@@ -17,7 +17,6 @@ import org.eclipse.om2m.sdt.Device;
 import org.eclipse.om2m.sdt.Element;
 import org.eclipse.om2m.sdt.Module;
 import org.eclipse.om2m.sdt.Property;
-import org.eclipse.om2m.sdt.exceptions.PropertyException;
 import org.eclipse.om2m.sdt.home.devices.GenericDevice;
 import org.eclipse.om2m.sdt.home.modules.GenericSensor;
 import org.osgi.framework.BundleContext;
@@ -52,9 +51,8 @@ public class Utils {
 
 	static public List<ServiceRegistration> register(GenericDevice device, 
 			BundleContext context) {
-		String protocol = null;
-		try { protocol = device.getProtocol(); }
-		catch(PropertyException e) {
+		String protocol = device.getProtocol();
+		if (protocol == null) {
 			protocol = "Unknown";
 		}
 		Logger log = new Logger(protocol);

@@ -126,10 +126,8 @@ public class GenericDevice extends Device {
 		deviceModelName.setValue(s);
 	}
 	
-	public String getDeviceName() throws PropertyException {
-		if (deviceName == null)
-			throw new PropertyException("Not implemented");
-		return deviceName.getValue();
+	public String getDeviceName() {
+		return (deviceName == null) ? null : deviceName.getValue();
 	}
 	
 	public void setDeviceName(String s) {
@@ -143,10 +141,8 @@ public class GenericDevice extends Device {
 		deviceName.setValue(s);
 	}
 	
-	public String getDeviceSubModelName() throws PropertyException {
-		if (deviceSubModelName == null)
-			throw new PropertyException("Not implemented");
-		return deviceSubModelName.getValue();
+	public String getDeviceSubModelName() {
+		return (deviceSubModelName == null) ? null : deviceSubModelName.getValue();
 	}
 	
 	public void setDeviceSubModelName(String s) {
@@ -160,10 +156,8 @@ public class GenericDevice extends Device {
 		deviceSubModelName.setValue(s);
 	}
 	
-	public String getDeviceAliasName() throws PropertyException {
-		if (deviceAliasName == null)
-			throw new PropertyException("Not implemented");
-		return deviceAliasName.getValue();
+	public String getDeviceAliasName() {
+		return (deviceAliasName == null) ? null : deviceAliasName.getValue();
 	}
 	
 	public void setDeviceAliasName(String s) {
@@ -177,10 +171,8 @@ public class GenericDevice extends Device {
 		deviceAliasName.setValue(s);
 	}
 	
-	public String getDeviceFirmwareVersion() throws PropertyException {
-		if (deviceFirmwareVersion == null)
-			throw new PropertyException("Not implemented");
-		return deviceFirmwareVersion.getValue();
+	public String getDeviceFirmwareVersion() {
+		return (deviceFirmwareVersion == null) ? null : deviceFirmwareVersion.getValue();
 	}
 	
 	public void setDeviceFirmwareVersion(String s) {
@@ -194,10 +186,8 @@ public class GenericDevice extends Device {
 		deviceFirmwareVersion.setValue(s);
 	}
 	
-	public String getHardwareVersion() throws PropertyException {
-		if (hardwareVersion == null)
-			throw new PropertyException("Not implemented");
-		return hardwareVersion.getValue();
+	public String getHardwareVersion() {
+		return (hardwareVersion == null) ? null : hardwareVersion.getValue();
 	}
 	
 	public void setHardwareVersion(String s) {
@@ -211,10 +201,8 @@ public class GenericDevice extends Device {
 		hardwareVersion.setValue(s);
 	}
 	
-	public String getOsVersion() throws PropertyException {
-		if (osVersion == null)
-			throw new PropertyException("Not implemented");
-		return osVersion.getValue();
+	public String getOsVersion() {
+		return (osVersion == null) ? null : osVersion.getValue();
 	}
 	
 	public void setOsVersion(String s) {
@@ -228,10 +216,8 @@ public class GenericDevice extends Device {
 		osVersion.setValue(s);
 	}
 	
-	public String getProtocol() throws PropertyException {
-		if (protocol == null)
-			throw new PropertyException("Not implemented");
-		return protocol.getValue();
+	public String getProtocol() {
+		return (protocol == null) ? null : protocol.getValue();
 	}
 	
 	public void setProtocol(String s) {
@@ -245,10 +231,8 @@ public class GenericDevice extends Device {
 		protocol.setValue(s);
 	}
 	
-	public String getCountry() throws PropertyException {
-		if (country == null)
-			throw new PropertyException("Not implemented");
-		return country.getValue();
+	public String getCountry() {
+		return (country == null) ? null : country.getValue();
 	}
 	
 	public void setCountry(String s) {
@@ -262,10 +246,8 @@ public class GenericDevice extends Device {
 		country.setValue(s);
 	}
 	
-	public String getLocation() throws PropertyException {
-		if (location == null)
-			throw new PropertyException("Not implemented");
-		return location.getValue();
+	public String getLocation() {
+		return (location == null) ? null : location.getValue();
 	}
 	
 	public void setLocation(String s) {
@@ -281,7 +263,7 @@ public class GenericDevice extends Device {
 
 	public Date getSystemTime() throws PropertyException {
 		if (systemTime == null)
-			throw new PropertyException("Not implemented");
+			return null;
 		try {
 			String s = systemTime.getValue();
 			return (s == null) ? null : new Date(Long.parseLong(s));
@@ -309,7 +291,7 @@ public class GenericDevice extends Device {
 	
 	public URL getManufacturerDetailsLink() throws PropertyException {
 		if (manufacturerDetailsLink == null)
-			throw new PropertyException("Not implemented");
+			return null;
 		try {
 			String s = manufacturerDetailsLink.getValue();
 			return (s == null) ? null : new URL(s);
@@ -337,7 +319,7 @@ public class GenericDevice extends Device {
 	
 	public Date getDateOfManufacture() throws PropertyException {
 		if (dateOfManufacture == null)
-			throw new PropertyException("Not implemented");
+			return null;
 		try {
 			String s = dateOfManufacture.getValue();
 			return (s == null) ? null : new Date(Long.parseLong(s));
@@ -365,7 +347,7 @@ public class GenericDevice extends Device {
 	
 	public URL getSupportURL() throws PropertyException {
 		if (supportURL == null)
-			throw new PropertyException("Not implemented");
+			return null;
 		try {
 			String s = supportURL.getValue();
 			return (s == null) ? null : new URL(s);
@@ -393,7 +375,7 @@ public class GenericDevice extends Device {
 	
 	public URL getPresentationURL() throws PropertyException {
 		if (presentationURL == null)
-			throw new PropertyException("Not implemented");
+			return null;
 		try {
 			String s = presentationURL.getValue();
 			return (s == null) ? null : new URL(s);
