@@ -27,7 +27,7 @@ public enum DatapointType implements Identifiers {
 	channelId("channelId", "chaId", DataType.Integer),
 	charging("charging", "charg", DataType.Boolean),
 	code("code", "code", DataType.Integer),
-	colourSat("colourSat", "colSt",  DataType.Integer),
+	colourSat("colourSat", "colSn",  DataType.Integer),
 	current("current", "currt", DataType.Float),
 	currentDate("currentDate", "curDe", DataType.Date),
 	currentTemperature("currentTemperature", "curT0", DataType.Float),
