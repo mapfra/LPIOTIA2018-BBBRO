@@ -44,7 +44,6 @@ public class AuthFillter {
 		}
 		String result = ResourceDiscovery.validateUserCredentials(name, password);
 		if (result != null) {
-			
 			// create new session
 			return SessionManager.getInstance().createNewSession(name, password);
 		}

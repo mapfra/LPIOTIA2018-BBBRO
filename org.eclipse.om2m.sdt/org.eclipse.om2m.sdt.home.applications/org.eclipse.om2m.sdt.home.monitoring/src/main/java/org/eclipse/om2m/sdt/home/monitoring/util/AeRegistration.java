@@ -7,6 +7,12 @@
  *******************************************************************************/
 package org.eclipse.om2m.sdt.home.monitoring.util;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,6 +34,8 @@ import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.resource.AE;
 import org.eclipse.om2m.commons.resource.AccessControlPolicy;
 import org.eclipse.om2m.commons.resource.AccessControlRule;
+import org.eclipse.om2m.commons.resource.Container;
+import org.eclipse.om2m.commons.resource.ContentInstance;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
 import org.eclipse.om2m.commons.resource.SetOfAcrs;
@@ -44,6 +52,7 @@ public class AeRegistration implements InterworkingService {
 	private static Log LOGGER = LogFactory.getLog(AeRegistration.class);
 
 	private static final String HOME_MONITORING_NAME = "SDT_Home_Monitoring_Application";
+	private static final String FRIENDLY_HOME_MONITORING_NAME = "Home Monitoring Application";
 	private static final String ACP_HOME_MONITORING_NAME = HOME_MONITORING_NAME + "_ACP";
 	private static final String HOME_MONITORING_RESOURCE_ID = "ResourceID/SDT_Home_Monitoring_Application";
 	private static final String RESOURCE_TYPE = "ResourceType/Application";
@@ -108,7 +117,7 @@ public class AeRegistration implements InterworkingService {
 
 		AE ae = new AE();
 		ae.setName(HOME_MONITORING_NAME);
-		ae.setAppName(HOME_MONITORING_NAME);
+		ae.setAppName(FRIENDLY_HOME_MONITORING_NAME);
 		ae.setAppID(HOME_MONITORING_NAME);
 		ae.setRequestReachability(Boolean.TRUE);
 		ae.getLabels().add(HOME_MONITORING_RESOURCE_ID);
@@ -139,9 +148,28 @@ public class AeRegistration implements InterworkingService {
 			// ko
 			return false;
 		}
+		
+		// create a Container to store the icon
+		Container iconContainer = createContainer(registeredApplication.getResourceID(), "ICON");
+		if (iconContainer != null) {
+			String logoUrlSuffix = "/Home_Monitoring_Application/webapps/images/logo.png";
+			createContentInstance(iconContainer, logoUrlSuffix);
+		}
+		
+		Container presentationUrlContainer = createContainer(registeredApplication.getResourceID(), "PRESENTATION_URL");
+		if (presentationUrlContainer != null) {
+			
+			String presentationUrlSuffix = "/Home_Monitoring_Application/webapps/login.html";
+			createContentInstance(presentationUrlContainer, presentationUrlSuffix);
+		}
+		
 		// ok
 		return true;
 	}
+
+	
+
+	
 
 	public void deleteAe() {
 		deleteAllSubscriptions();
@@ -216,6 +244,48 @@ public class AeRegistration implements InterworkingService {
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 		request.setTargetId(registeredAcp.getResourceID());
 		cseService.doRequest(request);
+	}
+	
+	
+	private Container createContainer(String resourceID, String name) {
+		Container container = new Container();
+		container.setName(name);
+
+		RequestPrimitive request = new RequestPrimitive();
+		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
+		request.setTargetId(resourceID);
+		request.setOperation(Operation.CREATE);
+		request.setResourceType(ResourceType.CONTAINER);
+		request.setReturnContentType(MimeMediaType.OBJ);
+		request.setRequestContentType(MimeMediaType.OBJ);
+		request.setContent(container);
+		
+		
+		ResponsePrimitive response = cseService.doRequest(request );
+		if (!response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {
+			return null;
+		} else {
+			return (Container) response.getContent();
+		}
+	}
+	
+	private void createContentInstance(Container iconContainer, String value) {
+		ContentInstance contentInstance = new ContentInstance();
+		contentInstance.setContentInfo("paint");
+		contentInstance.setContent(value);
+
+		
+		RequestPrimitive request = new RequestPrimitive();
+		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
+		request.setTargetId(iconContainer.getResourceID());
+		request.setOperation(Operation.CREATE);
+		request.setResourceType(ResourceType.CONTENT_INSTANCE);
+		request.setReturnContentType(MimeMediaType.OBJ);
+		request.setRequestContentType(MimeMediaType.OBJ);
+		request.setContent(contentInstance);
+		
+		
+		ResponsePrimitive response = cseService.doRequest(request );
 	}
 
 	@Override
