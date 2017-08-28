@@ -32,7 +32,6 @@ import org.eclipse.om2m.sdt.Identifiers;
 import org.eclipse.om2m.sdt.Module;
 import org.eclipse.om2m.sdt.Property;
 import org.eclipse.om2m.sdt.args.Command;
-import org.eclipse.om2m.sdt.args.ValuedArg;
 import org.eclipse.om2m.sdt.datapoints.ArrayDataPoint;
 import org.eclipse.om2m.sdt.datapoints.BooleanDataPoint;
 import org.eclipse.om2m.sdt.datapoints.ByteDataPoint;
@@ -50,8 +49,6 @@ import org.eclipse.om2m.sdt.home.modules.GenericSensor;
 import org.eclipse.om2m.sdt.home.types.DatapointType;
 import org.eclipse.om2m.sdt.home.types.PropertyType;
 import org.eclipse.om2m.sdt.home.utils.api.ISDTDiscovery;
-import org.eclipse.om2m.sdt.types.DataType;
-import org.eclipse.om2m.sdt.types.SimpleType;
 
 public class SDTDiscovery implements ISDTDiscovery {
 
@@ -93,13 +90,11 @@ public class SDTDiscovery implements ISDTDiscovery {
 		}
 		
 		public String getLongName() {
-			// TODO update flexA case
-			return (flex== null) ? flexA.getName() : flex.getLongName();
+			return (flex == null) ? flexA.getName() : flex.getLongName();
 		}
 		
 		public String getShortName() {
-			// TODO update flexA case
-			return (flex== null) ? flexA.getName() : flex.getShortName();
+			return (flex == null) ? flexA.getName() : flex.getShortName();
 		}
 
 	}
@@ -279,7 +274,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 				 + "/" + attr.getCustomAttributeValue());
 			PropertyType propType = PropertyType.fromShortName(attr.getCustomAttributeName());
 			if (propType != null) {
-				Property prop = new Property(propType, attr.getCustomAttributeValue());
+//				Property prop = new Property(propType, attr.getCustomAttributeValue());
 //				device.addProperty(prop);
 				device.addProperty(propType, attr.getCustomAttributeValue());
 			}
