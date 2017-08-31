@@ -8,6 +8,7 @@
 package org.eclipse.om2m.sdt.home.lifx.impl.lan;
 
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -57,10 +58,12 @@ public class Server implements Runnable {
 	
 	public void init(InetAddress pLocalInetAddress) {
 		try {
+			toBeStopped = false;
 			localInetAddress = pLocalInetAddress;
 			datagramSocket = new DatagramSocket(56700, localInetAddress);
 			datagramSocket.setReuseAddress(true);
-			
+			datagramSocket.setSoTimeout(1000); // 1 s timeout on the datagram socket
+
 		} catch (Exception e) {
 			e.printStackTrace();
 
@@ -75,7 +78,7 @@ public class Server implements Runnable {
 	}
 
 	public void stopServer() {
-		if (toBeStopped != false) {
+		if (toBeStopped == false) {
 			toBeStopped = true;
 			datagramSocket.disconnect();
 			datagramSocket.close();
@@ -84,6 +87,7 @@ public class Server implements Runnable {
 				serverThread.join();
 			} catch (InterruptedException e) {
 			}
+			Logger.getInstance().info(Server.class, "DatagramSocket closed");
 		}
 		
 		
@@ -102,12 +106,13 @@ public class Server implements Runnable {
 				Thread t = new Thread(rph);
 				t.start();
 				
+			} catch (SocketTimeoutException e) {
+				// ignore
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-				
-		}
 
+		}
 	}
 
 	protected void notify(LIFXGlobalFrame globalFrame) {
