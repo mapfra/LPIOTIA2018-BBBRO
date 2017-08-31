@@ -221,15 +221,9 @@ public class Activator implements BundleActivator, ManagedService, LIFXDiscovere
 				deviceToBeRemoved = registeredSDTDevices.remove(lifxDevice.getId());
 			}
 			if (deviceToBeRemoved != null) {
-				for (String moduleName : deviceToBeRemoved.getModuleNames()) {
-					domain.removeModule(moduleName);
-				}
-
 				domain.removeDevice(deviceToBeRemoved.getId());
 			}
-
 		}
-
 	}
 
 	private void startMode() throws UnknownHostException {

@@ -101,10 +101,6 @@ public class SmarterCoffeeMachine extends CoffeeMachine{
 		for (ServiceRegistration reg : registrations) {
 			reg.unregister();
 		}
-		for (String moduleName : getModuleNames()) {
-			// remove module from domain
-			domain.removeModule(moduleName);
-		}
 		domain.removeDevice(getName());
 	}
 	

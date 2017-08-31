@@ -126,9 +126,6 @@ public class SDTWelcomeCameraDevice extends Camera {
 			}
 		}
 		// remove modules and device object from Domain
-		for(String moduleName : getModuleNames()) {
-			Activator.NETATMO_DOMAIN.removeModule(moduleName);
-		}
 		Activator.NETATMO_DOMAIN.removeDevice(getName());
 	}
 

@@ -151,9 +151,6 @@ public class Activator implements BundleActivator {
 			for (ServiceRegistration reg : registrations.remove(device.getId())) {
 				reg.unregister();
 			}
-			for (String moduleName : device.getModuleNames()) {
-				DOMAIN.removeModule(moduleName);
-			}
 			DOMAIN.removeDevice(device.getName());
 		} catch (Exception e) {
 			logger.error("Error uninstalling remote device: " + uri, e);

@@ -143,9 +143,6 @@ public class SDTWeatherStation extends WeatherStation {
 		}
 		
 		// remove all modules & device object from domain
-		for(String moduleName : getModuleNames()) {
-			Activator.NETATMO_DOMAIN.removeModule(moduleName);
-		}
 		Activator.NETATMO_DOMAIN.removeDevice(getName());
 	}
 

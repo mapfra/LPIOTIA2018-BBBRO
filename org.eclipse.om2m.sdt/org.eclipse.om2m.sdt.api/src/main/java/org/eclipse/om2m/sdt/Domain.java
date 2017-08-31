@@ -75,7 +75,12 @@ public class Domain extends Element {
 	}
 
 	public void removeDevice(final String name) {
-		this.devices.remove(name);
+		Device dev = this.devices.remove(name);
+		if (dev != null) {
+			for (Module mod : dev.getModules()) {
+				removeModule(mod.getName());
+			}
+		}
 	}
 
 	public Collection<String> getImportNames() {
