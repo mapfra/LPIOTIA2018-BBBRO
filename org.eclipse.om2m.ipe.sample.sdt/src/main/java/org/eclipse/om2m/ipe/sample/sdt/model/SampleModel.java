@@ -26,6 +26,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
+import org.eclipse.om2m.sdt.exceptions.ModuleException;
 import org.eclipse.om2m.sdt.home.devices.Light;
 import org.eclipse.om2m.sdt.home.modules.Colour;
 
@@ -47,7 +48,11 @@ public class SampleModel {
 	 */
 	public static void setLampState(final String lampId, boolean value) throws DataPointException, AccessException {
 		Light light = getLamp(lampId);
-		light.getBinarySwitch().setPowerState(value);
+		try {
+			light.getBinarySwitch().setPowerState(value);
+		} catch (ModuleException e) {
+			throw new DataPointException(e);
+		}
 	}
 	
 	/**
@@ -58,7 +63,11 @@ public class SampleModel {
 	 * @throws DataPointException 
 	 */
 	public static boolean getLampValue(String lampId) throws DataPointException, AccessException {
-		return getLamp(lampId).getBinarySwitch().getPowerState();
+		try {
+			return getLamp(lampId).getBinarySwitch().getPowerState();
+		} catch (ModuleException e) {
+			throw new DataPointException(e);
+		}
 	}
 
 	public static void setColor(int red, int green, int blue) throws DataPointException, AccessException {

@@ -9,6 +9,7 @@ package org.eclipse.om2m.sdt.home.devices;
 
 import org.eclipse.om2m.sdt.Domain;
 import org.eclipse.om2m.sdt.Module;
+import org.eclipse.om2m.sdt.exceptions.ModuleException;
 import org.eclipse.om2m.sdt.home.modules.BinarySwitch;
 import org.eclipse.om2m.sdt.home.modules.Colour;
 import org.eclipse.om2m.sdt.home.modules.ColourSaturation;
@@ -76,7 +77,9 @@ public class Light extends GenericDevice {
 		return faultDetection;
 	}
 
-	public BinarySwitch getBinarySwitch() {
+	public BinarySwitch getBinarySwitch() throws ModuleException {
+		if (binarySwitch == null)
+			throw new ModuleException("Not implemented");
 		return binarySwitch;
 	}
 
