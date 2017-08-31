@@ -28,7 +28,7 @@ public class AtmosphericPressureSensor extends Module {
 		
 		if ((atmosphericPressure == null) ||
 				! atmosphericPressure.getShortDefinitionType().equals(DatapointType.atmosphericPressure.getShortName())) {
-			domain.removeDevice(name);
+			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong atmosphericPressure datapoint: " + atmosphericPressure);
 		}
 		this.atmosphericPressure = atmosphericPressure;

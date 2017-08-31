@@ -28,7 +28,7 @@ public class ExtendedCarbonDioxideSensor extends CarbonDioxideSensor {
 		
 		if ((carbonDioxideValue == null) ||
 				! carbonDioxideValue.getShortDefinitionType().equals(DatapointType.carbonDioxideValue.getShortName())) {
-			domain.removeDevice(name);
+			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong carbonDioxideValue datapoint: " + carbonDioxideValue);
 		}
 		this.carbonDioxideValue = carbonDioxideValue;

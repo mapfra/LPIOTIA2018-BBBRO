@@ -33,7 +33,7 @@ public class AbstractAlarmSensor extends Module {
 		super(name, domain, type);
 		if ((alarm == null) ||
 				! alarm.getShortDefinitionType().equals(DatapointType.alarm.getShortName())) {
-			domain.removeDevice(name);
+			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong alarm datapoint: " + alarm);
 		}
 		this.alarm = alarm;

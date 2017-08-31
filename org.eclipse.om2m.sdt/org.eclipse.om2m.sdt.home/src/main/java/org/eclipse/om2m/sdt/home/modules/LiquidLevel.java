@@ -27,7 +27,7 @@ public class LiquidLevel extends Module {
 
 		if ((liquidLevel == null) ||
 				! liquidLevel.getShortDefinitionType().equals(DatapointType.liquidLevel.getShortName())) {
-			domain.removeDevice(name);
+			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong liquidLevel datapoint: " + liquidLevel);
 		}
 		this.liquidLevel = liquidLevel;

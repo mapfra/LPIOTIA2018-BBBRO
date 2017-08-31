@@ -28,7 +28,7 @@ public class PushButton extends Module {
 
 		if ((pushed == null) ||
 				! pushed.getShortDefinitionType().equals(DatapointType.pushed.getShortName())) {
-			domain.removeDevice(name);
+			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong pushed datapoint: " + pushed);
 		}
 		this.pushed = pushed;

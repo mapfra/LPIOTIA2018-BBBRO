@@ -34,7 +34,7 @@ public class DoorStatus extends Module {
 
 		if ((state == null) ||
 				! state.getShortDefinitionType().equals(DatapointType.doorState.getShortName())) {
-			domain.removeDevice(name);
+			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong doorState datapoint: " + state);
 		}
 		this.doorState = state;

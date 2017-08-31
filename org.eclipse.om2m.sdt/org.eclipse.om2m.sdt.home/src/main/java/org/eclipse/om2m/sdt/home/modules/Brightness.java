@@ -27,7 +27,7 @@ public class Brightness extends Module {
 		
 		if ((brightness == null) ||
 				! brightness.getShortDefinitionType().equals(DatapointType.brightness.getShortName())) {
-			domain.removeDevice(name);
+			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong brightness datapoint: " + brightness);
 		}
 		this.brightness = brightness;

@@ -31,7 +31,7 @@ public class Colour extends Module {
 		
 		if ((red == null) ||
 				! red.getShortDefinitionType().equals(DatapointType.red.getShortName())) {
-			domain.removeDevice(name);
+			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong red datapoint: " + red);
 		}
 		this.red = red;
@@ -40,7 +40,7 @@ public class Colour extends Module {
 		
 		if ((green == null) ||
 				! green.getShortDefinitionType().equals(DatapointType.green.getShortName())) {
-			domain.removeDevice(name);
+			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong green datapoint: " + green);
 		}
 		this.green = green;
@@ -49,7 +49,7 @@ public class Colour extends Module {
 		
 		if ((blue == null) ||
 				! blue.getShortDefinitionType().equals(DatapointType.blue.getShortName())) {
-			domain.removeDevice(name);
+			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong blue datapoint: " + blue);
 		}
 		this.blue = blue;
@@ -86,15 +86,6 @@ public class Colour extends Module {
 	
 	public void setBlue(int value) throws DataPointException, AccessException {
 		blue.setValue(value);
-	}
-	
-	public void setValues(Integer red, Integer green, Integer blue) throws DataPointException, AccessException {
-		if (red != null)
-			setRed(red);
-		if (green != null)
-			setGreen(green);
-		if (blue != null)
-			setBlue(blue);
 	}
 	
 }

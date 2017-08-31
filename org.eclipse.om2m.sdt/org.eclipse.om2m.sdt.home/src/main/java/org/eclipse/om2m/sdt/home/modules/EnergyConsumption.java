@@ -39,7 +39,7 @@ public class EnergyConsumption extends Module {
 
 		if ((power == null) ||
 				! power.getShortDefinitionType().equals(DatapointType.power.getShortName())) {
-			domain.removeDevice(name);
+			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong power datapoint: " + power);
 		}
 		this.power = power;

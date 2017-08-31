@@ -31,7 +31,7 @@ public class AlarmSpeaker extends Module {
 		
 		if ((alarmStatus == null) ||
 				! alarmStatus.getShortDefinitionType().equals(DatapointType.alarmStatus.getShortName())) {
-			domain.removeDevice(name);
+			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong alarmStatus datapoint: " + alarmStatus);
 		}
 		this.alarmStatus = alarmStatus;

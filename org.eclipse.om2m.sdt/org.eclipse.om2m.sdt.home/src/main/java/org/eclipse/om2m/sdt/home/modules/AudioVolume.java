@@ -41,7 +41,7 @@ public class AudioVolume extends Module {
 
 		if ((muteEnabled == null) ||
 				! muteEnabled.getShortDefinitionType().equals(DatapointType.muteEnabled.getShortName())) {
-			domain.removeDevice(name);
+			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong muteEnabled datapoint: " + muteEnabled);
 		}
 		this.muteEnabled = muteEnabled;

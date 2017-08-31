@@ -30,7 +30,7 @@ public class RelativeHumidity extends Module {
 
 		if ((relativeHumidity == null) ||
 				! relativeHumidity.getShortDefinitionType().equals(DatapointType.relativeHumidity.getShortName())) {
-			domain.removeDevice(name);
+			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong relativeHumidity datapoint: " + relativeHumidity);
 		}
 		this.relativeHumidity = relativeHumidity;

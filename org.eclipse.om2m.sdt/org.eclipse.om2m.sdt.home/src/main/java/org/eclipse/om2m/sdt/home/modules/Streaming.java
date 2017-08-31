@@ -31,7 +31,7 @@ public class Streaming extends Module {
 		super(name, domain, ModuleType.streaming);
 		if ((url == null) ||
 				! url.getShortDefinitionType().equals(DatapointType.url.getShortName())) {
-			domain.removeDevice(name);
+			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong url datapoint: " + url);
 		}
 		this.url = url;
@@ -40,7 +40,7 @@ public class Streaming extends Module {
 		
 		if ((login == null) ||
 				! login.getShortDefinitionType().equals(DatapointType.login.getShortName())) {
-			domain.removeDevice(name);
+			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong login datapoint: " + login);
 		}
 		this.login = login;
@@ -49,7 +49,7 @@ public class Streaming extends Module {
 		
 		if ((password == null) ||
 				! password.getShortDefinitionType().equals(DatapointType.password.getShortName())) {
-			domain.removeDevice(name);
+			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong password datapoint: " + password);
 		}
 		this.password = password;
@@ -58,7 +58,7 @@ public class Streaming extends Module {
 		
 		if ((format == null) ||
 				! format.getShortDefinitionType().equals(DatapointType.format.getShortName())) {
-			domain.removeDevice(name);
+			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong format datapoint: " + format);
 		}
 		this.format = format;

@@ -40,7 +40,7 @@ public class BinarySwitch extends Module {
 
 		if ((powerState == null) ||
 				! powerState.getShortDefinitionType().equals(DatapointType.powerState.getShortName())) {
-			domain.removeDevice(name);
+			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong powerState datapoint: " + powerState);
 		}
 		this.powerState = powerState;
@@ -69,9 +69,6 @@ public class BinarySwitch extends Module {
 	}
 
 	public void setToggle(Toggle toggle) {
-//		this.toggle = toggle;
-//		this.toggle.setDoc("Toggle the switch");
-//		super.addAction(toggle);
 		addAction(toggle);
 	}
 	

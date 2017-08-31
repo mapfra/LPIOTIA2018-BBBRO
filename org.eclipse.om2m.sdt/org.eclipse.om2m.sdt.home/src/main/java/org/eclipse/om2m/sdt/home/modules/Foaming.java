@@ -27,7 +27,7 @@ public class Foaming extends Module{
 
 		if ((foamingStrength == null) ||
 				! foamingStrength.getShortDefinitionType().equals(DatapointType.foamingStrength.getShortName())) {
-			domain.removeDevice(name);
+			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong foamingStrength datapoint: " + foamingStrength);
 		}
 		this.foamingStrength = foamingStrength;

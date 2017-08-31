@@ -28,7 +28,7 @@ public class ColourSaturation extends Module {
 		
 		if ((colourSat == null) ||
 				! colourSat.getShortDefinitionType().equals(DatapointType.colourSat.getShortName())) {
-			domain.removeDevice(name);
+			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong colourSat datapoint: " + colourSat);
 		}
 		this.colourSat = colourSat;

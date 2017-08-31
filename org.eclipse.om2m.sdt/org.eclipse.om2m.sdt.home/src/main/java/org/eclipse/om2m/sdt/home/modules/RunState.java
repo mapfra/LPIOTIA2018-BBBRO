@@ -38,7 +38,7 @@ public class RunState extends Module {
 		
 		if ((jobState == null) ||
 				! jobState.getShortDefinitionType().equals(DatapointType.currentJobState.getShortName())) {
-			domain.removeDevice(name);
+			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong currentJobState datapoint: " + jobState);
 		}
 		this.currentJobState = jobState;
@@ -47,7 +47,7 @@ public class RunState extends Module {
 		
 		if ((jobStates == null) ||
 				! jobStates.getShortDefinitionType().equals(DatapointType.jobStates.getShortName())) {
-			domain.removeDevice(name);
+			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong jobStates datapoint: " + jobStates);
 		}
 		this.jobStates = jobStates;
@@ -57,7 +57,7 @@ public class RunState extends Module {
 		
 		if ((machineState == null) ||
 				! machineState.getShortDefinitionType().equals(DatapointType.currentMachineState.getShortName())) {
-			domain.removeDevice(name);
+			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong currentMachineState datapoint: " + machineState);
 		}
 		this.currentMachineState = machineState;
@@ -66,7 +66,7 @@ public class RunState extends Module {
 		
 		if ((machineStates == null) ||
 				! machineStates.getShortDefinitionType().equals(DatapointType.machineStates.getShortName())) {
-			domain.removeDevice(name);
+			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong machineStates datapoint: " + machineStates);
 		}
 		this.machineStates = machineStates;

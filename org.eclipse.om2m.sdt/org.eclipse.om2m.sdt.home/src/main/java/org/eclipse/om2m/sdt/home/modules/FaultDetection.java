@@ -31,7 +31,7 @@ public class FaultDetection extends Module {
 		
 		if ((status == null) ||
 				! status.getShortDefinitionType().equals(DatapointType.status.getShortName())) {
-			domain.removeDevice(name);
+			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong status datapoint: " + status);
 		}
 		this.status = status;

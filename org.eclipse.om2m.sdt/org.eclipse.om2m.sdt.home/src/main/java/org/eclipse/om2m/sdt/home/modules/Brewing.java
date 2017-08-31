@@ -22,7 +22,7 @@ public class Brewing extends Module{
 
 		if ((cupsNumber == null) ||
 				! cupsNumber.getShortDefinitionType().equals(DatapointType.cupsNumber.getShortName())) {
-			domain.removeDevice(name);
+			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong cupsNumber datapoint: " + cupsNumber);
 		}
 		this.cupsNumber = cupsNumber;
@@ -31,7 +31,7 @@ public class Brewing extends Module{
 
 		if ((strength == null) ||
 				! strength.getShortDefinitionType().equals(DatapointType.strength.getShortName())) {
-			domain.removeDevice(name);
+			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong strength datapoint: " + strength);
 		}
 		this.strength = strength;

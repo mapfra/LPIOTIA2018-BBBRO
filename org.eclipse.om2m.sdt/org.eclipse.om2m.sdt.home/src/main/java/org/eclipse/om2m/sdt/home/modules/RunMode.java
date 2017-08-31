@@ -33,7 +33,7 @@ public class RunMode extends Module {
 		
 		if ((operationMode == null) ||
 				! operationMode.getShortDefinitionType().equals(DatapointType.operationMode.getShortName())) {
-			domain.removeDevice(name);
+			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong operationMode datapoint: " + operationMode);
 		}
 		this.operationMode = operationMode;
@@ -42,7 +42,7 @@ public class RunMode extends Module {
 		
 		if ((supportedModes == null) ||
 				! supportedModes.getShortDefinitionType().equals(DatapointType.supportedModes.getShortName())) {
-			domain.removeDevice(name);
+			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong supportedModes datapoint: " + supportedModes);
 		}
 		this.supportedModes = supportedModes;

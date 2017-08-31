@@ -26,7 +26,7 @@ public class Noise extends Module {
 		super(name, domain, ModuleType.noise);
 		if ((noise == null) ||
 				! noise.getShortDefinitionType().equals(DatapointType.noise.getShortName())) {
-			domain.removeDevice(name);
+			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong noise datapoint: " + noise);
 		}
 		this.noise = noise;

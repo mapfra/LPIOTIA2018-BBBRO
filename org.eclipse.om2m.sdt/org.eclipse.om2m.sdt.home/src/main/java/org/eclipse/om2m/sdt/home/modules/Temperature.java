@@ -33,7 +33,7 @@ public class Temperature extends Module {
 
 		if ((currentTemperature == null) ||
 				! currentTemperature.getShortDefinitionType().equals(DatapointType.currentTemperature.getShortName())) {
-			domain.removeDevice(name);
+			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong currentTemperature datapoint: " + currentTemperature);
 		}
 		this.currentTemperature = currentTemperature;

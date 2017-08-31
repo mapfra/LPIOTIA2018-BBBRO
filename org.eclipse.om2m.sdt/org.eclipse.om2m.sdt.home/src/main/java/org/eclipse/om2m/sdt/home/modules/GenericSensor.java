@@ -29,7 +29,7 @@ public class GenericSensor extends Module {
 		super(name, domain, identifiers); 
 
 		if (value == null) {
-			domain.removeDevice(name);
+			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong value datapoint: " + value);
 		}
 		this.value = value;

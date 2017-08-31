@@ -34,7 +34,7 @@ public class Lock extends Module {
 		
 		if ((doorLock == null) ||
 				! doorLock.getShortDefinitionType().equals(DatapointType.doorLock.getShortName())) {
-			domain.removeDevice(name);
+			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong doorLock datapoint: " + doorLock);
 		}
 		this.doorLock = doorLock;
