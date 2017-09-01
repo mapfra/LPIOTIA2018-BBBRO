@@ -1,0 +1,316 @@
+<!--
+    Copyright (c) 2013, 2017 Orange.
+    All rights reserved. This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License v1.0
+    which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html
+   
+    Contributors:
+       BAREAU Cyrille <cyrille.bareau@orange.com>, 
+       BONNARDEL Gregory <gbonnardel.ext@orange.com>, 
+       BOLLE Sebastien <sebastien.bolle@orange.com>.
+ -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>org.eclipse.om2m.android.dashboard</artifactId>
+	<packaging>apk</packaging>
+	<name>org.eclipse.om2m :: android dashboard application</name>
+	
+	<parent>
+		<artifactId>org.eclipse.om2m</artifactId>
+		<groupId>org.eclipse.om2m</groupId>
+		<version>1.1.0-SNAPSHOT</version>
+	</parent>
+
+	<properties>
+		
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>	
+		
+		<!-- Maven dependencies -->
+		<maven.android.plugin.version>4.4.3</maven.android.plugin.version>
+		<compiler.maven.plugin.version>2.5.1</compiler.maven.plugin.version>
+        
+		<!--  Default values: do not skip reporting  -->
+		<skip.reporting>true</skip.reporting>
+		<profile.skip.reporting>false</profile.skip.reporting>     
+		
+		<!-- Android Dependencies -->
+		<android.sdk.path>${env.ANDROID_HOME}</android.sdk.path>        
+		<api.platform>17</api.platform>
+		<annotations.version>4.1.1.4</annotations.version>
+		<android.version>4.1.1.4</android.version>
+		<support-v4-android.version>r7</support-v4-android.version>
+		
+		<maven.build.timestamp.format>yyMMdd_HHmm</maven.build.timestamp.format>
+		<!--buildNumber>${maven.build.timestamp}</buildNumber-->
+		<buildNumber>snapshot</buildNumber>
+		
+	</properties>
+	
+	<dependencies>
+	
+		<dependency>
+			<groupId>com.google.android</groupId>
+			<artifactId>android</artifactId>
+			<scope>provided</scope>
+			<version>${android.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.google.android</groupId>
+			<artifactId>support-v4</artifactId>
+			<version>${support-v4-android.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.google.android</groupId>
+			<artifactId>annotations</artifactId>
+			<version>${annotations.version}</version>
+		</dependency>
+		    
+		<dependency>
+		    <groupId>org.springframework.android</groupId>
+		    <artifactId>spring-android-rest-template</artifactId>
+		    <version>1.0.1.RELEASE</version>
+		</dependency>     
+		
+		<dependency>
+		  <groupId>com.google.code.gson</groupId>
+		  <artifactId>gson</artifactId>
+		  <version>2.0</version>
+		</dependency>
+		
+		<dependency>
+		  <groupId>com.fasterxml.jackson.core</groupId>
+		  <artifactId>jackson-databind</artifactId>
+		  <version>2.2.1</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.eclipse.om2m</groupId>
+			<artifactId>org.eclipse.om2m.sdt.api</artifactId>
+			<scope>compile</scope>
+			<version>1.1.0-SNAPSHOT</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.eclipse.om2m</groupId>
+			<artifactId>org.eclipse.om2m.sdt.home</artifactId>
+			<scope>compile</scope>
+			<version>1.1.0-SNAPSHOT</version>
+		</dependency>
+		
+	</dependencies>
+	
+	<build>
+	
+	    <pluginManagement>
+        	<plugins>
+	            <!--This plugin's configuration is used to store Eclipse m2e settings 
+	                only. It has no influence on the Maven build itself. -->
+	            <plugin>
+	                <groupId>org.eclipse.m2e</groupId>
+	                <artifactId>lifecycle-mapping</artifactId>
+	                <version>1.0.0</version>
+	                <configuration>
+	                    <lifecycleMappingMetadata>
+	                        <pluginExecutions>
+	                            <pluginExecution>
+	                                <pluginExecutionFilter>
+	                                    <groupId>com.google.code.maven-replacer-plugin</groupId>
+	                                    <artifactId>replacer</artifactId>
+	                                    <versionRange>[1.5.0,)</versionRange>
+	                                    <goals>
+	                                        <goal>replace</goal>
+	                                    </goals>
+	                                </pluginExecutionFilter>
+	                                <action>
+	                                    <execute></execute>
+	                                </action>
+	                            </pluginExecution>
+	                        </pluginExecutions>
+	                    </lifecycleMappingMetadata>
+	                </configuration>
+	            </plugin>
+	        </plugins>
+	    </pluginManagement>
+    
+	    <plugins>
+         
+	    	<!-- Add maven version to Android manifest -->
+			<!-- ===================================== -->
+			<!-- NE FONCTIONNE PAS AVEC ECLIPSE (???)  -->
+			<!-- Il faut le faire en ligne de commande -->
+			<!-- mvn initialize install  -->
+			<plugin>
+                <groupId>com.google.code.maven-replacer-plugin</groupId>
+                <artifactId>replacer</artifactId>
+                <version>1.5.0</version>
+                <executions>
+                    <execution>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>replace</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <file>./src/main/AndroidManifest.xml</file>
+                    <outputFile>${project.build.directory}/AndroidManifest.xml</outputFile>
+                    <regex>true</regex>
+                    <replacements>
+                        <replacement>
+                            <token>android:versionCode="\d*"</token>
+                            <value>android:versionCode="1"</value>
+                        </replacement>
+                        <replacement>
+                            <token>android:versionName="[^"]*"</token>
+                            <value>android:versionName="${project.version}"</value>
+                        </replacement>
+                    </replacements>
+                </configuration>
+            </plugin>
+
+			<plugin>
+				<groupId>com.simpligility.maven.plugins</groupId>
+				<artifactId>android-maven-plugin</artifactId>
+				<version>${maven.android.plugin.version}</version>
+				<extensions>true</extensions>
+			</plugin>						
+            
+			 <!-- Plugin for android projects -->
+			<plugin>
+				<groupId>com.simpligility.maven.plugins</groupId>
+				<artifactId>android-maven-plugin</artifactId>
+				<version>${maven.android.plugin.version}</version>
+				<inherited>true</inherited>
+				<configuration>
+					<resourceDirectory>${project.basedir}/res</resourceDirectory>
+					<sdk>
+						<platform>${api.platform}</platform>
+					</sdk>
+					<undeployBeforeDeploy>true</undeployBeforeDeploy>
+				</configuration>
+		
+			</plugin>
+			
+			<plugin>
+				<!-- Default java version is 1.4, for osgi
+				     This can be overridden to 1.6 for android or desktop projects-->
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${compiler.maven.plugin.version}</version>
+				<inherited>true</inherited>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+						
+		</plugins>
+		
+	</build>
+	
+	<reporting>
+		<excludeDefaults>false</excludeDefaults>
+		
+		<plugins>
+			<!-- ======================================================= -->
+			<!-- Reports configuration for the web site. -->
+			<!-- ======================================================= -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>${maven-project-info-reports-plugin.version}</version>
+				<reportSets>
+					<reportSet>
+						<reports>
+							<report>index</report>
+							<report>dependencies</report>
+							<report>scm</report>
+							<report>plugins</report>
+							<report>summary</report>
+						</reports>
+					</reportSet>
+				</reportSets>
+				<configuration>
+					<!-- Avoid the dependency plugin to download again all jars from repositories 
+						just to report the following informations -->
+					<dependencyDetailsEnabled>false</dependencyDetailsEnabled>
+					<dependencyLocationsEnabled>false</dependencyLocationsEnabled>
+				</configuration>
+			</plugin>
+			
+			<!-- ======================================================= -->
+			<!-- Per module javadoc generation -->
+			<!-- ======================================================= -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>${maven-javadoc-plugin.version}</version>
+				<configuration>
+					<show>protected</show>
+				</configuration>
+			</plugin>
+			
+			<!-- ======================================================= -->
+			<!-- HTML based, cross-reference version of Java source code -->
+			<!-- ======================================================= -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jxr-plugin</artifactId>
+				<version>${maven-jxr-plugin.version}</version>
+				<inherited>true</inherited>
+			</plugin>
+			
+			<!-- ======================================================= -->
+			<!-- PMD Static analysis of code -->
+			<!-- ======================================================= -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<version>${maven-pmd-plugin.version}</version>
+				<configuration>
+					<linkXref>true</linkXref>
+					<sourceEncoding>utf-8</sourceEncoding>
+					<minimumTokens>100</minimumTokens>
+					<targetJdk>1.4</targetJdk>
+					<failOnViolation>false</failOnViolation>
+				</configuration>
+				<inherited>true</inherited>
+			</plugin>
+			
+			<!-- ======================================================= -->
+			<!-- FindBugs Static analysis of code -->
+			<!-- ======================================================= -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>findbugs-maven-plugin</artifactId>
+				<version>${findbugs-maven-plugin.version}</version>
+				<configuration>
+					<xmlOutput>true</xmlOutput>
+					<failOnError>false</failOnError>
+				</configuration>
+				<inherited>true</inherited>
+			</plugin>
+			
+			<!-- ======================================================= -->
+			<!-- Checkstyle Static analysis of code -->
+			<!-- ======================================================= -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>${maven-checkstyle-plugin.version}</version>
+				<configuration>
+					<enableRulesSummary>true</enableRulesSummary>
+				</configuration>
+				<inherited>true</inherited>
+			</plugin>
+			
+		</plugins>
+		
+	</reporting>    
+	
+</project>

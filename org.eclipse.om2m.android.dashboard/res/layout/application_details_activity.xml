@@ -1,0 +1,728 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright (c) 2013, 2017 Orange.
+    All rights reserved. This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License v1.0
+    which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html
+   
+    Contributors:
+       BAREAU Cyrille <cyrille.bareau@orange.com>, 
+       BONNARDEL Gregory <gbonnardel.ext@orange.com>, 
+       BOLLE Sebastien <sebastien.bolle@orange.com>.
+ -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res/org.eclipse.om2m.android.dashboard"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/solf_background"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/otb_red" >
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/otb_white_in" />
+
+        <TextView
+            android:id="@+id/tv_app_details_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:text="@string/application_details_title"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <ScrollView
+	    android:id="@+id/sv_app_details_scrollcontainer"
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1" >
+
+        <LinearLayout
+	    	android:id="@+id/ll_app_details_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:orientation="vertical" >
+
+            <!-- ============================================================== -->            
+            <!--  Description  -->
+            <!-- ============================================================== -->
+            
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/blur_shadow"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/tv_app_details_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="10dp"
+                    android:lines="3"
+                    android:orientation="vertical"
+                    android:text="@string/application_details_description"
+                    android:textColor="@color/otb_dark_gray"
+                    android:textSize="15sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp" >
+
+                    <TextView
+                        android:id="@+id/tv_app_details_runningstate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="20dp"
+                        android:layout_weight="1"
+                        android:lines="2"
+                        android:text="" />
+
+                    <Button
+                        android:id="@+id/btn_app_details_startstop"
+                        android:layout_width="225dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="20dp"
+                        android:layout_weight="0"
+                        android:background="@drawable/sel_button_red"
+                        android:text="@string/application_details_startstop"
+                        android:textColor="@color/otb_dark_gray"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+                
+            </LinearLayout>
+                        
+            <!-- ============================================================== -->            
+            <!--  PERMISSIONS  -->
+            <!-- ============================================================== -->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/blur_shadow"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/application_details_permissions"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/otb_red"
+                    android:textSize="17sp" />
+		
+                <org.eclipse.om2m.android.dashboard.applications.OTBApplicationPermissionsView
+			        android:id="@+id/obj_app_details_permview"
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content" />
+			                
+		    </LinearLayout>
+           
+               
+            <!-- ============================================================== -->            
+            <!--  CONFIGURATION  -->
+            <!-- ============================================================== -->
+            
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/blur_shadow"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_weight="1"
+                        android:text="@string/application_details_config"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textColor="@color/otb_red"
+                        android:textSize="17sp" />
+
+                    <Button
+                        android:id="@+id/btn_app_details_config"
+                        android:layout_width="225dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="35dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_weight="0"
+                        android:background="@drawable/sel_button_red"
+                        android:text="@string/application_details_config_btn"
+                        android:textColor="@color/otb_dark_gray"
+                        android:textSize="15sp" />
+
+                </LinearLayout>                	              
+            
+            </LinearLayout>
+                
+            <!-- ============================================================== -->            
+            <!--  UPDATE  -->
+            <!-- ============================================================== -->
+            
+            <LinearLayout
+                android:id="@+id/ll_app_details_update"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/blur_shadow"
+                android:orientation="vertical" >
+	                
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/application_details_update"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/otb_red"
+                    android:textSize="17sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:text="@string/application_details_update_msg1"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/otb_red"
+                        android:textSize="15sp" />
+
+                    <Button
+                        android:id="@+id/btn_app_details_update"
+                        android:layout_width="225dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="35dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_weight="0"
+                        android:background="@drawable/sel_button_red"
+                        android:text="@string/application_details_update_btn"
+                        android:textColor="@color/otb_dark_gray"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/application_details_update_msg2"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColorHint="@color/otb_dark_gray"
+                    android:textSize="15sp" />
+	                
+            </LinearLayout>
+             
+            <!-- ============================================================== -->            
+            <!--  INFORMATIONS  -->
+            <!-- ============================================================== -->
+            
+            <LinearLayout
+                android:id="@+id/ll_app_details_informations"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/blur_shadow"
+                android:orientation="vertical" >
+                
+	            <LinearLayout
+	                android:layout_width="match_parent"
+	                android:layout_height="wrap_content"
+	                android:layout_marginTop="10dp" >
+
+	                <TextView
+	                    android:layout_width="wrap_content"
+	                    android:layout_height="wrap_content"
+	                    android:layout_marginBottom="10dp"
+	                    android:layout_marginLeft="20dp"
+	                    android:layout_weight="1"
+	                    android:text="@string/application_details_info"
+	                    android:textAppearance="?android:attr/textAppearanceLarge"
+	                    android:textColor="@color/otb_red"
+	                    android:textSize="17sp" />
+	
+	                <ImageView
+	                    android:id="@+id/iv_app_details_informations_expandicon"
+	                    android:layout_width="20dp"
+	                    android:layout_height="20dp"
+	                    android:layout_marginRight="20dp"
+	                    android:src="@drawable/otb_picto_open_red" />
+	
+				 </LinearLayout>
+				 
+		         <LinearLayout
+		             android:id="@+id/ll_app_details_informations_content"
+		             android:layout_width="wrap_content"
+		             android:layout_height="wrap_content"
+		             android:layout_marginBottom="15dp"
+		             android:orientation="vertical"
+		             android:visibility="gone" >
+		
+		             <LinearLayout
+		                 android:layout_width="match_parent"
+		                 android:layout_height="wrap_content" >
+		
+		                 <TextView
+		                     android:layout_width="170dp"
+		                     android:layout_height="wrap_content"
+		                     android:layout_marginLeft="20dp"
+		                     android:text="@string/application_details_version"
+		                     android:textAppearance="?android:attr/textAppearanceMedium"
+		                     android:textColor="@color/otb_dark_gray"
+		                     android:textSize="15sp" />
+		
+		                 <TextView
+		                     android:id="@+id/tv_app_details_version"
+		                     android:layout_width="match_parent"
+		                     android:layout_height="wrap_content"
+		                     android:textAppearance="?android:attr/textAppearanceMedium"
+		                     android:textColor="@color/otb_dark_gray"
+		                     android:textSize="15sp" />
+		                 
+		             </LinearLayout>
+		
+		             <LinearLayout
+		                 android:layout_width="match_parent"
+		                 android:layout_height="wrap_content" >
+		
+		                 <TextView
+		                     android:layout_width="170dp"
+		                     android:layout_height="wrap_content"
+		                     android:layout_marginLeft="20dp"
+		                     android:text="@string/application_details_state"
+		                     android:textAppearance="?android:attr/textAppearanceMedium"
+		                     android:textColor="@color/otb_dark_gray"
+		                     android:textSize="15sp" />
+		
+		                 <TextView
+		                     android:id="@+id/tv_app_details_state"
+		                     android:layout_width="match_parent"
+		                     android:layout_height="wrap_content"
+		                     android:textAppearance="?android:attr/textAppearanceMedium"
+		                     android:textColor="@color/otb_dark_gray"
+		                     android:textSize="15sp" />
+		                 
+		             </LinearLayout>
+		
+		             <LinearLayout
+		                 android:layout_width="match_parent"
+		                 android:layout_height="wrap_content" >
+		
+		                 <TextView
+		                     android:layout_width="170dp"
+		                     android:layout_height="wrap_content"
+		                     android:layout_marginLeft="20dp"
+		                     android:text="@string/application_details_installdate"
+		                     android:textAppearance="?android:attr/textAppearanceMedium"
+		                     android:textColor="@color/otb_dark_gray"
+		                     android:textSize="15sp" />
+		
+		                 <TextView
+		                     android:id="@+id/tv_app_details_installDate"
+		                     android:layout_width="match_parent"
+		                     android:layout_height="wrap_content"
+		                     android:textAppearance="?android:attr/textAppearanceMedium"
+		                     android:textColor="@color/otb_dark_gray"
+		                     android:textSize="15sp" />
+		                 
+		             </LinearLayout>
+		
+		             <LinearLayout
+		                 android:layout_width="match_parent"
+		                 android:layout_height="wrap_content" >
+		
+		                 <TextView
+		                     android:layout_width="170dp"
+		                     android:layout_height="wrap_content"
+		                     android:layout_marginLeft="20dp"
+		                     android:text="@string/application_details_servicename"
+		                     android:textAppearance="?android:attr/textAppearanceMedium"
+		                     android:textColor="@color/otb_dark_gray"
+		                     android:textSize="15sp" />
+		
+		                 <TextView
+		                     android:id="@+id/tv_app_details_servicename"
+		                     android:layout_width="match_parent"
+		                     android:layout_height="wrap_content"
+		                     android:textAppearance="?android:attr/textAppearanceMedium"
+		                     android:textColor="@color/otb_dark_gray"
+		                     android:textSize="15sp" />
+		                 
+		             </LinearLayout>
+		
+		             <LinearLayout
+		                 android:layout_width="match_parent"
+		                 android:layout_height="wrap_content" >
+		
+		                 <TextView
+		                     android:layout_width="170dp"
+		                     android:layout_height="wrap_content"
+		                     android:layout_marginLeft="20dp"
+		                     android:text="@string/application_details_serviceversion"
+		                     android:textAppearance="?android:attr/textAppearanceMedium"
+		                     android:textColor="@color/otb_dark_gray"
+		                     android:textSize="15sp" />
+		
+		                 <TextView
+		                     android:id="@+id/tv_app_details_serviceversion"
+		                     android:layout_width="match_parent"
+		                     android:layout_height="wrap_content"
+		                     android:textAppearance="?android:attr/textAppearanceMedium"
+		                     android:textColor="@color/otb_dark_gray"
+		                     android:textSize="15sp" />
+		                 
+		             </LinearLayout>                
+	
+	            </LinearLayout>
+	            
+            </LinearLayout>
+
+            <!-- ============================================================== -->            
+            <!--  RESOURCES  -->
+            <!-- ============================================================== -->
+            
+            <LinearLayout
+                android:id="@+id/ll_app_details_resources"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/blur_shadow"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_weight="1"
+                        android:text="@string/application_details_resources"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textColor="@color/otb_red"
+                        android:textSize="17sp" />
+
+                    <ImageView
+                        android:id="@+id/iv_app_details_resources_expandicon"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginRight="20dp"
+                        android:src="@drawable/otb_picto_open_red" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_app_details_resources_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone" >
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:layout_width="220dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:text="@string/application_details_ram"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="@color/otb_dark_gray"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/tv_app_details_ram"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:layout_marginLeft="20dp"
+                            android:text="-- bytes"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="@color/otb_dark_gray"
+                            android:textSize="15sp" />
+                        
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:layout_width="220dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:text="@string/application_details_cpu"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="@color/otb_dark_gray"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/tv_app_details_cpu"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:layout_marginLeft="20dp"
+                            android:text="--"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="@color/otb_dark_gray"
+                            android:textSize="15sp" />
+                        
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:layout_width="220dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:text="@string/application_details_sockets"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="@color/otb_dark_gray"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/tv_app_details_sockets"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:layout_marginLeft="20dp"
+                            android:text="--"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="@color/otb_dark_gray"
+                            android:textSize="15sp" />
+                        
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:layout_width="220dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:text="@string/application_details_threads"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="@color/otb_dark_gray"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/tv_app_details_threads"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:layout_marginLeft="20dp"
+                            android:text="--"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="@color/otb_dark_gray"
+                            android:textSize="15sp" />
+                        
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:layout_width="220dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:text="@string/application_details_flash"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="@color/otb_dark_gray"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/tv_app_details_flash"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:layout_marginLeft="20dp"
+                            android:text="-- bytes"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="@color/otb_dark_gray"
+                            android:textSize="15sp" />
+                        
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="15dp" >
+
+                        <TextView
+                            android:layout_width="220dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:text="@string/application_details_bandwidth"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="@color/otb_dark_gray"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/tv_app_details_bandwidth"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:layout_marginLeft="20dp"
+                            android:text="-- bytes"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="@color/otb_dark_gray"
+                            android:textSize="15sp" />
+                        
+                    </LinearLayout>
+
+                </LinearLayout>
+	                
+            </LinearLayout>
+            
+            <!-- ============================================================== -->            
+            <!--  COMPOSITION  -->
+            <!-- ============================================================== -->
+
+            <LinearLayout
+                android:id="@+id/ll_app_details_composition"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/blur_shadow"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_weight="1"
+                        android:text="@string/application_details_compo"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textColor="@color/otb_red"
+                        android:textSize="17sp" />
+
+                    <ImageView
+                        android:id="@+id/iv_app_details_composition_expandicon"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginRight="20dp"
+                        android:src="@drawable/otb_picto_open_red" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_app_details_composition_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:orientation="vertical"
+                    android:visibility="gone" >
+
+                    <org.eclipse.om2m.android.dashboard.tools.CustomLineView
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:visibility="gone"
+                        custom:dashGap="2"
+                        custom:dashWidth="2"
+                        custom:dashed="true"
+                        custom:orientation="horizontal"
+                        custom:thickness="1"
+                        custom:color="@color/gray" />
+                    
+                </LinearLayout>
+
+            </LinearLayout>
+            
+        </LinearLayout>
+
+    </ScrollView>
+        
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:layout_gravity="bottom"
+        android:background="@color/otb_red"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/btn_app_details_uninstall"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/otb_picto_delete_white" />                       
+        
+    </RelativeLayout>
+    
+</LinearLayout>

@@ -1,0 +1,272 @@
+<!--
+    Copyright (c) 2013, 2017 Orange.
+    All rights reserved. This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License v1.0
+    which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html
+   
+    Contributors:
+       BAREAU Cyrille <cyrille.bareau@orange.com>, 
+       BONNARDEL Gregory <gbonnardel.ext@orange.com>, 
+       BOLLE Sebastien <sebastien.bolle@orange.com>.
+ -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:custom="http://schemas.android.com/apk/res/org.eclipse.om2m.android.dashboard"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/solf_background"
+    android:keepScreenOn="true"
+    android:orientation="vertical"
+    tools:context=".Demo" >
+
+    <ScrollView
+        android:id="@+id/sv_main_dynamic_card_scroller"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp" >
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+        
+        <!-- =========================================================== --> 
+		<!-- 						LEFT-SIDE							 -->
+        <!-- =========================================================== -->
+            
+            <LinearLayout
+                android:id="@+id/ll_cse_left"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_weight="4"
+                android:orientation="vertical" >
+
+        <!-- =========================================================== --> 
+		<!-- 							HAB								 -->
+        <!-- =========================================================== -->
+                
+                <RelativeLayout
+                    android:id="@+id/rl_main_zone_cse"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/blur_shadow" >
+                    
+                    <ImageView
+                        android:id="@+id/iv_cse_state_icon"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="15dp"
+                        android:src="@drawable/otb_picto_led_ko" />
+
+                    <TextView
+                        android:id="@+id/tv_cse_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="60dp"
+                        android:text="@string/main_config"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textColor="@color/otb_orange"
+                        android:textSize="@dimen/menu_title_size"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_cse_status_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="7dp"
+                        android:layout_toRightOf="@+id/tv_cse_title"
+                        android:text="@string/main_cse_state_not_detected"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textColor="@color/otb_orange"
+                        android:textSize="@dimen/menu_title_size"
+                        android:textStyle="bold" />
+                    
+                </RelativeLayout>
+        
+        <!-- =========================================================== --> 
+		<!-- 						APPLICATIONS						 -->
+        <!-- =========================================================== -->
+                
+                <RelativeLayout                    
+                    android:id="@+id/rl_main_zone_apps"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/blur_shadow" >
+
+                    <ImageView
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="5dp"
+                        android:src="@drawable/otb_picto_services" />
+
+                    <TextView
+                        android:id="@+id/tv_main_counter_app"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="60dp"
+                        android:layout_marginTop="10dp"
+                        android:text="xx"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textColor="@color/otb_red"
+                        android:textSize="26sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_toRightOf="@+id/tv_main_counter_app"
+                        android:text="@string/main_applications"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textColor="@color/otb_red"
+                        android:textSize="@dimen/menu_title_size"
+                        android:textStyle="bold" />                   
+                    
+                    <org.eclipse.om2m.android.dashboard.tools.CustomLineView
+	                    android:layout_width="match_parent"
+	                    android:layout_height="2dp"
+	                    android:layout_alignParentLeft="true"
+	                    android:layout_alignParentTop="true"
+	                    android:layout_marginLeft="10dp"
+	                    android:layout_marginRight="10dp"
+	                    android:layout_marginTop="60dp"
+	                    custom:dashGap="2"
+	                    custom:dashWidth="2"
+	                    custom:dashed="true"
+	                    custom:orientation="horizontal"
+	                    custom:thickness="1"
+	                    custom:color="@color/otb_red" />
+                    
+                    <GridLayout
+                        android:id="@+id/gl_main_cse_app"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="80dp"
+                        android:animateLayoutChanges="true"
+                        android:orientation="horizontal"
+                        android:scrollbarAlwaysDrawVerticalTrack="false" />
+                
+                </RelativeLayout>
+
+            </LinearLayout>
+        
+        <!-- =========================================================== --> 
+		<!-- 						RIGHT-SIDE							 -->
+        <!-- =========================================================== -->
+
+            <LinearLayout
+                android:id="@+id/ll_cse_right"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_weight="5"
+                android:layout_toRightOf="@id/ll_cse_left"
+                android:layout_marginLeft="10dp"
+                android:orientation="vertical" >
+        
+        <!-- =========================================================== --> 
+		<!-- 						DEVICES								 -->
+        <!-- =========================================================== -->
+
+                <RelativeLayout
+	                android:id="@+id/rl_main_zone_devs"
+	                android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+	                android:background="@drawable/blur_shadow" >
+	
+	                <ImageView
+	                    android:layout_width="50dp"
+	                    android:layout_height="50dp"
+	                    android:layout_alignParentLeft="true"
+	                    android:layout_alignParentTop="true"
+	                    android:layout_marginLeft="5dp"
+	                    android:layout_marginTop="5dp"
+	                    android:src="@drawable/otb_picto_devices" />
+	
+	                <TextView
+	                    android:id="@+id/tv_main_counter_dev"
+	                    android:layout_width="wrap_content"
+	                    android:layout_height="wrap_content"
+	                    android:layout_alignParentTop="true"
+	                    android:layout_centerVertical="true"
+	                    android:layout_gravity="center_vertical"
+	                    android:layout_marginLeft="60dp"
+	                    android:layout_marginTop="15dp"
+	                    android:text="xx"
+	                    android:textAppearance="?android:attr/textAppearanceLarge"
+	                    android:textColor="@color/otb_blue"
+	                    android:textSize="26sp"
+	                    android:textStyle="bold" />
+	
+	                <TextView
+	                    android:id="@+id/tv_main_dev"
+	                    android:layout_width="160dp"
+	                    android:layout_height="wrap_content"
+	                    android:layout_alignParentTop="true"
+	                    android:layout_centerVertical="true"
+	                    android:layout_gravity="center_vertical"
+	                    android:layout_marginLeft="10dp"
+	                    android:layout_marginTop="20dp"
+	                    android:layout_toRightOf="@+id/tv_main_counter_dev"
+	                    android:text="@string/main_devices"
+	                    android:textAppearance="?android:attr/textAppearanceLarge"
+	                    android:textColor="@color/otb_blue"
+	                    android:textSize="@dimen/menu_title_size"
+	                    android:textStyle="bold" />
+	
+	                <org.eclipse.om2m.android.dashboard.tools.CustomLineView
+	                    android:layout_width="match_parent"
+	                    android:layout_height="2dp"
+	                    android:layout_alignParentLeft="true"
+	                    android:layout_alignParentTop="true"
+	                    android:layout_marginLeft="10dp"
+	                    android:layout_marginRight="10dp"
+	                    android:layout_marginTop="60dp"
+	                    custom:dashGap="2"
+	                    custom:dashWidth="2"
+	                    custom:dashed="true"
+	                    custom:orientation="horizontal"
+	                    custom:thickness="1"
+	                    custom:color="@color/otb_blue" />
+	
+	                <GridLayout
+	                    android:id="@+id/gl_main_cse_devices"
+	                    android:layout_width="wrap_content"
+	                    android:layout_height="wrap_content"
+	                    android:layout_centerHorizontal="true"
+	                    android:layout_marginBottom="10dp"
+	                    android:layout_marginTop="80dp"
+	                    android:animateLayoutChanges="true"
+	                    android:orientation="horizontal"
+	                    android:scrollbarAlwaysDrawVerticalTrack="false" />
+	                
+	            </RelativeLayout>
+	        
+            </LinearLayout>
+            
+        </RelativeLayout>
+
+    </ScrollView>
+    
+</RelativeLayout>
