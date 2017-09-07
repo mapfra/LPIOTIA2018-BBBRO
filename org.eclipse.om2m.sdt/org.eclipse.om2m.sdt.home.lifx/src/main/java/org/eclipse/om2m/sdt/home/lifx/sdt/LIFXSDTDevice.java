@@ -7,9 +7,15 @@
  *******************************************************************************/
 package org.eclipse.om2m.sdt.home.lifx.sdt;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.eclipse.om2m.sdt.Domain;
+import org.eclipse.om2m.sdt.Module;
 import org.eclipse.om2m.sdt.datapoints.BooleanDataPoint;
 import org.eclipse.om2m.sdt.datapoints.IntegerDataPoint;
+import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.devices.Light;
 import org.eclipse.om2m.sdt.home.lifx.LIFXDevice;
@@ -19,6 +25,14 @@ import org.eclipse.om2m.sdt.home.types.DatapointType;
 
 public class LIFXSDTDevice extends Light {
 	
+	static private final int RED = 0;
+	static private final int GREEN = 1;
+	static private final int BLUE = 2;
+
+	static private final String SRED = DatapointType.red.getShortName();
+	static private final String SGREEN = DatapointType.green.getShortName();
+	static private final String SBLUE = DatapointType.blue.getShortName();
+
 	private final LIFXDevice lifxDevice;
 	
 	public LIFXSDTDevice(Domain domain, LIFXDevice pLIFXDevice) {
@@ -64,7 +78,7 @@ public class LIFXSDTDevice extends Light {
 				@Override
 				protected Integer doGetValue() throws DataPointException {
 					try {
-						return getColor(0);
+						return getColor(RED);
 					} catch (Exception e) {
 						throw new DataPointException(e.getMessage());
 					}
@@ -72,7 +86,7 @@ public class LIFXSDTDevice extends Light {
 				@Override
 				protected void doSetValue(Integer value) throws DataPointException {
 					try {
-						setColor(0, value);
+						setColor(RED, value);
 					} catch (Exception e) {
 						throw new DataPointException(e.getMessage());
 					}
@@ -82,7 +96,7 @@ public class LIFXSDTDevice extends Light {
 				@Override
 				protected Integer doGetValue() throws DataPointException {
 					try {
-						return getColor(1);
+						return getColor(GREEN);
 					} catch (Exception e) {
 						throw new DataPointException(e.getMessage());
 					}
@@ -90,7 +104,7 @@ public class LIFXSDTDevice extends Light {
 				@Override
 				protected void doSetValue(Integer value) throws DataPointException {
 					try {
-						setColor(1, value);
+						setColor(GREEN, value);
 					} catch (Exception e) {
 						throw new DataPointException(e.getMessage());
 					}
@@ -100,7 +114,7 @@ public class LIFXSDTDevice extends Light {
 				@Override
 				protected Integer doGetValue() throws DataPointException {
 					try {
-						return getColor(2);
+						return getColor(BLUE);
 					} catch (Exception e) {
 						throw new DataPointException(e.getMessage());
 					}
@@ -108,12 +122,38 @@ public class LIFXSDTDevice extends Light {
 				@Override
 				protected void doSetValue(Integer value) throws DataPointException {
 					try {
-						setColor(2, value);
+						setColor(BLUE, value);
 					} catch (Exception e) {
 						throw new DataPointException(e.getMessage());
 					}
 				}
 			});
+		colourModule.setDatapointHandler(new Module.DatapointHandler() {
+			@Override
+			public void setValues(Map<String, Object> values)
+					throws DataPointException, AccessException {
+				try {
+					setColors((Integer) values.get(SRED),
+						(Integer) values.get(SGREEN),
+						(Integer) values.get(SBLUE));
+				} catch (Exception e) {
+					throw new DataPointException(e);
+				}
+			}
+
+			@Override
+			public Map<String, Object> getValues(List<String> names)
+					throws DataPointException, AccessException {
+				int[] colors = getColors();
+				Map<String, Object> ret = new HashMap<String, Object>();
+				for (String s : names) {
+					if (s.equals(SRED)) ret.put(SRED, colors[RED]);
+					else if (s.equals(SGREEN)) ret.put(SGREEN, colors[GREEN]);
+					else if (s.equals(SBLUE)) ret.put(SBLUE, colors[BLUE]);
+				}
+				return ret;
+			}
+		});
 		addModule(colourModule);
 	}
 
@@ -127,8 +167,8 @@ public class LIFXSDTDevice extends Light {
 
 	private void setColor(int colorIndex, int colorValue) throws Exception {
 		// get current state
-		int h = Math.round((float)(lifxDevice.getHue() / 65565d * 360d));
-		int s = Math.round((float)  (lifxDevice.getSaturation() / 65535d * 100d));
+		int h = Math.round((float) (lifxDevice.getHue() / 65565d * 360d));
+		int s = Math.round((float) (lifxDevice.getSaturation() / 65535d * 100d));
 		int v = Math.round((float) (lifxDevice.getBrightness() / 65535d * 100d));
 
 		// convert current color in rgb
@@ -138,7 +178,35 @@ public class LIFXSDTDevice extends Light {
 		rgb[colorIndex] = colorValue;
 
 		// compute HSV
-		int[] hsv = RGBtoHSB((int) rgb[0], (int) rgb[1], (int) rgb[2]);
+		int[] hsv = RGBtoHSB(rgb[RED], rgb[GREEN], rgb[BLUE]);
+
+		// set new state
+		double newHue = ((double)hsv[0]) / 360d * 65535d;
+		double newSaturation = ((double) hsv[1]) / 100d * 65535d;
+		double newBrightness = ((double) hsv[2]) / 100d * 65535d;
+		
+		lifxDevice.setLightState(65535, newHue, newSaturation, lifxDevice.getKelvin(), newBrightness, 0);
+	}
+
+	private void setColors(Integer red, Integer green, Integer blue) throws Exception {
+		// get current state
+		int h = Math.round((float) (lifxDevice.getHue() / 65565d * 360d));
+		int s = Math.round((float) (lifxDevice.getSaturation() / 65535d * 100d));
+		int v = Math.round((float) (lifxDevice.getBrightness() / 65535d * 100d));
+
+		// convert current color in rgb
+		int[] rgb = HSVtoRGB(h, s, v);
+
+		// update values
+		if (red != null)
+			rgb[RED] = red;
+		if (green != null)
+			rgb[GREEN] = green;
+		if (blue != null)
+			rgb[BLUE] = blue;
+
+		// compute HSV
+		int[] hsv = RGBtoHSB(rgb[RED], rgb[GREEN], rgb[BLUE]);
 
 		// set new state
 		double newHue = ((double)hsv[0]) / 360d * 65535d;
@@ -150,13 +218,23 @@ public class LIFXSDTDevice extends Light {
 
 	private Integer getColor(int colorIndex) throws Exception {
 		// get current state
-		int h = Math.round((float)(lifxDevice.getHue() / 65565d * 360d));
-		int s = Math.round((float)  (lifxDevice.getSaturation() / 65535d * 100d));
+		int h = Math.round((float) (lifxDevice.getHue() / 65565d * 360d));
+		int s = Math.round((float) (lifxDevice.getSaturation() / 65535d * 100d));
 		int v = Math.round((float) (lifxDevice.getBrightness() / 65535d * 100d));
 
 		// convert current color in rgb
 		int[] rgb = HSVtoRGB(h, s, v);
 		return new Integer(rgb[colorIndex]);
+	}
+
+	private int[] getColors() {
+		// get current state
+		int h = Math.round((float) (lifxDevice.getHue() / 65565d * 360d));
+		int s = Math.round((float) (lifxDevice.getSaturation() / 65535d * 100d));
+		int v = Math.round((float) (lifxDevice.getBrightness() / 65535d * 100d));
+
+		// convert current color in rgb
+		return HSVtoRGB(h, s, v);
 	}
 
 	/**
