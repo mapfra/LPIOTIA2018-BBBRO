@@ -13,7 +13,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.eclipse.om2m.sdt.home.monitoring.util.AeRegistration;
 import org.eclipse.om2m.sdt.home.monitoring.util.Constants;
