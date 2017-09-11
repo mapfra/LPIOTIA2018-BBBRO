@@ -218,14 +218,16 @@ public class ContentInstanceController extends Controller {
 		// case parent is Container
 		if (parentEntity.getResourceType().intValue() == (ResourceType.CONTAINER)) {
 			ContainerEntity container = (ContainerEntity) parentEntity;
-					if (container.getMaxNrOfInstances()!= null ){
-						if (container.getCurrentNrOfInstances().intValue() >= container.getMaxNrOfInstances().intValue()) {
-							LOGGER.info("Deleting oldest content instance due to container size limit");
-							dbs.getDAOFactory().getContentInstanceDAO().delete(transaction, dbs.getDAOFactory().getOldestDAO().find(transaction, request.getTargetId()));	
-						}else{
-							container.setCurrentNrOfInstances(BigInteger.valueOf(container.getCurrentNrOfInstances().intValue()+1));
-						}
-					}
+			if (container.getMaxNrOfInstances()!= null ){
+				if (container.getCurrentNrOfInstances().intValue() >= container.getMaxNrOfInstances().intValue()) {
+					LOGGER.info("Deleting oldest content instance due to container size limit");
+					ContentInstanceEntity cinent = dbs.getDAOFactory().getOldestDAO().find(transaction, request.getTargetId());
+					dbs.getDAOFactory().getContentInstanceDAO().delete(transaction,cinent);
+					UriMapper.deleteUri(cinent.getHierarchicalURI());	
+				}else{
+					container.setCurrentNrOfInstances(BigInteger.valueOf(container.getCurrentNrOfInstances().intValue()+1));
+				}
+			}
 			cinEntity.setParentContainer(container);
 			if(container.getStateTag() != null){
 				container.setStateTag(BigInteger.valueOf(container.getStateTag().intValue() + 1));
