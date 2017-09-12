@@ -216,9 +216,11 @@ public class ContentInstanceController extends Controller {
 			if (container.getMaxNrOfInstances() != null && (cinList.size() == container.getMaxNrOfInstances().intValue())) {
 				LOGGER.info("Deleting oldest content instance due to container size limit: " + 
 						container.getChildContentInstances().get(0).getHierarchicalURI());
+				String hierarchicalUriToDelete = container.getChildContentInstances().get(0).getHierarchicalURI();
 				dbs.getDAOFactory().getContentInstanceDAO().delete(transaction, container.getChildContentInstances().get(0));
 				transaction.commit();
 				transaction.close();
+				UriMapper.deleteUri(hierarchicalUriToDelete);
 				transaction = dbs.getDbTransaction();
 				transaction.open();
 				container = (ContainerEntity)dao.find(transaction, request.getTargetId());

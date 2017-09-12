@@ -9,7 +9,6 @@ package org.eclipse.om2m.testsuite.flexcontainer;
 
 import java.util.List;
 
-import javax.servlet.ServletException;
 
 import org.eclipse.om2m.commons.constants.Constants;
 import org.eclipse.om2m.commons.constants.NotificationContentType;
@@ -26,6 +25,8 @@ import org.eclipse.om2m.datamapping.service.DataMapperService;
 import org.eclipse.om2m.testsuite.flexcontainer.TestReport.Status;
 import org.osgi.service.http.HttpService;
 import org.osgi.service.http.NamespaceException;
+import javax.servlet.ServletException;
+
 
 public class SubscriptionTest extends FlexContainerTestSuite {
 

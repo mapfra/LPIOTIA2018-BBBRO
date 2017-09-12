@@ -169,6 +169,7 @@ public class Activator implements BundleActivator {
 			subscriptionTest.executeTestsAndPrintReports();
 		}
 		
+		
 		AccessControlPolicyTest acpTest = new AccessControlPolicyTest(currentCseService);
 		acpTest.executeTestsAndPrintReports();
 		tests.add(acpTest);

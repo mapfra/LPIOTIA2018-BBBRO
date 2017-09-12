@@ -46,6 +46,19 @@
 			</java-attributes>
 		</java-type>
 
+        <!--  Request and Response Descriptions -->
+        <java-type name="RequestPrimitive">
+            <xml-root-element name="m2m:rqp"/>
+        </java-type>
+        
+        <java-type name="PrimitiveContent">
+            <xml-root-element name="pc"/>
+        </java-type>
+        
+        <java-type name="ResponsePrimitive">
+            <xml-root-element name="m2m:rsp"/>
+        </java-type>
+
 		<!-- CSE Descriptions -->
 		<java-type name="CSEBase">
 			<java-attributes>

@@ -267,3 +267,4 @@ public class AccessControlPolicyTest extends FlexContainerTestSuite {
 		createTestReport("testDeleteFlexContainerWithNoRight", Status.OK, null, null);
 	}
 }
+

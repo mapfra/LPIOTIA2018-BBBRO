@@ -22,6 +22,8 @@ package org.eclipse.om2m.core.notifier;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -78,6 +80,7 @@ public class Notifier {
 	 * @param resource - Notification resource
 	 */
 	public static void notify(List<SubscriptionEntity> listSubscription, ResourceEntity resource, int resourceStatus) {
+
 		notify(listSubscription, resource, null, resourceStatus);
 	}
 	
