@@ -1,11 +1,10 @@
-//
-// Ce fichier a été généré par l'implémentation de référence JavaTM Architecture for XML Binding (JAXB), v2.2.8-b130911.1802 
-// Voir <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
-// Toute modification apportée à ce fichier sera perdue lors de la recompilation du schéma source. 
-// Généré le : 2017.03.21 à 06:52:45 PM CET 
-//
-
-
+/*******************************************************************************
+ * Copyright (c) 2014, 2016 Orange.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *******************************************************************************/
 package org.eclipse.om2m.commons.resource;
 
 import java.math.BigInteger;
@@ -24,7 +23,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 /**
  * <p>Classe Java pour dynAuthDasRequest complex type.
  * 
- * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
+ * <p>Le fragment de schï¿½ma suivant indique le contenu attendu figurant dans cette classe.
  * 
  * <pre>
  * &lt;complexType name="dynAuthDasRequest">
@@ -127,7 +126,7 @@ public class DynAuthDasRequest {
     protected List<String> tokenIDs;
 
     /**
-     * Obtient la valeur de la propriété originator.
+     * Obtient la valeur de la propriï¿½tï¿½ originator.
      * 
      * @return
      *     possible object is
@@ -139,7 +138,7 @@ public class DynAuthDasRequest {
     }
 
     /**
-     * Définit la valeur de la propriété originator.
+     * Dï¿½finit la valeur de la propriï¿½tï¿½ originator.
      * 
      * @param value
      *     allowed object is
@@ -151,7 +150,7 @@ public class DynAuthDasRequest {
     }
 
     /**
-     * Obtient la valeur de la propriété targetedResourceType.
+     * Obtient la valeur de la propriï¿½tï¿½ targetedResourceType.
      * 
      * @return
      *     possible object is
@@ -163,7 +162,7 @@ public class DynAuthDasRequest {
     }
 
     /**
-     * Définit la valeur de la propriété targetedResourceType.
+     * Dï¿½finit la valeur de la propriï¿½tï¿½ targetedResourceType.
      * 
      * @param value
      *     allowed object is
@@ -175,7 +174,7 @@ public class DynAuthDasRequest {
     }
 
     /**
-     * Obtient la valeur de la propriété operation.
+     * Obtient la valeur de la propriï¿½tï¿½ operation.
      * 
      * @return
      *     possible object is
@@ -187,7 +186,7 @@ public class DynAuthDasRequest {
     }
 
     /**
-     * Définit la valeur de la propriété operation.
+     * Dï¿½finit la valeur de la propriï¿½tï¿½ operation.
      * 
      * @param value
      *     allowed object is
@@ -199,7 +198,7 @@ public class DynAuthDasRequest {
     }
 
     /**
-     * Obtient la valeur de la propriété originatorIP.
+     * Obtient la valeur de la propriï¿½tï¿½ originatorIP.
      * 
      * @return
      *     possible object is
@@ -211,7 +210,7 @@ public class DynAuthDasRequest {
     }
 
     /**
-     * Définit la valeur de la propriété originatorIP.
+     * Dï¿½finit la valeur de la propriï¿½tï¿½ originatorIP.
      * 
      * @param value
      *     allowed object is
@@ -223,7 +222,7 @@ public class DynAuthDasRequest {
     }
 
     /**
-     * Obtient la valeur de la propriété originatorLocation.
+     * Obtient la valeur de la propriï¿½tï¿½ originatorLocation.
      * 
      * @return
      *     possible object is
@@ -235,7 +234,7 @@ public class DynAuthDasRequest {
     }
 
     /**
-     * Définit la valeur de la propriété originatorLocation.
+     * Dï¿½finit la valeur de la propriï¿½tï¿½ originatorLocation.
      * 
      * @param value
      *     allowed object is
@@ -276,7 +275,7 @@ public class DynAuthDasRequest {
     }
 
     /**
-     * Obtient la valeur de la propriété requestTimestamp.
+     * Obtient la valeur de la propriï¿½tï¿½ requestTimestamp.
      * 
      * @return
      *     possible object is
@@ -288,7 +287,7 @@ public class DynAuthDasRequest {
     }
 
     /**
-     * Définit la valeur de la propriété requestTimestamp.
+     * Dï¿½finit la valeur de la propriï¿½tï¿½ requestTimestamp.
      * 
      * @param value
      *     allowed object is
@@ -300,7 +299,7 @@ public class DynAuthDasRequest {
     }
 
     /**
-     * Obtient la valeur de la propriété targetedResourceID.
+     * Obtient la valeur de la propriï¿½tï¿½ targetedResourceID.
      * 
      * @return
      *     possible object is
@@ -312,7 +311,7 @@ public class DynAuthDasRequest {
     }
 
     /**
-     * Définit la valeur de la propriété targetedResourceID.
+     * Dï¿½finit la valeur de la propriï¿½tï¿½ targetedResourceID.
      * 
      * @param value
      *     allowed object is
@@ -324,7 +323,7 @@ public class DynAuthDasRequest {
     }
 
     /**
-     * Obtient la valeur de la propriété proposedPrivilegesLifetime.
+     * Obtient la valeur de la propriï¿½tï¿½ proposedPrivilegesLifetime.
      * 
      * @return
      *     possible object is
@@ -336,7 +335,7 @@ public class DynAuthDasRequest {
     }
 
     /**
-     * Définit la valeur de la propriété proposedPrivilegesLifetime.
+     * Dï¿½finit la valeur de la propriï¿½tï¿½ proposedPrivilegesLifetime.
      * 
      * @param value
      *     allowed object is
@@ -409,7 +408,7 @@ public class DynAuthDasRequest {
     /**
      * <p>Classe Java pour anonymous complex type.
      * 
-     * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
+     * <p>Le fragment de schï¿½ma suivant indique le contenu attendu figurant dans cette classe.
      * 
      * <pre>
      * &lt;complexType>
@@ -441,7 +440,7 @@ public class DynAuthDasRequest {
         protected String ipv6Address;
 
         /**
-         * Obtient la valeur de la propriété ipv4Address.
+         * Obtient la valeur de la propriï¿½tï¿½ ipv4Address.
          * 
          * @return
          *     possible object is
@@ -453,7 +452,7 @@ public class DynAuthDasRequest {
         }
 
         /**
-         * Définit la valeur de la propriété ipv4Address.
+         * Dï¿½finit la valeur de la propriï¿½tï¿½ ipv4Address.
          * 
          * @param value
          *     allowed object is
@@ -465,7 +464,7 @@ public class DynAuthDasRequest {
         }
 
         /**
-         * Obtient la valeur de la propriété ipv6Address.
+         * Obtient la valeur de la propriï¿½tï¿½ ipv6Address.
          * 
          * @return
          *     possible object is
@@ -477,7 +476,7 @@ public class DynAuthDasRequest {
         }
 
         /**
-         * Définit la valeur de la propriété ipv6Address.
+         * Dï¿½finit la valeur de la propriï¿½tï¿½ ipv6Address.
          * 
          * @param value
          *     allowed object is

@@ -1,11 +1,10 @@
-//
-// Ce fichier a été généré par l'implémentation de référence JavaTM Architecture for XML Binding (JAXB), v2.2.8-b130911.1802 
-// Voir <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
-// Toute modification apportée à ce fichier sera perdue lors de la recompilation du schéma source. 
-// Généré le : 2017.03.21 à 06:52:45 PM CET 
-//
-
-
+/*******************************************************************************
+ * Copyright (c) 2014, 2016 Orange.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *******************************************************************************/
 package org.eclipse.om2m.commons.resource;
 
 import java.util.ArrayList;
@@ -20,7 +19,7 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>Classe Java pour dynAuthDasResponse complex type.
  * 
- * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
+ * <p>Le fragment de schï¿½ma suivant indique le contenu attendu figurant dans cette classe.
  * 
  * <pre>
  * &lt;complexType name="dynAuthDasResponse">
@@ -69,7 +68,7 @@ public class DynAuthDasResponse {
     protected List<String> tokens;
 
     /**
-     * Obtient la valeur de la propriété dynamicACPInfo.
+     * Obtient la valeur de la propriï¿½tï¿½ dynamicACPInfo.
      * 
      * @return
      *     possible object is
@@ -81,7 +80,7 @@ public class DynAuthDasResponse {
     }
 
     /**
-     * Définit la valeur de la propriété dynamicACPInfo.
+     * Dï¿½finit la valeur de la propriï¿½tï¿½ dynamicACPInfo.
      * 
      * @param value
      *     allowed object is
@@ -125,7 +124,7 @@ public class DynAuthDasResponse {
     /**
      * <p>Classe Java pour anonymous complex type.
      * 
-     * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
+     * <p>Le fragment de schï¿½ma suivant indique le contenu attendu figurant dans cette classe.
      * 
      * <pre>
      * &lt;complexType>
@@ -154,7 +153,7 @@ public class DynAuthDasResponse {
         protected String privilegesLifetime;
 
         /**
-         * Obtient la valeur de la propriété grantedPrivileges.
+         * Obtient la valeur de la propriï¿½tï¿½ grantedPrivileges.
          * 
          * @return
          *     possible object is
@@ -166,7 +165,7 @@ public class DynAuthDasResponse {
         }
 
         /**
-         * Définit la valeur de la propriété grantedPrivileges.
+         * Dï¿½finit la valeur de la propriï¿½tï¿½ grantedPrivileges.
          * 
          * @param value
          *     allowed object is
@@ -178,7 +177,7 @@ public class DynAuthDasResponse {
         }
 
         /**
-         * Obtient la valeur de la propriété privilegesLifetime.
+         * Obtient la valeur de la propriï¿½tï¿½ privilegesLifetime.
          * 
          * @return
          *     possible object is
@@ -190,7 +189,7 @@ public class DynAuthDasResponse {
         }
 
         /**
-         * Définit la valeur de la propriété privilegesLifetime.
+         * Dï¿½finit la valeur de la propriï¿½tï¿½ privilegesLifetime.
          * 
          * @param value
          *     allowed object is
