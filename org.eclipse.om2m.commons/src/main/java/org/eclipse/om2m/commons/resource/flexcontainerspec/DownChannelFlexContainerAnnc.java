@@ -1,11 +1,17 @@
 /*
+********************************************************************************
+ * Copyright (c) 2014, 2017 Orange.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ ********************************************************************************
+
 Action : downChannel
-
-
 
 Change the current channel to the previous channel in the  stored list of available channels. If the current channel is the  first one in the list, the new set channel may be the last one in  the list.
 
-Created: 2017-09-26 14:17:12
+Created: 2017-09-26 14:55:54
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;

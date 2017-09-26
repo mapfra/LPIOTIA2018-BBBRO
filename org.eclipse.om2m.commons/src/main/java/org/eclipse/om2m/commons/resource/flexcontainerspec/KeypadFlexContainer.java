@@ -1,11 +1,17 @@
 /*
+********************************************************************************
+ * Copyright (c) 2014, 2017 Orange.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ ********************************************************************************
+
 ModuleClass : Keypad
-
-
 
 This ModuleClass provides the capability to require a user  defined service through the key-in number. For example, a user can  define key 1 as "require a takeout from restaurant XXX with combo  meal 1". The IoT service provider or user can define the services.
 
-Created: 2017-09-26 14:17:12
+Created: 2017-09-26 14:55:54
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;

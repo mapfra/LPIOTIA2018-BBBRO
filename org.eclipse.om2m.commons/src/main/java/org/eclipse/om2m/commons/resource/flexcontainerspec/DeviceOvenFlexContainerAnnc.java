@@ -1,11 +1,17 @@
 /*
+********************************************************************************
+ * Copyright (c) 2014, 2017 Orange.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ ********************************************************************************
+
 Device : DeviceOvenAnnc
-
-
 
 An oven is a home appliance used to roast and heat food in a complete stove. This information model is applicable to different types of ovens: gas ovens, electrical ovens, steam ovens, microwave ovens, etc. This information model provides capabilities to interact with specific functions and resources of ovens.
 
-Created: 2017-09-26 14:17:12
+Created: 2017-09-26 14:55:54
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;

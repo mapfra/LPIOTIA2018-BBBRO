@@ -1,11 +1,17 @@
 /*
+********************************************************************************
+ * Copyright (c) 2014, 2017 Orange.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ ********************************************************************************
+
 ModuleClass : Temperature
-
-
 
 This ModuleClass provides capabilities to represent the current  temperature and target temperature of devices such as an air  conditioner, refrigerator, oven and etc.
 
-Created: 2017-09-26 14:17:12
+Created: 2017-09-26 14:55:54
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
