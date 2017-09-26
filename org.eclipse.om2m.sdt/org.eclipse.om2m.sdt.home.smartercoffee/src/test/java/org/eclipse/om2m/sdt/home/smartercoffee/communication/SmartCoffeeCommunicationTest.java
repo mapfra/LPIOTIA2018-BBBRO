@@ -13,14 +13,11 @@ import junit.framework.TestCase;
 public class SmartCoffeeCommunicationTest extends TestCase {
 
 	public void testStartBrewing() {
-		System.out.println("test");
-		
-		SmarterCoffeeCommunication smarterCoffeeCommunication = new SmarterCoffeeCommunication(null, 0);
-		smarterCoffeeCommunication.getStatus();
-		
-		System.out.println("waterStatus=" + smarterCoffeeCommunication.getWaterStatus());
-		
-		
-//		smarterCoffeeCommunication.start(true, 1, TasteStrength.maximum, true);
+		System.out.println("test escaped");
+		//System.out.println("test");
+		//SmarterCoffeeCommunication smarterCoffeeCommunication = new SmarterCoffeeCommunication(null, 0);
+		//smarterCoffeeCommunication.getStatus();	
+		//System.out.println("waterStatus=" + smarterCoffeeCommunication.getWaterStatus());
+
 	}
 }
