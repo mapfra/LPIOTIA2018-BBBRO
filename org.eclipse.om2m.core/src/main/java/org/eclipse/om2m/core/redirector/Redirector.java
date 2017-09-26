@@ -31,6 +31,7 @@ import org.eclipse.om2m.commons.constants.Operation;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.entities.AeEntity;
 import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
+import org.eclipse.om2m.commons.exceptions.BadRequestException;
 import org.eclipse.om2m.commons.exceptions.Om2mException;
 import org.eclipse.om2m.commons.exceptions.ResourceNotFoundException;
 import org.eclipse.om2m.commons.resource.RemoteCSE;
@@ -62,6 +63,15 @@ public class Redirector {
 	 * @return The generic returned response.
 	 */
 	public static ResponsePrimitive retarget(RequestPrimitive request) {
+		if (request.getTo() == null) {
+			if (request.getTargetId() == null) {
+				throw new BadRequestException("No To/TargetId parameter provided");
+			} else {
+				request.setTo(request.getTargetId());
+			}
+		} else if (request.getTargetId() == null) {
+			request.setTargetId(request.getTo());
+		}
 		String remoteCseId = "";
 		ResponsePrimitive response = new ResponsePrimitive(request);
 
@@ -211,6 +221,15 @@ public class Redirector {
 	}
 
 	public static ResponsePrimitive retargetNotify(RequestPrimitive request) {
+		if (request.getTo() == null) {
+			if (request.getTargetId() == null) {
+				throw new BadRequestException("No To/TargetId parameter provided");
+			} else {
+				request.setTo(request.getTargetId());
+			}
+		} else if (request.getTargetId() == null) {
+			request.setTargetId(request.getTo());
+		}
 		ResponsePrimitive response = new ResponsePrimitive(request);
 		DBService dbs = PersistenceService.getInstance().getDbService();
 		DBTransaction dbt = dbs.getDbTransaction();

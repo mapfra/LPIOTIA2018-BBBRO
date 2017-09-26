@@ -132,11 +132,13 @@ public class Router implements CseService {
 			}
 
 			// URI Handling
-			if(request.getTo() == null && request.getTargetId() == null){
-				throw new BadRequestException("No To parameter provided provided");
-			}
-			
-			if(request.getTargetId() == null){
+			if (request.getTo() == null) {
+				if (request.getTargetId() == null) {
+					throw new BadRequestException("No To/TargetId parameter provided");
+				} else {
+					request.setTo(request.getTargetId());
+				}
+			} else if (request.getTargetId() == null) {
 				request.setTargetId(request.getTo());
 			}
 
@@ -404,10 +406,8 @@ public class Router implements CseService {
 			
 			if(request.getTo() == null){
 				request.setTo(request.getTargetId().split("\\?")[0]);
-			} else {
-				request.setTo(request.getTo().split("\\?")[0]);
+				request.setTargetId(request.getTo());
 			}
-			request.setTargetId(request.getTo());
 		}
 
 	}
