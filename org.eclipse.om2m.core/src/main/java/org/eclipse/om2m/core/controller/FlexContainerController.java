@@ -224,7 +224,8 @@ public class FlexContainerController extends Controller {
 		// set name if present and without any conflict
 		if (flexContainer.getName() != null) {
 			if (!Patterns.checkResourceName(flexContainer.getName())) {
-				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
+				throw new BadRequestException("Name provided is incorrect: " + flexContainer.getName()
+					+ ". Must be:" + Patterns.ID_STRING);
 			}
 			flexContainerEntity.setName(flexContainer.getName());
 		} else {
