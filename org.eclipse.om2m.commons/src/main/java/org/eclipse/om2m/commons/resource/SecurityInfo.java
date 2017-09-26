@@ -1,11 +1,10 @@
-//
-// Ce fichier a été généré par l'implémentation de référence JavaTM Architecture for XML Binding (JAXB), v2.2.8-b130911.1802 
-// Voir <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
-// Toute modification apportée à ce fichier sera perdue lors de la recompilation du schéma source. 
-// Généré le : 2017.03.21 à 06:52:45 PM CET 
-//
-
-
+/*******************************************************************************
+ * Copyright (c) 2014, 2016 Orange.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *******************************************************************************/
 package org.eclipse.om2m.commons.resource;
 
 import java.math.BigInteger;
@@ -17,7 +16,7 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>Classe Java pour securityInfo complex type.
  * 
- * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
+ * <p>Le fragment de schï¿½ma suivant indique le contenu attendu figurant dans cette classe.
  * 
  * <pre>
  * &lt;complexType name="securityInfo">
@@ -57,7 +56,7 @@ public class SecurityInfo {
     protected byte[] escertkeMessage;
 
     /**
-     * Obtient la valeur de la propriété securityInfoType.
+     * Obtient la valeur de la propriï¿½tï¿½ securityInfoType.
      * 
      * @return
      *     possible object is
@@ -69,7 +68,7 @@ public class SecurityInfo {
     }
 
     /**
-     * Définit la valeur de la propriété securityInfoType.
+     * Dï¿½finit la valeur de la propriï¿½tï¿½ securityInfoType.
      * 
      * @param value
      *     allowed object is
@@ -81,7 +80,7 @@ public class SecurityInfo {
     }
 
     /**
-     * Obtient la valeur de la propriété dasRequest.
+     * Obtient la valeur de la propriï¿½tï¿½ dasRequest.
      * 
      * @return
      *     possible object is
@@ -93,7 +92,7 @@ public class SecurityInfo {
     }
 
     /**
-     * Définit la valeur de la propriété dasRequest.
+     * Dï¿½finit la valeur de la propriï¿½tï¿½ dasRequest.
      * 
      * @param value
      *     allowed object is
@@ -105,7 +104,7 @@ public class SecurityInfo {
     }
 
     /**
-     * Obtient la valeur de la propriété dasResponse.
+     * Obtient la valeur de la propriï¿½tï¿½ dasResponse.
      * 
      * @return
      *     possible object is
@@ -117,7 +116,7 @@ public class SecurityInfo {
     }
 
     /**
-     * Définit la valeur de la propriété dasResponse.
+     * Dï¿½finit la valeur de la propriï¿½tï¿½ dasResponse.
      * 
      * @param value
      *     allowed object is
@@ -129,7 +128,7 @@ public class SecurityInfo {
     }
 
     /**
-     * Obtient la valeur de la propriété esprimRandObject.
+     * Obtient la valeur de la propriï¿½tï¿½ esprimRandObject.
      * 
      * @return
      *     possible object is
@@ -141,7 +140,7 @@ public class SecurityInfo {
     }
 
     /**
-     * Définit la valeur de la propriété esprimRandObject.
+     * Dï¿½finit la valeur de la propriï¿½tï¿½ esprimRandObject.
      * 
      * @param value
      *     allowed object is
@@ -153,7 +152,7 @@ public class SecurityInfo {
     }
 
     /**
-     * Obtient la valeur de la propriété esprimObject.
+     * Obtient la valeur de la propriï¿½tï¿½ esprimObject.
      * 
      * @return
      *     possible object is
@@ -165,7 +164,7 @@ public class SecurityInfo {
     }
 
     /**
-     * Définit la valeur de la propriété esprimObject.
+     * Dï¿½finit la valeur de la propriï¿½tï¿½ esprimObject.
      * 
      * @param value
      *     allowed object is
@@ -177,7 +176,7 @@ public class SecurityInfo {
     }
 
     /**
-     * Obtient la valeur de la propriété escertkeMessage.
+     * Obtient la valeur de la propriï¿½tï¿½ escertkeMessage.
      * 
      * @return
      *     possible object is
@@ -188,7 +187,7 @@ public class SecurityInfo {
     }
 
     /**
-     * Définit la valeur de la propriété escertkeMessage.
+     * Dï¿½finit la valeur de la propriï¿½tï¿½ escertkeMessage.
      * 
      * @param value
      *     allowed object is
