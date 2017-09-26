@@ -5,7 +5,7 @@ ModuleClass : BinarySwitch
 
 This ModuleClass provides capabilities to control and monitor  the state of power.
 
-Created: 2017-08-09 15:38:05
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -35,6 +35,12 @@ public class BinarySwitchFlexContainer extends AbstractFlexContainer {
 	
 	public void finalizeSerialization() {
 		getToggle();
+	}
+	
+	public void finalizeDeserialization() {
+		if (this.toggle != null) {
+			setToggle(toggle);
+		}
 	}
 	
 	@XmlElement(name=ToggleFlexContainer.SHORT_NAME, required=true, type=ToggleFlexContainer.class)

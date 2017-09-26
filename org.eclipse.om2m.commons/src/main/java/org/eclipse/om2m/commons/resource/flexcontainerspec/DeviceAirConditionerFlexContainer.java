@@ -5,7 +5,7 @@ Device : DeviceAirConditioner
 
 An air conditioner is a home appliance used to alter the properties of air (primarily temperature and humidity) to more comfortable conditions. This air conditioner information model provides capabilities to control and monitor air conditioner specific functions and resources.
 
-Created: 2017-08-09 15:38:05
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -40,6 +40,27 @@ public class DeviceAirConditionerFlexContainer extends AbstractFlexContainer {
 		getTimer();
 		getTurbo();
 		getWind();
+	}
+	
+	public void finalizeDeserialization() {
+		if (this.binarySwitch != null) {
+			setBinarySwitch(this.binarySwitch);
+		}
+		if (this.runMode != null) {
+			setRunMode(this.runMode);
+		}
+		if (this.temperature != null) {
+			setTemperature(this.temperature);
+		}
+		if (this.timer != null) {
+			setTimer(this.timer);
+		}
+		if (this.turbo != null) {
+			setTurbo(this.turbo);
+		}
+		if (this.wind != null) {
+			setWind(this.wind);
+		}
 	}
 	
 	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainer.class)

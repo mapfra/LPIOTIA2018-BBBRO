@@ -5,7 +5,7 @@ Device : DeviceWaterHeater
 
 A water heater is a device that is used to provide hot water through home facilities.
 
-Created: 2017-08-09 15:38:05
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -40,6 +40,27 @@ public class DeviceWaterHeaterFlexContainer extends AbstractFlexContainer {
 		getClock();
 		getBoiler();
 		getHotWaterSupply();
+	}
+	
+	public void finalizeDeserialization() {
+		if (this.faultDetection != null) {
+			setFaultDetection(this.faultDetection);
+		}
+		if (this.binarySwitch != null) {
+			setBinarySwitch(this.binarySwitch);
+		}
+		if (this.runMode != null) {
+			setRunMode(this.runMode);
+		}
+		if (this.clock != null) {
+			setClock(this.clock);
+		}
+		if (this.boiler != null) {
+			setBoiler(this.boiler);
+		}
+		if (this.hotWaterSupply != null) {
+			setHotWaterSupply(this.hotWaterSupply);
+		}
 	}
 	
 	@XmlElement(name="fauDn", required=true, type=FaultDetectionFlexContainer.class)

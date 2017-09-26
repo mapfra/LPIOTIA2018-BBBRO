@@ -5,7 +5,7 @@ Device : DeviceElectricVehicleCharger
 
 An electric vehicle charger is a device that is used for charging or discharging electric vehicles.
 
-Created: 2017-08-09 15:38:05
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -39,6 +39,24 @@ public class DeviceElectricVehicleChargerFlexContainer extends AbstractFlexConta
 		getRunMode();
 		getBattery();
 		getElectricVehicleConnector();
+	}
+	
+	public void finalizeDeserialization() {
+		if (this.faultDetection != null) {
+			setFaultDetection(this.faultDetection);
+		}
+		if (this.binarySwitch != null) {
+			setBinarySwitch(this.binarySwitch);
+		}
+		if (this.runMode != null) {
+			setRunMode(this.runMode);
+		}
+		if (this.battery != null) {
+			setBattery(this.battery);
+		}
+		if (this.electricVehicleConnector != null) {
+			setElectricVehicleConnector(this.electricVehicleConnector);
+		}
 	}
 	
 	@XmlElement(name="fauDn", required=true, type=FaultDetectionFlexContainer.class)

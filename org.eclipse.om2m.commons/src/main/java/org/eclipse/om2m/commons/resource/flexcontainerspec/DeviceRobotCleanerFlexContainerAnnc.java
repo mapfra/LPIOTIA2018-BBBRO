@@ -5,7 +5,7 @@ Device : DeviceRobotCleanerAnnc
 
 A robot cleaner is an autonomous robotic vacuum cleaner that has intelligent programming and a limited vacuum cleaning system. This robot cleaner information model provides capabilities to control and monitor robot cleaner specific functions and resources.
 
-Created: 2017-08-09 15:38:05
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -44,6 +44,37 @@ public class DeviceRobotCleanerFlexContainerAnnc extends AbstractFlexContainerAn
 		getTimerAnnc();
 	}
 	
+	public void finalizeDeserialization() {
+		if (this.binarySwitch != null) {
+			setBinarySwitch(this.binarySwitch);
+		}
+		if (this.binarySwitchAnnc != null) {
+			setBinarySwitchAnnc(this.binarySwitchAnnc);
+			}
+		
+		if (this.runMode != null) {
+			setRunMode(this.runMode);
+		}
+		if (this.runModeAnnc != null) {
+			setRunModeAnnc(this.runModeAnnc);
+			}
+		
+		if (this.battery != null) {
+			setBattery(this.battery);
+		}
+		if (this.batteryAnnc != null) {
+			setBatteryAnnc(this.batteryAnnc);
+			}
+		
+		if (this.timer != null) {
+			setTimer(this.timer);
+		}
+		if (this.timerAnnc != null) {
+			setTimerAnnc(this.timerAnnc);
+			}
+		
+	}
+	
 	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainerAnnc.class)
 	private BinarySwitchFlexContainer binarySwitch;
 	
@@ -62,7 +93,7 @@ public class DeviceRobotCleanerFlexContainerAnnc extends AbstractFlexContainerAn
 	private BinarySwitchFlexContainerAnnc binarySwitchAnnc;
 	
 	
-	public void setBinarySwitch(BinarySwitchFlexContainerAnnc binarySwitchAnnc) {
+	public void setBinarySwitchAnnc(BinarySwitchFlexContainerAnnc binarySwitchAnnc) {
 		this.binarySwitchAnnc = binarySwitchAnnc;
 		getFlexContainerOrContainerOrSubscription().add(binarySwitchAnnc);
 	}
@@ -90,7 +121,7 @@ public class DeviceRobotCleanerFlexContainerAnnc extends AbstractFlexContainerAn
 	private RunModeFlexContainerAnnc runModeAnnc;
 	
 	
-	public void setRunMode(RunModeFlexContainerAnnc runModeAnnc) {
+	public void setRunModeAnnc(RunModeFlexContainerAnnc runModeAnnc) {
 		this.runModeAnnc = runModeAnnc;
 		getFlexContainerOrContainerOrSubscription().add(runModeAnnc);
 	}
@@ -118,7 +149,7 @@ public class DeviceRobotCleanerFlexContainerAnnc extends AbstractFlexContainerAn
 	private BatteryFlexContainerAnnc batteryAnnc;
 	
 	
-	public void setBattery(BatteryFlexContainerAnnc batteryAnnc) {
+	public void setBatteryAnnc(BatteryFlexContainerAnnc batteryAnnc) {
 		this.batteryAnnc = batteryAnnc;
 		getFlexContainerOrContainerOrSubscription().add(batteryAnnc);
 	}
@@ -146,7 +177,7 @@ public class DeviceRobotCleanerFlexContainerAnnc extends AbstractFlexContainerAn
 	private TimerFlexContainerAnnc timerAnnc;
 	
 	
-	public void setTimer(TimerFlexContainerAnnc timerAnnc) {
+	public void setTimerAnnc(TimerFlexContainerAnnc timerAnnc) {
 		this.timerAnnc = timerAnnc;
 		getFlexContainerOrContainerOrSubscription().add(timerAnnc);
 	}

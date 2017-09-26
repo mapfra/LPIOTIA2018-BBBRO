@@ -5,7 +5,7 @@ Action : toggle
 
 Toggle the switch.
 
-Created: 2017-08-09 14:07:04
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -31,6 +31,13 @@ public class ToggleFlexContainer extends AbstractFlexContainer {
 		setContainerDefinition("org.onem2m.home.moduleclass.binaryswitch." + ToggleFlexContainer.LONG_NAME);
 		setLongName(LONG_NAME);
 		setShortName(SHORT_NAME);
+	}
+	
+	
+	public void finalizeSerialization() {
+	}
+	
+	public void finalizeDeserialization() {
 	}
 	
 }

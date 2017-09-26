@@ -5,7 +5,7 @@ Device : DeviceAirConditionerAnnc
 
 An air conditioner is a home appliance used to alter the properties of air (primarily temperature and humidity) to more comfortable conditions. This air conditioner information model provides capabilities to control and monitor air conditioner specific functions and resources.
 
-Created: 2017-08-09 15:38:05
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -48,6 +48,51 @@ public class DeviceAirConditionerFlexContainerAnnc extends AbstractFlexContainer
 		getWindAnnc();
 	}
 	
+	public void finalizeDeserialization() {
+		if (this.binarySwitch != null) {
+			setBinarySwitch(this.binarySwitch);
+		}
+		if (this.binarySwitchAnnc != null) {
+			setBinarySwitchAnnc(this.binarySwitchAnnc);
+			}
+		
+		if (this.runMode != null) {
+			setRunMode(this.runMode);
+		}
+		if (this.runModeAnnc != null) {
+			setRunModeAnnc(this.runModeAnnc);
+			}
+		
+		if (this.temperature != null) {
+			setTemperature(this.temperature);
+		}
+		if (this.temperatureAnnc != null) {
+			setTemperatureAnnc(this.temperatureAnnc);
+			}
+		
+		if (this.timer != null) {
+			setTimer(this.timer);
+		}
+		if (this.timerAnnc != null) {
+			setTimerAnnc(this.timerAnnc);
+			}
+		
+		if (this.turbo != null) {
+			setTurbo(this.turbo);
+		}
+		if (this.turboAnnc != null) {
+			setTurboAnnc(this.turboAnnc);
+			}
+		
+		if (this.wind != null) {
+			setWind(this.wind);
+		}
+		if (this.windAnnc != null) {
+			setWindAnnc(this.windAnnc);
+			}
+		
+	}
+	
 	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainerAnnc.class)
 	private BinarySwitchFlexContainer binarySwitch;
 	
@@ -66,7 +111,7 @@ public class DeviceAirConditionerFlexContainerAnnc extends AbstractFlexContainer
 	private BinarySwitchFlexContainerAnnc binarySwitchAnnc;
 	
 	
-	public void setBinarySwitch(BinarySwitchFlexContainerAnnc binarySwitchAnnc) {
+	public void setBinarySwitchAnnc(BinarySwitchFlexContainerAnnc binarySwitchAnnc) {
 		this.binarySwitchAnnc = binarySwitchAnnc;
 		getFlexContainerOrContainerOrSubscription().add(binarySwitchAnnc);
 	}
@@ -94,7 +139,7 @@ public class DeviceAirConditionerFlexContainerAnnc extends AbstractFlexContainer
 	private RunModeFlexContainerAnnc runModeAnnc;
 	
 	
-	public void setRunMode(RunModeFlexContainerAnnc runModeAnnc) {
+	public void setRunModeAnnc(RunModeFlexContainerAnnc runModeAnnc) {
 		this.runModeAnnc = runModeAnnc;
 		getFlexContainerOrContainerOrSubscription().add(runModeAnnc);
 	}
@@ -122,7 +167,7 @@ public class DeviceAirConditionerFlexContainerAnnc extends AbstractFlexContainer
 	private TemperatureFlexContainerAnnc temperatureAnnc;
 	
 	
-	public void setTemperature(TemperatureFlexContainerAnnc temperatureAnnc) {
+	public void setTemperatureAnnc(TemperatureFlexContainerAnnc temperatureAnnc) {
 		this.temperatureAnnc = temperatureAnnc;
 		getFlexContainerOrContainerOrSubscription().add(temperatureAnnc);
 	}
@@ -150,7 +195,7 @@ public class DeviceAirConditionerFlexContainerAnnc extends AbstractFlexContainer
 	private TimerFlexContainerAnnc timerAnnc;
 	
 	
-	public void setTimer(TimerFlexContainerAnnc timerAnnc) {
+	public void setTimerAnnc(TimerFlexContainerAnnc timerAnnc) {
 		this.timerAnnc = timerAnnc;
 		getFlexContainerOrContainerOrSubscription().add(timerAnnc);
 	}
@@ -178,7 +223,7 @@ public class DeviceAirConditionerFlexContainerAnnc extends AbstractFlexContainer
 	private TurboFlexContainerAnnc turboAnnc;
 	
 	
-	public void setTurbo(TurboFlexContainerAnnc turboAnnc) {
+	public void setTurboAnnc(TurboFlexContainerAnnc turboAnnc) {
 		this.turboAnnc = turboAnnc;
 		getFlexContainerOrContainerOrSubscription().add(turboAnnc);
 	}
@@ -206,7 +251,7 @@ public class DeviceAirConditionerFlexContainerAnnc extends AbstractFlexContainer
 	private WindFlexContainerAnnc windAnnc;
 	
 	
-	public void setWind(WindFlexContainerAnnc windAnnc) {
+	public void setWindAnnc(WindFlexContainerAnnc windAnnc) {
 		this.windAnnc = windAnnc;
 		getFlexContainerOrContainerOrSubscription().add(windAnnc);
 	}

@@ -5,7 +5,7 @@ Device : DeviceCoffeeMachine
 
 A CoffeeMachine is a device that produces coffee.
 
-Created: 2017-08-09 15:38:05
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -46,6 +46,45 @@ public class DeviceCoffeeMachineFlexContainer extends AbstractFlexContainer {
 		getMilkQuantity();
 		getKeepWarm();
 		getBrewingSwitch();
+	}
+	
+	public void finalizeDeserialization() {
+		if (this.faultDetection != null) {
+			setFaultDetection(this.faultDetection);
+		}
+		if (this.runMode != null) {
+			setRunMode(this.runMode);
+		}
+		if (this.clock != null) {
+			setClock(this.clock);
+		}
+		if (this.brewing != null) {
+			setBrewing(this.brewing);
+		}
+		if (this.waterStatus != null) {
+			setWaterStatus(this.waterStatus);
+		}
+		if (this.milkStatus != null) {
+			setMilkStatus(this.milkStatus);
+		}
+		if (this.beansStatus != null) {
+			setBeansStatus(this.beansStatus);
+		}
+		if (this.grinder != null) {
+			setGrinder(this.grinder);
+		}
+		if (this.foamedMilk != null) {
+			setFoamedMilk(this.foamedMilk);
+		}
+		if (this.milkQuantity != null) {
+			setMilkQuantity(this.milkQuantity);
+		}
+		if (this.keepWarm != null) {
+			setKeepWarm(this.keepWarm);
+		}
+		if (this.brewingSwitch != null) {
+			setBrewingSwitch(this.brewingSwitch);
+		}
 	}
 	
 	@XmlElement(name="fauDn", required=true, type=FaultDetectionFlexContainer.class)

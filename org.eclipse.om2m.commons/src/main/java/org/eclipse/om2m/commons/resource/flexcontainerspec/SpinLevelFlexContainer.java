@@ -5,7 +5,7 @@ ModuleClass : SpinLevel
 
 This ModuleClass provides capabilities to control and monitor  the level of spin. It is intended to be part of objects which use  spinning function such as a washing machine and a dryer.
 
-Created: 2017-08-09 15:38:05
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -34,6 +34,9 @@ public class SpinLevelFlexContainer extends AbstractFlexContainer {
 	}
 	
 	public void finalizeSerialization() {
+	}
+	
+	public void finalizeDeserialization() {
 	}
 	
 }

@@ -5,7 +5,7 @@ Device : DeviceGasValve
 
 A gas valve is a device that is used to open/close a gas valve.
 
-Created: 2017-08-09 15:38:06
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -36,6 +36,15 @@ public class DeviceGasValveFlexContainer extends AbstractFlexContainer {
 	public void finalizeSerialization() {
 		getFaultDetection();
 		getBinarySwitch();
+	}
+	
+	public void finalizeDeserialization() {
+		if (this.faultDetection != null) {
+			setFaultDetection(this.faultDetection);
+		}
+		if (this.binarySwitch != null) {
+			setBinarySwitch(this.binarySwitch);
+		}
 	}
 	
 	@XmlElement(name="fauDn", required=true, type=FaultDetectionFlexContainer.class)

@@ -5,7 +5,7 @@ Device : DeviceContactDetectorAnnc
 
 A ContactDetector is a device that trigger alarm when contact is lost.
 
-Created: 2017-08-09 15:38:05
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -38,6 +38,16 @@ public class DeviceContactDetectorFlexContainerAnnc extends AbstractFlexContaine
 		getContactSensorAnnc();
 	}
 	
+	public void finalizeDeserialization() {
+		if (this.contactSensor != null) {
+			setContactSensor(this.contactSensor);
+		}
+		if (this.contactSensorAnnc != null) {
+			setContactSensorAnnc(this.contactSensorAnnc);
+			}
+		
+	}
+	
 	@XmlElement(name="conSr", required=true, type=ContactSensorFlexContainerAnnc.class)
 	private ContactSensorFlexContainer contactSensor;
 	
@@ -56,7 +66,7 @@ public class DeviceContactDetectorFlexContainerAnnc extends AbstractFlexContaine
 	private ContactSensorFlexContainerAnnc contactSensorAnnc;
 	
 	
-	public void setContactSensor(ContactSensorFlexContainerAnnc contactSensorAnnc) {
+	public void setContactSensorAnnc(ContactSensorFlexContainerAnnc contactSensorAnnc) {
 		this.contactSensorAnnc = contactSensorAnnc;
 		getFlexContainerOrContainerOrSubscription().add(contactSensorAnnc);
 	}

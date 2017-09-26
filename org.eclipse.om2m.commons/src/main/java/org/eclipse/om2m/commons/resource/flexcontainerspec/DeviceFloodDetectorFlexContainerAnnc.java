@@ -5,7 +5,7 @@ Device : DeviceFloodDetectorAnnc
 
 A door is a door.
 
-Created: 2017-08-09 15:38:05
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -38,6 +38,16 @@ public class DeviceFloodDetectorFlexContainerAnnc extends AbstractFlexContainerA
 		getWaterSensorAnnc();
 	}
 	
+	public void finalizeDeserialization() {
+		if (this.waterSensor != null) {
+			setWaterSensor(this.waterSensor);
+		}
+		if (this.waterSensorAnnc != null) {
+			setWaterSensorAnnc(this.waterSensorAnnc);
+			}
+		
+	}
+	
 	@XmlElement(name="watSr", required=true, type=WaterSensorFlexContainerAnnc.class)
 	private WaterSensorFlexContainer waterSensor;
 	
@@ -56,7 +66,7 @@ public class DeviceFloodDetectorFlexContainerAnnc extends AbstractFlexContainerA
 	private WaterSensorFlexContainerAnnc waterSensorAnnc;
 	
 	
-	public void setWaterSensor(WaterSensorFlexContainerAnnc waterSensorAnnc) {
+	public void setWaterSensorAnnc(WaterSensorFlexContainerAnnc waterSensorAnnc) {
 		this.waterSensorAnnc = waterSensorAnnc;
 		getFlexContainerOrContainerOrSubscription().add(waterSensorAnnc);
 	}

@@ -5,7 +5,7 @@ ModuleClass : AudioVideoInputAnnc
 
 This ModuleClass provides capabilities to control and monitor  audio video input source of device such as TV or SetTopBox.
 
-Created: 2017-08-09 15:38:05
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -34,6 +34,9 @@ public class AudioVideoInputFlexContainerAnnc extends AbstractFlexContainerAnnc 
 	}
 	
 	public void finalizeSerialization() {
+	}
+	
+	public void finalizeDeserialization() {
 	}
 	
 }

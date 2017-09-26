@@ -5,7 +5,7 @@ ModuleClass : EnergyConsumptionAnnc
 
 This ModuleClass describes the energy consumed by the device  since power up. One particular use case for energyConsumption  ModuleClass is smart meter.
 
-Created: 2017-08-09 15:38:05
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -34,6 +34,9 @@ public class EnergyConsumptionFlexContainerAnnc extends AbstractFlexContainerAnn
 	}
 	
 	public void finalizeSerialization() {
+	}
+	
+	public void finalizeDeserialization() {
 	}
 	
 }

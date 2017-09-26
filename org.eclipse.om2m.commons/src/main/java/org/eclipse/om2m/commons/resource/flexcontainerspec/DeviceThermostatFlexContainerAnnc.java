@@ -5,7 +5,7 @@ Device : DeviceThermostatAnnc
 
 A thermostat is used to control the ambient temperature of rooms within for example a house. This information model provides capabilities to interact with specific functions of thermostats.
 
-Created: 2017-08-09 15:38:05
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -42,6 +42,30 @@ public class DeviceThermostatFlexContainerAnnc extends AbstractFlexContainerAnnc
 		getTemperatureAnnc();
 	}
 	
+	public void finalizeDeserialization() {
+		if (this.runMode != null) {
+			setRunMode(this.runMode);
+		}
+		if (this.runModeAnnc != null) {
+			setRunModeAnnc(this.runModeAnnc);
+			}
+		
+		if (this.timer != null) {
+			setTimer(this.timer);
+		}
+		if (this.timerAnnc != null) {
+			setTimerAnnc(this.timerAnnc);
+			}
+		
+		if (this.temperature != null) {
+			setTemperature(this.temperature);
+		}
+		if (this.temperatureAnnc != null) {
+			setTemperatureAnnc(this.temperatureAnnc);
+			}
+		
+	}
+	
 	@XmlElement(name="runMe", required=true, type=RunModeFlexContainerAnnc.class)
 	private RunModeFlexContainer runMode;
 	
@@ -60,7 +84,7 @@ public class DeviceThermostatFlexContainerAnnc extends AbstractFlexContainerAnnc
 	private RunModeFlexContainerAnnc runModeAnnc;
 	
 	
-	public void setRunMode(RunModeFlexContainerAnnc runModeAnnc) {
+	public void setRunModeAnnc(RunModeFlexContainerAnnc runModeAnnc) {
 		this.runModeAnnc = runModeAnnc;
 		getFlexContainerOrContainerOrSubscription().add(runModeAnnc);
 	}
@@ -88,7 +112,7 @@ public class DeviceThermostatFlexContainerAnnc extends AbstractFlexContainerAnnc
 	private TimerFlexContainerAnnc timerAnnc;
 	
 	
-	public void setTimer(TimerFlexContainerAnnc timerAnnc) {
+	public void setTimerAnnc(TimerFlexContainerAnnc timerAnnc) {
 		this.timerAnnc = timerAnnc;
 		getFlexContainerOrContainerOrSubscription().add(timerAnnc);
 	}
@@ -116,7 +140,7 @@ public class DeviceThermostatFlexContainerAnnc extends AbstractFlexContainerAnnc
 	private TemperatureFlexContainerAnnc temperatureAnnc;
 	
 	
-	public void setTemperature(TemperatureFlexContainerAnnc temperatureAnnc) {
+	public void setTemperatureAnnc(TemperatureFlexContainerAnnc temperatureAnnc) {
 		this.temperatureAnnc = temperatureAnnc;
 		getFlexContainerOrContainerOrSubscription().add(temperatureAnnc);
 	}

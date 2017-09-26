@@ -5,7 +5,7 @@ Device : DeviceSmartElectricMeter
 
 A smart electric meter is a metering device that is used to measure consumption data for electrictricity.
 
-Created: 2017-08-09 15:38:05
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -40,6 +40,27 @@ public class DeviceSmartElectricMeterFlexContainer extends AbstractFlexContainer
 		getClock();
 		getEnergyConsumption();
 		getEnergyGeneration();
+	}
+	
+	public void finalizeDeserialization() {
+		if (this.faultDetection != null) {
+			setFaultDetection(this.faultDetection);
+		}
+		if (this.binarySwitch != null) {
+			setBinarySwitch(this.binarySwitch);
+		}
+		if (this.runMode != null) {
+			setRunMode(this.runMode);
+		}
+		if (this.clock != null) {
+			setClock(this.clock);
+		}
+		if (this.energyConsumption != null) {
+			setEnergyConsumption(this.energyConsumption);
+		}
+		if (this.energyGeneration != null) {
+			setEnergyGeneration(this.energyGeneration);
+		}
 	}
 	
 	@XmlElement(name="fauDn", required=true, type=FaultDetectionFlexContainer.class)

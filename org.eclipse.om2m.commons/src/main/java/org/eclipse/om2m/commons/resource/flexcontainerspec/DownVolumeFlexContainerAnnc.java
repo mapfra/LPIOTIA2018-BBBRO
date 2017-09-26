@@ -5,7 +5,7 @@ Action : downVolume
 
 Decrease volume by the amount of the stepValue down to 0.
 
-Created: 2017-08-09 15:38:05
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -31,6 +31,13 @@ public class DownVolumeFlexContainerAnnc extends AbstractFlexContainerAnnc {
 		setContainerDefinition("org.onem2m.home.moduleclass.audiovolume." + DownVolumeFlexContainer.LONG_NAME);
 		setLongName(LONG_NAME);
 		setShortName(SHORT_NAME);
+	}
+	
+	
+	public void finalizeSerialization() {
+	}
+	
+	public void finalizeDeserialization() {
 	}
 	
 }

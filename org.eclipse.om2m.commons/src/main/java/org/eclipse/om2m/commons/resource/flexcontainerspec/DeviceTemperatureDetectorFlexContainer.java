@@ -5,7 +5,7 @@ Device : DeviceTemperatureDetector
 
 A SwitchButton is a device that provides button.
 
-Created: 2017-08-09 15:38:06
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -36,6 +36,15 @@ public class DeviceTemperatureDetectorFlexContainer extends AbstractFlexContaine
 	public void finalizeSerialization() {
 		getAlarmSensor();
 		getTemperature();
+	}
+	
+	public void finalizeDeserialization() {
+		if (this.alarmSensor != null) {
+			setAlarmSensor(this.alarmSensor);
+		}
+		if (this.temperature != null) {
+			setTemperature(this.temperature);
+		}
 	}
 	
 	@XmlElement(name="alSer", required=true, type=AlarmSensorFlexContainer.class)

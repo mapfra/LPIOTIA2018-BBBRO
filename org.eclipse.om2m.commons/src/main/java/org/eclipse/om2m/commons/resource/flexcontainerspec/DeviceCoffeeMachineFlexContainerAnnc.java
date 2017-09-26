@@ -5,7 +5,7 @@ Device : DeviceCoffeeMachineAnnc
 
 A CoffeeMachine is a device that produces coffee.
 
-Created: 2017-08-09 15:38:05
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -60,6 +60,93 @@ public class DeviceCoffeeMachineFlexContainerAnnc extends AbstractFlexContainerA
 		getBrewingSwitchAnnc();
 	}
 	
+	public void finalizeDeserialization() {
+		if (this.faultDetection != null) {
+			setFaultDetection(this.faultDetection);
+		}
+		if (this.faultDetectionAnnc != null) {
+			setFaultDetectionAnnc(this.faultDetectionAnnc);
+			}
+		
+		if (this.runMode != null) {
+			setRunMode(this.runMode);
+		}
+		if (this.runModeAnnc != null) {
+			setRunModeAnnc(this.runModeAnnc);
+			}
+		
+		if (this.clock != null) {
+			setClock(this.clock);
+		}
+		if (this.clockAnnc != null) {
+			setClockAnnc(this.clockAnnc);
+			}
+		
+		if (this.brewing != null) {
+			setBrewing(this.brewing);
+		}
+		if (this.brewingAnnc != null) {
+			setBrewingAnnc(this.brewingAnnc);
+			}
+		
+		if (this.waterStatus != null) {
+			setWaterStatus(this.waterStatus);
+		}
+		if (this.waterStatusAnnc != null) {
+			setWaterStatusAnnc(this.waterStatusAnnc);
+			}
+		
+		if (this.milkStatus != null) {
+			setMilkStatus(this.milkStatus);
+		}
+		if (this.milkStatusAnnc != null) {
+			setMilkStatusAnnc(this.milkStatusAnnc);
+			}
+		
+		if (this.beansStatus != null) {
+			setBeansStatus(this.beansStatus);
+		}
+		if (this.beansStatusAnnc != null) {
+			setBeansStatusAnnc(this.beansStatusAnnc);
+			}
+		
+		if (this.grinder != null) {
+			setGrinder(this.grinder);
+		}
+		if (this.grinderAnnc != null) {
+			setGrinderAnnc(this.grinderAnnc);
+			}
+		
+		if (this.foamedMilk != null) {
+			setFoamedMilk(this.foamedMilk);
+		}
+		if (this.foamedMilkAnnc != null) {
+			setFoamedMilkAnnc(this.foamedMilkAnnc);
+			}
+		
+		if (this.milkQuantity != null) {
+			setMilkQuantity(this.milkQuantity);
+		}
+		if (this.milkQuantityAnnc != null) {
+			setMilkQuantityAnnc(this.milkQuantityAnnc);
+			}
+		
+		if (this.keepWarm != null) {
+			setKeepWarm(this.keepWarm);
+		}
+		if (this.keepWarmAnnc != null) {
+			setKeepWarmAnnc(this.keepWarmAnnc);
+			}
+		
+		if (this.brewingSwitch != null) {
+			setBrewingSwitch(this.brewingSwitch);
+		}
+		if (this.brewingSwitchAnnc != null) {
+			setBrewingSwitchAnnc(this.brewingSwitchAnnc);
+			}
+		
+	}
+	
 	@XmlElement(name="fauDn", required=true, type=FaultDetectionFlexContainerAnnc.class)
 	private FaultDetectionFlexContainer faultDetection;
 	
@@ -78,7 +165,7 @@ public class DeviceCoffeeMachineFlexContainerAnnc extends AbstractFlexContainerA
 	private FaultDetectionFlexContainerAnnc faultDetectionAnnc;
 	
 	
-	public void setFaultDetection(FaultDetectionFlexContainerAnnc faultDetectionAnnc) {
+	public void setFaultDetectionAnnc(FaultDetectionFlexContainerAnnc faultDetectionAnnc) {
 		this.faultDetectionAnnc = faultDetectionAnnc;
 		getFlexContainerOrContainerOrSubscription().add(faultDetectionAnnc);
 	}
@@ -106,7 +193,7 @@ public class DeviceCoffeeMachineFlexContainerAnnc extends AbstractFlexContainerA
 	private RunModeFlexContainerAnnc runModeAnnc;
 	
 	
-	public void setRunMode(RunModeFlexContainerAnnc runModeAnnc) {
+	public void setRunModeAnnc(RunModeFlexContainerAnnc runModeAnnc) {
 		this.runModeAnnc = runModeAnnc;
 		getFlexContainerOrContainerOrSubscription().add(runModeAnnc);
 	}
@@ -134,7 +221,7 @@ public class DeviceCoffeeMachineFlexContainerAnnc extends AbstractFlexContainerA
 	private ClockFlexContainerAnnc clockAnnc;
 	
 	
-	public void setClock(ClockFlexContainerAnnc clockAnnc) {
+	public void setClockAnnc(ClockFlexContainerAnnc clockAnnc) {
 		this.clockAnnc = clockAnnc;
 		getFlexContainerOrContainerOrSubscription().add(clockAnnc);
 	}
@@ -162,7 +249,7 @@ public class DeviceCoffeeMachineFlexContainerAnnc extends AbstractFlexContainerA
 	private BrewingFlexContainerAnnc brewingAnnc;
 	
 	
-	public void setBrewing(BrewingFlexContainerAnnc brewingAnnc) {
+	public void setBrewingAnnc(BrewingFlexContainerAnnc brewingAnnc) {
 		this.brewingAnnc = brewingAnnc;
 		getFlexContainerOrContainerOrSubscription().add(brewingAnnc);
 	}
@@ -190,7 +277,7 @@ public class DeviceCoffeeMachineFlexContainerAnnc extends AbstractFlexContainerA
 	private LiquidLevelFlexContainerAnnc waterStatusAnnc;
 	
 	
-	public void setWaterStatus(LiquidLevelFlexContainerAnnc waterStatusAnnc) {
+	public void setWaterStatusAnnc(LiquidLevelFlexContainerAnnc waterStatusAnnc) {
 		this.waterStatusAnnc = waterStatusAnnc;
 		getFlexContainerOrContainerOrSubscription().add(waterStatusAnnc);
 	}
@@ -218,7 +305,7 @@ public class DeviceCoffeeMachineFlexContainerAnnc extends AbstractFlexContainerA
 	private LiquidLevelFlexContainerAnnc milkStatusAnnc;
 	
 	
-	public void setMilkStatus(LiquidLevelFlexContainerAnnc milkStatusAnnc) {
+	public void setMilkStatusAnnc(LiquidLevelFlexContainerAnnc milkStatusAnnc) {
 		this.milkStatusAnnc = milkStatusAnnc;
 		getFlexContainerOrContainerOrSubscription().add(milkStatusAnnc);
 	}
@@ -246,7 +333,7 @@ public class DeviceCoffeeMachineFlexContainerAnnc extends AbstractFlexContainerA
 	private LiquidLevelFlexContainerAnnc beansStatusAnnc;
 	
 	
-	public void setBeansStatus(LiquidLevelFlexContainerAnnc beansStatusAnnc) {
+	public void setBeansStatusAnnc(LiquidLevelFlexContainerAnnc beansStatusAnnc) {
 		this.beansStatusAnnc = beansStatusAnnc;
 		getFlexContainerOrContainerOrSubscription().add(beansStatusAnnc);
 	}
@@ -274,7 +361,7 @@ public class DeviceCoffeeMachineFlexContainerAnnc extends AbstractFlexContainerA
 	private GrinderFlexContainerAnnc grinderAnnc;
 	
 	
-	public void setGrinder(GrinderFlexContainerAnnc grinderAnnc) {
+	public void setGrinderAnnc(GrinderFlexContainerAnnc grinderAnnc) {
 		this.grinderAnnc = grinderAnnc;
 		getFlexContainerOrContainerOrSubscription().add(grinderAnnc);
 	}
@@ -302,7 +389,7 @@ public class DeviceCoffeeMachineFlexContainerAnnc extends AbstractFlexContainerA
 	private FoamingFlexContainerAnnc foamedMilkAnnc;
 	
 	
-	public void setFoamedMilk(FoamingFlexContainerAnnc foamedMilkAnnc) {
+	public void setFoamedMilkAnnc(FoamingFlexContainerAnnc foamedMilkAnnc) {
 		this.foamedMilkAnnc = foamedMilkAnnc;
 		getFlexContainerOrContainerOrSubscription().add(foamedMilkAnnc);
 	}
@@ -330,7 +417,7 @@ public class DeviceCoffeeMachineFlexContainerAnnc extends AbstractFlexContainerA
 	private LiquidLevelFlexContainerAnnc milkQuantityAnnc;
 	
 	
-	public void setMilkQuantity(LiquidLevelFlexContainerAnnc milkQuantityAnnc) {
+	public void setMilkQuantityAnnc(LiquidLevelFlexContainerAnnc milkQuantityAnnc) {
 		this.milkQuantityAnnc = milkQuantityAnnc;
 		getFlexContainerOrContainerOrSubscription().add(milkQuantityAnnc);
 	}
@@ -358,7 +445,7 @@ public class DeviceCoffeeMachineFlexContainerAnnc extends AbstractFlexContainerA
 	private KeepWarmFlexContainerAnnc keepWarmAnnc;
 	
 	
-	public void setKeepWarm(KeepWarmFlexContainerAnnc keepWarmAnnc) {
+	public void setKeepWarmAnnc(KeepWarmFlexContainerAnnc keepWarmAnnc) {
 		this.keepWarmAnnc = keepWarmAnnc;
 		getFlexContainerOrContainerOrSubscription().add(keepWarmAnnc);
 	}
@@ -386,7 +473,7 @@ public class DeviceCoffeeMachineFlexContainerAnnc extends AbstractFlexContainerA
 	private BinarySwitchFlexContainerAnnc brewingSwitchAnnc;
 	
 	
-	public void setBrewingSwitch(BinarySwitchFlexContainerAnnc brewingSwitchAnnc) {
+	public void setBrewingSwitchAnnc(BinarySwitchFlexContainerAnnc brewingSwitchAnnc) {
 		this.brewingSwitchAnnc = brewingSwitchAnnc;
 		getFlexContainerOrContainerOrSubscription().add(brewingSwitchAnnc);
 	}

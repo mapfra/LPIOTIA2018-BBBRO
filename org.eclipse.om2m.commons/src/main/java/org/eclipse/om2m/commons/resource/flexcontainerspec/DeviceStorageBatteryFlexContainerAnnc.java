@@ -5,7 +5,7 @@ Device : DeviceStorageBatteryAnnc
 
 A storage battery is a HEMS device that is used to provide the home with electrical energy.
 
-Created: 2017-08-09 15:38:05
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -44,6 +44,37 @@ public class DeviceStorageBatteryFlexContainerAnnc extends AbstractFlexContainer
 		getBatteryAnnc();
 	}
 	
+	public void finalizeDeserialization() {
+		if (this.faultDetection != null) {
+			setFaultDetection(this.faultDetection);
+		}
+		if (this.faultDetectionAnnc != null) {
+			setFaultDetectionAnnc(this.faultDetectionAnnc);
+			}
+		
+		if (this.binarySwitch != null) {
+			setBinarySwitch(this.binarySwitch);
+		}
+		if (this.binarySwitchAnnc != null) {
+			setBinarySwitchAnnc(this.binarySwitchAnnc);
+			}
+		
+		if (this.runMode != null) {
+			setRunMode(this.runMode);
+		}
+		if (this.runModeAnnc != null) {
+			setRunModeAnnc(this.runModeAnnc);
+			}
+		
+		if (this.battery != null) {
+			setBattery(this.battery);
+		}
+		if (this.batteryAnnc != null) {
+			setBatteryAnnc(this.batteryAnnc);
+			}
+		
+	}
+	
 	@XmlElement(name="fauDn", required=true, type=FaultDetectionFlexContainerAnnc.class)
 	private FaultDetectionFlexContainer faultDetection;
 	
@@ -62,7 +93,7 @@ public class DeviceStorageBatteryFlexContainerAnnc extends AbstractFlexContainer
 	private FaultDetectionFlexContainerAnnc faultDetectionAnnc;
 	
 	
-	public void setFaultDetection(FaultDetectionFlexContainerAnnc faultDetectionAnnc) {
+	public void setFaultDetectionAnnc(FaultDetectionFlexContainerAnnc faultDetectionAnnc) {
 		this.faultDetectionAnnc = faultDetectionAnnc;
 		getFlexContainerOrContainerOrSubscription().add(faultDetectionAnnc);
 	}
@@ -90,7 +121,7 @@ public class DeviceStorageBatteryFlexContainerAnnc extends AbstractFlexContainer
 	private BinarySwitchFlexContainerAnnc binarySwitchAnnc;
 	
 	
-	public void setBinarySwitch(BinarySwitchFlexContainerAnnc binarySwitchAnnc) {
+	public void setBinarySwitchAnnc(BinarySwitchFlexContainerAnnc binarySwitchAnnc) {
 		this.binarySwitchAnnc = binarySwitchAnnc;
 		getFlexContainerOrContainerOrSubscription().add(binarySwitchAnnc);
 	}
@@ -118,7 +149,7 @@ public class DeviceStorageBatteryFlexContainerAnnc extends AbstractFlexContainer
 	private RunModeFlexContainerAnnc runModeAnnc;
 	
 	
-	public void setRunMode(RunModeFlexContainerAnnc runModeAnnc) {
+	public void setRunModeAnnc(RunModeFlexContainerAnnc runModeAnnc) {
 		this.runModeAnnc = runModeAnnc;
 		getFlexContainerOrContainerOrSubscription().add(runModeAnnc);
 	}
@@ -146,7 +177,7 @@ public class DeviceStorageBatteryFlexContainerAnnc extends AbstractFlexContainer
 	private BatteryFlexContainerAnnc batteryAnnc;
 	
 	
-	public void setBattery(BatteryFlexContainerAnnc batteryAnnc) {
+	public void setBatteryAnnc(BatteryFlexContainerAnnc batteryAnnc) {
 		this.batteryAnnc = batteryAnnc;
 		getFlexContainerOrContainerOrSubscription().add(batteryAnnc);
 	}

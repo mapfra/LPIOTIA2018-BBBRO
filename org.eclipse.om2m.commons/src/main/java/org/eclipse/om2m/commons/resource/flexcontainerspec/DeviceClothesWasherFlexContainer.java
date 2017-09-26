@@ -5,7 +5,7 @@ Device : DeviceClothesWasher
 
 A clothes washer is a home appliance that is used to wash laundry, such as clothing and sheets. This information model provides capabilities to interact with specific functions and resources of clothes washers.
 
-Created: 2017-08-09 15:38:05
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -42,6 +42,33 @@ public class DeviceClothesWasherFlexContainer extends AbstractFlexContainer {
 		getRinseLevel();
 		getWaterFlow();
 		getSpinLevel();
+	}
+	
+	public void finalizeDeserialization() {
+		if (this.binarySwitch != null) {
+			setBinarySwitch(this.binarySwitch);
+		}
+		if (this.timer != null) {
+			setTimer(this.timer);
+		}
+		if (this.runMode != null) {
+			setRunMode(this.runMode);
+		}
+		if (this.temperature != null) {
+			setTemperature(this.temperature);
+		}
+		if (this.waterLevel != null) {
+			setWaterLevel(this.waterLevel);
+		}
+		if (this.rinseLevel != null) {
+			setRinseLevel(this.rinseLevel);
+		}
+		if (this.waterFlow != null) {
+			setWaterFlow(this.waterFlow);
+		}
+		if (this.spinLevel != null) {
+			setSpinLevel(this.spinLevel);
+		}
 	}
 	
 	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainer.class)

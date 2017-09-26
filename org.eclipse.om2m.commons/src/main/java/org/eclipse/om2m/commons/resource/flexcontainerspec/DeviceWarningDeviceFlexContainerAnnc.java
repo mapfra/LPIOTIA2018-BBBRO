@@ -5,7 +5,7 @@ Device : DeviceWarningDeviceAnnc
 
 A WarningDevice is a device that prevents users about an alarm (ie a siren).
 
-Created: 2017-08-09 15:38:06
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -40,6 +40,23 @@ public class DeviceWarningDeviceFlexContainerAnnc extends AbstractFlexContainerA
 		getFaultDetectionAnnc();
 	}
 	
+	public void finalizeDeserialization() {
+		if (this.alarmSpeaker != null) {
+			setAlarmSpeaker(this.alarmSpeaker);
+		}
+		if (this.alarmSpeakerAnnc != null) {
+			setAlarmSpeakerAnnc(this.alarmSpeakerAnnc);
+			}
+		
+		if (this.faultDetection != null) {
+			setFaultDetection(this.faultDetection);
+		}
+		if (this.faultDetectionAnnc != null) {
+			setFaultDetectionAnnc(this.faultDetectionAnnc);
+			}
+		
+	}
+	
 	@XmlElement(name="alaSr", required=true, type=AlarmSpeakerFlexContainerAnnc.class)
 	private AlarmSpeakerFlexContainer alarmSpeaker;
 	
@@ -58,7 +75,7 @@ public class DeviceWarningDeviceFlexContainerAnnc extends AbstractFlexContainerA
 	private AlarmSpeakerFlexContainerAnnc alarmSpeakerAnnc;
 	
 	
-	public void setAlarmSpeaker(AlarmSpeakerFlexContainerAnnc alarmSpeakerAnnc) {
+	public void setAlarmSpeakerAnnc(AlarmSpeakerFlexContainerAnnc alarmSpeakerAnnc) {
 		this.alarmSpeakerAnnc = alarmSpeakerAnnc;
 		getFlexContainerOrContainerOrSubscription().add(alarmSpeakerAnnc);
 	}
@@ -86,7 +103,7 @@ public class DeviceWarningDeviceFlexContainerAnnc extends AbstractFlexContainerA
 	private FaultDetectionFlexContainerAnnc faultDetectionAnnc;
 	
 	
-	public void setFaultDetection(FaultDetectionFlexContainerAnnc faultDetectionAnnc) {
+	public void setFaultDetectionAnnc(FaultDetectionFlexContainerAnnc faultDetectionAnnc) {
 		this.faultDetectionAnnc = faultDetectionAnnc;
 		getFlexContainerOrContainerOrSubscription().add(faultDetectionAnnc);
 	}

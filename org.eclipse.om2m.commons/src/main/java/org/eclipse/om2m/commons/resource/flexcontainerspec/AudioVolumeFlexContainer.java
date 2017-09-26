@@ -5,7 +5,7 @@ ModuleClass : AudioVolume
 
 This ModuleClass provides capabilities to control and monitor  volume.
 
-Created: 2017-08-09 15:38:05
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -36,6 +36,15 @@ public class AudioVolumeFlexContainer extends AbstractFlexContainer {
 	public void finalizeSerialization() {
 		getUpVolume();
 		getDownVolume();
+	}
+	
+	public void finalizeDeserialization() {
+		if (this.upVolume != null) {
+			setUpVolume(upVolume);
+		}
+		if (this.downVolume != null) {
+			setDownVolume(downVolume);
+		}
 	}
 	
 	@XmlElement(name=UpVolumeFlexContainer.SHORT_NAME, required=true, type=UpVolumeFlexContainer.class)

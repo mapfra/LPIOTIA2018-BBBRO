@@ -5,7 +5,7 @@ ModuleClass : Colour
 
 This ModuleClass provides the capabilities to set the value of  Red, Green, Blue for the color device.
 
-Created: 2017-08-09 15:38:05
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -34,6 +34,9 @@ public class ColourFlexContainer extends AbstractFlexContainer {
 	}
 	
 	public void finalizeSerialization() {
+	}
+	
+	public void finalizeDeserialization() {
 	}
 	
 }

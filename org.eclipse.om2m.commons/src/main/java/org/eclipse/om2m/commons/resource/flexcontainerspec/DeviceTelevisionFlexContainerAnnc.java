@@ -5,7 +5,7 @@ Device : DeviceTelevisionAnnc
 
 A stelevision (TV) is a home appliance used to show audio and visual content such as broadcasting programs and network streaming. This TV information model provides capabilities to control and monitor TV specific resources.
 
-Created: 2017-08-09 15:38:05
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -44,6 +44,37 @@ public class DeviceTelevisionFlexContainerAnnc extends AbstractFlexContainerAnnc
 		getAudioVideoInputAnnc();
 	}
 	
+	public void finalizeDeserialization() {
+		if (this.binarySwitch != null) {
+			setBinarySwitch(this.binarySwitch);
+		}
+		if (this.binarySwitchAnnc != null) {
+			setBinarySwitchAnnc(this.binarySwitchAnnc);
+			}
+		
+		if (this.audioVolume != null) {
+			setAudioVolume(this.audioVolume);
+		}
+		if (this.audioVolumeAnnc != null) {
+			setAudioVolumeAnnc(this.audioVolumeAnnc);
+			}
+		
+		if (this.televisionChannel != null) {
+			setTelevisionChannel(this.televisionChannel);
+		}
+		if (this.televisionChannelAnnc != null) {
+			setTelevisionChannelAnnc(this.televisionChannelAnnc);
+			}
+		
+		if (this.audioVideoInput != null) {
+			setAudioVideoInput(this.audioVideoInput);
+		}
+		if (this.audioVideoInputAnnc != null) {
+			setAudioVideoInputAnnc(this.audioVideoInputAnnc);
+			}
+		
+	}
+	
 	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainerAnnc.class)
 	private BinarySwitchFlexContainer binarySwitch;
 	
@@ -62,7 +93,7 @@ public class DeviceTelevisionFlexContainerAnnc extends AbstractFlexContainerAnnc
 	private BinarySwitchFlexContainerAnnc binarySwitchAnnc;
 	
 	
-	public void setBinarySwitch(BinarySwitchFlexContainerAnnc binarySwitchAnnc) {
+	public void setBinarySwitchAnnc(BinarySwitchFlexContainerAnnc binarySwitchAnnc) {
 		this.binarySwitchAnnc = binarySwitchAnnc;
 		getFlexContainerOrContainerOrSubscription().add(binarySwitchAnnc);
 	}
@@ -90,7 +121,7 @@ public class DeviceTelevisionFlexContainerAnnc extends AbstractFlexContainerAnnc
 	private AudioVolumeFlexContainerAnnc audioVolumeAnnc;
 	
 	
-	public void setAudioVolume(AudioVolumeFlexContainerAnnc audioVolumeAnnc) {
+	public void setAudioVolumeAnnc(AudioVolumeFlexContainerAnnc audioVolumeAnnc) {
 		this.audioVolumeAnnc = audioVolumeAnnc;
 		getFlexContainerOrContainerOrSubscription().add(audioVolumeAnnc);
 	}
@@ -118,7 +149,7 @@ public class DeviceTelevisionFlexContainerAnnc extends AbstractFlexContainerAnnc
 	private TelevisionChannelFlexContainerAnnc televisionChannelAnnc;
 	
 	
-	public void setTelevisionChannel(TelevisionChannelFlexContainerAnnc televisionChannelAnnc) {
+	public void setTelevisionChannelAnnc(TelevisionChannelFlexContainerAnnc televisionChannelAnnc) {
 		this.televisionChannelAnnc = televisionChannelAnnc;
 		getFlexContainerOrContainerOrSubscription().add(televisionChannelAnnc);
 	}
@@ -146,7 +177,7 @@ public class DeviceTelevisionFlexContainerAnnc extends AbstractFlexContainerAnnc
 	private AudioVideoInputFlexContainerAnnc audioVideoInputAnnc;
 	
 	
-	public void setAudioVideoInput(AudioVideoInputFlexContainerAnnc audioVideoInputAnnc) {
+	public void setAudioVideoInputAnnc(AudioVideoInputFlexContainerAnnc audioVideoInputAnnc) {
 		this.audioVideoInputAnnc = audioVideoInputAnnc;
 		getFlexContainerOrContainerOrSubscription().add(audioVideoInputAnnc);
 	}

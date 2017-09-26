@@ -5,7 +5,7 @@ ModuleClass : ColourSaturation
 
 This ModuleClass describes a colour saturation value. The value  is an integer. A colourSaturation has a range of [0,100]. A  colourSaturation value of 0 means producing black and white images.  A colourSaturation value of 50 means producing device specific  normal colour images. A colourSaturation value of 100 means  producing device very colourfull images.
 
-Created: 2017-08-09 15:38:05
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -34,6 +34,9 @@ public class ColourSaturationFlexContainer extends AbstractFlexContainer {
 	}
 	
 	public void finalizeSerialization() {
+	}
+	
+	public void finalizeDeserialization() {
 	}
 	
 }

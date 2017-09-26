@@ -5,7 +5,7 @@ Device : DeviceLight
 
 A light is a device that is used to control the state of an illumination device.
 
-Created: 2017-08-09 15:38:05
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -40,6 +40,27 @@ public class DeviceLightFlexContainer extends AbstractFlexContainer {
 		getColour();
 		getColourSaturation();
 		getBrightness();
+	}
+	
+	public void finalizeDeserialization() {
+		if (this.faultDetection != null) {
+			setFaultDetection(this.faultDetection);
+		}
+		if (this.binarySwitch != null) {
+			setBinarySwitch(this.binarySwitch);
+		}
+		if (this.runMode != null) {
+			setRunMode(this.runMode);
+		}
+		if (this.colour != null) {
+			setColour(this.colour);
+		}
+		if (this.colourSaturation != null) {
+			setColourSaturation(this.colourSaturation);
+		}
+		if (this.brightness != null) {
+			setBrightness(this.brightness);
+		}
 	}
 	
 	@XmlElement(name="fauDn", required=true, type=FaultDetectionFlexContainer.class)

@@ -5,7 +5,7 @@ ModuleClass : AudioVolumeAnnc
 
 This ModuleClass provides capabilities to control and monitor  volume.
 
-Created: 2017-08-09 15:38:05
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -38,11 +38,20 @@ public class AudioVolumeFlexContainerAnnc extends AbstractFlexContainerAnnc {
 		getDownVolumeAnnc();
 	}
 	
+	public void finalizeDeserialization() {
+		if (this.upVolumeAnnc != null) {
+			setUpVolumeAnnc(upVolumeAnnc);
+		}
+		if (this.downVolumeAnnc != null) {
+			setDownVolumeAnnc(downVolumeAnnc);
+		}
+	}
+	
 	@XmlElement(name=UpVolumeFlexContainerAnnc.SHORT_NAME, required=true, type=UpVolumeFlexContainerAnnc.class)
 	private UpVolumeFlexContainerAnnc upVolumeAnnc;
 	
 	
-	public void setUpVolume(UpVolumeFlexContainerAnnc upVolumeAnnc) {
+	public void setUpVolumeAnnc(UpVolumeFlexContainerAnnc upVolumeAnnc) {
 		this.upVolumeAnnc = upVolumeAnnc;
 		getFlexContainerOrContainerOrSubscription().add(upVolumeAnnc);
 	}
@@ -56,7 +65,7 @@ public class AudioVolumeFlexContainerAnnc extends AbstractFlexContainerAnnc {
 	private DownVolumeFlexContainerAnnc downVolumeAnnc;
 	
 	
-	public void setDownVolume(DownVolumeFlexContainerAnnc downVolumeAnnc) {
+	public void setDownVolumeAnnc(DownVolumeFlexContainerAnnc downVolumeAnnc) {
 		this.downVolumeAnnc = downVolumeAnnc;
 		getFlexContainerOrContainerOrSubscription().add(downVolumeAnnc);
 	}

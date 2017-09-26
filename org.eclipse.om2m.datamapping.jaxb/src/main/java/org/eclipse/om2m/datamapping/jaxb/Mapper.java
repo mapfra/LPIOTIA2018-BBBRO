@@ -32,10 +32,13 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.Unmarshaller.Listener;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.om2m.commons.constants.MimeMediaType;
+import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
+import org.eclipse.om2m.commons.resource.AbstractFlexContainerAnnc;
 import org.eclipse.om2m.commons.resource.URIList;
 import org.eclipse.om2m.datamapping.service.DataMapperService;
 import org.eclipse.persistence.jaxb.JAXBContextProperties;
@@ -160,6 +163,20 @@ public class Mapper implements DataMapperService {
 			namespaces.put("http://www.onem2m.org/xml/protocols", "m2m"); 
 			unmarshaller.setProperty(MarshallerProperties.NAMESPACE_PREFIX_MAPPER, namespaces);
 			unmarshaller.setProperty(MarshallerProperties.JSON_NAMESPACE_SEPARATOR, ':');
+			
+			unmarshaller.setListener(new Listener() {
+				
+				@Override
+				public void afterUnmarshal(Object target, Object parent) {
+					System.out.println("afterUnmarshal (target=" + target + ", parent=" + parent + ")");
+					super.afterUnmarshal(target, parent);
+					
+					if (target instanceof AbstractFlexContainer) {
+						((AbstractFlexContainer) target).finalizeDeserialization();
+					}
+				}
+			});
+			
 			
 			Object unmarshaledObject = unmarshaller.unmarshal(stringReader);
 			Object toBeReturned = null;

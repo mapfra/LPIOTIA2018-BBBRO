@@ -5,7 +5,7 @@ ModuleClass : BatteryAnnc
 
 Battery indicates the detection of low battery and gives an  alarm if triggering criterion is met. The charge value in the module  shows the current battery charge level.
 
-Created: 2017-08-09 15:38:05
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -34,6 +34,9 @@ public class BatteryFlexContainerAnnc extends AbstractFlexContainerAnnc {
 	}
 	
 	public void finalizeSerialization() {
+	}
+	
+	public void finalizeDeserialization() {
 	}
 	
 }

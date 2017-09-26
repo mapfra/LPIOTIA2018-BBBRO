@@ -5,7 +5,7 @@ Device : DeviceCameraAnnc
 
 A Camera is a device that provides video streaming feature.
 
-Created: 2017-08-09 15:38:05
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -42,6 +42,30 @@ public class DeviceCameraFlexContainerAnnc extends AbstractFlexContainerAnnc {
 		getPersonSensorAnnc();
 	}
 	
+	public void finalizeDeserialization() {
+		if (this.motionSensor != null) {
+			setMotionSensor(this.motionSensor);
+		}
+		if (this.motionSensorAnnc != null) {
+			setMotionSensorAnnc(this.motionSensorAnnc);
+			}
+		
+		if (this.streaming != null) {
+			setStreaming(this.streaming);
+		}
+		if (this.streamingAnnc != null) {
+			setStreamingAnnc(this.streamingAnnc);
+			}
+		
+		if (this.personSensor != null) {
+			setPersonSensor(this.personSensor);
+		}
+		if (this.personSensorAnnc != null) {
+			setPersonSensorAnnc(this.personSensorAnnc);
+			}
+		
+	}
+	
 	@XmlElement(name="motSr", required=true, type=MotionSensorFlexContainerAnnc.class)
 	private MotionSensorFlexContainer motionSensor;
 	
@@ -60,7 +84,7 @@ public class DeviceCameraFlexContainerAnnc extends AbstractFlexContainerAnnc {
 	private MotionSensorFlexContainerAnnc motionSensorAnnc;
 	
 	
-	public void setMotionSensor(MotionSensorFlexContainerAnnc motionSensorAnnc) {
+	public void setMotionSensorAnnc(MotionSensorFlexContainerAnnc motionSensorAnnc) {
 		this.motionSensorAnnc = motionSensorAnnc;
 		getFlexContainerOrContainerOrSubscription().add(motionSensorAnnc);
 	}
@@ -88,7 +112,7 @@ public class DeviceCameraFlexContainerAnnc extends AbstractFlexContainerAnnc {
 	private StreamingFlexContainerAnnc streamingAnnc;
 	
 	
-	public void setStreaming(StreamingFlexContainerAnnc streamingAnnc) {
+	public void setStreamingAnnc(StreamingFlexContainerAnnc streamingAnnc) {
 		this.streamingAnnc = streamingAnnc;
 		getFlexContainerOrContainerOrSubscription().add(streamingAnnc);
 	}
@@ -116,7 +140,7 @@ public class DeviceCameraFlexContainerAnnc extends AbstractFlexContainerAnnc {
 	private PersonSensorFlexContainerAnnc personSensorAnnc;
 	
 	
-	public void setPersonSensor(PersonSensorFlexContainerAnnc personSensorAnnc) {
+	public void setPersonSensorAnnc(PersonSensorFlexContainerAnnc personSensorAnnc) {
 		this.personSensorAnnc = personSensorAnnc;
 		getFlexContainerOrContainerOrSubscription().add(personSensorAnnc);
 	}

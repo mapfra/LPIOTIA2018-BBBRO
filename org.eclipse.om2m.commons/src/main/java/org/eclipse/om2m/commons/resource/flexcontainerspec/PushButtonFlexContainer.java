@@ -5,7 +5,7 @@ ModuleClass : PushButton
 
 This ModuleClass provides the capability to indicate the  operation of a button style switch. A typical application can be an  SOS button.
 
-Created: 2017-08-09 15:38:05
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -34,6 +34,9 @@ public class PushButtonFlexContainer extends AbstractFlexContainer {
 	}
 	
 	public void finalizeSerialization() {
+	}
+	
+	public void finalizeDeserialization() {
 	}
 	
 }

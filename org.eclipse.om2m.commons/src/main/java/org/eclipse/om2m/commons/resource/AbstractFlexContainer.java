@@ -379,10 +379,9 @@ public abstract class AbstractFlexContainer extends AnnounceableResource {
 		return this.flexContainerOrContainerOrSubscription;
 	}
 	
-	public void finalizeSerialization() {
-		// do nothing
-		// should be overwrote 
-	}
+	public abstract void finalizeSerialization();
+	
+	public abstract void finalizeDeserialization();
 
 	public Resource getResourceByName(String name) {
 		for(Resource r : getFlexContainerOrContainerOrSubscription()) {

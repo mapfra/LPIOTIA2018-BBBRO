@@ -5,7 +5,7 @@ Device : DeviceWeatherStationAnnc
 
 A WeatherStation is a device that provides weather information.
 
-Created: 2017-08-09 15:38:06
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -46,6 +46,44 @@ public class DeviceWeatherStationFlexContainerAnnc extends AbstractFlexContainer
 		getExtendedCarbonDioxideSensorAnnc();
 	}
 	
+	public void finalizeDeserialization() {
+		if (this.temperature != null) {
+			setTemperature(this.temperature);
+		}
+		if (this.temperatureAnnc != null) {
+			setTemperatureAnnc(this.temperatureAnnc);
+			}
+		
+		if (this.relativeHumidity != null) {
+			setRelativeHumidity(this.relativeHumidity);
+		}
+		if (this.relativeHumidityAnnc != null) {
+			setRelativeHumidityAnnc(this.relativeHumidityAnnc);
+			}
+		
+		if (this.atmosphericPressureSensor != null) {
+			setAtmosphericPressureSensor(this.atmosphericPressureSensor);
+		}
+		if (this.atmosphericPressureSensorAnnc != null) {
+			setAtmosphericPressureSensorAnnc(this.atmosphericPressureSensorAnnc);
+			}
+		
+		if (this.noise != null) {
+			setNoise(this.noise);
+		}
+		if (this.noiseAnnc != null) {
+			setNoiseAnnc(this.noiseAnnc);
+			}
+		
+		if (this.extendedCarbonDioxideSensor != null) {
+			setExtendedCarbonDioxideSensor(this.extendedCarbonDioxideSensor);
+		}
+		if (this.extendedCarbonDioxideSensorAnnc != null) {
+			setExtendedCarbonDioxideSensorAnnc(this.extendedCarbonDioxideSensorAnnc);
+			}
+		
+	}
+	
 	@XmlElement(name="tempe", required=true, type=TemperatureFlexContainerAnnc.class)
 	private TemperatureFlexContainer temperature;
 	
@@ -64,7 +102,7 @@ public class DeviceWeatherStationFlexContainerAnnc extends AbstractFlexContainer
 	private TemperatureFlexContainerAnnc temperatureAnnc;
 	
 	
-	public void setTemperature(TemperatureFlexContainerAnnc temperatureAnnc) {
+	public void setTemperatureAnnc(TemperatureFlexContainerAnnc temperatureAnnc) {
 		this.temperatureAnnc = temperatureAnnc;
 		getFlexContainerOrContainerOrSubscription().add(temperatureAnnc);
 	}
@@ -92,7 +130,7 @@ public class DeviceWeatherStationFlexContainerAnnc extends AbstractFlexContainer
 	private RelativeHumidityFlexContainerAnnc relativeHumidityAnnc;
 	
 	
-	public void setRelativeHumidity(RelativeHumidityFlexContainerAnnc relativeHumidityAnnc) {
+	public void setRelativeHumidityAnnc(RelativeHumidityFlexContainerAnnc relativeHumidityAnnc) {
 		this.relativeHumidityAnnc = relativeHumidityAnnc;
 		getFlexContainerOrContainerOrSubscription().add(relativeHumidityAnnc);
 	}
@@ -120,7 +158,7 @@ public class DeviceWeatherStationFlexContainerAnnc extends AbstractFlexContainer
 	private AtmosphericPressureSensorFlexContainerAnnc atmosphericPressureSensorAnnc;
 	
 	
-	public void setAtmosphericPressureSensor(AtmosphericPressureSensorFlexContainerAnnc atmosphericPressureSensorAnnc) {
+	public void setAtmosphericPressureSensorAnnc(AtmosphericPressureSensorFlexContainerAnnc atmosphericPressureSensorAnnc) {
 		this.atmosphericPressureSensorAnnc = atmosphericPressureSensorAnnc;
 		getFlexContainerOrContainerOrSubscription().add(atmosphericPressureSensorAnnc);
 	}
@@ -148,7 +186,7 @@ public class DeviceWeatherStationFlexContainerAnnc extends AbstractFlexContainer
 	private NoiseFlexContainerAnnc noiseAnnc;
 	
 	
-	public void setNoise(NoiseFlexContainerAnnc noiseAnnc) {
+	public void setNoiseAnnc(NoiseFlexContainerAnnc noiseAnnc) {
 		this.noiseAnnc = noiseAnnc;
 		getFlexContainerOrContainerOrSubscription().add(noiseAnnc);
 	}
@@ -176,7 +214,7 @@ public class DeviceWeatherStationFlexContainerAnnc extends AbstractFlexContainer
 	private ExtendedCarbonDioxideSensorFlexContainerAnnc extendedCarbonDioxideSensorAnnc;
 	
 	
-	public void setExtendedCarbonDioxideSensor(ExtendedCarbonDioxideSensorFlexContainerAnnc extendedCarbonDioxideSensorAnnc) {
+	public void setExtendedCarbonDioxideSensorAnnc(ExtendedCarbonDioxideSensorFlexContainerAnnc extendedCarbonDioxideSensorAnnc) {
 		this.extendedCarbonDioxideSensorAnnc = extendedCarbonDioxideSensorAnnc;
 		getFlexContainerOrContainerOrSubscription().add(extendedCarbonDioxideSensorAnnc);
 	}

@@ -5,7 +5,7 @@ Device : DeviceOven
 
 An oven is a home appliance used to roast and heat food in a complete stove. This information model is applicable to different types of ovens: gas ovens, electrical ovens, steam ovens, microwave ovens, etc. This information model provides capabilities to interact with specific functions and resources of ovens.
 
-Created: 2017-08-09 15:38:05
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -38,6 +38,21 @@ public class DeviceOvenFlexContainer extends AbstractFlexContainer {
 		getRunMode();
 		getTimer();
 		getTemperature();
+	}
+	
+	public void finalizeDeserialization() {
+		if (this.binarySwitch != null) {
+			setBinarySwitch(this.binarySwitch);
+		}
+		if (this.runMode != null) {
+			setRunMode(this.runMode);
+		}
+		if (this.timer != null) {
+			setTimer(this.timer);
+		}
+		if (this.temperature != null) {
+			setTemperature(this.temperature);
+		}
 	}
 	
 	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainer.class)

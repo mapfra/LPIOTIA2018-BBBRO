@@ -5,7 +5,7 @@ ModuleClass : TemperatureAlarmAnnc
 
 This ModuleClass provides the capabilities to indicates the  detection of abnormal temperatures and raies an alarm if the  triggering criterion is met.
 
-Created: 2017-08-09 15:38:05
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -34,6 +34,9 @@ public class TemperatureAlarmFlexContainerAnnc extends AbstractFlexContainerAnnc
 	}
 	
 	public void finalizeSerialization() {
+	}
+	
+	public void finalizeDeserialization() {
 	}
 	
 }

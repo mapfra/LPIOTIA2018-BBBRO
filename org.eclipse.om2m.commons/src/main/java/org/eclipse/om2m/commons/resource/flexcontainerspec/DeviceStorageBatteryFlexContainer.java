@@ -5,7 +5,7 @@ Device : DeviceStorageBattery
 
 A storage battery is a HEMS device that is used to provide the home with electrical energy.
 
-Created: 2017-08-09 15:38:05
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -38,6 +38,21 @@ public class DeviceStorageBatteryFlexContainer extends AbstractFlexContainer {
 		getBinarySwitch();
 		getRunMode();
 		getBattery();
+	}
+	
+	public void finalizeDeserialization() {
+		if (this.faultDetection != null) {
+			setFaultDetection(this.faultDetection);
+		}
+		if (this.binarySwitch != null) {
+			setBinarySwitch(this.binarySwitch);
+		}
+		if (this.runMode != null) {
+			setRunMode(this.runMode);
+		}
+		if (this.battery != null) {
+			setBattery(this.battery);
+		}
 	}
 	
 	@XmlElement(name="fauDn", required=true, type=FaultDetectionFlexContainer.class)

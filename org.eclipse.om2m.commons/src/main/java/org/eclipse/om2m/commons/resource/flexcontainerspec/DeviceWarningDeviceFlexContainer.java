@@ -5,7 +5,7 @@ Device : DeviceWarningDevice
 
 A WarningDevice is a device that prevents users about an alarm (ie a siren).
 
-Created: 2017-08-09 15:38:06
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -36,6 +36,15 @@ public class DeviceWarningDeviceFlexContainer extends AbstractFlexContainer {
 	public void finalizeSerialization() {
 		getAlarmSpeaker();
 		getFaultDetection();
+	}
+	
+	public void finalizeDeserialization() {
+		if (this.alarmSpeaker != null) {
+			setAlarmSpeaker(this.alarmSpeaker);
+		}
+		if (this.faultDetection != null) {
+			setFaultDetection(this.faultDetection);
+		}
 	}
 	
 	@XmlElement(name="alaSr", required=true, type=AlarmSpeakerFlexContainer.class)

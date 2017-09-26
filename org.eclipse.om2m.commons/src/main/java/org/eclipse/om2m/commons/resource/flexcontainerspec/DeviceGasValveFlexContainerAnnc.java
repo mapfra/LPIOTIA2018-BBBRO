@@ -5,7 +5,7 @@ Device : DeviceGasValveAnnc
 
 A gas valve is a device that is used to open/close a gas valve.
 
-Created: 2017-08-09 15:38:06
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -40,6 +40,23 @@ public class DeviceGasValveFlexContainerAnnc extends AbstractFlexContainerAnnc {
 		getBinarySwitchAnnc();
 	}
 	
+	public void finalizeDeserialization() {
+		if (this.faultDetection != null) {
+			setFaultDetection(this.faultDetection);
+		}
+		if (this.faultDetectionAnnc != null) {
+			setFaultDetectionAnnc(this.faultDetectionAnnc);
+			}
+		
+		if (this.binarySwitch != null) {
+			setBinarySwitch(this.binarySwitch);
+		}
+		if (this.binarySwitchAnnc != null) {
+			setBinarySwitchAnnc(this.binarySwitchAnnc);
+			}
+		
+	}
+	
 	@XmlElement(name="fauDn", required=true, type=FaultDetectionFlexContainerAnnc.class)
 	private FaultDetectionFlexContainer faultDetection;
 	
@@ -58,7 +75,7 @@ public class DeviceGasValveFlexContainerAnnc extends AbstractFlexContainerAnnc {
 	private FaultDetectionFlexContainerAnnc faultDetectionAnnc;
 	
 	
-	public void setFaultDetection(FaultDetectionFlexContainerAnnc faultDetectionAnnc) {
+	public void setFaultDetectionAnnc(FaultDetectionFlexContainerAnnc faultDetectionAnnc) {
 		this.faultDetectionAnnc = faultDetectionAnnc;
 		getFlexContainerOrContainerOrSubscription().add(faultDetectionAnnc);
 	}
@@ -86,7 +103,7 @@ public class DeviceGasValveFlexContainerAnnc extends AbstractFlexContainerAnnc {
 	private BinarySwitchFlexContainerAnnc binarySwitchAnnc;
 	
 	
-	public void setBinarySwitch(BinarySwitchFlexContainerAnnc binarySwitchAnnc) {
+	public void setBinarySwitchAnnc(BinarySwitchFlexContainerAnnc binarySwitchAnnc) {
 		this.binarySwitchAnnc = binarySwitchAnnc;
 		getFlexContainerOrContainerOrSubscription().add(binarySwitchAnnc);
 	}

@@ -5,7 +5,7 @@ ModuleClass : WindAnnc
 
 This ModuleClass is for controlling wind strength and direction  of a device.
 
-Created: 2017-08-09 15:38:05
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -34,6 +34,9 @@ public class WindFlexContainerAnnc extends AbstractFlexContainerAnnc {
 	}
 	
 	public void finalizeSerialization() {
+	}
+	
+	public void finalizeDeserialization() {
 	}
 	
 }

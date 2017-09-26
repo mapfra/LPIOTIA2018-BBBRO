@@ -5,7 +5,7 @@ Device : DeviceRefrigerator
 
 A refrigerator is a home appliance used to store food at temperatures which are a few degrees above the freezing point of water. This information model provides capabilities to interact with specific functions and resource of refrigerators.
 
-Created: 2017-08-09 15:38:05
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -38,6 +38,21 @@ public class DeviceRefrigeratorFlexContainer extends AbstractFlexContainer {
 		getPowerSave();
 		getDoorStatus();
 		getRefrigeration();
+	}
+	
+	public void finalizeDeserialization() {
+		if (this.binarySwitch != null) {
+			setBinarySwitch(this.binarySwitch);
+		}
+		if (this.powerSave != null) {
+			setPowerSave(this.powerSave);
+		}
+		if (this.doorStatus != null) {
+			setDoorStatus(this.doorStatus);
+		}
+		if (this.refrigeration != null) {
+			setRefrigeration(this.refrigeration);
+		}
 	}
 	
 	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainer.class)

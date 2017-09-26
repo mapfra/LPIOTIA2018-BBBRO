@@ -26,4 +26,14 @@ public class FlexContainer extends AbstractFlexContainer {
 		setShortName(SHORT_NAME);
 	}
 
+
+	@Override
+	public void finalizeSerialization() {
+	}
+
+
+	@Override
+	public void finalizeDeserialization() {
+	}
+
 }

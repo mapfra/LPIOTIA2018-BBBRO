@@ -1,0 +1,49 @@
+{
+  "hd:devLt": {
+    "hd:binSh": {
+      "hd:togge": {
+        "ri": "40F201-Livebox 4-LK15050DP990500_DECT_ULE_02B67001E3_Module_binarySwitch_Action_toggle",
+        "ct": "2017-09-22T05:40:20Z",
+        "ty": "28",
+        "lbl": [
+          "object.type\/action",
+          "cnt\/org.onem2m.home.moduleclass.binarySwitch.toggle"
+        ],
+        "cnd": "org.onem2m.home.moduleclass.binarySwitch.toggle",
+        "pi": "40F201-Livebox 4-LK15050DP990500_DECT_ULE_02B67001E3_Module_binarySwitch",
+        "lt": "2017-09-25T10:25:18Z",
+        "rn": "org.onem2m.home.moduleclass.binarySwitch.toggle"
+      },
+      "lt": "2017-09-25T10:25:18Z",
+      "ri": "40F201-Livebox 4-LK15050DP990500_DECT_ULE_02B67001E3_Module_binarySwitch",
+      "ct": "2017-09-22T05:40:20Z",
+      "ty": "28",
+      "lbl": [
+        "object.type\/module",
+        "cnd\/org.onem2m.home.moduleclass.binarySwitch"
+      ],
+      "cnd": "org.onem2m.home.moduleclass.binarySwitch",
+      "powSe": false,
+      "pi": "40F201-Livebox 4-LK15050DP990500_DECT_ULE_02B67001E3_Device",
+      "rn": "org.onem2m.home.moduleclass.binarySwitch"
+    },
+    "prDTe": "9",
+    "pDMNe": "",
+    "prDMr": "DSP Group",
+    "cnd": "org.onem2m.home.device.deviceLight",
+    "pDSNm": "02B67001E3",
+    "lt": "2017-09-22T05:40:20Z",
+    "prHVn": "VTECH_BULB_COLOR_VC7004_V1",
+    "ri": "40F201-Livebox 4-LK15050DP990500_DECT_ULE_02B67001E3_Device",
+    "ct": "2017-09-22T05:40:20Z",
+    "ty": "28",
+    "lbl": [
+      "object.type\/device",
+      "cnd\/org.onem2m.home.device.deviceLight"
+    ],
+    "pDFVn": "Tur15DHX07v01f",
+    "prDNe": "Switch Switch",
+    "pi": "",
+    "rn": "org.onem2m.home.device.deviceLight"
+  }
+}

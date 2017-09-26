@@ -5,7 +5,7 @@ Device : DeviceClothesWasherAnnc
 
 A clothes washer is a home appliance that is used to wash laundry, such as clothing and sheets. This information model provides capabilities to interact with specific functions and resources of clothes washers.
 
-Created: 2017-08-09 15:38:05
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -52,6 +52,65 @@ public class DeviceClothesWasherFlexContainerAnnc extends AbstractFlexContainerA
 		getSpinLevelAnnc();
 	}
 	
+	public void finalizeDeserialization() {
+		if (this.binarySwitch != null) {
+			setBinarySwitch(this.binarySwitch);
+		}
+		if (this.binarySwitchAnnc != null) {
+			setBinarySwitchAnnc(this.binarySwitchAnnc);
+			}
+		
+		if (this.timer != null) {
+			setTimer(this.timer);
+		}
+		if (this.timerAnnc != null) {
+			setTimerAnnc(this.timerAnnc);
+			}
+		
+		if (this.runMode != null) {
+			setRunMode(this.runMode);
+		}
+		if (this.runModeAnnc != null) {
+			setRunModeAnnc(this.runModeAnnc);
+			}
+		
+		if (this.temperature != null) {
+			setTemperature(this.temperature);
+		}
+		if (this.temperatureAnnc != null) {
+			setTemperatureAnnc(this.temperatureAnnc);
+			}
+		
+		if (this.waterLevel != null) {
+			setWaterLevel(this.waterLevel);
+		}
+		if (this.waterLevelAnnc != null) {
+			setWaterLevelAnnc(this.waterLevelAnnc);
+			}
+		
+		if (this.rinseLevel != null) {
+			setRinseLevel(this.rinseLevel);
+		}
+		if (this.rinseLevelAnnc != null) {
+			setRinseLevelAnnc(this.rinseLevelAnnc);
+			}
+		
+		if (this.waterFlow != null) {
+			setWaterFlow(this.waterFlow);
+		}
+		if (this.waterFlowAnnc != null) {
+			setWaterFlowAnnc(this.waterFlowAnnc);
+			}
+		
+		if (this.spinLevel != null) {
+			setSpinLevel(this.spinLevel);
+		}
+		if (this.spinLevelAnnc != null) {
+			setSpinLevelAnnc(this.spinLevelAnnc);
+			}
+		
+	}
+	
 	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainerAnnc.class)
 	private BinarySwitchFlexContainer binarySwitch;
 	
@@ -70,7 +129,7 @@ public class DeviceClothesWasherFlexContainerAnnc extends AbstractFlexContainerA
 	private BinarySwitchFlexContainerAnnc binarySwitchAnnc;
 	
 	
-	public void setBinarySwitch(BinarySwitchFlexContainerAnnc binarySwitchAnnc) {
+	public void setBinarySwitchAnnc(BinarySwitchFlexContainerAnnc binarySwitchAnnc) {
 		this.binarySwitchAnnc = binarySwitchAnnc;
 		getFlexContainerOrContainerOrSubscription().add(binarySwitchAnnc);
 	}
@@ -98,7 +157,7 @@ public class DeviceClothesWasherFlexContainerAnnc extends AbstractFlexContainerA
 	private TimerFlexContainerAnnc timerAnnc;
 	
 	
-	public void setTimer(TimerFlexContainerAnnc timerAnnc) {
+	public void setTimerAnnc(TimerFlexContainerAnnc timerAnnc) {
 		this.timerAnnc = timerAnnc;
 		getFlexContainerOrContainerOrSubscription().add(timerAnnc);
 	}
@@ -126,7 +185,7 @@ public class DeviceClothesWasherFlexContainerAnnc extends AbstractFlexContainerA
 	private RunModeFlexContainerAnnc runModeAnnc;
 	
 	
-	public void setRunMode(RunModeFlexContainerAnnc runModeAnnc) {
+	public void setRunModeAnnc(RunModeFlexContainerAnnc runModeAnnc) {
 		this.runModeAnnc = runModeAnnc;
 		getFlexContainerOrContainerOrSubscription().add(runModeAnnc);
 	}
@@ -154,7 +213,7 @@ public class DeviceClothesWasherFlexContainerAnnc extends AbstractFlexContainerA
 	private TemperatureFlexContainerAnnc temperatureAnnc;
 	
 	
-	public void setTemperature(TemperatureFlexContainerAnnc temperatureAnnc) {
+	public void setTemperatureAnnc(TemperatureFlexContainerAnnc temperatureAnnc) {
 		this.temperatureAnnc = temperatureAnnc;
 		getFlexContainerOrContainerOrSubscription().add(temperatureAnnc);
 	}
@@ -182,7 +241,7 @@ public class DeviceClothesWasherFlexContainerAnnc extends AbstractFlexContainerA
 	private WaterLevelFlexContainerAnnc waterLevelAnnc;
 	
 	
-	public void setWaterLevel(WaterLevelFlexContainerAnnc waterLevelAnnc) {
+	public void setWaterLevelAnnc(WaterLevelFlexContainerAnnc waterLevelAnnc) {
 		this.waterLevelAnnc = waterLevelAnnc;
 		getFlexContainerOrContainerOrSubscription().add(waterLevelAnnc);
 	}
@@ -210,7 +269,7 @@ public class DeviceClothesWasherFlexContainerAnnc extends AbstractFlexContainerA
 	private RinseLevelFlexContainerAnnc rinseLevelAnnc;
 	
 	
-	public void setRinseLevel(RinseLevelFlexContainerAnnc rinseLevelAnnc) {
+	public void setRinseLevelAnnc(RinseLevelFlexContainerAnnc rinseLevelAnnc) {
 		this.rinseLevelAnnc = rinseLevelAnnc;
 		getFlexContainerOrContainerOrSubscription().add(rinseLevelAnnc);
 	}
@@ -238,7 +297,7 @@ public class DeviceClothesWasherFlexContainerAnnc extends AbstractFlexContainerA
 	private WaterFlowFlexContainerAnnc waterFlowAnnc;
 	
 	
-	public void setWaterFlow(WaterFlowFlexContainerAnnc waterFlowAnnc) {
+	public void setWaterFlowAnnc(WaterFlowFlexContainerAnnc waterFlowAnnc) {
 		this.waterFlowAnnc = waterFlowAnnc;
 		getFlexContainerOrContainerOrSubscription().add(waterFlowAnnc);
 	}
@@ -266,7 +325,7 @@ public class DeviceClothesWasherFlexContainerAnnc extends AbstractFlexContainerA
 	private SpinLevelFlexContainerAnnc spinLevelAnnc;
 	
 	
-	public void setSpinLevel(SpinLevelFlexContainerAnnc spinLevelAnnc) {
+	public void setSpinLevelAnnc(SpinLevelFlexContainerAnnc spinLevelAnnc) {
 		this.spinLevelAnnc = spinLevelAnnc;
 		getFlexContainerOrContainerOrSubscription().add(spinLevelAnnc);
 	}

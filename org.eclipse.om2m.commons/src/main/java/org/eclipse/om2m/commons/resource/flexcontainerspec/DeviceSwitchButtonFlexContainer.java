@@ -5,7 +5,7 @@ Device : DeviceSwitchButton
 
 A SwitchButton is a device that provides button.
 
-Created: 2017-08-09 15:38:06
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -35,6 +35,12 @@ public class DeviceSwitchButtonFlexContainer extends AbstractFlexContainer {
 	
 	public void finalizeSerialization() {
 		getButtonSwitch();
+	}
+	
+	public void finalizeDeserialization() {
+		if (this.buttonSwitch != null) {
+			setButtonSwitch(this.buttonSwitch);
+		}
 	}
 	
 	@XmlElement(name="butSh", required=true, type=PushButtonFlexContainer.class)

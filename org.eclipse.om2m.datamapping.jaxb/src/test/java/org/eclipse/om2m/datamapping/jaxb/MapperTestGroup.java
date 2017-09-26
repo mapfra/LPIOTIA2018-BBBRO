@@ -16,7 +16,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class MapperTestGroup {
+public class MapperTestGroup extends AbstractMapperTest {
 	
 	private Mapper xmlMapper;
 	private Mapper jsonMapper;
@@ -80,22 +80,5 @@ public class MapperTestGroup {
 		
 	}
 	
-	private String readFile(String filename) {
-		StringBuffer sb = new StringBuffer();
-		File file = new File(filename);
-		try {
-			BufferedReader buffReader = new BufferedReader(new FileReader(file));
-			String line = null;
-			while ((line = buffReader.readLine()) != null) {
-				sb.append(line);
-				sb.append("\n");
-			}
-			// sb.setLength(sb.length()-1);
-		} catch (FileNotFoundException e) {
-		} catch (IOException e) {
-		}
-
-		return sb.toString();
-	}
 
 }

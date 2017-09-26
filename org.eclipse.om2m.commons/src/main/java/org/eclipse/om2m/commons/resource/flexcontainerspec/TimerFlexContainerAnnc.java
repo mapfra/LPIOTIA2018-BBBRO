@@ -5,7 +5,7 @@ ModuleClass : TimerAnnc
 
 This ModuleClass provides capabilities to monitor and control  the times when the appliance executes its operations (i.e. when it  starts, when it ends).
 
-Created: 2017-08-09 15:38:05
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -38,11 +38,20 @@ public class TimerFlexContainerAnnc extends AbstractFlexContainerAnnc {
 		getDeactivateClockTimerAnnc();
 	}
 	
+	public void finalizeDeserialization() {
+		if (this.activateClockTimerAnnc != null) {
+			setActivateClockTimerAnnc(activateClockTimerAnnc);
+		}
+		if (this.deactivateClockTimerAnnc != null) {
+			setDeactivateClockTimerAnnc(deactivateClockTimerAnnc);
+		}
+	}
+	
 	@XmlElement(name=ActivateClockTimerFlexContainerAnnc.SHORT_NAME, required=true, type=ActivateClockTimerFlexContainerAnnc.class)
 	private ActivateClockTimerFlexContainerAnnc activateClockTimerAnnc;
 	
 	
-	public void setActivateClockTimer(ActivateClockTimerFlexContainerAnnc activateClockTimerAnnc) {
+	public void setActivateClockTimerAnnc(ActivateClockTimerFlexContainerAnnc activateClockTimerAnnc) {
 		this.activateClockTimerAnnc = activateClockTimerAnnc;
 		getFlexContainerOrContainerOrSubscription().add(activateClockTimerAnnc);
 	}
@@ -56,7 +65,7 @@ public class TimerFlexContainerAnnc extends AbstractFlexContainerAnnc {
 	private DeactivateClockTimerFlexContainerAnnc deactivateClockTimerAnnc;
 	
 	
-	public void setDeactivateClockTimer(DeactivateClockTimerFlexContainerAnnc deactivateClockTimerAnnc) {
+	public void setDeactivateClockTimerAnnc(DeactivateClockTimerFlexContainerAnnc deactivateClockTimerAnnc) {
 		this.deactivateClockTimerAnnc = deactivateClockTimerAnnc;
 		getFlexContainerOrContainerOrSubscription().add(deactivateClockTimerAnnc);
 	}

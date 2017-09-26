@@ -5,7 +5,7 @@ Device : DeviceLightAnnc
 
 A light is a device that is used to control the state of an illumination device.
 
-Created: 2017-08-09 15:38:05
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -48,6 +48,51 @@ public class DeviceLightFlexContainerAnnc extends AbstractFlexContainerAnnc {
 		getBrightnessAnnc();
 	}
 	
+	public void finalizeDeserialization() {
+		if (this.faultDetection != null) {
+			setFaultDetection(this.faultDetection);
+		}
+		if (this.faultDetectionAnnc != null) {
+			setFaultDetectionAnnc(this.faultDetectionAnnc);
+			}
+		
+		if (this.binarySwitch != null) {
+			setBinarySwitch(this.binarySwitch);
+		}
+		if (this.binarySwitchAnnc != null) {
+			setBinarySwitchAnnc(this.binarySwitchAnnc);
+			}
+		
+		if (this.runMode != null) {
+			setRunMode(this.runMode);
+		}
+		if (this.runModeAnnc != null) {
+			setRunModeAnnc(this.runModeAnnc);
+			}
+		
+		if (this.colour != null) {
+			setColour(this.colour);
+		}
+		if (this.colourAnnc != null) {
+			setColourAnnc(this.colourAnnc);
+			}
+		
+		if (this.colourSaturation != null) {
+			setColourSaturation(this.colourSaturation);
+		}
+		if (this.colourSaturationAnnc != null) {
+			setColourSaturationAnnc(this.colourSaturationAnnc);
+			}
+		
+		if (this.brightness != null) {
+			setBrightness(this.brightness);
+		}
+		if (this.brightnessAnnc != null) {
+			setBrightnessAnnc(this.brightnessAnnc);
+			}
+		
+	}
+	
 	@XmlElement(name="fauDn", required=true, type=FaultDetectionFlexContainerAnnc.class)
 	private FaultDetectionFlexContainer faultDetection;
 	
@@ -66,7 +111,7 @@ public class DeviceLightFlexContainerAnnc extends AbstractFlexContainerAnnc {
 	private FaultDetectionFlexContainerAnnc faultDetectionAnnc;
 	
 	
-	public void setFaultDetection(FaultDetectionFlexContainerAnnc faultDetectionAnnc) {
+	public void setFaultDetectionAnnc(FaultDetectionFlexContainerAnnc faultDetectionAnnc) {
 		this.faultDetectionAnnc = faultDetectionAnnc;
 		getFlexContainerOrContainerOrSubscription().add(faultDetectionAnnc);
 	}
@@ -94,7 +139,7 @@ public class DeviceLightFlexContainerAnnc extends AbstractFlexContainerAnnc {
 	private BinarySwitchFlexContainerAnnc binarySwitchAnnc;
 	
 	
-	public void setBinarySwitch(BinarySwitchFlexContainerAnnc binarySwitchAnnc) {
+	public void setBinarySwitchAnnc(BinarySwitchFlexContainerAnnc binarySwitchAnnc) {
 		this.binarySwitchAnnc = binarySwitchAnnc;
 		getFlexContainerOrContainerOrSubscription().add(binarySwitchAnnc);
 	}
@@ -122,7 +167,7 @@ public class DeviceLightFlexContainerAnnc extends AbstractFlexContainerAnnc {
 	private RunModeFlexContainerAnnc runModeAnnc;
 	
 	
-	public void setRunMode(RunModeFlexContainerAnnc runModeAnnc) {
+	public void setRunModeAnnc(RunModeFlexContainerAnnc runModeAnnc) {
 		this.runModeAnnc = runModeAnnc;
 		getFlexContainerOrContainerOrSubscription().add(runModeAnnc);
 	}
@@ -150,7 +195,7 @@ public class DeviceLightFlexContainerAnnc extends AbstractFlexContainerAnnc {
 	private ColourFlexContainerAnnc colourAnnc;
 	
 	
-	public void setColour(ColourFlexContainerAnnc colourAnnc) {
+	public void setColourAnnc(ColourFlexContainerAnnc colourAnnc) {
 		this.colourAnnc = colourAnnc;
 		getFlexContainerOrContainerOrSubscription().add(colourAnnc);
 	}
@@ -178,7 +223,7 @@ public class DeviceLightFlexContainerAnnc extends AbstractFlexContainerAnnc {
 	private ColourSaturationFlexContainerAnnc colourSaturationAnnc;
 	
 	
-	public void setColourSaturation(ColourSaturationFlexContainerAnnc colourSaturationAnnc) {
+	public void setColourSaturationAnnc(ColourSaturationFlexContainerAnnc colourSaturationAnnc) {
 		this.colourSaturationAnnc = colourSaturationAnnc;
 		getFlexContainerOrContainerOrSubscription().add(colourSaturationAnnc);
 	}
@@ -206,7 +251,7 @@ public class DeviceLightFlexContainerAnnc extends AbstractFlexContainerAnnc {
 	private BrightnessFlexContainerAnnc brightnessAnnc;
 	
 	
-	public void setBrightness(BrightnessFlexContainerAnnc brightnessAnnc) {
+	public void setBrightnessAnnc(BrightnessFlexContainerAnnc brightnessAnnc) {
 		this.brightnessAnnc = brightnessAnnc;
 		getFlexContainerOrContainerOrSubscription().add(brightnessAnnc);
 	}

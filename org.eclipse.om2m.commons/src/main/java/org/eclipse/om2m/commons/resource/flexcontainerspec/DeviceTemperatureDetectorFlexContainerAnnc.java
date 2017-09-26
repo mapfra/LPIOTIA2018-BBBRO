@@ -5,7 +5,7 @@ Device : DeviceTemperatureDetectorAnnc
 
 A SwitchButton is a device that provides button.
 
-Created: 2017-08-09 15:38:06
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -40,6 +40,23 @@ public class DeviceTemperatureDetectorFlexContainerAnnc extends AbstractFlexCont
 		getTemperatureAnnc();
 	}
 	
+	public void finalizeDeserialization() {
+		if (this.alarmSensor != null) {
+			setAlarmSensor(this.alarmSensor);
+		}
+		if (this.alarmSensorAnnc != null) {
+			setAlarmSensorAnnc(this.alarmSensorAnnc);
+			}
+		
+		if (this.temperature != null) {
+			setTemperature(this.temperature);
+		}
+		if (this.temperatureAnnc != null) {
+			setTemperatureAnnc(this.temperatureAnnc);
+			}
+		
+	}
+	
 	@XmlElement(name="alSer", required=true, type=AlarmSensorFlexContainerAnnc.class)
 	private AlarmSensorFlexContainer alarmSensor;
 	
@@ -58,7 +75,7 @@ public class DeviceTemperatureDetectorFlexContainerAnnc extends AbstractFlexCont
 	private AlarmSensorFlexContainerAnnc alarmSensorAnnc;
 	
 	
-	public void setAlarmSensor(AlarmSensorFlexContainerAnnc alarmSensorAnnc) {
+	public void setAlarmSensorAnnc(AlarmSensorFlexContainerAnnc alarmSensorAnnc) {
 		this.alarmSensorAnnc = alarmSensorAnnc;
 		getFlexContainerOrContainerOrSubscription().add(alarmSensorAnnc);
 	}
@@ -86,7 +103,7 @@ public class DeviceTemperatureDetectorFlexContainerAnnc extends AbstractFlexCont
 	private TemperatureFlexContainerAnnc temperatureAnnc;
 	
 	
-	public void setTemperature(TemperatureFlexContainerAnnc temperatureAnnc) {
+	public void setTemperatureAnnc(TemperatureFlexContainerAnnc temperatureAnnc) {
 		this.temperatureAnnc = temperatureAnnc;
 		getFlexContainerOrContainerOrSubscription().add(temperatureAnnc);
 	}

@@ -5,7 +5,7 @@ Device : DeviceOvenAnnc
 
 An oven is a home appliance used to roast and heat food in a complete stove. This information model is applicable to different types of ovens: gas ovens, electrical ovens, steam ovens, microwave ovens, etc. This information model provides capabilities to interact with specific functions and resources of ovens.
 
-Created: 2017-08-09 15:38:05
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -44,6 +44,37 @@ public class DeviceOvenFlexContainerAnnc extends AbstractFlexContainerAnnc {
 		getTemperatureAnnc();
 	}
 	
+	public void finalizeDeserialization() {
+		if (this.binarySwitch != null) {
+			setBinarySwitch(this.binarySwitch);
+		}
+		if (this.binarySwitchAnnc != null) {
+			setBinarySwitchAnnc(this.binarySwitchAnnc);
+			}
+		
+		if (this.runMode != null) {
+			setRunMode(this.runMode);
+		}
+		if (this.runModeAnnc != null) {
+			setRunModeAnnc(this.runModeAnnc);
+			}
+		
+		if (this.timer != null) {
+			setTimer(this.timer);
+		}
+		if (this.timerAnnc != null) {
+			setTimerAnnc(this.timerAnnc);
+			}
+		
+		if (this.temperature != null) {
+			setTemperature(this.temperature);
+		}
+		if (this.temperatureAnnc != null) {
+			setTemperatureAnnc(this.temperatureAnnc);
+			}
+		
+	}
+	
 	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainerAnnc.class)
 	private BinarySwitchFlexContainer binarySwitch;
 	
@@ -62,7 +93,7 @@ public class DeviceOvenFlexContainerAnnc extends AbstractFlexContainerAnnc {
 	private BinarySwitchFlexContainerAnnc binarySwitchAnnc;
 	
 	
-	public void setBinarySwitch(BinarySwitchFlexContainerAnnc binarySwitchAnnc) {
+	public void setBinarySwitchAnnc(BinarySwitchFlexContainerAnnc binarySwitchAnnc) {
 		this.binarySwitchAnnc = binarySwitchAnnc;
 		getFlexContainerOrContainerOrSubscription().add(binarySwitchAnnc);
 	}
@@ -90,7 +121,7 @@ public class DeviceOvenFlexContainerAnnc extends AbstractFlexContainerAnnc {
 	private RunModeFlexContainerAnnc runModeAnnc;
 	
 	
-	public void setRunMode(RunModeFlexContainerAnnc runModeAnnc) {
+	public void setRunModeAnnc(RunModeFlexContainerAnnc runModeAnnc) {
 		this.runModeAnnc = runModeAnnc;
 		getFlexContainerOrContainerOrSubscription().add(runModeAnnc);
 	}
@@ -118,7 +149,7 @@ public class DeviceOvenFlexContainerAnnc extends AbstractFlexContainerAnnc {
 	private TimerFlexContainerAnnc timerAnnc;
 	
 	
-	public void setTimer(TimerFlexContainerAnnc timerAnnc) {
+	public void setTimerAnnc(TimerFlexContainerAnnc timerAnnc) {
 		this.timerAnnc = timerAnnc;
 		getFlexContainerOrContainerOrSubscription().add(timerAnnc);
 	}
@@ -146,7 +177,7 @@ public class DeviceOvenFlexContainerAnnc extends AbstractFlexContainerAnnc {
 	private TemperatureFlexContainerAnnc temperatureAnnc;
 	
 	
-	public void setTemperature(TemperatureFlexContainerAnnc temperatureAnnc) {
+	public void setTemperatureAnnc(TemperatureFlexContainerAnnc temperatureAnnc) {
 		this.temperatureAnnc = temperatureAnnc;
 		getFlexContainerOrContainerOrSubscription().add(temperatureAnnc);
 	}

@@ -5,7 +5,7 @@ Device : DeviceTelevision
 
 A stelevision (TV) is a home appliance used to show audio and visual content such as broadcasting programs and network streaming. This TV information model provides capabilities to control and monitor TV specific resources.
 
-Created: 2017-08-09 15:38:05
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -38,6 +38,21 @@ public class DeviceTelevisionFlexContainer extends AbstractFlexContainer {
 		getAudioVolume();
 		getTelevisionChannel();
 		getAudioVideoInput();
+	}
+	
+	public void finalizeDeserialization() {
+		if (this.binarySwitch != null) {
+			setBinarySwitch(this.binarySwitch);
+		}
+		if (this.audioVolume != null) {
+			setAudioVolume(this.audioVolume);
+		}
+		if (this.televisionChannel != null) {
+			setTelevisionChannel(this.televisionChannel);
+		}
+		if (this.audioVideoInput != null) {
+			setAudioVideoInput(this.audioVideoInput);
+		}
 	}
 	
 	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainer.class)

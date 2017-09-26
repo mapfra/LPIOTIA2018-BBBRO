@@ -5,7 +5,7 @@ Device : DeviceMotionDetectorAnnc
 
 A MotionDetector is a device that triggers alarm in case of motion detection.
 
-Created: 2017-08-09 15:38:06
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -38,6 +38,16 @@ public class DeviceMotionDetectorFlexContainerAnnc extends AbstractFlexContainer
 		getMotionSensorAnnc();
 	}
 	
+	public void finalizeDeserialization() {
+		if (this.motionSensor != null) {
+			setMotionSensor(this.motionSensor);
+		}
+		if (this.motionSensorAnnc != null) {
+			setMotionSensorAnnc(this.motionSensorAnnc);
+			}
+		
+	}
+	
 	@XmlElement(name="motSr", required=true, type=MotionSensorFlexContainerAnnc.class)
 	private MotionSensorFlexContainer motionSensor;
 	
@@ -56,7 +66,7 @@ public class DeviceMotionDetectorFlexContainerAnnc extends AbstractFlexContainer
 	private MotionSensorFlexContainerAnnc motionSensorAnnc;
 	
 	
-	public void setMotionSensor(MotionSensorFlexContainerAnnc motionSensorAnnc) {
+	public void setMotionSensorAnnc(MotionSensorFlexContainerAnnc motionSensorAnnc) {
 		this.motionSensorAnnc = motionSensorAnnc;
 		getFlexContainerOrContainerOrSubscription().add(motionSensorAnnc);
 	}

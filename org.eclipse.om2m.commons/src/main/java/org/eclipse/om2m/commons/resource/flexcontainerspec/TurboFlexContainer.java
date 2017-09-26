@@ -5,7 +5,7 @@ ModuleClass : Turbo
 
 This ModuleClass provides capabilities to enalbe turbo mode and  monitor the current status of the turbo function. It is intended to  be part of objects which use turbo function such as an air  conditioner, a washing machine etc.
 
-Created: 2017-08-09 15:38:05
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -34,6 +34,9 @@ public class TurboFlexContainer extends AbstractFlexContainer {
 	}
 	
 	public void finalizeSerialization() {
+	}
+	
+	public void finalizeDeserialization() {
 	}
 	
 }

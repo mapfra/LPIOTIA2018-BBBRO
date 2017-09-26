@@ -5,7 +5,7 @@ ModuleClass : EnergyGenerationAnnc
 
 This ModuleClass provides the information about generation data  on electric generator devices such as a photo voltaic power system,  fuel cells, or microgeneration.
 
-Created: 2017-08-09 15:38:05
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -34,6 +34,9 @@ public class EnergyGenerationFlexContainerAnnc extends AbstractFlexContainerAnnc
 	}
 	
 	public void finalizeSerialization() {
+	}
+	
+	public void finalizeDeserialization() {
 	}
 	
 }

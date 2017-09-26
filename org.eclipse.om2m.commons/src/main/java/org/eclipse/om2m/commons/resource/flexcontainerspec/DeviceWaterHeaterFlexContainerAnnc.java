@@ -5,7 +5,7 @@ Device : DeviceWaterHeaterAnnc
 
 A water heater is a device that is used to provide hot water through home facilities.
 
-Created: 2017-08-09 15:38:05
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -48,6 +48,51 @@ public class DeviceWaterHeaterFlexContainerAnnc extends AbstractFlexContainerAnn
 		getHotWaterSupplyAnnc();
 	}
 	
+	public void finalizeDeserialization() {
+		if (this.faultDetection != null) {
+			setFaultDetection(this.faultDetection);
+		}
+		if (this.faultDetectionAnnc != null) {
+			setFaultDetectionAnnc(this.faultDetectionAnnc);
+			}
+		
+		if (this.binarySwitch != null) {
+			setBinarySwitch(this.binarySwitch);
+		}
+		if (this.binarySwitchAnnc != null) {
+			setBinarySwitchAnnc(this.binarySwitchAnnc);
+			}
+		
+		if (this.runMode != null) {
+			setRunMode(this.runMode);
+		}
+		if (this.runModeAnnc != null) {
+			setRunModeAnnc(this.runModeAnnc);
+			}
+		
+		if (this.clock != null) {
+			setClock(this.clock);
+		}
+		if (this.clockAnnc != null) {
+			setClockAnnc(this.clockAnnc);
+			}
+		
+		if (this.boiler != null) {
+			setBoiler(this.boiler);
+		}
+		if (this.boilerAnnc != null) {
+			setBoilerAnnc(this.boilerAnnc);
+			}
+		
+		if (this.hotWaterSupply != null) {
+			setHotWaterSupply(this.hotWaterSupply);
+		}
+		if (this.hotWaterSupplyAnnc != null) {
+			setHotWaterSupplyAnnc(this.hotWaterSupplyAnnc);
+			}
+		
+	}
+	
 	@XmlElement(name="fauDn", required=true, type=FaultDetectionFlexContainerAnnc.class)
 	private FaultDetectionFlexContainer faultDetection;
 	
@@ -66,7 +111,7 @@ public class DeviceWaterHeaterFlexContainerAnnc extends AbstractFlexContainerAnn
 	private FaultDetectionFlexContainerAnnc faultDetectionAnnc;
 	
 	
-	public void setFaultDetection(FaultDetectionFlexContainerAnnc faultDetectionAnnc) {
+	public void setFaultDetectionAnnc(FaultDetectionFlexContainerAnnc faultDetectionAnnc) {
 		this.faultDetectionAnnc = faultDetectionAnnc;
 		getFlexContainerOrContainerOrSubscription().add(faultDetectionAnnc);
 	}
@@ -94,7 +139,7 @@ public class DeviceWaterHeaterFlexContainerAnnc extends AbstractFlexContainerAnn
 	private BinarySwitchFlexContainerAnnc binarySwitchAnnc;
 	
 	
-	public void setBinarySwitch(BinarySwitchFlexContainerAnnc binarySwitchAnnc) {
+	public void setBinarySwitchAnnc(BinarySwitchFlexContainerAnnc binarySwitchAnnc) {
 		this.binarySwitchAnnc = binarySwitchAnnc;
 		getFlexContainerOrContainerOrSubscription().add(binarySwitchAnnc);
 	}
@@ -122,7 +167,7 @@ public class DeviceWaterHeaterFlexContainerAnnc extends AbstractFlexContainerAnn
 	private RunModeFlexContainerAnnc runModeAnnc;
 	
 	
-	public void setRunMode(RunModeFlexContainerAnnc runModeAnnc) {
+	public void setRunModeAnnc(RunModeFlexContainerAnnc runModeAnnc) {
 		this.runModeAnnc = runModeAnnc;
 		getFlexContainerOrContainerOrSubscription().add(runModeAnnc);
 	}
@@ -150,7 +195,7 @@ public class DeviceWaterHeaterFlexContainerAnnc extends AbstractFlexContainerAnn
 	private ClockFlexContainerAnnc clockAnnc;
 	
 	
-	public void setClock(ClockFlexContainerAnnc clockAnnc) {
+	public void setClockAnnc(ClockFlexContainerAnnc clockAnnc) {
 		this.clockAnnc = clockAnnc;
 		getFlexContainerOrContainerOrSubscription().add(clockAnnc);
 	}
@@ -178,7 +223,7 @@ public class DeviceWaterHeaterFlexContainerAnnc extends AbstractFlexContainerAnn
 	private BoilerFlexContainerAnnc boilerAnnc;
 	
 	
-	public void setBoiler(BoilerFlexContainerAnnc boilerAnnc) {
+	public void setBoilerAnnc(BoilerFlexContainerAnnc boilerAnnc) {
 		this.boilerAnnc = boilerAnnc;
 		getFlexContainerOrContainerOrSubscription().add(boilerAnnc);
 	}
@@ -206,7 +251,7 @@ public class DeviceWaterHeaterFlexContainerAnnc extends AbstractFlexContainerAnn
 	private HotWaterSupplyFlexContainerAnnc hotWaterSupplyAnnc;
 	
 	
-	public void setHotWaterSupply(HotWaterSupplyFlexContainerAnnc hotWaterSupplyAnnc) {
+	public void setHotWaterSupplyAnnc(HotWaterSupplyFlexContainerAnnc hotWaterSupplyAnnc) {
 		this.hotWaterSupplyAnnc = hotWaterSupplyAnnc;
 		getFlexContainerOrContainerOrSubscription().add(hotWaterSupplyAnnc);
 	}

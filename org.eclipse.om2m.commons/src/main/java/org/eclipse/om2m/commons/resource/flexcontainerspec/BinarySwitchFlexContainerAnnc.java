@@ -5,7 +5,7 @@ ModuleClass : BinarySwitchAnnc
 
 This ModuleClass provides capabilities to control and monitor  the state of power.
 
-Created: 2017-08-09 15:38:05
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -37,11 +37,17 @@ public class BinarySwitchFlexContainerAnnc extends AbstractFlexContainerAnnc {
 		getToggleAnnc();
 	}
 	
+	public void finalizeDeserialization() {
+		if (this.toggleAnnc != null) {
+			setToggleAnnc(toggleAnnc);
+		}
+	}
+	
 	@XmlElement(name=ToggleFlexContainerAnnc.SHORT_NAME, required=true, type=ToggleFlexContainerAnnc.class)
 	private ToggleFlexContainerAnnc toggleAnnc;
 	
 	
-	public void setToggle(ToggleFlexContainerAnnc toggleAnnc) {
+	public void setToggleAnnc(ToggleFlexContainerAnnc toggleAnnc) {
 		this.toggleAnnc = toggleAnnc;
 		getFlexContainerOrContainerOrSubscription().add(toggleAnnc);
 	}

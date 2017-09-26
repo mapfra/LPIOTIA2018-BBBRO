@@ -5,7 +5,7 @@ Device : DeviceRefrigeratorAnnc
 
 A refrigerator is a home appliance used to store food at temperatures which are a few degrees above the freezing point of water. This information model provides capabilities to interact with specific functions and resource of refrigerators.
 
-Created: 2017-08-09 15:38:05
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -44,6 +44,37 @@ public class DeviceRefrigeratorFlexContainerAnnc extends AbstractFlexContainerAn
 		getRefrigerationAnnc();
 	}
 	
+	public void finalizeDeserialization() {
+		if (this.binarySwitch != null) {
+			setBinarySwitch(this.binarySwitch);
+		}
+		if (this.binarySwitchAnnc != null) {
+			setBinarySwitchAnnc(this.binarySwitchAnnc);
+			}
+		
+		if (this.powerSave != null) {
+			setPowerSave(this.powerSave);
+		}
+		if (this.powerSaveAnnc != null) {
+			setPowerSaveAnnc(this.powerSaveAnnc);
+			}
+		
+		if (this.doorStatus != null) {
+			setDoorStatus(this.doorStatus);
+		}
+		if (this.doorStatusAnnc != null) {
+			setDoorStatusAnnc(this.doorStatusAnnc);
+			}
+		
+		if (this.refrigeration != null) {
+			setRefrigeration(this.refrigeration);
+		}
+		if (this.refrigerationAnnc != null) {
+			setRefrigerationAnnc(this.refrigerationAnnc);
+			}
+		
+	}
+	
 	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainerAnnc.class)
 	private BinarySwitchFlexContainer binarySwitch;
 	
@@ -62,7 +93,7 @@ public class DeviceRefrigeratorFlexContainerAnnc extends AbstractFlexContainerAn
 	private BinarySwitchFlexContainerAnnc binarySwitchAnnc;
 	
 	
-	public void setBinarySwitch(BinarySwitchFlexContainerAnnc binarySwitchAnnc) {
+	public void setBinarySwitchAnnc(BinarySwitchFlexContainerAnnc binarySwitchAnnc) {
 		this.binarySwitchAnnc = binarySwitchAnnc;
 		getFlexContainerOrContainerOrSubscription().add(binarySwitchAnnc);
 	}
@@ -90,7 +121,7 @@ public class DeviceRefrigeratorFlexContainerAnnc extends AbstractFlexContainerAn
 	private PowerSaveFlexContainerAnnc powerSaveAnnc;
 	
 	
-	public void setPowerSave(PowerSaveFlexContainerAnnc powerSaveAnnc) {
+	public void setPowerSaveAnnc(PowerSaveFlexContainerAnnc powerSaveAnnc) {
 		this.powerSaveAnnc = powerSaveAnnc;
 		getFlexContainerOrContainerOrSubscription().add(powerSaveAnnc);
 	}
@@ -118,7 +149,7 @@ public class DeviceRefrigeratorFlexContainerAnnc extends AbstractFlexContainerAn
 	private DoorStatusFlexContainerAnnc doorStatusAnnc;
 	
 	
-	public void setDoorStatus(DoorStatusFlexContainerAnnc doorStatusAnnc) {
+	public void setDoorStatusAnnc(DoorStatusFlexContainerAnnc doorStatusAnnc) {
 		this.doorStatusAnnc = doorStatusAnnc;
 		getFlexContainerOrContainerOrSubscription().add(doorStatusAnnc);
 	}
@@ -146,7 +177,7 @@ public class DeviceRefrigeratorFlexContainerAnnc extends AbstractFlexContainerAn
 	private RefrigerationFlexContainerAnnc refrigerationAnnc;
 	
 	
-	public void setRefrigeration(RefrigerationFlexContainerAnnc refrigerationAnnc) {
+	public void setRefrigerationAnnc(RefrigerationFlexContainerAnnc refrigerationAnnc) {
 		this.refrigerationAnnc = refrigerationAnnc;
 		getFlexContainerOrContainerOrSubscription().add(refrigerationAnnc);
 	}

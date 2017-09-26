@@ -5,7 +5,7 @@ Device : DeviceDoorAnnc
 
 A door is a door.
 
-Created: 2017-08-09 15:38:05
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -42,6 +42,30 @@ public class DeviceDoorFlexContainerAnnc extends AbstractFlexContainerAnnc {
 		getLockAnnc();
 	}
 	
+	public void finalizeDeserialization() {
+		if (this.battery != null) {
+			setBattery(this.battery);
+		}
+		if (this.batteryAnnc != null) {
+			setBatteryAnnc(this.batteryAnnc);
+			}
+		
+		if (this.doorStatus != null) {
+			setDoorStatus(this.doorStatus);
+		}
+		if (this.doorStatusAnnc != null) {
+			setDoorStatusAnnc(this.doorStatusAnnc);
+			}
+		
+		if (this.lock != null) {
+			setLock(this.lock);
+		}
+		if (this.lockAnnc != null) {
+			setLockAnnc(this.lockAnnc);
+			}
+		
+	}
+	
 	@XmlElement(name="batty", required=true, type=BatteryFlexContainerAnnc.class)
 	private BatteryFlexContainer battery;
 	
@@ -60,7 +84,7 @@ public class DeviceDoorFlexContainerAnnc extends AbstractFlexContainerAnnc {
 	private BatteryFlexContainerAnnc batteryAnnc;
 	
 	
-	public void setBattery(BatteryFlexContainerAnnc batteryAnnc) {
+	public void setBatteryAnnc(BatteryFlexContainerAnnc batteryAnnc) {
 		this.batteryAnnc = batteryAnnc;
 		getFlexContainerOrContainerOrSubscription().add(batteryAnnc);
 	}
@@ -88,7 +112,7 @@ public class DeviceDoorFlexContainerAnnc extends AbstractFlexContainerAnnc {
 	private DoorStatusFlexContainerAnnc doorStatusAnnc;
 	
 	
-	public void setDoorStatus(DoorStatusFlexContainerAnnc doorStatusAnnc) {
+	public void setDoorStatusAnnc(DoorStatusFlexContainerAnnc doorStatusAnnc) {
 		this.doorStatusAnnc = doorStatusAnnc;
 		getFlexContainerOrContainerOrSubscription().add(doorStatusAnnc);
 	}
@@ -116,7 +140,7 @@ public class DeviceDoorFlexContainerAnnc extends AbstractFlexContainerAnnc {
 	private LockFlexContainerAnnc lockAnnc;
 	
 	
-	public void setLock(LockFlexContainerAnnc lockAnnc) {
+	public void setLockAnnc(LockFlexContainerAnnc lockAnnc) {
 		this.lockAnnc = lockAnnc;
 		getFlexContainerOrContainerOrSubscription().add(lockAnnc);
 	}

@@ -5,7 +5,7 @@ Device : DeviceFloodDetector
 
 A door is a door.
 
-Created: 2017-08-09 15:38:05
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -35,6 +35,12 @@ public class DeviceFloodDetectorFlexContainer extends AbstractFlexContainer {
 	
 	public void finalizeSerialization() {
 		getWaterSensor();
+	}
+	
+	public void finalizeDeserialization() {
+		if (this.waterSensor != null) {
+			setWaterSensor(this.waterSensor);
+		}
 	}
 	
 	@XmlElement(name="watSr", required=true, type=WaterSensorFlexContainer.class)

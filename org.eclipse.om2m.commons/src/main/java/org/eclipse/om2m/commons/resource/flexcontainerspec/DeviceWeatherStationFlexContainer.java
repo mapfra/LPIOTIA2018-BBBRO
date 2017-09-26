@@ -5,7 +5,7 @@ Device : DeviceWeatherStation
 
 A WeatherStation is a device that provides weather information.
 
-Created: 2017-08-09 15:38:06
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -39,6 +39,24 @@ public class DeviceWeatherStationFlexContainer extends AbstractFlexContainer {
 		getAtmosphericPressureSensor();
 		getNoise();
 		getExtendedCarbonDioxideSensor();
+	}
+	
+	public void finalizeDeserialization() {
+		if (this.temperature != null) {
+			setTemperature(this.temperature);
+		}
+		if (this.relativeHumidity != null) {
+			setRelativeHumidity(this.relativeHumidity);
+		}
+		if (this.atmosphericPressureSensor != null) {
+			setAtmosphericPressureSensor(this.atmosphericPressureSensor);
+		}
+		if (this.noise != null) {
+			setNoise(this.noise);
+		}
+		if (this.extendedCarbonDioxideSensor != null) {
+			setExtendedCarbonDioxideSensor(this.extendedCarbonDioxideSensor);
+		}
 	}
 	
 	@XmlElement(name="tempe", required=true, type=TemperatureFlexContainer.class)

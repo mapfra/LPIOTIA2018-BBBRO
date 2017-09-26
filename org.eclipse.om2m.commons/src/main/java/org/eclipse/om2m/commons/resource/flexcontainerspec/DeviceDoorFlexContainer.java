@@ -5,7 +5,7 @@ Device : DeviceDoor
 
 A door is a door.
 
-Created: 2017-08-09 15:38:05
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -37,6 +37,18 @@ public class DeviceDoorFlexContainer extends AbstractFlexContainer {
 		getBattery();
 		getDoorStatus();
 		getLock();
+	}
+	
+	public void finalizeDeserialization() {
+		if (this.battery != null) {
+			setBattery(this.battery);
+		}
+		if (this.doorStatus != null) {
+			setDoorStatus(this.doorStatus);
+		}
+		if (this.lock != null) {
+			setLock(this.lock);
+		}
 	}
 	
 	@XmlElement(name="batty", required=true, type=BatteryFlexContainer.class)

@@ -5,7 +5,7 @@ Device : DeviceSmokeExtractor
 
 A SmokeExtractor is a device that is able to extract fire.
 
-Created: 2017-08-09 15:38:06
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -36,6 +36,15 @@ public class DeviceSmokeExtractorFlexContainer extends AbstractFlexContainer {
 	public void finalizeSerialization() {
 		getFaultDetection();
 		getBinarySwitch();
+	}
+	
+	public void finalizeDeserialization() {
+		if (this.faultDetection != null) {
+			setFaultDetection(this.faultDetection);
+		}
+		if (this.binarySwitch != null) {
+			setBinarySwitch(this.binarySwitch);
+		}
 	}
 	
 	@XmlElement(name="fauDn", required=true, type=FaultDetectionFlexContainer.class)

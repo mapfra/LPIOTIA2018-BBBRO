@@ -5,7 +5,7 @@ ModuleClass : BioElectricalImpedanceAnalysis
 
 ModuleClass provides the analysis of human body tissue based on  impedance measurement.
 
-Created: 2017-08-09 15:38:05
+Created: 2017-09-26 14:17:12
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -34,6 +34,9 @@ public class BioElectricalImpedanceAnalysisFlexContainer extends AbstractFlexCon
 	}
 	
 	public void finalizeSerialization() {
+	}
+	
+	public void finalizeDeserialization() {
 	}
 	
 }
