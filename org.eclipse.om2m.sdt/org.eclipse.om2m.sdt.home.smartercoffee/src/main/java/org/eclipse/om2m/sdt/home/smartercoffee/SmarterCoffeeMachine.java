@@ -46,15 +46,6 @@ public class SmarterCoffeeMachine extends CoffeeMachine{
 	private TasteStrength strength;
 	private IntegerDataPoint status;
 	
-	/*
-	 * Paweł
-	 * Zawartość doGetValue i doSetValue z keepWarma osadzonego jako DataPoint w Brewing została przeniesiona do Modułu keepWarm do dataPointa keepWarm. W kwestii KeepWarm nic więcej nie zostało
-	 * ruszone, więc wszystko powinno (nie)działać tak samo jak wczesniej. 
-	 * 
-	 * 
-	 * 
-	 */
-
 	public SmarterCoffeeMachine(String id, Domain domain, String ip , int port) {
 		super(id, id, domain);
 		this.domain = domain;
