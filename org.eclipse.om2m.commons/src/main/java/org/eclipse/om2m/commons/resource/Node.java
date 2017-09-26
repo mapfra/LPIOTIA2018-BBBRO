@@ -85,9 +85,9 @@ import org.eclipse.om2m.commons.constants.ShortName;
 @XmlType(name = "")
 @XmlRootElement(name = ShortName.NODE)
 public class Node extends AnnounceableResource {
-
-	@XmlElement(required = true, name = ShortName.NODE_ID)
+	
 	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+	@XmlElement(required = true, name = ShortName.NODE_ID, namespace="")
 	protected String nodeID;
 	@XmlElement(name = ShortName.HOSTED_CSE_LINK)
 	protected String hostedCSELink;
