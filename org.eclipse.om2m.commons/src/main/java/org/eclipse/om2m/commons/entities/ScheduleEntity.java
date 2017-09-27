@@ -56,7 +56,7 @@ public class ScheduleEntity extends AnnounceableSubordinateEntity {
 	protected SubscriptionEntity parentSub;
 	
 	
-	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
+	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY, mappedBy="parentSch")
 	@JoinTable(
 			name = DBEntities.SCHSUB_JOIN,
 			joinColumns = { @JoinColumn(name = DBEntities.SCH_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 

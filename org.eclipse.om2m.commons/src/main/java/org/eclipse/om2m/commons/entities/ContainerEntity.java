@@ -64,7 +64,7 @@ public class ContainerEntity extends AnnounceableSubordinateEntity{
 	@Column(name= ShortName.ONTOLOGY_REF)
 	protected String ontologyRef;
 	
-	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
+	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY, mappedBy="parentCnt")
 	@JoinTable(
 			name = DBEntities.CNTSUB_JOIN,
 			joinColumns = { @JoinColumn(name = DBEntities.CNT_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 

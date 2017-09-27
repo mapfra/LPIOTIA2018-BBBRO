@@ -70,7 +70,7 @@ public class AreaNwkInfoEntity extends MgmtObjEntity {
 	protected List<DynamicAuthorizationConsultationEntity> dynamicAuthorizationConsultations;
 
 	// Database link to Subscriptions
-	@OneToMany(fetch = FetchType.LAZY, targetEntity = SubscriptionEntity.class)
+	@OneToMany(fetch = FetchType.LAZY, targetEntity = SubscriptionEntity.class, mappedBy="parentAni")
 	@JoinTable(
 			name = DBEntities.ANISUB_JOIN,
 			joinColumns = { @JoinColumn(name = DBEntities.ANI_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 

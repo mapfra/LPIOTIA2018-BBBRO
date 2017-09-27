@@ -151,7 +151,7 @@ public class RemoteCSEEntity extends AnnounceableSubordinateEntity {
 	protected List<AeAnncEntity> childAeAnncs;
 
 	//list of subscription
-	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
+	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY, mappedBy="parentCsr")
 	@JoinTable(
 			name = DBEntities.CSRSUB_JOIN,
 			joinColumns = { @JoinColumn(name = DBEntities.CSR_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
