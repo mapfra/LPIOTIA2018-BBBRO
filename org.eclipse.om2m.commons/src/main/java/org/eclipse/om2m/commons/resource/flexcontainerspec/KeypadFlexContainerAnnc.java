@@ -11,7 +11,7 @@ ModuleClass : KeypadAnnc
 
 This ModuleClass provides the capability to require a user  defined service through the key-in number. For example, a user can  define key 1 as "require a takeout from restaurant XXX with combo  meal 1". The IoT service provider or user can define the services.
 
-Created: 2017-09-26 14:55:54
+Created: 2017-09-28 17:26:40
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;

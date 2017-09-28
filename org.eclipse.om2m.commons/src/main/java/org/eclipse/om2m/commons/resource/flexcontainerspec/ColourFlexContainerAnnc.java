@@ -11,7 +11,7 @@ ModuleClass : ColourAnnc
 
 This ModuleClass provides the capabilities to set the value of  Red, Green, Blue for the color device.
 
-Created: 2017-09-26 14:55:54
+Created: 2017-09-28 17:26:40
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;

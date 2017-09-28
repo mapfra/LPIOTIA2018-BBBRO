@@ -11,7 +11,7 @@ Device : DeviceMicrogeneration
 
 A microgeneration is a Home Energy Management System (HEMS) device that is used to create energy. Examples of microgeneration devices are photovoltaics device or fuel cells.
 
-Created: 2017-09-26 14:55:54
+Created: 2017-09-28 17:26:40
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;

@@ -11,7 +11,7 @@ ModuleClass : Timer
 
 This ModuleClass provides capabilities to monitor and control  the times when the appliance executes its operations (i.e. when it  starts, when it ends).
 
-Created: 2017-09-26 14:55:54
+Created: 2017-09-28 17:26:40
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;

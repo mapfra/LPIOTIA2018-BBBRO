@@ -91,7 +91,9 @@ import org.eclipse.om2m.commons.resource.flexcontainerspec.*;
 	StreamingFlexContainer.class, LockFlexContainer.class,
 	BatteryFlexContainer.class,
 	LiquidLevelFlexContainer.class, TimerFlexContainer.class,
-	ToggleFlexContainer.class})
+	ToggleFlexContainer.class, DeviceNumberDeviceFlexContainer.class, NumberValueFlexContainer.class,
+	DecrementNumberValueFlexContainer.class, IncrementNumberValueFlexContainer.class, 
+	ResetNumberValueFlexContainer.class})
 public abstract class AbstractFlexContainer extends AnnounceableResource {
 	
 	@XmlTransient

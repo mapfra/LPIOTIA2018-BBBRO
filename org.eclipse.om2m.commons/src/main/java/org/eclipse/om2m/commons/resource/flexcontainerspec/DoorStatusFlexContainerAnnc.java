@@ -11,7 +11,7 @@ ModuleClass : DoorStatusAnnc
 
 This ModuleClass provides the status of a door. It is intended  to be part of a larger object such as a refrigerator and an oven  that might have multiple doors.
 
-Created: 2017-09-26 14:55:54
+Created: 2017-09-28 17:26:40
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;

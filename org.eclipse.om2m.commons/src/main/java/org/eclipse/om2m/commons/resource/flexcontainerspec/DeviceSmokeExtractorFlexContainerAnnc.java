@@ -11,7 +11,7 @@ Device : DeviceSmokeExtractorAnnc
 
 A SmokeExtractor is a device that is able to extract fire.
 
-Created: 2017-09-26 14:55:54
+Created: 2017-09-28 17:26:40
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;

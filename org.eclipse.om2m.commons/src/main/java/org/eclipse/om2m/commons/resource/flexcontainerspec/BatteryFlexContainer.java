@@ -11,7 +11,7 @@ ModuleClass : Battery
 
 Battery indicates the detection of low battery and gives an  alarm if triggering criterion is met. The charge value in the module  shows the current battery charge level.
 
-Created: 2017-09-26 14:55:54
+Created: 2017-09-28 17:26:40
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;

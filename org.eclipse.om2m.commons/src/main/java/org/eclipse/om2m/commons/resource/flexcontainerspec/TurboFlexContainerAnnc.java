@@ -11,7 +11,7 @@ ModuleClass : TurboAnnc
 
 This ModuleClass provides capabilities to enalbe turbo mode and  monitor the current status of the turbo function. It is intended to  be part of objects which use turbo function such as an air  conditioner, a washing machine etc.
 
-Created: 2017-09-26 14:55:54
+Created: 2017-09-28 17:26:40
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;

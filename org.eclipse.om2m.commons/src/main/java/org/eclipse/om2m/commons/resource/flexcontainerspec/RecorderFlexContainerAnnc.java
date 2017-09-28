@@ -11,7 +11,7 @@ ModuleClass : RecorderAnnc
 
 This ModuleClass provides the capability to record the  video/audio for a defined duration.
 
-Created: 2017-09-26 14:55:54
+Created: 2017-09-28 17:26:40
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
