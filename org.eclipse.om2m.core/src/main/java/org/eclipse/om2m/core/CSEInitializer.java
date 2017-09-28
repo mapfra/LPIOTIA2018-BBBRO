@@ -65,9 +65,6 @@ public class CSEInitializer {
 	/** Logger */
 	private static final Log LOGGER = LogFactory.getLog(CSEInitializer.class);
 
-	private static String contentFormat = System.getProperty("org.eclipse.om2m.registration.contentFormat",
-			MimeMediaType.XML);
-
 	private static RemoteCSE currentRegistrationToIn;
 
 	private static ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
@@ -169,6 +166,9 @@ public class CSEInitializer {
 	 * Sends {@link CseBase} resource in DataBase.
 	 */
 	private static void registerCSE() {
+		
+		String contentFormat = System.getProperty("org.eclipse.om2m.registration.contentFormat",	MimeMediaType.XML);
+		
 		RemoteCSE remoteCSE = new RemoteCSE();
 		switch (Constants.CSE_TYPE.toLowerCase()) {
 		case CSEType.ASN:
@@ -441,6 +441,7 @@ public class CSEInitializer {
 	}
 
 	protected static RemoteCSE retrieveCSERegistration() {
+		String contentFormat = System.getProperty("org.eclipse.om2m.registration.contentFormat",	MimeMediaType.XML);
 
 		try {
 
@@ -456,10 +457,10 @@ public class CSEInitializer {
 			remotePoa += "/" + Constants.REMOTE_CSE_ID + "/" + Constants.REMOTE_CSE_NAME + "/" + Constants.CSE_NAME;
 			request.setTo(remotePoa);
 			request.setResultContent(ResultContent.ATTRIBUTES);
-			request.setReturnContentType(MimeMediaType.XML);
+			request.setReturnContentType(contentFormat);
 			ResponsePrimitive response = RestClient.sendRequest(request);
 			if (ResponseStatusCode.OK.equals(response.getResponseStatusCode())) {
-				return (RemoteCSE) DataMapperSelector.getDataMapperList().get(MimeMediaType.XML)
+				return (RemoteCSE) DataMapperSelector.getDataMapperList().get(contentFormat)
 						.stringToObj((String) response.getContent());
 			}
 			return null;

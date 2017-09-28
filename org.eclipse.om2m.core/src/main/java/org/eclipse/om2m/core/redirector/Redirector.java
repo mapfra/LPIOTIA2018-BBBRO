@@ -115,6 +115,8 @@ public class Redirector {
 
 	private static ResponsePrimitive sendRedirectorRequest(RequestPrimitive request, RemoteCSEEntity csrEntity,
 			DBTransaction transaction) {
+		
+		String contentFormat = System.getProperty("org.eclipse.om2m.registration.contentFormat", 	MimeMediaType.XML);
 
 		// test if the remoteCse is reachable
 		if (!csrEntity.isRequestReachability()) {
@@ -167,22 +169,22 @@ public class Redirector {
 				String initialRequestContentType = request.getRequestContentType();
 				String initialReturnContentType = request.getReturnContentType();
 				if ((MimeMediaType.OBJ.equals(initialRequestContentType))) {
-					// forward payload using XML
-					request.setRequestContentType(MimeMediaType.XML);
+					// forward payload using the set content format
+					request.setRequestContentType(contentFormat);
 
 					if ((Operation.CREATE.equals(request.getOperation()))
 							|| (Operation.UPDATE.equals(request.getOperation()))) {
-						// convert content type as XML payload
-						String xmlPayload = DataMapperSelector.getDataMapperList().get(MimeMediaType.XML)
+						// convert content type as XML or JSON payload
+						String payload = DataMapperSelector.getDataMapperList().get(request.getRequestContentType())
 								.objToString(request.getContent());
-						request.setContent(xmlPayload);
+						request.setContent(payload);
 					}
 
 				}
 				
-				// if returnType=OBJ, change it to XML
+				// if returnType=OBJ, change it to the set content format
 				if ((MimeMediaType.OBJ.equals(initialReturnContentType))) {
-					request.setReturnContentType(MimeMediaType.XML);
+					request.setReturnContentType(contentFormat);
 				}
 
 				ResponsePrimitive response = RestClient.sendRequest(request);
@@ -198,7 +200,7 @@ public class Redirector {
 					// convert response as expected
 					if (response.getContent() != null) {
 						if (MimeMediaType.OBJ.equals(initialReturnContentType)) {
-							Object resource = DataMapperSelector.getDataMapperList().get(MimeMediaType.XML)
+							Object resource = DataMapperSelector.getDataMapperList().get(contentFormat)
 									.stringToObj((String) response.getContent());
 							response.setContent(resource);
 						}
