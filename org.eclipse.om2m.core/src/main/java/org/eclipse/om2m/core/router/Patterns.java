@@ -32,18 +32,18 @@ import org.eclipse.om2m.persistence.service.DBService;
  * Patterns used as regular expressions and conditions
  *
  */
-public class Patterns {
+public class Patterns implements Constants {
 	
 	/** All short name for filtering */
-	private static final String ALL_SHORT_NAMES = ShortName.ACP+"|"+ShortName.AE+"|"+ShortName.CNT+
+	public final String ALL_SHORT_NAMES = ShortName.ACP+"|"+ShortName.AE+"|"+ShortName.CNT+
 			"|"+ShortName.CIN + "|" + ShortName.REMOTE_CSE + "|" + ShortName.LATEST + "|" + ShortName.OLDEST +
 			"|" + ShortName.GROUP + "|" + ShortName.FANOUTPOINT + "|" + ShortName.SUB + "|" + ShortName.PCH + 
 			"|" + ShortName.POLLING_CHANNEL_URI + "|" + ShortName.REQ + "|" + ShortName.NODE +
 			"|" + ShortName.ANI + "|" + ShortName.ANDI + "|" + ShortName.FCNT + "|" + ShortName.DAC;
 	
-	private static final String NON_HIERARCHICAL_ID = "(" + Constants.PREFIX_SEPERATOR +"(\\b\\w+\\b)?)" ;
+	public final String NON_HIERARCHICAL_ID = "(" + Constants.PREFIX_SEPERATOR +"(\\b\\w+\\b)?)" ;
 	
-	public static final Pattern UNAUTHORIZED_NAMES = Pattern.compile(ShortName.ACP + NON_HIERARCHICAL_ID + "?|" + 
+	public final Pattern UNAUTHORIZED_NAMES = Pattern.compile(ShortName.ACP + NON_HIERARCHICAL_ID + "?|" + 
 					ShortName.AE + NON_HIERARCHICAL_ID + "?|" + ShortName.CNT + NON_HIERARCHICAL_ID + "?|" +
 					ShortName.CIN + NON_HIERARCHICAL_ID + "?|" + ShortName.REMOTE_CSE + NON_HIERARCHICAL_ID + "?|" +
 					ShortName.LATEST + NON_HIERARCHICAL_ID + "?|" + ShortName.OLDEST + NON_HIERARCHICAL_ID + "?|" +
@@ -52,60 +52,60 @@ public class Patterns {
 					"?|" + ShortName.REQ + "?|" + ShortName.NODE + "?|" + ShortName.FCNT + "?|" + ShortName.DAC + "?");
 	
 	/** Main id string */
-	public static final String ID_STRING = "([A-Za-z0-9_\\-~#]|\\.)+";
+	public final String ID_STRING = "([A-Za-z0-9_\\-~#]|\\.)+";
 	
 	/** Main id pattern */
-	public static final Pattern ID_PATTERN = Pattern.compile(ID_STRING);
+	public final Pattern ID_PATTERN = Pattern.compile(ID_STRING);
 	
     /** CseBase resource uri pattern. */
-    public static final Pattern CSE_BASE_PATTERN= Pattern.compile("/" + Constants.CSE_ID);
+    public final Pattern CSE_BASE_PATTERN= Pattern.compile("/" + Constants.CSE_ID);
     
     /** AccessControlPolicy uri pattern MAY BE NOT COMPLETE */
-    public static final Pattern ACP_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.ACP + Constants.PREFIX_SEPERATOR + ID_STRING );
+    public final Pattern ACP_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.ACP + Constants.PREFIX_SEPERATOR + ID_STRING );
     
-    public static final Pattern AE_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + "(C|S)" + ID_STRING);
+    public final Pattern AE_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + "(C|S)" + ID_STRING);
     
-    public static final Pattern AEANNC_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.AE_ANNC + ID_STRING);
+    public final Pattern AEANNC_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.AE_ANNC + ID_STRING);
     
-    public static final Pattern CONTAINER_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.CNT + Constants.PREFIX_SEPERATOR + ID_STRING);
+    public final Pattern CONTAINER_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.CNT + Constants.PREFIX_SEPERATOR + ID_STRING);
     
-    public static final Pattern DYNAMIC_AUTHORIZATION_CONSULTATION_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.DAC + Constants.PREFIX_SEPERATOR + ID_STRING);
+    public final Pattern DYNAMIC_AUTHORIZATION_CONSULTATION_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.DAC + Constants.PREFIX_SEPERATOR + ID_STRING);
 
-    public static final Pattern FLEXCONTAINER_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.FCNT + Constants.PREFIX_SEPERATOR + ID_STRING);
+    public final Pattern FLEXCONTAINER_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.FCNT + Constants.PREFIX_SEPERATOR + ID_STRING);
     
-    public static final Pattern FLEXCONTAINER_ANNC_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.FCNTA + Constants.PREFIX_SEPERATOR + ID_STRING);
+    public final Pattern FLEXCONTAINER_ANNC_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.FCNTA + Constants.PREFIX_SEPERATOR + ID_STRING);
 
-    public static final Pattern CONTENTINSTANCE_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.CIN + Constants.PREFIX_SEPERATOR + ID_STRING);
+    public final Pattern CONTENTINSTANCE_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.CIN + Constants.PREFIX_SEPERATOR + ID_STRING);
     
-    public static final Pattern REMOTE_CSE_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.REMOTE_CSE + Constants.PREFIX_SEPERATOR + ID_STRING);
+    public final Pattern REMOTE_CSE_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.REMOTE_CSE + Constants.PREFIX_SEPERATOR + ID_STRING);
     
-    public static final Pattern GROUP_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.GROUP + Constants.PREFIX_SEPERATOR + ID_STRING);
+    public final Pattern GROUP_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.GROUP + Constants.PREFIX_SEPERATOR + ID_STRING);
     
-    public static final Pattern SUBSCRIPTION_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.SUB + Constants.PREFIX_SEPERATOR + ID_STRING);
+    public final Pattern SUBSCRIPTION_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.SUB + Constants.PREFIX_SEPERATOR + ID_STRING);
     
-    public static final Pattern POLLING_CHANNEL_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.PCH + Constants.PREFIX_SEPERATOR + ID_STRING);
+    public final Pattern POLLING_CHANNEL_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.PCH + Constants.PREFIX_SEPERATOR + ID_STRING);
     
-    public static final Pattern POLLING_CHANNEL_URI_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.POLLING_CHANNEL_URI + Constants.PREFIX_SEPERATOR + ID_STRING);
+    public final Pattern POLLING_CHANNEL_URI_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.POLLING_CHANNEL_URI + Constants.PREFIX_SEPERATOR + ID_STRING);
     
-    public static final Pattern REQUEST_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.REQ + Constants.PREFIX_SEPERATOR + ID_STRING);
+    public final Pattern REQUEST_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.REQ + Constants.PREFIX_SEPERATOR + ID_STRING);
     
-    public static final Pattern NON_RETARGETING_PATTERN = Pattern.compile("/" + Constants.CSE_ID + "(/("+ID_STRING+")?)*"); 
+    public final Pattern NON_RETARGETING_PATTERN = Pattern.compile("/" + Constants.CSE_ID + "(/("+ID_STRING+")?)*"); 
     
-    public static final String FANOUT_POINT_MATCH = "/" + ShortName.FANOUTPOINT ;
+    public final String FANOUT_POINT_MATCH = "/" + ShortName.FANOUTPOINT ;
     
-    public static final Pattern NODE_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.NODE + Constants.PREFIX_SEPERATOR + ID_STRING);
+    public final Pattern NODE_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.NODE + Constants.PREFIX_SEPERATOR + ID_STRING);
 
-    public static final Pattern AREA_NW_INFO_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.ANI + Constants.PREFIX_SEPERATOR + ID_STRING);
+    public final Pattern AREA_NW_INFO_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.ANI + Constants.PREFIX_SEPERATOR + ID_STRING);
 
-	public static final Pattern AREA_NWK_DEVICE_INFO_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.ANDI + Constants.PREFIX_SEPERATOR + ID_STRING);
+	public final Pattern AREA_NWK_DEVICE_INFO_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.ANDI + Constants.PREFIX_SEPERATOR + ID_STRING);
 
     /** Non-hierarchical URI pattern */
-    public static final Pattern NON_HIERARCHICAL_PATTERN = Pattern.compile(
+    public final Pattern NON_HIERARCHICAL_PATTERN = Pattern.compile(
     		"(" + CSE_BASE_PATTERN + "/(" + ALL_SHORT_NAMES + ")" + Constants.PREFIX_SEPERATOR + ID_STRING + ")|(" + CSE_BASE_PATTERN+ ")|" +
     		AE_PATTERN.pattern()); 
     
     /** Hierarchical URI Pattern */
-    public static final Pattern HIERARCHICAL_PATTERN = Pattern.compile(
+    public final Pattern HIERARCHICAL_PATTERN = Pattern.compile(
     		CSE_BASE_PATTERN + "(/" + Constants.CSE_NAME + "(/"+ ID_PATTERN +")*)?"
     		);
     
@@ -115,7 +115,7 @@ public class Patterns {
 	 * @param uri - resource uri
 	 * @return true if matched, otherwise false.
 	 */
-	public static boolean match(Pattern pattern, String uri) {
+	public boolean match(Pattern pattern, String uri) {
 	    // Match uri with pattern
 	    Matcher m = pattern.matcher(uri);
 	    if (!m.matches()){
@@ -130,7 +130,7 @@ public class Patterns {
 	 * @param db database service
 	 * @return DAO corresponding to the resource, null if not found
 	 */
-	public static DAO<?> getDAO(String uri, DBService db){
+	public DAO<?> getDAO(String uri, DBService db){
 		if (match(CSE_BASE_PATTERN, uri)){
 			return db.getDAOFactory().getCSEBaseDAO();
 		}
@@ -184,7 +184,7 @@ public class Patterns {
 	 * @param resourceName
 	 * @return
 	 */
-	public static boolean checkResourceName(String resourceName){
+	public boolean checkResourceName(String resourceName){
 		return match(ID_PATTERN, resourceName);
 	}
 }

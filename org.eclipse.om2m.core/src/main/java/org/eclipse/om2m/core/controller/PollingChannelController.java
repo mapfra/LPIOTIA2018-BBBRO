@@ -59,8 +59,9 @@ public class PollingChannelController extends Controller {
 	@Override
 	public ResponsePrimitive doCreate(RequestPrimitive request) {
 		ResponsePrimitive response = new ResponsePrimitive(request);
+		Patterns patterns = new Patterns();
 
-		DAO<ResourceEntity> dao = (DAO<ResourceEntity>) Patterns.getDAO(request.getTargetId(), dbs);
+		DAO<ResourceEntity> dao = (DAO<ResourceEntity>) patterns.getDAO(request.getTargetId(), dbs);
 		if (dao == null){
 			throw new ResourceNotFoundException("Cannot find parent resource");
 		}
@@ -149,8 +150,8 @@ public class PollingChannelController extends Controller {
 		String generatedId = generateId();
 		pollingChannelEntity.setResourceID("/" + Constants.CSE_ID + "/" + ShortName.PCH + Constants.PREFIX_SEPERATOR + generatedId);
 		if (pollingChannel.getName() != null){
-			if (!Patterns.checkResourceName(pollingChannel.getName())){
-				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
+			if (!patterns.checkResourceName(pollingChannel.getName())){
+				throw new BadRequestException("Name provided is incorrect. Must be:" + patterns.ID_STRING);
 			}
 			pollingChannelEntity.setName(pollingChannel.getName());
 		} else {

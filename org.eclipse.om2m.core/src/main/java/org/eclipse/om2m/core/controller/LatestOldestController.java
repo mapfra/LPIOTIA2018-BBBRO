@@ -108,6 +108,8 @@ public class LatestOldestController extends Controller{
 	public ResponsePrimitive doDelete(RequestPrimitive request) {
 		// Creating the response primitive
 		ResponsePrimitive response = new ResponsePrimitive(request);
+		Patterns patterns = new Patterns();
+
 
 		// Check existence of the resource
 		ContainerEntity containerEntity = dbs.getDAOFactory().getContainerDAO().find(transaction, request.getTargetId());
@@ -136,7 +138,7 @@ public class LatestOldestController extends Controller{
 			break;
 		}
 		UriMapper.deleteUri(cinEntity.getHierarchicalURI());
-		DAO<?> dao = (DAO<?>) Patterns.getDAO(cinEntity.getParentID(), dbs);
+		DAO<?> dao = (DAO<?>) patterns.getDAO(cinEntity.getParentID(), dbs);
 		ResourceEntity parentEntity = (ResourceEntity)dao.find(transaction, cinEntity.getParentID());
 
 		ContainerEntity container = (ContainerEntity) parentEntity;

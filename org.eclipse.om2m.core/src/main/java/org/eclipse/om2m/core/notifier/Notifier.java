@@ -22,8 +22,6 @@ package org.eclipse.om2m.core.notifier;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -72,15 +70,12 @@ public class Notifier {
 	/** Logger */
 	private static Log LOGGER = LogFactory.getLog(Notifier.class);
 	
-	private static final Integer NB_OF_FAILED_NOTIFS_BEFORE_DELETION = Integer.valueOf(System.getProperty("org.eclipse.om2m.subscriptions.nbOfFailedNotificationsBeforeDeletion", "5"));
-
 	/**
 	 * Finds all resource subscribers and notifies them.
 	 * @param statusCode - Notification status code
 	 * @param resource - Notification resource
 	 */
 	public static void notify(List<SubscriptionEntity> listSubscription, ResourceEntity resource, int resourceStatus) {
-
 		notify(listSubscription, resource, null, resourceStatus);
 	}
 	
@@ -179,8 +174,10 @@ public class Notifier {
 		String parentId = UriMapper.getNonHierarchicalUri(parentHierarchicalId);
 		// get parent entity
 		DBService dbs = PersistenceService.getInstance().getDbService();
+		Patterns patterns = new Patterns();
 
-		DAO<?> dao = Patterns.getDAO(parentId, dbs);
+
+		DAO<?> dao = patterns.getDAO(parentId, dbs);
 		DBTransaction transaction = dbs.getDbTransaction();
 		transaction.open();
 		ResourceEntity parentEntity = (ResourceEntity) dao.find(transaction, parentId);
@@ -245,6 +242,8 @@ public class Notifier {
 		@SuppressWarnings("unchecked")
 		@Override
 		public void run() {
+			final Integer NB_OF_FAILED_NOTIFS_BEFORE_DELETION = Integer.valueOf(System.getProperty("org.eclipse.om2m.subscriptions.nbOfFailedNotificationsBeforeDeletion", "5"));
+
 			final RequestPrimitive request = new RequestPrimitive();
 			Notification notification = new Notification();
 			NotificationEvent notifEvent = new NotificationEvent();

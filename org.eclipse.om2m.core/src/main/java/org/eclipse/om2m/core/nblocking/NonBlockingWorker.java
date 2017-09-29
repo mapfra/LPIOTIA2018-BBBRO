@@ -60,6 +60,8 @@ public class NonBlockingWorker extends Thread {
 		DBService dbs = PersistenceService.getInstance().getDbService();
 		DBTransaction transaction = dbs.getDbTransaction();
 		transaction.open();
+		Patterns patterns = new Patterns();
+
 		
 		RequestEntity managedRequest = dbs.getDAOFactory().getRequestEntityDAO().
 				find(transaction, requestIdentifier);
@@ -68,7 +70,7 @@ public class NonBlockingWorker extends Thread {
 		request.getResponseTypeInfo().setResponseType(ResponseType.BLOCKING_REQUEST);
 		
 		// Case of retargeting, changing the request status to forwarded
-		if(!Patterns.match(Patterns.NON_RETARGETING_PATTERN, request.getTo())){
+		if(!patterns.match(patterns.NON_RETARGETING_PATTERN, request.getTo())){
 			managedRequest.setRequestStatus(RequestStatus.FORWARDED);
 			managedRequest.setStateTag(managedRequest.getStateTag().add(BigInteger.valueOf(1)));
 			dbs.getDAOFactory().getRequestEntityDAO().update(transaction, managedRequest);

@@ -41,7 +41,7 @@ public class Activator implements BundleActivator {
     /** CSE service tracker */
     private ServiceTracker<Object, Object> cseServiceTracker;
     /** Csebase listening context */
-    protected static final String CSE_BASE_CONTEXT = System.getProperty("org.eclipse.om2m.cseBaseContext","/om2m");
+    protected final String CSE_BASE_CONTEXT = System.getProperty("org.eclipse.om2m.cseBaseContext","/om2m");
 
     @Override
     public void start(BundleContext bundleContext) throws Exception {
@@ -68,7 +68,9 @@ public class Activator implements BundleActivator {
                 HttpService httpService = (HttpService) this.context.getService(reference);
                 try {
                     LOGGER.info("Register "+CSE_BASE_CONTEXT+" context");
-                    httpService.registerServlet(CSE_BASE_CONTEXT, new RestHttpServlet(), null,null);
+                    RestHttpServlet servlet = new RestHttpServlet();
+                    servlet.CSE_BASE_CONTEXT = CSE_BASE_CONTEXT;
+                    httpService.registerServlet(CSE_BASE_CONTEXT, servlet, null,null);
                 } catch (Exception e) {
                     LOGGER.error("Error registering CseServlet",e);
                 }

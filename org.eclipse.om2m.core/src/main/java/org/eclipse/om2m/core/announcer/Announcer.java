@@ -53,7 +53,7 @@ import org.eclipse.om2m.persistence.service.util.AnnouncedResourceUtil;
  *
  */
 
-public class Announcer {
+public class Announcer implements Constants {
 	/** Logger */
 	private static Log LOGGER = LogFactory.getLog(Announcer.class);
 

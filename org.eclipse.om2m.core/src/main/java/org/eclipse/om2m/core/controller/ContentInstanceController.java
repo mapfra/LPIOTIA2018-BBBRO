@@ -88,9 +88,10 @@ public class ContentInstanceController extends Controller {
 		 */
 		// create the response
 		ResponsePrimitive response = new ResponsePrimitive(request);
+		Patterns patterns = new Patterns();
 
 		// get the dao of the parent
-		DAO<?> dao = (DAO<?>) Patterns.getDAO(request.getTargetId(), dbs);
+		DAO<?> dao = (DAO<?>) patterns.getDAO(request.getTargetId(), dbs);
 		if (dao == null) {
 			throw new ResourceNotFoundException("Cannot find parent resource");
 		}
@@ -173,8 +174,8 @@ public class ContentInstanceController extends Controller {
 		cinEntity.setResourceID("/" + Constants.CSE_ID + "/" + ShortName.CIN + Constants.PREFIX_SEPERATOR + generatedId);
 		// check & set resource name if present
 		if (cin.getName() != null){
-			if (!Patterns.checkResourceName(cin.getName())){
-				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
+			if (!patterns.checkResourceName(cin.getName())){
+				throw new BadRequestException("Name provided is incorrect. Must be:" + patterns.ID_STRING);
 			}
 			cinEntity.setName(cin.getName());
 		} else {
@@ -295,6 +296,9 @@ public class ContentInstanceController extends Controller {
 	public ResponsePrimitive doDelete(RequestPrimitive request) {
 		// create the response primitive
 		ResponsePrimitive response = new ResponsePrimitive(request);
+		Patterns patterns = new Patterns();
+
+		
 		// get the database service
 		DBService dbs = PersistenceService.getInstance().getDbService();
 		DBTransaction transaction = dbs.getDbTransaction();
@@ -314,7 +318,7 @@ public class ContentInstanceController extends Controller {
 
 		UriMapper.deleteUri(cin.getHierarchicalURI());
 		
-		DAO<?> dao = (DAO<?>) Patterns.getDAO(cin.getParentID(), dbs);
+		DAO<?> dao = (DAO<?>) patterns.getDAO(cin.getParentID(), dbs);
 		ResourceEntity parentEntity = (ResourceEntity)dao.find(transaction, cin.getParentID());
 		ContainerEntity container = (ContainerEntity) parentEntity;
 

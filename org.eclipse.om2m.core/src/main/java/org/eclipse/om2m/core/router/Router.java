@@ -85,6 +85,7 @@ public class Router implements CseService {
 
 		LOGGER.info("Received request in Router: " + request.toString());
 		ResponsePrimitive response = new ResponsePrimitive(request);
+		Patterns patterns = new Patterns();
 		
 		String contentFormat = System.getProperty("org.eclipse.om2m.registration.contentFormat", MimeMediaType.XML);
 
@@ -169,7 +170,7 @@ public class Router implements CseService {
 			getQueryStringFromTargetId(request);
 
 			// Redirection case
-			if (!Patterns.match(Patterns.NON_RETARGETING_PATTERN, request.getTargetId())){
+			if (!patterns.match(patterns.NON_RETARGETING_PATTERN, request.getTargetId())){
 				LOGGER.info("Request targeting another CSE, forwarding to Redirector: " + request.getTo());
 				return Redirector.retarget(request);
 			}
@@ -177,21 +178,21 @@ public class Router implements CseService {
 
 			Controller controller = null ; 
 			// Case of hierarchical URI, retrieve the non-hierarchical URI of the resource
-			if (Patterns.match(Patterns.HIERARCHICAL_PATTERN, request.getTargetId())){
-				if(request.getTargetId().contains(Patterns.FANOUT_POINT_MATCH + "/")){
-					int foptIndex = request.getTargetId().indexOf(Patterns.FANOUT_POINT_MATCH);
+			if (patterns.match(patterns.HIERARCHICAL_PATTERN, request.getTargetId())){
+				if(request.getTargetId().contains(patterns.FANOUT_POINT_MATCH + "/")){
+					int foptIndex = request.getTargetId().indexOf(patterns.FANOUT_POINT_MATCH);
 					String uri = request.getTargetId().substring(0, foptIndex);
 					String suffix = request.getTargetId()
 							.substring(
-									foptIndex + Patterns.FANOUT_POINT_MATCH.length(), 
+									foptIndex + patterns.FANOUT_POINT_MATCH.length(), 
 									request.getTargetId().length()
 									);
 					controller = new FanOutPointController(suffix);
 					request.setTargetId(uri);
 					LOGGER.info("Fan Out request received: [grp uri: " + uri + ", suffix: " + suffix + "]");
-				} if (request.getTargetId().endsWith(Patterns.FANOUT_POINT_MATCH)) {
+				} if (request.getTargetId().endsWith(patterns.FANOUT_POINT_MATCH)) {
 					controller = new FanOutPointController();
-					request.setTargetId(request.getTargetId().replaceAll(Patterns.FANOUT_POINT_MATCH, ""));
+					request.setTargetId(request.getTargetId().replaceAll(patterns.FANOUT_POINT_MATCH, ""));
 					LOGGER.info("Fan Out request received: [grp uri: " + request.getTargetId()+ "]");
 				} 
 				if(request.getTargetId().endsWith("/" + ShortName.LATEST)){
@@ -276,53 +277,54 @@ public class Router implements CseService {
 	 * @return The matched resource controller otherwise null
 	 */
 	protected Controller getResourceControllerFromURI(String uri){
+		Patterns patterns = new Patterns();
 		// Match the resource controller with an uri pattern and return it, otherwise return null
-		if (Patterns.match(Patterns.CSE_BASE_PATTERN, uri)){
+		if (patterns.match(patterns.CSE_BASE_PATTERN, uri)){
 			return new CSEBaseController();
 		}
-		if (Patterns.match(Patterns.AE_PATTERN, uri)){
+		if (patterns.match(patterns.AE_PATTERN, uri)){
 			return new AEController();
 		}
-		if (Patterns.match(Patterns.AEANNC_PATTERN, uri)){
+		if (patterns.match(patterns.AEANNC_PATTERN, uri)){
 			return new AEAnncController();
 		}
-		if (Patterns.match(Patterns.ACP_PATTERN, uri)){
+		if (patterns.match(patterns.ACP_PATTERN, uri)){
 			return new AccessControlPolicyController();
 		}
-		if (Patterns.match(Patterns.CONTAINER_PATTERN, uri)){
+		if (patterns.match(patterns.CONTAINER_PATTERN, uri)){
 			return new ContainerController();
 		}
-		if (Patterns.match(Patterns.DYNAMIC_AUTHORIZATION_CONSULTATION_PATTERN, uri)){
+		if (patterns.match(patterns.DYNAMIC_AUTHORIZATION_CONSULTATION_PATTERN, uri)){
 			return new DynamicAuthorizationConsultationController();
 		}
-		if(Patterns.match(Patterns.FLEXCONTAINER_PATTERN, uri)) {
+		if (patterns.match(patterns.FLEXCONTAINER_PATTERN, uri)) {
 			return new FlexContainerController();
 		}
-		if(Patterns.match(Patterns.FLEXCONTAINER_ANNC_PATTERN, uri)) {
+		if (patterns.match(patterns.FLEXCONTAINER_ANNC_PATTERN, uri)) {
 			return new FlexContainerAnncController();
 		}
-		if (Patterns.match(Patterns.CONTENTINSTANCE_PATTERN, uri)) {
+		if (patterns.match(patterns.CONTENTINSTANCE_PATTERN, uri)) {
 			return new ContentInstanceController();
 		}
-		if (Patterns.match(Patterns.REMOTE_CSE_PATTERN, uri)) {
+		if (patterns.match(patterns.REMOTE_CSE_PATTERN, uri)) {
 			return new RemoteCSEController();
 		}
-		if(Patterns.match(Patterns.GROUP_PATTERN, uri)){
+		if (patterns.match(patterns.GROUP_PATTERN, uri)){
 			return new GroupController();
 		}
-		if (Patterns.match(Patterns.NODE_PATTERN, uri)) {
+		if (patterns.match(patterns.NODE_PATTERN, uri)) {
 			return new NodeController();
 		}
-		if(Patterns.match(Patterns.SUBSCRIPTION_PATTERN, uri)){
+		if (patterns.match(patterns.SUBSCRIPTION_PATTERN, uri)){
 			return new SubscriptionController();
 		}
-		if(Patterns.match(Patterns.POLLING_CHANNEL_PATTERN, uri)){
+		if (patterns.match(patterns.POLLING_CHANNEL_PATTERN, uri)){
 			return new PollingChannelController();
 		}
-		if(Patterns.match(Patterns.POLLING_CHANNEL_URI_PATTERN, uri)){
+		if (patterns.match(patterns.POLLING_CHANNEL_URI_PATTERN, uri)){
 			return new PollingChannelUriController();
 		}
-		if(Patterns.match(Patterns.REQUEST_PATTERN, uri)){
+		if (patterns.match(patterns.REQUEST_PATTERN, uri)){
 			return new RequestController();
 		}
 		return null;

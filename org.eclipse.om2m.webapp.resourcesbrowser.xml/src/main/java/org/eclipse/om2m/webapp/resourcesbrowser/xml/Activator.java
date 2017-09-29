@@ -33,9 +33,10 @@ import org.osgi.util.tracker.ServiceTracker;
 public class Activator implements BundleActivator {
 	/** logger */
 	private static Log LOGGER = LogFactory.getLog(Activator.class);
-	public static String globalContext = System.getProperty("org.eclipse.om2m.globalContext","");
-	public static String uiContext = System.getProperty("org.eclipse.om2m.webInterfaceContext","/");
-	public static String sep ="/";
+	public String globalContext = System.getProperty("org.eclipse.om2m.globalContext","");
+	private Activator _this = this; //dgo
+	public String uiContext = System.getProperty("org.eclipse.om2m.webInterfaceContext","/webpage");
+	public String sep ="/";
 	/** HTTP service tracker */
 	private ServiceTracker<Object, Object> httpServiceTracker;
 	
@@ -49,10 +50,8 @@ public class Activator implements BundleActivator {
 	      public void removedService(ServiceReference<Object> reference, Object service) {
 			LOGGER.info("HttpService removed");
 	        try {
-//				LOGGER.info("Unregister "+uiContext+sep+" http context");
-//	        	((HttpService) service).unregister(uiContext+sep);
-				LOGGER.info("Unregister "+uiContext+" http context");
-	           ((HttpService) service).unregister(uiContext);
+	        		LOGGER.info("Unregister "+uiContext+" http context");
+	        		((HttpService) service).unregister(uiContext);
 	        } catch (IllegalArgumentException e) {
 		        LOGGER.error("Error unregistring webapp servlet",e);
 	        }
@@ -63,11 +62,8 @@ public class Activator implements BundleActivator {
 	        HttpService httpService = (HttpService) context.getService(reference);
 	        try{
 			LOGGER.info("Register "+uiContext+" http context");
-	          httpService.registerServlet(uiContext, new WelcomeServlet(), null, null);
+	          httpService.registerServlet(uiContext, new WelcomeServlet(_this), null, null);
 			  httpService.registerResources(uiContext+sep+"welcome", "/webapps", null);
-//			  LOGGER.info("Register "+uiContext+sep+" http context");
-//			  httpService.registerServlet(uiContext+sep, new WelcomeServlet(), null, null);
-//			  httpService.registerResources(uiContext+sep+"welcome", uiContext+sep+"webapps", null);
 	        } catch (Exception e) {
 	          LOGGER.error("Error registring webapp servlet",e);
 	        }
@@ -79,6 +75,11 @@ public class Activator implements BundleActivator {
 	
 	@Override
 	public void stop(BundleContext context) throws Exception {
+		if(httpServiceTracker != null){ //dgo
+			((HttpService)httpServiceTracker.getService()).unregister(uiContext); //dgo
+			httpServiceTracker.close(); //dgo
+			httpServiceTracker = null; //dgo
+		}
 	}
 }
 

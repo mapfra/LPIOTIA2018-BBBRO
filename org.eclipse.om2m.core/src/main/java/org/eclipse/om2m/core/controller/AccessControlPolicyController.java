@@ -83,9 +83,10 @@ public class AccessControlPolicyController extends Controller {
 	@Override
 	public ResponsePrimitive doCreate(RequestPrimitive request) {
 		ResponsePrimitive response = new ResponsePrimitive(request);
+		Patterns patterns = new Patterns();
 
 		// Get the DAO of the parent
-		DAO<ResourceEntity> dao = (DAO<ResourceEntity>) Patterns.getDAO(request.getTargetId(), dbs);
+		DAO<ResourceEntity> dao = (DAO<ResourceEntity>) patterns.getDAO(request.getTargetId(), dbs);
 		if (dao == null){
 			throw new ResourceNotFoundException("Cannot find parent resource");
 		}
@@ -174,8 +175,8 @@ public class AccessControlPolicyController extends Controller {
 		String generatedId = generateId();
 		// Creating the corresponding entity
 		if (acp.getName() != null){
-			if (!Patterns.checkResourceName(acp.getName())){
-				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
+			if (!patterns.checkResourceName(acp.getName())){
+				throw new BadRequestException("Name provided is incorrect. Must be:" + patterns.ID_STRING);
 			}
 			acpEntity.setName(acp.getName());
 		} else {

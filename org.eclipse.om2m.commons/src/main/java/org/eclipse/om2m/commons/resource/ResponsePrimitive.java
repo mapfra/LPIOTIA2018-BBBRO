@@ -70,7 +70,7 @@ import org.eclipse.om2m.commons.constants.ShortName;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = ShortName.RESPONSE_PRIMITIVE)
-public class ResponsePrimitive {
+public class ResponsePrimitive implements Constants {
 
 	@XmlElement(required = true, name = ShortName.RESPONSE_STATUS_CODE)
 	protected BigInteger responseStatusCode;

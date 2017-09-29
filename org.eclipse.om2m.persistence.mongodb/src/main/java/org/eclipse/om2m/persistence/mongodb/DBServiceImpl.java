@@ -1,10 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2014, 2016 Orange.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *******************************************************************************/
 package org.eclipse.om2m.persistence.mongodb;
 
 import org.apache.commons.logging.Log;
@@ -58,7 +51,8 @@ public class DBServiceImpl implements DBService {
 	}
 
 	protected void init() {
-		MongoClient mongoClient = new MongoClient(DBConstants.DB_URL);
+		LOGGER.info("mongoDB URL=" + System.getProperty("org.eclipse.om2m.dbUrl", "jdbc:mongo://cloud1/default"));
+		MongoClient mongoClient = new MongoClient(System.getProperty("org.eclipse.om2m.dbUrl", "jdbc:mongo://cloud1/default"));
 		LOGGER.info("mongoDB client=" + mongoClient);
 
 		MongoDatabase database = mongoClient.getDatabase("mydb_" + Constants.CSE_NAME);
@@ -93,6 +87,7 @@ public class DBServiceImpl implements DBService {
 						new IndexOptions().unique(true)/*.weights(doc)*/);
 			} catch (Exception e) {
 				e.printStackTrace();
+				LOGGER.error("Can't delete all ", e); //dgo
 			}
 
 			announceCollection.deleteMany(new Document());

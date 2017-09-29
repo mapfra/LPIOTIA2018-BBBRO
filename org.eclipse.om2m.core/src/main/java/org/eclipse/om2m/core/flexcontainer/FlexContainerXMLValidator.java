@@ -40,18 +40,6 @@ public class FlexContainerXMLValidator {
 	/** FLEXCONTAINER XSD FOLDER PROPERTY NAME */
 	private static final String FLEXCONTAINER_XSD_FOLDER_PROPERTY_NAME = "org.eclipse.om2m.flexcontainer.xsd.folder";
 
-	/** FLEXCONTAINER XSD FOLDER PROPERTY VALUE */
-	private static String FLEXCONTAINER_XSD_FOLDER_PROPERTY_VALUE = System
-			.getProperty(FLEXCONTAINER_XSD_FOLDER_PROPERTY_NAME, null);
-
-	static {
-		// ensure there is a / at the end
-		if (FLEXCONTAINER_XSD_FOLDER_PROPERTY_VALUE != null) {
-			if (!FLEXCONTAINER_XSD_FOLDER_PROPERTY_VALUE.endsWith("/")) {
-				FLEXCONTAINER_XSD_FOLDER_PROPERTY_VALUE += "/";
-			}
-		}
-	}
 
 	/**
 	 * Validate XML payload based on the ContainerDefinition value. This method
@@ -69,6 +57,16 @@ public class FlexContainerXMLValidator {
 		// validate the XML payload
 		// need to perform a post validation due to the fact we need
 		// to know the value of the containerDefinition.
+
+		/** FLEXCONTAINER XSD FOLDER PROPERTY VALUE */
+		String FLEXCONTAINER_XSD_FOLDER_PROPERTY_VALUE = System.getProperty(FLEXCONTAINER_XSD_FOLDER_PROPERTY_NAME, null);
+
+		// ensure there is a / at the end
+		if (FLEXCONTAINER_XSD_FOLDER_PROPERTY_VALUE != null) {
+			if (!FLEXCONTAINER_XSD_FOLDER_PROPERTY_VALUE.endsWith("/")) {
+				FLEXCONTAINER_XSD_FOLDER_PROPERTY_VALUE += "/";
+			}
+		}
 
 		if (FLEXCONTAINER_XSD_FOLDER_PROPERTY_VALUE == null) {
 			// nothing to do as there is no XSD file.

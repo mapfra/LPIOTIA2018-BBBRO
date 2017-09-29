@@ -51,7 +51,7 @@ import org.eclipse.om2m.persistence.service.DBTransaction;
  * {@link RemoteCSE} children.
  *
  */
-public class Redirector {
+public class Redirector implements Constants {
 
 	private static Log LOGGER = LogFactory.getLog(Redirector.class);
 

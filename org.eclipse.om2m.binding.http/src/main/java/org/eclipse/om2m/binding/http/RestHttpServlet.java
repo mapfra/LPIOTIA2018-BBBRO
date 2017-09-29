@@ -63,6 +63,8 @@ public class RestHttpServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	/** Discovered CSE service */
 	private static CseService cse;
+	
+	protected String CSE_BASE_CONTEXT = "";
 
 	/**
 	 * Converts a {@link HttpServletRequest} to a {@link RequestIndication} and uses it to invoke the SCL service.
@@ -79,8 +81,8 @@ public class RestHttpServlet extends HttpServlet {
 
 		// Remove the context (ex: '/api')
 		String targetID = uri ;
-		if (Activator.CSE_BASE_CONTEXT.length() > 1 && uri.length() > Activator.CSE_BASE_CONTEXT.length()){
-			targetID = uri.substring(Activator.CSE_BASE_CONTEXT.length());
+		if (CSE_BASE_CONTEXT.length() > 1 && uri.length() > CSE_BASE_CONTEXT.length()){
+			targetID = uri.substring(CSE_BASE_CONTEXT.length());
 		}
 		
 		if(targetID.startsWith("/~")){
