@@ -22,7 +22,6 @@ import org.eclipse.om2m.sdt.home.monitoring.util.AeRegistration;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 public class InCseContextServlet extends HttpServlet {
 
@@ -35,10 +34,11 @@ public class InCseContextServlet extends HttpServlet {
 	public InCseContextServlet() {
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String sessionId = req.getParameter(SessionManager.SESSION_ID_PARAMETER);
-		if (!SessionManager.getInstance().checkTokenExists(sessionId)) {
+		if (! SessionManager.getInstance().checkTokenExists(sessionId)) {
 			resp.sendError(HttpServletResponse.SC_FORBIDDEN);
 			return;
 		}
@@ -53,7 +53,7 @@ public class InCseContextServlet extends HttpServlet {
 			// retrieve notifications
 			List<JSONObject> notifications = AeRegistration.getInstance().getNotificationsAndClears(sessionId);
 			JSONArray globalJson = new JSONArray();
-			for(JSONObject notification : notifications) {
+			for (JSONObject notification : notifications) {
 				globalJson.add(notification);
 			}
 			resp.setHeader("Content-Type", "application/json");
@@ -64,43 +64,22 @@ public class InCseContextServlet extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
 		LOGGER.info("doPost(subscribeTo)");
-
-		JSONParser parser = new JSONParser();
-		JSONObject jsonObject = null;
 		try {
-			jsonObject = (JSONObject) parser.parse(req.getReader());
-		} catch (ParseException e) {
-			resp.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE,
-					"json payload is incorrect: valid format is {'resourceId':'url'}");
-			return;
-		} catch (ClassCastException e) {
-			resp.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE,
-					"json payload is incorrect: valid format is {'resourceId':'url'}");
-			return;
-		}
-		
-		String resourceId = null;
-		String sessionId = null;
-		try {
-			resourceId = (String) jsonObject.get(RESOURCE_ID);
-			sessionId = (String) jsonObject.get(SessionManager.SESSION_ID_PARAMETER);
-			if (!AeRegistration.getInstance().createSubscription(resourceId, sessionId)) {
-				resp.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE,
-						"unable to create subscription");
+			JSONParser parser = new JSONParser();
+			JSONObject jsonObject = (JSONObject) parser.parse(req.getReader());
+			String resourceId = (String) jsonObject.get(RESOURCE_ID);
+			String sessionId = (String) jsonObject.get(SessionManager.SESSION_ID_PARAMETER);
+			if (AeRegistration.getInstance().createSubscription(resourceId, sessionId)) {
+				resp.setStatus(HttpServletResponse.SC_OK);
 				return;
 			}
-		} catch (ClassCastException e) {
+			resp.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE,
+					"unable to create subscription");
+		} catch (Exception e) {
 			resp.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE,
 					"json payload is incorrect: valid format is {'resourceId':'url'}");
-			return;
 		}
-		LOGGER.debug("doPost(subscribeTo=" + resourceId + ")");
-		
-		resp.setStatus(HttpServletResponse.SC_OK);
-
 	}
-	
 
 }

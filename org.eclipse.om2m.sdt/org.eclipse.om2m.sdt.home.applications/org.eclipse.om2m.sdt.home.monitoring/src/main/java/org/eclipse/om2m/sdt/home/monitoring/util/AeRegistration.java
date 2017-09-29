@@ -7,13 +7,6 @@
  *******************************************************************************/
 package org.eclipse.om2m.sdt.home.monitoring.util;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -47,16 +40,9 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-public class AeRegistration implements InterworkingService {
+public class AeRegistration implements InterworkingService, org.eclipse.om2m.sdt.home.monitoring.util.Constants {
 
 	private static Log LOGGER = LogFactory.getLog(AeRegistration.class);
-
-	private static final String HOME_MONITORING_NAME = "SDT_Home_Monitoring_Application";
-	private static final String FRIENDLY_HOME_MONITORING_NAME = "Home Monitoring Application";
-	private static final String ACP_HOME_MONITORING_NAME = HOME_MONITORING_NAME + "_ACP";
-	private static final String HOME_MONITORING_RESOURCE_ID = "ResourceID/SDT_Home_Monitoring_Application";
-	private static final String RESOURCE_TYPE = "ResourceType/Application";
-	private static final String POA = "HomeMonitoringPOA";
 
 	private static final AeRegistration INSTANCE = new AeRegistration();
 
@@ -83,10 +69,10 @@ public class AeRegistration implements InterworkingService {
 	 * Make private the default constructor
 	 */
 	private AeRegistration() {
-		notifications = new HashMap<>();
-		subscriptions = new HashMap();
-		subscribedToResourcesSet = new HashMap();
-		subscriptionsPerSessions = new HashMap<>();
+		notifications = new HashMap<String, List<JSONObject>>();
+		subscriptions = new HashMap<String,String>();
+		subscribedToResourcesSet = new HashMap<String,String>();
+		subscriptionsPerSessions = new HashMap<String, Set<String>>();
 	}
 
 	/**
@@ -105,26 +91,21 @@ public class AeRegistration implements InterworkingService {
 	 * @return true if the AE has been successfully created
 	 */
 	public boolean createAe() {
-		if (cseService == null) {
-			// KO
+		if ((cseService == null) || ! createACP()) {
 			return false;
 		}
-		if (!createACP()) {
-			return false;
-		}
-
-		RequestPrimitive request = new RequestPrimitive();
 
 		AE ae = new AE();
-		ae.setName(HOME_MONITORING_NAME);
+		ae.setName(RESOURCE_ID);
 		ae.setAppName(FRIENDLY_HOME_MONITORING_NAME);
-		ae.setAppID(HOME_MONITORING_NAME);
+		ae.setAppID(RESOURCE_ID);
 		ae.setRequestReachability(Boolean.TRUE);
 		ae.getLabels().add(HOME_MONITORING_RESOURCE_ID);
 		ae.getLabels().add(RESOURCE_TYPE);
 		ae.getAccessControlPolicyIDs().add(registeredAcp.getResourceID());
 		ae.getPointOfAccess().add(POA);
 
+		RequestPrimitive request = new RequestPrimitive();
 		request.setOperation(Operation.CREATE);
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 		request.setTargetId("/" + Constants.CSE_ID + "/" + Constants.CSE_NAME);
@@ -134,10 +115,8 @@ public class AeRegistration implements InterworkingService {
 		request.setContent(ae);
 
 		ResponsePrimitive response = cseService.doRequest(request);
-
 		// check response status code
-		if (!ResponseStatusCode.CREATED.equals(response.getResponseStatusCode())) {
-			// KO
+		if (! ResponseStatusCode.CREATED.equals(response.getResponseStatusCode())) {
 			return false;
 		}
 
@@ -145,39 +124,27 @@ public class AeRegistration implements InterworkingService {
 		try {
 			registeredApplication = (AE) response.getContent();
 		} catch (ClassCastException e) {
-			// ko
 			return false;
 		}
 		
 		// create a Container to store the icon
 		Container iconContainer = createContainer(registeredApplication.getResourceID(), "ICON");
 		if (iconContainer != null) {
-			String logoUrlSuffix = "/Home_Monitoring_Application/webapps/images/logo.png";
-			createContentInstance(iconContainer, logoUrlSuffix);
+			createContentInstance(iconContainer, "/" + IMAGES + "logo.png");
 		}
 		
 		Container presentationUrlContainer = createContainer(registeredApplication.getResourceID(), "PRESENTATION_URL");
 		if (presentationUrlContainer != null) {
-			
-			String presentationUrlSuffix = "/Home_Monitoring_Application/webapps/login.html";
-			createContentInstance(presentationUrlContainer, presentationUrlSuffix);
+			createContentInstance(presentationUrlContainer, "/" + WEBAPPS + "login.html");
 		}
 		
 		// ok
 		return true;
 	}
 
-	
-
-	
-
 	public void deleteAe() {
 		deleteAllSubscriptions();
-
-		if (registeredApplication == null) {
-			return;
-		}
-		if (cseService == null) { // KO
+		if ((registeredApplication == null) || (cseService == null)) { // KO
 			return;
 		}
 
@@ -214,10 +181,8 @@ public class AeRegistration implements InterworkingService {
 
 		ResponsePrimitive response = cseService.doRequest(request);
 		// check response status code
-		BigInteger code = response.getResponseStatusCode();
-		if (!ResponseStatusCode.CREATED.equals(code)) {
-			// KO
-			LOGGER.info("createACP KO " + code);
+		if (! ResponseStatusCode.CREATED.equals(response.getResponseStatusCode())) {
+			LOGGER.info("createACP KO " + response);
 			return false;
 		}
 
@@ -237,7 +202,6 @@ public class AeRegistration implements InterworkingService {
 		if (registeredAcp == null) {
 			return;
 		}
-
 		LOGGER.info("deleteAcp " + registeredAcp);
 		RequestPrimitive request = new RequestPrimitive();
 		request.setOperation(Operation.DELETE);
@@ -245,7 +209,6 @@ public class AeRegistration implements InterworkingService {
 		request.setTargetId(registeredAcp.getResourceID());
 		cseService.doRequest(request);
 	}
-	
 	
 	private Container createContainer(String resourceID, String name) {
 		Container container = new Container();
@@ -260,13 +223,9 @@ public class AeRegistration implements InterworkingService {
 		request.setRequestContentType(MimeMediaType.OBJ);
 		request.setContent(container);
 		
-		
-		ResponsePrimitive response = cseService.doRequest(request );
-		if (!response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {
-			return null;
-		} else {
-			return (Container) response.getContent();
-		}
+		ResponsePrimitive response = cseService.doRequest(request);
+		return response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)
+				? (Container) response.getContent() : null;
 	}
 	
 	private void createContentInstance(Container iconContainer, String value) {
@@ -274,7 +233,6 @@ public class AeRegistration implements InterworkingService {
 		contentInstance.setContentInfo("paint");
 		contentInstance.setContent(value);
 
-		
 		RequestPrimitive request = new RequestPrimitive();
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 		request.setTargetId(iconContainer.getResourceID());
@@ -284,15 +242,13 @@ public class AeRegistration implements InterworkingService {
 		request.setRequestContentType(MimeMediaType.OBJ);
 		request.setContent(contentInstance);
 		
-		
-		ResponsePrimitive response = cseService.doRequest(request );
+		cseService.doRequest(request );
 	}
 
 	@Override
 	public ResponsePrimitive doExecute(RequestPrimitive request) {
 		ResponsePrimitive response = new ResponsePrimitive(request);
-
-		if (!request.getOperation().equals(Operation.NOTIFY)) {
+		if (! request.getOperation().equals(Operation.NOTIFY)) {
 			response.setResponseStatusCode(ResponseStatusCode.NOT_IMPLEMENTED);
 			return response;
 		}
@@ -308,10 +264,8 @@ public class AeRegistration implements InterworkingService {
 			response.setResponseStatusCode(ResponseStatusCode.BAD_REQUEST);
 			return response;
 		}
-
 		// add in list
 		addNotification(notification);
-
 		response.setResponseStatusCode(ResponseStatusCode.OK);
 		return response;
 	}
@@ -322,34 +276,29 @@ public class AeRegistration implements InterworkingService {
 	}
 
 	public List<JSONObject> getNotificationsAndClears(String sessionId) {
-		List<JSONObject> notificationsToBeReturned = new ArrayList<>();
+		List<JSONObject> notificationsToBeReturned = new ArrayList<JSONObject>();
 		List<JSONObject> notifsPerSession;
 		// retrieve list of notifs based on sessionId
 		synchronized (notifications) {
 			notifsPerSession = notifications.get(sessionId);
 		}
-
 		if (notifsPerSession != null) {
 			synchronized (notifsPerSession) {
 				notificationsToBeReturned.addAll(notifsPerSession);
 				notifsPerSession.clear();
 			}
 		}
-
 		return notificationsToBeReturned;
 	}
 
 	private void addNotification(JSONObject notification) {
 		LOGGER.debug("add notification from subscription ");
-
 		String subscriptionId = (String) ((JSONObject) notification.get("m2m:sgn")).get("m2m:sur");
-
 		for (Entry<String, Set<String>> entry : subscriptionsPerSessions.entrySet()) {
 			if (entry.getValue().contains(subscriptionId)) {
 				addNotification(entry.getKey(), notification);
 			}
 		}
-
 	}
 
 	private void addNotification(String sessionId, JSONObject notification) {
@@ -367,9 +316,7 @@ public class AeRegistration implements InterworkingService {
 	}
 
 	public boolean createSubscription(String resourceId, String sessionId) {
-
-		if ((resourceId == null) || (sessionId == null)
-				|| (!SessionManager.getInstance().checkTokenExists(sessionId))) {
+		if ((resourceId == null) || ! SessionManager.getInstance().checkTokenExists(sessionId)) {
 			return false;
 		}
 
@@ -378,7 +325,6 @@ public class AeRegistration implements InterworkingService {
 		if ((subscriptionId = checkIfSubscriptionExists(resourceId)) != null) {
 			// associate this session with this subscription
 			associateSubscriptionAndSession(subscriptionId, sessionId);
-
 			return true;
 		}
 
@@ -433,7 +379,7 @@ public class AeRegistration implements InterworkingService {
 		request.setReturnContentType(MimeMediaType.OBJ);
 		request.setRequestContentType(MimeMediaType.OBJ);
 
-		ResponsePrimitive response = cseService.doRequest(request);
+		cseService.doRequest(request);
 	}
 
 	private void addSubscription(String subscriptionId, String resourceId) {
@@ -452,7 +398,6 @@ public class AeRegistration implements InterworkingService {
 			}
 			subscriptions.clear();
 		}
-
 		synchronized (subscribedToResourcesSet) {
 			subscribedToResourcesSet.clear();
 		}
@@ -473,7 +418,6 @@ public class AeRegistration implements InterworkingService {
 				subscriptionsPerSessions.put(sessionId, subscriptionIds);
 			}
 		}
-
 		synchronized (subscriptionIds) {
 			subscriptionIds.add(subscriptionId);
 		}
@@ -483,16 +427,15 @@ public class AeRegistration implements InterworkingService {
 		synchronized (subscriptionsPerSessions) {
 			subscriptionsPerSessions.remove(sessionId);
 		}
-
 		List<JSONObject> notifsPerSession = null;
 		synchronized (notifications) {
 			notifsPerSession = notifications.remove(sessionId);
 		}
-
 		if (notifsPerSession != null) {
 			synchronized (notifsPerSession) {
 				notifsPerSession.clear();
 			}
 		}
 	}
+	
 }

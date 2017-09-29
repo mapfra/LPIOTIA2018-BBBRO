@@ -8,13 +8,13 @@
 package org.eclipse.om2m.sdt.home.monitoring.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.eclipse.om2m.sdt.home.monitoring.util.Constants;
 import org.json.simple.JSONObject;
 import org.osgi.framework.BundleContext;
 
@@ -25,35 +25,24 @@ public class CredentialsServlet extends HttpServlet {
 	public CredentialsServlet(BundleContext context) {
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String sessionId = request.getParameter(SessionManager.SESSION_ID_PARAMETER);
-
-		if ((sessionId == null) || (!SessionManager.getInstance().checkTokenExists(sessionId))) {
+		SessionManager.Session session = SessionManager.getInstance().getSession(sessionId);
+		if (session == null) {
 			// no valid session =>
 			response.sendError(HttpServletResponse.SC_FORBIDDEN);
 			return;
 		}
 
-		SessionManager.Session session = SessionManager.getInstance().getSession(sessionId);
-		if (session == null) {
-			// no valid session =>
-						response.sendError(HttpServletResponse.SC_FORBIDDEN);
-						return;
-		}
-
-		String name = session.getName();
-		String password = session.getPassword();
-		String cred = name + ':' + password;
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put(Constants.NAME, session.getName());
+		jsonObject.put(Constants.CREDENTIALS, session.getName() + ':' + session.getPassword());
 
 		response.setContentType("application/json");
-		PrintWriter out = response.getWriter();
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("name", name);
-		jsonObject.put("credentials", cred);
-
-		out.write(jsonObject.toJSONString());
+		response.getWriter().write(jsonObject.toJSONString());
 	}
 
 }

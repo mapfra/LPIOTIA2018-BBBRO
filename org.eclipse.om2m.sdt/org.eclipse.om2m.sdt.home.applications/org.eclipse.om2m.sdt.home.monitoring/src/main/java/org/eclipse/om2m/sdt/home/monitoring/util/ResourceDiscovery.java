@@ -43,7 +43,7 @@ public class ResourceDiscovery {
 		request.setFilterCriteria(new FilterCriteria());
 		request.setOperation(Operation.RETRIEVE);
 		request.getFilterCriteria().setFilterUsage(FilterUsage.DISCOVERY_CRITERIA);
-		request.getFilterCriteria().getLabels().add(RESOURCE_ID_SEARCH_STRING + Constants.ResourceID);
+		request.getFilterCriteria().getLabels().add(RESOURCE_ID_SEARCH_STRING + Constants.RESOURCE_ID);
 		request.getFilterCriteria().getLabels().add(RESOURCE_TYPE_APPLICATION_SEARCH_STRING);
 		request.setTargetId("/" + org.eclipse.om2m.commons.constants.Constants.CSE_ID
 				+ "/" + org.eclipse.om2m.commons.constants.Constants.CSE_NAME);
