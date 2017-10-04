@@ -78,6 +78,11 @@
       <plugin id="org.eclipse.om2m.webapp.resourcesbrowser.xml"/>
       <plugin id="org.eclipse.osgi"/>
       <plugin id="org.eclipse.osgi.services"/>
+      <plugin id="org.eclipse.equinox.event"/>
+      <plugin id="org.eclipse.om2m.dal"/>
+      <plugin id="org.eclipse.om2m.dal.driver.sample"/>
+      <plugin id="org.eclipse.om2m.interworking.service"/>
+      <plugin id="org.eclipse.om2m.ipe.dal"/>
    </plugins>
 
    <configurations>
@@ -120,7 +125,6 @@
       <property name="org.eclipse.om2m.cseType" value="IN-CSE" />
       <property name="org.eclipse.om2m.dbDriver" value="org.h2.Driver" />
       <property name="org.eclipse.om2m.dbPassword" value="om2m" />
-
       <property name="org.eclipse.om2m.dbReset" value="false" />
       <property name="org.eclipse.om2m.dbUrl" value="jdbc:h2:./database/indb;MULTI_THREADED=1" />
       <property name="org.eclipse.om2m.dbUrl_mongodb" value="127.0.0.1" />

@@ -75,6 +75,11 @@
       <plugin id="org.eclipse.osgi"/>
       <plugin id="org.eclipse.osgi.compatibility.state" fragment="true"/>
       <plugin id="org.eclipse.osgi.services"/>
+      <plugin id="org.eclipse.equinox.event"/>
+      <plugin id="org.eclipse.om2m.dal"/>
+      <plugin id="org.eclipse.om2m.dal.driver.sample"/>
+      <plugin id="org.eclipse.om2m.interworking.service"/>
+      <plugin id="org.eclipse.om2m.ipe.dal"/>
    </plugins>
 
    <configurations>

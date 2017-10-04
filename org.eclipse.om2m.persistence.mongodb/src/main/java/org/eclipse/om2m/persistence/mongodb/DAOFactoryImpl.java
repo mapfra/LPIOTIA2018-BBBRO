@@ -26,6 +26,9 @@ import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
 import org.eclipse.om2m.commons.entities.RequestEntity;
 import org.eclipse.om2m.commons.entities.SubscriptionEntity;
 import org.eclipse.om2m.commons.entities.UriMapperEntity;
+import org.eclipse.om2m.persistence.eclipselink.internal.dao.AeByAppIdDAO;
+import org.eclipse.om2m.persistence.eclipselink.internal.dao.ContainerByNameDAO;
+import org.eclipse.om2m.persistence.eclipselink.internal.dao.DescContainerByParentDAO;
 import org.eclipse.om2m.persistence.mongodb.dao.AccessControlOriginatorEntityDAO;
 import org.eclipse.om2m.persistence.mongodb.dao.CreatedAnnouncedResourceEntityDao;
 import org.eclipse.om2m.persistence.mongodb.dao.LabelEntityDao;
@@ -33,6 +36,7 @@ import org.eclipse.om2m.persistence.mongodb.dao.RemoteCSEByIdDAO;
 import org.eclipse.om2m.persistence.mongodb.dao.UriMapperEntityDAO;
 import org.eclipse.om2m.persistence.service.DAO;
 import org.eclipse.om2m.persistence.service.DAOFactory;
+
 
 public class DAOFactoryImpl implements DAOFactory {
 
@@ -156,6 +160,21 @@ public class DAOFactoryImpl implements DAOFactory {
 		return  new DAOImpl<ContentInstanceEntity>(ContentInstanceEntity.class) {
 		};
 	}
+
 	
+	@Override
+	public DAO<ContainerEntity> getContainerByResourceNameDAO() {
+		return new ContainerByNameDAO();
+	}
+	
+	@Override
+	public DAO<ContainerEntity> getDescContainerByParentDAO() {
+		return new DescContainerByParentDAO();
+	}
+	
+	@Override
+	public DAO<AeEntity> getAeByAppIdDAO() {
+		return new AeByAppIdDAO();
+	}
 
 }
