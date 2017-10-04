@@ -1,4 +1,5 @@
 /*******************************************************************************
+
  * Copyright (c) 2013-2016 LAAS-CNRS (www.laas.fr)
  * 7 Colonel Roche 31077 Toulouse - France
  *
@@ -54,6 +55,8 @@ public class ContainerEntity extends AnnounceableSubordinateEntity{
 	protected BigInteger maxNrOfInstances;
 	@Column(name= ShortName.MAX_BYTE_SIZE)
 	protected BigInteger maxByteSize;
+	@Column(name= ShortName.CURRENT_NUMBER_OF_INSTANCES)
+	protected BigInteger currentNrOfInstances;
 	@Column(name= ShortName.MAX_INSTANCE_AGE)
 	protected BigInteger maxInstanceAge;
 	@Column(name= ShortName.LOCATION_ID)
@@ -157,6 +160,16 @@ public class ContainerEntity extends AnnounceableSubordinateEntity{
 			inverseJoinColumns={@JoinColumn(name=DBEntities.CSR_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)},
 			joinColumns={@JoinColumn(name=DBEntities.CNT_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)}
 			)
+	
+	
+	public BigInteger getCurrentNrOfInstances() {
+			return currentNrOfInstances;
+	}
+
+	public void setCurrentNrOfInstances(BigInteger currentNrOfInstances) {
+			this.currentNrOfInstances = currentNrOfInstances;
+	}
+	
 	protected RemoteCSEEntity parentCSR;
 	
 	/**

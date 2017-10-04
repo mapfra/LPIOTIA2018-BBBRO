@@ -63,7 +63,7 @@
       <plugin id="org.eclipse.om2m.datamapping.jaxb"/>
       <plugin id="org.eclipse.om2m.datamapping.service"/>
       <plugin id="org.eclipse.om2m.ipe.sdt"/>
-      <!--plugin id="org.eclipse.om2m.ipe.sdt.testsuite"/-->
+      <plugin id="org.eclipse.om2m.ipe.sdt.testsuite"/>
       <plugin id="org.eclipse.om2m.persistence.eclipselink"/>
       <plugin id="org.eclipse.om2m.persistence.mongodb"/>
       <plugin id="org.eclipse.om2m.persistence.service"/>
@@ -73,7 +73,7 @@
       <plugin id="org.eclipse.om2m.sdt.home.mocked.devices"/>
       <plugin id="org.eclipse.om2m.sdt.home.monitoring"/>
       <plugin id="org.eclipse.om2m.sdt.comparator.xml"/>
-      <!--plugin id="org.eclipse.om2m.testsuite.flexcontainer"/-->
+      <plugin id="org.eclipse.om2m.testsuite.flexcontainer"/>
       <plugin id="org.eclipse.om2m.webapp.resourcesbrowser.json"/>
       <plugin id="org.eclipse.om2m.webapp.resourcesbrowser.xml"/>
       <plugin id="org.eclipse.osgi"/>
@@ -95,7 +95,7 @@
       <plugin id="org.eclipse.om2m.das.testsuite" autoStart="false" startLevel="6" />
       <plugin id="org.eclipse.om2m.datamapping.jaxb" autoStart="true" startLevel="1" />
       <plugin id="org.eclipse.om2m.ipe.sdt" autoStart="true" startLevel="6" />
-      <!--plugin id="org.eclipse.om2m.ipe.sdt.testsuite" autoStart="false" startLevel="6" /-->
+      <plugin id="org.eclipse.om2m.ipe.sdt.testsuite" autoStart="false" startLevel="6" />
       <plugin id="org.eclipse.om2m.persistence.eclipselink" autoStart="true" startLevel="2" />
       <plugin id="org.eclipse.om2m.persistence.mongodb" autoStart="false" startLevel="2" />
       <plugin id="org.eclipse.om2m.sdt.api" autoStart="true" startLevel="5" />
@@ -104,7 +104,7 @@
       <plugin id="org.eclipse.om2m.sdt.home.mocked.devices" autoStart="false" startLevel="5" />
       <plugin id="org.eclipse.om2m.sdt.home.monitoring" autoStart="false" startLevel="5" />
       <plugin id="org.eclipse.om2m.sdt.comparator.xml" autoStart="false" startLevel="5"/>
-      <!--plugin id="org.eclipse.om2m.testsuite.flexcontainer" autoStart="false" startLevel="6" /-->
+      <plugin id="org.eclipse.om2m.testsuite.flexcontainer" autoStart="false" startLevel="6"/>
       <plugin id="org.eclipse.om2m.webapp.resourcesbrowser.json" autoStart="true" startLevel="4" />
       <plugin id="org.eclipse.om2m.webapp.resourcesbrowser.xml" autoStart="false" startLevel="4" />
       <property name="log4j.configuration" value="file:./log4j.configuration" />
@@ -120,8 +120,9 @@
       <property name="org.eclipse.om2m.cseType" value="IN-CSE" />
       <property name="org.eclipse.om2m.dbDriver" value="org.h2.Driver" />
       <property name="org.eclipse.om2m.dbPassword" value="om2m" />
-      <property name="org.eclipse.om2m.dbReset" value="true" />
-      <property name="org.eclipse.om2m.dbUrl" value="jdbc:h2:./data/mndb" />
+
+      <property name="org.eclipse.om2m.dbReset" value="false" />
+      <property name="org.eclipse.om2m.dbUrl" value="jdbc:h2:./database/indb;MULTI_THREADED=1" />
       <property name="org.eclipse.om2m.dbUrl_mongodb" value="127.0.0.1" />
       <property name="org.eclipse.om2m.dbUser" value="om2m" />
       <property name="org.eclipse.om2m.globalContext" value="" />

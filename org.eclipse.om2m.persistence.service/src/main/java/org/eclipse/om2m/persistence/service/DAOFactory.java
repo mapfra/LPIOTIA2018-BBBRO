@@ -83,4 +83,7 @@ public interface DAOFactory {
 	public abstract DAO<FlexContainerAnncEntity> getFlexContainerAnncDAO();
 	
 	public abstract DAO<DynamicAuthorizationConsultationEntity> getDynamicAuthorizationDAO();
+
+	public abstract DAO<ContentInstanceEntity> getOldestDAO();
+
 }

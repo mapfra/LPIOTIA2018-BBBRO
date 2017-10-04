@@ -32,7 +32,6 @@ import org.eclipse.om2m.commons.entities.SubscriptionEntity;
 import org.eclipse.om2m.commons.entities.UriMapperEntity;
 import org.eclipse.om2m.commons.resource.M2MServiceSubscriptionProfile;
 import org.eclipse.om2m.commons.resource.RemoteCSE;
-import org.eclipse.om2m.persistence.eclipselink.internal.DAOFactoryImpl;
 import org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl;
 import org.eclipse.om2m.persistence.eclipselink.internal.DBTransactionJPAImpl;
 import org.eclipse.om2m.persistence.service.util.DynamicAuthorizationConsultationUtil;

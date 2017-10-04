@@ -150,6 +150,12 @@ public class DAOFactoryImpl implements DAOFactory {
 		return  new DAOImpl<DynamicAuthorizationConsultationEntity>(DynamicAuthorizationConsultationEntity.class) {
 		};
 	}
+
+	@Override
+	public DAO<ContentInstanceEntity> getOldestDAO() {
+		return  new DAOImpl<ContentInstanceEntity>(ContentInstanceEntity.class) {
+		};
+	}
 	
 
 }
