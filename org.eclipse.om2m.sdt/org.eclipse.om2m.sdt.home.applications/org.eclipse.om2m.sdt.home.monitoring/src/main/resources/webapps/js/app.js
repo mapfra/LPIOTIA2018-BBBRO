@@ -1,4 +1,4 @@
-angular.module('app', ['uiSwitch']).controller('MainController', function($scope,$http,$interval,$q) {
+angular.module('app', ['uiSwitch']).controller('MainController', function($scope,$http,$interval,$q,$timeout) {
 
 	// add contains method to String
 	String.prototype.contains = function(it) { return this.indexOf(it) != -1; };
@@ -426,18 +426,32 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 									// as we have announced device.
 									device = $scope.getDeviceByRi(moduleRep.pi);
 									if (device) {
-										device.isUpdated=true;
+										
+
+											$scope.removeColor(device);													
+											
 									}
-									// remove background after 1,5s
-									$interval(function() {
-										device.isUpdated = false;
-									}, 1500,1);
+									
 									
 								}
 							}
 						);
 				}
 		);
+	}
+	
+	$scope.removeColor = function(d) {
+		
+		d.isUpdated=true;
+		// remove background after 1,5s
+		
+		$timeout(
+				function() {
+					d.isUpdated = false;
+				}, 
+				1500
+		);
+		
 	}
 	
 	// called when the user clicks on the witch widget in the HMI
