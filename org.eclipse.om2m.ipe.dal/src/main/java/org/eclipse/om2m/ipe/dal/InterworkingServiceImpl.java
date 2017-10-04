@@ -216,8 +216,8 @@ public class InterworkingServiceImpl implements InterworkingService {
 		ae.setRequestReachability(true);
 		ae.getPointOfAccess().add(InterworkingServiceImpl.poc);
 		ae.setAppID(appId);
-
-		ResponsePrimitive response = createResource(CSE_ID, appId, ae,
+		ae.setName(appId);
+		ResponsePrimitive response = createResource(CSE_ID,  ae,
 				ResourceType.AE);
 
 		if (response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {
@@ -267,8 +267,8 @@ public class InterworkingServiceImpl implements InterworkingService {
 	 *            resource - resource object resourceType - resource type
 	 * @return ResponsePrimitive
 	 */
-	public static ResponsePrimitive createResource(String targetId,
-			String name, Resource resource, int resourceType) {
+	
+	public static ResponsePrimitive createResource(String targetId, Resource resource, int resourceType) {
 		RequestPrimitive request = new RequestPrimitive();
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 		request.setTargetId(targetId);
@@ -276,7 +276,7 @@ public class InterworkingServiceImpl implements InterworkingService {
 		request.setRequestContentType(MimeMediaType.OBJ);
 		request.setReturnContentType(MimeMediaType.OBJ);
 		request.setContent(resource);
-		request.setName(name);
+		//request.setName(name);
 		request.setOperation(Operation.CREATE);
 		return Activator.getCseService().doRequest(request);
 	}

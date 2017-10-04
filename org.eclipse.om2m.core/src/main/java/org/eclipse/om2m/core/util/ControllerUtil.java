@@ -22,6 +22,7 @@ package org.eclipse.om2m.core.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.om2m.commons.constants.Constants;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
 import org.eclipse.om2m.commons.entities.AnnounceableSubordinateEntity;
@@ -60,23 +61,30 @@ public class ControllerUtil {
 					throws ResourceNotFoundException {
 
 		// Get the database service
+	
 		DBService dbs = PersistenceService.getInstance().getDbService();
 		// Create the response  list
-		List<AccessControlPolicyEntity> response = new ArrayList<>();		
+		List<AccessControlPolicyEntity> response = new ArrayList<>();	
+		String acpHierarchical = "/" + Constants.CSE_ID + "/" + Constants.CSE_NAME + "/" + Constants.ADMIN_PROFILE_ID;
+		String acpAdminResourceId = UriMapper.getNonHierarchicalUri(acpHierarchical);
+		AccessControlPolicyEntity acpAdminDB = dbs.getDAOFactory().getAccessControlPolicyDAO().find(transaction,acpAdminResourceId );
+		response.add(acpAdminDB);
+		
+		
+		
 		// For each id provided, check the existence of the resource
-		for (String acpId : acpUriList) {
-			String dbId = UriMapper.getNonHierarchicalUri(acpId);
-			if(dbId == null){
-				throw new ResourceNotFoundException("AccessControlPolicy Id [" 
-						+ acpId + "] is not found");
+		if(acpUriList!=null){
+			for (String acpId : acpUriList) {
+					AccessControlPolicyEntity acpEntity = dbs.getDAOFactory()
+							.getAccessControlPolicyDAO().find(transaction, acpId);
+					if (acpEntity == null) {
+						throw new Om2mException("AccessControlPolicy Id ["
+								+ acpId + "] is not found", ResponseStatusCode.BAD_REQUEST);
+					}
+					if(!response.contains(acpEntity)){
+						response.add(acpEntity);
+					}		
 			}
-			AccessControlPolicyEntity acpEntity = dbs.getDAOFactory()
-					.getAccessControlPolicyDAO().find(transaction, dbId);
-			if (acpEntity == null) {
-				throw new Om2mException("AccessControlPolicy Id ["
-						+ acpId + "] is not found", ResponseStatusCode.BAD_REQUEST);
-			}
-			response.add(acpEntity);
 		}
 		return response;
 	}

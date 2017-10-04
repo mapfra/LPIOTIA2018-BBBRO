@@ -93,7 +93,7 @@ public class FunctionEventHandler implements EventHandler {
 		obj.add(new Str("Event", data.toString()));
 		cin.setContent(ObixEncoder.toString(obj));
 		cin.setContentInfo(MimeMediaType.OBIX + ":" + MimeMediaType.ENCOD_PLAIN);
-		InterworkingServiceImpl.createResource(funcResourceId, null, cin,
+		InterworkingServiceImpl.createResource(funcResourceId,  cin,
 				ResourceType.CONTENT_INSTANCE);
 	}
 

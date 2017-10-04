@@ -134,10 +134,10 @@ public class FunctionServiceTracker extends ServiceTracker<Object, Object> {
 		// Construct the container resource
 		Container container = new Container();
 		container.setMaxNrOfInstances(BigInteger.valueOf(10));
-
+		container.setName(resourceName);
 		ResponsePrimitive response = InterworkingServiceImpl.createResource(
 				InterworkingServiceImpl.CSE_PREFIX + "/" + deviceResourceName,
-				resourceName, container, ResourceType.CONTAINER);
+				 container, ResourceType.CONTAINER);
 
 		if (response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {
 			resourceId = response.getLocation();
@@ -168,7 +168,9 @@ public class FunctionServiceTracker extends ServiceTracker<Object, Object> {
 			// describe the function information
 			container = new Container();
 			container.setMaxNrOfInstances(BigInteger.valueOf(10));
-			response = InterworkingServiceImpl.createResource(resourceId, DESC,
+			container.setName(DESC);
+
+			response = InterworkingServiceImpl.createResource(resourceId,
 					container, ResourceType.CONTAINER);
 
 			String descResourceId = "";
@@ -197,7 +199,8 @@ public class FunctionServiceTracker extends ServiceTracker<Object, Object> {
 				contentInstance.setContent(getFunctionDescContent(func,
 						resourceName, resourceId));
 				contentInstance.setContentInfo(MimeMediaType.OBIX);
-				InterworkingServiceImpl.createResource(descResourceId, DESC,
+				contentInstance.setName(DESC);
+				InterworkingServiceImpl.createResource(descResourceId, 
 						contentInstance, ResourceType.CONTENT_INSTANCE);
 			}
 
