@@ -188,8 +188,8 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 						// starts with prop
 						var value = jsonDevice[key];
 						if (typeof value !== "undefined") {
-							// override name if there is a propDeviceName
-							if (key === 'prDNe') {
+							// override name if there is a propDeviceAliasName
+							if (key === 'pDANe') {
 								device.name = value;
 							}
 							var propName = key;

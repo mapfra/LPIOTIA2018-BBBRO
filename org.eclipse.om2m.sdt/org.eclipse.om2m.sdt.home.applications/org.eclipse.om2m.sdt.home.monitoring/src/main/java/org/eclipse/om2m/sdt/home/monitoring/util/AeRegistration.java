@@ -254,19 +254,17 @@ public class AeRegistration implements InterworkingService, org.eclipse.om2m.sdt
 		}
 
 		// store notifications
-		String content = null;
-		JSONParser parser = new JSONParser();
-		JSONObject notification = null;
 		try {
-			content = (String) request.getContent();
-			notification = (JSONObject) parser.parse(content);
-		} catch (ClassCastException | ParseException e) {
+			String content = (String) request.getContent();
+			JSONObject notification = (JSONObject) new JSONParser().parse(content);
+			LOGGER.info("Got notif: " + notification);
+			// add in list
+			addNotification(notification);
+			response.setResponseStatusCode(ResponseStatusCode.OK);
+		} catch (Exception e) {
+			LOGGER.error("Error notif", e);
 			response.setResponseStatusCode(ResponseStatusCode.BAD_REQUEST);
-			return response;
 		}
-		// add in list
-		addNotification(notification);
-		response.setResponseStatusCode(ResponseStatusCode.OK);
 		return response;
 	}
 
@@ -342,32 +340,27 @@ public class AeRegistration implements InterworkingService, org.eclipse.om2m.sdt
 		request.setContent(subscription);
 
 		ResponsePrimitive response = cseService.doRequest(request);
-
 		// check response status code
 		if (!ResponseStatusCode.CREATED.equals(response.getResponseStatusCode())) {
-			// KO
 			return false;
-		} else {
-			String content = (String) response.getContent();
-			JSONParser parser = new JSONParser();
-			try {
-				JSONObject createdSubscription = (JSONObject) parser.parse(content);
-				subscriptionId = (String) ((JSONObject) createdSubscription.get("m2m:sub")).get("ri");
-				addSubscription(subscriptionId, resourceId);
-				// associate this session with this subscription
-				associateSubscriptionAndSession(subscriptionId, sessionId);
-			} catch (ParseException e) {
-				LOGGER.error("unable to parse subscription json payload", e);
-				return false;
-			} catch (NullPointerException e) {
-				LOGGER.error("unable to retrieve subscription object", e);
-				return false;
-			} catch (ClassCastException e) {
-				LOGGER.error("unable to cast subscription object", e);
-				return false;
-			}
-			return true;
 		}
+		
+		try {
+			String content = (String) response.getContent();
+			JSONObject createdSubscription = (JSONObject) new JSONParser().parse(content);
+			subscriptionId = (String) ((JSONObject) createdSubscription.get("m2m:sub")).get("ri");
+			addSubscription(subscriptionId, resourceId);
+			// associate this session with this subscription
+			associateSubscriptionAndSession(subscriptionId, sessionId);
+			return true;
+		} catch (ParseException e) {
+			LOGGER.error("unable to parse subscription json payload", e);
+		} catch (NullPointerException e) {
+			LOGGER.error("unable to retrieve subscription object", e);
+		} catch (ClassCastException e) {
+			LOGGER.error("unable to cast subscription object", e);
+		}
+		return false;
 	}
 
 	private void deleteSubscription(String subscriptionId) {
