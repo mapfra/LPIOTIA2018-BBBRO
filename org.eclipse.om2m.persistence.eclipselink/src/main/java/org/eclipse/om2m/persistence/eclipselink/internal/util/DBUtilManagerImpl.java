@@ -19,8 +19,11 @@
  *******************************************************************************/
 package org.eclipse.om2m.persistence.eclipselink.internal.util;
 
+import org.eclipse.om2m.persistence.eclipselink.internal.dao.CreatedAnnouncedResourceDAO;
+import org.eclipse.om2m.persistence.service.util.AnnouncedResourceUtil;
 import org.eclipse.om2m.persistence.service.util.ComplexFindUtil;
 import org.eclipse.om2m.persistence.service.util.DBUtilManager;
+import org.eclipse.om2m.persistence.service.util.DynamicAuthorizationConsultationUtil;
 
 
 public class DBUtilManagerImpl implements DBUtilManager{
@@ -28,6 +31,16 @@ public class DBUtilManagerImpl implements DBUtilManager{
 	@Override
 	public ComplexFindUtil getComplexFindUtil() {
 		return new ComplexFindUtilImpl();
+	}
+	
+	@Override
+	public AnnouncedResourceUtil getAnnouncedResourceUtil() {
+		return new CreatedAnnouncedResourceDAO();
+	}
+	
+	@Override
+	public DynamicAuthorizationConsultationUtil getDynamicAuthorizationConsultationUtil() {
+		return new DynamicAuthorizationConsultationUtilImpl();
 	}
 	
 }

@@ -44,7 +44,7 @@ public class ObixMapper {
 
 	private ObixMapper() {
 		try {
-			context = JAXBContext.newInstance(OBIX_PACKAGE);
+			context = JAXBContext.newInstance(OBIX_PACKAGE, ObixMapper.class.getClassLoader());
 		} catch (JAXBException e) {
 			LOGGER.error("Error creating the JAXB context for Obix objects", e);
 		}

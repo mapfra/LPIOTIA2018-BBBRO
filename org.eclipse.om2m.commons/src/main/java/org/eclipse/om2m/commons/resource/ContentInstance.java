@@ -69,20 +69,20 @@ import org.eclipse.om2m.commons.constants.ShortName;
 @XmlRootElement(name = ShortName.CIN)
 public class ContentInstance extends AnnounceableSubordinateResource {
 
-	@XmlElement(name = ShortName.STATETAG, required = true)
+	@XmlElement(name = ShortName.STATETAG, required = true, namespace="")
 	@XmlSchemaType(name = "nonNegativeInteger")
 	protected BigInteger stateTag;
-	@XmlElement(name = ShortName.CREATOR)
+	@XmlElement(name = ShortName.CREATOR, namespace="")
 	protected String creator;
-	@XmlElement(name = ShortName.CONTENT_INFO)
+	@XmlElement(name = ShortName.CONTENT_INFO, namespace="")
 	protected String contentInfo;
-	@XmlElement(name = ShortName.CONTENT_SIZE, required = true)
+	@XmlElement(name = ShortName.CONTENT_SIZE, required = true, namespace="")
 	@XmlSchemaType(name = "nonNegativeInteger")
 	protected BigInteger contentSize;
 	@XmlSchemaType(name = "anyURI")
-	@XmlElement(name = ShortName.ONTOLOGY_REF)
+	@XmlElement(name = ShortName.ONTOLOGY_REF, namespace="")
 	protected String ontologyRef;
-	@XmlElement(name = ShortName.CONTENT, required = true)
+	@XmlElement(name = ShortName.CONTENT, required = true, namespace="")
 	protected String content;
 
 	/**

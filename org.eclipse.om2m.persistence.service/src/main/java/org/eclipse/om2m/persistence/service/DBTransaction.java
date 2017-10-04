@@ -35,5 +35,12 @@ public interface DBTransaction {
 
 	/** clear the transaction */
 	public abstract void clear();
+	
+	/** lock an object */
+	public abstract void lock(Object object);
+	
+	/** unlock an object */
+	public abstract void unlock(Object object);
+	
 
 }

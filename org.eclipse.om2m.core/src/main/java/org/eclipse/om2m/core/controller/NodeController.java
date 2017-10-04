@@ -165,12 +165,6 @@ public class NodeController extends Controller {
 				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
 			}
 			nodeEntity.setName(node.getName());
-		} else 		
-		if(request.getName() != null){
-			if (!Patterns.checkResourceName(request.getName())){
-				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
-			}
-			nodeEntity.setName(request.getName());
 		} else {
 			nodeEntity.setName(ShortName.NODE + "_" + generatedId);
 		}

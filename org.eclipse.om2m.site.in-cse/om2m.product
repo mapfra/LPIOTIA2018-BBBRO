@@ -18,7 +18,6 @@
    <windowImages/>
 
    <launcher name="in-cse">
-      <solaris/>
       <win useIco="false">
          <bmp/>
       </win>
@@ -39,7 +38,10 @@
       <plugin id="org.apache.felix.gogo.shell"/>
       <plugin id="org.apache.httpcomponents.httpclient"/>
       <plugin id="org.apache.httpcomponents.httpcore"/>
+      <plugin id="org.eclipse.equinox.cm"/>
       <plugin id="org.eclipse.equinox.console"/>
+      <plugin id="org.eclipse.equinox.ds"/>
+      <plugin id="org.eclipse.equinox.event"/>
       <plugin id="org.eclipse.equinox.http.jetty"/>
       <plugin id="org.eclipse.equinox.http.servlet"/>
       <plugin id="org.eclipse.equinox.launcher"/>
@@ -52,16 +54,27 @@
       <plugin id="org.eclipse.jetty.util"/>
       <plugin id="org.eclipse.om2m.binding.coap"/>
       <plugin id="org.eclipse.om2m.binding.http"/>
-      <plugin id="org.eclipse.om2m.binding.mqtt"/>
       <plugin id="org.eclipse.om2m.binding.service"/>
       <plugin id="org.eclipse.om2m.commons"/>
       <plugin id="org.eclipse.om2m.commons.logging" fragment="true"/>
       <plugin id="org.eclipse.om2m.core"/>
       <plugin id="org.eclipse.om2m.core.service"/>
+      <plugin id="org.eclipse.om2m.das.testsuite"/>
       <plugin id="org.eclipse.om2m.datamapping.jaxb"/>
       <plugin id="org.eclipse.om2m.datamapping.service"/>
+      <plugin id="org.eclipse.om2m.ipe.sdt"/>
+      <plugin id="org.eclipse.om2m.ipe.sdt.testsuite"/>
       <plugin id="org.eclipse.om2m.persistence.eclipselink"/>
+      <plugin id="org.eclipse.om2m.persistence.mongodb"/>
       <plugin id="org.eclipse.om2m.persistence.service"/>
+      <plugin id="org.eclipse.om2m.sdt.api"/>
+      <plugin id="org.eclipse.om2m.sdt.home"/>
+      <plugin id="org.eclipse.om2m.sdt.home.driver"/>
+      <plugin id="org.eclipse.om2m.sdt.home.mocked.devices"/>
+      <plugin id="org.eclipse.om2m.sdt.home.monitoring"/>
+      <plugin id="org.eclipse.om2m.sdt.comparator.xml"/>
+      <plugin id="org.eclipse.om2m.testsuite.flexcontainer"/>
+      <plugin id="org.eclipse.om2m.webapp.resourcesbrowser.json"/>
       <plugin id="org.eclipse.om2m.webapp.resourcesbrowser.xml"/>
       <plugin id="org.eclipse.osgi"/>
       <plugin id="org.eclipse.osgi.services"/>
@@ -76,14 +89,29 @@
       <plugin id="org.apache.felix.gogo.command" autoStart="true" startLevel="0" />
       <plugin id="org.apache.felix.gogo.runtime" autoStart="true" startLevel="0" />
       <plugin id="org.apache.felix.gogo.shell" autoStart="true" startLevel="0" />
+      <plugin id="org.eclipse.equinox.cm" autoStart="true" startLevel="1" />
       <plugin id="org.eclipse.equinox.console" autoStart="true" startLevel="0" />
+      <plugin id="org.eclipse.equinox.ds" autoStart="true" startLevel="1" />
+      <plugin id="org.eclipse.equinox.event" autoStart="true" startLevel="1" />
       <plugin id="org.eclipse.equinox.http.jetty" autoStart="true" startLevel="1" />
       <plugin id="org.eclipse.om2m.binding.coap" autoStart="true" startLevel="2" />
       <plugin id="org.eclipse.om2m.binding.http" autoStart="true" startLevel="2" />
-      <plugin id="org.eclipse.om2m.core" autoStart="true" startLevel="4" />
+      <plugin id="org.eclipse.om2m.core" autoStart="true" startLevel="3" />
+      <plugin id="org.eclipse.om2m.das.testsuite" autoStart="false" startLevel="6" />
       <plugin id="org.eclipse.om2m.datamapping.jaxb" autoStart="true" startLevel="1" />
+      <plugin id="org.eclipse.om2m.ipe.sdt" autoStart="true" startLevel="6" />
+      <plugin id="org.eclipse.om2m.ipe.sdt.testsuite" autoStart="false" startLevel="6" />
       <plugin id="org.eclipse.om2m.persistence.eclipselink" autoStart="true" startLevel="2" />
-      <plugin id="org.eclipse.om2m.webapp.resourcesbrowser.xml" autoStart="true" startLevel="4" />
+      <plugin id="org.eclipse.om2m.persistence.mongodb" autoStart="false" startLevel="2" />
+      <plugin id="org.eclipse.om2m.sdt.api" autoStart="true" startLevel="5" />
+      <plugin id="org.eclipse.om2m.sdt.home" autoStart="true" startLevel="5" />
+      <plugin id="org.eclipse.om2m.sdt.home.driver" autoStart="true" startLevel="5" />
+      <plugin id="org.eclipse.om2m.sdt.home.mocked.devices" autoStart="false" startLevel="5" />
+      <plugin id="org.eclipse.om2m.sdt.home.monitoring" autoStart="false" startLevel="5" />
+      <plugin id="org.eclipse.om2m.sdt.comparator.xml" autoStart="false" startLevel="5"/>
+      <plugin id="org.eclipse.om2m.testsuite.flexcontainer" autoStart="false" startLevel="6"/>
+      <plugin id="org.eclipse.om2m.webapp.resourcesbrowser.json" autoStart="true" startLevel="4" />
+      <plugin id="org.eclipse.om2m.webapp.resourcesbrowser.xml" autoStart="false" startLevel="4" />
       <property name="log4j.configuration" value="file:./log4j.configuration" />
       <property name="org.apache.commons.logging.Log" value="org.apache.commons.logging.impl.Log4JLogger" />
       <property name="org.eclipse.equinox.http.jetty.http.port" value="8080" />
@@ -99,11 +127,13 @@
       <property name="org.eclipse.om2m.dbPassword" value="om2m" />
       <property name="org.eclipse.om2m.dbReset" value="false" />
       <property name="org.eclipse.om2m.dbUrl" value="jdbc:h2:./database/indb;MULTI_THREADED=1" />
+      <property name="org.eclipse.om2m.dbUrl_mongodb" value="127.0.0.1" />
       <property name="org.eclipse.om2m.dbUser" value="om2m" />
       <property name="org.eclipse.om2m.globalContext" value="" />
       <property name="org.eclipse.om2m.guestRequestingEntity" value="guest:guest" />
       <property name="org.eclipse.om2m.m2mSpId" value="om2m.org" />
       <property name="org.eclipse.om2m.resource.idseparator" value="-" />
+      <property name="org.eclipse.om2m.subscriptions.nbOfFailedNotificationsBeforeDeletion" value="3" />
       <property name="org.eclipse.om2m.webInterfaceContext" value="/webpage" />
    </configurations>
 

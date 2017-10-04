@@ -67,7 +67,7 @@ function get(targetId){
         type: "GET",
         beforeSend: function(){},
         dataType: "json",
-        url: context + targetId + "?rcn=5",
+        url: context + targetId + "?rcn=5&lvl=1",
         headers : {"X-M2M-Origin" : make_base_auth(username, password), "Accept":"application/json"},
         success: function(response){
             $("#login").hide();
@@ -81,14 +81,14 @@ function get(targetId){
 
             for(var resourceName in response){
                 var resource = response[resourceName];
-                if(resourceName == "cb"){
+                if(resourceName == "m2m:cb"){
                     $("#resources").html("<li onclick=get('"+targetId+"')>"+resource['rn']+"<ul id="+encodeId(targetId)+"></ul></li>");
                 }
-                for (var attribute in response[resourceName]){
+                for (var attribute in resource){
                     if(attribute == "ch"){
                         for (var index in resource[attribute]){
                             var child = resource[attribute][index];
-                            $("#"+encodeId(targetId)).append("<li onclick=get('"+child["value"]+"')>"+child["rn"]+"<ul id="+encodeId(child["value"])+"></ul></li>");
+                            $("#"+encodeId(targetId)).append("<li onclick=get('"+child["val"]+"')>"+child["nm"]+"<ul id="+encodeId(child["val"])+"></ul></li>");
                         }
                         
                     } else {
@@ -99,7 +99,7 @@ function get(targetId){
                             for(var index in resource[attribute]['acr']){
                                 var acr = resource[attribute]['acr'][index] ;
                                 var acor = '<table class="bordered"><tbody>'
-                                var acors = acr['acor'].split(" ");
+                                var acors = acr['acor'];
                                 for (var indexJ in acors){
                                     acor += "<tr><td>"+ acors[indexJ] +"</td></tr>";
                                 }
@@ -110,9 +110,17 @@ function get(targetId){
                             value = table;
                         } else if (attribute == "poa"){
                             var table = '<table class="bordered"><thead><th>Point Of Access</th></thead><tbody>' ;
-                            var poas = resource[attribute].split(" ") ;
+                            var poas = resource[attribute];
                             for (var index in poas){
                                 table += '<tr><td>'+ poas[index] +'</td></tr>' 
+                            }
+                            table += "</tbody></table>";
+                            value = table ;
+                        } else if (attribute == "srt") {
+                        	var table = '<table class="bordered"><thead><th>Supported resource types</th></thead><tbody>' ;
+                            var srts = resource[attribute];
+                            for (var index in srts){
+                                table += '<tr><td>'+ srts[index] +'</td></tr>' 
                             }
                             table += "</tbody></table>";
                             value = table ;
@@ -120,7 +128,7 @@ function get(targetId){
                             value = '<button type="button" onClick="get(\'' + resource['csi'] +'\')">'+ resource['csi'] +'</button>';
                         } else if(attribute == "acpi"){
                             var table = "<table class='bordered'><thead><th>AccessControlPolicyIDs</th></thdead><tbody>";
-                            var acpiList = resource[attribute].split(" ");
+                            var acpiList = resource[attribute];
                             for(var index in acpiList){
                                 table += "<tr><td>" + acpiList[index] + "</td></tr>";
                             }
@@ -128,8 +136,18 @@ function get(targetId){
                             value = table;
                         } else if(attribute == "la" || attribute == "ol"){
                             value = "<button onClick=\"get('"+ resource[attribute] +"')\">"+ resource[attribute] +"</button>";
+                        } else if (attribute =="lbl") {
+	                        var lblList = resource[attribute];
+	                        value="<ul>";
+	                        for(var index in lblList) {
+	                          value+= "<li>" + lblList[index] + "</li>";
+	                        }
+	                        value += "</ul>";
                         } else {
                             value = resource[attribute];
+                            if (value instanceof Object) {
+                              value = value.val;
+                            }
                         }
 
                         if(attribute == "con"){

@@ -19,6 +19,9 @@
  *******************************************************************************/
 package org.eclipse.om2m.persistence.eclipselink.internal.dao;
 
+import java.util.List;
+
+import org.eclipse.om2m.commons.constants.DBEntities;
 import org.eclipse.om2m.commons.entities.AccessControlOriginatorEntity;
 import org.eclipse.om2m.persistence.eclipselink.internal.DBTransactionJPAImpl;
 import org.eclipse.om2m.persistence.service.DBTransaction;
@@ -30,19 +33,29 @@ import org.eclipse.om2m.persistence.service.DBTransaction;
 public class AccessControlOriginatorDAO extends AbstractDAO<AccessControlOriginatorEntity> {
 
 	@Override
-	public AccessControlOriginatorEntity find(DBTransaction dbTransaction,
-			Object id) {
+	public AccessControlOriginatorEntity find(DBTransaction dbTransaction, Object id) {
 		DBTransactionJPAImpl transaction = (DBTransactionJPAImpl) dbTransaction;
-		return transaction.getEm().find(AccessControlOriginatorEntity.class, id);
+
+
+		List<AccessControlOriginatorEntity> acoes = transaction.getEm().createQuery("select a from "
+				+ DBEntities.ACCESSCONTROLORIGINATOR_ENTITY + " a where a.originatorID =\'" + id + "\'")
+				.getResultList();
+
+		for (AccessControlOriginatorEntity acoe : acoes) {
+		}
+		if (acoes.size() > 0) {
+
+			return acoes.get(0);
+		} else {
+			return null;
+		}
+
 	}
 
 	@Override
-	public void delete(DBTransaction dbTransaction,
-			AccessControlOriginatorEntity resource) {
+	public void delete(DBTransaction dbTransaction, AccessControlOriginatorEntity resource) {
 		DBTransactionJPAImpl transaction = (DBTransactionJPAImpl) dbTransaction;
 		transaction.getEm().remove(resource);
 	}
 
-	
-	
 }

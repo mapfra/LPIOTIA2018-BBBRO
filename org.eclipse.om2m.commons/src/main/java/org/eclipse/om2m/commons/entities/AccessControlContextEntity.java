@@ -39,7 +39,7 @@ import org.eclipse.om2m.commons.resource.LocationRegion;
 public class AccessControlContextEntity {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private String accessControlContextId;
+	private long accessControlContextId;
 
 	protected List<String> accessControlWindow;
 

@@ -51,6 +51,8 @@ public class ResourceType {
 	public static final int STATS_COLLECT = 21;
 	public static final int STATS_CONFIG = 22;
 	public static final int SUBSCRIPTION = 23;
+	public static final int FLEXCONTAINER = 28;
+	public static final int DYNAMIC_AUTHORIZATION_CONSULTATION = 34;
 	public static final int ACCESS_CONTROL_POLICY_ANNC = 10001;
 	public static final int AE_ANNC = 10002;
 	public static final int CONTAINER_ANNC = 10003;
@@ -61,5 +63,8 @@ public class ResourceType {
 	public static final int NODE_ANNC = 10014;
 	public static final int REMOTE_CSE_ANNC = 10016;
 	public static final int SCHEDULE_ANNC = 10018;
+	public static final int FLEXCONTAINER_ANNC = 10028;
+	
+	
 	
 }

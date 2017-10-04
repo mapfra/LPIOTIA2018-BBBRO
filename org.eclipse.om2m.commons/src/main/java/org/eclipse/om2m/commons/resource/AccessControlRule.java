@@ -98,11 +98,11 @@ import org.eclipse.om2m.commons.constants.ShortName;
 public class AccessControlRule {
 
 	@XmlList
-	@XmlElement(name = ShortName.ACOR, required = true)
+	@XmlElement(name = ShortName.ACOR, required = true, namespace="")
 	protected List<String> accessControlOriginators;
-	@XmlElement(name = ShortName.ACOP, required = true)
+	@XmlElement(name = ShortName.ACOP, required = true, namespace="")
 	protected BigInteger accessControlOperations;
-	@XmlElement(name = ShortName.ACCO)
+	@XmlElement(name = ShortName.ACCO, namespace="")
 	protected List<AccessControlRule.AccessControlContexts> accessControlContexts;
 
 	/**

@@ -31,7 +31,6 @@ public class HttpHeaders {
 	public static final String CONTENT_LOCATION = "Content-Location";
 	public static final String ETAG = "Etag";
 	public static final String ORIGINATOR = "X-M2M-Origin";
-	public static final String NAME = "X-M2M-NM";
 	public static final String GROUP_REQUEST_IDENTIFIER = "X-M2M-GID";
 	public static final String RESPONSE_TYPE = "X-M2M-RTU";
 	public static final String HOST = "Host";

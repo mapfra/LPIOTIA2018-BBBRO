@@ -32,6 +32,7 @@ import org.eclipse.om2m.commons.entities.AccessControlOriginatorEntity;
 import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
 import org.eclipse.om2m.commons.entities.AccessControlRuleEntity;
 import org.eclipse.om2m.commons.entities.CSEBaseEntity;
+import org.eclipse.om2m.commons.entities.DynamicAuthorizationConsultationEntity;
 import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
 import org.eclipse.om2m.commons.entities.ResourceEntity;
 import org.eclipse.om2m.commons.entities.SubscriptionEntity;
@@ -48,6 +49,7 @@ import org.eclipse.om2m.core.datamapper.DataMapperSelector;
 import org.eclipse.om2m.core.entitymapper.EntityMapperFactory;
 import org.eclipse.om2m.core.notifier.Notifier;
 import org.eclipse.om2m.core.persistence.PersistenceService;
+import org.eclipse.om2m.core.remotecse.RemoteCseService;
 import org.eclipse.om2m.core.router.Patterns;
 import org.eclipse.om2m.core.urimapper.UriMapper;
 import org.eclipse.om2m.core.util.ControllerUtil;
@@ -97,11 +99,6 @@ public class RemoteCSEController extends Controller {
 
 		ResponsePrimitive response = new ResponsePrimitive(request);
 
-		// get the database service
-		DBService dbs = PersistenceService.getInstance().getDbService();
-		DBTransaction transaction = dbs.getDbTransaction();
-		transaction.open();
-
 		// get the dao of the parent
 		DAO<ResourceEntity> dao = (DAO<ResourceEntity>) Patterns.getDAO(request.getTargetId(), dbs);
 		if (dao == null){
@@ -113,6 +110,9 @@ public class RemoteCSEController extends Controller {
 		if (parentEntity == null) {
 			throw new ResourceNotFoundException("Cannot find the parent resource");
 		}
+		
+		// lock parent
+		transaction.lock(parentEntity);
 
 		// get lists to change in the method corresponding to specific object
 		List<AccessControlPolicyEntity> acpsToCheck = null;
@@ -195,13 +195,17 @@ public class RemoteCSEController extends Controller {
 		} else {
 			remoteCseEntity.setRequestReachability(remoteCse.isRequestReachability());
 		}
-
 		// accessControlPolicyIDs	O
 		if (!remoteCse.getAccessControlPolicyIDs().isEmpty()){		
 			remoteCseEntity.setAccessControlPolicies(
 					ControllerUtil.buildAcpEntityList(remoteCse.getAccessControlPolicyIDs(), transaction));
 		} else {
 			remoteCseEntity.getAccessControlPolicies().addAll(acpsToCheck);
+		}
+		// dynamicAuthorizationConsultationIDs O
+		if (!remoteCse.getDynamicAuthorizationConsultationIDs().isEmpty()) {
+			remoteCseEntity.setDynamicAuthorizationConsultations(
+					ControllerUtil.buildDacEntityList(remoteCse.getDynamicAuthorizationConsultationIDs(), transaction));
 		}
 		// expiration time 			O
 		if (remoteCse.getExpirationTime() != null){
@@ -246,12 +250,6 @@ public class RemoteCSEController extends Controller {
 				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
 			}
 			remoteCseEntity.setName(remoteCse.getName());
-		} else 
-		if (request.getName() != null){
-			if (!Patterns.checkResourceName(request.getName())){
-				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
-			}
-			remoteCseEntity.setName(request.getName());
 		} else {
 			remoteCseEntity.setName(ShortName.REMOTE_CSE + "_" + generatedId);
 		}
@@ -262,6 +260,7 @@ public class RemoteCSEController extends Controller {
 		remoteCseEntity.setCreationTime(DateUtil.now());
 		remoteCseEntity.setLastModifiedTime(DateUtil.now());
 		remoteCseEntity.setParentID(parentEntity.getResourceID());
+		remoteCseEntity.setParentCseBase((CSEBaseEntity) parentEntity);
 		remoteCseEntity.setResourceType(ResourceType.REMOTE_CSE);
 
 		if(newOriginator){
@@ -271,6 +270,7 @@ public class RemoteCSEController extends Controller {
 			acpEntity.setParentID("/" + Constants.CSE_ID);
 			acpEntity.setResourceID("/" + Constants.CSE_ID + "/" + ShortName.ACP + Constants.PREFIX_SEPERATOR + generateId());
 			acpEntity.setName(ShortName.ACP + ShortName.REMOTE_CSE + Constants.PREFIX_SEPERATOR + generatedId);
+			acpEntity.setResourceType(ResourceType.ACCESS_CONTROL_POLICY);
 			AccessControlRuleEntity ruleEntity = new AccessControlRuleEntity();
 			AccessControlOriginatorEntity originatorEntity = new AccessControlOriginatorEntity(Constants.ADMIN_REQUESTING_ENTITY);
 			ruleEntity.getAccessControlOriginators().add(originatorEntity);
@@ -314,10 +314,19 @@ public class RemoteCSEController extends Controller {
 		// Add the remoteCSE to the CSEBase list
 		remoteCSEs.add(csrDB);
 		dao.update(transaction, parentEntity);
+		
+		// update link with remoteCseEntity - DacEntity
+		for(DynamicAuthorizationConsultationEntity dace : csrDB.getDynamicAuthorizationConsultations()) {
+			DynamicAuthorizationConsultationEntity daceFromDB = dbs.getDAOFactory().getDynamicAuthorizationDAO().find(transaction, dace.getResourceID());
+			daceFromDB.getLinkedRemoteCSEEntities().add(csrDB);
+			dbs.getDAOFactory().getDynamicAuthorizationDAO().update(transaction, daceFromDB);
+		}
 
-		// Commit the DB transaction
+		// Commit the DB transaction & release lock
 		transaction.commit();
 
+		RemoteCseService.getInstance().addRemoteCseAndPublish(csrDB);
+		
 		Notifier.notify(subscriptions, csrDB, ResourceStatus.CHILD_CREATED);
 		// Create the response
 		response.setResponseStatusCode(ResponseStatusCode.CREATED);
@@ -337,7 +346,7 @@ public class RemoteCSEController extends Controller {
 		if (csrEntity == null) {
 			throw new ResourceNotFoundException();
 		}
-
+		
 		// if resource exists, check authorization
 		// retrieve 
 		List<AccessControlPolicyEntity> acpList = csrEntity.getAccessControlPolicies();
@@ -384,10 +393,6 @@ public class RemoteCSEController extends Controller {
 		 */
 		// create the response base
 		ResponsePrimitive response = new ResponsePrimitive(request);
-		// get the persistence service
-		DBService dbs = PersistenceService.getInstance().getDbService();
-		DBTransaction transaction = dbs.getDbTransaction();
-		transaction.open();
 
 		// retrieve the resource from the DB
 		RemoteCSEEntity csrEntity = dbs.getDAOFactory().getRemoteCSEDAO().find(transaction, request.getTargetId());
@@ -395,6 +400,9 @@ public class RemoteCSEController extends Controller {
 			throw new ResourceNotFoundException();
 		}
 
+		// lock entity
+		transaction.lock(csrEntity);
+		
 		// check ACP
 		checkACP(csrEntity.getAccessControlPolicies(), request.getFrom(), Operation.UPDATE);
 		
@@ -464,6 +472,19 @@ public class RemoteCSEController extends Controller {
 			modifiedAttributes.getAccessControlPolicyIDs().addAll(csr.getAccessControlPolicyIDs());
 		}
 		
+		// dynamicAuthorizationConsultationIDs O
+		if (!csr.getDynamicAuthorizationConsultationIDs().isEmpty()) {
+			csrEntity.setDynamicAuthorizationConsultations(
+					ControllerUtil.buildDacEntityList(csr.getDynamicAuthorizationConsultationIDs(), transaction));
+			
+			// update link with remoteCseEntity - DacEntity
+			for(DynamicAuthorizationConsultationEntity dace : csrEntity.getDynamicAuthorizationConsultations()) {
+				DynamicAuthorizationConsultationEntity daceFromDB = dbs.getDAOFactory().getDynamicAuthorizationDAO().find(transaction, dace.getResourceID());
+				daceFromDB.getLinkedRemoteCSEEntities().add(csrEntity);
+				dbs.getDAOFactory().getDynamicAuthorizationDAO().update(transaction, daceFromDB);
+			}
+		}
+		
 		// expirationTime			O
 		if (csr.getExpirationTime() != null){
 			csrEntity.setExpirationTime(csr.getExpirationTime());
@@ -510,7 +531,10 @@ public class RemoteCSEController extends Controller {
 		
 		// update the resource in the database
 		dbs.getDAOFactory().getRemoteCSEDAO().update(transaction, csrEntity);
+		
+		// commit & release lock
 		transaction.commit();
+		
 		Notifier.notify(csrEntity.getSubscriptions(), csrEntity, ResourceStatus.UPDATED);
 
 		// set response status code
@@ -531,17 +555,23 @@ public class RemoteCSEController extends Controller {
 		if (csrEntity == null) {
 			throw new ResourceNotFoundException();
 		}
+		
+		// lock entity
+		transaction.lock(csrEntity);
 
 		// check access control policies
 		checkACP(csrEntity.getAccessControlPolicies(), request.getFrom(), Operation.DELETE);
 
 		UriMapper.deleteUri(csrEntity.getHierarchicalURI());
 		Notifier.notifyDeletion(csrEntity.getSubscriptions(), csrEntity);
-
+		
 		// delete the resource in the database
 		dbs.getDAOFactory().getRemoteCSEDAO().delete(transaction, csrEntity);
-		// commit the transaction
+		// commit the transaction & release lock
 		transaction.commit();
+		
+		RemoteCseService.getInstance().removeRemoteCseAndPublish(csrEntity.getName());
+		
 		// return the response
 		response.setResponseStatusCode(ResponseStatusCode.DELETED);
 		return response;

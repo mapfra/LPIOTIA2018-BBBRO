@@ -29,6 +29,7 @@ package org.eclipse.om2m.commons.resource;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.MappedSuperclass;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -68,14 +69,15 @@ import org.eclipse.om2m.commons.constants.ShortName;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "announceableResource")
 @XmlSeeAlso({ LocationPolicy.class, RemoteCSE.class, Node.class, AE.class,
-		NodeAnnc.class, MgmtResource.class, Group.class, Container.class })
+		NodeAnnc.class, MgmtResource.class, Group.class, Container.class, AbstractFlexContainer.class })
+@MappedSuperclass
 public class AnnounceableResource extends RegularResource {
 
 	@XmlList
-	@XmlElement(name=ShortName.ANNOUNCE_TO)
+	@XmlElement(name=ShortName.ANNOUNCE_TO, required=false, namespace="")
 	protected List<String> announceTo;
 	@XmlList
-	@XmlElement(name=ShortName.ANNOUNCED_ATTRIBUTE)
+	@XmlElement(name=ShortName.ANNOUNCED_ATTRIBUTE, required=false, namespace="")
 	protected List<String> announcedAttribute;
 
 	/**

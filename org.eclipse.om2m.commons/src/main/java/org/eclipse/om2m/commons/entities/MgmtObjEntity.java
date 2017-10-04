@@ -24,8 +24,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToMany;
 
+import org.eclipse.om2m.commons.constants.DBEntities;
 import org.eclipse.om2m.commons.constants.ShortName;
 
 /**
@@ -33,7 +39,7 @@ import org.eclipse.om2m.commons.constants.ShortName;
  *
  */
 @MappedSuperclass
-public class MgmtObjEntity extends AnnounceableSubordinateEntity {
+public abstract class MgmtObjEntity extends AnnounceableSubordinateEntity {
 
 	@Column (name = ShortName.MGMT_DEF)
 	protected BigInteger mgmtDefinition;
@@ -43,6 +49,7 @@ public class MgmtObjEntity extends AnnounceableSubordinateEntity {
 	protected List<String> objectPaths;
 	@Column(name = ShortName.DESCRIPTION)
 	protected String description;
+	
 	
 	/**
 	 * @return the mgmtDefinition

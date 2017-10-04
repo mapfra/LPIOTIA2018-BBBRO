@@ -32,6 +32,7 @@ import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
 import org.eclipse.om2m.commons.entities.AeEntity;
 import org.eclipse.om2m.commons.entities.CSEBaseEntity;
 import org.eclipse.om2m.commons.entities.ContainerEntity;
+import org.eclipse.om2m.commons.entities.FlexContainerEntity;
 import org.eclipse.om2m.commons.entities.GroupEntity;
 import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
 import org.eclipse.om2m.commons.entities.ResourceEntity;
@@ -108,6 +109,11 @@ public class SubscriptionController extends Controller{
 		if(parentEntity.getResourceType().intValue() == (ResourceType.CONTAINER)){
 			ContainerEntity container = (ContainerEntity) parentEntity;
 			acpsToCheck = container.getAccessControlPolicies();
+		}
+		
+		if (parentEntity.getResourceType().intValue() == (ResourceType.FLEXCONTAINER)) {
+			FlexContainerEntity flexContainer = (FlexContainerEntity) parentEntity;
+			acpsToCheck = flexContainer.getAccessControlPolicies();
 		}
 
 		if(parentEntity.getResourceType().intValue() == (ResourceType.ACCESS_CONTROL_POLICY)){
@@ -246,10 +252,10 @@ public class SubscriptionController extends Controller{
 		}
 
 		if(!subscription.getAccessControlPolicyIDs().isEmpty()){
-			subscriptionEntity.setAcpList(
+			subscriptionEntity.setAccessControlPolicies(
 					ControllerUtil.buildAcpEntityList(subscription.getAccessControlPolicyIDs(), transaction));
 		} else {
-			subscriptionEntity.getAcpList().addAll(acpsToCheck);
+			subscriptionEntity.getAccessControlPolicies().addAll(acpsToCheck);
 		}
 
 		String generatedId = generateId();
@@ -258,18 +264,14 @@ public class SubscriptionController extends Controller{
 		subscriptionEntity.setLastModifiedTime(DateUtil.now());
 		subscriptionEntity.setParentID(parentEntity.getResourceID());
 		subscriptionEntity.setResourceType(ResourceType.SUBSCRIPTION);
+		subscriptionEntity.setNotificationPayloadContentType(request.getReturnContentType());
+		subscriptionEntity.setNbOfFailedNotifications(new Integer(0));
 
 		if (subscription.getName() != null){
 			if (!Patterns.checkResourceName(subscription.getName())){
 				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
 			}
 			subscriptionEntity.setName(subscription.getName());
-		} else 
-		if(request.getName() != null){
-			if(!Patterns.checkResourceName(request.getName())){
-				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
-			}
-			subscriptionEntity.setName(request.getName());
 		} else {
 			subscriptionEntity.setName(ShortName.SUB + "_" + generatedId);
 		}
@@ -299,7 +301,7 @@ public class SubscriptionController extends Controller{
 			throw new ResourceNotFoundException();
 		}
 
-		checkACP(subscriptionEntity.getAcpList(), request.getFrom(), 
+		checkACP(subscriptionEntity.getAccessControlPolicies(), request.getFrom(), 
 				Operation.RETRIEVE);
 		
 
@@ -325,7 +327,7 @@ public class SubscriptionController extends Controller{
 			throw new ResourceNotFoundException();
 		}
 
-		checkACP(subscriptionEntity.getAcpList(), request.getFrom(), 
+		checkACP(subscriptionEntity.getAccessControlPolicies(), request.getFrom(), 
 				Operation.UPDATE);
 		
 
@@ -373,11 +375,11 @@ public class SubscriptionController extends Controller{
 
 		// ACPIDs O
 		if(!subscription.getAccessControlPolicyIDs().isEmpty()){
-			for(AccessControlPolicyEntity acpe : subscriptionEntity.getAcpList()){
+			for(AccessControlPolicyEntity acpe : subscriptionEntity.getAccessControlPolicies()){
 				checkSelfACP(acpe, request.getFrom(), Operation.UPDATE);
 			}
-			subscriptionEntity.getAcpList().clear();
-			subscriptionEntity.setAcpList(ControllerUtil.buildAcpEntityList(subscription.getAccessControlPolicyIDs(), transaction));
+			subscriptionEntity.getAccessControlPolicies().clear();
+			subscriptionEntity.setAccessControlPolicies(ControllerUtil.buildAcpEntityList(subscription.getAccessControlPolicyIDs(), transaction));
 			modifiedAttributes.getAccessControlPolicyIDs().addAll(subscription.getAccessControlPolicyIDs());
 		}
 		// expirationTime O
@@ -482,7 +484,7 @@ public class SubscriptionController extends Controller{
 			throw new ResourceNotFoundException();
 		}
 
-		checkACP(se.getAcpList(), request.getFrom(), 
+		checkACP(se.getAccessControlPolicies(), request.getFrom(), 
 				Operation.DELETE);
 
 		// Delete the resource in UriMapper table

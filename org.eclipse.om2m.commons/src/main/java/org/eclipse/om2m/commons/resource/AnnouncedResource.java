@@ -37,6 +37,8 @@ import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 
+import org.eclipse.om2m.commons.constants.ShortName;
+
 /**
  * <p>
  * Java class for announcedResource complex type.
@@ -53,6 +55,7 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="accessControlPolicyIDs" type="{http://www.onem2m.org/xml/protocols}acpType"/>
  *         &lt;element name="expirationTime" type="{http://www.onem2m.org/xml/protocols}timestamp"/>
  *         &lt;element name="link" type="{http://www.w3.org/2001/XMLSchema}anyURI"/>
+ *         &lt;element name="dynamicAuthorizationConsultationIDs" type="{http://www.onem2m.org/xml/protocols}listOfURIs" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -63,20 +66,23 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "announcedResource", propOrder = { "accessControlPolicyIDs",
-		"expirationTime", "link" })
+		"expirationTime", "link", "dynamicAuthorizationConsultationIDs" })
 @XmlSeeAlso({ LocationPolicyAnnc.class, RemoteCSEAnnc.class,
 		AnnouncedMgmtResource.class, GroupAnnc.class, ContainerAnnc.class,
-		AEAnnc.class })
+		AEAnnc.class, AbstractFlexContainerAnnc.class })
 public class AnnouncedResource extends Resource {
 
 	@XmlList
-	@XmlElement(required = true)
+	@XmlElement(name=ShortName.ACP_IDS, required=true, namespace="")
 	protected List<String> accessControlPolicyIDs;
-	@XmlElement(required = true)
+	@XmlElement(name=ShortName.EXPIRATION_TIME, required = true, namespace="")
 	protected String expirationTime;
-	@XmlElement(required = true)
+	@XmlElement(name=ShortName.LINK, required = true, namespace="")
 	@XmlSchemaType(name = "anyURI")
 	protected String link;
+	@XmlList
+	@XmlElement(name=ShortName.DAC_IDS, required=false, namespace="")
+	protected List<String> dynamicAuthorizationConsultationIDs;
 
 	/**
 	 * Gets the value of the accessControlPolicyIDs property.
@@ -147,6 +153,35 @@ public class AnnouncedResource extends Resource {
 	 */
 	public void setLink(String value) {
 		this.link = value;
+	}
+	
+	/**
+	 * Gets the value of the dynamicAuthorizationConsultationIDs property.
+	 * 
+	 * <p>
+	 * This accessor method returns a reference to the live list, not a
+	 * snapshot. Therefore any modification you make to the returned list will
+	 * be present inside the JAXB object. This is why there is not a
+	 * <CODE>set</CODE> method for the dynamicAuthorizationConsultationIDs property.
+	 * 
+	 * <p>
+	 * For example, to add a new item, do as follows:
+	 * 
+	 * <pre>
+	 * getDynamicAuthorizationConsultationIDs().add(newItem);
+	 * </pre>
+	 * 
+	 * 
+	 * <p>
+	 * Objects of the following type(s) are allowed in the list {@link String }
+	 * 
+	 * 
+	 */
+	public List<String> getDynamicAuthorizationConsultationIDs() {
+		if (dynamicAuthorizationConsultationIDs == null) {
+			dynamicAuthorizationConsultationIDs = new ArrayList<String>();
+		}
+		return this.dynamicAuthorizationConsultationIDs;
 	}
 
 }

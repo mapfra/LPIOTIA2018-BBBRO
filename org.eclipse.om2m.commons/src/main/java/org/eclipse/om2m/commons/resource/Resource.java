@@ -81,21 +81,21 @@ import org.eclipse.om2m.commons.constants.ShortName;
 @MappedSuperclass
 public class Resource {
 
-	@XmlElement(name=ShortName.RESOURCE_TYPE, required = true)
+	@XmlElement(name=ShortName.RESOURCE_TYPE, required = true, namespace="")
 	protected BigInteger resourceType;
-	@XmlElement(name=ShortName.RESOURCE_ID, required = true)
+	@XmlElement(name=ShortName.RESOURCE_ID, required = true, namespace="")
 	@Id
 	protected String resourceID;
-	@XmlElement(name=ShortName.PARENT_ID, required = true)
+	@XmlElement(name=ShortName.PARENT_ID, required = true, namespace="")
 	protected String parentID;
-	@XmlElement(name=ShortName.CREATION_TIME, required = true)
+	@XmlElement(name=ShortName.CREATION_TIME, required = true, namespace="")
 	protected String creationTime;
-	@XmlElement(name=ShortName.LAST_MODIFIED_TIME, required = true)
+	@XmlElement(name=ShortName.LAST_MODIFIED_TIME, required = true, namespace="")
 	protected String lastModifiedTime;
 	@XmlList
-	@XmlElement(name=ShortName.LABELS)
+	@XmlElement(name=ShortName.LABELS, required=false, namespace="")
 	protected List<String> labels;
-	@XmlAttribute(name = ShortName.RESOURCE_NAME, required = true)
+	@XmlAttribute(name = ShortName.RESOURCE_NAME, required = true, namespace="")
 	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
 	@XmlSchemaType(name = "token")
 	protected String name;

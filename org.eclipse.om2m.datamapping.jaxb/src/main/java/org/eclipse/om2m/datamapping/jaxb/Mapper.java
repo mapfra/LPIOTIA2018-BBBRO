@@ -23,17 +23,23 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.Unmarshaller.Listener;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.om2m.commons.constants.MimeMediaType;
+import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
+import org.eclipse.om2m.commons.resource.AbstractFlexContainerAnnc;
+import org.eclipse.om2m.commons.resource.URIList;
 import org.eclipse.om2m.datamapping.service.DataMapperService;
 import org.eclipse.persistence.jaxb.JAXBContextProperties;
 import org.eclipse.persistence.jaxb.MarshallerProperties;
@@ -48,7 +54,8 @@ public class Mapper implements DataMapperService {
 	/** JAXB Context, entry point to the JAXB API */
 	private JAXBContext context;
 	/** Resource package name used for JAXBContext instantiation */
-	private String resourcePackage = "org.eclipse.om2m.commons.resource";
+	// org.eclipse.om2m.commons.resource:
+	private String resourcePackage = "org.eclipse.om2m.commons.resource:org.eclipse.om2m.commons.resource.flexcontainerspec";
 	private String mediaType;
 
 	/**
@@ -59,16 +66,30 @@ public class Mapper implements DataMapperService {
 		try {
 			if(context==null){
 				if(mediaType.equals(MimeMediaType.JSON)){
-					ClassLoader classLoader = Thread.currentThread().getContextClassLoader(); 
-					InputStream iStream = classLoader.getResourceAsStream("json-binding.xml"); 
+					// JSON
+					ClassLoader classLoader = Mapper.class.getClassLoader(); 
+					InputStream iStreamJsonBinding = classLoader.getResourceAsStream("json-binding.json");
+					InputStream iStreamJsonBindingFlexcontainer = classLoader.getResourceAsStream("json-binding-flexcontainer.json");
+					List<Object> iStreamList = new ArrayList<>();
+					iStreamList.add(iStreamJsonBinding);
+					iStreamList.add(iStreamJsonBindingFlexcontainer);
+					Map<String, Object> properties = new HashMap<String, Object>(); 
+					properties.put("eclipselink-oxm-xml", iStreamList); 
+					properties.put("eclipselink.media-type", "application/json");;
+					context = JAXBContext.newInstance(resourcePackage, classLoader , properties);
+				} else if (mediaType.equals(MimeMediaType.XML)) {
+					// XML
+					ClassLoader classLoader = Mapper.class.getClassLoader(); 
+					InputStream iStream = classLoader.getResourceAsStream("xml-binding.xml"); 
 					Map<String, Object> properties = new HashMap<String, Object>(); 
 					properties.put(JAXBContextProperties.OXM_METADATA_SOURCE, iStream);
 					context = JAXBContext.newInstance(resourcePackage, classLoader , properties);
 				} else {
-					context = JAXBContext.newInstance(resourcePackage);
+					// other
+					context = JAXBContext.newInstance(resourcePackage, Mapper.class.getClassLoader());
 				}
 			}
-		} catch (JAXBException e) { 
+		} catch (Throwable e) { 
 			LOGGER.error("Create JAXBContext error", e);
 		}
 	}
@@ -87,8 +108,25 @@ public class Mapper implements DataMapperService {
 			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 			OutputStream outputStream = new ByteArrayOutputStream();
 			marshaller.setProperty(MarshallerProperties.MEDIA_TYPE,mediaType);
-			marshaller.setProperty(MarshallerProperties.JSON_INCLUDE_ROOT, true);
+			if (obj instanceof URIList) {
+				marshaller.setProperty(MarshallerProperties.JSON_INCLUDE_ROOT, false);
+				marshaller.setProperty(MarshallerProperties.JSON_MARSHAL_EMPTY_COLLECTIONS, true);
+				marshaller.setProperty(MarshallerProperties.JSON_REDUCE_ANY_ARRAYS, false);
+			} else {
+				marshaller.setProperty(MarshallerProperties.JSON_INCLUDE_ROOT, true);
+				marshaller.setProperty(MarshallerProperties.JSON_MARSHAL_EMPTY_COLLECTIONS, false);
+				marshaller.setProperty(MarshallerProperties.JSON_REDUCE_ANY_ARRAYS, true);
+			}
+			marshaller.setProperty(MarshallerProperties.JSON_VALUE_WRAPPER, "val");
+			
+			
+			Map<String, String> namespaces = new HashMap<String, String>(); 
+			namespaces.put("http://www.onem2m.org/xml/protocols/homedomain", "hd"); 
+			namespaces.put("http://www.onem2m.org/xml/protocols", "m2m"); 
+			marshaller.setProperty(MarshallerProperties.NAMESPACE_PREFIX_MAPPER, namespaces);
+			marshaller.setProperty(MarshallerProperties.JSON_NAMESPACE_SEPARATOR, ':');
 			marshaller.marshal(obj, outputStream);
+			
 			return outputStream.toString();
 		} catch (JAXBException e) {
 			LOGGER.error("JAXB marshalling error!", e);
@@ -112,9 +150,39 @@ public class Mapper implements DataMapperService {
 		try {
 			Unmarshaller unmarshaller = context.createUnmarshaller();
 			unmarshaller.setProperty(UnmarshallerProperties.MEDIA_TYPE, mediaType);
-			unmarshaller.setProperty(UnmarshallerProperties.JSON_INCLUDE_ROOT, true);
+			if (representation.contains("m2m:uril")) {
+				unmarshaller.setProperty(UnmarshallerProperties.JSON_INCLUDE_ROOT, true);
+				unmarshaller.setProperty(UnmarshallerProperties.JSON_WRAPPER_AS_ARRAY_NAME , true);
+			} else {
+				unmarshaller.setProperty(UnmarshallerProperties.JSON_INCLUDE_ROOT, true);
+				unmarshaller.setProperty(UnmarshallerProperties.JSON_WRAPPER_AS_ARRAY_NAME , false);
+			}
+			unmarshaller.setProperty(UnmarshallerProperties.JSON_VALUE_WRAPPER , "val");
+			Map<String, String> namespaces = new HashMap<String, String>(); 
+			namespaces.put("http://www.onem2m.org/xml/protocols/homedomain", "hd"); 
+			namespaces.put("http://www.onem2m.org/xml/protocols", "m2m"); 
+			unmarshaller.setProperty(MarshallerProperties.NAMESPACE_PREFIX_MAPPER, namespaces);
+			unmarshaller.setProperty(MarshallerProperties.JSON_NAMESPACE_SEPARATOR, ':');
+			
+			unmarshaller.setListener(new Listener() {
+				
+				@Override
+				public void afterUnmarshal(Object target, Object parent) {
+					System.out.println("afterUnmarshal (target=" + target + ", parent=" + parent + ")");
+					super.afterUnmarshal(target, parent);
+					
+					if (target instanceof AbstractFlexContainer) {
+						((AbstractFlexContainer) target).finalizeDeserialization();
+					}
+				}
+			});
+			
+			
+			Object unmarshaledObject = unmarshaller.unmarshal(stringReader);
+			Object toBeReturned = null;
+			toBeReturned = unmarshaledObject;
 
-			return unmarshaller.unmarshal(stringReader);
+			return toBeReturned;
 		} catch (JAXBException e) {
 			LOGGER.error("JAXB unmarshalling error!", e);
 		}

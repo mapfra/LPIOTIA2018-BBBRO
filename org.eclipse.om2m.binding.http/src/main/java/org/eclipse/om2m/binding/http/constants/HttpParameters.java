@@ -43,6 +43,8 @@ public class HttpParameters {
 	public static final String SIZE_BELOW = "szb";
 	public static final String CONTENT_TYPE = "cty";
 	public static final String LIMIT = "lim";
+	public static final String LEVEL = "lvl";
+	public static final String OFFSET = "ofst";
 	public static final String ATTRIBUTE = "atr";
 	public static final String FILTER_USAGE = "fu";
 	public static final String DISCOVERY_RESULT_TYPE = "drt";

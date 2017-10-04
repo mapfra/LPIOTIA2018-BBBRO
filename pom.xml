@@ -45,6 +45,11 @@
 			<layout>p2</layout>
 			<url>http://download.eclipse.org/releases/luna</url>
 		</repository>
+		<repository>
+			<id>orbit</id>
+			<layout>p2</layout>
+			<url>http://download.eclipse.org/tools/orbit/downloads/drops/R20160520211859/repository</url>
+		</repository>
 	</repositories>
 	<build>
 		<plugins>
@@ -130,10 +135,19 @@
 		<module>org.eclipse.om2m.webapp.resourcesbrowser.xml</module>
 		<module>org.eclipse.om2m.webapp.resourcesbrowser.json</module>
 		<module>org.eclipse.om2m.persistence.eclipselink</module>
+		<module>org.eclipse.om2m.persistence.mongodb</module>
 		<module>org.eclipse.om2m.persistence.service</module>
+		<module>org.eclipse.om2m.flexcontainer.service</module>
 		<module>org.eclipse.om2m.core</module>
 		<module>org.eclipse.om2m.interworking.service</module>
 		<module>org.eclipse.om2m.ipe.sample</module>
+		<module>org.eclipse.om2m.das.testsuite</module>
+		<module>org.eclipse.om2m.testsuite.flexcontainer</module>
+		<module>org.eclipse.om2m.sdt</module>
+		<module>org.eclipse.om2m.ipe.sdt</module>
+		<module>org.eclipse.om2m.ipe.sample.sdt</module>
+		<module>org.eclipse.om2m.ipe.sdt.testsuite</module>
+		<module>org.eclipse.om2m.sdt.comparator.xml</module>   
 		<module>org.eclipse.om2m.site.asn-cse</module>
 		<module>org.eclipse.om2m.site.in-cse</module>
 		<module>org.eclipse.om2m.site.mn-cse</module>

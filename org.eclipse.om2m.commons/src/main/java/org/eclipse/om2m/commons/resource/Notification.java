@@ -31,6 +31,7 @@ import java.math.BigInteger;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
@@ -276,7 +277,7 @@ public class Notification {
 	public static class NotificationEvent {
 
 		@XmlElement(name = ShortName.REPRESENTATION)
-		protected Resource representation;
+		protected Representation representation;
 		@XmlElement(name = ShortName.RESOURCE_STATUS)
 		protected BigInteger resourceStatus;
 		@XmlElement(name = ShortName.OPERATION_MONITOR)
@@ -288,7 +289,7 @@ public class Notification {
 		 * @return possible object is {@link Object }
 		 * 
 		 */
-		public Resource getRepresentation() {
+		public Representation getRepresentation() {
 			return representation;
 		}
 
@@ -299,7 +300,7 @@ public class Notification {
 		 *            allowed object is {@link Object }
 		 * 
 		 */
-		public void setRepresentation(Resource value) {
+		public void setRepresentation(Representation value) {
 			this.representation = value;
 		}
 
@@ -346,6 +347,24 @@ public class Notification {
 		public void setOperationMonitor(
 				Notification.NotificationEvent.OperationMonitor value) {
 			this.operationMonitor = value;
+		}
+		
+		@XmlAccessorType(XmlAccessType.FIELD)
+		public static class Representation {
+
+			@XmlElementRef
+			private Resource resource;
+
+			public Resource getResource() {
+				return resource;
+			}
+
+			public void setResource(Resource resource) {
+				this.resource = resource;
+			}
+			
+			
+			
 		}
 
 		/**

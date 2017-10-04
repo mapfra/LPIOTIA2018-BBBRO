@@ -19,15 +19,25 @@
  *******************************************************************************/
 package org.eclipse.om2m.core.entitymapper;
 
-import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.om2m.commons.entities.AreaNwkInfoEntity;
-import org.eclipse.om2m.commons.entities.LabelEntity;
 import org.eclipse.om2m.commons.resource.AreaNwkInfo;
+import org.eclipse.om2m.commons.resource.ChildResourceRef;
 
 public class AreaNwkInfoMapper extends EntityMapper<AreaNwkInfoEntity, AreaNwkInfo> {
 
 	@Override
-	protected void mapAttributes(AreaNwkInfoEntity entity, AreaNwkInfo resource) {
+	protected void mapAttributes(AreaNwkInfoEntity entity, AreaNwkInfo resource, int level, int offset) {
+		if (level < 0) {
+			return;
+		}
+		
+		// Announceable resource attributes
+		EntityMapperFactory.getAnnounceableSubordonateEntity_AnnounceableResourceMapper().mapAttributes(entity,
+				resource, level, offset);
+
 		resource.setAreaNwkType(entity.getAreaNwkType());
 		resource.setCreationTime(entity.getCreationTime());
 		resource.setDescription(entity.getDescription());
@@ -38,34 +48,23 @@ public class AreaNwkInfoMapper extends EntityMapper<AreaNwkInfoEntity, AreaNwkIn
 		resource.setParentID(entity.getParentID());
 		resource.setResourceID(entity.getResourceID());
 		resource.setResourceType(entity.getResourceType());
-		if (!entity.getAnnouncedAttribute().isEmpty()) {
-			resource.getAnnouncedAttribute().addAll(entity.getAnnouncedAttribute());
-		}
-		if (!entity.getAnnounceTo().isEmpty()) {
-			resource.getAnnounceTo().addAll(entity.getAnnounceTo());
-		}
-		for (AccessControlPolicyEntity acp : entity.getAcps()) {
-			resource.getAccessControlPolicyIDs().add(acp.getResourceID());
-		}
-		for (LabelEntity lbl : entity.getLabelsEntities()) {
-			resource.getLabels().add(lbl.getLabel());
-		}
 		if (!entity.getListOfDevices().isEmpty()) {
 			resource.getListOfDevices().addAll(entity.getListOfDevices());
 		}
 	}
+	
+	@Override
+	protected List<ChildResourceRef> getChildResourceRef(AreaNwkInfoEntity entity, int level, int offset) {
+		return new ArrayList<>();
+	}
 
 	@Override
-	protected void mapChildResourceRef(AreaNwkInfoEntity entity,
-			AreaNwkInfo resource) {
-		// TODO Auto-generated method stub
+	protected void mapChildResourceRef(AreaNwkInfoEntity entity, AreaNwkInfo resource, int level, int offset) {
 
 	}
 
 	@Override
-	protected void mapChildResources(AreaNwkInfoEntity entity,
-			AreaNwkInfo resource) {
-		// TODO Auto-generated method stub
+	protected void mapChildResources(AreaNwkInfoEntity entity, AreaNwkInfo resource, int level, int offset) {
 
 	}
 
@@ -75,4 +74,3 @@ public class AreaNwkInfoMapper extends EntityMapper<AreaNwkInfoEntity, AreaNwkIn
 	}
 
 }
-

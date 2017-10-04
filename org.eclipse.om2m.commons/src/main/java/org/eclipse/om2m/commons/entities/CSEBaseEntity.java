@@ -52,6 +52,14 @@ public class CSEBaseEntity extends ResourceEntity {
 			inverseJoinColumns={@JoinColumn(name=DBEntities.ACP_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)}
 			)
 	protected List<AccessControlPolicyEntity> accessControlPolicies;
+	
+	@ManyToMany(fetch=FetchType.LAZY, cascade={CascadeType.ALL}, mappedBy="linkedCseBaseEntities")
+	@JoinTable(
+			name=DBEntities.CSEB_DAC_JOIN,
+			joinColumns={@JoinColumn(name=DBEntities.CSEB_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)},
+			inverseJoinColumns={@JoinColumn(name=DBEntities.DAC_JOINID, referencedColumnName=ShortName.RESOURCE_ID)}
+			)
+	protected List<DynamicAuthorizationConsultationEntity> dynamicAuthorizationConsultations;
 
 	@Column(name=ShortName.CSE_TYPE)
 	protected BigInteger cseType; // TODO see if better int ? short ?
@@ -102,7 +110,7 @@ public class CSEBaseEntity extends ResourceEntity {
 
 
 	/** List of ApplicationEntities */
-	@OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.ALL})
+	@OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.ALL}, mappedBy="parentCse")
 	@JoinTable(
 			name=DBEntities.CSEBAE_JOIN,
 			joinColumns={@JoinColumn(name=DBEntities.CSEB_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)},
@@ -111,7 +119,7 @@ public class CSEBaseEntity extends ResourceEntity {
 	protected List<AeEntity> childAes;
 
 	/** List of Remote CSEs */
-	@OneToMany(fetch = FetchType.LAZY, cascade={CascadeType.ALL})
+	@OneToMany(fetch = FetchType.LAZY, cascade={CascadeType.ALL}, mappedBy="parentCseBase")
 	@JoinTable(
 			name = DBEntities.CSBCSR_JOIN,
 			joinColumns = {@JoinColumn(name = DBEntities.CSEB_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID)},
@@ -129,8 +137,18 @@ public class CSEBaseEntity extends ResourceEntity {
 			inverseJoinColumns={@JoinColumn(name=DBEntities.CNT_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)}
 			)
 	protected List<ContainerEntity> childContainers;
+	
+	
+	/** List of FlexContainerEntites */
+	@OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.ALL})
+	@JoinTable(
+			name=DBEntities.CSEB_FCNT_JOIN,
+			joinColumns={@JoinColumn(name=DBEntities.CSEB_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)},
+			inverseJoinColumns={@JoinColumn(name=DBEntities.FCNT_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)}
+			)
+	protected List<FlexContainerEntity> childFlexContainers;
 
-	/** List of ContainerEntities */
+	/** List of GroupEntities */
 	@OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.ALL})
 	@JoinTable(
 			name=DBEntities.CSEB_GRP_JOIN,
@@ -142,7 +160,7 @@ public class CSEBaseEntity extends ResourceEntity {
 	/**
 	 * List of child AccessControlPolicies
 	 */
-	@OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.ALL})
+	@OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.ALL}, mappedBy="parentCse")
 	@JoinTable(
 			name=DBEntities.CSEBCHILDACP_JOIN,
 			joinColumns={@JoinColumn(name=DBEntities.CSEB_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)},
@@ -158,6 +176,14 @@ public class CSEBaseEntity extends ResourceEntity {
 			inverseJoinColumns = { @JoinColumn(name = DBEntities.SUB_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
 			)
 	protected List<SubscriptionEntity> childSubscriptions;
+	@JoinTable(
+			name = DBEntities.CSEB_CHILDDAC_JOIN,
+			joinColumns = { @JoinColumn(name = DBEntities.CSEB_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
+			inverseJoinColumns = { @JoinColumn(name = DBEntities.DAC_JOINID, referencedColumnName = ShortName.RESOURCE_ID) }
+			)
+	@OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL,mappedBy="parentCseBase")
+	
+	private List<DynamicAuthorizationConsultationEntity> childDynamicAuthorizationConsultation;
 
 	/**
 	 * @return the aes
@@ -304,6 +330,23 @@ public class CSEBaseEntity extends ResourceEntity {
 	public void setContainers(List<ContainerEntity> containers) {
 		this.childContainers = containers;
 	}
+	
+	/**
+	 * @return the flexContainers
+	 */
+	public List<FlexContainerEntity> getChildFlexContainers() {
+		if (childFlexContainers == null) {
+			childFlexContainers = new ArrayList<>();
+		}
+		return childFlexContainers;
+	}
+
+	/**
+	 * @param flexContainers the flexContainers to set
+	 */
+	public void setFlexContainers(List<FlexContainerEntity> flexContainers) {
+		this.childFlexContainers = flexContainers;
+	}
 
 	/**
 	 * @return the remoteCses
@@ -391,6 +434,9 @@ public class CSEBaseEntity extends ResourceEntity {
 	 * @return the childNodes
 	 */
 	public List<NodeEntity> getChildNodes() {
+		if (childNodes == null) {
+			childNodes = new ArrayList<NodeEntity>();
+		}
 		return childNodes;
 	}
 
@@ -400,4 +446,37 @@ public class CSEBaseEntity extends ResourceEntity {
 	public void setChildNodes(List<NodeEntity> childNodes) {
 		this.childNodes = childNodes;
 	}
+
+	
+	public List<DynamicAuthorizationConsultationEntity> getChildDynamicAuthorizationConsultation() {
+		if (childDynamicAuthorizationConsultation == null) {
+			childDynamicAuthorizationConsultation = new ArrayList<>();
+		}
+		return childDynamicAuthorizationConsultation;
+	}
+
+	public void setChildDynamicAuthorizationConsultation(
+			List<DynamicAuthorizationConsultationEntity> childDynamicAuthorizationConsultation) {
+		this.childDynamicAuthorizationConsultation = childDynamicAuthorizationConsultation;
+	}
+
+	/**
+	 * @return the dynamicAuthorizationConsultations
+	 */
+	public List<DynamicAuthorizationConsultationEntity> getDynamicAuthorizationConsultations() {
+		if (dynamicAuthorizationConsultations == null) {
+			dynamicAuthorizationConsultations = new ArrayList<>();
+		}
+		return dynamicAuthorizationConsultations;
+	}
+
+	/**
+	 * @param dynamicAuthorizationConsultations the dynamicAuthorizationConsultations to set
+	 */
+	public void setDynamicAuthorizationConsultations(
+			List<DynamicAuthorizationConsultationEntity> dynamicAuthorizationConsultations) {
+		this.dynamicAuthorizationConsultations = dynamicAuthorizationConsultations;
+	}
+	
+	
 }

@@ -62,7 +62,7 @@ function get(targetId) {
         type: "GET",
         beforeSend: function() {},
         dataType: "xml",
-        url: context + targetId + "?rcn=5",
+        url: context + targetId + "?rcn=5&lvl=1",
         headers: {
             "X-M2M-Origin": make_base_auth(username, password),
             "Accept": "application/xml"
@@ -93,7 +93,7 @@ function get(targetId) {
 
                 if (attribute.localName == "ch") {
                     // If it is a child resource (ch) add it to the resource tree
-                    $("#" + encodeId(targetId)).append("<li onclick=get('" + attribute.textContent + "')>" + $(attribute).attr('rn') + "<ul id=" + encodeId(attribute.textContent) + "></ul></li>");
+                    $("#" + encodeId(targetId)).append("<li onclick=get('" + attribute.textContent + "')>" + $(attribute).attr('nm') + "<ul id=" + encodeId(attribute.textContent) + "></ul></li>");
                 } else {
                     // Handle other attributes
                     var value;
@@ -131,6 +131,15 @@ function get(targetId) {
                         var acpiList = attribute.textContent.split(" ");
                         for (var index in acpiList) {
                             table += "<tr><td>" + acpiList[index] + "</td></tr>";
+                        }
+                        table += "</tbody></table>";
+                        value = table;
+                    } else if (attribute.localName == "daci") {
+                        // Handle the list of acp ids
+                        var table = "<table class='bordered'><thead><th>DynamicAuthorizationConsultationIDs</th></thdead><tbody>";
+                        var daciList = attribute.textContent.split(" ");
+                        for (var index in daciList) {
+                            table += "<tr><td>" + daciList[index] + "</td></tr>";
                         }
                         table += "</tbody></table>";
                         value = table;

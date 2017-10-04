@@ -40,7 +40,12 @@ public class UriMapper {
 	 * @return non-hierarchical Uri of the resource
 	 */
 	public static String getNonHierarchicalUri(String hierarchicalUri) {
-		String spRelativeUri = UriUtil.toSpRelativeUri(hierarchicalUri);
+		String uri = hierarchicalUri;
+		if (uri.contains("#")) {
+			uri = uri.split("#")[0];
+		}
+		
+		String spRelativeUri = UriUtil.toSpRelativeUri(uri);
 		if (Patterns.match(Patterns.NON_HIERARCHICAL_PATTERN, spRelativeUri)){
 			return spRelativeUri;
 		}

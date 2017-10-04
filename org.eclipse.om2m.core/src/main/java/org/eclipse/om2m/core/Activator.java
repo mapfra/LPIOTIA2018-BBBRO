@@ -26,18 +26,24 @@ import org.eclipse.om2m.commons.constants.CSEType;
 import org.eclipse.om2m.commons.constants.Constants;
 import org.eclipse.om2m.core.comm.RestClient;
 import org.eclipse.om2m.core.datamapper.DataMapperSelector;
+import org.eclipse.om2m.core.dynamicauthorization.DynamicAuthorizationSelector;
+import org.eclipse.om2m.core.flexcontainer.FlexContainerSelector;
 import org.eclipse.om2m.core.interworking.IpeSelector;
 import org.eclipse.om2m.core.persistence.PersistenceService;
+import org.eclipse.om2m.core.remotecse.RemoteCseService;
 import org.eclipse.om2m.core.router.Router;
 import org.eclipse.om2m.core.service.CseService;
 import org.eclipse.om2m.core.thread.CoreExecutor;
 import org.eclipse.om2m.datamapping.service.DataMapperService;
+import org.eclipse.om2m.flexcontainer.service.FlexContainerService;
 import org.eclipse.om2m.interworking.service.InterworkingService;
 import org.eclipse.om2m.persistence.service.DBService;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
+import org.osgi.service.event.EventAdmin;
 import org.osgi.util.tracker.ServiceTracker;
+import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * Manages the starting and stopping of the bundle.
@@ -54,7 +60,11 @@ public class Activator implements BundleActivator {
 	private ServiceTracker<Object, Object> dataMapperServiceTracker;
 	/** Database Service tracker */
 	private ServiceTracker<Object, Object> databaseServiceTracker;
-
+	/** FlexContainerService tracker */
+	private ServiceTracker<Object, Object> flexContainerServiceTracker;
+	/** EventAdmin tracker */
+	private ServiceTracker<Object, Object> eventAdminTracker;
+	
 	public void start(BundleContext bundleContext) throws Exception {
 		LOGGER.info("Starting CSE...");
 		Activator.context = bundleContext;
@@ -158,6 +168,46 @@ public class Activator implements BundleActivator {
 		};
 		ipeServiceTracker.open();
 
+		// track FlexContainerService
+		flexContainerServiceTracker = new ServiceTracker<Object, Object>(bundleContext, FlexContainerService.class.getName(), null) {
+			public Object addingService(org.osgi.framework.ServiceReference<Object> reference) {
+				FlexContainerService fcs = (FlexContainerService) this.context.getService(reference);
+				FlexContainerSelector.addFlexContainerService(fcs.getFlexContainerLocation(), fcs);
+				
+				LOGGER.info("FlexContainerService discovered for " + fcs.getFlexContainerLocation());
+				return fcs;
+			}
+			
+			@Override
+			public void removedService(ServiceReference<Object> reference, Object service) {
+				FlexContainerService fcs = (FlexContainerService) service;
+				
+				FlexContainerSelector.removeFlexContainerService(fcs);
+				
+				LOGGER.info("FlexContainerService removed for " + fcs.getFlexContainerLocation());
+			}
+		};
+		flexContainerServiceTracker.open();
+		
+		
+		// eventAdmin tracker
+		eventAdminTracker = new ServiceTracker<Object, Object>(bundleContext, EventAdmin.class.getName(), null) {
+
+			@Override
+			public Object addingService(ServiceReference<Object> reference) {
+				// new eventAdmin
+				EventAdmin eventAdmin = (EventAdmin) this.context.getService(reference);
+				RemoteCseService.getInstance().setEventAdmin(eventAdmin);
+				return eventAdmin;
+			}
+
+			@Override
+			public void removedService(ServiceReference<Object> reference, Object service) {
+				RemoteCseService.getInstance().setEventAdmin(null);
+			}
+		};
+		eventAdminTracker.open();
+		
 	}
 
 	public void stop(BundleContext bundleContext) throws Exception {

@@ -32,15 +32,19 @@ import org.eclipse.om2m.commons.constants.ResultContent;
 import org.eclipse.om2m.commons.entities.AccessControlOriginatorEntity;
 import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
 import org.eclipse.om2m.commons.entities.AccessControlRuleEntity;
+import org.eclipse.om2m.commons.entities.DynamicAuthorizationConsultationEntity;
 import org.eclipse.om2m.commons.entities.ResourceEntity;
 import org.eclipse.om2m.commons.exceptions.AccessDeniedException;
 import org.eclipse.om2m.commons.exceptions.BadRequestException;
 import org.eclipse.om2m.commons.exceptions.Om2mException;
 import org.eclipse.om2m.commons.exceptions.ResourceNotFoundException;
+import org.eclipse.om2m.commons.resource.AccessControlPolicy;
+import org.eclipse.om2m.commons.resource.AccessControlRule;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.Resource;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
 import org.eclipse.om2m.core.datamapper.DataMapperSelector;
+import org.eclipse.om2m.core.dynamicauthorization.DynamicAuthorizationSelector;
 import org.eclipse.om2m.core.entitymapper.EntityMapper;
 import org.eclipse.om2m.core.entitymapper.EntityMapperFactory;
 import org.eclipse.om2m.core.persistence.PersistenceService;
@@ -80,6 +84,8 @@ public abstract class Controller {
 				response = doUpdate(request);
 			} else if(request.getOperation().equals(Operation.DELETE)){
 				response = doDelete(request);
+			} else if (request.getOperation().equals(Operation.INTERNAL_NOTIFY)) {
+				response = doInternalNotify(request);
 			} else {
 				throw new BadRequestException("Incorrect Operation value (op): " + request.getOperation());
 			}
@@ -89,6 +95,13 @@ public abstract class Controller {
 			LOGGER.error("Controller internal error", e);
 			throw e;
 		} finally {
+			LOGGER.info("Clear and close transaction");
+			try {
+				transaction.commit();
+			} catch (Exception e) {
+				// do not log this exception
+			}
+			transaction.clear();
 			transaction.close();
 		}
 		return response;
@@ -121,6 +134,46 @@ public abstract class Controller {
 	 * @return The generic returned response.
 	 */
 	public abstract ResponsePrimitive doDelete (RequestPrimitive request);
+	
+	/**
+	 * Handle internal notify operation.
+	 * This kind of operation is only handle by FlexContainer.
+	 * @param request
+	 * @return response
+	 */
+	public ResponsePrimitive doInternalNotify(RequestPrimitive request) {
+		return null;
+	}
+	
+	/**
+	 * Check permissions based on the provided ACPs & DACs.
+	 * 
+	 * @param request request to be performed if the access is granted
+	 * @param resource related resource
+	 * @param acpList list of ACPs
+	 * @param dacList list of DACs
+	 * @throws AccessDeniedException if access granting failed
+	 */
+	public void checkPermissions(RequestPrimitive request, ResourceEntity resource, 
+			List<AccessControlPolicyEntity> acpList) 
+					throws AccessDeniedException {
+		
+		// check ACPs
+		try {
+			checkACP(acpList, request.getFrom(), request.getOperation());
+			//return immediately if one ACP grants access
+			return;
+		} catch (AccessDeniedException e) {
+			// nothing to do as we need to check DynamicAuthorizationConsultation
+		}
+		
+		DynamicAuthorizationSelector.getInstance().
+			authorize(
+				dbs.getDBUtilManager().getDynamicAuthorizationConsultationUtil().
+					getDynamicAuthorizationConsultations(resource.getResourceID())
+						, request, resource);
+		
+	}
 
 	/**
 	 * Check the access right based on acpId
@@ -158,7 +211,7 @@ public abstract class Controller {
 			throw new AccessDeniedException();
 		}
 		if (acpList == null || acpList.isEmpty()) {
-			throw new ResourceNotFoundException("Current resource does not have any ACP attached");
+			throw new AccessDeniedException("Current resource does not have any ACP attached");
 		}
 		// Check Resource accessRight existence not found
 		boolean originatorFound = false;
@@ -204,6 +257,9 @@ public abstract class Controller {
 			throw new AccessDeniedException();
 		}
 	}
+	
+	
+	
 
 	/**
 	 * Check Access Right from Acp Self privileges for ACP modifications
@@ -242,6 +298,10 @@ public abstract class Controller {
 				} else if (operation.equals(Operation.DELETE)){
 					if (rule.isDelete()){
 						operationAllowed = true; 
+					}
+				} else if (operation.equals(Operation.DISCOVERY)) {
+					if (rule.isDiscovery()) {
+						operationAllowed = true;
 					}
 				}
 			}
@@ -295,7 +355,7 @@ public abstract class Controller {
 			}
 			if(request.getResultContent().equals(ResultContent.HIERARCHICAL_AND_ATTRIBUTES)
 					|| request.getResultContent().equals(ResultContent.ATTRIBUTES)){
-				Resource res = mapper.mapEntityToResource(entity, ResultContent.ATTRIBUTES);
+				Resource res = mapper.mapEntityToResource(entity, ResultContent.ATTRIBUTES, 0, 0);
 				if(request.getReturnContentType().equals(MimeMediaType.OBJ)){
 					response.setContent(res);
 				} else {
@@ -305,7 +365,7 @@ public abstract class Controller {
 				}
 			}
 		} else {
-			response.setContent(mapper.mapEntityToResource(entity, ResultContent.ATTRIBUTES));
+			response.setContent(mapper.mapEntityToResource(entity, ResultContent.ATTRIBUTES, 0, 0));
 			response.setLocation(entity.getResourceID());			
 		}
 	}

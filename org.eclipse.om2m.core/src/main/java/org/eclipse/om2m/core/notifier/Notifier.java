@@ -48,6 +48,7 @@ import org.eclipse.om2m.commons.entities.SubscriptionEntity;
 import org.eclipse.om2m.commons.exceptions.Om2mException;
 import org.eclipse.om2m.commons.resource.Notification;
 import org.eclipse.om2m.commons.resource.Notification.NotificationEvent;
+import org.eclipse.om2m.commons.resource.Notification.NotificationEvent.Representation;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.Resource;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
@@ -70,6 +71,8 @@ import org.eclipse.om2m.persistence.service.DBTransaction;
 public class Notifier {
 	/** Logger */
 	private static Log LOGGER = LogFactory.getLog(Notifier.class);
+	
+	private static final Integer NB_OF_FAILED_NOTIFS_BEFORE_DELETION = Integer.valueOf(System.getProperty("org.eclipse.om2m.subscriptions.nbOfFailedNotificationsBeforeDeletion", "5"));
 
 	/**
 	 * Finds all resource subscribers and notifies them.
@@ -77,9 +80,21 @@ public class Notifier {
 	 * @param resource - Notification resource
 	 */
 	public static void notify(List<SubscriptionEntity> listSubscription, ResourceEntity resource, int resourceStatus) {
+
+		notify(listSubscription, resource, null, resourceStatus);
+	}
+	
+	/**
+	 * Find all resource subscrivers and notifies them.
+	 * @param listSubscription
+	 * @param resource
+	 * @param modifiedOnlyResource
+	 * @param resourceStatus
+	 */
+	public static void notify(List<SubscriptionEntity> listSubscription, ResourceEntity resource, Resource modifiedOnlyResource, int resourceStatus) {
 		if (listSubscription != null){
 			for(SubscriptionEntity sub : listSubscription){
-				NotificationWorker worker = new NotificationWorker(sub, resourceStatus, resource);
+				NotificationWorker worker = new NotificationWorker(sub, resourceStatus, resource, modifiedOnlyResource);
 				CoreExecutor.postThread(worker);
 			}
 		}
@@ -103,6 +118,7 @@ public class Notifier {
 
 	public static void performVerificationRequest(RequestPrimitive request,
 			SubscriptionEntity subscriptionEntity) {
+		String notificationPayloadContentType = subscriptionEntity.getNotificationPayloadContentType();
 		for(String uri : subscriptionEntity.getNotificationURI()){
 			if(!uri.equals(request.getFrom())){
 				Notification notification = new Notification();
@@ -111,13 +127,16 @@ public class Notifier {
 				notification.setSubscriptionReference(subscriptionEntity.getHierarchicalURI());
 				notification.setSubscriptionDeletion(false);
 				RequestPrimitive notifRequest = new RequestPrimitive();
-				notifRequest.setContent(DataMapperSelector.getDataMapperList().get(Constants.NOTIFICATION_MMT).objToString(notification));
+				if (!MimeMediaType.OBJ.equals(notificationPayloadContentType)) {
+					notifRequest.setContent(DataMapperSelector.getDataMapperList().get(notificationPayloadContentType).objToString(notification));
+				} else {
+					notifRequest.setContent(notification);
+				}
 				notifRequest.setFrom("/" + Constants.CSE_ID);
 				notifRequest.setTo(uri);
 				notifRequest.setOperation(Operation.NOTIFY);
-				notifRequest.setRequestContentType(Constants.NOTIFICATION_MMT);
-				notifRequest.setReturnContentType(Constants.NOTIFICATION_MMT);
-				
+				notifRequest.setRequestContentType(notificationPayloadContentType);
+				notifRequest.setReturnContentType(notificationPayloadContentType);
 				ResponsePrimitive resp = notify(notifRequest, uri);
 				if(resp.getResponseStatusCode().equals(ResponseStatusCode.TARGET_NOT_REACHABLE)){
 					throw new Om2mException("Error during the verification request", 
@@ -136,30 +155,11 @@ public class Notifier {
 		LOGGER.info("Sending notify request to: " + contact);
 		if(contact.matches(".*://.*")){ 
 			// Contact = protocol-dependent -> direct notification using the rest client.
-			// In case of MQTT, the URI of the broker and the Topic has to be handled separatly
-			if(contact.startsWith("mqtt://")){
-				Pattern mqttUriPattern = Pattern.compile("(mqtt://[^:/]*(:[0-9]{1,5})?)(/.*)");
-				Matcher matcher = mqttUriPattern.matcher(contact);
-				if(matcher.matches()){
-					String uri = matcher.group(1);
-					String topic = matcher.group(3) == null ? "" : matcher.group(3).substring(1);
-					request.setMqttTopic(topic);
-					request.setMqttUri(uri);
-					// We do not want to wait for a response on AE topic
-					request.setMqttResponseExpected(false);
-				} else {
-					ResponsePrimitive resp = new ResponsePrimitive(request);
-					resp.setResponseStatusCode(ResponseStatusCode.BAD_REQUEST);
-					resp.setContent("Error in mqtt URI");
-					resp.setContentType(MimeMediaType.TEXT_PLAIN);
-					return resp;
-				}
-			}
 			request.setTo(contact);
 			return RestClient.sendRequest(request);
 		}else{
-			request.setTo(contact);
 			request.setTargetId(contact);
+			request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 			LOGGER.info("Sending notify request...");
 			return new Router().doRequest(request);
 		}
@@ -232,11 +232,14 @@ public class Notifier {
 		private SubscriptionEntity sub;
 		/** the resource to be sent */
 		private ResourceEntity resource;
+		/** the resource to be sent - modified attribute */
+		private Resource modifiedOnlyResource;
 
-		public NotificationWorker(SubscriptionEntity sub, int resourceStatus, ResourceEntity resource) {
+		public NotificationWorker(SubscriptionEntity sub, int resourceStatus, ResourceEntity resource, Resource modifiedOnlyResource) {
 			this.resourceStatus = resourceStatus;
 			this.sub = sub;
 			this.resource = resource;
+			this.modifiedOnlyResource = modifiedOnlyResource;
 		}
 
 		@SuppressWarnings("unchecked")
@@ -253,8 +256,7 @@ public class Notifier {
 
 			// Set request parameters
 			request.setOperation(Operation.NOTIFY);
-			//request.setFrom("/" + Constants.CSE_ID);
-			request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
+			request.setFrom("/" + Constants.CSE_ID);
 
 			if(resourceStatus == ResourceStatus.DELETED){
 				notification.setSubscriptionDeletion(true);
@@ -262,7 +264,7 @@ public class Notifier {
 				notification.setSubscriptionDeletion(false);
 			}
 
-			notification.setSubscriptionReference(sub.getHierarchicalURI());
+			notification.setSubscriptionReference(sub.getResourceID());
 
 			// Get the representation of the content
 			Resource serializableResource;
@@ -275,26 +277,80 @@ public class Notifier {
 							getMapperFromResourceType(resource.getResourceType().intValue());
 				}
 				if(sub.getNotificationContentType().equals(NotificationContentType.MODIFIED_ATTRIBUTES)){
-					serializableResource = (Resource)mapper.mapEntityToResource(resource, ResultContent.ATTRIBUTES);
-					notification.getNotificationEvent().setRepresentation(serializableResource);
-					request.setRequestContentType(Constants.NOTIFICATION_MMT);
+					Representation representation = new Representation();
+					if (modifiedOnlyResource != null) {
+						// Gregory BONNARDEL - 26 Avril 2016
+						// as all Controllers have not been modified
+						// for modified controllers, use the resource provided by the controller
+						representation.setResource(modifiedOnlyResource);
+					} else {
+						// for non modified controllers, send the ResourceEntity 
+						// but it is not compliant with the specs
+						serializableResource  = (Resource) mapper
+								.mapEntityToResource(resource, ResultContent.ATTRIBUTES, 0, 0);
+						representation.setResource(serializableResource);
+					}
+					notification.getNotificationEvent().setRepresentation(representation);
+					request.setRequestContentType(sub.getNotificationPayloadContentType());
 				} else if(sub.getNotificationContentType().equals(NotificationContentType.WHOLE_RESOURCE)){
-					serializableResource = (Resource) mapper.mapEntityToResource(resource, ResultContent.ATTRIBUTES);
-					notification.getNotificationEvent().setRepresentation(serializableResource);
-					request.setRequestContentType(Constants.NOTIFICATION_MMT);
+					serializableResource = (Resource) mapper.mapEntityToResource(resource, ResultContent.ATTRIBUTES, 0, 0);
+					Representation representation = new Representation();
+					representation.setResource(serializableResource);
+					notification.getNotificationEvent().setRepresentation(representation);
+					request.setRequestContentType(sub.getNotificationPayloadContentType());
 				} 
 			} 
 			// Set the content
-			request.setContent(DataMapperSelector.getDataMapperList().get(Constants.NOTIFICATION_MMT).objToString(notification));
+			request.setContent(DataMapperSelector.getDataMapperList().get(sub.getNotificationPayloadContentType()).objToString(notification));
 			// For each notification URI: send the notify request
 			for(final String uri : sub.getNotificationURI()){
 				CoreExecutor.postThread(new Runnable(){
 					public void run() {
-						Notifier.notify(request, uri);			
+						ResponsePrimitive response = Notifier.notify(request, uri);  
+						if (ResponseStatusCode.OK.equals(response.getResponseStatusCode())) {
+							// notify ok
+							updateSubscription(sub.getResourceID(), 0);
+							LOGGER.debug("notify OK for subscription " + sub.getResourceID());
+						} else {
+							// notify KO
+							Integer nbOfFailed = sub.getNbOfFailedNotifications();
+							if (nbOfFailed == null) {
+								nbOfFailed = 0;
+							}
+							if (nbOfFailed > NB_OF_FAILED_NOTIFS_BEFORE_DELETION) {
+								// delete notification
+								deleteSubscription(sub.getResourceID());
+								LOGGER.error("Reach the limit of failed notifs --> delete subscription " + sub.getResourceID());
+							} else {
+								updateSubscription(sub.getResourceID(), nbOfFailed+1);
+								LOGGER.warn("unable to notify, increase failed notifs(" + nbOfFailed +") for subscription " + sub.getResourceID());
+							}
+						}
 					};
 				});
 			}
 		}
+	}
+	
+	private static void deleteSubscription(String resourceId) {
+		DBService dbs = PersistenceService.getInstance().getDbService();
+		DBTransaction dbTransaction = dbs.getDbTransaction();
+		dbTransaction.open();
+		SubscriptionEntity subscriptionEntityToBeDeleted = dbs.getDAOFactory().getSubsciptionDAO().find(dbTransaction, resourceId);
+		dbs.getDAOFactory().getSubsciptionDAO().delete(dbTransaction, subscriptionEntityToBeDeleted);
+		dbTransaction.commit();
+		dbTransaction.close();
+	}
+	
+	private static void updateSubscription(String resourceId, Integer nbOfFailedNotification) {
+		DBService dbs = PersistenceService.getInstance().getDbService();
+		DBTransaction dbTransaction = dbs.getDbTransaction();
+		dbTransaction.open();
+		SubscriptionEntity subscriptionEntityToBeUpdated = dbs.getDAOFactory().getSubsciptionDAO().find(dbTransaction, resourceId);
+		subscriptionEntityToBeUpdated.setNbOfFailedNotifications(nbOfFailedNotification);
+		dbs.getDAOFactory().getSubsciptionDAO().update(dbTransaction, subscriptionEntityToBeUpdated);
+		dbTransaction.commit();
+		dbTransaction.close();
 	}
 
 }

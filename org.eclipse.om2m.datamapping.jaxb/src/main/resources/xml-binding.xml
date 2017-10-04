@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<xml-bindings xmlns="http://www.eclipse.org/eclipselink/xsds/persistence/oxm"
+	package-name="org.eclipse.om2m.commons.resource">
+	<java-types>
+
+		<!-- Adaptation for labels array and resource names -->
+
+		<!-- Generic resource -->
+		<java-type name="Resource">
+			<java-attributes>
+				<xml-element java-attribute="labels" name="lbl"  xml-list="true"/>
+			</java-attributes>
+		</java-type>
+
+		<java-type name="RegularResource">
+			<java-attributes>
+				<xml-element java-attribute="accessControlPolicyIDs"
+					name="acpi"/>
+				<xml-element java-attribute="dynamicAuthorizationConsultationIDs"
+					name="daci"/>
+			</java-attributes>
+		</java-type>
+		
+		<java-type name="AnnounceableResource">
+			<java-attributes>
+				<xml-element java-attribute="announceTo"
+					name="at" />
+				<xml-element java-attribute="announcedAttribute"
+					name="aa"  />
+			</java-attributes>
+		</java-type>
+		
+		<java-type name="AnnounceableSubordinateResource">
+			<java-attributes>
+				<xml-element java-attribute="announceTo"
+					name="at" />
+				<xml-element java-attribute="announcedAttribute"
+					name="aa" />
+			</java-attributes>
+		</java-type>
+		
+		<java-type name="AnnouncedResource">
+			<java-attributes>
+				<xml-element java-attribute="accessControlPolicyIDs"
+					name="acpi"  />
+			</java-attributes>
+		</java-type>
+
+        <!--  Request and Response Descriptions -->
+        <java-type name="RequestPrimitive">
+            <xml-root-element name="m2m:rqp"/>
+        </java-type>
+        
+        <java-type name="PrimitiveContent">
+            <xml-root-element name="pc"/>
+        </java-type>
+        
+        <java-type name="ResponsePrimitive">
+            <xml-root-element name="m2m:rsp"/>
+        </java-type>
+
+		<!-- CSE Descriptions -->
+		<java-type name="CSEBase">
+			<java-attributes>
+				<xml-element java-attribute="accessControlPolicyIDs"
+					name="acpi" />
+				<xml-element java-attribute="dynamicAuthorizationConsultationIDs"
+					name="daci" />
+				<xml-element java-attribute="supportedResourceType"
+					name="srt" xml-list="true" />
+				<xml-element java-attribute="pointOfAccess" name="poa" />
+			</java-attributes>
+		</java-type>
+
+		<java-type name="RemoteCSE">
+			<java-attributes>
+				<xml-element java-attribute="pointOfAccess" name="poa"/>
+			</java-attributes>
+		</java-type>
+
+		<!-- Access Control resources -->
+		<java-type name="AccessControlPolicy">
+		</java-type>
+		<java-type name="AccessControlRule">
+			<java-attributes>
+				<xml-element java-attribute="accessControlOriginators"
+					name="acor" />
+			</java-attributes>
+		</java-type>
+
+		<!-- Common resources -->
+		<java-type name="AE">
+			<java-attributes>
+				<xml-element java-attribute="pointOfAccess" name="poa" xml-list="true" />
+			</java-attributes>
+		</java-type>
+		<java-type name="AEAnnc">
+			<java-attributes>
+				<xml-element java-attribute="pointOfAccess" name="poa" xml-list="true" />
+			</java-attributes>
+		</java-type>
+
+		<java-type name="Container">
+		</java-type>
+		
+		<java-type name="AbstractFlexContainer">
+			<java-attributes>
+			</java-attributes>
+		</java-type>
+		
+
+		<java-type name="ContentInstance">
+		</java-type>
+
+		<java-type name="Group">
+			<java-attributes>
+				<xml-element java-attribute="memberIDs" name="mid" xml-list="true"/>
+				<xml-element java-attribute="membersAccessControlPolicyIDs"
+					name="macp" xml-list="true"/>
+			</java-attributes>
+		</java-type>
+
+		<java-type name="Node">
+		</java-type>
+
+		<!-- Subscription and notification handling -->
+
+		<java-type name="Subscription">
+			<java-attributes>
+				<xml-element java-attribute="notificationURI" name="nu" />
+			</java-attributes>
+		</java-type>
+
+		<java-type name="Notification">
+		</java-type>
+
+		<!-- TODO Mgmt Objects -->
+
+		<!-- Other resources -->
+
+        <java-type name="URIList">
+       		<xml-root-element name="uril" /> 
+       		<java-attributes>
+       			<xml-value java-attribute="listOfUri" xml-list="true"/> 
+       		</java-attributes>
+        </java-type>
+        
+         <java-type name="ChildResourceRef">
+       		<java-attributes>
+       			<xml-value java-attribute="value"  />
+       		</java-attributes>
+        </java-type>
+
+		<java-type name="PollingChannel">
+		</java-type>
+
+		<java-type name="Schedule">
+		</java-type>
+
+		<java-type name="LocationRegion">
+			<java-attributes>
+				<!-- TODO Short name for countryCode -->
+				<xml-element java-attribute="countryCode" />
+				<!-- TODO Short name for circRegion -->
+				<xml-element java-attribute="circRegion" />
+			</java-attributes>
+		</java-type>
+
+	</java-types>
+
+</xml-bindings>

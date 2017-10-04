@@ -48,9 +48,18 @@ public class LabelEntity {
 
 	@ManyToMany(targetEntity = AeEntity.class, mappedBy = "labelsEntities")
 	protected List<AeEntity> linkedAe;
+	
+	@ManyToMany(targetEntity = AeAnncEntity.class, mappedBy = "labelsEntities")
+	protected List<AeAnncEntity> linkedAeA;
 
 	@ManyToMany(targetEntity = ContainerEntity.class, mappedBy = "labelsEntities")
 	protected List<ContainerEntity> linkedCnt;
+	
+	@ManyToMany(targetEntity = FlexContainerEntity.class, mappedBy = "labelsEntities")
+	protected List<FlexContainerEntity> linkedFcnt;
+	
+	@ManyToMany(targetEntity = FlexContainerAnncEntity.class, mappedBy = "labelsEntities")
+	protected List<FlexContainerAnncEntity> linkedFcntA;
 
 	@ManyToMany(targetEntity = ContentInstanceEntity.class, mappedBy = "labelsEntities")
 	protected List<ContentInstanceEntity> linkedCin;
@@ -66,6 +75,9 @@ public class LabelEntity {
 
 	@ManyToMany(targetEntity = PollingChannelEntity.class, mappedBy = "labelsEntities")
 	protected List<PollingChannelEntity> linkedPch;
+	
+	@ManyToMany(targetEntity = AccessControlPolicyEntity.class, mappedBy = "labelsEntities")
+	protected List<AccessControlPolicyEntity> linkedACP;
 	
 	@ManyToMany(targetEntity = NodeEntity.class, mappedBy = "labelsEntities")
 	protected List<NodeEntity> linkedNodes;
@@ -140,6 +152,35 @@ public class LabelEntity {
 		this.linkedCsb = linkedCsb;
 	}
 
+
+	public void setLinkedACP(List<AccessControlPolicyEntity> pLinkedACPs) {
+		this.linkedACP = pLinkedACPs;
+	}
+	
+	public List<AccessControlPolicyEntity> getLinkedACP() {
+		if (this.linkedACP == null) {
+			this.linkedACP = new ArrayList<>();
+		}
+		return this.linkedACP;
+	}
+	
+	/**
+	 * @return the linkedAeA
+	 */
+	public List<AeAnncEntity> getLinkedAeA() {
+		if (this.linkedAeA == null) {
+			this.linkedAeA = new ArrayList<>();
+		}
+		return linkedAeA;
+	}
+
+	/**
+	 * @param linkedAeA the linkedAeA to set
+	 */
+	public void setLinkedAeA(List<AeAnncEntity> linkedAeA) {
+		this.linkedAeA = linkedAeA;
+	}
+	
 	/**
 	 * @return the linkedAe
 	 */
@@ -149,6 +190,7 @@ public class LabelEntity {
 		}
 		return linkedAe;
 	}
+
 
 	/**
 	 * @param linkedAe the linkedAe to set
@@ -173,6 +215,40 @@ public class LabelEntity {
 	public void setLinkedCnt(List<ContainerEntity> linkedCnt) {
 		this.linkedCnt = linkedCnt;
 	}
+	
+	/**
+	 * @return the linkedFcnt
+	 */
+	public List<FlexContainerEntity> getLinkedFcnt() {
+		if (this.linkedFcnt == null) {
+			this.linkedFcnt = new ArrayList<>();
+		}
+		return linkedFcnt;
+	}
+
+	/**
+	 * @param linkedFcnt the linkedFcnt to set
+	 */
+	public void setLinkedFcnt(List<FlexContainerEntity> linkedFcnt) {
+		this.linkedFcnt = linkedFcnt;
+	}
+	
+	/**
+	 * @return the linkedFcntA
+	 */
+	public List<FlexContainerAnncEntity> getLinkedFcntA() {
+		if (this.linkedFcntA == null) {
+			this.linkedFcntA = new ArrayList<>();
+		}
+		return linkedFcntA;
+	}
+
+	/**
+	 * @param linkedFcntA the linkedFcnt to set
+	 */
+	public void setLinkedFcntA(List<FlexContainerAnncEntity> linkedFcntA) {
+		this.linkedFcntA = linkedFcntA;
+	}
 
 	/**
 	 * @return the linkedCin
@@ -195,6 +271,9 @@ public class LabelEntity {
 	 * @return the linkedGroup
 	 */
 	public List<ContentInstanceEntity> getLinkedGroup() {
+		if (linkedGroup == null) {
+			linkedGroup = new ArrayList<>();
+		}
 		return linkedGroup;
 	}
 

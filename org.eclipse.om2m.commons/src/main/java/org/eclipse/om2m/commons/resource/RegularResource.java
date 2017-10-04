@@ -29,12 +29,14 @@ package org.eclipse.om2m.commons.resource;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.MappedSuperclass;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlValue;
 
 import org.eclipse.om2m.commons.constants.ShortName;
 
@@ -52,6 +54,7 @@ import org.eclipse.om2m.commons.constants.ShortName;
  *     &lt;extension base="{http://www.onem2m.org/xml/protocols}resource">
  *       &lt;sequence>
  *         &lt;element name="accessControlPolicyIDs" type="{http://www.onem2m.org/xml/protocols}acpType" minOccurs="0"/>
+ *         &lt;element name="dynamicAuthorizationConsultationIDs" type="{http://www.onem2m.org/xml/protocols}listOfURIs" minOccurs="0"/>
  *         &lt;element name="expirationTime" type="{http://www.onem2m.org/xml/protocols}timestamp"/>
  *       &lt;/sequence>
  *     &lt;/extension>
@@ -67,13 +70,17 @@ import org.eclipse.om2m.commons.constants.ShortName;
 		StatsConfig.class, Delivery.class, ExecInstance.class, MgmtCmd.class,
 		Request.class, ServiceSubscribedNode.class,
 		M2MServiceSubscriptionProfile.class, EventConfig.class,
-		PollingChannel.class, Subscription.class, AnnounceableResource.class })
+		PollingChannel.class, Subscription.class, AnnounceableResource.class, DynamicAuthorizationConsultation.class })
+@MappedSuperclass
 public class RegularResource extends Resource {
 
 	@XmlList
-	@XmlElement(name=ShortName.ACP_IDS)
+	@XmlElement(name=ShortName.ACP_IDS, required=false, namespace="")
 	protected List<String> accessControlPolicyIDs;
-	@XmlElement(name=ShortName.EXPIRATION_TIME, required = true)
+	@XmlList
+	@XmlElement(name=ShortName.DAC_IDS, required=false, namespace="")
+	protected List<String> dynamicAuthorizationConsultationIDs;
+	@XmlElement(name=ShortName.EXPIRATION_TIME, required = true, namespace="")
 	protected String expirationTime;
 
 	/**
@@ -103,6 +110,40 @@ public class RegularResource extends Resource {
 			accessControlPolicyIDs = new ArrayList<String>();
 		}
 		return this.accessControlPolicyIDs;
+	}
+	
+	/**
+	 * Gets the value of the dynamicAuthorizationConsultationIDs property.
+	 * 
+	 * <p>
+	 * This accessor method returns a reference to the live list, not a
+	 * snapshot. Therefore any modification you make to the returned list will
+	 * be present inside the JAXB object. This is why there is not a
+	 * <CODE>set</CODE> method for the dynamicAuthorizationConsultationIDs property.
+	 * 
+	 * <p>
+	 * For example, to add a new item, do as follows:
+	 * 
+	 * <pre>
+	 * getDynamicAuthorizationConsultationIDs().add(newItem);
+	 * </pre>
+	 * 
+	 * 
+	 * <p>
+	 * Objects of the following type(s) are allowed in the list {@link String }
+	 * 
+	 * 
+	 */
+	public List<String> getDynamicAuthorizationConsultationIDs() {
+		if (dynamicAuthorizationConsultationIDs == null) {
+			dynamicAuthorizationConsultationIDs = new ArrayList<String>();
+		}
+		return this.dynamicAuthorizationConsultationIDs;
+	}
+	
+	
+	public List<String> getRawDynamicAuthorizationConsultationIDs() {
+		return this.dynamicAuthorizationConsultationIDs;
 	}
 
 	/**

@@ -72,6 +72,12 @@ public class DBServiceJPAImpl implements DBService {
 	}
 
 	public void init() {
+		// BONNARDEL Gregory - 2016 03 08
+		// the context class loader of the current thread must be set to the class loader 
+		// of the DBServiceJPAImpl (ie it set to the classloader of the bundle 
+		// containing persistence.xml file)
+		Thread.currentThread().setContextClassLoader(this.getClass().getClassLoader());
+		
 		LOGGER.info("Initializing Database...");
 		try {
 			Map<Object, Object> properties = new HashMap<Object, Object>();
@@ -98,6 +104,8 @@ public class DBServiceJPAImpl implements DBService {
 				properties.put(PersistenceUnitProperties.DDL_GENERATION,
 						PersistenceUnitProperties.CREATE_OR_EXTEND);
 			}
+			
+			properties.put("javax.persistence.lock.timeout", "5000");
 
 			LOGGER.info("Creating new EntityManagerFactory...");
 			emf = Persistence.createEntityManagerFactory("om2mdb", properties);

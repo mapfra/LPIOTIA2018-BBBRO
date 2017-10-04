@@ -25,12 +25,15 @@ import java.util.List;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
 import org.eclipse.om2m.commons.entities.AnnounceableSubordinateEntity;
+import org.eclipse.om2m.commons.entities.DynamicAuthorizationConsultationEntity;
+import org.eclipse.om2m.commons.entities.RegularResourceEntity;
 import org.eclipse.om2m.commons.entities.ResourceEntity;
 import org.eclipse.om2m.commons.exceptions.BadRequestException;
 import org.eclipse.om2m.commons.exceptions.NotPermittedAttrException;
 import org.eclipse.om2m.commons.exceptions.Om2mException;
 import org.eclipse.om2m.commons.exceptions.ResourceNotFoundException;
 import org.eclipse.om2m.commons.resource.AnnounceableResource;
+import org.eclipse.om2m.commons.resource.RegularResource;
 import org.eclipse.om2m.commons.resource.Resource;
 import org.eclipse.om2m.commons.utils.Util.DateUtil;
 import org.eclipse.om2m.core.persistence.PersistenceService;
@@ -77,6 +80,32 @@ public class ControllerUtil {
 		}
 		return response;
 	}
+	
+	public static List<DynamicAuthorizationConsultationEntity> buildDacEntityList(
+			List<String> dacIds, DBTransaction transaction) 
+					throws ResourceNotFoundException{
+		// Get the database service
+		DBService dbs = PersistenceService.getInstance().getDbService();
+		
+		// create response list
+		List<DynamicAuthorizationConsultationEntity> daces = new ArrayList<>();
+		for(String dacId : dacIds) {
+			String dbId = UriMapper.getNonHierarchicalUri(dacId);
+			if (dbId == null) {
+				throw new ResourceNotFoundException("DynamicAuthorizationConsultation Id [" 
+						+ dacId + "] is not found");
+			}
+			DynamicAuthorizationConsultationEntity dace = dbs.getDAOFactory().
+					getDynamicAuthorizationDAO().find(transaction, dbId);
+			if (dace == null) {
+				throw new ResourceNotFoundException("DynamicAuthorizationConsultation Id [" 
+						+ dacId + "] is not found_");
+			}
+			daces.add(dace);
+		}
+		
+		return daces;
+	}
 
 	/**
 	 * Util methods in create case
@@ -107,6 +136,7 @@ public class ControllerUtil {
 			if(!resource.getLabels().isEmpty()){
 				entity.setLabelsEntitiesFromSring(resource.getLabels());
 			}
+			
 		}
 
 		public static void fillEntityFromAnnounceableResource(AnnounceableResource resource, AnnounceableSubordinateEntity entity) 

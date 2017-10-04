@@ -84,32 +84,32 @@ import org.eclipse.om2m.commons.constants.ShortName;
 @XmlRootElement(name = ShortName.GROUP)
 public class Group extends AnnounceableResource {
 
-	@XmlElement(name = ShortName.CREATOR)
+	@XmlElement(name = ShortName.CREATOR, namespace="")
 	protected String creator;
-	@XmlElement(name = ShortName.MEMBER_TYPE, required = true)
+	@XmlElement(name = ShortName.MEMBER_TYPE, required = true, namespace="")
 	protected BigInteger memberType;
-	@XmlElement(name = ShortName.CURRENT_NUM_MEMBERS, required = true)
+	@XmlElement(name = ShortName.CURRENT_NUM_MEMBERS, required = true, namespace="")
 	@XmlSchemaType(name = "nonNegativeInteger")
 	protected BigInteger currentNrOfMembers;
-	@XmlElement(name = ShortName.MAX_NUM_MEMBERS, required = true)
+	@XmlElement(name = ShortName.MAX_NUM_MEMBERS, required = true, namespace="")
 	@XmlSchemaType(name = "nonNegativeInteger")
 	protected BigInteger maxNrOfMembers;
 	@XmlList
-	@XmlElement(name = ShortName.MEMBER_ID, required = true)
+	@XmlElement(name = ShortName.MEMBER_ID, required = true, namespace="")
 	protected List<String> memberIDs;
 	@XmlList
-	@XmlElement(name = ShortName.MEMBER_ACP_ID)
+	@XmlElement(name = ShortName.MEMBER_ACP_ID, namespace="")
 	protected List<String> membersAccessControlPolicyIDs;
-	@XmlElement(name = ShortName.MEMBER_TYPE_VALIDATED)
+	@XmlElement(name = ShortName.MEMBER_TYPE_VALIDATED, namespace="")
 	protected Boolean memberTypeValidated;
-	@XmlElement(name = ShortName.CONSISTENCY_STRATEGY)
+	@XmlElement(name = ShortName.CONSISTENCY_STRATEGY, namespace="")
 	protected BigInteger consistencyStrategy;
-	@XmlElement(name = ShortName.GROUP_NAME)
+	@XmlElement(name = ShortName.GROUP_NAME, namespace="")
 	protected String groupName;
-	@XmlElement(name = ShortName.FANOUTPOINT, required = true)
+	@XmlElement(name = ShortName.FANOUTPOINT, required = true, namespace="")
 	@XmlSchemaType(name = "anyURI")
 	protected String fanOutPoint;
-	@XmlElement(name = ShortName.CHILD_RESOURCE)
+	@XmlElement(name = ShortName.CHILD_RESOURCE, namespace="")
 	protected List<ChildResourceRef> childResource;
 	@XmlElement(name = ShortName.SUB, namespace = "http://www.onem2m.org/xml/protocols")
 	protected List<Subscription> subscription;

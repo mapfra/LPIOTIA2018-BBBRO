@@ -19,8 +19,11 @@
  *******************************************************************************/
 package org.eclipse.om2m.core.entitymapper;
 
-import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.om2m.commons.entities.PollingChannelEntity;
+import org.eclipse.om2m.commons.resource.ChildResourceRef;
 import org.eclipse.om2m.commons.resource.PollingChannel;
 
 public class PollingChannelMapper extends
@@ -33,26 +36,35 @@ public class PollingChannelMapper extends
 
 	@Override
 	protected void mapAttributes(PollingChannelEntity entity,
-			PollingChannel resource) {
-		if (entity.getExpirationTime() != null) {
-			resource.setExpirationTime(entity.getExpirationTime());
+			PollingChannel resource, int level, int offset) {
+		
+		if (level < 0) {
+			return;
 		}
+		
+		// regular resource attributes
+		// expiration time
+		resource.setExpirationTime(entity.getExpirationTime());
+
+		// polling channel attributes
 		if (entity.getPollingChannelUri() != null) {
 			resource.setPollingChannelURI(entity.getPollingChannelUri());
 		}
-		for (AccessControlPolicyEntity acpEntity : entity.getLinkedAcps()) {
-			resource.getAccessControlPolicyIDs().add(acpEntity.getResourceID());
-		}
+	}
+	
+	@Override
+	protected List<ChildResourceRef> getChildResourceRef(PollingChannelEntity entity, int level, int offset) {
+		return new ArrayList<>();
 	}
 
 	@Override
 	protected void mapChildResourceRef(PollingChannelEntity entity,
-			PollingChannel resource) {
+			PollingChannel resource, int level, int offset) {
 	}
 
 	@Override
 	protected void mapChildResources(PollingChannelEntity entity,
-			PollingChannel resource) {
+			PollingChannel resource, int level, int offset) {
 	}
 
 }

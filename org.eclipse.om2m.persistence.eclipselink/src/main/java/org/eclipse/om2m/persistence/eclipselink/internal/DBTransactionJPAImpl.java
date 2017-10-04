@@ -20,6 +20,7 @@
 package org.eclipse.om2m.persistence.eclipselink.internal;
 
 import javax.persistence.EntityManager;
+import javax.persistence.LockModeType;
 
 import org.eclipse.om2m.persistence.service.DBTransaction;
 
@@ -57,6 +58,16 @@ public class DBTransactionJPAImpl implements DBTransaction {
 
 	public EntityManager getEm() {
 		return em;
+	}
+	
+	@Override
+	public void lock(Object object) {
+		em.lock(object, LockModeType.PESSIMISTIC_WRITE);
+	}
+	
+	@Override
+	public void unlock(Object object) {
+		em.lock(object, LockModeType.NONE);
 	}
 
 }

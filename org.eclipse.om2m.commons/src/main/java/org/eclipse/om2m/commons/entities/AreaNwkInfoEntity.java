@@ -58,7 +58,16 @@ public class AreaNwkInfoEntity extends MgmtObjEntity {
 			joinColumns = { @JoinColumn(name = DBEntities.ANI_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
 			inverseJoinColumns = { @JoinColumn(name = DBEntities.ACP_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
 			)
-	protected List<AccessControlPolicyEntity> acps;
+	protected List<AccessControlPolicyEntity> accessControlPolicies;
+	
+	/** List of DynamicAuthorizationConsultations*/
+	@ManyToMany(fetch=FetchType.LAZY, mappedBy="linkedAreaNwkInfoEntities")
+	@JoinTable(
+			name = DBEntities.ANI_DAC_JOIN,
+			joinColumns = { @JoinColumn(name = DBEntities.ANI_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
+			inverseJoinColumns = { @JoinColumn(name = DBEntities.DAC_JOINID, referencedColumnName = ShortName.RESOURCE_ID) }
+			)
+	protected List<DynamicAuthorizationConsultationEntity> dynamicAuthorizationConsultations;
 
 	// Database link to Subscriptions
 	@OneToMany(fetch = FetchType.LAZY, targetEntity = SubscriptionEntity.class)
@@ -116,18 +125,18 @@ public class AreaNwkInfoEntity extends MgmtObjEntity {
 	/**
 	 * @return the acps
 	 */
-	public List<AccessControlPolicyEntity> getAcps() {
-		if (this.acps == null) {
-			this.acps = new ArrayList<>();
+	public List<AccessControlPolicyEntity> getAccessControlPolicies() {
+		if (this.accessControlPolicies == null) {
+			this.accessControlPolicies = new ArrayList<>();
 		}
-		return acps;
+		return accessControlPolicies;
 	}
 
 	/**
 	 * @param acps the acps to set
 	 */
-	public void setAcps(List<AccessControlPolicyEntity> acps) {
-		this.acps = acps;
+	public void setAccessControlPolicies(List<AccessControlPolicyEntity> acps) {
+		this.accessControlPolicies = acps;
 	}
 
 	/**
@@ -147,7 +156,18 @@ public class AreaNwkInfoEntity extends MgmtObjEntity {
 		this.subscriptions = subscriptions;
 	}
 	
+
+	@Override
+	public List<DynamicAuthorizationConsultationEntity> getDynamicAuthorizationConsultations() {
+		if (dynamicAuthorizationConsultations == null) {
+			dynamicAuthorizationConsultations = new ArrayList<>();
+		}
+		return dynamicAuthorizationConsultations;
+	}
 	
-	
+	@Override
+	public void setDynamicAuthorizationConsultations(List<DynamicAuthorizationConsultationEntity> list) {
+		this.dynamicAuthorizationConsultations = list;
+	}
 	
 }

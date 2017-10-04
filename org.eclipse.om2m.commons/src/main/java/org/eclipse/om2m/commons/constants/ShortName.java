@@ -42,6 +42,12 @@ public class ShortName {
 	public static final String CNT = "cnt";
 	/** Short name for ContainerAnnc resource */
 	public static final String CNTA = "cntA";
+	/** Short name for DynamicAuthorizationConsultation resource */
+	public static final String DAC = "dac";
+	/** Short name for FlexContainer resource*/
+	public static final String FCNT = "fcnt";
+	/** Short name for FlexContainerAnnc resource */
+	public static final String FCNTA = "fcnta";
 	/** Short name for Content Instance resource */
 	public static final String CIN = "cin";
 	/** Short name for ContentInstanceAnnc resource */
@@ -166,6 +172,16 @@ public class ShortName {
 	public static final String ACP_IDS = "acpi";
 	/** Short name for Child Resource */
 	public static final String CHILD_RESOURCE = "ch";
+	/** Short name for DynamicAuthorizationConsultationIDs attribute */
+	public static final String DAC_IDS = "daci";
+	
+	// Attributes for Child Resources
+	/** Short name for name attribute of a ChildResourceRef */
+	public static final String CHILD_RESOURCE_NAME = "nm";
+	/** Short name for type attribute of a ChildResourceRef */
+	public static final String CHILD_RESOURCE_TYPE = "typ";
+	/** Short name for spid attribute of a ChildResourceRef */ 
+	public static final String CHILD_RESOURCE_SPID = "spid";
 	
 	// Attributes for CSEBase Entity
 	/** Short name for SupportedResourceTypes attribute */
@@ -236,6 +252,11 @@ public class ShortName {
 	public static final String OLDEST = "ol";
 	/** Short name for current number of instances attribute */	
 	public static final String CURRENT_NUMBER_OF_INSTANCES = "cni";
+	
+	
+	// Attributes for FlexContainerEntity
+	/** Short name for ContainerDefinition attribute */
+	public static final String CONTAINER_DEFINITION = "cnd";
 	
 	
 	// Attributes for Content Instance
@@ -315,7 +336,7 @@ public class ShortName {
 	public static final String SCHEDULE_ENTRY = "sce";
 	
 	// attributes for announced resource
-	public static final String LINK = "LINK"; // TODO to update when available
+	public static final String LINK = "lnk"; 
 	public static final String AE_ANNC = ShortName.AE + "A";
 	public static final String CNT_ANNC = ShortName.CNT + "A";
 
@@ -347,6 +368,8 @@ public class ShortName {
 	public static final String FILTER_RESOURCETYPE = "rty";
 	public static final String CONTENT_TYPE = "cty";
 	public static final String LIMIT = "lim";
+	public static final String LEVEL = "lvl";
+	public static final String OFFSET = "ofst";
 	public static final String ATTRIBUTE = "atr";
 	public static final String FILTER_USAGE = "fu";
 	public static final String DISCOVERY_RESULT_TYPE = "drt";
@@ -415,6 +438,11 @@ public class ShortName {
 	public static final String CMDH_POLICY = "cmp";
 	public static final String ACTIVE_CMDH_POLICY = "acmp";
 	
+	// Short names for Custom Attributes
+	public static final String CUSTOM_ATTRIBUTE_NAME = "can";
+	public static final String CUSTOM_ATTRIBUTE_TYPE = "cat";
+	public static final String CUSTOM_ATTRIBUTE_VALUE = "cav";
+	
 	// short names for area nwk info
 	public static final String AREA_NWK_TYPE = "ant";
 	public static final String LIST_DEVICES = "ldv";
@@ -430,4 +458,9 @@ public class ShortName {
 	
 	// short name for URI List
 	public static final String URI_LIST = "uril";
+	
+	// short names for DynamicAuthorizationConsultation 
+	public static final String DYNAMIC_AUTHORIZATION_ENABLED = "dae";
+	public static final String DYNAMIC_AUTHORIZATION_PoA = "dap";
+	public static final String DYNAMIC_AUTHORIZATION_LIFETIME = "dal";
 }

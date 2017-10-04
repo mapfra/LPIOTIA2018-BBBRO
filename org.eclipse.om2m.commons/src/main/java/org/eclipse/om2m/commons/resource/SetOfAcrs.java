@@ -62,7 +62,7 @@ import org.eclipse.om2m.commons.constants.ShortName;
 @XmlType(name = "setOfAcrs")
 public class SetOfAcrs {
 
-	@XmlElement(name = ShortName.ACR)
+	@XmlElement(name = ShortName.ACR, namespace="")
 	protected List<AccessControlRule> accessControlRule;
 
 	/**

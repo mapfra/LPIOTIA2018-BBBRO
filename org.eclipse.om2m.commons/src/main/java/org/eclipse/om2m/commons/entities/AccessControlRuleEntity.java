@@ -29,10 +29,14 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import org.eclipse.om2m.commons.constants.DBEntities;
+import org.eclipse.om2m.commons.constants.ShortName;
 
 /**
  * Access control rule JPA entity
@@ -44,7 +48,15 @@ public class AccessControlRuleEntity {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name=DBEntities.ACCESSCONTROLRULE_ID)
-	private String accessControlRuleId;
+	private long accessControlRuleId;
+
+	public long getAccessControlRuleId() {
+		return accessControlRuleId;
+	}
+
+	public void setAccessControlRuleId(long accessControlRuleId) {
+		this.accessControlRuleId = accessControlRuleId;
+	}
 
 	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST })
 	// TODO force names for join table
@@ -60,6 +72,38 @@ public class AccessControlRuleEntity {
 	
 	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
 	protected List<AccessControlContextEntity> accessControlContexts;
+	
+	@ManyToOne(targetEntity=AccessControlPolicyEntity.class)
+	@JoinTable(
+			name=DBEntities.ACPACR_PRIVILEGES,
+			inverseJoinColumns={@JoinColumn(name=DBEntities.ACP_JOIN_ID,referencedColumnName=ShortName.RESOURCE_ID)},
+			joinColumns={@JoinColumn(name=DBEntities.ACRID_COLUMN,referencedColumnName=DBEntities.ACCESSCONTROLRULE_ID)}
+			)
+	protected AccessControlPolicyEntity accessControlPolicy;
+	
+	@ManyToOne(targetEntity=AccessControlPolicyEntity.class)
+	@JoinTable(
+			name=DBEntities.ACPACR_SEFPRIVILEGES,
+			inverseJoinColumns={@JoinColumn(name=DBEntities.ACP_JOIN_ID,referencedColumnName=ShortName.RESOURCE_ID)},
+			joinColumns={@JoinColumn(name=DBEntities.ACRID_COLUMN,referencedColumnName=DBEntities.ACCESSCONTROLRULE_ID)}
+			)
+	protected AccessControlPolicyEntity selfAccessControlPolicy;
+	
+	public AccessControlPolicyEntity getSelfAccessControlPolicy() {
+		return selfAccessControlPolicy;
+	}
+
+	public void setSelfAccessControlPolicy(AccessControlPolicyEntity selfAccessControlPolicy) {
+		this.selfAccessControlPolicy = selfAccessControlPolicy;
+	}
+
+	public AccessControlPolicyEntity getAccessControlPolicy() {
+		return accessControlPolicy;
+	}
+
+	public void setAccessControlPolicy(AccessControlPolicyEntity accessControlPolicy) {
+		this.accessControlPolicy = accessControlPolicy;
+	}
 
 	/**
 	 * @return the accessControlOriginators

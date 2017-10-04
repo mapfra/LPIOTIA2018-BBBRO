@@ -85,42 +85,42 @@ import org.eclipse.om2m.commons.constants.ShortName;
 @XmlRootElement(name = ShortName.CNT)
 public class Container extends AnnounceableResource {
 
-	@XmlElement(name = ShortName.STATETAG, required = true)
+	@XmlElement(name = ShortName.STATETAG, required = true, namespace="")
 	@XmlSchemaType(name = "nonNegativeInteger")
 	protected BigInteger stateTag;
-	@XmlElement(name = ShortName.CREATOR, required = true)
+	@XmlElement(name = ShortName.CREATOR, required = true, namespace="")
 	protected String creator;
 	@XmlSchemaType(name = "nonNegativeInteger")
-	@XmlElement(name = ShortName.MAX_NR_OF_INSTANCES)
+	@XmlElement(name = ShortName.MAX_NR_OF_INSTANCES, namespace="")
 	protected BigInteger maxNrOfInstances;
 	@XmlSchemaType(name = "nonNegativeInteger")
-	@XmlElement(name = ShortName.MAX_BYTE_SIZE)
+	@XmlElement(name = ShortName.MAX_BYTE_SIZE, namespace="")
 	protected BigInteger maxByteSize;
 	@XmlSchemaType(name = "nonNegativeInteger")
-	@XmlElement(name = ShortName.MAX_INSTANCE_AGE)
+	@XmlElement(name = ShortName.MAX_INSTANCE_AGE, namespace="")
 	protected BigInteger maxInstanceAge;
-	@XmlElement(name = ShortName.CURRENT_NUMBER_OF_INSTANCES, required = true)
+	@XmlElement(name = ShortName.CURRENT_NUMBER_OF_INSTANCES, required = true, namespace="")
 	@XmlSchemaType(name = "nonNegativeInteger")
 	protected BigInteger currentNrOfInstances;
-	@XmlElement(name = ShortName.CURRENT_BYTE_SIZE, required = true)
+	@XmlElement(name = ShortName.CURRENT_BYTE_SIZE, required = true, namespace="")
 	@XmlSchemaType(name = "nonNegativeInteger")
 	protected BigInteger currentByteSize;
 	@XmlSchemaType(name = "anyURI")
-	@XmlElement(name = ShortName.LOCATION_ID)
+	@XmlElement(name = ShortName.LOCATION_ID, namespace="")
 	protected String locationID;
 	@XmlSchemaType(name = "anyURI")
-	@XmlElement(name = ShortName.ONTOLOGY_REF)
+	@XmlElement(name = ShortName.ONTOLOGY_REF, namespace="")
 	protected String ontologyRef;
-	@XmlElement(name = ShortName.CHILD_RESOURCE)
+	@XmlElement(name = ShortName.CHILD_RESOURCE, namespace="")
 	protected List<ChildResourceRef> childResource;
 	@XmlElements({
 			@XmlElement(name = ShortName.CIN, namespace = "http://www.onem2m.org/xml/protocols", type = ContentInstance.class),
 			@XmlElement(name = ShortName.CNT, namespace = "http://www.onem2m.org/xml/protocols", type = Container.class),
 			@XmlElement(name = ShortName.SUB, namespace = "http://www.onem2m.org/xml/protocols", type = Subscription.class) })
 	protected List<Resource> contentInstanceOrContainerOrSubscription;
-	@XmlElement(name = ShortName.OLDEST)
+	@XmlElement(name = ShortName.OLDEST, namespace="")
 	protected String oldest;
-	@XmlElement(name = ShortName.LATEST)
+	@XmlElement(name = ShortName.LATEST, namespace="")
 	protected String latest;
 	/**
 	 * Gets the value of the stateTag property.

@@ -178,10 +178,6 @@ public class RestHttpClient implements RestClientService {
 				method.addHeader(HttpHeaders.RESPONSE_TYPE, uris);
 			}
 			
-			if (requestPrimitive.getName() != null){
-				method.addHeader(HttpHeaders.NAME, requestPrimitive.getName());
-			}
-			
 			LOGGER.info("Request to be send: " + method.toString());
 			String headers = "";
 			for (Header h : method.getAllHeaders()){

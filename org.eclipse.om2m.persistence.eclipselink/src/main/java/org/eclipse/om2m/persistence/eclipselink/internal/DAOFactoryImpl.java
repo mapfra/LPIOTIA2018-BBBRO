@@ -21,10 +21,14 @@ package org.eclipse.om2m.persistence.eclipselink.internal;
 
 import org.eclipse.om2m.commons.entities.AccessControlOriginatorEntity;
 import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
+import org.eclipse.om2m.commons.entities.AeAnncEntity;
 import org.eclipse.om2m.commons.entities.AeEntity;
+import org.eclipse.om2m.commons.entities.CreatedAnnouncedResourceEntity;
+import org.eclipse.om2m.commons.entities.DynamicAuthorizationConsultationEntity;
 import org.eclipse.om2m.commons.entities.CSEBaseEntity;
 import org.eclipse.om2m.commons.entities.ContainerEntity;
 import org.eclipse.om2m.commons.entities.ContentInstanceEntity;
+import org.eclipse.om2m.commons.entities.FlexContainerEntity;
 import org.eclipse.om2m.commons.entities.GroupEntity;
 import org.eclipse.om2m.commons.entities.LabelEntity;
 import org.eclipse.om2m.commons.entities.NodeEntity;
@@ -36,25 +40,29 @@ import org.eclipse.om2m.commons.entities.UriMapperEntity;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.AccessControlOriginatorDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.AccessControlPolicyDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.AeByAppIdDAO;
+import org.eclipse.om2m.persistence.eclipselink.internal.dao.AeAnncDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.AeDAO;
+import org.eclipse.om2m.persistence.eclipselink.internal.dao.CreatedAnnouncedResourceDAO;
+import org.eclipse.om2m.persistence.eclipselink.internal.dao.DynamicAuthorizationConsultationDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.CSEBaseDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.ContainerByNameDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.DescContainerByParentDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.ContainerDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.ContentInstanceDAO;
+import org.eclipse.om2m.persistence.eclipselink.internal.dao.FlexContainerAnncDAO;
+import org.eclipse.om2m.persistence.eclipselink.internal.dao.FlexContainerDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.GroupDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.LabelDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.NodeEntityDAO;
+import org.eclipse.om2m.persistence.eclipselink.internal.dao.OldestDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.PollingChannelDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.RemoteCSEByIdDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.RemoteCSEDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.RequestEntityDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.SubscriptionDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.UriMapperDAO;
-import org.eclipse.om2m.persistence.eclipselink.internal.dao.OldestDAO;
 import org.eclipse.om2m.persistence.service.DAO;
 import org.eclipse.om2m.persistence.service.DAOFactory;
-
 
 public class DAOFactoryImpl implements DAOFactory {
 
@@ -81,6 +89,11 @@ public class DAOFactoryImpl implements DAOFactory {
 	@Override
 	public DAO<ContainerEntity> getContainerDAO() {
 		return new ContainerDAO();
+	}
+	
+	@Override
+	public DAO<FlexContainerEntity> getFlexContainerDAO() {
+		return new FlexContainerDAO();
 	}
 	
 	@Override
@@ -152,8 +165,27 @@ public class DAOFactoryImpl implements DAOFactory {
 
 	
 	@Override
+	public DAO<AeAnncEntity> getAeAnncDAO() {
+		return new AeAnncDAO();
+	}
+	
+	@Override
+	public DAO<CreatedAnnouncedResourceEntity> getAnnouncedResourceDAO() {
+		return new CreatedAnnouncedResourceDAO();
+	}
+
+	@Override
+	public DAO<org.eclipse.om2m.commons.entities.FlexContainerAnncEntity> getFlexContainerAnncDAO() {
+		return new FlexContainerAnncDAO();
+	}
+	
+	@Override
+	public DAO<DynamicAuthorizationConsultationEntity> getDynamicAuthorizationDAO() {
+		return new DynamicAuthorizationConsultationDAO();
+	}
+
+	@Override
 	public DAO<ContentInstanceEntity> getOldestDAO() {
 		return new OldestDAO();
 	}
-	
 }

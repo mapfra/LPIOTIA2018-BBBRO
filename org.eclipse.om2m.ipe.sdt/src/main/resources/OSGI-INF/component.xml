@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" immediate="true" modified="modified" name="sdt.ipe" configuration-policy="optional">
+	
+	<implementation
+		class="org.eclipse.om2m.ipe.sdt.Activator" />
+		
+	<service>
+		<provide interface="org.osgi.service.event.EventHandler" />
+	</service>
+
+	<property name="event.topics" value="org/eclipse/om2m/remoteCse" />
+
+	<reference name="cseService" cardinality="1..1"
+        interface="org.eclipse.om2m.core.service.CseService"
+        bind="setCseService" unbind="unsetCseService" policy="dynamic"/>
+
+	<reference name="Device" cardinality="0..n" policy="dynamic" 
+	    bind="setDevice" unbind="unsetDevice" 
+	    interface="org.eclipse.om2m.sdt.Device" />
+ 
+ 	<property name="configurationPid" type="String" value="sdt.ipe"/>		
+	
+</scr:component>

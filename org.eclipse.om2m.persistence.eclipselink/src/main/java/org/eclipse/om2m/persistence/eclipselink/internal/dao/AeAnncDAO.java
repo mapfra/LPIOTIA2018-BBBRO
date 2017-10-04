@@ -19,12 +19,16 @@
  *******************************************************************************/
 package org.eclipse.om2m.persistence.eclipselink.internal.dao;
 
+import java.util.List;
+
 import org.eclipse.om2m.commons.entities.AeAnncEntity;
 import org.eclipse.om2m.commons.entities.CSEBaseEntity;
+import org.eclipse.om2m.commons.entities.LabelEntity;
 import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
 import org.eclipse.om2m.persistence.eclipselink.internal.DBTransactionJPAImpl;
 import org.eclipse.om2m.persistence.service.DBTransaction;
-class AeAnncDAO extends AbstractDAO<AeAnncEntity> {
+
+public class AeAnncDAO extends AbstractDAO<AeAnncEntity> {
 
 	@Override
 	public AeAnncEntity find(DBTransaction dbTransaction, Object id) {
@@ -35,11 +39,18 @@ class AeAnncDAO extends AbstractDAO<AeAnncEntity> {
 	@Override
 	public void delete(DBTransaction dbTransaction, AeAnncEntity resource) {
 		DBTransactionJPAImpl transaction = (DBTransactionJPAImpl) dbTransaction;
-		transaction.getEm().remove(resource);
-		transaction.getEm().getEntityManagerFactory().getCache().evict(CSEBaseEntity.class);	
-		transaction.getEm().getEntityManagerFactory().getCache().evict(RemoteCSEEntity.class);	
-		// TODO check evict
-	}
 
+		// de-associate labels
+		List<LabelEntity> labels = resource.getLabelsEntities();
+		for (LabelEntity label : labels) {
+			label.getLinkedFcnt().remove(resource);
+		}
+		
+		if (resource.getParentCsr() != null) {
+			resource.getParentCsr().getChildAeAnncs().remove(resource);
+		}
+
+		transaction.getEm().remove(resource);
+	}
 
 }

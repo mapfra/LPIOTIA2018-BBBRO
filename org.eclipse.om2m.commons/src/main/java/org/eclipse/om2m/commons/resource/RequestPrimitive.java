@@ -268,6 +268,7 @@ public class RequestPrimitive {
 		this.resourceType = BigInteger.valueOf(value);
 	}
 	
+	
 	/**
 	 * Gets the value of the name property.
 	 * 
@@ -288,7 +289,7 @@ public class RequestPrimitive {
 	public void setName(String value) {
 		this.name = value;
 	}
-
+	
 	/**
 	 * Gets the value of the content property.
 	 * 
@@ -699,7 +700,6 @@ public class RequestPrimitive {
 		result.filterCriteria = this.filterCriteria;
 		result.from = this.from;
 		result.groupRequestIdentifier = this.groupRequestIdentifier;
-		result.name = this.name;
 		result.operation = this.operation;
 		result.operationExecutionTime = this.operationExecutionTime;
 		result.originatingTimestamp = this.originatingTimestamp;
@@ -707,7 +707,7 @@ public class RequestPrimitive {
 		result.requestExpirationTimestamp = this.requestExpirationTimestamp;
 		result.requestIdentifier = this.requestIdentifier;
 		result.resourceType = this.resourceType;
-		result.responseType = this.responseType;
+		result.name = this.name;
 		result.resultContent = this.resultContent;
 		result.resultExpirationTimestamp = this.resultExpirationTimestamp;
 		result.resultPersistence = this.resultPersistence;

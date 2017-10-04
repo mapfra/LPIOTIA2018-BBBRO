@@ -122,7 +122,7 @@ public class NonBlockingWorker extends Thread {
 					getDataMapperList().get(request.getReturnContentType()).
 					objToString(
 							EntityMapperFactory.getRequestMapper().
-							mapEntityToResource(managedRequest, ResultContent.ATTRIBUTES)
+							mapEntityToResource(managedRequest, ResultContent.ATTRIBUTES, 0, 0)
 					);
 			for(String uriNotif : request.getResponseTypeInfo().getNotificationURI()){
 				RequestPrimitive notifRequest = new RequestPrimitive();

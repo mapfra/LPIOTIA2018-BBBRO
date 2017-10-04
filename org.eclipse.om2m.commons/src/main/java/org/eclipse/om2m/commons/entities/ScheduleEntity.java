@@ -29,6 +29,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -40,7 +41,7 @@ import org.eclipse.om2m.commons.constants.ShortName;
  *
  */
 @Entity(name = ShortName.SCHEDULE)
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.JOINED)
 public class ScheduleEntity extends AnnounceableSubordinateEntity {
 	
 	protected List<String> scheduleEntries;
@@ -62,6 +63,24 @@ public class ScheduleEntity extends AnnounceableSubordinateEntity {
 			inverseJoinColumns = { @JoinColumn(name = DBEntities.SUB_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
 			)
 	protected List<SubscriptionEntity> subscriptions;
+	
+	/** AccessControlPolicies linked to the ScheduleEntity */
+	@ManyToMany(fetch=FetchType.LAZY)
+	@JoinTable(
+			name = DBEntities.SCHACP_JOIN,
+			joinColumns = { @JoinColumn(name = DBEntities.SCH_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
+			inverseJoinColumns = { @JoinColumn(name = DBEntities.ACP_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
+			)
+	protected List<AccessControlPolicyEntity> accessControlPolicies;
+	
+	/** List of DynamicAuthorizationConsultations*/
+	@ManyToMany(fetch=FetchType.LAZY, mappedBy="linkedScheduleEntities")
+	@JoinTable(
+			name = DBEntities.SCH_DAC_JOIN,
+			joinColumns = { @JoinColumn(name = DBEntities.SCH_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
+			inverseJoinColumns = { @JoinColumn(name = DBEntities.DAC_JOINID, referencedColumnName = ShortName.RESOURCE_ID) }
+			)
+	protected List<DynamicAuthorizationConsultationEntity> dynamicAuthorizationConsultations;
 	
 
 	/**
@@ -137,7 +156,43 @@ public class ScheduleEntity extends AnnounceableSubordinateEntity {
 		this.parentSub = linkedSub;
 	}
 	
+	/**
+	 * @return the accessControlPolicies
+	 */
+	public List<AccessControlPolicyEntity> getAccessControlPolicies() {
+		if (this.accessControlPolicies == null) {
+			this.accessControlPolicies = new ArrayList<>();
+		}
+		return accessControlPolicies;
+	}
+
+	/**
+	 * @param accessControlPolicies
+	 *            the accessControlPolicies to set
+	 */
+	public void setAccessControlPolicies(
+			List<AccessControlPolicyEntity> accessControlPolicies) {
+		this.accessControlPolicies = accessControlPolicies;
+	}
 	
+	@Override
+	/**
+	 * Retrieve linked dynamicAuthorizationConsultations
+	 */
+	public List<DynamicAuthorizationConsultationEntity> getDynamicAuthorizationConsultations() {
+		if (dynamicAuthorizationConsultations == null) {
+			dynamicAuthorizationConsultations = new ArrayList<>();
+		}
+		return dynamicAuthorizationConsultations;
+	}
+	
+	@Override
+	/**
+	 * Set linked dynamicAuthorizationConsultations
+	 */
+	public void setDynamicAuthorizationConsultations(List<DynamicAuthorizationConsultationEntity> list) {
+		this.dynamicAuthorizationConsultations = list;
+	}
 
 	
 	

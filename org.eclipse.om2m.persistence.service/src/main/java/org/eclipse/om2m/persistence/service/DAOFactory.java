@@ -21,10 +21,15 @@ package org.eclipse.om2m.persistence.service;
 
 import org.eclipse.om2m.commons.entities.AccessControlOriginatorEntity;
 import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
+import org.eclipse.om2m.commons.entities.AeAnncEntity;
 import org.eclipse.om2m.commons.entities.AeEntity;
+import org.eclipse.om2m.commons.entities.CreatedAnnouncedResourceEntity;
+import org.eclipse.om2m.commons.entities.DynamicAuthorizationConsultationEntity;
+import org.eclipse.om2m.commons.entities.FlexContainerAnncEntity;
 import org.eclipse.om2m.commons.entities.CSEBaseEntity;
 import org.eclipse.om2m.commons.entities.ContainerEntity;
 import org.eclipse.om2m.commons.entities.ContentInstanceEntity;
+import org.eclipse.om2m.commons.entities.FlexContainerEntity;
 import org.eclipse.om2m.commons.entities.GroupEntity;
 import org.eclipse.om2m.commons.entities.LabelEntity;
 import org.eclipse.om2m.commons.entities.NodeEntity;
@@ -51,6 +56,8 @@ public interface DAOFactory {
 	
 	public abstract DAO<ContainerEntity> getDescContainerByParentDAO();
 
+	public abstract DAO<FlexContainerEntity> getFlexContainerDAO();
+
 	public abstract DAO<ContentInstanceEntity> getContentInstanceDAO();
 
 	public abstract DAO<CSEBaseEntity> getCSEBaseDAO();
@@ -75,6 +82,14 @@ public interface DAOFactory {
 
 	public abstract DAO<AccessControlOriginatorEntity> getAccessControlOriginatorDAO();
 	
-	public abstract DAO<ContentInstanceEntity> getOldestDAO();
+	public abstract DAO<AeAnncEntity> getAeAnncDAO();
 	
+	public abstract DAO<CreatedAnnouncedResourceEntity> getAnnouncedResourceDAO();
+	
+	public abstract DAO<FlexContainerAnncEntity> getFlexContainerAnncDAO();
+	
+	public abstract DAO<DynamicAuthorizationConsultationEntity> getDynamicAuthorizationDAO();
+
+	public abstract DAO<ContentInstanceEntity> getOldestDAO();
+
 }

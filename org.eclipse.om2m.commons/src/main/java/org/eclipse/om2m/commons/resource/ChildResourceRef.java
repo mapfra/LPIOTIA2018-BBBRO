@@ -31,9 +31,9 @@ import java.math.BigInteger;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
@@ -61,18 +61,21 @@ import org.eclipse.om2m.commons.constants.ShortName;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = ShortName.CHILD_RESOURCE, propOrder = { "value" })
+@XmlType(name = ShortName.CHILD_RESOURCE)
 public class ChildResourceRef {
 
-	@XmlValue
+	@XmlElement(name="val", namespace="")
 	@XmlSchemaType(name = "anyURI")
 	protected String value;
-	@XmlAttribute(name = ShortName.RESOURCE_NAME, required = true)
+	@XmlAttribute(name = ShortName.CHILD_RESOURCE_NAME, required = true)
 	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
 	@XmlSchemaType(name = "NCName")
 	protected String resourceName;
-	@XmlAttribute(name = ShortName.TYPE, required = true)
+	@XmlAttribute(name = ShortName.CHILD_RESOURCE_TYPE, required = true)
 	protected BigInteger type;
+	@XmlAttribute(name=ShortName.CHILD_RESOURCE_SPID, required=false)
+	@XmlSchemaType(name = "anyURI")
+	protected String spid;
 
 	/**
 	 * Gets the value of the value property.
@@ -140,5 +143,21 @@ public class ChildResourceRef {
 	public void setType(int value){
 		this.type = BigInteger.valueOf(value);
 	}
+
+	/**
+	 * @return the spid
+	 */
+	public String getSpid() {
+		return spid;
+	}
+
+	/**
+	 * @param spid the spid to set
+	 */
+	public void setSpid(String spid) {
+		this.spid = spid;
+	}
+	
+	
 
 }

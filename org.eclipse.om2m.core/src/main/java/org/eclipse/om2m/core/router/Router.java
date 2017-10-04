@@ -39,16 +39,21 @@ import org.eclipse.om2m.commons.exceptions.BadRequestException;
 import org.eclipse.om2m.commons.exceptions.NotImplementedException;
 import org.eclipse.om2m.commons.exceptions.Om2mException;
 import org.eclipse.om2m.commons.exceptions.ResourceNotFoundException;
+import org.eclipse.om2m.commons.resource.DynamicAuthorizationConsultation;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
 import org.eclipse.om2m.core.controller.AEController;
 import org.eclipse.om2m.core.controller.AccessControlPolicyController;
+import org.eclipse.om2m.core.controller.AEAnncController;
 import org.eclipse.om2m.core.controller.CSEBaseController;
 import org.eclipse.om2m.core.controller.ContainerController;
 import org.eclipse.om2m.core.controller.ContentInstanceController;
 import org.eclipse.om2m.core.controller.Controller;
 import org.eclipse.om2m.core.controller.DiscoveryController;
+import org.eclipse.om2m.core.controller.DynamicAuthorizationConsultationController;
 import org.eclipse.om2m.core.controller.FanOutPointController;
+import org.eclipse.om2m.core.controller.FlexContainerAnncController;
+import org.eclipse.om2m.core.controller.FlexContainerController;
 import org.eclipse.om2m.core.controller.GroupController;
 import org.eclipse.om2m.core.controller.LatestOldestController;
 import org.eclipse.om2m.core.controller.LatestOldestController.SortingPolicy;
@@ -77,6 +82,7 @@ public class Router implements CseService {
 	 * @return The generic returned response
 	 */
 	public ResponsePrimitive doRequest(RequestPrimitive request) {
+
 		LOGGER.info("Received request in Router: " + request.toString());
 		ResponsePrimitive response = new ResponsePrimitive(request);
 
@@ -126,11 +132,13 @@ public class Router implements CseService {
 			}
 
 			// URI Handling
-			if(request.getTo() == null && request.getTargetId() == null){
-				throw new BadRequestException("No To parameter provided provided");
-			}
-			
-			if(request.getTargetId() == null){
+			if (request.getTo() == null) {
+				if (request.getTargetId() == null) {
+					throw new BadRequestException("No To/TargetId parameter provided");
+				} else {
+					request.setTo(request.getTargetId());
+				}
+			} else if (request.getTargetId() == null) {
 				request.setTargetId(request.getTo());
 			}
 
@@ -208,7 +216,8 @@ public class Router implements CseService {
 			}
 
 			// Discovery case
-			if (request.getFilterCriteria() != null){
+			if ((request.getFilterCriteria() != null) && (request.getFilterCriteria().getFilterUsage() != null)
+					&& (request.getFilterCriteria().getFilterUsage().intValue() == 1)){
 				controller = new DiscoveryController();
 			}
 
@@ -272,11 +281,23 @@ public class Router implements CseService {
 		if (Patterns.match(Patterns.AE_PATTERN, uri)){
 			return new AEController();
 		}
+		if (Patterns.match(Patterns.AEANNC_PATTERN, uri)){
+			return new AEAnncController();
+		}
 		if (Patterns.match(Patterns.ACP_PATTERN, uri)){
 			return new AccessControlPolicyController();
 		}
 		if (Patterns.match(Patterns.CONTAINER_PATTERN, uri)){
 			return new ContainerController();
+		}
+		if (Patterns.match(Patterns.DYNAMIC_AUTHORIZATION_CONSULTATION_PATTERN, uri)){
+			return new DynamicAuthorizationConsultationController();
+		}
+		if(Patterns.match(Patterns.FLEXCONTAINER_PATTERN, uri)) {
+			return new FlexContainerController();
+		}
+		if(Patterns.match(Patterns.FLEXCONTAINER_ANNC_PATTERN, uri)) {
+			return new FlexContainerAnncController();
 		}
 		if (Patterns.match(Patterns.CONTENTINSTANCE_PATTERN, uri)) {
 			return new ContentInstanceController();
@@ -328,6 +349,8 @@ public class Router implements CseService {
 			return new ContainerController();
 		case ResourceType.CONTENT_INSTANCE :
 			return new ContentInstanceController();
+		case ResourceType.DYNAMIC_AUTHORIZATION_CONSULTATION:
+			return new DynamicAuthorizationConsultationController();
 		case ResourceType.REMOTE_CSE :
 			return new RemoteCSEController();
 		case ResourceType.GROUP:
@@ -338,12 +361,22 @@ public class Router implements CseService {
 			return new SubscriptionController();
 		case ResourceType.POLLING_CHANNEL:
 			return new PollingChannelController();
+		case ResourceType.FLEXCONTAINER:
+			return new FlexContainerController(); 
+		case ResourceType.AE_ANNC:
+			return new AEAnncController();
+		case ResourceType.FLEXCONTAINER_ANNC:
+			return new FlexContainerAnncController();
 		default : 
 			throw new NotImplementedException("ResourceType: " + resourceType + " is not implemented");
 		}
 	}
 
 	private static void getQueryStringFromTargetId(RequestPrimitive request){
+		
+		if (request.getTo().contains("#")) {
+			request.getQueryStrings().put("#", new ArrayList());
+		}
 		if(request.getTargetId().contains("?")){
 			String query = request.getTargetId().split("\\?")[1];
 			Map<String, List<String>> parameters = new HashMap<String, List<String>>();
@@ -370,12 +403,11 @@ public class Router implements CseService {
 				}
 			}
 			request.getQueryStrings().putAll(parameters);
+			
 			if(request.getTo() == null){
 				request.setTo(request.getTargetId().split("\\?")[0]);
-			} else {
-				request.setTo(request.getTo().split("\\?")[0]);
+				request.setTargetId(request.getTo());
 			}
-			request.setTargetId(request.getTo());
 		}
 
 	}

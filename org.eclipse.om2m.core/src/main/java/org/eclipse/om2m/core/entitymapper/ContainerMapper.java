@@ -20,6 +20,8 @@
 package org.eclipse.om2m.core.entitymapper;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.om2m.commons.constants.ResourceType;
 import org.eclipse.om2m.commons.constants.ResultContent;
@@ -27,10 +29,12 @@ import org.eclipse.om2m.commons.constants.ShortName;
 import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
 import org.eclipse.om2m.commons.entities.ContainerEntity;
 import org.eclipse.om2m.commons.entities.ContentInstanceEntity;
+import org.eclipse.om2m.commons.entities.FlexContainerEntity;
 import org.eclipse.om2m.commons.entities.SubscriptionEntity;
 import org.eclipse.om2m.commons.resource.ChildResourceRef;
 import org.eclipse.om2m.commons.resource.Container;
 import org.eclipse.om2m.commons.resource.ContentInstance;
+import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
 import org.eclipse.om2m.commons.resource.Subscription;
 
 public class ContainerMapper extends EntityMapper<ContainerEntity, Container>{
@@ -41,7 +45,15 @@ public class ContainerMapper extends EntityMapper<ContainerEntity, Container>{
 	}
 
 	@Override
-	protected void mapAttributes(ContainerEntity entity, Container resource) {
+	protected void mapAttributes(ContainerEntity entity, Container resource, int level, int offset) {
+		if (level < 0) {
+			return;
+		}
+		
+		// announceable resource mapper
+		EntityMapperFactory.getAnnounceableSubordonateEntity_AnnounceableResourceMapper().mapAttributes(entity, resource, level, offset);
+		
+		// Container attributes
 		resource.setCreator(entity.getCreator());
 		resource.setCurrentByteSize(BigInteger.valueOf(entity.getCurrentByteSize()));
 		resource.setCurrentNrOfInstances(entity.getCurrentNrOfInstances());
@@ -51,32 +63,27 @@ public class ContainerMapper extends EntityMapper<ContainerEntity, Container>{
 		resource.setMaxNrOfInstances(entity.getMaxNrOfInstances());
 		resource.setOntologyRef(entity.getOntologyRef());
 		resource.setStateTag(entity.getStateTag());
-		resource.setExpirationTime(entity.getExpirationTime());
-		if (!entity.getAnnouncedAttribute().isEmpty()) {			
-			resource.getAnnouncedAttribute().addAll(entity.getAnnouncedAttribute());
-		}
-		if (!entity.getAnnounceTo().isEmpty()) {			
-			resource.getAnnounceTo().addAll(entity.getAnnounceTo());
-		}
-		// setting acpIds
-		for (AccessControlPolicyEntity acp : entity.getAccessControlPolicies()) {
-			resource.getAccessControlPolicyIDs().add(acp.getResourceID());
-		}
 		resource.setOldest(entity.getHierarchicalURI() + "/" + ShortName.OLDEST);
 		resource.setLatest(entity.getHierarchicalURI() + "/" + ShortName.LATEST);
 	}
-
+	
 	@Override
-	protected void mapChildResourceRef(ContainerEntity entity,
-			Container resource) {
-
+	protected List<ChildResourceRef> getChildResourceRef(ContainerEntity entity, int level, int offset) {
+		List<ChildResourceRef> childRefs = new ArrayList<>();
+		
+		if (level == 0) {
+			return childRefs;
+		}
+		
 		// add child ref contentInstance
 		for (ContentInstanceEntity cin : entity.getChildContentInstances()) {
 			ChildResourceRef child = new ChildResourceRef();
 			child.setResourceName(cin.getName());
 			child.setType(ResourceType.CONTENT_INSTANCE);
 			child.setValue(cin.getResourceID());
-			resource.getChildResource().add(child);	
+			childRefs.add(child);
+			
+			childRefs.addAll(new ContentInstanceMapper().getChildResourceRef(cin, level - 1, offset - 1));
 		}
 
 		// add child ref subscription
@@ -85,7 +92,9 @@ public class ContainerMapper extends EntityMapper<ContainerEntity, Container>{
 			child.setResourceName(sub.getName());
 			child.setType(ResourceType.SUBSCRIPTION);
 			child.setValue(sub.getResourceID());
-			resource.getChildResource().add(child);
+			childRefs.add(child);
+			
+			childRefs.addAll(new SubscriptionMapper().getChildResourceRef(sub, level - 1, offset - 1));
 		}
 		
 		
@@ -95,29 +104,56 @@ public class ContainerMapper extends EntityMapper<ContainerEntity, Container>{
 			child.setResourceName(childCont.getName());
 			child.setType(ResourceType.CONTAINER);
 			child.setValue(childCont.getResourceID());
-			resource.getChildResource().add(child);
+			childRefs.add(child);
+			
+			childRefs.addAll(new ContainerMapper().getChildResourceRef(childCont, level - 1, offset - 1));
 		}
+		
+		// add child ref FlexContainers
+		for(FlexContainerEntity childFlexCont : entity.getChildFlexContainers()) {
+			ChildResourceRef child = new ChildResourceRef();
+			child.setResourceName(childFlexCont.getName());
+			child.setType(ResourceType.FLEXCONTAINER);
+			child.setValue(childFlexCont.getResourceID());
+			childRefs.add(child);
+			
+			childRefs.addAll(new FlexContainerMapper().getChildResourceRef(childFlexCont, level - 1, offset - 1));
+		}
+		
+		return childRefs;
 	}
 
 	@Override
-	protected void mapChildResources(ContainerEntity entity, Container resource) {
+	protected void mapChildResourceRef(ContainerEntity entity,
+			Container resource, int level, int offset) {
+		resource.getChildResource().addAll(getChildResourceRef(entity, level, offset));
+	}
+
+	@Override
+	protected void mapChildResources(ContainerEntity entity, Container resource, int level, int offset) {
 		// add child ref contentInstance
 		for (ContentInstanceEntity cin : entity.getChildContentInstances()) {
-			ContentInstance cinRes = new ContentInstanceMapper().mapEntityToResource(cin, ResultContent.ATTRIBUTES);
+			ContentInstance cinRes = new ContentInstanceMapper().mapEntityToResource(cin, ResultContent.ATTRIBUTES, level - 1, offset - 1);
 			resource.getContentInstanceOrContainerOrSubscription().add(cinRes);
 		}
 
 		// add child ref subscription
 		for (SubscriptionEntity sub : entity.getSubscriptions()){
-			Subscription subRes = new SubscriptionMapper().mapEntityToResource(sub, ResultContent.ATTRIBUTES);
+			Subscription subRes = new SubscriptionMapper().mapEntityToResource(sub, ResultContent.ATTRIBUTES, level - 1, offset - 1);
 			resource.getContentInstanceOrContainerOrSubscription().add(subRes);
 		}
 		
 		
 		// add child ref with containers
 		for (ContainerEntity childCont : entity.getChildContainers()) {
-			Container cnt = new ContainerMapper().mapEntityToResource(childCont, ResultContent.ATTRIBUTES);
+			Container cnt = new ContainerMapper().mapEntityToResource(childCont, ResultContent.ATTRIBUTES, level - 1, offset - 1);
 			resource.getContentInstanceOrContainerOrSubscription().add(cnt);
+		}
+		
+		// add child ref flexContainers
+		for(FlexContainerEntity childFlexCont : entity.getChildFlexContainers()) {
+			AbstractFlexContainer fcnt = new FlexContainerMapper().mapEntityToResource(childFlexCont, ResultContent.ATTRIBUTES, level - 1, offset - 1);
+			resource.getContentInstanceOrContainerOrSubscription().add(fcnt);
 		}
 	}
 

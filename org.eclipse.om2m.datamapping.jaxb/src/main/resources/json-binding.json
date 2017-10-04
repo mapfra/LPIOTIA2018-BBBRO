@@ -1,0 +1,213 @@
+{
+  "package-name": "org.eclipse.om2m.commons.resource",
+  "xml-schema": {
+    "element-form-default": "QUALIFIED",
+    "namespace": "http://www.onem2m.org/xml/protocols"
+  },
+  "java-types": {
+    "java-type": [
+      {
+        "name": "Resource",
+        "java-attributes": {
+          "xml-element": [
+            {
+              "java-attribute": "labels",
+              "name": "lbl",
+              "namespace": ""
+            }
+          ]
+        }
+      },
+      {
+        "name": "RegularResource",
+        "java-attributes": {
+          "xml-element": [
+            {
+              "java-attribute": "accessControlPolicyIDs",
+              "name": "acpi",
+              "namespace": ""
+            },
+            {
+              "java-attribute": "dynamicAuthorizationConsultationIDs",
+              "name": "daci",
+              "namespace": ""
+            }
+          ]
+        }
+      },
+      {
+        "name": "AnnounceableResource",
+        "java-attributes": {
+          "xml-element": [
+            {
+              "java-attribute": "announceTo",
+              "name": "at",
+              "namespace": ""
+            },
+            {
+              "java-attribute": "announcedAttribute",
+              "name": "aa",
+              "namespace": ""
+            }
+          ]
+        }
+      },
+      {
+        "name": "AnnounceableSubordinateResource",
+        "java-attributes": {
+          "xml-element": [
+            {
+              "java-attribute": "announceTo",
+              "name": "at",
+              "namespace": ""
+            },
+            {
+              "java-attribute": "announcedAttribute",
+              "name": "aa",
+              "namespace": ""
+            }
+          ]
+        }
+      },
+      {
+        "name": "AnnouncedResource",
+        "java-attributes": {
+          "xml-element": [
+            {
+              "java-attribute": "accessControlPolicyIDs",
+              "name": "acpi",
+              "namespace": ""
+            }
+          ]
+        }
+      },
+      {
+        "name": "CSEBase",
+        "java-attributes": {
+          "xml-element": [
+            {
+              "java-attribute": "accessControlPolicyIDs",
+              "name": "acpi",
+              "namespace": ""
+            },
+            {
+              "java-attribute": "dynamicAuthorizationConsultationIDs",
+              "name": "daci",
+              "namespace": ""
+            },
+            {
+              "java-attribute": "supportedResourceType",
+              "name": "srt",
+              "namespace": ""
+            },
+            {
+              "java-attribute": "pointOfAccess",
+              "name": "poa",
+              "namespace": ""
+            }
+          ]
+        }
+      },
+      {
+        "name": "RemoteCSE",
+        "java-attributes": {
+          "xml-element": [
+            {
+              "java-attribute": "pointOfAccess",
+              "name": "poa",
+              "namespace": ""
+            }
+          ]
+        }
+      },
+      {
+        "name": "AccessControlRule",
+        "java-attributes": {
+          "xml-element": [
+            {
+              "java-attribute": "accessControlOriginators",
+              "name": "acor",
+              "namespace": ""
+            }
+          ]
+        }
+      },
+      {
+        "name": "AE",
+        "java-attributes": {
+          "xml-element": [
+            {
+              "java-attribute": "pointOfAccess",
+              "name": "poa",
+              "namespace": ""
+            }
+          ]
+        }
+      },
+      {
+        "name": "AEAnnc",
+        "java-attributes": {
+          "xml-element": [
+            {
+              "java-attribute": "pointOfAccess",
+              "name": "poa",
+              "namespace": ""
+            }
+          ]
+        }
+      },
+      {
+        "name": "Group",
+        "java-attributes": {
+          "xml-element": [
+            {
+              "java-attribute": "memberIDs",
+              "name": "mid",
+              "namespace": ""
+            },
+            {
+              "java-attribute": "membersAccessControlPolicyIDs",
+              "name": "macp",
+              "namespace": ""
+            }
+          ]
+        }
+      },
+      {
+        "name": "Subscription",
+        "java-attributes": {
+          "xml-element": [
+            {
+              "java-attribute": "notificationURI",
+              "name": "nu",
+              "namespace": ""
+            },
+            {
+              "java-attribute": "notificationContentType",
+              "name": "nct",
+              "namespace": ""
+            }
+          ]
+        }
+      },
+      {
+        "name": "URIList",
+        "java-attributes": {
+          "xml-element": [
+            {
+              "java-attribute": "listOfUri",
+              "name":"uril",
+              "namespace":"http://www.onem2m.org/xml/protocols"
+            }
+           ]
+        }
+      },
+      {
+        "name": "ChildResourceRef",
+        "java-attributes": {
+         }
+      }
+    ]
+  }
+}
+

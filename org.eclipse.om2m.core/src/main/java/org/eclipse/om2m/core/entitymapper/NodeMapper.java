@@ -19,9 +19,11 @@
  *******************************************************************************/
 package org.eclipse.om2m.core.entitymapper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.om2m.commons.constants.ResourceType;
 import org.eclipse.om2m.commons.constants.ResultContent;
-import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
 import org.eclipse.om2m.commons.entities.AreaNwkDeviceInfoEntity;
 import org.eclipse.om2m.commons.entities.AreaNwkInfoEntity;
 import org.eclipse.om2m.commons.entities.NodeEntity;
@@ -37,32 +39,36 @@ import org.eclipse.om2m.commons.resource.Node;
 public class NodeMapper extends EntityMapper<NodeEntity, Node> {
 
 	@Override
-	protected void mapAttributes(NodeEntity entity, Node resource) {
+	protected void mapAttributes(NodeEntity entity, Node resource, int level, int offset) {
+		
+		if (level < 0) {
+			return;
+		}
+		
+		// announceableResource attributes
+		EntityMapperFactory.getAnnounceableSubordonateEntity_AnnounceableResourceMapper().mapAttributes(entity, resource, level, offset);
+		
+		// node attribute
 		resource.setNodeID(entity.getNodeID());
 		resource.setHostedCSELink(entity.getHostedCSELink());
-		resource.setExpirationTime(entity.getExpirationTime());
-
-		if (!entity.getAnnouncedAttribute().isEmpty()) {
-			resource.getAnnouncedAttribute().addAll(entity.getAnnouncedAttribute());
-		}
-		if (!entity.getAnnounceTo().isEmpty()) {
-			resource.getAnnounceTo().addAll(entity.getAnnounceTo());
-		}
-
-		for (AccessControlPolicyEntity acp : entity.getAccessControlPolicies()) {
-			resource.getAccessControlPolicyIDs().add(acp.getResourceID());
-		}
 	}
-
+	
 	@Override
-	protected void mapChildResourceRef(NodeEntity entity, Node resource) {
+	protected List<ChildResourceRef> getChildResourceRef(NodeEntity entity, int level, int offset) {
+		List<ChildResourceRef> childRefs = new ArrayList<>();
+		
+		if (level == 0) {
+			return childRefs;
+		}
+		
 		// add child area nwk info entities
 		for (AreaNwkInfoEntity aniEntity : entity.getChildAreaNwkInfoEntities()) {
 			ChildResourceRef chref = new ChildResourceRef();
 			chref.setResourceName(aniEntity.getName());
 			chref.setType(ResourceType.MGMT_OBJ);
 			chref.setValue(aniEntity.getResourceID());
-			resource.getChildResource().add(chref);
+			childRefs.add(chref);
+			childRefs.addAll(new AreaNwkInfoMapper().getChildResourceRef(aniEntity, level - 1, offset - 1));
 		}
 		// add child area nwk device info entities
 		for (AreaNwkDeviceInfoEntity andiEntity : entity.getChildAreaNwkDeviceInfoEntities()) {
@@ -70,20 +76,28 @@ public class NodeMapper extends EntityMapper<NodeEntity, Node> {
 			chref.setResourceName(andiEntity.getName());
 			chref.setType(ResourceType.MGMT_OBJ);
 			chref.setValue(andiEntity.getResourceID());
-			resource.getChildResource().add(chref);
+			childRefs.add(chref);
+			childRefs.addAll(new AreaNwkDeviceInfoMapper().getChildResourceRef(andiEntity, level - 1, offset - 1));
 		}
+		
+		return childRefs;
 	}
 
 	@Override
-	protected void mapChildResources(NodeEntity entity, Node resource) {
+	protected void mapChildResourceRef(NodeEntity entity, Node resource, int level, int offset) {
+		resource.getChildResource().addAll(getChildResourceRef(entity, level, offset));
+	}
+
+	@Override
+	protected void mapChildResources(NodeEntity entity, Node resource, int level, int offset) {
 		// add child area nwk info entities
 		for (AreaNwkInfoEntity aniEntity : entity.getChildAreaNwkInfoEntities()) {
-			AreaNwkInfo aniRes = new AreaNwkInfoMapper().mapEntityToResource(aniEntity, ResultContent.ATTRIBUTES);
+			AreaNwkInfo aniRes = new AreaNwkInfoMapper().mapEntityToResource(aniEntity, ResultContent.ATTRIBUTES, level - 1, offset - 1);
 			resource.getMemoryOrBatteryOrAreaNwkInfo().add(aniRes);
 		}
 		// add child area nwk device info entities
 		for (AreaNwkDeviceInfoEntity andiEntity : entity.getChildAreaNwkDeviceInfoEntities()) {
-			AreaNwkDeviceInfo andiRes = new AreaNwkDeviceInfoMapper().mapEntityToResource(andiEntity, ResultContent.ATTRIBUTES);
+			AreaNwkDeviceInfo andiRes = new AreaNwkDeviceInfoMapper().mapEntityToResource(andiEntity, ResultContent.ATTRIBUTES, level - 1, offset - 1);
 			resource.getMemoryOrBatteryOrAreaNwkInfo().add(andiRes);
 		}
 	}

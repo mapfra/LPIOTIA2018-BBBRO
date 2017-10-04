@@ -23,4 +23,8 @@ public interface DBUtilManager {
 	
 	public abstract ComplexFindUtil getComplexFindUtil();
 	
+	public abstract AnnouncedResourceUtil getAnnouncedResourceUtil();
+	
+	public abstract DynamicAuthorizationConsultationUtil getDynamicAuthorizationConsultationUtil();
+	
 }

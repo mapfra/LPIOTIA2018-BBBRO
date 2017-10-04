@@ -87,21 +87,25 @@ public class LifeCycleManager {
 		Container container = new Container();
 		container.getLabels().add("lamp");
 		container.setMaxNrOfInstances(BigInteger.valueOf(0));
+		
 
 		AE ae = new AE();
 		ae.setRequestReachability(true);
 		ae.getPointOfAccess().add(poa);
 		ae.setAppID(appId);
+		ae.setName(appId);
 
-		ResponsePrimitive response = RequestSender.createAE(ae, appId);
+		ResponsePrimitive response = RequestSender.createAE(ae);
 		// Create Application sub-resources only if application not yet created
 		if(response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {
 			container = new Container();
 			container.setMaxNrOfInstances(BigInteger.valueOf(10));
 			// Create DESCRIPTOR container sub-resource
-			LOGGER.info(RequestSender.createContainer(response.getLocation(), SampleConstants.DESC, container));
+			container.setName(SampleConstants.DESC);
+			LOGGER.info(RequestSender.createContainer(response.getLocation(), container));
 			// Create STATE container sub-resource
-			LOGGER.info(RequestSender.createContainer(response.getLocation(), SampleConstants.DATA, container));
+			container.setName(SampleConstants.DATA);
+			LOGGER.info(RequestSender.createContainer(response.getLocation(), container));
 
 			String content;
 			// Create DESCRIPTION contentInstance on the DESCRIPTOR container resource
@@ -110,13 +114,13 @@ public class LifeCycleManager {
 			contentInstance.setContent(content);
 			contentInstance.setContentInfo(MimeMediaType.OBIX);
 			RequestSender.createContentInstance(
-					SampleConstants.CSE_PREFIX + "/" + appId + "/" + SampleConstants.DESC, null, contentInstance);
+					SampleConstants.CSE_PREFIX + "/" + appId + "/" + SampleConstants.DESC, contentInstance);
 
 			// Create initial contentInstance on the STATE container resource
 			content = ObixUtil.getStateRep(appId, initValue);
 			contentInstance.setContent(content);
 			RequestSender.createContentInstance(
-					SampleConstants.CSE_PREFIX + "/" + appId + "/" + SampleConstants.DATA, null, contentInstance);
+					SampleConstants.CSE_PREFIX + "/" + appId + "/" + SampleConstants.DATA, contentInstance);
 		}
 	}
 
@@ -130,20 +134,22 @@ public class LifeCycleManager {
 		ae.setRequestReachability(true);
 		ae.getPointOfAccess().add(poa);
 		ae.setAppID("LAMP_ALL");
-		ResponsePrimitive response = RequestSender.createAE(ae, "LAMP_ALL");
+		ae.setName("LAMP_ALL");
+		ResponsePrimitive response = RequestSender.createAE(ae);
 
 		// Create descriptor container if not yet created
 		if(response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)){
 			// Creation of the DESCRIPTOR container
 			Container cnt = new Container();
 			cnt.setMaxNrOfInstances(BigInteger.valueOf(10));
-			RequestSender.createContainer(SampleConstants.CSE_PREFIX + "/" + "LAMP_ALL", SampleConstants.DESC, cnt);
+			cnt.setName(SampleConstants.DESC);
+			RequestSender.createContainer(SampleConstants.CSE_PREFIX + "/" + "LAMP_ALL", cnt);
 
 			// Create the description
 			ContentInstance cin = new ContentInstance();
 			cin.setContent(ObixUtil.createLampAllDescriptor());
 			cin.setContentInfo(MimeMediaType.OBIX);
-			RequestSender.createContentInstance(SampleConstants.CSE_PREFIX + "/" + "LAMP_ALL" + "/" + SampleConstants.DESC, null, cin);
+			RequestSender.createContentInstance(SampleConstants.CSE_PREFIX + "/" + "LAMP_ALL" + "/" + SampleConstants.DESC, cin);
 		}
 	}
 

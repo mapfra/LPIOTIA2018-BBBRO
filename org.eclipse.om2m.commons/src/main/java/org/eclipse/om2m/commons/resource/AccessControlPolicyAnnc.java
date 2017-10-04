@@ -68,9 +68,9 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "accessControlPolicyAnnc")
 public class AccessControlPolicyAnnc extends AnnouncedSubordinateResource {
 
-	@XmlElement(required = true)
+	@XmlElement(required = true, namespace="")
 	protected SetOfAcrs privileges;
-	@XmlElement(required = true)
+	@XmlElement(required = true, namespace="")
 	protected SetOfAcrs selfPrivileges;
 	protected List<ChildResourceRef> childResource;
 	@XmlElement(namespace = "http://www.onem2m.org/xml/protocols")

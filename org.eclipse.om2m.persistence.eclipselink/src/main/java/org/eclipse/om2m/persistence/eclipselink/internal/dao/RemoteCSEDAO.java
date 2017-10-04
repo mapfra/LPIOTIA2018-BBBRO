@@ -35,14 +35,20 @@ public class RemoteCSEDAO extends AbstractDAO<RemoteCSEEntity> {
 	@Override
 	public void delete(DBTransaction dbTransaction, RemoteCSEEntity resource) {
 		DBTransactionJPAImpl transaction = (DBTransactionJPAImpl) dbTransaction;
+		
+		if (resource.getParentCseBase() != null) {
+			resource.getParentCseBase().getRemoteCses().remove(resource);
+		}
+		
 		transaction.getEm().remove(resource);
-		transaction.getEm().getEntityManagerFactory().getCache().evict(CSEBaseEntity.class);
+//		transaction.getEm().getEntityManagerFactory().getCache().evict(CSEBaseEntity.class);
 	}
 	
 	@Override
 	public void update(DBTransaction dbTransaction, RemoteCSEEntity resource) {
 		resource.setLabelsEntities(processLabels(dbTransaction, resource.getLabelsEntities()));
-		super.update(dbTransaction, resource);
+		DBTransactionJPAImpl transaction = (DBTransactionJPAImpl) dbTransaction;
+		transaction.getEm().merge(resource);
 	}
 
 }

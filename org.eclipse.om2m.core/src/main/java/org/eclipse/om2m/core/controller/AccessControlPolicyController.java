@@ -32,6 +32,7 @@ import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
 import org.eclipse.om2m.commons.entities.AccessControlRuleEntity;
 import org.eclipse.om2m.commons.entities.AeEntity;
 import org.eclipse.om2m.commons.entities.CSEBaseEntity;
+import org.eclipse.om2m.commons.entities.RegularResourceEntity;
 import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
 import org.eclipse.om2m.commons.entities.ResourceEntity;
 import org.eclipse.om2m.commons.entities.SubscriptionEntity;
@@ -94,6 +95,9 @@ public class AccessControlPolicyController extends Controller {
 		if (parentEntity == null){
 			throw new ResourceNotFoundException("Cannot find parent resource");
 		}
+		
+		// lock parent database entity
+		transaction.lock(parentEntity);
 
 		// Get lists to change in the method corresponding to specific object
 		List<AccessControlPolicyEntity> acpsToCheck = null;
@@ -174,12 +178,6 @@ public class AccessControlPolicyController extends Controller {
 				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
 			}
 			acpEntity.setName(acp.getName());
-		} else 
-		if (request.getName() != null){
-			if (!Patterns.checkResourceName(request.getName())){
-				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
-			}
-			acpEntity.setName(request.getName());			
 		} else {
 			acpEntity.setName(ShortName.ACP + "_" + generatedId);			
 		}
@@ -194,6 +192,18 @@ public class AccessControlPolicyController extends Controller {
 		acpEntity.setLastModifiedTime(DateUtil.now());
 		acpEntity.setParentID(parentEntity.getResourceID());
 		acpEntity.setResourceType(ResourceType.ACCESS_CONTROL_POLICY);
+		switch(parentEntity.getResourceType().intValue()) {
+		case ResourceType.AE:
+			acpEntity.setParentAE((AeEntity) parentEntity);
+			break;
+		case ResourceType.REMOTE_CSE:
+			acpEntity.setParentCsr((RemoteCSEEntity) parentEntity);
+			break;
+		case ResourceType.CSE_BASE:
+			acpEntity.setParentCse((CSEBaseEntity) parentEntity);
+			break;
+		}
+		
 		// expirationTime 		O
 		if (acp.getExpirationTime() != null){
 			acpEntity.setExpirationTime(acp.getExpirationTime());
@@ -215,7 +225,7 @@ public class AccessControlPolicyController extends Controller {
 		childAcps.add(acpDB);
 		dao.update(transaction, parentEntity);
 
-		// Commit the DB transaction
+		// Commit the DB transaction & release lock
 		transaction.commit();
 
 		Notifier.notify(subscriptions, acpDB, ResourceStatus.CHILD_CREATED);
@@ -283,6 +293,9 @@ public class AccessControlPolicyController extends Controller {
 		if (acpEntity == null){
 			throw new ResourceNotFoundException("Resource " + request.getTargetId() + " not found.");
 		}
+		
+		// lock entity
+		transaction.lock(acpEntity);
 
 		// Check self ACP
 		checkSelfACP(acpEntity, request.getFrom(), Operation.UPDATE);
@@ -361,6 +374,8 @@ public class AccessControlPolicyController extends Controller {
 		modifiedAttributes.setLastModifiedTime(acpEntity.getLastModifiedTime());
 		response.setContent(modifiedAttributes);
 		dbs.getDAOFactory().getAccessControlPolicyDAO().update(transaction, acpEntity);
+		
+		// commit transaction & unlock
 		transaction.commit();
 
 		Notifier.notify(acpEntity.getChildSubscriptions(), acpEntity, ResourceStatus.UPDATED);
@@ -376,11 +391,6 @@ public class AccessControlPolicyController extends Controller {
 	public ResponsePrimitive doDelete(RequestPrimitive request) {
 		ResponsePrimitive response = new ResponsePrimitive(request);
 
-		// Get the database service & initialize the transaction
-		DBService dbs = PersistenceService.getInstance().getDbService();
-		DBTransaction transaction = dbs.getDbTransaction();
-		transaction.open();
-
 		// Retrieve the resource from database
 		AccessControlPolicyEntity acpEntity = dbs.getDAOFactory()
 				.getAccessControlPolicyDAO().find(transaction, request.getTargetId());
@@ -390,10 +400,25 @@ public class AccessControlPolicyController extends Controller {
 			throw new ResourceNotFoundException("Resource not found");
 		}
 		
+		// transaction lock
+		transaction.lock(acpEntity);
+		
 		// Check this acp is not a generated acp for an AE to avoid inconsistency
+//		for(RegularResourceEntity regularResourceEntity : acpEntity.getLinkedRegularResources()) {
+//			if (regularResourceEntity instanceof AeEntity) {
+//				AeEntity ae = (AeEntity) regularResourceEntity;
+//				if (ae.getGeneratedAcp() != null) {
+//					if(ae.getGeneratedAcp().getResourceID().equals(acpEntity.getResourceID())){
+//						throw new BadRequestException("Delete the linked ae(s) to avoid acp inconsistency.");
+//					}
+//				}
+//			}
+//		}
 		for(AeEntity ae : acpEntity.getLinkedAes()){
-			if(ae.getGeneratedAcp().getResourceID().equals(acpEntity.getResourceID())){
-				throw new BadRequestException("Delete the linked ae(s) to avoid acp inconsistency.");
+			if (ae.getGeneratedAcp() != null) {
+				if(ae.getGeneratedAcp().getResourceID().equals(acpEntity.getResourceID())){
+					throw new BadRequestException("Delete the linked ae(s) to avoid acp inconsistency.");
+				}
 			}
 		}
 		
@@ -410,6 +435,7 @@ public class AccessControlPolicyController extends Controller {
 		// Delete the resource
 		dbs.getDAOFactory().getAccessControlPolicyDAO().delete(transaction, acpEntity);
 		
+		// commit & unlock
 		transaction.commit();
 		
 		// Close transaction and return

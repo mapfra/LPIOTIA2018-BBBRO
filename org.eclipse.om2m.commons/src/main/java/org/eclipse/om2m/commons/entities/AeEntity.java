@@ -43,7 +43,7 @@ import org.eclipse.om2m.commons.constants.ShortName;
  *
  */
 @Entity(name = DBEntities.AE_ENTITY)
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.JOINED)
 public class AeEntity extends AnnounceableSubordinateEntity {
 	@Column(name=ShortName.APP_NAME)
 	protected String appName;
@@ -71,9 +71,18 @@ public class AeEntity extends AnnounceableSubordinateEntity {
 			inverseJoinColumns = { @JoinColumn(name = DBEntities.ACP_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
 			)
 	protected List<AccessControlPolicyEntity> accessControlPolicies;
+	
+	/** DynamicAuthorizationConsultations linked to the AE */
+	@ManyToMany(fetch=FetchType.LAZY, mappedBy="linkedAeEntities")
+	@JoinTable(
+			name = DBEntities.AE_DAC_JOIN,
+			joinColumns = { @JoinColumn(name = DBEntities.AE_JOINID, referencedColumnName = ShortName.RESOURCE_ID) }, 
+			inverseJoinColumns = { @JoinColumn(name = DBEntities.DAC_JOINID, referencedColumnName = ShortName.RESOURCE_ID) }
+			)
+	protected List<DynamicAuthorizationConsultationEntity> dynamicAuthorizationConsultations;
 
 	/** Child AccessControlPolicies of the AE */
-	@OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.ALL})
+	@OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.ALL}, mappedBy="parentAE")
 	@JoinTable(
 			name = DBEntities.AEACPCHILD_JOIN,
 			joinColumns = { @JoinColumn(name = DBEntities.AE_JOINID, referencedColumnName = ShortName.RESOURCE_ID) }, 
@@ -89,6 +98,15 @@ public class AeEntity extends AnnounceableSubordinateEntity {
 			inverseJoinColumns = { @JoinColumn(name = DBEntities.CNT_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
 			)
 	protected List<ContainerEntity> childContainers;
+	
+	@OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.ALL}, mappedBy="parentAE")
+	@JoinTable(
+			name = DBEntities.AE_FCNTCHILD_JOIN,
+			joinColumns = {@JoinColumn(name = DBEntities.AE_JOINID, referencedColumnName=ShortName.RESOURCE_ID)},
+			inverseJoinColumns = {@JoinColumn(name=DBEntities.FCNT_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)}
+			)
+	protected List<FlexContainerEntity> childFlexContainers;
+	
 	
 	/** list of groups */
 	@OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.ALL})
@@ -127,7 +145,7 @@ public class AeEntity extends AnnounceableSubordinateEntity {
 	
 	
 	// Database link to Subscriptions
-	@OneToMany(fetch = FetchType.LAZY, targetEntity = SubscriptionEntity.class)
+	@OneToMany(fetch = FetchType.LAZY, targetEntity = SubscriptionEntity.class, cascade = CascadeType.ALL)
 	@JoinTable(
 			name = DBEntities.AESUB_JOIN,
 			joinColumns = { @JoinColumn(name = DBEntities.AE_JOINID, referencedColumnName = ShortName.RESOURCE_ID) }, 
@@ -135,6 +153,26 @@ public class AeEntity extends AnnounceableSubordinateEntity {
 			)
 	protected List<SubscriptionEntity> subscriptions;
 	
+	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL, mappedBy="parentAe")
+	@JoinTable(
+			name=DBEntities.AE_DACCHILD_JOIN,
+			joinColumns={@JoinColumn(name=DBEntities.AE_JOINID, referencedColumnName=ShortName.RESOURCE_ID)},
+			inverseJoinColumns={@JoinColumn(name=DBEntities.DAC_JOINID, referencedColumnName=ShortName.RESOURCE_ID)}
+			)
+	private List<DynamicAuthorizationConsultationEntity> childDynamicAuthorizationConsultations;
+	
+	public List<DynamicAuthorizationConsultationEntity> getChildDynamicAuthorizationConsultations() {
+		if (childDynamicAuthorizationConsultations == null) {
+			childDynamicAuthorizationConsultations = new ArrayList<>();
+		}
+		return childDynamicAuthorizationConsultations;
+	}
+
+	public void setChildDynamicAuthorizationConsultations(
+			List<DynamicAuthorizationConsultationEntity> dynamicAuthorizationConsultations) {
+		this.childDynamicAuthorizationConsultations = dynamicAuthorizationConsultations;
+	}
+
 	/**
 	 * @return the childAccessControlPolicies
 	 */
@@ -281,6 +319,23 @@ public class AeEntity extends AnnounceableSubordinateEntity {
 	public void setChildContainers(List<ContainerEntity> childContainers) {
 		this.childContainers = childContainers;
 	}
+	
+	/**
+	 * @return the childFlexContainers
+	 */
+	public List<FlexContainerEntity> getChildFlexContainers() {
+		if (childFlexContainers == null) {
+			childFlexContainers = new ArrayList<>();
+		}
+		return childFlexContainers;
+	}
+
+	/**
+	 * @param childFlexContainers the childFlexContainers to set
+	 */
+	public void setChildFlexContainers(List<FlexContainerEntity> childFlexContainers) {
+		this.childFlexContainers = childFlexContainers;
+	}
 
 	/**
 	 * @return the parentCse
@@ -364,7 +419,7 @@ public class AeEntity extends AnnounceableSubordinateEntity {
 	/**
 	 * @return the requestReachability
 	 */
-	public boolean isRequestReachable() {
+	public boolean isRequestReachability() {
 		return requestReachability;
 	}
 
@@ -387,6 +442,19 @@ public class AeEntity extends AnnounceableSubordinateEntity {
 	 */
 	public void setGeneratedAcp(AccessControlPolicyEntity generatedAcp) {
 		this.generatedAcp = generatedAcp;
+	}
+	
+	@Override
+	public List<DynamicAuthorizationConsultationEntity> getDynamicAuthorizationConsultations() {
+		if(dynamicAuthorizationConsultations == null) {
+			dynamicAuthorizationConsultations = new ArrayList<>();
+		}
+		return dynamicAuthorizationConsultations;
+	}
+	
+	@Override
+	public void setDynamicAuthorizationConsultations(List<DynamicAuthorizationConsultationEntity> list) {
+		dynamicAuthorizationConsultations = list;
 	}
 	
 
