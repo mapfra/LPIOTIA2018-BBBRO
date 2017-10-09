@@ -14,7 +14,7 @@ import org.eclipse.om2m.sdt.home.types.DeviceType;
 public class MotionDetector extends GenericSensor {
 
 	public MotionDetector(final String id, final String serial, final Domain domain) {
-		super(id, serial, DeviceType.deviceSmokeDetector, domain);
+		super(id, serial, DeviceType.deviceMotionDetector, domain);
 		setDeviceSubModelName("MOTION");
 	}
 
