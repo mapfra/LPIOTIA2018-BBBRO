@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Commons
 Bundle-SymbolicName: org.eclipse.om2m.commons
-Bundle-Version: 1.1.0
+Bundle-Version: 1.1.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: javax.persistence,javax.persistence.criteria,javax.per
  sistence.metamodel,javax.persistence.spi,org.eclipse.om2m.commons.con

@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: http
 Bundle-SymbolicName: org.eclipse.om2m.binding.http
-Bundle-Version: 1.1.0
+Bundle-Version: 1.1.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: org.eclipse.om2m.commons,
  org.apache.httpcomponents.httpcore,

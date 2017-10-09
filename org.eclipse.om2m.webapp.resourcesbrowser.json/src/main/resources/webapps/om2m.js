@@ -124,7 +124,7 @@ function get(targetId){
                             }
                             table += "</tbody></table>";
                             value = table ;
-                        } else if(resourceName == "csr" && attribute == "csi"){
+                        } else if(resourceName == "m2m:csr" && attribute == "csi"){
                             value = '<button type="button" onClick="get(\'' + resource['csi'] +'\')">'+ resource['csi'] +'</button>';
                         } else if(attribute == "acpi"){
                             var table = "<table class='bordered'><thead><th>AccessControlPolicyIDs</th></thdead><tbody>";

@@ -19,7 +19,7 @@
 	<parent>
 		<groupId>org.eclipse.om2m</groupId>
 		<artifactId>org.eclipse.om2m.sdt.home.applications</artifactId>
-		<version>1.1.0</version>
+		<version>1.1.0-SNAPSHOT</version>
 	</parent>
 	
 	<!-- dependencies>

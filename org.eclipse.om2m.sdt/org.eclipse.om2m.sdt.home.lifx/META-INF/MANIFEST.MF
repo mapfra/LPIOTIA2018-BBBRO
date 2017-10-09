@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: org.eclipse.om2m.sdt.home.lifx
 Bundle-SymbolicName: org.eclipse.om2m.sdt.home.lifx
-Bundle-Version: 1.1.0
+Bundle-Version: 1.1.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-Activator: org.eclipse.om2m.sdt.home.lifx.impl.Activator
 Bundle-ClassPath: .,

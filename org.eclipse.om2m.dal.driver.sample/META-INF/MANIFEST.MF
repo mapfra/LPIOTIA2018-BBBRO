@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: DAL Driver Sample
 Bundle-SymbolicName: org.eclipse.om2m.dal.driver.sample
-Bundle-Version: 1.1.0
+Bundle-Version: 1.1.0.qualifier
 Bundle-ClassPath: .
 Bundle-Activator: org.eclipse.om2m.dal.driver.sample.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
