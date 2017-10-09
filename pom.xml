@@ -23,7 +23,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.eclipse.om2m</groupId>
 	<artifactId>org.eclipse.om2m</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.1.0</version>
 	<packaging>pom</packaging>
 	<name>org.eclipse.om2m :: parent</name>
 	<description>org.eclipse.om2m parent</description>
@@ -97,7 +97,12 @@
 					</environments>
 				</configuration>
 			</plugin>
-
+			
+			<plugin>
+    		    <groupId>org.eclipse.tycho</groupId>
+     			   <artifactId>tycho-versions-plugin</artifactId>
+   			   </plugin>
+      
 		</plugins>
 
 		<pluginManagement>
@@ -116,7 +121,13 @@
 					<artifactId>maven-assembly-plugin</artifactId>
 					<version>2.3</version>
 				</plugin>
-
+				
+				  <plugin>
+			          <groupId>org.eclipse.tycho</groupId>
+			          <artifactId>tycho-versions-plugin</artifactId>
+			          <version>${tycho.version}</version>
+			        </plugin>
+        
 			</plugins>
 		</pluginManagement>
 	</build>

@@ -11,13 +11,13 @@
 
 	<artifactId>org.eclipse.om2m.sdt</artifactId>
 	<packaging>pom</packaging>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.1.0</version>
 	<description>SDT for oneM2M, Home domain</description>
 
 	<parent>
 		<groupId>org.eclipse.om2m</groupId>
 		<artifactId>org.eclipse.om2m</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
+		<version>1.1.0</version>
 	</parent>
 
 
