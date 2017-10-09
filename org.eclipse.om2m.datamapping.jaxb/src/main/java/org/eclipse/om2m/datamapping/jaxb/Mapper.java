@@ -38,12 +38,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.om2m.commons.constants.MimeMediaType;
 import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
-import org.eclipse.om2m.commons.resource.AbstractFlexContainerAnnc;
 import org.eclipse.om2m.commons.resource.URIList;
 import org.eclipse.om2m.datamapping.service.DataMapperService;
 import org.eclipse.persistence.jaxb.JAXBContextProperties;
 import org.eclipse.persistence.jaxb.MarshallerProperties;
 import org.eclipse.persistence.jaxb.UnmarshallerProperties;
+
 /**
  * Datamapper (JAXB) implementing DataMapper service
  */
@@ -168,7 +168,7 @@ public class Mapper implements DataMapperService {
 				
 				@Override
 				public void afterUnmarshal(Object target, Object parent) {
-					System.out.println("afterUnmarshal (target=" + target + ", parent=" + parent + ")");
+					LOGGER.debug("afterUnmarshal (target=" + target + ", parent=" + parent + ")");
 					super.afterUnmarshal(target, parent);
 					
 					if (target instanceof AbstractFlexContainer) {
@@ -176,7 +176,6 @@ public class Mapper implements DataMapperService {
 					}
 				}
 			});
-			
 			
 			Object unmarshaledObject = unmarshaller.unmarshal(stringReader);
 			Object toBeReturned = null;
