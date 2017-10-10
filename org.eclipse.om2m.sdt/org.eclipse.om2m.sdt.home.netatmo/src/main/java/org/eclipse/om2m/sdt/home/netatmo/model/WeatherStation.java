@@ -16,9 +16,9 @@ public class WeatherStation extends WeatherStationModule {
 
 	private final Map<String/* id */, WeatherStationModule> modules;
 
-	public WeatherStation(final String pId, final String pName) {
-		super(pId, pName);
-		modules = new HashMap<>();
+	public WeatherStation(final String id, final String name) {
+		super(id, name);
+		modules = new HashMap<String, WeatherStationModule>();
 	}
 
 	public void addOrUpdateModule(WeatherStationModule module) {
@@ -43,13 +43,15 @@ public class WeatherStation extends WeatherStationModule {
 
 	@Override
 	public String toString() {
-		StringBuffer sb = new StringBuffer();
-		sb.append("WeatherStation(mainModule=").append(super.toString()).append(",modules=[");
-		for(WeatherStationModule module : getModules().values()) {
-			sb.append(module.toString()).append(",");
+		String ret = "WeatherStation(mainModule=" + super.toString()
+			+ ", modules=[\"";
+		boolean first = true;
+		for (WeatherStationModule module : getModules().values()) {
+			if (first) first = false;
+			else ret += ", ";
+			ret += module;
 		}
-		sb.append("])");
-		return sb.toString();
+		return ret + "])";
 	}
 
 	@Override
