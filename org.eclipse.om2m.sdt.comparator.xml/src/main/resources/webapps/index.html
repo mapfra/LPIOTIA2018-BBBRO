@@ -44,13 +44,13 @@
 			<table width="100%">
 				<tr>
 					<td class="half" width="50%" valign="top"><select
-						ng-model="selectedDevice" ng-options="x.name for x in devices"
+						ng-model="selectedDevice" ng-options="x.friendlyName for x in devices"
 						ng-change="updateTree1()"></select> <abn-tree tree-data="my_data"
 							tree-control="my_tree" on-select="my_tree_handler1(branch)"
 							expand-level="4" icon-leaf="icon-caret-right"></abn-tree> <!--p>selectbox: {{selectedDevice.model}}</p>
 					<p>treeItem: {{selectedItem1}}</p--></td>
 					<td class="half" width="50%" valign="top"><select
-						ng-model="selectedDevice2" ng-options="x.name for x in devices"
+						ng-model="selectedDevice2" ng-options="x.friendlyName for x in devices"
 						ng-change="updateTree2()"></select> <abn-tree tree-data="my_data2"
 							tree-control="my_tree2" on-select="my_tree_handler2(branch)"
 							expand-level="4" icon-leaf="imgPath"></abn-tree> <!--p>selectbox: {{selectedDevice2.model}}</p>
