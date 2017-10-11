@@ -136,7 +136,7 @@ function get(targetId){
                             value = table;
                         } else if(attribute == "la" || attribute == "ol"){
                             value = "<button onClick=\"get('"+ resource[attribute] +"')\">"+ resource[attribute] +"</button>";
-                        } else if (attribute =="lbl") {
+                        } else if ((attribute =="lbl") || (attribute == "nu")) {
 	                        var lblList = resource[attribute];
 	                        value="<ul>";
 	                        for(var index in lblList) {
