@@ -23,6 +23,7 @@ package org.eclipse.om2m.core.controller;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 import org.eclipse.om2m.commons.constants.DiscoveryResultType;
@@ -119,41 +120,29 @@ public class DiscoveryController extends Controller {
 		}
 
 		List<UriMapperEntity> childUris = new ArrayList<>();
-		if(!filter.getLabels().isEmpty()){
+		if (!filter.getLabels().isEmpty()) {
+			HashSet<UriMapperEntity> allFoundUriEntities = new HashSet<>();
 			int limit = (filter.getLimit() != null ? filter.getLimit().intValue() : -1);
-			for(int indexLabel = 0; indexLabel < filter.getLabels().size() ; indexLabel++){
+			for (int indexLabel = 0; indexLabel < filter.getLabels().size(); indexLabel++) {
 				String label = filter.getLabels().get(indexLabel);
 				LabelEntity labelEntity = dbs.getDAOFactory().getLabelDAO().find(transaction, label);
-				List<UriMapperEntity> auxList = new ArrayList<>();
-				if(labelEntity != null){
+
+				if (labelEntity != null) {
 					List<ResourceEntity> allFoundResources = stackLabelResources(labelEntity, filter);
-					// In the case its the first label
-					for(ResourceEntity resEntity : allFoundResources){
-						if (resEntity.getHierarchicalURI().matches(resourceEntity.getHierarchicalURI() + "/?.*")) {
-							UriMapperEntity uriEntity = new UriMapperEntity();
-							uriEntity.setHierarchicalUri(resEntity.getHierarchicalURI());
-							uriEntity.setNonHierarchicalUri(resEntity.getResourceID());
-							uriEntity.setResourceType(resEntity.getResourceType());
-							// In the case of multiple label, you have to make the intersection of resource
-							if(indexLabel == 0){
-								childUris.add(uriEntity);
-							} else if (childUris.contains(uriEntity)){
-								auxList.add(uriEntity);
-								if(indexLabel == filter.getLabels().size() - 1 && limit != -1 && auxList.size() == limit){
-									break;
-								}
-							}
+					for (ResourceEntity resEntity : allFoundResources) {
+						UriMapperEntity uriEntity = new UriMapperEntity();
+						uriEntity.setHierarchicalUri(resEntity.getHierarchicalURI());
+						uriEntity.setNonHierarchicalUri(resEntity.getResourceID());
+						uriEntity.setResourceType(resEntity.getResourceType());
+						allFoundUriEntities.add(uriEntity);
+						// stop in case limit filter is reached
+						if (limit != -1 && allFoundUriEntities.size() == limit) {
+							break;
 						}
 					}
-					if(indexLabel != 0){
-						childUris = auxList;
-					}
-				} else{
-					// If a label is null, the intersection with other labels is null
-					childUris = new ArrayList<UriMapperEntity>();
-					break;
 				}
 			}
+			childUris.addAll(allFoundUriEntities);
 		} else {
 			// Get the list of UriMapperEntity from database with some filters
 			childUris = dbs.getDBUtilManager().getComplexFindUtil().
