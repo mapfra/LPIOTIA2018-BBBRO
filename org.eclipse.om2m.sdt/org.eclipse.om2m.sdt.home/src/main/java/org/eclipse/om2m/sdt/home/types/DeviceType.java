@@ -43,6 +43,7 @@ public enum DeviceType implements Identifiers {
 	
 	deviceCamera(400, "deviceCamera", "deviceCamera", "devCa"),
 	deviceWeatherStation(500, "deviceWeatherStation", "deviceWeatherStation", "deWSn"),
+	deviceNumberDevice(600, "deviceNumberDevice", "deviceNumberDevice", "deNDe"),
 	
 	undefinedVendorExt(0, "undefinedVendorExt", "", "");
 	

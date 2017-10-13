@@ -17,7 +17,11 @@ public enum ActionType implements Identifiers {
 	downVolume(4, "audiovolume.downVolume", "downVolume", "dowVe"),
 	toggle(5, "binaryswitch.toggle", "toggle", "togge"),
 	upChannel(6, "televisionchannel.upChannel", "upChannel", "uphCl"),
-	upVolume(7, "audiovolume.upVolume", "upVolume", "upVol");
+	upVolume(7, "audiovolume.upVolume", "upVolume", "upVol"),
+	
+	resetNumberValue(8,"numbervalue.resetNumberValue", "resetNumberValue", "reNVe"), 					// Added by Andreas Kraft
+	incrementNumberValue(9, "numbervalue.incrementNumberValue", "incrementNumberValue", "inNVe"), 		// Added by Andreas Kraft
+	decrementNumberValue(10, "numbervalue.decrementNumberValue", "decrementNumberValue", "deNVe"); 	// Added by Andreas Kraft
 	
 	static private final String PATH = "org.onem2m.home.moduleclass.";
 	

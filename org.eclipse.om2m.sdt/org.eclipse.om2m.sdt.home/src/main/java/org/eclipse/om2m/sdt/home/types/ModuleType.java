@@ -81,6 +81,9 @@ public enum ModuleType implements Identifiers {
 	noise(152, "noise", "noise", "noise"),
 	extendedCarbonDioxideSensor(153, "extendedCarbonDioxideSensor", "extendedCarbonDioxideSensor", "eCDSr"),
 	
+	numberValue(154, "numberValue", "numberValue", "numVe"), // Added by Andreas Kraft
+	
+	
 	abstractAlarmSensor(200, "abstractAlarmSensor", "abstractAlarmSensor", "aAlSr");
 	
 	static private final String PATH = "org.onem2m.home.moduleclass.";
