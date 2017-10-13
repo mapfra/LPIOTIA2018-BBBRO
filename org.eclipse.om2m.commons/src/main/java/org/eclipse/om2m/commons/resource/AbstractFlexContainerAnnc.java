@@ -33,6 +33,7 @@ import org.eclipse.om2m.commons.resource.flexcontainerspec.ClockFlexContainerAnn
 import org.eclipse.om2m.commons.resource.flexcontainerspec.ColourFlexContainerAnnc;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.ColourSaturationFlexContainerAnnc;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.ContactSensorFlexContainerAnnc;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DecrementNumberValueFlexContainerAnnc;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceCameraFlexContainerAnnc;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceCoffeeMachineFlexContainerAnnc;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceContactDetectorFlexContainerAnnc;
@@ -41,6 +42,7 @@ import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceFloodDetectorFl
 import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceGasValveFlexContainerAnnc;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceLightFlexContainerAnnc;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceMotionDetectorFlexContainerAnnc;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceNumberDeviceFlexContainerAnnc;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceSmartElectricMeterFlexContainerAnnc;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceSmokeDetectorFlexContainerAnnc;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceSmokeExtractorFlexContainerAnnc;
@@ -58,11 +60,14 @@ import org.eclipse.om2m.commons.resource.flexcontainerspec.ExtendedCarbonDioxide
 import org.eclipse.om2m.commons.resource.flexcontainerspec.FaultDetectionFlexContainerAnnc;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.FoamingFlexContainerAnnc;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.GrinderFlexContainerAnnc;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.IncrementNumberValueFlexContainerAnnc;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.LiquidLevelFlexContainerAnnc;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.LockFlexContainerAnnc;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.NoiseFlexContainerAnnc;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.NumberValueFlexContainerAnnc;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.PersonSensorFlexContainerAnnc;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.RelativeHumidityFlexContainerAnnc;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.ResetNumberValueFlexContainerAnnc;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.RunModeFlexContainerAnnc;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.SmokeSensorFlexContainerAnnc;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.StreamingFlexContainerAnnc;
@@ -83,7 +88,7 @@ import org.eclipse.om2m.commons.resource.flexcontainerspec.WaterSensorFlexContai
 	DeviceTemperatureDetectorFlexContainerAnnc.class, DeviceThermostatFlexContainerAnnc.class,
 	DeviceWarningDeviceFlexContainerAnnc.class,
 	DeviceWaterValveFlexContainerAnnc.class, DeviceWeatherStationFlexContainerAnnc.class,
-	DeviceThermostatFlexContainerAnnc.class,
+	DeviceThermostatFlexContainerAnnc.class, DeviceNumberDeviceFlexContainerAnnc.class,
 	AlarmSpeakerFlexContainerAnnc.class, AudioVolumeFlexContainerAnnc.class,
 	BinarySwitchFlexContainerAnnc.class, BoilerFlexContainerAnnc.class,
 	BrightnessFlexContainerAnnc.class, ClockFlexContainerAnnc.class,
@@ -100,6 +105,8 @@ import org.eclipse.om2m.commons.resource.flexcontainerspec.WaterSensorFlexContai
 	StreamingFlexContainerAnnc.class, LockFlexContainerAnnc.class,
 	BatteryFlexContainerAnnc.class,
 	LiquidLevelFlexContainerAnnc.class, TimerFlexContainerAnnc.class,
+	NumberValueFlexContainerAnnc.class, IncrementNumberValueFlexContainerAnnc.class,
+	DecrementNumberValueFlexContainerAnnc.class, ResetNumberValueFlexContainerAnnc.class,
 	ToggleFlexContainerAnnc.class})
 public class AbstractFlexContainerAnnc extends AnnouncedResource {
 	
