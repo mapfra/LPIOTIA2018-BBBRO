@@ -289,6 +289,13 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 
 			module.datapoints = {};
 			module.actions = [];
+			if (root.prROy) {
+				module.isReadOnly = (root.prROy === 'true');
+			} else {
+				module.isReadOnly = false;
+			}
+			
+			
 
 			// create the attributes
 			var dpNames = $scope.datapointsNamePerModule[module.name];

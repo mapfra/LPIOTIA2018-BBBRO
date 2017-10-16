@@ -93,6 +93,7 @@
 												ng-repeat="module in getModulesFromDevice(device) | filter: switchFilter">
 											<switch class="adjustSwitch" name="moduleSwitch_{{module.id}}" id="moduleSwitch_{{module.id}}"
 												 ng-model="module.state"
+												 disabled="module.isReadOnly"
 												ng-change="changeState(device,module)"></switch>
 										</td>
 									</tr>
