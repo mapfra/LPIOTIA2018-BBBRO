@@ -33,7 +33,7 @@ public class MockedWeatherStation extends WeatherStation implements MockedDevice
 	private float humidity;
 	private Temperature temperature;
 	private RelativeHumidity relativeHumidity;
-	private boolean running=true;
+	private boolean running;
 	private int delta = 1;
 
 	public MockedWeatherStation(String id, String serial, Domain domain) {
