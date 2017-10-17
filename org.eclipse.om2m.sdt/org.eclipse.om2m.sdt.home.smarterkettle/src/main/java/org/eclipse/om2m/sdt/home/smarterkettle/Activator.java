@@ -8,26 +8,16 @@
 package org.eclipse.om2m.sdt.home.smarterkettle;
 
 import java.util.Dictionary;
-import java.util.Hashtable;
-
-import javax.naming.Context;
-import javax.net.ssl.SSLException;
 
 import org.eclipse.om2m.sdt.Domain;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.ActionException;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.HomeDomain;
-import org.eclipse.om2m.sdt.home.driver.Logger;
-import org.eclipse.om2m.sdt.home.types.TasteStrength;
-import org.omg.CORBA.SystemException;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.Constants;
-import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.cm.ConfigurationException;
 import org.osgi.service.cm.ManagedService;
-import org.osgi.service.log.LogService;
 
 public class Activator implements ManagedService, BundleActivator {
 	
