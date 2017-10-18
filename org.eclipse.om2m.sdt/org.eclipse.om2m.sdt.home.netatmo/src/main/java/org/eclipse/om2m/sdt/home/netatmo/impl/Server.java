@@ -372,7 +372,7 @@ public class Server {
 		connection.setDoInput(true);
 		connection.setDoOutput(true);
 		connection.setRequestMethod("POST");
-		connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+		connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
 
 		connection.getOutputStream().write(data.getBytes());
 		connection.connect();

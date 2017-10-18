@@ -22,6 +22,7 @@ package org.eclipse.om2m.binding.http;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigInteger;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
@@ -159,18 +160,15 @@ public class RestHttpServlet extends HttpServlet {
 		// Set the message body
 		if (response.getContent() != null){
 			// Set the Content-Type header
+			httpServletResponse.setCharacterEncoding("UTF-8");
 			httpServletResponse.setContentType(response.getContentType());
 			
 			String body = (String) response.getContent(); 
-			PrintWriter out = null;
-			try {
-				out = httpServletResponse.getWriter();
-			} catch (IOException e) {
-				LOGGER.error("Error reading httpServletResponse Writer",e);
-			}
-			out.println(body);
-			out.close();
+			LOGGER.info("send UTF8");
+			httpServletResponse.getOutputStream().write(body.getBytes(Charset.forName("UTF-8")));
 		}
+		
+		httpServletResponse.getOutputStream().close();
 	}
 
 	/**
