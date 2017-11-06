@@ -166,6 +166,5 @@
 		<module>org.eclipse.om2m.dal</module>
 		<module>org.eclipse.om2m.dal.driver.sample</module>
 		<module>org.eclipse.om2m.ipe.dal</module>
-		<module>org.eclipse.om2m.android.dashboard</module>
 	</modules>
 </project>
