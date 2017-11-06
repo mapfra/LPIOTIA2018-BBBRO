@@ -66,7 +66,7 @@ public class LatestOldestController extends Controller{
 		ResponsePrimitive response = new ResponsePrimitive(request);
 
 		// Check existence of the resource
-		ContainerEntity containerEntity = dbs.getDAOFactory().getContainerDAO().find(transaction, request.getTargetId());
+		ContainerEntity containerEntity = dbs.getDAOFactory().getContainerDAO().find(transaction, request.getTo());
 		if (containerEntity == null) {
 			throw new ResourceNotFoundException("Resource not found");
 		}
@@ -86,7 +86,7 @@ public class LatestOldestController extends Controller{
 					containerEntity.getChildContentInstances().size()-1);
 			break;
 		case OLDEST:
-			cinEntity = dbs.getDAOFactory().getOldestDAO().find(transaction, request.getTargetId());
+			cinEntity = dbs.getDAOFactory().getOldestDAO().find(transaction, request.getTo());
 			break;
 		default:
 			break;
@@ -112,7 +112,7 @@ public class LatestOldestController extends Controller{
 
 
 		// Check existence of the resource
-		ContainerEntity containerEntity = dbs.getDAOFactory().getContainerDAO().find(transaction, request.getTargetId());
+		ContainerEntity containerEntity = dbs.getDAOFactory().getContainerDAO().find(transaction, request.getTo());
 		if (containerEntity == null) {
 			throw new ResourceNotFoundException();
 		}

@@ -93,13 +93,13 @@ public class ContainerController extends Controller {
 		Patterns patterns = new Patterns();
 
 		// get the dao of the parent
-		DAO<ResourceEntity> dao = (DAO<ResourceEntity>) patterns.getDAO(request.getTargetId(), dbs);
+		DAO<ResourceEntity> dao = (DAO<ResourceEntity>) patterns.getDAO(request.getTo(), dbs);
 		if (dao == null){
 			throw new ResourceNotFoundException("Cannot find parent resource");
 		}
 
 		// get the parent entity
-		ResourceEntity parentEntity = (ResourceEntity)dao.find(transaction, request.getTargetId());
+		ResourceEntity parentEntity = (ResourceEntity)dao.find(transaction, request.getTo());
 		// check the parent existence
 		if (parentEntity == null) {
 			throw new ResourceNotFoundException("Cannot find parent resource");
@@ -284,7 +284,7 @@ public class ContainerController extends Controller {
 		ResponsePrimitive response = new ResponsePrimitive(request);
 
 		// Check existence of the resource
-		ContainerEntity containerEntity = dbs.getDAOFactory().getContainerDAO().find(transaction, request.getTargetId());
+		ContainerEntity containerEntity = dbs.getDAOFactory().getContainerDAO().find(transaction, request.getTo());
 		if (containerEntity == null) {
 			throw new ResourceNotFoundException("Resource not found");
 		}
@@ -339,7 +339,7 @@ public class ContainerController extends Controller {
 		ResponsePrimitive response = new ResponsePrimitive(request);
 
 		// retrieve the resource from database
-		ContainerEntity containerEntity = dbs.getDAOFactory().getContainerDAO().find(transaction, request.getTargetId());
+		ContainerEntity containerEntity = dbs.getDAOFactory().getContainerDAO().find(transaction, request.getTo());
 		if (containerEntity == null) {
 			throw new ResourceNotFoundException("Resource not found");
 		}
@@ -476,7 +476,7 @@ public class ContainerController extends Controller {
 		ResponsePrimitive response = new ResponsePrimitive(request);
 
 		// retrieve the corresponding resource from database
-		ContainerEntity containerEntity = dbs.getDAOFactory().getContainerDAO().find(transaction, request.getTargetId());
+		ContainerEntity containerEntity = dbs.getDAOFactory().getContainerDAO().find(transaction, request.getTo());
 		if (containerEntity == null) {
 			throw new ResourceNotFoundException("Resource not found");
 		}

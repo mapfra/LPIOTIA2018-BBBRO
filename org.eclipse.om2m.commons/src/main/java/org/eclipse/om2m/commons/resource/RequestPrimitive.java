@@ -134,8 +134,6 @@ public class RequestPrimitive {
 	@XmlTransient
 	protected Map<String,List<String>> queryStrings;
 	@XmlTransient
-	protected String targetId;
-	@XmlTransient
 	protected String mqttTopic;
 	@XmlTransient
 	protected String mqttUri;
@@ -540,20 +538,6 @@ public class RequestPrimitive {
 		this.discoveryResultType = value;
 	}
 
-	/**
-	 * @return the targetId
-	 */
-	public String getTargetId() {
-		return this.targetId;
-	}
-
-	/**
-	 * @param targetId
-	 *            the targetId to set
-	 */
-	public void setTargetId(String targetId) {
-		this.targetId= targetId;
-	}
 
 	/**
 	 * @return the returnContentType

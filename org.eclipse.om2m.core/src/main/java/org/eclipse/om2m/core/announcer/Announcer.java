@@ -111,13 +111,13 @@ public class Announcer implements Constants {
 			CreatedAnnouncedResourceEntity parentResource = dao.find(transaction, toBeAnnounced.getParentID(), cseId);
 			if (parentResource != null) {
 
-				request.setTargetId(parentResource.getRemoteAnnouncedId());
+				request.setTo(parentResource.getRemoteAnnouncedId());
 			} else {
 
 				if (!remoteDestination.startsWith("/")) {
 					remoteDestination = "/" + remoteDestination;
 				}
-				request.setTargetId(remoteCSE.getRemoteCseId() + "/" + remoteCSE.getName() + "/" + Constants.CSE_NAME
+				request.setTo(remoteCSE.getRemoteCseId() + "/" + remoteCSE.getName() + "/" + Constants.CSE_NAME
 						+ remoteDestination);
 			}
 			
@@ -184,7 +184,7 @@ public class Announcer implements Constants {
 					cseId);
 			if (are != null) {
 				RequestPrimitive request = new RequestPrimitive();
-				request.setTargetId(are.getRemoteAnnouncedId());
+				request.setTo(are.getRemoteAnnouncedId());
 				request.setOperation(Operation.DELETE);
 				request.setFrom(requestingEntity);
 				Redirector.retarget(request);

@@ -47,13 +47,13 @@ public class DynamicAuthorizationConsultationController extends Controller {
 		Patterns patterns = new Patterns();
 
 		// Get the DAO of the parent
-		DAO<ResourceEntity> dao = (DAO<ResourceEntity>) patterns.getDAO(request.getTargetId(), dbs);
+		DAO<ResourceEntity> dao = (DAO<ResourceEntity>) patterns.getDAO(request.getTo(), dbs);
 		if (dao == null) {
 			throw new ResourceNotFoundException("Cannot find parent resource");
 		}
 
 		// Get the parent entity
-		ResourceEntity parentEntity = (ResourceEntity) dao.find(transaction, request.getTargetId());
+		ResourceEntity parentEntity = (ResourceEntity) dao.find(transaction, request.getTo());
 		// Check the parent existence
 		if (parentEntity == null) {
 			throw new ResourceNotFoundException("Cannot find parent resource");
@@ -253,7 +253,7 @@ public class DynamicAuthorizationConsultationController extends Controller {
 
 		// check resource existency
 		DynamicAuthorizationConsultationEntity dacEntity = dbs.getDAOFactory().getDynamicAuthorizationDAO()
-				.find(transaction, request.getTargetId());
+				.find(transaction, request.getTo());
 		if (dacEntity == null) {
 			throw new ResourceNotFoundException("Resource not found");
 		}
@@ -282,7 +282,7 @@ public class DynamicAuthorizationConsultationController extends Controller {
 
 		// check resource existency
 		DynamicAuthorizationConsultationEntity dacEntity = dbs.getDAOFactory().getDynamicAuthorizationDAO()
-				.find(transaction, request.getTargetId());
+				.find(transaction, request.getTo());
 		if (dacEntity == null) {
 			throw new ResourceNotFoundException("Resource not found");
 		}
@@ -406,7 +406,7 @@ public class DynamicAuthorizationConsultationController extends Controller {
 
 		// check resource existency
 		DynamicAuthorizationConsultationEntity dacEntity = dbs.getDAOFactory().getDynamicAuthorizationDAO()
-				.find(transaction, request.getTargetId());
+				.find(transaction, request.getTo());
 		if (dacEntity == null) {
 			throw new ResourceNotFoundException("Resource not found");
 		}

@@ -148,7 +148,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 		request.getFilterCriteria().setFilterUsage(FilterUsage.DISCOVERY_CRITERIA);
 		request.getFilterCriteria().getLabels().add(RESOURCE_ID_SEARCH_STRING + appName);
 		request.getFilterCriteria().getLabels().add(APPLICATION_TYPE_SEARCH_STRING);
-		request.setTargetId(//SEP + Constants.CSE_ID + SEP + Constants.CSE_NAME);
+		request.setTo(//SEP + Constants.CSE_ID + SEP + Constants.CSE_NAME);
 			SEP + Constants.CSE_ID + SEP + Constants.CSE_NAME + SEP + mnName);
 		Activator.LOGGER.info(request);
 		
@@ -218,7 +218,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 	private List<String> retrieveDeviceURIs(List<String> labels, final String cred) 
 			throws Exception {
 		RequestPrimitive request = new RequestPrimitive();
-		request.setTargetId(//Constants.SP_RELATIVE_URI_SEPARATOR +
+		request.setTo(//Constants.SP_RELATIVE_URI_SEPARATOR +
 				SEP + Constants.CSE_ID + SEP + Constants.CSE_NAME
 				+ SEP + mnName);
 		request.setReturnContentType(MimeMediaType.OBJ);
@@ -745,7 +745,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 		request.setFilterCriteria(new FilterCriteria());
 		request.getFilterCriteria().setLevel(BigInteger.ONE);
 		request.setFrom(cred);
-		request.setTargetId(uri);
+		request.setTo(uri);
 		request.setResultContent(resultContent);
 
 		ResponsePrimitive resp = cseService.doRequest(request);
@@ -774,7 +774,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 		request.setReturnContentType(MimeMediaType.OBJ);
 		request.setRequestContentType(MimeMediaType.OBJ);
 		request.setFrom(cred);
-		request.setTargetId(uri);
+		request.setTo(uri);
 		request.setResultContent(ResultContent.ORIGINAL_RES);
 
 		ResponsePrimitive resp = cseService.doRequest(request);
@@ -796,7 +796,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 		request.setResultContent(ResultContent.ORIGINAL_RES);
 		request.setOperation(Operation.UPDATE);
 		request.setFrom(cred);
-		request.setTargetId(uri);
+		request.setTo(uri);
 
 		ResponsePrimitive resp = cseService.doRequest(request);
 		Activator.LOGGER.info("write " + customAttribute + " -> " + resp.getResponseStatusCode());
@@ -816,7 +816,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 		request.setResultContent(ResultContent.ORIGINAL_RES);
 		request.setOperation(Operation.UPDATE);
 		request.setFrom(cred);
-		request.setTargetId(uri);
+		request.setTo(uri);
 
 		ResponsePrimitive resp = cseService.doRequest(request);
 		Activator.LOGGER.info("invoke " + customAttributes + " -> " + resp.getResponseStatusCode());

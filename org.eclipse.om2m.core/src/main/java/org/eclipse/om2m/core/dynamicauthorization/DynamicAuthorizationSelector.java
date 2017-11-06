@@ -108,7 +108,7 @@ public class DynamicAuthorizationSelector {
 		for (String pointOfAccess : pointOfAccesses) {
 			RequestPrimitive notifyRequest = new RequestPrimitive();
 			notifyRequest.setOperation(Operation.NOTIFY);
-			notifyRequest.setTargetId(pointOfAccess);
+			notifyRequest.setTo(pointOfAccess);
 			notifyRequest.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 			notifyRequest.setContent(securityInfo);
 			notifyRequest.setRequestContentType(MimeMediaType.OBJ);

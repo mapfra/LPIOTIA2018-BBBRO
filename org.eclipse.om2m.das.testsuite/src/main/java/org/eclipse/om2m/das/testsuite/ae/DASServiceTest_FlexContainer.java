@@ -90,7 +90,7 @@ public class DASServiceTest_FlexContainer extends AbstractDASServiceTest {
 		// prepare update request
 		RequestPrimitive updateRequest = new RequestPrimitive();
 		updateRequest.setFrom("nom:prenom");
-		updateRequest.setTargetId(createdFlexContainer.getResourceID());
+		updateRequest.setTo(createdFlexContainer.getResourceID());
 		updateRequest.setOperation(Operation.UPDATE);
 		updateRequest.setRequestContentType(MimeMediaType.OBJ);
 		updateRequest.setReturnContentType(MimeMediaType.OBJ);
@@ -131,7 +131,7 @@ public class DASServiceTest_FlexContainer extends AbstractDASServiceTest {
 		createChildRequest.setReturnContentType(MimeMediaType.OBJ);
 		createChildRequest.setResourceType(ResourceType.FLEXCONTAINER);
 		createChildRequest.setFrom("nana:nono");
-		createChildRequest.setTargetId(createdFlexContainer.getResourceID());
+		createChildRequest.setTo(createdFlexContainer.getResourceID());
 		createChildRequest.setOperation(Operation.CREATE);
 
 		// execute createChildRequest
@@ -158,7 +158,7 @@ public class DASServiceTest_FlexContainer extends AbstractDASServiceTest {
 
 		// delete FlexContainer
 		RequestPrimitive deleteRequest = new RequestPrimitive();
-		deleteRequest.setTargetId(createdFlexContainer.getResourceID());
+		deleteRequest.setTo(createdFlexContainer.getResourceID());
 		deleteRequest.setFrom("toto:tata");
 		deleteRequest.setOperation(Operation.DELETE);
 

@@ -58,7 +58,7 @@ public class FanOutPointController extends Controller {
 	 * @return response primitive including aggregated response(s)
 	 */
 	protected ResponsePrimitive fanOutRequest(RequestPrimitive request) {
-		String targetGroup = request.getTargetId();
+		String targetGroup = request.getTo();
 		AggregatedResponse aggResp = new AggregatedResponse();
 //		ArrayList<RequestPrimitive> requests = new ArrayList<>();
 		ResponsePrimitive resp = new ResponsePrimitive(request);

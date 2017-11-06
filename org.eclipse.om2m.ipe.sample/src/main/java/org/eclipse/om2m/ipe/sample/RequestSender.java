@@ -43,7 +43,7 @@ public class RequestSender {
 	public static ResponsePrimitive createResource(String targetId, Resource resource, int resourceType){
 		RequestPrimitive request = new RequestPrimitive();
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
-		request.setTargetId(targetId);
+		request.setTo(targetId);
 		request.setResourceType(BigInteger.valueOf(resourceType));
 		request.setRequestContentType(MimeMediaType.OBJ);
 		request.setReturnContentType(MimeMediaType.OBJ);
@@ -68,7 +68,7 @@ public class RequestSender {
 	public static ResponsePrimitive getRequest(String targetId){
 		RequestPrimitive request = new RequestPrimitive();
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
-		request.setTargetId(targetId);
+		request.setTo(targetId);
 		request.setReturnContentType(MimeMediaType.OBJ);
 		request.setOperation(Operation.RETRIEVE);
 		request.setRequestContentType(MimeMediaType.OBJ);

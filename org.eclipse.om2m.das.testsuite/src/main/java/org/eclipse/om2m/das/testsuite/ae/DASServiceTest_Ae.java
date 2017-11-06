@@ -85,7 +85,7 @@ public class DASServiceTest_Ae extends AbstractDASServiceTest  {
 		RequestPrimitive updateRequest = new RequestPrimitive();
 		updateRequest.setOperation(Operation.UPDATE);
 		updateRequest.setFrom("nini:nono");
-		updateRequest.setTargetId(ae.getResourceID());
+		updateRequest.setTo(ae.getResourceID());
 		updateRequest.setRequestContentType(MimeMediaType.OBJ);
 		updateRequest.setReturnContentType(MimeMediaType.OBJ);
 		updateRequest.setContent(toBeUpdated);
@@ -115,7 +115,7 @@ public class DASServiceTest_Ae extends AbstractDASServiceTest  {
 		// delete ae ==> prepare request
 		RequestPrimitive deleteRequest = new RequestPrimitive();
 		deleteRequest.setOperation(Operation.DELETE);
-		deleteRequest.setTargetId(ae.getResourceID());
+		deleteRequest.setTo(ae.getResourceID());
 		deleteRequest.setFrom("zaza:zozo");
 
 		// execute deleteRequest

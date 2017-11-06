@@ -77,7 +77,7 @@ public class LocationFlexContainerTest extends FlexContainerTestSuite {
 		RequestPrimitive request = new RequestPrimitive();
 		request.setContent(container);
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
-		request.setTargetId(baseParentContainerLocation);
+		request.setTo(baseParentContainerLocation);
 		request.setResourceType(BigInteger.valueOf(ResourceType.CONTAINER));
 		request.setRequestContentType(MimeMediaType.OBJ);
 		request.setReturnContentType(MimeMediaType.OBJ);

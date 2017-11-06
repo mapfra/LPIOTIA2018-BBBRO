@@ -86,12 +86,12 @@ public class AccessControlPolicyController extends Controller {
 		Patterns patterns = new Patterns();
 
 		// Get the DAO of the parent
-		DAO<ResourceEntity> dao = (DAO<ResourceEntity>) patterns.getDAO(request.getTargetId(), dbs);
+		DAO<ResourceEntity> dao = (DAO<ResourceEntity>) patterns.getDAO(request.getTo(), dbs);
 		if (dao == null){
 			throw new ResourceNotFoundException("Cannot find parent resource");
 		}
 		// Get the parent entity
-		ResourceEntity parentEntity = (ResourceEntity)dao.find(transaction, request.getTargetId());
+		ResourceEntity parentEntity = (ResourceEntity)dao.find(transaction, request.getTo());
 		// Check the parent existence
 		if (parentEntity == null){
 			throw new ResourceNotFoundException("Cannot find parent resource");
@@ -248,9 +248,9 @@ public class AccessControlPolicyController extends Controller {
 
 		// Check existence of the resource
 		AccessControlPolicyEntity acpEntity = dbs.getDAOFactory()
-				.getAccessControlPolicyDAO().find(transaction, request.getTargetId());
+				.getAccessControlPolicyDAO().find(transaction, request.getTo());
 		if (acpEntity == null) {
-			throw new ResourceNotFoundException("Resource " + request.getTargetId() + " not found.");
+			throw new ResourceNotFoundException("Resource " + request.getTo() + " not found.");
 		}
 
 		// Check authorization
@@ -288,11 +288,11 @@ public class AccessControlPolicyController extends Controller {
 		
 		// Retrieve the resource from DB
 		AccessControlPolicyEntity acpEntity = dbs.getDAOFactory().
-				getAccessControlPolicyDAO().find(transaction, request.getTargetId());
+				getAccessControlPolicyDAO().find(transaction, request.getTo());
 
 		// Check resource existence
 		if (acpEntity == null){
-			throw new ResourceNotFoundException("Resource " + request.getTargetId() + " not found.");
+			throw new ResourceNotFoundException("Resource " + request.getTo() + " not found.");
 		}
 		
 		// lock entity
@@ -394,7 +394,7 @@ public class AccessControlPolicyController extends Controller {
 
 		// Retrieve the resource from database
 		AccessControlPolicyEntity acpEntity = dbs.getDAOFactory()
-				.getAccessControlPolicyDAO().find(transaction, request.getTargetId());
+				.getAccessControlPolicyDAO().find(transaction, request.getTo());
 
 		// Check resource existence
 		if (acpEntity == null){

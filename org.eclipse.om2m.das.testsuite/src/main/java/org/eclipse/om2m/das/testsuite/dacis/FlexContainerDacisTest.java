@@ -52,7 +52,7 @@ public class FlexContainerDacisTest extends Test {
 		RequestPrimitive createRequest = new RequestPrimitive();
 		createRequest.setOperation(Operation.CREATE);
 		createRequest.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
-		createRequest.setTargetId("/" + Constants.CSE_ID + "/" + Constants.CSE_NAME);
+		createRequest.setTo("/" + Constants.CSE_ID + "/" + Constants.CSE_NAME);
 		createRequest.setRequestContentType(MimeMediaType.OBJ);
 		createRequest.setReturnContentType(MimeMediaType.OBJ);
 		createRequest.setResourceType(ResourceType.FLEXCONTAINER);
@@ -127,7 +127,7 @@ public class FlexContainerDacisTest extends Test {
 		// delete DAC
 		RequestPrimitive deleteRequest = new RequestPrimitive();
 		deleteRequest.setOperation(Operation.DELETE);
-		deleteRequest.setTargetId(dac.getResourceID());
+		deleteRequest.setTo(dac.getResourceID());
 		deleteRequest.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 		ResponsePrimitive deleteResponse = getCseService().doRequest(deleteRequest);
 		if (!ResponseStatusCode.DELETED.equals(deleteResponse.getResponseStatusCode())) {

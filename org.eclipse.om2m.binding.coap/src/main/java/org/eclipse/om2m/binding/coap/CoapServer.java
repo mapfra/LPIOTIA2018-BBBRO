@@ -143,7 +143,6 @@ class CoapMessageDeliverer implements MessageDeliverer {
 		}
 
 		requestPrimitive.setTo(request.getURI());
-		requestPrimitive.setTargetId(targetId);
 		requestPrimitive.setContent(request.getPayloadString());
 
 		// Parse CoAP options

@@ -43,7 +43,7 @@ public class RequestController extends Controller {
 		ResponsePrimitive response = new ResponsePrimitive(request);
 		
 		RequestEntity requestEntity = dbs.getDAOFactory().getRequestEntityDAO().
-				find(transaction, request.getTargetId());
+				find(transaction, request.getTo());
 		if(requestEntity == null){
 			throw new ResourceNotFoundException();
 		}
@@ -71,7 +71,7 @@ public class RequestController extends Controller {
 		ResponsePrimitive response = new ResponsePrimitive(request);
 		
 		RequestEntity requestEntity = dbs.getDAOFactory().
-				getRequestEntityDAO().find(transaction, request.getTargetId());
+				getRequestEntityDAO().find(transaction, request.getTo());
 		if(requestEntity == null){
 			throw new ResourceNotFoundException();
 		}

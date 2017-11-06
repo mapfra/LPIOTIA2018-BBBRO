@@ -49,9 +49,9 @@ public class CSEBaseController extends Controller {
 		ResponsePrimitive response = new ResponsePrimitive(request);
 
 		// Check existence of the resource
-		CSEBaseEntity cseBaseEntity = dbs.getDAOFactory().getCSEBaseDAO().find(transaction, request.getTargetId());
+		CSEBaseEntity cseBaseEntity = dbs.getDAOFactory().getCSEBaseDAO().find(transaction, request.getTo());
 		if (cseBaseEntity == null){
-			throw new ResourceNotFoundException("Resource " + request.getTargetId() + "not found");
+			throw new ResourceNotFoundException("Resource " + request.getTo() + "not found");
 		}
 		// Check authorization
 		List<AccessControlPolicyEntity> acpList = cseBaseEntity.getAccessControlPolicies();

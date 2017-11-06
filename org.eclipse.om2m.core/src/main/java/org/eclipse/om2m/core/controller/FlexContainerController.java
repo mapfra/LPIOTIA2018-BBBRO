@@ -81,13 +81,13 @@ public class FlexContainerController extends Controller {
 		ResponsePrimitive response = new ResponsePrimitive(request);
 
 		// get the dao of the parent
-		DAO<ResourceEntity> dao = (DAO<ResourceEntity>) patterns.getDAO(request.getTargetId(), dbs);
+		DAO<ResourceEntity> dao = (DAO<ResourceEntity>) patterns.getDAO(request.getTo(), dbs);
 		if (dao == null) {
 			throw new ResourceNotFoundException("Cannot find parent resource");
 		}
 
 		// get the parent entity
-		ResourceEntity parentEntity = (ResourceEntity) dao.find(transaction, request.getTargetId());
+		ResourceEntity parentEntity = (ResourceEntity) dao.find(transaction, request.getTo());
 		// check the parent existence
 		if (parentEntity == null) {
 			throw new ResourceNotFoundException("Cannot find parent resource");
@@ -335,7 +335,7 @@ public class FlexContainerController extends Controller {
 
 		// Check existence of the resource
 		FlexContainerEntity flexContainerEntity = dbs.getDAOFactory().getFlexContainerDAO().find(transaction,
-				request.getTargetId());
+				request.getTo());
 		if (flexContainerEntity == null) {
 			throw new ResourceNotFoundException("Resource not found");
 		}
@@ -397,7 +397,7 @@ public class FlexContainerController extends Controller {
 
 		// retrieve the resource from database
 		FlexContainerEntity flexContainerEntity = dbs.getDAOFactory().getFlexContainerDAO().find(transaction,
-				request.getTargetId());
+				request.getTo());
 
 		// lock current object
 		transaction.lock(flexContainerEntity);
@@ -581,7 +581,7 @@ public class FlexContainerController extends Controller {
 
 		// retrieve the corresponding resource from database
 		FlexContainerEntity flexContainerEntity = dbs.getDAOFactory().getFlexContainerDAO().find(transaction,
-				request.getTargetId());
+				request.getTo());
 		if (flexContainerEntity == null) {
 			throw new ResourceNotFoundException("Resource not found");
 		}

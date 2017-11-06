@@ -211,7 +211,7 @@ public abstract class Test {
 
 		// setup request
 		request.setOperation(Operation.CREATE);
-		request.setTargetId("/" + Constants.CSE_ID + "/" + Constants.CSE_NAME);
+		request.setTo("/" + Constants.CSE_ID + "/" + Constants.CSE_NAME);
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 		request.setResourceType(ResourceType.DYNAMIC_AUTHORIZATION_CONSULTATION);
 		request.setRequestContentType(MimeMediaType.OBJ);
@@ -246,7 +246,7 @@ public abstract class Test {
 
 		// setup request
 		request.setOperation(Operation.CREATE);
-		request.setTargetId("/" + Constants.CSE_ID + "/" + Constants.CSE_NAME);
+		request.setTo("/" + Constants.CSE_ID + "/" + Constants.CSE_NAME);
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 		request.setResourceType(ResourceType.REMOTE_CSE);
 		request.setRequestContentType(MimeMediaType.OBJ);
@@ -292,7 +292,7 @@ public abstract class Test {
 
 		// setup request
 		request.setOperation(Operation.CREATE);
-		request.setTargetId(url);
+		request.setTo(url);
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 		request.setResourceType(ResourceType.AE_ANNC);
 		request.setRequestContentType(MimeMediaType.OBJ);
@@ -351,7 +351,7 @@ public abstract class Test {
 		acpCreateRequest.setRequestContentType(MimeMediaType.OBJ);
 		acpCreateRequest.setReturnContentType(MimeMediaType.OBJ);
 		acpCreateRequest.setResourceType(ResourceType.ACCESS_CONTROL_POLICY);
-		acpCreateRequest.setTargetId("/" + Constants.CSE_ID + "/" + Constants.CSE_NAME);
+		acpCreateRequest.setTo("/" + Constants.CSE_ID + "/" + Constants.CSE_NAME);
 		acpCreateRequest.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 		acpCreateRequest.setContent(acp);
 
@@ -395,7 +395,7 @@ public abstract class Test {
 		request.setRequestContentType(MimeMediaType.OBJ);
 		request.setReturnContentType(MimeMediaType.OBJ);
 		request.setResourceType(ResourceType.AE);
-		request.setTargetId("/" + Constants.CSE_ID + "/" + Constants.CSE_NAME);
+		request.setTo("/" + Constants.CSE_ID + "/" + Constants.CSE_NAME);
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 		request.setContent(ae);
 
@@ -435,7 +435,7 @@ public abstract class Test {
 		request.setRequestContentType(MimeMediaType.OBJ);
 		request.setReturnContentType(MimeMediaType.OBJ);
 		request.setResourceType(ResourceType.FLEXCONTAINER);
-		request.setTargetId(resourceUrl);
+		request.setTo(resourceUrl);
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 		request.setContent(flexContainer);
 
@@ -469,7 +469,7 @@ public abstract class Test {
 		request.setRequestContentType(MimeMediaType.OBJ);
 		request.setReturnContentType(MimeMediaType.OBJ);
 		request.setResourceType(ResourceType.FLEXCONTAINER_ANNC);
-		request.setTargetId(resourceUrl);
+		request.setTo(resourceUrl);
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 		request.setContent(flexContainerAnnc);
 
@@ -492,7 +492,7 @@ public abstract class Test {
 
 		// setup request
 		request.setOperation(Operation.RETRIEVE);
-		request.setTargetId(url);
+		request.setTo(url);
 		request.setFrom(from);
 		request.setResourceType(ResourceType.DYNAMIC_AUTHORIZATION_CONSULTATION);
 		request.setReturnContentType(MimeMediaType.OBJ);
@@ -503,7 +503,7 @@ public abstract class Test {
 	protected void deleteEntity(String url) {
 		RequestPrimitive request = new RequestPrimitive();
 		request.setOperation(Operation.DELETE);
-		request.setTargetId(url);
+		request.setTo(url);
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 		
 		getCseService().doRequest(request);

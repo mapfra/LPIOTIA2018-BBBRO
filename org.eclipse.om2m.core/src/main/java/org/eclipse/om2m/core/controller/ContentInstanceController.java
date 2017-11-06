@@ -91,12 +91,12 @@ public class ContentInstanceController extends Controller {
 		Patterns patterns = new Patterns();
 
 		// get the dao of the parent
-		DAO<?> dao = (DAO<?>) patterns.getDAO(request.getTargetId(), dbs);
+		DAO<?> dao = (DAO<?>) patterns.getDAO(request.getTo(), dbs);
 		if (dao == null) {
 			throw new ResourceNotFoundException("Cannot find parent resource");
 		}
 		// get the parent entity
-		ResourceEntity parentEntity = (ResourceEntity)dao.find(transaction, request.getTargetId());
+		ResourceEntity parentEntity = (ResourceEntity)dao.find(transaction, request.getTo());
 		// check the parent existence
 		if (parentEntity == null) {
 			throw new ResourceNotFoundException("Cannot find parent resource");
@@ -216,7 +216,7 @@ public class ContentInstanceController extends Controller {
 			if (container.getMaxNrOfInstances()!= null ){
 				if (container.getCurrentNrOfInstances().intValue() >= container.getMaxNrOfInstances().intValue()) {
 					LOGGER.info("Deleting oldest content instance due to container size limit");
-					ContentInstanceEntity cinent = dbs.getDAOFactory().getOldestDAO().find(transaction, request.getTargetId());
+					ContentInstanceEntity cinent = dbs.getDAOFactory().getOldestDAO().find(transaction, request.getTo());
 					dbs.getDAOFactory().getContentInstanceDAO().delete(transaction,cinent);
 					UriMapper.deleteUri(cinent.getHierarchicalURI());	
 				}else{
@@ -259,7 +259,7 @@ public class ContentInstanceController extends Controller {
 		ResponsePrimitive response = new ResponsePrimitive(request);
 
 		// check existence of the resource
-		ContentInstanceEntity cinEntity = dbs.getDAOFactory().getContentInstanceDAO().find(transaction, request.getTargetId());
+		ContentInstanceEntity cinEntity = dbs.getDAOFactory().getContentInstanceDAO().find(transaction, request.getTo());
 		if (cinEntity == null) {
 			throw new ResourceNotFoundException("Resource not found");
 		}
@@ -307,7 +307,7 @@ public class ContentInstanceController extends Controller {
 
 		// retrieve the target resource from database
 		ContentInstanceEntity cin = dbs.getDAOFactory()
-				.getContentInstanceDAO().find(transaction, request.getTargetId());
+				.getContentInstanceDAO().find(transaction, request.getTo());
 		if (cin == null) {
 			throw new ResourceNotFoundException("Resource not found");
 		}

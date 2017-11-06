@@ -75,7 +75,7 @@ public class CreateDAS_CseBase_Test extends Test {
 
 		// setup request
 		request.setOperation(Operation.CREATE);
-		request.setTargetId(toBeCreatedDasUrl);
+		request.setTo(toBeCreatedDasUrl);
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 		request.setResourceType(ResourceType.DYNAMIC_AUTHORIZATION_CONSULTATION);
 		request.setRequestContentType(MimeMediaType.OBJ);

@@ -91,13 +91,13 @@ public class AEController extends Controller {
 		Patterns patterns = new Patterns();
 
 		// Get the DAO of the parent
-		DAO<ResourceEntity> dao = (DAO<ResourceEntity>) patterns.getDAO(request.getTargetId(), dbs);
+		DAO<ResourceEntity> dao = (DAO<ResourceEntity>) patterns.getDAO(request.getTo(), dbs);
 		if (dao == null){
 			throw new ResourceNotFoundException("Cannot find parent resource");
 		}
 
 		// Get the parent entity
-		ResourceEntity parentEntity = (ResourceEntity) dao.find(transaction, request.getTargetId());
+		ResourceEntity parentEntity = (ResourceEntity) dao.find(transaction, request.getTo());
 		// Check the parent existence
 		if (parentEntity == null){
 			throw new ResourceNotFoundException("Cannot find parent resource");
@@ -364,7 +364,7 @@ public class AEController extends Controller {
 
 		// Check existence of the resource
 		AeEntity aeEntity = dbs.getDAOFactory()
-				.getAeDAO().find(transaction, request.getTargetId());
+				.getAeDAO().find(transaction, request.getTo());
 		if (aeEntity == null){
 			throw new ResourceNotFoundException("Resource not found");
 		}
@@ -409,7 +409,7 @@ public class AEController extends Controller {
 
 		// Retrieve the resource from database
 		AeEntity aeEntity = dbs.getDAOFactory()
-				.getAeDAO().find(transaction, request.getTargetId());
+				.getAeDAO().find(transaction, request.getTo());
 		if (aeEntity == null){
 			throw new ResourceNotFoundException("Resource not found");
 		}
@@ -578,7 +578,7 @@ public class AEController extends Controller {
 
 		// Retrieve the resource from database
 		AeEntity aeEntity = dbs.getDAOFactory()
-				.getAeDAO().find(transaction, request.getTargetId());
+				.getAeDAO().find(transaction, request.getTo());
 		if (aeEntity == null){
 			throw new ResourceNotFoundException("Resource not found");
 		}

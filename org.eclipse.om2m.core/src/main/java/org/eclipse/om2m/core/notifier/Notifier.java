@@ -153,7 +153,7 @@ public class Notifier {
 			request.setTo(contact);
 			return RestClient.sendRequest(request);
 		}else{
-			request.setTargetId(contact);
+			request.setTo(contact);
 			request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 			LOGGER.info("Sending notify request...");
 			return new Router().doRequest(request);

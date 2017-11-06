@@ -136,41 +136,35 @@ public class Router implements CseService {
 
 			// URI Handling
 			if (request.getTo() == null) {
-				if (request.getTargetId() == null) {
-					throw new BadRequestException("No To/TargetId parameter provided");
-				} else {
-					request.setTo(request.getTargetId());
-				}
-			} else if (request.getTargetId() == null) {
-				request.setTargetId(request.getTo());
-			}
-
-			if(request.getTargetId().startsWith("~")){
-				request.setTargetId(request.getTargetId().substring(1));
+				throw new BadRequestException("No To/TargetId parameter provided");
+			} 
+			
+			if(request.getTo().startsWith("~")){
+				request.setTo(request.getTo().substring(1));
 			} 
 
 			// Check if the SP-ID is provided
-			if(request.getTargetId().startsWith("//") || request.getTargetId().startsWith("_")){
-				String uri = request.getTargetId().substring(2);
+			if(request.getTo().startsWith("//") || request.getTo().startsWith("_")){
+				String uri = request.getTo().substring(2);
 				String spId = uri.split("/")[0];
 				if (!spId.equals(Constants.M2M_SP_ID)){
 					throw new ResourceNotFoundException("Not the current SP Domain (" + spId + ")");
 				} else {
-					request.setTargetId(uri.replace(spId, ""));
+					request.setTo(uri.replace(spId, ""));
 				}
-			} else if (!request.getTargetId().startsWith("/")){
-				request.setTargetId("/" + Constants.CSE_ID + "/" + request.getTargetId());
+			} else if (!request.getTo().startsWith("/")){
+				request.setTo("/" + Constants.CSE_ID + "/" + request.getTo());
 			}
 
 			// Remove the last "/" from the request uri if exist.
-			if(request.getTargetId().endsWith("/")){
-				request.setTargetId(request.getTargetId().substring(0,request.getTargetId().length()-1));
+			if(request.getTo().endsWith("/")){
+				request.setTo(request.getTo().substring(0,request.getTo().length()-1));
 			}
 
 			getQueryStringFromTargetId(request);
 
 			// Redirection case
-			if (!patterns.match(patterns.NON_RETARGETING_PATTERN, request.getTargetId())){
+			if (!patterns.match(patterns.NON_RETARGETING_PATTERN, request.getTo())){
 				LOGGER.info("Request targeting another CSE, forwarding to Redirector: " + request.getTo());
 				return Redirector.retarget(request);
 			}
@@ -178,39 +172,39 @@ public class Router implements CseService {
 
 			Controller controller = null ; 
 			// Case of hierarchical URI, retrieve the non-hierarchical URI of the resource
-			if (patterns.match(patterns.HIERARCHICAL_PATTERN, request.getTargetId())){
-				if(request.getTargetId().contains(patterns.FANOUT_POINT_MATCH + "/")){
-					int foptIndex = request.getTargetId().indexOf(patterns.FANOUT_POINT_MATCH);
-					String uri = request.getTargetId().substring(0, foptIndex);
-					String suffix = request.getTargetId()
+			if (patterns.match(patterns.HIERARCHICAL_PATTERN, request.getTo())){
+				if(request.getTo().contains(patterns.FANOUT_POINT_MATCH + "/")){
+					int foptIndex = request.getTo().indexOf(patterns.FANOUT_POINT_MATCH);
+					String uri = request.getTo().substring(0, foptIndex);
+					String suffix = request.getTo()
 							.substring(
 									foptIndex + patterns.FANOUT_POINT_MATCH.length(), 
-									request.getTargetId().length()
+									request.getTo().length()
 									);
 					controller = new FanOutPointController(suffix);
-					request.setTargetId(uri);
+					request.setTo(uri);
 					LOGGER.info("Fan Out request received: [grp uri: " + uri + ", suffix: " + suffix + "]");
-				} if (request.getTargetId().endsWith(patterns.FANOUT_POINT_MATCH)) {
+				} if (request.getTo().endsWith(patterns.FANOUT_POINT_MATCH)) {
 					controller = new FanOutPointController();
-					request.setTargetId(request.getTargetId().replaceAll(patterns.FANOUT_POINT_MATCH, ""));
-					LOGGER.info("Fan Out request received: [grp uri: " + request.getTargetId()+ "]");
+					request.setTo(request.getTo().replaceAll(patterns.FANOUT_POINT_MATCH, ""));
+					LOGGER.info("Fan Out request received: [grp uri: " + request.getTo()+ "]");
 				} 
-				if(request.getTargetId().endsWith("/" + ShortName.LATEST)){
+				if(request.getTo().endsWith("/" + ShortName.LATEST)){
 					controller = new LatestOldestController(SortingPolicy.LATEST);
-					request.setTargetId(request.getTargetId() + "/");
-					request.setTargetId(request.getTargetId().replace("/"+ShortName.LATEST+"/", ""));
+					request.setTo(request.getTo() + "/");
+					request.setTo(request.getTo().replace("/"+ShortName.LATEST+"/", ""));
 				}
-				if (request.getTargetId().endsWith("/" + ShortName.OLDEST)){
+				if (request.getTo().endsWith("/" + ShortName.OLDEST)){
 					controller = new LatestOldestController(SortingPolicy.OLDEST);
-					request.setTargetId(request.getTargetId() + "/");
-					request.setTargetId(request.getTargetId().replace("/"+ShortName.OLDEST+"/", ""));
+					request.setTo(request.getTo() + "/");
+					request.setTo(request.getTo().replace("/"+ShortName.OLDEST+"/", ""));
 				}
-				String nonHierarchicalUri = UriMapper.getNonHierarchicalUri(request.getTargetId());
+				String nonHierarchicalUri = UriMapper.getNonHierarchicalUri(request.getTo());
 				if (nonHierarchicalUri == null){
 					throw new ResourceNotFoundException("Resource not found");
 				}
-				request.setTargetId(nonHierarchicalUri);
-				LOGGER.debug("Changing to unstructured uri for routing to: " + request.getTargetId());
+				request.setTo(nonHierarchicalUri);
+				LOGGER.debug("Changing to unstructured uri for routing to: " + request.getTo());
 			}
 
 			// Notify case
@@ -230,7 +224,7 @@ public class Router implements CseService {
 				if (request.getOperation().equals(Operation.CREATE)){
 					controller = getResourceControllerFromRT(request.getResourceType());
 				} else {
-					controller = getResourceControllerFromURI(request.getTargetId());
+					controller = getResourceControllerFromURI(request.getTo());
 				}        		
 			}
 
@@ -381,8 +375,8 @@ public class Router implements CseService {
 		if (request.getTo().contains("#")) {
 			request.getQueryStrings().put("#", new ArrayList());
 		}
-		if(request.getTargetId().contains("?")){
-			String query = request.getTargetId().split("\\?")[1];
+		if(request.getTo().contains("?")){
+			String query = request.getTo().split("\\?")[1];
 			Map<String, List<String>> parameters = new HashMap<String, List<String>>();
 			if (query != null) {
 				String[] pairs = query.split("[&]");
@@ -408,10 +402,6 @@ public class Router implements CseService {
 			}
 			request.getQueryStrings().putAll(parameters);
 			
-			if(request.getTo() == null){
-				request.setTo(request.getTargetId().split("\\?")[0]);
-				request.setTargetId(request.getTo());
-			}
 		}
 
 	}

@@ -108,7 +108,7 @@ public class AeRegistration implements InterworkingService, org.eclipse.om2m.sdt
 		RequestPrimitive request = new RequestPrimitive();
 		request.setOperation(Operation.CREATE);
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
-		request.setTargetId("/" + Constants.CSE_ID + "/" + Constants.CSE_NAME);
+		request.setTo("/" + Constants.CSE_ID + "/" + Constants.CSE_NAME);
 		request.setResourceType(ResourceType.AE);
 		request.setReturnContentType(MimeMediaType.OBJ);
 		request.setRequestContentType(MimeMediaType.OBJ);
@@ -151,7 +151,7 @@ public class AeRegistration implements InterworkingService, org.eclipse.om2m.sdt
 		RequestPrimitive request = new RequestPrimitive();
 		request.setOperation(Operation.DELETE);
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
-		request.setTargetId(registeredApplication.getResourceID());
+		request.setTo(registeredApplication.getResourceID());
 
 		cseService.doRequest(request);
 		deleteAcp();
@@ -173,7 +173,7 @@ public class AeRegistration implements InterworkingService, org.eclipse.om2m.sdt
 
 		request.setOperation(Operation.CREATE);
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
-		request.setTargetId("/" + Constants.CSE_ID + "/" + Constants.CSE_NAME);
+		request.setTo("/" + Constants.CSE_ID + "/" + Constants.CSE_NAME);
 		request.setResourceType(ResourceType.ACCESS_CONTROL_POLICY);
 		request.setReturnContentType(MimeMediaType.OBJ);
 		request.setRequestContentType(MimeMediaType.OBJ);
@@ -206,7 +206,7 @@ public class AeRegistration implements InterworkingService, org.eclipse.om2m.sdt
 		RequestPrimitive request = new RequestPrimitive();
 		request.setOperation(Operation.DELETE);
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
-		request.setTargetId(registeredAcp.getResourceID());
+		request.setTo(registeredAcp.getResourceID());
 		cseService.doRequest(request);
 	}
 	
@@ -216,7 +216,7 @@ public class AeRegistration implements InterworkingService, org.eclipse.om2m.sdt
 
 		RequestPrimitive request = new RequestPrimitive();
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
-		request.setTargetId(resourceID);
+		request.setTo(resourceID);
 		request.setOperation(Operation.CREATE);
 		request.setResourceType(ResourceType.CONTAINER);
 		request.setReturnContentType(MimeMediaType.OBJ);
@@ -235,7 +235,7 @@ public class AeRegistration implements InterworkingService, org.eclipse.om2m.sdt
 
 		RequestPrimitive request = new RequestPrimitive();
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
-		request.setTargetId(iconContainer.getResourceID());
+		request.setTo(iconContainer.getResourceID());
 		request.setOperation(Operation.CREATE);
 		request.setResourceType(ResourceType.CONTENT_INSTANCE);
 		request.setReturnContentType(MimeMediaType.OBJ);
@@ -333,7 +333,7 @@ public class AeRegistration implements InterworkingService, org.eclipse.om2m.sdt
 		RequestPrimitive request = new RequestPrimitive();
 		request.setOperation(Operation.CREATE);
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
-		request.setTargetId(resourceId);
+		request.setTo(resourceId);
 		request.setResourceType(ResourceType.SUBSCRIPTION);
 		request.setReturnContentType(MimeMediaType.JSON);
 		request.setRequestContentType(MimeMediaType.OBJ);
@@ -367,7 +367,7 @@ public class AeRegistration implements InterworkingService, org.eclipse.om2m.sdt
 		RequestPrimitive request = new RequestPrimitive();
 		request.setOperation(Operation.DELETE);
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
-		request.setTargetId(subscriptionId);
+		request.setTo(subscriptionId);
 		request.setResourceType(ResourceType.SUBSCRIPTION);
 		request.setReturnContentType(MimeMediaType.OBJ);
 		request.setRequestContentType(MimeMediaType.OBJ);

@@ -271,7 +271,7 @@ public class InterworkingServiceImpl implements InterworkingService {
 	public static ResponsePrimitive createResource(String targetId, Resource resource, int resourceType) {
 		RequestPrimitive request = new RequestPrimitive();
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
-		request.setTargetId(targetId);
+		request.setTo(targetId);
 		request.setResourceType(BigInteger.valueOf(resourceType));
 		request.setRequestContentType(MimeMediaType.OBJ);
 		request.setReturnContentType(MimeMediaType.OBJ);

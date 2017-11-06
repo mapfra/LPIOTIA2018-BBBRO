@@ -68,13 +68,13 @@ public class AEAnncController extends Controller {
 		Patterns patterns = new Patterns();
 
 		// Get the DAO of the parent
-		DAO<ResourceEntity> dao = (DAO<ResourceEntity>) patterns.getDAO(request.getTargetId(), dbs);
+		DAO<ResourceEntity> dao = (DAO<ResourceEntity>) patterns.getDAO(request.getTo(), dbs);
 		if (dao == null) {
 			throw new ResourceNotFoundException("Cannot find parent resource");
 		}
 
 		// Get the parent entity
-		ResourceEntity parentEntity = (ResourceEntity) dao.find(transaction, request.getTargetId());
+		ResourceEntity parentEntity = (ResourceEntity) dao.find(transaction, request.getTo());
 		// Check the parent existence
 		if (parentEntity == null) {
 			throw new ResourceNotFoundException("Cannot find parent resource");
@@ -333,7 +333,7 @@ public class AEAnncController extends Controller {
 
 		// Check existence of the resource
 		AeAnncEntity aeAnncEntity = dbs.getDAOFactory()
-				.getAeAnncDAO().find(transaction, request.getTargetId());
+				.getAeAnncDAO().find(transaction, request.getTo());
 		if (aeAnncEntity == null){
 			throw new ResourceNotFoundException("Resource not found");
 		}
@@ -346,7 +346,7 @@ public class AEAnncController extends Controller {
 			RequestPrimitive originalResourceRequest = new RequestPrimitive();
 			originalResourceRequest.setOperation(Operation.RETRIEVE);
 			originalResourceRequest.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
-			originalResourceRequest.setTargetId(aeAnncEntity.getLink());
+			originalResourceRequest.setTo(aeAnncEntity.getLink());
 			originalResourceRequest.setReturnContentType(request.getReturnContentType());
 			return Redirector.retarget(originalResourceRequest );
 		} else {
@@ -388,7 +388,7 @@ public class AEAnncController extends Controller {
 
 		// Retrieve the resource from database
 		AeAnncEntity aeAnncEntity = dbs.getDAOFactory()
-				.getAeAnncDAO().find(transaction, request.getTargetId());
+				.getAeAnncDAO().find(transaction, request.getTo());
 		if (aeAnncEntity == null){
 			throw new ResourceNotFoundException("Resource not found");
 		}
@@ -519,7 +519,7 @@ public class AEAnncController extends Controller {
 
 		// Retrieve the resource from database
 		AeAnncEntity aeAnncEntity = dbs.getDAOFactory()
-				.getAeAnncDAO().find(transaction, request.getTargetId());
+				.getAeAnncDAO().find(transaction, request.getTo());
 		if (aeAnncEntity == null){
 			throw new ResourceNotFoundException("Resource not found");
 		}

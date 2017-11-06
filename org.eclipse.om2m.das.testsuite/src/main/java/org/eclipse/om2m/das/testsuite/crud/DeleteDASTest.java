@@ -61,7 +61,7 @@ public class DeleteDASTest extends Test {
 		// prepare request
 		RequestPrimitive requestPrimitive = new RequestPrimitive();
 		requestPrimitive.setOperation(Operation.DELETE);
-		requestPrimitive.setTargetId(dasUrl);
+		requestPrimitive.setTo(dasUrl);
 		requestPrimitive.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 
 		// execute request

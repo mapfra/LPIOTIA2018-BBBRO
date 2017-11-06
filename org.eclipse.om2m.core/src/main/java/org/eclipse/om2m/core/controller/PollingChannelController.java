@@ -61,14 +61,14 @@ public class PollingChannelController extends Controller {
 		ResponsePrimitive response = new ResponsePrimitive(request);
 		Patterns patterns = new Patterns();
 
-		DAO<ResourceEntity> dao = (DAO<ResourceEntity>) patterns.getDAO(request.getTargetId(), dbs);
+		DAO<ResourceEntity> dao = (DAO<ResourceEntity>) patterns.getDAO(request.getTo(), dbs);
 		if (dao == null){
 			throw new ResourceNotFoundException("Cannot find parent resource");
 		}
 
 		// Get the parent entity
-		LOGGER.info("Target ID in controller: " + request.getTargetId());
-		ResourceEntity parentEntity = (ResourceEntity) dao.find(transaction, request.getTargetId());
+		LOGGER.info("Target ID in controller: " + request.getTo());
+		ResourceEntity parentEntity = (ResourceEntity) dao.find(transaction, request.getTo());
 		// Check the parent existence
 		if (parentEntity == null){
 			throw new ResourceNotFoundException("Cannot find parent resource");
@@ -192,7 +192,7 @@ public class PollingChannelController extends Controller {
 		ResponsePrimitive response = new ResponsePrimitive(request);
 		
 		// Check the existence of the resource
-		PollingChannelEntity pollingChannelEntity = dbs.getDAOFactory().getPollingChannelDAO().find(transaction, request.getTargetId());
+		PollingChannelEntity pollingChannelEntity = dbs.getDAOFactory().getPollingChannelDAO().find(transaction, request.getTo());
 		if(pollingChannelEntity == null){
 			throw new ResourceNotFoundException();
 		}
@@ -213,7 +213,7 @@ public class PollingChannelController extends Controller {
 		ResponsePrimitive response = new ResponsePrimitive(request);
 		
 		// Check the existence of the resource
-		PollingChannelEntity pollingChannelEntity = dbs.getDAOFactory().getPollingChannelDAO().find(transaction, request.getTargetId());
+		PollingChannelEntity pollingChannelEntity = dbs.getDAOFactory().getPollingChannelDAO().find(transaction, request.getTo());
 		if(pollingChannelEntity == null){
 			throw new ResourceNotFoundException();
 		}
@@ -273,7 +273,7 @@ public class PollingChannelController extends Controller {
 		ResponsePrimitive response = new ResponsePrimitive(request);
 		
 		// Check the existence of the resource
-		PollingChannelEntity pollingChannelEntity = dbs.getDAOFactory().getPollingChannelDAO().find(transaction, request.getTargetId());
+		PollingChannelEntity pollingChannelEntity = dbs.getDAOFactory().getPollingChannelDAO().find(transaction, request.getTo());
 		if(pollingChannelEntity == null){
 			throw new ResourceNotFoundException();
 		}

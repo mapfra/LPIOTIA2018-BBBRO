@@ -88,7 +88,7 @@ public class UpdateDASTest extends Test {
 		request.setRequestContentType(MimeMediaType.OBJ);
 		request.setReturnContentType(MimeMediaType.OBJ);
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
-		request.setTargetId(dasUrl);
+		request.setTo(dasUrl);
 
 		// perform request
 		ResponsePrimitive response = getCseService().doRequest(request);

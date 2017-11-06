@@ -58,7 +58,7 @@ public class RetrieveDASTest extends Test {
 		requestPrimitive.setRequestContentType(MimeMediaType.OBJ);
 		requestPrimitive.setReturnContentType(MimeMediaType.OBJ);
 		requestPrimitive.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
-		requestPrimitive.setTargetId(dasUrl);
+		requestPrimitive.setTo(dasUrl);
 
 		// perform request
 		ResponsePrimitive response = getCseService().doRequest(requestPrimitive);

@@ -86,7 +86,7 @@ public class ResourceDiscovery {
 				.add(RESOURCE_ID_SEARCH_STRING + RESOURCE_ID);
 		request.getFilterCriteria().getLabels()
 				.add(RESOURCE_TYPE_APPLICATION_SEARCH_STRING);
-		request.setTargetId(SEP + Constants.CSE_ID + SEP + Constants.CSE_NAME);
+		request.setTo(SEP + Constants.CSE_ID + SEP + Constants.CSE_NAME);
 		ResponsePrimitive response = cseService.doRequest(request);
 		if (! ResponseStatusCode.OK.equals(response.getResponseStatusCode())) {
 			return null;
@@ -99,7 +99,7 @@ public class ResourceDiscovery {
 	static public List<String> readDeviceURIs() throws Exception {
 		RequestPrimitive request = new RequestPrimitive();
 //		http://127.0.0.1:8081/om2m//mn-cse/mn-name/in-name/SDT_IPE_Annc?rcn=7
-		request.setTargetId(SEP + Constants.CSE_ID + SEP + Constants.CSE_NAME 
+		request.setTo(SEP + Constants.CSE_ID + SEP + Constants.CSE_NAME 
 			+ SEP + Constants.REMOTE_CSE_NAME + SEP + MN_CSE_NAME);
 		request.setReturnContentType(MimeMediaType.OBJ);
 		request.setRequestContentType(MimeMediaType.OBJ);
@@ -621,7 +621,7 @@ public class ResourceDiscovery {
 		request.setFilterCriteria(new FilterCriteria());
 		request.getFilterCriteria().setLevel(BigInteger.ONE);
 //		request.setFrom(name + ":" + pwd);
-		request.setTargetId(uri);
+		request.setTo(uri);
 		request.setResultContent(resultContent);
 //		Activator.logger.info(request.toString(), ResourceDiscovery.class);
 
@@ -637,7 +637,7 @@ public class ResourceDiscovery {
 		request.setReturnContentType(MimeMediaType.OBJ);
 		request.setRequestContentType(MimeMediaType.OBJ);
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
-		request.setTargetId(uri);
+		request.setTo(uri);
 		request.setResultContent(ResultContent.ORIGINAL_RES);
 
 		ResponsePrimitive response = cseService.doRequest(request);
@@ -659,7 +659,7 @@ public class ResourceDiscovery {
 		request.setResultContent(ResultContent.ORIGINAL_RES);
 		request.setOperation(Operation.UPDATE);
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
-		request.setTargetId(uri);
+		request.setTo(uri);
 
 		ResponsePrimitive response = cseService.doRequest(request);
 		Activator.logger.info("write " + customAttribute + " -> " + response.getResponseStatusCode());
@@ -679,7 +679,7 @@ public class ResourceDiscovery {
 		request.setResultContent(ResultContent.ORIGINAL_RES);
 		request.setOperation(Operation.UPDATE);
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
-		request.setTargetId(uri);
+		request.setTo(uri);
 
 		ResponsePrimitive response = cseService.doRequest(request);
 		Activator.logger.info("invoke " + customAttributes + " -> " + response.getResponseStatusCode());

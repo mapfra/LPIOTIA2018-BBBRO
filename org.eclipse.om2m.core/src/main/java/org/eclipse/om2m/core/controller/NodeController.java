@@ -80,14 +80,14 @@ public class NodeController extends Controller {
 		Patterns patterns = new Patterns();
 
 		// retrieve the parent
-		DAO<ResourceEntity> dao = (DAO<ResourceEntity>) patterns.getDAO(request.getTargetId(), dbs);
+		DAO<ResourceEntity> dao = (DAO<ResourceEntity>) patterns.getDAO(request.getTo(), dbs);
 		if (dao == null){
 			throw new ResourceNotFoundException("Cannot find parent resource");
 		}
 
 		// Get the parent entity
-		LOGGER.trace("Target ID in controller: " + request.getTargetId());
-		ResourceEntity parentEntity = (ResourceEntity) dao.find(transaction, request.getTargetId());
+		LOGGER.trace("Target ID in controller: " + request.getTo());
+		ResourceEntity parentEntity = (ResourceEntity) dao.find(transaction, request.getTo());
 		// Check the parent existence
 		if (parentEntity == null){
 			throw new ResourceNotFoundException("Cannot find parent resource");
@@ -204,7 +204,7 @@ public class NodeController extends Controller {
 		ResponsePrimitive response = new ResponsePrimitive(request);
 
 		// get the entity
-		NodeEntity nodeEntity = dbs.getDAOFactory().getNodeEntityDAO().find(transaction, request.getTargetId());
+		NodeEntity nodeEntity = dbs.getDAOFactory().getNodeEntityDAO().find(transaction, request.getTo());
 		if (nodeEntity == null) {
 			throw new ResourceNotFoundException();
 		}
@@ -229,7 +229,7 @@ public class NodeController extends Controller {
 		ResponsePrimitive response = new ResponsePrimitive(request);
 
 		// retrieve the resource from database
-		NodeEntity nodeEntity = dbs.getDAOFactory().getNodeEntityDAO().find(transaction, request.getTargetId());
+		NodeEntity nodeEntity = dbs.getDAOFactory().getNodeEntityDAO().find(transaction, request.getTo());
 		if (nodeEntity == null) {
 			throw new ResourceNotFoundException();
 		}
@@ -335,7 +335,7 @@ public class NodeController extends Controller {
 		ResponsePrimitive response = new ResponsePrimitive(request);
 
 		// retrieve the entity
-		NodeEntity nodeEntity = dbs.getDAOFactory().getNodeEntityDAO().find(transaction, request.getTargetId());
+		NodeEntity nodeEntity = dbs.getDAOFactory().getNodeEntityDAO().find(transaction, request.getTo());
 		if (nodeEntity == null) {
 			throw new ResourceNotFoundException();
 		}

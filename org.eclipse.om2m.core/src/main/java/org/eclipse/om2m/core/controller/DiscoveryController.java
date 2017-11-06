@@ -82,12 +82,12 @@ public class DiscoveryController extends Controller {
 		Patterns patterns = new Patterns();
 
 		// Get the DAO of the parent
-		DAO<?> dao = (DAO<?>) patterns.getDAO(request.getTargetId(), dbs);
+		DAO<?> dao = (DAO<?>) patterns.getDAO(request.getTo(), dbs);
 		if (dao == null){
 			throw new ResourceNotFoundException("Root resource not found for discovery");
 		}
 
-		ResourceEntity resourceEntity = (ResourceEntity) dao.find(transaction, request.getTargetId());
+		ResourceEntity resourceEntity = (ResourceEntity) dao.find(transaction, request.getTo());
 
 //		List<AccessControlPolicyEntity> acpsToCheck = getAcpsFromEntity(resourceEntity);
 //
@@ -147,7 +147,7 @@ public class DiscoveryController extends Controller {
 		} else {
 			// Get the list of UriMapperEntity from database with some filters
 			childUris = dbs.getDBUtilManager().getComplexFindUtil().
-					getChildUrisDis(request.getTargetId(), filter);
+					getChildUrisDis(request.getTo(), filter);
 		}
 		
 		URIList uriList = new URIList();

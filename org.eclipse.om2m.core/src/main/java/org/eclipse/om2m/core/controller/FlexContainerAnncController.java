@@ -72,13 +72,13 @@ public class FlexContainerAnncController extends Controller {
 		Patterns patterns = new Patterns();
 
 		// get the dao of the parent
-		DAO<ResourceEntity> dao = (DAO<ResourceEntity>) patterns.getDAO(request.getTargetId(), dbs);
+		DAO<ResourceEntity> dao = (DAO<ResourceEntity>) patterns.getDAO(request.getTo(), dbs);
 		if (dao == null) {
 			throw new ResourceNotFoundException("Cannot find parent resource");
 		}
 
 		// get the parent entity
-		ResourceEntity parentEntity = (ResourceEntity) dao.find(transaction, request.getTargetId());
+		ResourceEntity parentEntity = (ResourceEntity) dao.find(transaction, request.getTo());
 		// check the parent existence
 		if (parentEntity == null) {
 			throw new ResourceNotFoundException("Cannot find parent resource");
@@ -282,7 +282,7 @@ public class FlexContainerAnncController extends Controller {
 
 		// Check existence of the resource
 		FlexContainerAnncEntity flexContainerAnncEntity = dbs.getDAOFactory().getFlexContainerAnncDAO()
-				.find(transaction, request.getTargetId());
+				.find(transaction, request.getTo());
 		if (flexContainerAnncEntity == null) {
 			throw new ResourceNotFoundException("Resource not found");
 		}
@@ -297,7 +297,7 @@ public class FlexContainerAnncController extends Controller {
 			RequestPrimitive originalResourceRequest = new RequestPrimitive();
 			originalResourceRequest.setOperation(Operation.RETRIEVE);
 			originalResourceRequest.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
-			originalResourceRequest.setTargetId(flexContainerAnncEntity.getLink());
+			originalResourceRequest.setTo(flexContainerAnncEntity.getLink());
 			originalResourceRequest.setReturnContentType(request.getReturnContentType());
 			return Redirector.retarget(originalResourceRequest);
 		} else {
@@ -317,7 +317,7 @@ public class FlexContainerAnncController extends Controller {
 
 		// Check existence of the resource
 		FlexContainerAnncEntity flexContainerAnncEntity = dbs.getDAOFactory().getFlexContainerAnncDAO()
-				.find(transaction, request.getTargetId());
+				.find(transaction, request.getTo());
 		if (flexContainerAnncEntity == null) {
 			throw new ResourceNotFoundException("Resource not found");
 		}
@@ -338,7 +338,7 @@ public class FlexContainerAnncController extends Controller {
 			RequestPrimitive originalResourceRequest = new RequestPrimitive();
 			originalResourceRequest.setOperation(Operation.UPDATE);
 			originalResourceRequest.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
-			originalResourceRequest.setTargetId(flexContainerAnncEntity.getLink());
+			originalResourceRequest.setTo(flexContainerAnncEntity.getLink());
 			originalResourceRequest.setRequestContentType(request.getRequestContentType());
 			originalResourceRequest.setReturnContentType(request.getReturnContentType());
 			originalResourceRequest.setContent(request.getContent());
@@ -463,7 +463,7 @@ public class FlexContainerAnncController extends Controller {
 
 		// Retrieve the resource from database
 		FlexContainerAnncEntity flexContainerAnncEntity = dbs.getDAOFactory().getFlexContainerAnncDAO()
-				.find(transaction, request.getTargetId());
+				.find(transaction, request.getTo());
 		if (flexContainerAnncEntity == null) {
 			throw new ResourceNotFoundException("Resource not found");
 		}

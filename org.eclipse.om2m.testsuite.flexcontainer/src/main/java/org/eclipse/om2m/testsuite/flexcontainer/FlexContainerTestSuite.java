@@ -109,7 +109,6 @@ public abstract class FlexContainerTestSuite {
 		RequestPrimitive request = new RequestPrimitive();
 		request.setContent(resource);
 		request.setFrom(from);
-		request.setTargetId(resourceLocation);
 		request.setTo(resourceLocation);
 		request.setResourceType(BigInteger.valueOf(resourceType));
 		request.setRequestContentType(requestContentType);
@@ -153,7 +152,6 @@ public abstract class FlexContainerTestSuite {
 		RequestPrimitive request = new RequestPrimitive();
 		request.setContent(resource);
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
-		request.setTargetId(resourceLocation);
 		request.setTo(resourceLocation);
 		request.setResourceType(BigInteger.valueOf(resourceType));
 		request.setRequestContentType(MimeMediaType.OBJ);
@@ -186,7 +184,6 @@ public abstract class FlexContainerTestSuite {
 	protected ResponsePrimitive sendRetrieveRequest(String resourceLocation, String from) {
 		RequestPrimitive request = new RequestPrimitive();
 		request.setFrom(from);
-		request.setTargetId(resourceLocation);
 		request.setTo(resourceLocation);
 		request.setRequestContentType(MimeMediaType.OBJ);
 		request.setReturnContentType(MimeMediaType.OBJ);
@@ -210,7 +207,6 @@ public abstract class FlexContainerTestSuite {
 	protected ResponsePrimitive sendDeleteRequest(String resourceLocation, String from) {
 		RequestPrimitive request = new RequestPrimitive();
 		request.setFrom(from);
-		request.setTargetId(resourceLocation);
 		request.setTo(resourceLocation);
 		request.setRequestContentType(MimeMediaType.OBJ);
 		request.setReturnContentType(MimeMediaType.OBJ);

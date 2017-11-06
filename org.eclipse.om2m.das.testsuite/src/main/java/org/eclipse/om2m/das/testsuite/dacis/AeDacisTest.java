@@ -50,7 +50,7 @@ public class AeDacisTest extends Test {
 		RequestPrimitive createRequest = new RequestPrimitive();
 		createRequest.setOperation(Operation.CREATE);
 		createRequest.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
-		createRequest.setTargetId("/" + Constants.CSE_ID + "/" + Constants.CSE_NAME);
+		createRequest.setTo("/" + Constants.CSE_ID + "/" + Constants.CSE_NAME);
 		createRequest.setRequestContentType(MimeMediaType.OBJ);
 		createRequest.setReturnContentType(MimeMediaType.OBJ);
 		createRequest.setResourceType(ResourceType.AE);
@@ -123,7 +123,7 @@ public class AeDacisTest extends Test {
 		RequestPrimitive deleteDACRequest = new RequestPrimitive();
 		deleteDACRequest.setOperation(Operation.DELETE);
 		deleteDACRequest.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
-		deleteDACRequest.setTargetId(dac.getResourceID());
+		deleteDACRequest.setTo(dac.getResourceID());
 		if (!ResponseStatusCode.DELETED.equals(getCseService().doRequest(deleteDACRequest).getResponseStatusCode())) {
 			setState(State.KO);
 			setMessage("unable to delete DAC");

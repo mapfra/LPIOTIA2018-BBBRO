@@ -95,13 +95,13 @@ public class GroupController extends Controller {
 		Patterns patterns = new Patterns();
 
 		// Get the DAO of the parent
-		DAO<ResourceEntity> dao = (DAO<ResourceEntity>) patterns.getDAO(request.getTargetId(), dbs);
+		DAO<ResourceEntity> dao = (DAO<ResourceEntity>) patterns.getDAO(request.getTo(), dbs);
 		if (dao == null){
 			throw new ResourceNotFoundException("Cannot find parent resource");
 		}
 
 		// Get the parent entity
-		ResourceEntity parentEntity = (ResourceEntity) dao.find(transaction, request.getTargetId());
+		ResourceEntity parentEntity = (ResourceEntity) dao.find(transaction, request.getTo());
 		// Check the parent existence
 		if (parentEntity == null){
 			throw new ResourceNotFoundException("Cannot find parent resource");
@@ -290,7 +290,7 @@ public class GroupController extends Controller {
 
 		// Check the existence of the resource
 		GroupEntity groupEntity = dbs.getDAOFactory().getGroupDAO().
-				find(transaction, request.getTargetId());
+				find(transaction, request.getTo());
 		if (groupEntity == null){
 			throw new ResourceNotFoundException("Resource not found");
 		}
@@ -341,7 +341,7 @@ public class GroupController extends Controller {
 
 		// Retrieve the resource from database
 		GroupEntity groupEntity = dbs.getDAOFactory()
-				.getGroupDAO().find(transaction, request.getTargetId());
+				.getGroupDAO().find(transaction, request.getTo());
 		if (groupEntity == null){
 			throw new ResourceNotFoundException("Resource not found");
 		}
@@ -479,7 +479,7 @@ public class GroupController extends Controller {
 
 		// Retrieve the resource from database
 		GroupEntity groupEntity = dbs.getDAOFactory()
-				.getGroupDAO().find(transaction, request.getTargetId());
+				.getGroupDAO().find(transaction, request.getTo());
 		if (groupEntity == null){
 			throw new ResourceNotFoundException("Resource not found");
 		}

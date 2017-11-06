@@ -78,7 +78,7 @@ public class DASServiceTest_IndirectDACIs extends AbstractDASServiceTest {
 		// prepare childCreateRequest
 		RequestPrimitive childCreateRequest = new RequestPrimitive();
 		childCreateRequest.setFrom("mama:mimi");
-		childCreateRequest.setTargetId(parentFlexContainer.getResourceID());
+		childCreateRequest.setTo(parentFlexContainer.getResourceID());
 		childCreateRequest.setOperation(Operation.CREATE);
 		childCreateRequest.setRequestContentType(MimeMediaType.OBJ);
 		childCreateRequest.setReturnContentType(MimeMediaType.OBJ);
@@ -110,7 +110,7 @@ public class DASServiceTest_IndirectDACIs extends AbstractDASServiceTest {
 		// retrieve child FlexContainer
 		RequestPrimitive retrieveChildFlexContainerRequest = new RequestPrimitive();
 		retrieveChildFlexContainerRequest.setFrom("sisi:sasa");
-		retrieveChildFlexContainerRequest.setTargetId(createdChildFlexContainer.getResourceID());
+		retrieveChildFlexContainerRequest.setTo(createdChildFlexContainer.getResourceID());
 		retrieveChildFlexContainerRequest.setOperation(Operation.RETRIEVE);
 		retrieveChildFlexContainerRequest.setReturnContentType(MimeMediaType.OBJ);
 
@@ -145,7 +145,7 @@ public class DASServiceTest_IndirectDACIs extends AbstractDASServiceTest {
 		RequestPrimitive createGrandSonRequest = new RequestPrimitive();
 		createGrandSonRequest.setOperation(Operation.CREATE);
 		createGrandSonRequest.setFrom("juju:jaja");
-		createGrandSonRequest.setTargetId(createdChildFlexContainer.getResourceID());
+		createGrandSonRequest.setTo(createdChildFlexContainer.getResourceID());
 		createGrandSonRequest.setRequestContentType(MimeMediaType.OBJ);
 		createGrandSonRequest.setReturnContentType(MimeMediaType.OBJ);
 		createGrandSonRequest.setResourceType(ResourceType.FLEXCONTAINER);
@@ -176,7 +176,7 @@ public class DASServiceTest_IndirectDACIs extends AbstractDASServiceTest {
 
 		// prepare retrieveGrandSonFlexContainerRequest
 		RequestPrimitive retrieveGrandSonFlexContainerRequest = new RequestPrimitive();
-		retrieveGrandSonFlexContainerRequest.setTargetId(createdGrandSonFlexContainer.getResourceID());
+		retrieveGrandSonFlexContainerRequest.setTo(createdGrandSonFlexContainer.getResourceID());
 		retrieveGrandSonFlexContainerRequest.setReturnContentType(MimeMediaType.OBJ);
 		retrieveGrandSonFlexContainerRequest.setOperation(Operation.RETRIEVE);
 		retrieveGrandSonFlexContainerRequest.setFrom("xixi:xoxo");

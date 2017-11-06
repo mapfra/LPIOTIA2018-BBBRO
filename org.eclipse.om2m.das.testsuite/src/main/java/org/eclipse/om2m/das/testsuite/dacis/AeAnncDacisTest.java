@@ -64,7 +64,7 @@ public class AeAnncDacisTest extends Test {
 		RequestPrimitive createRequest = new RequestPrimitive();
 		createRequest.setOperation(Operation.CREATE);
 		createRequest.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
-		createRequest.setTargetId(remoteCse.getResourceID());
+		createRequest.setTo(remoteCse.getResourceID());
 		createRequest.setRequestContentType(MimeMediaType.OBJ);
 		createRequest.setReturnContentType(MimeMediaType.OBJ);
 		createRequest.setResourceType(ResourceType.AE_ANNC);
@@ -137,7 +137,7 @@ public class AeAnncDacisTest extends Test {
 		// DELETE DAC
 		RequestPrimitive deleteRequest = new RequestPrimitive();
 		deleteRequest.setOperation(Operation.DELETE);
-		deleteRequest.setTargetId(dac.getResourceID());
+		deleteRequest.setTo(dac.getResourceID());
 		deleteRequest.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 		ResponsePrimitive deleteResponse = getCseService().doRequest(deleteRequest);
 		if (!ResponseStatusCode.DELETED.equals(deleteResponse.getResponseStatusCode())) {

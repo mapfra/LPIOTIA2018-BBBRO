@@ -64,19 +64,13 @@ public class Redirector implements Constants {
 	 */
 	public static ResponsePrimitive retarget(RequestPrimitive request) {
 		if (request.getTo() == null) {
-			if (request.getTargetId() == null) {
-				throw new BadRequestException("No To/TargetId parameter provided");
-			} else {
-				request.setTo(request.getTargetId());
-			}
-		} else if (request.getTargetId() == null) {
-			request.setTargetId(request.getTo());
-		}
+			throw new BadRequestException("No To/TargetId parameter provided");
+		} 
 		String remoteCseId = "";
 		ResponsePrimitive response = new ResponsePrimitive(request);
 
 		try {
-			remoteCseId = "/" + request.getTargetId().split("/")[1];
+			remoteCseId = "/" + request.getTo().split("/")[1];
 		} catch (ArrayIndexOutOfBoundsException e) {
 			LOGGER.debug("Remote cse not found", e);
 			throw new ResourceNotFoundException("Remote cse not found", e);
@@ -224,23 +218,17 @@ public class Redirector implements Constants {
 
 	public static ResponsePrimitive retargetNotify(RequestPrimitive request) {
 		if (request.getTo() == null) {
-			if (request.getTargetId() == null) {
-				throw new BadRequestException("No To/TargetId parameter provided");
-			} else {
-				request.setTo(request.getTargetId());
-			}
-		} else if (request.getTargetId() == null) {
-			request.setTargetId(request.getTo());
+			throw new BadRequestException("No To/TargetId parameter provided");
 		}
 		ResponsePrimitive response = new ResponsePrimitive(request);
 		DBService dbs = PersistenceService.getInstance().getDbService();
 		DBTransaction dbt = dbs.getDbTransaction();
 		dbt.open();
 		// get the AE
-		AeEntity ae = dbs.getDAOFactory().getAeDAO().find(dbt, request.getTargetId());
+		AeEntity ae = dbs.getDAOFactory().getAeDAO().find(dbt, request.getTo());
 		if (ae == null) {
 			dbt.close();
-			throw new ResourceNotFoundException("AE resource " + request.getTargetId() + " not found.");
+			throw new ResourceNotFoundException("AE resource " + request.getTo() + " not found.");
 		}
 
 		// FIXME use the correct originator when a notification is generated

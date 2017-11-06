@@ -101,12 +101,12 @@ public class RemoteCSEController extends Controller {
 		Patterns patterns = new Patterns();
 
 		// get the dao of the parent
-		DAO<ResourceEntity> dao = (DAO<ResourceEntity>) patterns.getDAO(request.getTargetId(), dbs);
+		DAO<ResourceEntity> dao = (DAO<ResourceEntity>) patterns.getDAO(request.getTo(), dbs);
 		if (dao == null){
 			throw new ResourceNotFoundException("Cannot find parent resource");
 		}
 		// get the parent entity
-		ResourceEntity parentEntity = (ResourceEntity)dao.find(transaction, request.getTargetId());
+		ResourceEntity parentEntity = (ResourceEntity)dao.find(transaction, request.getTo());
 		// check the parent existence
 		if (parentEntity == null) {
 			throw new ResourceNotFoundException("Cannot find the parent resource");
@@ -343,7 +343,7 @@ public class RemoteCSEController extends Controller {
 		ResponsePrimitive response = new ResponsePrimitive(request);
 
 		// Check existence of the resource
-		RemoteCSEEntity csrEntity = dbs.getDAOFactory().getRemoteCSEDAO().find(transaction, request.getTargetId());
+		RemoteCSEEntity csrEntity = dbs.getDAOFactory().getRemoteCSEDAO().find(transaction, request.getTo());
 		if (csrEntity == null) {
 			throw new ResourceNotFoundException();
 		}
@@ -396,7 +396,7 @@ public class RemoteCSEController extends Controller {
 		ResponsePrimitive response = new ResponsePrimitive(request);
 
 		// retrieve the resource from the DB
-		RemoteCSEEntity csrEntity = dbs.getDAOFactory().getRemoteCSEDAO().find(transaction, request.getTargetId());
+		RemoteCSEEntity csrEntity = dbs.getDAOFactory().getRemoteCSEDAO().find(transaction, request.getTo());
 		if (csrEntity == null) {
 			throw new ResourceNotFoundException();
 		}
@@ -552,7 +552,7 @@ public class RemoteCSEController extends Controller {
 		ResponsePrimitive response = new ResponsePrimitive(request);
 
 		// retrieve the corresponding resource from database
-		RemoteCSEEntity csrEntity = dbs.getDAOFactory().getRemoteCSEDAO().find(transaction, request.getTargetId());
+		RemoteCSEEntity csrEntity = dbs.getDAOFactory().getRemoteCSEDAO().find(transaction, request.getTo());
 		if (csrEntity == null) {
 			throw new ResourceNotFoundException();
 		}

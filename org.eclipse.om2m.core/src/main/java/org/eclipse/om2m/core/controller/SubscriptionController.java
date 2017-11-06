@@ -70,13 +70,13 @@ public class SubscriptionController extends Controller{
 		Patterns patterns = new Patterns();
 
 		// Get the DAO of the parent
-		DAO<ResourceEntity> dao = (DAO<ResourceEntity>) patterns.getDAO(request.getTargetId(), dbs);
+		DAO<ResourceEntity> dao = (DAO<ResourceEntity>) patterns.getDAO(request.getTo(), dbs);
 		if (dao == null){
 			throw new ResourceNotFoundException("Cannot find parent resource");
 		}
 
 		// Get the parent entity
-		ResourceEntity parentEntity = (ResourceEntity) dao.find(transaction, request.getTargetId());
+		ResourceEntity parentEntity = (ResourceEntity) dao.find(transaction, request.getTo());
 		// Check the parent existence
 		if (parentEntity == null){
 			throw new ResourceNotFoundException("Cannot find parent resource");
@@ -316,7 +316,7 @@ public class SubscriptionController extends Controller{
 		ResponsePrimitive response = new ResponsePrimitive(request);
 
 		SubscriptionEntity subscriptionEntity = dbs.getDAOFactory()
-				.getSubsciptionDAO().find(transaction, request.getTargetId());
+				.getSubsciptionDAO().find(transaction, request.getTo());
 		if (subscriptionEntity == null){
 			throw new ResourceNotFoundException();
 		}
@@ -342,7 +342,7 @@ public class SubscriptionController extends Controller{
 		transaction.open();
 
 		SubscriptionEntity subscriptionEntity = dbs.getDAOFactory()
-				.getSubsciptionDAO().find(transaction, request.getTargetId());
+				.getSubsciptionDAO().find(transaction, request.getTo());
 		if (subscriptionEntity == null){
 			throw new ResourceNotFoundException();
 		}
@@ -499,7 +499,7 @@ public class SubscriptionController extends Controller{
 		transaction.open();
 
 		SubscriptionEntity se = dbs.getDAOFactory()
-				.getSubsciptionDAO().find(transaction, request.getTargetId());
+				.getSubsciptionDAO().find(transaction, request.getTo());
 		if (se == null){
 			throw new ResourceNotFoundException();
 		}

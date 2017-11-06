@@ -68,7 +68,7 @@ public class CreateDAS_RemoteCSE_Test extends CreateDAS_CseBase_Test {
 		request.setRequestContentType(MimeMediaType.OBJ);
 		request.setReturnContentType(MimeMediaType.OBJ);
 		request.setResourceType(ResourceType.REMOTE_CSE);
-		request.setTargetId("/" + Constants.CSE_ID + "/" + Constants.CSE_NAME);
+		request.setTo("/" + Constants.CSE_ID + "/" + Constants.CSE_NAME);
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 		request.setContent(remoteCse);
 		
