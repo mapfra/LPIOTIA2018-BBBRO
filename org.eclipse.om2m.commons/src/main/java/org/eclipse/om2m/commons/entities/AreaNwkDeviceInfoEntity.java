@@ -81,7 +81,7 @@ public class AreaNwkDeviceInfoEntity extends MgmtObjEntity {
 	
 	
 	// Database link to Subscriptions
-	@OneToMany(fetch = FetchType.LAZY, targetEntity = SubscriptionEntity.class)
+	@OneToMany(fetch = FetchType.LAZY, targetEntity = SubscriptionEntity.class, mappedBy="parentAndi")
 	@JoinTable(
 			name = DBEntities.ANDISUB_JOIN,
 			joinColumns = { @JoinColumn(name = DBEntities.ANDI_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 

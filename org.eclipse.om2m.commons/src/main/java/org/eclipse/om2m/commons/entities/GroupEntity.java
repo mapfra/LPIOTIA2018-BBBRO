@@ -66,7 +66,7 @@ public class GroupEntity extends AnnounceableSubordinateEntity {
 	protected String fanOutPoint;
 
 	// subscription list
-	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
+	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY, mappedBy="parentGrp")
 	@JoinTable(
 			name = DBEntities.GRPSUB_JOIN,
 			joinColumns = { @JoinColumn(name = DBEntities.GRP_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 

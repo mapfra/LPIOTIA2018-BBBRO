@@ -169,7 +169,7 @@ public class CSEBaseEntity extends ResourceEntity {
 	protected List<AccessControlPolicyEntity> childAccessControlPolicies;
 
 	// list of subscription
-	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, mappedBy="parentCsb")
 	@JoinTable(
 			name = DBEntities.CSBSUB_JOIN,
 			joinColumns = { @JoinColumn(name = DBEntities.CSEB_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 

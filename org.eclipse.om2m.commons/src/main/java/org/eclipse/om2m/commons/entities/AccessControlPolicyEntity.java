@@ -97,7 +97,7 @@ public class AccessControlPolicyEntity extends AnnounceableSubordinateEntity {
 			)
 	protected RemoteCSEEntity parentCsr;
 
-	@OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.ALL}, targetEntity = SubscriptionEntity.class)
+	@OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.ALL}, targetEntity = SubscriptionEntity.class, mappedBy="parentAcp")
 	@JoinTable(
 			name=DBEntities.ACPSUB_JOIN,
 			inverseJoinColumns={@JoinColumn(name=DBEntities.SUB_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)},

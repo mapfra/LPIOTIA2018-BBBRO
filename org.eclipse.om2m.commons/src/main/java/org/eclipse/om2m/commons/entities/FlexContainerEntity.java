@@ -67,7 +67,7 @@ public class FlexContainerEntity extends AnnounceableSubordinateEntity{
 			)
 	protected List<CustomAttributeEntity> customAttributes;
 	
-	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
+	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY, mappedBy="parentFlexCnt")
 	@JoinTable(
 			name = DBEntities.FCNTSUB_JOIN,
 			joinColumns = { @JoinColumn(name = DBEntities.FCNT_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 

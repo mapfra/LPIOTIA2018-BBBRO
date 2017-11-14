@@ -69,7 +69,7 @@ public class SubscriptionController extends Controller{
 		ResponsePrimitive response = new ResponsePrimitive(request);
 
 		// Get the DAO of the parent
-		DAO<?> dao = (DAO<?>) Patterns.getDAO(request.getTargetId(), dbs);
+		DAO<ResourceEntity> dao = (DAO<ResourceEntity>) Patterns.getDAO(request.getTargetId(), dbs);
 		if (dao == null){
 			throw new ResourceNotFoundException("Cannot find parent resource");
 		}
@@ -83,48 +83,57 @@ public class SubscriptionController extends Controller{
 
 		// Get lists to change in the method corresponding to specific object
 		List<AccessControlPolicyEntity> acpsToCheck = null;
+		List<SubscriptionEntity> parentChildSubscriptions = null;
 
 		// Distinguish parents
 		// Case of CSEBase
 		if(parentEntity.getResourceType().intValue() == (ResourceType.CSE_BASE)){
 			CSEBaseEntity cseBase = (CSEBaseEntity) parentEntity;
 			acpsToCheck = cseBase.getAccessControlPolicies();
+			parentChildSubscriptions = cseBase.getSubscriptions();
 		}
 
 		if(parentEntity.getResourceType().intValue() == (ResourceType.AE)){
 			AeEntity ae = (AeEntity) parentEntity;
 			acpsToCheck = ae.getAccessControlPolicies();
+			parentChildSubscriptions = ae.getSubscriptions();
 		}
 
 		if(parentEntity.getResourceType().intValue() == (ResourceType.REMOTE_CSE)){
 			RemoteCSEEntity remoteCSE = (RemoteCSEEntity) parentEntity;
 			acpsToCheck = remoteCSE.getAccessControlPolicies();
+			parentChildSubscriptions = remoteCSE.getSubscriptions();
 		}
 
 		if(parentEntity.getResourceType().intValue() == (ResourceType.GROUP)){
 			GroupEntity group = (GroupEntity) parentEntity;
 			acpsToCheck = group.getAccessControlPolicies();
+			parentChildSubscriptions = group.getSubscriptions();
 		}
 
 		if(parentEntity.getResourceType().intValue() == (ResourceType.CONTAINER)){
 			ContainerEntity container = (ContainerEntity) parentEntity;
 			acpsToCheck = container.getAccessControlPolicies();
+			parentChildSubscriptions = container.getSubscriptions();
 		}
 		
 		if (parentEntity.getResourceType().intValue() == (ResourceType.FLEXCONTAINER)) {
 			FlexContainerEntity flexContainer = (FlexContainerEntity) parentEntity;
 			acpsToCheck = flexContainer.getAccessControlPolicies();
+			parentChildSubscriptions = flexContainer.getSubscriptions();
 		}
 
 		if(parentEntity.getResourceType().intValue() == (ResourceType.ACCESS_CONTROL_POLICY)){
 			AccessControlPolicyEntity acp = (AccessControlPolicyEntity) parentEntity;
 			acpsToCheck = new ArrayList<>();
 			acpsToCheck.add(acp); // TODO check the acp to check in case of acp parent for subs
+			parentChildSubscriptions = acp.getChildSubscriptions();
 		}
 		
 		if(parentEntity.getResourceType().intValue() == ResourceType.REMOTE_CSE){
 			RemoteCSEEntity csr = (RemoteCSEEntity) parentEntity;
 			acpsToCheck = csr.getAccessControlPolicies();
+			parentChildSubscriptions = csr.getSubscriptions();
 		}
 
 		if(acpsToCheck == null){
@@ -284,7 +293,17 @@ public class SubscriptionController extends Controller{
 		
 		
 		subscriptionEntity.setParentEntity(parentEntity);	
+		// create subscription in database
 		dbs.getDAOFactory().getSubsciptionDAO().create(transaction, subscriptionEntity);
+		
+		// retrieve subscription from db
+		SubscriptionEntity subscriptionFromDB = dbs.getDAOFactory().getSubsciptionDAO().find(transaction, subscriptionEntity.getResourceID());
+		
+		// add the subscription to the parentEntity child list
+		parentChildSubscriptions.add(subscriptionFromDB);
+		dao.update(transaction, parentEntity);
+		
+		
 		transaction.commit();
 		response.setResponseStatusCode(ResponseStatusCode.CREATED);
 		setLocationAndCreationContent(request, response, subscriptionEntity);

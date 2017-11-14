@@ -28,12 +28,6 @@ import org.eclipse.om2m.persistence.service.DBTransaction;
 
 public class SubscriptionDAO extends AbstractDAO<SubscriptionEntity> {
 	
-	@Override
-	public void create(DBTransaction dbTransaction, SubscriptionEntity resource) {
-		super.create(dbTransaction, resource);
-		DBTransactionJPAImpl transaction = (DBTransactionJPAImpl) dbTransaction;
-		transaction.getEm().getEntityManagerFactory().getCache().evictAll();
-	}
 
 	@Override
 	public SubscriptionEntity find(DBTransaction dbTransaction, Object id) {
@@ -51,8 +45,54 @@ public class SubscriptionDAO extends AbstractDAO<SubscriptionEntity> {
 	@Override
 	public void delete(DBTransaction dbTransaction, SubscriptionEntity resource) {
 		DBTransactionJPAImpl transaction = (DBTransactionJPAImpl) dbTransaction;
+		
+		// de-associate labels
+		List<LabelEntity> labels = resource.getLabelsEntities();
+		for (LabelEntity label : labels) {
+			label.getLinkedSub().remove(resource);
+		}
+		
+		if (resource.getParentAe() != null) {
+			resource.getParentAe().getSubscriptions().remove(resource);
+		}
+		
+		if (resource.getParentAcp() != null) {
+			resource.getParentAcp().getChildSubscriptions().remove(resource);
+		}
+		
+		if (resource.getParentAndi() != null) {
+			resource.getParentAndi().getSubscriptions().remove(resource);
+		}
+		
+		if (resource.getParentAni() != null) {
+			resource.getParentAni().getSubscriptions().remove(resource);
+		}
+		
+		if (resource.getParentCnt() != null) {
+			resource.getParentCnt().getSubscriptions().remove(resource);
+		}
+		
+		if (resource.getParentCsb() != null) {
+			resource.getParentCsb().getSubscriptions().remove(resource);
+		}
+		
+		if (resource.getParentCsr() != null) {
+			resource.getParentCsr().getSubscriptions().remove(resource);
+		}
+		
+		if (resource.getParentFlexCnt() != null) {
+			resource.getParentFlexCnt().getSubscriptions().remove(resource);
+		}
+		
+		if (resource.getParentGrp() != null) {
+			resource.getParentGrp().getSubscriptions().remove(resource);
+		}
+		
+		if (resource.getParentSch() != null) {
+			resource.getParentSch().getSubscriptions().remove(resource);
+		}
+		
 		transaction.getEm().remove(resource);
-		transaction.getEm().getEntityManagerFactory().getCache().evictAll();
 	}
 	
 }
