@@ -76,11 +76,12 @@ public class FlexContainerController extends Controller {
 		 */
 		
 		String contentFormat = System.getProperty("org.eclipse.om2m.registration.contentFormat", MimeMediaType.XML);
+		Patterns patterns = new Patterns();
 
 		ResponsePrimitive response = new ResponsePrimitive(request);
 
 		// get the dao of the parent
-		DAO<ResourceEntity> dao = (DAO<ResourceEntity>) Patterns.getDAO(request.getTargetId(), dbs);
+		DAO<ResourceEntity> dao = (DAO<ResourceEntity>) patterns.getDAO(request.getTargetId(), dbs);
 		if (dao == null) {
 			throw new ResourceNotFoundException("Cannot find parent resource");
 		}
@@ -227,8 +228,8 @@ public class FlexContainerController extends Controller {
 		String generatedId = generateId("", "");
 		// set name if present and without any conflict
 		if (flexContainer.getName() != null) {
-			if (!Patterns.checkResourceName(flexContainer.getName())) {
-				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
+			if (!patterns.checkResourceName(flexContainer.getName())) {
+				throw new BadRequestException("Name provided is incorrect. Must be:" + patterns.ID_STRING);
 			}
 			flexContainerEntity.setName(flexContainer.getName());
 		} else {

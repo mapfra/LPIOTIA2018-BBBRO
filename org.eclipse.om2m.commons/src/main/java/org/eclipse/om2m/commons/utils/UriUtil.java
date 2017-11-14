@@ -25,7 +25,7 @@ import org.eclipse.om2m.commons.constants.Constants;
  * Uri util methods to check uri relativity. 
  *
  */
-public class UriUtil {
+public class UriUtil implements Constants {
 
 	private UriUtil(){}
 

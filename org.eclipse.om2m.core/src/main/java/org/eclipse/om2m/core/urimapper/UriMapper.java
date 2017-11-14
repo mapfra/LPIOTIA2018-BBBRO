@@ -46,7 +46,9 @@ public class UriMapper {
 		}
 		
 		String spRelativeUri = UriUtil.toSpRelativeUri(uri);
-		if (Patterns.match(Patterns.NON_HIERARCHICAL_PATTERN, spRelativeUri)){
+		Patterns patterns = new Patterns();
+
+		if (patterns.match(patterns.NON_HIERARCHICAL_PATTERN, spRelativeUri)){
 			return spRelativeUri;
 		}
 		DBService dbs = PersistenceService.getInstance().getDbService();

@@ -98,9 +98,10 @@ public class RemoteCSEController extends Controller {
 		 */
 
 		ResponsePrimitive response = new ResponsePrimitive(request);
+		Patterns patterns = new Patterns();
 
 		// get the dao of the parent
-		DAO<ResourceEntity> dao = (DAO<ResourceEntity>) Patterns.getDAO(request.getTargetId(), dbs);
+		DAO<ResourceEntity> dao = (DAO<ResourceEntity>) patterns.getDAO(request.getTargetId(), dbs);
 		if (dao == null){
 			throw new ResourceNotFoundException("Cannot find parent resource");
 		}
@@ -246,8 +247,8 @@ public class RemoteCSEController extends Controller {
 		remoteCseEntity.setResourceID("/" + Constants.CSE_ID + "/" + ShortName.REMOTE_CSE + Constants.PREFIX_SEPERATOR + generatedId);
 		// set name if present and without any conflict
 		if (remoteCse.getName() != null){
-			if (!Patterns.checkResourceName(remoteCse.getName())){
-				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
+			if (!patterns.checkResourceName(remoteCse.getName())){
+				throw new BadRequestException("Name provided is incorrect. Must be:" + patterns.ID_STRING);
 			}
 			remoteCseEntity.setName(remoteCse.getName());
 		} else {

@@ -32,10 +32,10 @@ import org.osgi.service.http.HttpService;
 import org.osgi.util.tracker.ServiceTracker;
 
 
-public class Activator implements BundleActivator, ManagedService {
+public class Activator implements BundleActivator , ManagedService {
 	/** logger */
 	private static Log LOGGER = LogFactory.getLog(Activator.class);
-	public static String globalContext = System.getProperty("org.eclipse.om2m.globalContext","");
+	public String globalContext = System.getProperty("org.eclipse.om2m.globalContext","");
 	public static String uiContext = /*System.getProperty("org.eclipse.om2m.webInterfaceContext","/")*/"";
 	public static String sep ="/";
 	public static String CAMERAURL ="";

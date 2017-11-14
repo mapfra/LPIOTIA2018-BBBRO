@@ -79,9 +79,10 @@ public class DiscoveryController extends Controller {
 	public ResponsePrimitive doRetrieve(RequestPrimitive request) {
 		// Create the response
 		ResponsePrimitive response = new ResponsePrimitive(request);
+		Patterns patterns = new Patterns();
 
 		// Get the DAO of the parent
-		DAO<?> dao = (DAO<?>) Patterns.getDAO(request.getTargetId(), dbs);
+		DAO<?> dao = (DAO<?>) patterns.getDAO(request.getTargetId(), dbs);
 		if (dao == null){
 			throw new ResourceNotFoundException("Root resource not found for discovery");
 		}
@@ -158,7 +159,7 @@ public class DiscoveryController extends Controller {
 			}
 			
 			// check acp
-			DAO<?> currentDao = (DAO<?>) Patterns.getDAO(uriEntity.getNonHierarchicalUri(), dbs);
+			DAO<?> currentDao = (DAO<?>) patterns.getDAO(uriEntity.getNonHierarchicalUri(), dbs);
 			ResourceEntity currentResourceEntity = (ResourceEntity) currentDao.find(transaction, uriEntity.getNonHierarchicalUri());
 			if (currentResourceEntity != null) {
 				List<AccessControlPolicyEntity> acps = getAcpsFromEntity(currentResourceEntity);

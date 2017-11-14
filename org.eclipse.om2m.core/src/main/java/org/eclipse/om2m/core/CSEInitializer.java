@@ -60,7 +60,7 @@ import org.eclipse.om2m.persistence.service.DBTransaction;
  * Initializer for CSE entity
  *
  */
-public class CSEInitializer {
+public class CSEInitializer implements Constants {
 
 	/** Logger */
 	private static final Log LOGGER = LogFactory.getLog(CSEInitializer.class);
@@ -384,7 +384,7 @@ public class CSEInitializer {
 		if (Constants.REMOTE_CSE_CONTEXT.length() > 1) {
 			remotePoa += "/" + Constants.REMOTE_CSE_CONTEXT;
 		}
-		remotePoa += "/" + Constants.REMOTE_CSE_ID + "/" + Constants.REMOTE_CSE_NAME + "/" + Constants.CSE_NAME;
+		remotePoa += "/" + REMOTE_CSE_ID + "/" + REMOTE_CSE_NAME + "/" + CSE_NAME;
 		request.setTo(remotePoa);
 		request.setResultContent(ResultContent.NOTHING);
 		LOGGER.info("Sending unregistration request");

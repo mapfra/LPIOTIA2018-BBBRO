@@ -31,10 +31,16 @@ import javax.servlet.http.HttpServletResponse;
 public class WelcomeServlet extends HttpServlet {
     /** Serial Version UID */
     private static final long serialVersionUID = 1L;
-    @Override
+    private Activator activator = null;
+    
+    public WelcomeServlet(Activator _a) { 
+    		this.activator = _a;
+	} 
+    
+	@Override
     protected void service(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
-    	String cseBaseContext = (System.getProperty("org.eclipse.om2m.cseBaseContext", "/om2m").equals("/") ?
+		String cseBaseContext = (System.getProperty("org.eclipse.om2m.cseBaseContext", "/om2m").equals("/") ?
     			"/~":System.getProperty("org.eclipse.om2m.cseBaseContext", "/om2m") + "/");
-    	httpServletResponse.sendRedirect(Activator.globalContext+Activator.uiContext+Activator.sep+"welcome/index.html?context="+System.getProperty("org.eclipse.om2m.globalContext","")+cseBaseContext+"&"+"cseId="+System.getProperty("org.eclipse.om2m.cseBaseId", "in-cse"));
+		httpServletResponse.sendRedirect(activator.globalContext+activator.uiContext+activator.sep+"welcome/index.html?context="+System.getProperty("org.eclipse.om2m.globalContext","")+cseBaseContext+"&"+"cseId="+System.getProperty("org.eclipse.om2m.cseBaseId", "in-cse"));
     }
 }

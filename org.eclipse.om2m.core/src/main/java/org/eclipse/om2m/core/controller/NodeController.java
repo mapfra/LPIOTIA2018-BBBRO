@@ -77,8 +77,10 @@ public class NodeController extends Controller {
 		 */
 
 		ResponsePrimitive response = new ResponsePrimitive(request);
+		Patterns patterns = new Patterns();
+
 		// retrieve the parent
-		DAO<ResourceEntity> dao = (DAO<ResourceEntity>) Patterns.getDAO(request.getTargetId(), dbs);
+		DAO<ResourceEntity> dao = (DAO<ResourceEntity>) patterns.getDAO(request.getTargetId(), dbs);
 		if (dao == null){
 			throw new ResourceNotFoundException("Cannot find parent resource");
 		}
@@ -161,8 +163,8 @@ public class NodeController extends Controller {
 		nodeEntity.setResourceType(ResourceType.NODE);
 	
 		if (node.getName() != null){
-			if (!Patterns.checkResourceName(node.getName())){
-				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
+			if (!patterns.checkResourceName(node.getName())){
+				throw new BadRequestException("Name provided is incorrect. Must be:" + patterns.ID_STRING);
 			}
 			nodeEntity.setName(node.getName());
 		} else {

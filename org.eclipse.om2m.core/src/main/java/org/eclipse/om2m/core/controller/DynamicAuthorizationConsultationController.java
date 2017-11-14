@@ -44,9 +44,10 @@ public class DynamicAuthorizationConsultationController extends Controller {
 	@Override
 	public ResponsePrimitive doCreate(RequestPrimitive request) {
 		ResponsePrimitive response = new ResponsePrimitive(request);
+		Patterns patterns = new Patterns();
 
 		// Get the DAO of the parent
-		DAO<ResourceEntity> dao = (DAO<ResourceEntity>) Patterns.getDAO(request.getTargetId(), dbs);
+		DAO<ResourceEntity> dao = (DAO<ResourceEntity>) patterns.getDAO(request.getTargetId(), dbs);
 		if (dao == null) {
 			throw new ResourceNotFoundException("Cannot find parent resource");
 		}
@@ -162,8 +163,8 @@ public class DynamicAuthorizationConsultationController extends Controller {
 		String generatedId = generateId("", "");
 		// set name if present and without any conflict
 		if (dac.getName() != null) {
-			if (!Patterns.checkResourceName(dac.getName())) {
-				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
+			if (!patterns.checkResourceName(dac.getName())) {
+				throw new BadRequestException("Name provided is incorrect. Must be:" + patterns.ID_STRING);
 			}
 			dacEntity.setName(dac.getName());
 		} else {

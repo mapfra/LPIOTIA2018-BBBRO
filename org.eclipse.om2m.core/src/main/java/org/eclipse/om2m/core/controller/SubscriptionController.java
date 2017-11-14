@@ -67,9 +67,10 @@ public class SubscriptionController extends Controller{
 	@Override
 	public ResponsePrimitive doCreate(RequestPrimitive request) {
 		ResponsePrimitive response = new ResponsePrimitive(request);
+		Patterns patterns = new Patterns();
 
 		// Get the DAO of the parent
-		DAO<ResourceEntity> dao = (DAO<ResourceEntity>) Patterns.getDAO(request.getTargetId(), dbs);
+		DAO<ResourceEntity> dao = (DAO<ResourceEntity>) patterns.getDAO(request.getTargetId(), dbs);
 		if (dao == null){
 			throw new ResourceNotFoundException("Cannot find parent resource");
 		}
@@ -277,8 +278,8 @@ public class SubscriptionController extends Controller{
 		subscriptionEntity.setNbOfFailedNotifications(new Integer(0));
 
 		if (subscription.getName() != null){
-			if (!Patterns.checkResourceName(subscription.getName())){
-				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
+			if (!patterns.checkResourceName(subscription.getName())){
+				throw new BadRequestException("Name provided is incorrect. Must be:" + patterns.ID_STRING);
 			}
 			subscriptionEntity.setName(subscription.getName());
 		} else {

@@ -53,6 +53,8 @@ public class GroupUtil {
 			DBService dbs = PersistenceService.getInstance().getDbService();
 			DBTransaction transaction = dbs.getDbTransaction();
 			transaction.open();
+			Patterns patterns = new Patterns();
+
 			List<String> result = new ArrayList<String>();
 			// for each member of the group
 			for(String memberUri : group.getMemberIDs()){
@@ -62,7 +64,7 @@ public class GroupUtil {
 					throw new MemberNonFoundException("Member not found: " + memberUri);
 				}
 				
-				DAO<ResourceEntity> dao = (DAO<ResourceEntity>) Patterns.getDAO(nonHierarchicalUri, dbs);
+				DAO<ResourceEntity> dao = (DAO<ResourceEntity>) patterns.getDAO(nonHierarchicalUri, dbs);
 				if(dao == null){
 					transaction.close();
 					throw new MemberNonFoundException("Member not found: " + memberUri);

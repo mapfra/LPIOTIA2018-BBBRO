@@ -90,9 +90,10 @@ public class ContainerController extends Controller {
 		 * 
 		 */
 		ResponsePrimitive response = new ResponsePrimitive(request);
+		Patterns patterns = new Patterns();
 
 		// get the dao of the parent
-		DAO<ResourceEntity> dao = (DAO<ResourceEntity>) Patterns.getDAO(request.getTargetId(), dbs);
+		DAO<ResourceEntity> dao = (DAO<ResourceEntity>) patterns.getDAO(request.getTargetId(), dbs);
 		if (dao == null){
 			throw new ResourceNotFoundException("Cannot find parent resource");
 		}
@@ -197,8 +198,8 @@ public class ContainerController extends Controller {
 		String generatedId = generateId("", "");
 		// set name if present and without any conflict
 		if (container.getName() != null){
-			if (!Patterns.checkResourceName(container.getName())){
-				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
+			if (!patterns.checkResourceName(container.getName())){
+				throw new BadRequestException("Name provided is incorrect. Must be:" + patterns.ID_STRING);
 			}
 			containerEntity.setName(container.getName());
 		} else {

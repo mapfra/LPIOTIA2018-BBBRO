@@ -38,8 +38,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class Util {
 	
-	protected static String dateFormat = System.getProperty("org.eclipse.om2m.date.format", "yyyyMMdd'T'HHmmss");
-//	protected static String dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZZ";
+
 
 	/** Private consctructor */
 	private Util() {}
@@ -60,6 +59,8 @@ public class Util {
 		 * @return
 		 */
 		public static String now() {
+			String dateFormat = System.getProperty("org.eclipse.om2m.date.format", "yyyyMMdd'T'HHmmss");
+//			String dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZZ";
 			return new SimpleDateFormat(dateFormat).format(new Date()).toString();
 		}
 		
@@ -69,7 +70,10 @@ public class Util {
 	     * @return false if the expirationTime attribute is out of date otherwise true
 	     */
 	    public static boolean checkExpirationTime(String expirationTime) {
-	        DateFormat df=new SimpleDateFormat(dateFormat);
+			String dateFormat = System.getProperty("org.eclipse.om2m.date.format", "yyyyMMdd'T'HHmmss");
+//			String dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZZ";
+
+			DateFormat df=new SimpleDateFormat(dateFormat);
 	        Date expDate;
 	        try {
 	            expDate = df.parse(expirationTime);
@@ -111,10 +115,13 @@ public class Util {
 	     * @return
 	     */
 	    public static String getDefaultExpirationTime(){
-	    	Calendar cal = Calendar.getInstance();
-	    	cal.setTime(new Date());
-	    	cal.add(Calendar.YEAR, 1);
-	    	return new SimpleDateFormat(dateFormat).format(cal.getTime());
+	    		String dateFormat = System.getProperty("org.eclipse.om2m.date.format", "yyyyMMdd'T'HHmmss");
+//			String dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZZ";
+	
+		    	Calendar cal = Calendar.getInstance();
+		    	cal.setTime(new Date());
+		    	cal.add(Calendar.YEAR, 1);
+		    	return new SimpleDateFormat(dateFormat).format(cal.getTime());
 	    }
 	}
 	
