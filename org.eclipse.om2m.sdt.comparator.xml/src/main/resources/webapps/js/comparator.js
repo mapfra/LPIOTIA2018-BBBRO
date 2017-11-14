@@ -85,6 +85,10 @@ gemDelegate.controller('delegationController', function($scope, $http, $window) 
 					var id = $scope.getIdFromLabel (label);
 					config.data.id = id;
 					config.data.name = $scope.getNameFromLabel(label);
+					config.data.friendlyName = jsonData[key].pDANe;
+					if (!config.data.friendlyName) {
+						config.data.friendlyName = config.data.name;
+					}
 					config.data.desc = jsonData[key].cnd;
 					
 					var tags = jsonData[key];
