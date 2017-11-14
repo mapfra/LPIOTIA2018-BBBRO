@@ -7,6 +7,8 @@
  *******************************************************************************/
 package org.eclipse.om2m.sdt.home.mocked.modules;
 
+import java.nio.charset.Charset;
+
 import org.eclipse.om2m.sdt.Domain;
 import org.eclipse.om2m.sdt.datapoints.FloatDataPoint;
 import org.eclipse.om2m.sdt.datapoints.StringDataPoint;
