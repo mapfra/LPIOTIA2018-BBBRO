@@ -56,6 +56,10 @@ public class Utils {
 			protocol = "Unknown";
 		}
 		Logger log = new Logger(protocol);
+		if (isEmpty(device.getDeviceAliasName())) {
+			device.setDeviceAliasName(device.getDeviceType().getLongName().substring(6)
+					+ " #" + device.getSerialNumber().substring(device.getSerialNumber().length() - 5));
+		}
 		List<ServiceRegistration> regs = new ArrayList<ServiceRegistration>();
 		regs.add(context.registerService(getSDTNames(device),
 				device, getProperties(device, protocol, log)));
@@ -121,6 +125,10 @@ public class Utils {
 	
 	static public final boolean equals(final String s1, final String s2) {
 		return (s1 == null) ? (s2 == null) : s1.equals(s2);
+	}
+	
+	static private final boolean isEmpty(final String s1) {
+		return (s1 == null) || s1.isEmpty();
 	}
 	
 	static private final String[] getSDTNames(final Device elt) {

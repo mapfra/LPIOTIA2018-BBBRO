@@ -125,13 +125,9 @@ public class Activator implements BundleActivator {
 	private void install(String uri) {
 		try {
 			GenericDevice device = ResourceDiscovery.readDevice(uri);
-			device.setProtocol(PROTOCOL + "." + device.getProtocol());
-			String name = device.getDeviceName();
-			if (isEmpty(name))
-				name = device.getDeviceAliasName();
-			if (isEmpty(name))
-				name = device.getName();
-			device.setDeviceAliasName("Cloud device " + name);
+			String protocol = device.getProtocol();
+			if (! isEmpty(protocol)) protocol = "." + protocol;
+			device.setProtocol(PROTOCOL + protocol);
 			registrations.put(device.getId(), Utils.register(device, context));
 			devices.put(uri, device);
 			logger.info("Installed device " + device);

@@ -29,7 +29,7 @@ public class MotionSensor extends AbstractAlarmSensor {
 	}
 
 	public MotionSensor(final String name, final Domain domain, Map<String, DataPoint> dps) {
-		this(name, domain, (BooleanDataPoint) dps.get("alarm"));
+		this(name, domain, (BooleanDataPoint) dps.get(DatapointType.alarm.getShortName()));
 		IntegerDataPoint silentTime = 
 				(IntegerDataPoint) dps.get(DatapointType.silentTime.getShortName());
 		if (silentTime != null)

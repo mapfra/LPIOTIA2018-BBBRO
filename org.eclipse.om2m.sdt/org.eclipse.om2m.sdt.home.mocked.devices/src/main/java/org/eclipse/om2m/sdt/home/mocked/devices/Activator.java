@@ -31,7 +31,7 @@ public class Activator implements BundleActivator {
 
 	static private final String PROTOCOL = "Mocked";
 	static private final String MANUFACTURER = "MockedManufacturer";
-	static private final String ALIAS = "Simulated device for ";
+//	static private final String ALIAS = "Simulated device for ";
 	
 	static private BundleContext context;
 	static public Logger logger;
@@ -100,7 +100,7 @@ public class Activator implements BundleActivator {
 	private void install(GenericDevice dev) {
 		String name = dev.getClass().getSimpleName() + " " + dev.getName();
 		dev.setDeviceName(name);
-		dev.setDeviceAliasName(ALIAS + name);
+//		dev.setDeviceAliasName(ALIAS + name);
 		dev.setProtocol(PROTOCOL);
 		dev.setDeviceManufacturer(MANUFACTURER);
 		logger.info("register " + dev);

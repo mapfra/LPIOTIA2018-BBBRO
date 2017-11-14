@@ -56,6 +56,8 @@ public class InCseContextServlet extends HttpServlet {
 			for (JSONObject notification : notifications) {
 				globalJson.add(notification);
 			}
+			if (! notifications.isEmpty())
+				LOGGER.info("Get notifs: " + globalJson);
 			resp.setHeader("Content-Type", "application/json");
 			resp.getWriter().print(globalJson.toJSONString());
 			resp.setStatus(HttpServletResponse.SC_OK);
@@ -64,12 +66,12 @@ public class InCseContextServlet extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		LOGGER.info("doPost(subscribeTo)");
 		try {
 			JSONParser parser = new JSONParser();
 			JSONObject jsonObject = (JSONObject) parser.parse(req.getReader());
 			String resourceId = (String) jsonObject.get(RESOURCE_ID);
 			String sessionId = (String) jsonObject.get(SessionManager.SESSION_ID_PARAMETER);
+			LOGGER.info("doPost(subscribeTo) " + resourceId);
 			if (AeRegistration.getInstance().createSubscription(resourceId, sessionId)) {
 				resp.setStatus(HttpServletResponse.SC_OK);
 				return;

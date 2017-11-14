@@ -22,11 +22,11 @@ import org.eclipse.om2m.commons.constants.ResourceType;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.constants.ResultContent;
 import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
+import org.eclipse.om2m.commons.resource.AbstractFlexContainerAnnc;
 import org.eclipse.om2m.commons.resource.ChildResourceRef;
 import org.eclipse.om2m.commons.resource.CustomAttribute;
 import org.eclipse.om2m.commons.resource.FilterCriteria;
 import org.eclipse.om2m.commons.resource.FlexContainer;
-import org.eclipse.om2m.commons.resource.AbstractFlexContainerAnnc;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
 import org.eclipse.om2m.commons.resource.URIList;
@@ -39,7 +39,6 @@ import org.eclipse.om2m.sdt.Identifiers;
 import org.eclipse.om2m.sdt.Module;
 import org.eclipse.om2m.sdt.Property;
 import org.eclipse.om2m.sdt.args.Command;
-import org.eclipse.om2m.sdt.args.ValuedArg;
 import org.eclipse.om2m.sdt.datapoints.ArrayDataPoint;
 import org.eclipse.om2m.sdt.datapoints.BooleanDataPoint;
 import org.eclipse.om2m.sdt.datapoints.ByteDataPoint;
@@ -57,8 +56,6 @@ import org.eclipse.om2m.sdt.home.devices.GenericDevice;
 import org.eclipse.om2m.sdt.home.modules.AlarmSpeaker;
 import org.eclipse.om2m.sdt.home.types.DatapointType;
 import org.eclipse.om2m.sdt.home.types.PropertyType;
-import org.eclipse.om2m.sdt.types.DataType;
-import org.eclipse.om2m.sdt.types.SimpleType;
 
 public class ResourceDiscovery {
 
