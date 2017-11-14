@@ -128,6 +128,10 @@ public enum DatapointType implements Identifiers {
 	progressPercentage("progressPercentage", "prgPc", DataType.Integer),
 	url("url", "url", DataType.String),
 	useGrinder("useGrinder", "useGr", DataType.Boolean),
+	
+	numberValue("numberValue", "numVe", DataType.Float),		// Added by Andreas Kraft
+	defaultValue("defaultValue", "defVe", DataType.Float),	// Added by Andreas Kraft
+	step("step", "step", DataType.Float),					// Added by Andreas Kraft
 
 	undefinedVendorExt("undefinedVendorExt", "undef", DataType.String);
 	
