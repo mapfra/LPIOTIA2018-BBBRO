@@ -330,6 +330,9 @@ public class RestHttpServlet extends HttpServlet {
 
 	private void mapHeaders(HttpServletRequest httpServletRequest,
 			RequestPrimitive request) {
+		
+		String contentFormat = System.getProperty("org.eclipse.om2m.registration.contentFormat", MimeMediaType.XML);
+
 		// Get the originator from the X-M2M-Origin header
 
 		String authorization = httpServletRequest.getHeader(HttpHeaders.ORIGINATOR);
@@ -365,11 +368,11 @@ public class RestHttpServlet extends HttpServlet {
 				}
 			}
 		} else{
-			request.setRequestContentType(MimeMediaType.XML);
+			request.setRequestContentType(contentFormat);
 		}
 
 		if(request.getRequestContentType() == null){
-			request.setRequestContentType(MimeMediaType.XML);
+			request.setRequestContentType(contentFormat);
 		}
 
 		// Get dataTypes

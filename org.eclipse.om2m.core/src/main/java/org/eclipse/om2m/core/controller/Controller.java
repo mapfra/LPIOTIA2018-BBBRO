@@ -90,6 +90,7 @@ public abstract class Controller {
 				throw new BadRequestException("Incorrect Operation value (op): " + request.getOperation());
 			}
 		} catch(Om2mException om2mException){
+			LOGGER.error("om2mException", om2mException);
 			throw om2mException;
 		} catch(Exception e){
 			LOGGER.error("Controller internal error", e);

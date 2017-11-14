@@ -85,6 +85,8 @@ public class Router implements CseService {
 
 		LOGGER.info("Received request in Router: " + request.toString());
 		ResponsePrimitive response = new ResponsePrimitive(request);
+		
+		String contentFormat = System.getProperty("org.eclipse.om2m.registration.contentFormat", MimeMediaType.XML);
 
 		try{
 
@@ -106,11 +108,11 @@ public class Router implements CseService {
 
 			// Check if the data type has been set
 			if (request.getRequestContentType() == null){
-				request.setRequestContentType(MimeMediaType.XML);
+				request.setRequestContentType(contentFormat);
 				LOGGER.info("No Content-Type parameter set, setting to default: " + request.getRequestContentType());
 			}
 			if (request.getReturnContentType() == null){
-				request.setReturnContentType(MimeMediaType.XML);
+				request.setReturnContentType(contentFormat);
 				LOGGER.info("No Accept parameter set, setting to default: " + request.getReturnContentType());
 			}
 
@@ -253,7 +255,7 @@ public class Router implements CseService {
 			response.setResponseStatusCode(om2mException.getErrorStatusCode());
 			response.setContent(om2mException.getMessage());
 			response.setContentType(MimeMediaType.TEXT_PLAIN);
-			LOGGER.info("OM2M exception caught in Router: " + om2mException.getMessage());
+			LOGGER.error("OM2M exception caught in Router: " + om2mException.getMessage(), om2mException);
 			LOGGER.debug("OM2M exception caught in Router", om2mException);
 		} catch(Exception e){
 			LOGGER.error("Router internal error", e);

@@ -74,6 +74,9 @@ public class FlexContainerController extends Controller {
 		 * currentNrOfInstances NP currentByteSize NP locationID O ontologyRef O
 		 * 
 		 */
+		
+		String contentFormat = System.getProperty("org.eclipse.om2m.registration.contentFormat", MimeMediaType.XML);
+
 		ResponsePrimitive response = new ResponsePrimitive(request);
 
 		// get the dao of the parent
@@ -153,28 +156,29 @@ public class FlexContainerController extends Controller {
 		AbstractFlexContainer flexContainer = null;
 		try {
 
-			String xmlPayload = null;
+			String payload = null;
 			if (request.getRequestContentType().equals(MimeMediaType.OBJ)) {
 				flexContainer = (AbstractFlexContainer) request.getContent();
 
-				// need to create the XML payload in order to validate it
-				xmlPayload = DataMapperSelector.getDataMapperList().get(MimeMediaType.XML).objToString(flexContainer);
+				// need to create the payload in order to validate it
+				payload = DataMapperSelector.getDataMapperList().get(contentFormat).objToString(flexContainer);
 
 			} else {
 				flexContainer = (AbstractFlexContainer) DataMapperSelector.getDataMapperList()
 						.get(request.getRequestContentType()).stringToObj((String) request.getContent());
 
-				if (request.getRequestContentType().equals(MimeMediaType.XML)) {
-					xmlPayload = (String) request.getContent();
+				if (request.getRequestContentType().equals(contentFormat)) {
+					payload = (String) request.getContent();
 				} else {
-					// need to create the XML payload in order to validate it
-					xmlPayload = DataMapperSelector.getDataMapperList().get(MimeMediaType.XML)
-							.objToString(flexContainer);
+					// need to create the payload in order to validate it
+					payload = DataMapperSelector.getDataMapperList().get(contentFormat).objToString(flexContainer);
 				}
 			}
 
 			// validate XML payload
-			FlexContainerXMLValidator.validateXMLPayload(xmlPayload, flexContainer.getContainerDefinition());
+			if (contentFormat.equals(MimeMediaType.XML)) {
+				FlexContainerXMLValidator.validateXMLPayload(payload, flexContainer.getContainerDefinition());
+			}
 		} catch (ClassCastException e) {
 			e.printStackTrace();
 			LOGGER.debug("ClassCastException: Incorrect resource type in object conversion.", e);
@@ -224,8 +228,7 @@ public class FlexContainerController extends Controller {
 		// set name if present and without any conflict
 		if (flexContainer.getName() != null) {
 			if (!Patterns.checkResourceName(flexContainer.getName())) {
-				throw new BadRequestException("Name provided is incorrect: " + flexContainer.getName()
-					+ ". Must be:" + Patterns.ID_STRING);
+				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
 			}
 			flexContainerEntity.setName(flexContainer.getName());
 		} else {
@@ -387,6 +390,8 @@ public class FlexContainerController extends Controller {
 		 * 
 		 */
 		// create the response base
+		String contentFormat = System.getProperty("org.eclipse.om2m.registration.contentFormat", MimeMediaType.XML);
+
 		ResponsePrimitive response = new ResponsePrimitive(request);
 
 		// retrieve the resource from database
@@ -412,29 +417,31 @@ public class FlexContainerController extends Controller {
 			// get the object from the representation
 			AbstractFlexContainer flexContainer = null;
 			try {
-				String xmlPayload = null;
+				String payload = null;
 				if (request.getRequestContentType().equals(MimeMediaType.OBJ)) {
 					flexContainer = (AbstractFlexContainer) request.getContent();
-					// need to create the XML payload in order to validate it
-					xmlPayload = DataMapperSelector.getDataMapperList().get(MimeMediaType.XML)
+					// need to create the payload in order to validate it
+					payload = DataMapperSelector.getDataMapperList().get(contentFormat)
 							.objToString(flexContainer);
 
 				} else {
 					flexContainer = (AbstractFlexContainer) DataMapperSelector.getDataMapperList()
 							.get(request.getRequestContentType()).stringToObj((String) request.getContent());
 
-					if (request.getRequestContentType().equals(MimeMediaType.XML)) {
-						xmlPayload = (String) request.getContent();
+					if (request.getRequestContentType().equals(contentFormat)) {
+						payload = (String) request.getContent();
 					} else {
 						// need to create the XML payload in order to validate
 						// it
-						xmlPayload = DataMapperSelector.getDataMapperList().get(MimeMediaType.XML)
+						payload = DataMapperSelector.getDataMapperList().get(contentFormat)
 								.objToString(flexContainer);
 					}
 				}
 
 				// validate XML payload
-				FlexContainerXMLValidator.validateXMLPayload(xmlPayload, flexContainer.getContainerDefinition());
+				if (contentFormat.equals(MimeMediaType.XML)) {
+					FlexContainerXMLValidator.validateXMLPayload(payload, flexContainer.getContainerDefinition());
+				}
 
 			} catch (ClassCastException e) {
 				throw new BadRequestException("Incorrect resource representation in content", e);
