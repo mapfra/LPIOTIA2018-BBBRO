@@ -7,10 +7,24 @@
  *******************************************************************************/
 package org.eclipse.om2m.sdt.home.monitoring.util;
 
-public class Constants {
+public interface Constants {
 	
-	public static final String ResourceID = "SDT_Home_Monitoring_Application";
+	String APPNAME = "Home_Monitoring_Application";
+	String RESOURCE_ID = "SDT_" + APPNAME;
+	String FRIENDLY_HOME_MONITORING_NAME = "Home Monitoring Application";
+	String ACP_HOME_MONITORING_NAME = RESOURCE_ID + "_ACP";
+	String HOME_MONITORING_RESOURCE_ID = "ResourceID/" + RESOURCE_ID;
+	String RESOURCE_TYPE = "ResourceType/Application";
+	String POA = "HomeMonitoringPOA";
 	
-	public static final String APPNAME = "Home_Monitoring_Application";
+	String WEBAPPS = APPNAME + "/webapps/";
+	String IMAGES = WEBAPPS + "images/";
+
+	String NAME = "name";
+	String CREDENTIALS = "credentials";
+	String PASSWORD = "password";
+	String AUTHORIZATION = "Authorization";
+	String AUTHENTICATE = "WWW-Authenticate";
+	String REQUESTED = "X-Requested-With";
 	
 }

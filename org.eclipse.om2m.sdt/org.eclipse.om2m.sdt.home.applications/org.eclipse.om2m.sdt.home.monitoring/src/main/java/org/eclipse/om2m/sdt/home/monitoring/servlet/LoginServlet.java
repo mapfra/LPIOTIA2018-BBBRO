@@ -14,12 +14,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.eclipse.om2m.sdt.home.monitoring.util.AuthFillter;
 import org.eclipse.om2m.sdt.home.monitoring.util.Constants;
 import org.osgi.framework.BundleContext;
 
-
 public class LoginServlet extends HttpServlet {
+
+	private static Log LOGGER = LogFactory.getLog(LoginServlet.class);
 
 	private static final long serialVersionUID = 1L;
 
@@ -29,15 +32,14 @@ public class LoginServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
-		
-		SessionManager.Session session = null;
-		if ((session = AuthFillter.validateUserCredentials(request, response)) != null) {	
-			response.sendRedirect("/" + Constants.APPNAME + "/webapps/monitor.html?" + SessionManager.SESSION_ID_PARAMETER + "=" + session.getId());
+		LOGGER.info("login " + request.getParameterMap());
+		SessionManager.Session session = AuthFillter.validateUserCredentials(request, response);
+		if (session != null) {	
+			response.sendRedirect("/" + Constants.WEBAPPS + "monitor.html?" 
+					+ SessionManager.SESSION_ID_PARAMETER + "=" + session.getId());
 		} else {
-			response.sendRedirect("/" + Constants.APPNAME + "/webapps/login.html?message=error");
+			response.sendRedirect("/" + Constants.WEBAPPS + "login.html?message=error");
 		}
 	}
-	
-	
 
 }

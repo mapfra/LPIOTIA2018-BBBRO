@@ -9,63 +9,67 @@
  -->
 <!doctype html>
 <html>
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Smart Home | login</title>
-<link rel="stylesheet" href="css/style.css">
-<link rel="icon" type="image/png" href="../webapps/images/favicon.ico" />
-<script>
-	var params = {};
-if (location.search) {
-    var parts = location.search.substring(1).split('&');
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Smart Home | login</title>
+		<link rel="stylesheet" href="css/style.css">
+		<link rel="icon" type="image/png" href="../webapps/images/favicon.ico" />
+		<script>
+			var params = {};
+			if (location.search) {
+				var parts = location.search.substring(1).split('&');
+				for (var i = 0; i < parts.length; i++) {
+					var nv = parts[i].split('=');
+					if (!nv[0]) continue;
+					params[nv[0]] = nv[1] || true;
+				}
+			}
 
-    for (var i = 0; i < parts.length; i++) {
-        var nv = parts[i].split('=');
-        if (!nv[0]) continue;
-        params[nv[0]] = nv[1] || true;
-    }
-}
+			var message = params.message;
+			function loginCenter() {
+				var bodyHeight = (document.getElementById('page-wrap').clientHeight - 273)/2;
+				console.log(bodyHeight)
+				document.getElementById("loginArea").style.top = bodyHeight +"px";
+				if (message)
+					document.getElementById("error").style.display ="inline";
+				console.log("name: " + params.name);
+				if (params.name != null) 
+					document.getElementById("thename").value = params.name;
+				if (params.password != null) 
+					document.getElementById("thepassword").value = params.password;
+			}
+			
+			function updateFormAction(form) {
+				form.action = form.action + "?sessionId=" + Date.now();
+			}
+		</script>
+	</head>
 
-var message = params.message;
-	function loginCenter(){
-		var bodyHeight = (document.getElementById('page-wrap').clientHeight - 273)/2;
-		console.log(bodyHeight)
-		  document.getElementById("loginArea").style.top = bodyHeight +"px";
-		  
-		if(message)document.getElementById("error").style.display ="inline";
-	}
-	
-	function updateFormAction(form) {
-		form.action = form.action + "?sessionId=" + Date.now();
-	}
-
-</script>
-</head>
-
-<body onLoad="loginCenter()" onResize="loginCenter()"> 
-<!-- login screen -->
-<div class="page-wrap" id="page-wrap">
-<div class="login-strip clearfix" id="loginArea">
-    	<div class="loginBox">
-    	<form method="POST" action="../security/login" id="loginForm" name="loginForm" onsubmit="updateFormAction(this)">
-        	<figure>
-            	<img src="images/logo.png">
-                <figcaption>Monitoring Application </figcaption>
-            </figure>
-            <div id="error" style="color:red;display:none;">Invalid user name or password.</div>
-            <label>
-	            user name
-                <input type="text" name="name">
-            </label>
-            <label>
-	            password
-                <input type="password" name="password">
-            </label>
-            <input type="submit" value="login">
-            <form/>
-        </div>
-    </div>
-    </div>
-</body>
+	<body onLoad="loginCenter()" onResize="loginCenter()"> 
+		<!-- login screen -->
+		<div class="page-wrap" id="page-wrap">
+			<div class="login-strip clearfix" id="loginArea">
+				<div class="loginBox">
+					<form method="POST" action="../security/login" id="loginForm" name="loginForm" 
+							onsubmit="updateFormAction(this)">
+						<figure>
+							<img src="images/logo.png">
+							<figcaption>Home Monitoring Application</figcaption>
+						</figure>
+						<div id="error" style="color:red;display:none;">Invalid user name or password.</div>
+						<label>
+							User name
+							<input type="text" name="name" id="thename">
+						</label>
+						<label>
+							Password
+							<input type="password" name="password" id="thepassword">
+						</label>
+						<input type="submit" value="login">
+					<form/>
+				</div>
+			</div>
+		</div>
+	</body>
 </html>

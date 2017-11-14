@@ -41,5 +41,9 @@ public class FileUtil {
 		}
 		return res;
 	}
+	
+	public static final boolean isEmpty(Object o) {
+		return (o == null) ? true : o.toString().isEmpty();
+	}
 
 }

@@ -18,7 +18,6 @@ import org.eclipse.om2m.sdt.home.monitoring.util.AeRegistration;
 import org.eclipse.om2m.sdt.home.monitoring.util.Constants;
 import org.osgi.framework.BundleContext;
 
-
 public class LogoutServlet extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
@@ -29,16 +28,12 @@ public class LogoutServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
-		
 		String sessionId = request.getParameter(SessionManager.SESSION_ID_PARAMETER);
-		
-		SessionManager.Session session = null;
 		if (sessionId != null) {
-			session = SessionManager.getInstance().removeSession(sessionId);
+			SessionManager.Session session = SessionManager.getInstance().removeSession(sessionId);
 			AeRegistration.getInstance().deassociateSubscriptionAndSessions(session.getId());
 		}
-		
-		response.sendRedirect("/" + Constants.APPNAME + "/webapps/login.html");
+		response.sendRedirect("/" + Constants.WEBAPPS + "login.html");
 	}
 	
 }
