@@ -15,7 +15,7 @@ import org.eclipse.om2m.sdt.home.types.ActionType;
 public abstract class DecrementNumberValue extends Command {
 
 	public DecrementNumberValue(String name) {
-		super(name, ActionType.incrementNumberValue);
+		super(name, ActionType.decrementNumberValue);
 		setDoc("Decrement the \"numberValue\" by the value of \"step\", down to the value of \"minimum\".");
 	}
 

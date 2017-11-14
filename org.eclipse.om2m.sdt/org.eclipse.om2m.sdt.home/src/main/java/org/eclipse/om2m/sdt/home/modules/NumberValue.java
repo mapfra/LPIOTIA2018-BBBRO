@@ -129,7 +129,7 @@ public class NumberValue extends Module {
 			this.decrementNumberValue = action;
 			this.decrementNumberValue.setOptional(true);
 			this.decrementNumberValue.setDoc("Decrement the \"numberValue\" by the value of \"step\", down to the value of \"minimum\".");
-			super.addAction(this.resetNumberValue);
+			super.addAction(this.decrementNumberValue);
 		} else if (action.getShortDefinitionName().equals(ActionType.incrementNumberValue.getShortName())) {
 			this.incrementNumberValue = action;
 			this.incrementNumberValue.setOptional(true);
