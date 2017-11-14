@@ -74,7 +74,7 @@ import org.eclipse.om2m.commons.resource.flexcontainerspec.*;
 	DeviceTemperatureDetectorFlexContainer.class, DeviceThermostatFlexContainer.class,
 	DeviceWarningDeviceFlexContainer.class,
 	DeviceWaterValveFlexContainer.class, DeviceWeatherStationFlexContainer.class,
-	DeviceThermostatFlexContainer.class,
+	DeviceThermostatFlexContainer.class, 
 	AlarmSpeakerFlexContainer.class, AudioVolumeFlexContainer.class,
 	BinarySwitchFlexContainer.class, BoilerFlexContainer.class,
 	BrightnessFlexContainer.class, ClockFlexContainer.class,
