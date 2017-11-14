@@ -22,7 +22,9 @@ package org.eclipse.om2m.datamapping.jaxb;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -105,8 +107,9 @@ public class Mapper implements DataMapperService {
 	public String objToString(Object obj) {
 		try {
 			Marshaller marshaller = context.createMarshaller();
+			marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
 			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-			OutputStream outputStream = new ByteArrayOutputStream();
+			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 			marshaller.setProperty(MarshallerProperties.MEDIA_TYPE,mediaType);
 			if (obj instanceof URIList) {
 				marshaller.setProperty(MarshallerProperties.JSON_INCLUDE_ROOT, false);
@@ -127,8 +130,10 @@ public class Mapper implements DataMapperService {
 			marshaller.setProperty(MarshallerProperties.JSON_NAMESPACE_SEPARATOR, ':');
 			marshaller.marshal(obj, outputStream);
 			
-			return outputStream.toString();
+			return outputStream.toString("UTF-8");
 		} catch (JAXBException e) {
+			LOGGER.error("JAXB marshalling error!", e);
+		} catch (UnsupportedEncodingException e) {
 			LOGGER.error("JAXB marshalling error!", e);
 		}
 		return null;
