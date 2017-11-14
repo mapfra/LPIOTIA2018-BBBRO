@@ -59,15 +59,12 @@ public class Activator implements BundleActivator {
 //			devices.add(new MockedWarningDevice(getId(), getSerial(), domain));
 //			devices.add(new MockedFloodDetector(getId(), getSerial(), domain));
 //			devices.add(new MockedSmartElectricMeter(getId(), getSerial(), domain));
-			
-			
 			devices.add(new MockedLight(getId(), getSerial(), domain));
 			devices.add(new MockedDoor(getId(), getSerial(), domain, true));
 			devices.add(new MockedDoor(getId(), getSerial(), domain, false));
 			devices.add(new MockedCamera(getId(), getSerial(), domain));
 			devices.add(new MockedWeatherStation(getId(), getSerial(), domain));
-			
-			
+			devices.add(new MockedSwitchButton(getId(), getSerial(), domain));
 			devices.add(new MockedDeviceNumberDevice(getId(), getSerial(), domain));
 //			devices.add(new MockedThermometer(getId(), getSerial(), domain));
 //			devices.add(new MockedThermostat(getId(), getSerial(), domain));
