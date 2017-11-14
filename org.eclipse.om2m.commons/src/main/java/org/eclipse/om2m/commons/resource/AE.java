@@ -155,7 +155,12 @@ public class AE extends AnnounceableResource {
 			@XmlElement(name = StreamingFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = StreamingFlexContainer.class),
 			@XmlElement(name = LockFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = LockFlexContainer.class),
 			@XmlElement(name = TimerFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = TimerFlexContainer.class),
-			@XmlElement(name = ToggleFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = ToggleFlexContainer.class)
+			@XmlElement(name = ToggleFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = ToggleFlexContainer.class),
+			@XmlElement(name = DeviceNumberDeviceFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DeviceNumberDeviceFlexContainer.class),
+			@XmlElement(name = NumberValueFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = NumberValueFlexContainer.class),
+			@XmlElement(name = DecrementNumberValueFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DecrementNumberValueFlexContainer.class),
+			@XmlElement(name = IncrementNumberValueFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = IncrementNumberValueFlexContainer.class),
+			@XmlElement(name = ResetNumberValueFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = ResetNumberValueFlexContainer.class)
 			})
 	protected List<Resource> containerOrGroupOrAccessControlPolicy;
 

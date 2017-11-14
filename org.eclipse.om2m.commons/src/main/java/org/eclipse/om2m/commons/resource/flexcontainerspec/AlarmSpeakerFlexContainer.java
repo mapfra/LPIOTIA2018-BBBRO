@@ -11,7 +11,7 @@ ModuleClass : AlarmSpeaker
 
 This ModuleClass provides the capability to initiate an alarm.
 
-Created: 2017-09-26 14:55:54
+Created: 2017-09-28 17:26:40
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;

@@ -11,7 +11,7 @@ ModuleClass : WaterLevelAnnc
 
 This ModuleClass provides the level and supply source of water  for an appliance. Examples of appliances which may include this  ModuleClass are air purifier, humidifier and ice maker.
 
-Created: 2017-09-26 14:55:54
+Created: 2017-09-28 17:26:40
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;

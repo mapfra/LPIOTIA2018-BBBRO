@@ -11,7 +11,7 @@ ObjectFactory : ObjectFactory
 
 
 
-Created: 2017-09-26 14:55:54
+Created: 2017-09-28 17:26:40
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -511,6 +511,38 @@ public class ObjectFactory {
 		return new ExtendedCarbonDioxideSensorFlexContainerAnnc();
 	}
 	
+	public AbstractFlexContainer createNumVe() {
+		return new NumberValueFlexContainer();
+	}
+	
+	public AbstractFlexContainerAnnc createNumVeAnnc() {
+		return new NumberValueFlexContainerAnnc();
+	}
+	
+	public AbstractFlexContainer createDeNVe() {
+		return new DecrementNumberValueFlexContainer();
+	}
+	
+	public AbstractFlexContainerAnnc createDeNVeAnnc() {
+		return new DecrementNumberValueFlexContainerAnnc();
+	}
+	
+	public AbstractFlexContainer createInNVe() {
+		return new IncrementNumberValueFlexContainer();
+	}
+	
+	public AbstractFlexContainerAnnc createInNVeAnnc() {
+		return new IncrementNumberValueFlexContainerAnnc();
+	}
+	
+	public AbstractFlexContainer createReNVe() {
+		return new ResetNumberValueFlexContainer();
+	}
+	
+	public AbstractFlexContainerAnnc createReNVeAnnc() {
+		return new ResetNumberValueFlexContainerAnnc();
+	}
+	
 	public AbstractFlexContainer createDeACr() {
 		return new DeviceAirConditionerFlexContainer();
 	}
@@ -725,6 +757,14 @@ public class ObjectFactory {
 	
 	public AbstractFlexContainerAnnc createDeWSnAnnc() {
 		return new DeviceWeatherStationFlexContainerAnnc();
+	}
+	
+	public AbstractFlexContainer createDeNDe() {
+		return new DeviceNumberDeviceFlexContainer();
+	}
+	
+	public AbstractFlexContainerAnnc createDeNDeAnnc() {
+		return new DeviceNumberDeviceFlexContainerAnnc();
 	}
 	
 }

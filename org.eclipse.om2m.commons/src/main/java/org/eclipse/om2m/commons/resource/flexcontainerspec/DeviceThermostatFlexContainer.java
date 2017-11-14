@@ -11,7 +11,7 @@ Device : DeviceThermostat
 
 A thermostat is used to control the ambient temperature of rooms within for example a house. This information model provides capabilities to interact with specific functions of thermostats.
 
-Created: 2017-09-26 14:55:54
+Created: 2017-09-28 17:26:40
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;

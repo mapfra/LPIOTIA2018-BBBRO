@@ -11,7 +11,7 @@ ModuleClass : Temperature
 
 This ModuleClass provides capabilities to represent the current  temperature and target temperature of devices such as an air  conditioner, refrigerator, oven and etc.
 
-Created: 2017-09-26 14:55:54
+Created: 2017-09-28 17:26:40
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;

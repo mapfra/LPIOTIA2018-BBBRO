@@ -11,7 +11,7 @@ ModuleClass : TelevisionChannel
 
 This ModuleClass provides capabilities to set and get channels  of a device that has a channel list.
 
-Created: 2017-09-26 14:55:54
+Created: 2017-09-28 17:26:40
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;

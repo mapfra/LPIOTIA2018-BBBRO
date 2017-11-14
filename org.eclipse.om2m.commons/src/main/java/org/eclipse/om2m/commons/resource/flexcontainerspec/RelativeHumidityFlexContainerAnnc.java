@@ -11,7 +11,7 @@ ModuleClass : RelativeHumidityAnnc
 
 This ModuleClass provides the capability for the device to  report the humidity based on a specified rule that is vendor  discretionary.
 
-Created: 2017-09-26 14:55:54
+Created: 2017-09-28 17:26:40
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
