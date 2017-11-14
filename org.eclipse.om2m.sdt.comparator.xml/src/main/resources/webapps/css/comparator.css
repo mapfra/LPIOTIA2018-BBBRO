@@ -155,3 +155,18 @@ li.level a {
 	color:#ffffff;
 	background-color:#44dde6;	
 }
+
+li.contactSensor a {
+	color:#ffffff;
+	background-color:#ff0080;
+}
+
+li.motionSensor a {
+	color:#ffffff;
+	background-color:#ff00ff;
+}
+
+li.brightness a {
+	color:#ff0000;
+	background-color:#ff8040;
+}
