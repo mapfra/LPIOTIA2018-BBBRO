@@ -104,29 +104,4 @@ public class SubscriptionServlet extends HttpServlet {
 		}
 	}
 
-//	public class Notification {
-//
-//		private final Object notification;
-//
-//		public Notification(Object pNotification) {
-//			this.notification = pNotification;
-//		}
-//
-//		public Object getNotification() {
-//			return notification;
-//		}
-//
-//		@Override
-//		public String toString() {
-//			if (notification.getClass().equals(org.eclipse.om2m.commons.resource.Notification.class)) {
-//				org.eclipse.om2m.commons.resource.Notification n = (org.eclipse.om2m.commons.resource.Notification) notification;
-//				return "Notification(creator=" + n.getCreator() + ", notificationForwardingUri="
-//						+ n.getNotificationForwardingURI() + ", notificationEvent=" + n.getNotificationEvent()
-//						+ ", subscriptionReference=" + n.getSubscriptionReference() + ")";
-//			}
-//			return "obj=" + notification;
-//		}
-//
-//	}
-
 }
