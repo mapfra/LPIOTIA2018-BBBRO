@@ -14,49 +14,36 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-
 public class TCPConnection {
-	
-	private static String address = "";
 
-	private static int port = 2081;
-
-	private Socket socket;
-
+	private String address = "";
+	private int port = 2081;
 	private boolean waitForResponse = true;  // should be set true if ACK or Status expected
 	
-	/*public TCPConnection(String address, int port){
-		
-		this.address = address;
+	public TCPConnection(String ip, int port) {
+		this.address = ip;
 		this.port = port;
-		
-	}*/
-	
-
-	public void sendTCPPacket(byte[] bytes2send){
-		sendTCPPacket(bytes2send, this.address, this.port);
-		
 	}
-	
-	
-	public void sendTCPPacket(byte[] bytes2send, String address, int port){
+
+	public void sendTCPPacket(byte[] bytes2send) {
+		sendTCPPacket(bytes2send, address, port);
+	}
+
+	public void sendTCPPacket(byte[] bytes2send, String address, int port) {
 		try {
-			socket = new Socket(address, port);
-			
+			Socket socket = new Socket(address, port);
 			sendBytes(bytes2send, socket);
-			
-			if(!waitForResponse ){
+
+			if (! waitForResponse) {
 				socket.close();
-			}else{
+			} else {
 				/*if(bytes2send[0] == SmarterCoffeeCommands.HEADER_START){
-					
+
 				}
 				else{*/
-					readBytes();
-				//}
+				readBytes(socket);
 				//socket.close();
 			}
-			
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -66,131 +53,92 @@ public class TCPConnection {
 		}
 	}
 
-
-
-public void sendBytes(byte[] bytes2send, Socket socket) throws IOException {
-    sendBytes(bytes2send, 0, bytes2send.length, socket);
-}
-
-public void sendBytes(byte[] bytes2send, int start, int len, Socket socket) throws IOException {
-    if (len < 0)
-        throw new IllegalArgumentException("Negative length not allowed");
-    if (start < 0 || start >= bytes2send.length)
-        throw new IndexOutOfBoundsException("Out of bounds: " + start);
-
-    if(socket != null){
-    	OutputStream out = socket.getOutputStream(); 
-    	DataOutputStream dos = new DataOutputStream(out);
-
-    	//dos.writeInt(len);
-    	if (len > 0) {
-    		dos.write(bytes2send, start, len);
-    	}
-    	
-    	//dos.close();
-    	//out.close();
-    }
-    
-}
-
-public byte[] readBytes() throws IOException {
-	boolean statusMsg = false;
-	 byte[] buffer = new byte[1024];
-	    int charsRead = 0;
-	    if(socket!= null){
-	    	InputStream in = this.socket.getInputStream();
-	    	
-	    	
-	    	while(!statusMsg){
-	    		int k = 0;
-	    		int iterator = 0;
-	    		while ((charsRead = in.read(buffer)) != -1)
-	    			
-	    		
-	    
-	    
-	    		{	
-	    			
-	    			iterator++;
-	    			
-	    			if(charsRead == 3) break;  //ACK received
-	    			if(charsRead > 3) statusMsg = true; //Status received
-	    		
-	    				for(int i = 0; i < charsRead; i++){
-	    					if(i == 2)
-	    						System.out.print( "Temp ( " + i + ")" +": " + Byte.toUnsignedInt(buffer[i]) + " | ");
-	    					else
-	    						System.out.print( i +": " + Byte.toUnsignedInt(buffer[i]) + " | ");	        
-	    				}
-	    				System.out.println(" ");
-	    		
-	    			if(buffer[charsRead-1] == SmarterKettleCommands.END_OF_MESSAGE) break; 
-	    		   
-	    			
-	    		
-	    		}
-	    		
-	    	}
-	    		in.close();
-	    }
-	    byte[] data = new byte[charsRead];
-	    System.arraycopy(buffer, 0, data, 0, charsRead);
-	    	 
-    return data;
-}
-
-public byte[] checkStatus(){
-	
-	byte[] result = new byte[7];
-	
-	try {
-		socket = new Socket(address, port);
-		result = readBytes();
-		return result;
-		//socket.close();
-		
-	} catch (UnknownHostException e) {
-
-		e.printStackTrace();
-	} catch (IOException e) {
-
-		e.printStackTrace();
+	private void sendBytes(byte[] bytes2send, Socket socket) throws IOException {
+		sendBytes(bytes2send, 0, bytes2send.length, socket);
 	}
-	
-	return result;
-	
-	
-}
 
+	private void sendBytes(byte[] bytes2send, int start, int len, Socket socket) throws IOException {
+		if (len < 0)
+			throw new IllegalArgumentException("Negative length not allowed");
+		if (start < 0 || start >= bytes2send.length)
+			throw new IndexOutOfBoundsException("Out of bounds: " + start);
 
-public static String getAddress() {
-	return address;
-}
+		if (socket != null) {
+			OutputStream out = socket.getOutputStream(); 
+			DataOutputStream dos = new DataOutputStream(out);
+			//dos.writeInt(len);
+			if (len > 0) {
+				dos.write(bytes2send, start, len);
+			}
+			//dos.close();
+			//out.close();
+		}
+	}
 
+	private byte[] readBytes(Socket socket) throws IOException {
+		boolean statusMsg = false;
+		byte[] buffer = new byte[1024];
+		int charsRead = 0;
+		if (socket != null) {
+			InputStream in = socket.getInputStream();
+			while (!statusMsg) {
+				int iterator = 0;
+				while ((charsRead = in.read(buffer)) != -1) {	
+					iterator++;
+					if (charsRead == 3) break;  //ACK received
+					if (charsRead > 3) statusMsg = true; //Status received
+//					for (int i = 0; i < charsRead; i++) {
+//						if (i == 2)
+//							System.out.print( "Temp ( " + i + ")" +": " + Byte.toUnsignedInt(buffer[i]) + " | ");
+//						else
+//							System.out.print( i +": " + Byte.toUnsignedInt(buffer[i]) + " | ");	        
+//					}
+					if (buffer[charsRead-1] == SmarterKettleCommands.END_OF_MESSAGE) 
+						break; 
+				}
+			}
+			in.close();
+		}
+		byte[] data = new byte[charsRead];
+		System.arraycopy(buffer, 0, data, 0, charsRead);
+		return data;
+	}
 
-public static void setAddress(String address) {
-	TCPConnection.address = address;
-}
+	public byte[] checkStatus() {
+		try {
+			Socket socket = new Socket(address, port);
+			return readBytes(socket);
+			//socket.close();
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return new byte[7];
+	}
 
+	public String getAddress() {
+		return address;
+	}
 
-public boolean isWaitForResponse() {
-	return waitForResponse;
-}
+	public void setAddress(String address) {
+		this.address = address;
+	}
 
+	public boolean isWaitForResponse() {
+		return waitForResponse;
+	}
 
-public void setWaitForResponse(boolean waitForResponse) {
-	this.waitForResponse = waitForResponse;
-}
+	public void setWaitForResponse(boolean waitForResponse) {
+		this.waitForResponse = waitForResponse;
+	}
 
-public static int getPort() {
-	return port;
-}
+	public int getPort() {
+		return port;
+	}
 
-
-public static void setPort(int port) {
-	TCPConnection.port = port;
-}
-
-
+	public void setPort(int port) {
+		this.port = port;
+	}
 
 }

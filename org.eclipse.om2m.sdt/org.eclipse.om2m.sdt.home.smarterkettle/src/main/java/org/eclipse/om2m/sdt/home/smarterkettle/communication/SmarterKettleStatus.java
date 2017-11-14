@@ -16,9 +16,14 @@ public class SmarterKettleStatus {
 	
 	public final SmarterKettleStatusDescriptor BOILING_IN_PROGRESS = new SmarterKettleStatusDescriptor(1,  "Boiling in progress");
 	
+	private enum WaterLevels {
+		EMPTY, LOW, HALF, QUARTER, FULL;
+	}
 
 	private int currentTemperature = 0;
 	private  int waterLevel = 0;
+
+	private WaterLevels waterLevelName = WaterLevels.EMPTY;
 
 	private boolean isPlugged = false;
 	private boolean isBoiling = false;
@@ -29,8 +34,8 @@ public class SmarterKettleStatus {
 	private int maxTemperature = 100;
 	private int stepTemperature = 1;
 	
-	public int getCode(){
-		if(!isPlugged)
+	public int getCode() {
+		if (!isPlugged)
 			return UNPLUGGED.getCode();
 		else if (isEmpty) 
 			return WATER_ERROR.getCode();
@@ -38,28 +43,20 @@ public class SmarterKettleStatus {
 			return NO_FAULT.getCode();
 	}
 	
-	public String getDescription(){
-		if(!isPlugged)
+	public String getDescription() {
+		if (!isPlugged)
 			return UNPLUGGED.getDescription();
 		else if (isEmpty) 
 			return WATER_ERROR.getDescription();
 		else 
 			return NO_FAULT.getDescription();
 	}
-	
-	
 
-	public enum waterLevels {
-		EMPTY, LOW, HALF, QUARTER, FULL;
-	}
-
-	private waterLevels waterLevelName = waterLevels.EMPTY;
-
-	public waterLevels getWaterLevelName() {
+	public WaterLevels getWaterLevelName() {
 		return waterLevelName;
 	}
 
-	public void setWaterLevelName(waterLevels waterLevelName) {
+	public void setWaterLevelName(WaterLevels waterLevelName) {
 		this.waterLevelName = waterLevelName;
 	}
 
@@ -79,17 +76,17 @@ public class SmarterKettleStatus {
 		this.waterLevel = waterLevel;
 	}
 
-	public  void setWaterLevelEnum(int waterLevel) {
-		if (waterLevel >= 190)
-			waterLevelName = waterLevels.FULL;
-		else if (waterLevel < 190 && waterLevel >= 120)
-			waterLevelName = waterLevels.QUARTER;
-		else if (waterLevel < 120 && waterLevel >= 80)
-			waterLevelName = waterLevels.HALF;
-		else if (waterLevel < 80 && waterLevel >= 20)
-			waterLevelName = waterLevels.LOW;
+	public  void setWaterLevelEnum(int level) {
+		if (level >= 190)
+			waterLevelName = WaterLevels.FULL;
+		else if (level < 190 && level >= 120)
+			waterLevelName = WaterLevels.QUARTER;
+		else if (level < 120 && level >= 80)
+			waterLevelName = WaterLevels.HALF;
+		else if (level < 80 && level >= 20)
+			waterLevelName = WaterLevels.LOW;
 		else
-			waterLevelName = waterLevels.EMPTY;
+			waterLevelName = WaterLevels.EMPTY;
 	}
 
 	public  boolean isPlugged() {
@@ -108,15 +105,8 @@ public class SmarterKettleStatus {
 		this.isBoiling = isBoiling;
 	}
 	
-	
-	
-	public boolean getFaultDetection(){
-		if(!isPlugged)
-			return false;
-		else if(isEmpty)
-			return false;
-		else
-			return true;
+	public boolean getFaultDetection() {
+		return isPlugged && ! isEmpty;
 	}
 
 	public boolean isEmpty() {

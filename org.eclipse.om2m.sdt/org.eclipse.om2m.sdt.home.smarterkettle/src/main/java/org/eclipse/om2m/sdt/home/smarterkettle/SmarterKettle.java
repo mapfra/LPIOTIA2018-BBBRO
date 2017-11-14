@@ -24,20 +24,16 @@ import org.eclipse.om2m.sdt.home.modules.FaultDetection;
 import org.eclipse.om2m.sdt.home.modules.Temperature;
 import org.eclipse.om2m.sdt.home.smarterkettle.communication.SmarterKettleCommunication;
 import org.eclipse.om2m.sdt.home.types.DatapointType;
-import org.eclipse.om2m.sdt.home.types.DeviceType;
+import org.eclipse.om2m.sdt.home.types.ModuleType;
 import org.eclipse.om2m.sdt.home.types.TasteStrength;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 
-public class SmarterKettle extends Kettle{
+public class SmarterKettle extends Kettle {
 	
-	
+	@SuppressWarnings("rawtypes")
 	private List<ServiceRegistration> registrations;
 	private Domain domain; 
-	private String serial = "SmarterKettle";
-	private String IP;
-	private int port;
-	
 	
 	private SmarterKettleCommunication smarterKettle;
 	
@@ -46,99 +42,59 @@ public class SmarterKettle extends Kettle{
 	private TasteStrength strength;
 	private IntegerDataPoint status;
 	
-	
 
 	public SmarterKettle(String id, Domain domain, String ip , int port) {
-		
 		super(id, id, domain);
 		this.domain = domain;
-		this.serial = id;
-		this.IP = ip;
-		this.port = port;
-		
 		smarterKettle = new SmarterKettleCommunication(ip, port);
-		
-		System.out.println("TUTAJ HALO: " + DeviceType.deviceKettle);
-		
-		
 		addBinarySwitch();
 		addFaultDetection();
 		addTemperature();
-		
 		setDeviceManufacturer("Smarter");
 		setDeviceName("SmarterKettle 2.0");
-	
-		
-		
-		
 	}
-	
 	
 	public void register(BundleContext context) {
 		registrations = Utils.register(this, context);
 	}
 	
-	
-	
 //*********************BinarySwitch*********************	
 	
-	private void addBinarySwitch(){
-		
-		
-
-		BinarySwitch binarySwitch = new BinarySwitch("BinarySwitch" + getId(), domain, new BooleanDataPoint(DatapointType.powerState){
-
+	private void addBinarySwitch() {
+		BinarySwitch binarySwitch = new BinarySwitch("BinarySwitch" + getId(), 
+				domain, new BooleanDataPoint(DatapointType.powerState) {
 			@Override
 			protected Boolean doGetValue() throws DataPointException {
-				return smarterKettle.kettleStatus.isBoiling();
+				return smarterKettle.getStatus().isBoiling();
 			}
-			
 			@Override
-			protected void doSetValue(Boolean v)throws DataPointException{
-				if(!smarterKettle.kettleStatus.isBoiling()){
-					smarterKettle.startKettle(smarterKettle.kettleStatus.getTargetTemperature());
-					System.out.println("Włączanie");
-				}
-					
-				else{
+			protected void doSetValue(Boolean v)throws DataPointException {
+				if (smarterKettle.getStatus().isBoiling()) {
 					smarterKettle.stopKettle();	
-					System.out.println("Wyłączanie");
+				} else {
+					smarterKettle.startKettle(smarterKettle.getStatus().getTargetTemperature());
 				}
-									
 			}			
 		});
 		
-		binarySwitch.setToggle(new Toggle("toggle"){
-
+		binarySwitch.setToggle(new Toggle("toggle") {
 			@Override
 			protected void doToggle() throws ActionException {
-				
 				smarterKettle.checkStatus();
-				
-				System.out.println("Uruchomiony toggle");
-				if(!smarterKettle.kettleStatus.isBoiling()){
-					smarterKettle.startKettle();
-					System.out.println("Włączanie");
-				}
-					
-				else{
+				if (smarterKettle.getStatus().isBoiling()) {
 					smarterKettle.stopKettle();	
-					System.out.println("Wyłączanie");
+				} else {
+					smarterKettle.startKettle();
 				}
-								
 			}			
 		});
-		
-		
 		addModule(binarySwitch);
 	}
-//*********************BinarySwitch*********************
 	
 //***************Fault Detection Module*****************
 
-	
 	private void addFaultDetection() {
-		FaultDetection faultDetection = new FaultDetection("FaultDetection_" + getId(), domain,
+		FaultDetection faultDetection = new FaultDetection(ModuleType.faultDetection + getId(), domain,
 				new BooleanDataPoint(DatapointType.status) {
 			@Override
 			public Boolean doGetValue() throws DataPointException {
@@ -146,107 +102,66 @@ public class SmarterKettle extends Kettle{
 				return smarterKettle.getFaultDetection(); 
 			}
 		});
-		
 		faultDetection.setCode(new IntegerDataPoint(DatapointType.code) {
-			
 			@Override
 			protected Integer doGetValue() throws DataPointException {
 				return smarterKettle.getCode();
 			}	
 		});
-		
 		faultDetection.setDescription(new StringDataPoint(DatapointType.description) {
-			
 			@Override
 			protected String doGetValue() throws DataPointException {
 				return smarterKettle.getDescription();
 			}
 		});
-		
-		
-		
 		addModule(faultDetection);
 	}
 	
-	
-//***************Fault Detection Module*****************
-	
 //*****************Temperature Module*******************
 	
-	
 	private void addTemperature(){
-		System.out.println("Dodawanie modułu temperatury...");
-		Temperature temperature = new Temperature("Temperature_" + getId(), domain, new FloatDataPoint(DatapointType.currentTemperature) {
-			
+		Temperature temperature = new Temperature("Temperature_" + getId(), domain, 
+				new FloatDataPoint(DatapointType.currentTemperature) {
 			@Override
 			protected Float doGetValue() throws DataPointException {
-				return (float) smarterKettle.kettleStatus.getCurrentTemperature();
+				return (float) smarterKettle.getStatus().getCurrentTemperature();
 			}
-			
-			
-			
 		});
-		
 		temperature.setTargetTemperature(new FloatDataPoint(DatapointType.targetTemperature) {
-			
 			@Override
 			protected Float doGetValue() throws DataPointException {
-				return (float)smarterKettle.kettleStatus.getTargetTemperature();
+				return (float)smarterKettle.getStatus().getTargetTemperature();
 			}
-			
 			@Override
 			protected void doSetValue(Float b) throws DataPointException {
-				
-				smarterKettle.kettleStatus.setTargetTemperature(Math.round(b));
+				smarterKettle.getStatus().setTargetTemperature(Math.round(b));
 			}
-					
-			
 		});
-		
 		temperature.setUnit(new StringDataPoint(DatapointType.unit) {
-			
 			@Override
 			protected String doGetValue() throws DataPointException {
 				return null;
 			}
 		});
-		
 		temperature.setMinValue(new FloatDataPoint(DatapointType.minValue) {
-			
 			@Override
 			protected Float doGetValue() throws DataPointException {
-				return (float)smarterKettle.kettleStatus.getMinTemperature();
+				return (float)smarterKettle.getStatus().getMinTemperature();
 			}
-			
-			
 		});
-		
 		temperature.setMaxValue(new FloatDataPoint(DatapointType.maxValue) {
-			
 			@Override
 			protected Float doGetValue() throws DataPointException {
-				return (float)smarterKettle.kettleStatus.getMaxTemperature();
+				return (float)smarterKettle.getStatus().getMaxTemperature();
 			}
 		});
-		
 		temperature.setStepValue(new FloatDataPoint(DatapointType.stepValue) {
-			
 			@Override
 			protected Float doGetValue() throws DataPointException {
-				return (float)smarterKettle.kettleStatus.getStepTemperature();
+				return (float)smarterKettle.getStatus().getStepTemperature();
 			}
 		});
-		
-		
-		
 		addModule(temperature);
 	}
-	
-//*****************Temperature Module*******************
-
 
 }
-
-	
-	
-

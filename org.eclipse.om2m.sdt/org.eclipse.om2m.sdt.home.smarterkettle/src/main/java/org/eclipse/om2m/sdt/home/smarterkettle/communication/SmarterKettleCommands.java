@@ -7,16 +7,11 @@
  *******************************************************************************/
 package org.eclipse.om2m.sdt.home.smarterkettle.communication;
 
-public class SmarterKettleCommands {
+public interface SmarterKettleCommands {
 	
-	public static final byte START_KETTLE = 21; //START KETTLE
-	public static final byte STOP_KETTLE = 22; //STOP KETTLE
-	public static final byte SHEDULE_TEST = 65;
+	byte START_KETTLE = 21; //START KETTLE
+	byte STOP_KETTLE = 22; //STOP KETTLE
+	byte SHEDULE_TEST = 65;
+	byte END_OF_MESSAGE = 126; //ENDING MESSAGE
 	
-	public static final byte END_OF_MESSAGE = 126; //ENDING MESSAGE
-	
-	
-	
-	
-
 }
