@@ -117,22 +117,25 @@ public class SDTIpeApplication implements DeviceListListener {
 		}
 
 		ResponsePrimitive resp = null;
-		for (int i = 0; i < 3; i++) {
-			 resp = CseUtil.sendCreateApplicationEntityRequest(cseService, ae, sdtIpeBaseLocation);
-
-			 if (ResponseStatusCode.CREATED.equals(resp.getResponseStatusCode())) {
-				 // nothing do 
-				 break;
-			 } else if (ResponseStatusCode.CONFLICT.equals(resp.getResponseStatusCode())) {
-				 // remove previous SDT_IPE application
-				 deleteIpeApplicationEntity();
-				 continue;
-			 } else {
-				 logger.error("Unable to create SDT IPE Application:" + resp.getContent(), null);
-					throw new Exception("unable to create SDT Application Entity");
-			 }
-			 
-
+		try {
+			for (int i = 0; i < 3; i++) {
+				resp = CseUtil.sendCreateApplicationEntityRequest(cseService, ae, sdtIpeBaseLocation);
+	
+				if (ResponseStatusCode.CREATED.equals(resp.getResponseStatusCode())) {
+					 // nothing do 
+					 break;
+				 } else if (ResponseStatusCode.CONFLICT.equals(resp.getResponseStatusCode())) {
+					 // remove previous SDT_IPE application
+					 deleteIpeApplicationEntity();
+					 continue;
+				 } else {	
+					 logger.error("Unable to create SDT IPE Application:" + resp.getContent(), null);
+						throw new Exception("unable to create SDT Application Entity");
+				 }
+			}
+		} catch (Throwable _e) {
+			logger.error("Error in CreateIPEApplication", _e);
+			throw _e;
 		}
 
 		if (!ResponseStatusCode.CREATED.equals(resp.getResponseStatusCode())) {
