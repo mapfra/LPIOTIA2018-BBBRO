@@ -39,6 +39,23 @@
 		<tycho.test.jvmArgs>-Xmx512m -XX:MaxPermSize=256m</tycho.test.jvmArgs>
 	</properties>
 
+	<distributionManagement>
+		<repository>
+			<id>inhouse</id>
+			<name>inhouse repository</name>
+			<uniqueVersion>true</uniqueVersion>
+			<url>http://maven2.rd.francetelecom.fr/proxy/repository/inhouse</url>
+			<layout>default</layout>
+		</repository>
+		<snapshotRepository>
+			<id>inhouse.snapshot</id>
+			<name>inhouse.snapshot repository</name>
+			<uniqueVersion>false</uniqueVersion>
+			<url>http://maven2.rd.francetelecom.fr/proxy/repository/inhouse.snapshot</url>
+			<layout>default</layout>
+		</snapshotRepository>
+	</distributionManagement>
+
 	<repositories>
 		<repository>
 			<id>luna</id>
@@ -166,5 +183,6 @@
 		<module>org.eclipse.om2m.dal</module>
 		<module>org.eclipse.om2m.dal.driver.sample</module>
 		<module>org.eclipse.om2m.ipe.dal</module>
+		<module>com.orange.om2m.p2.repo</module>
 	</modules>
 </project>
