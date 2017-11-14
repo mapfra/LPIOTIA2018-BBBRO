@@ -10,8 +10,8 @@ Import-Package: org.apache.commons.logging,
  org.eclipse.om2m.commons.resource,
  org.eclipse.om2m.commons.resource.flexcontainerspec,
  org.eclipse.om2m.datamapping.service,
+ org.junit;resolution:=optional,
  org.osgi.framework,
  org.osgi.util.tracker
 Bundle-ClassPath: .,
  eclipselink.jar
-Require-Bundle: org.junit
