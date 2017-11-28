@@ -170,7 +170,7 @@ public class SubscriptionEntity extends RegularResourceEntity {
 	
 	@ManyToOne(targetEntity = NodeEntity.class, fetch = FetchType.LAZY)
 	@JoinTable(
-			name = DBEntities.NODSUB_JOIN,
+			name = DBEntities.NOD_SUB_JOIN,
 			inverseJoinColumns = { @JoinColumn(name = DBEntities.NOD_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
 			joinColumns = { @JoinColumn(name = DBEntities.SUB_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
 			)
@@ -180,7 +180,7 @@ public class SubscriptionEntity extends RegularResourceEntity {
 	// Database link to Subscriptions
 	@ManyToOne(fetch = FetchType.LAZY, targetEntity = AreaNwkInfoEntity.class)
 	@JoinTable(
-			name = DBEntities.ANISUB_JOIN,
+			name = DBEntities.ANI_SUB_JOIN,
 			inverseJoinColumns = { @JoinColumn(name = DBEntities.ANI_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
 			joinColumns = { @JoinColumn(name = DBEntities.SUB_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
 			)
@@ -188,7 +188,7 @@ public class SubscriptionEntity extends RegularResourceEntity {
 	
 	@ManyToOne(fetch = FetchType.LAZY, targetEntity = AreaNwkDeviceInfoEntity.class)
 	@JoinTable(
-			name = DBEntities.ANDISUB_JOIN,
+			name = DBEntities.ANDI_SUB_JOIN,
 			inverseJoinColumns = { @JoinColumn(name = DBEntities.ANDI_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
 			joinColumns = { @JoinColumn(name = DBEntities.SUB_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
 			)
@@ -196,7 +196,7 @@ public class SubscriptionEntity extends RegularResourceEntity {
 	
 	@ManyToOne(fetch = FetchType.LAZY, targetEntity = DeviceInfoEntity.class)
 	@JoinTable(
-			name = DBEntities.DVISUB_JOIN,
+			name = DBEntities.DVI_SUB_JOIN,
 			inverseJoinColumns = { @JoinColumn(name = DBEntities.DVI_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
 			joinColumns = { @JoinColumn(name = DBEntities.SUB_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
 			)

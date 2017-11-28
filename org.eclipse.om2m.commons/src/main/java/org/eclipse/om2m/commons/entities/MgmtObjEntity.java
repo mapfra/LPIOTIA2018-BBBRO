@@ -133,5 +133,6 @@ public abstract class MgmtObjEntity extends AnnounceableSubordinateEntity {
 	abstract public NodeEntity getParentNode();
 	abstract public void setParentNode(NodeEntity parentNode);
 	abstract public List<AccessControlPolicyEntity> getAccessControlPolicies();
+	abstract public List<SubscriptionEntity> getSubscriptions();
 
 }

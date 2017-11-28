@@ -401,6 +401,17 @@ public class ShortName {
 	public static final String REBOOT = "rbo";
 	public static final String SOFTWARE = "swr";
 	
+	public static final String AREA_NWK_DEVICE_INFO_ANNC = "andiA";
+	public static final String AREA_NWK_INFO_ANNC = "aniA";
+	public static final String BATTERY_ANNC = "batA";
+	public static final String DEVICE_CAPABILITY_ANNC = "dvcA";
+	public static final String DEVICE_INFO_ANNC = "dviA";
+	public static final String EVENT_LOG_ANNC = "evlA";
+	public static final String FIRMWARE_ANNC = "fwrA";
+	public static final String MEMORY_ANNC = "memA";
+	public static final String REBOOT_ANNC = "rboA";
+	public static final String SOFTWARE_ANNC = "swrA";
+	
 	public static final String ACTIVE_CMDH_POLICY = "acmp";
 	public static final String CMDH_POLICY = "cmp";
 	public static final String CMDH_DEFAULTS = "cmdf";

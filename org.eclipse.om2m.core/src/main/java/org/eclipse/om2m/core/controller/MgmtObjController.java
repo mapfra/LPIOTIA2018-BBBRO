@@ -15,7 +15,6 @@ import org.apache.commons.logging.LogFactory;
 import org.eclipse.om2m.commons.constants.Constants;
 import org.eclipse.om2m.commons.constants.MgmtDefinitionTypes;
 import org.eclipse.om2m.commons.constants.MimeMediaType;
-import org.eclipse.om2m.commons.constants.Operation;
 import org.eclipse.om2m.commons.constants.ResourceStatus;
 import org.eclipse.om2m.commons.constants.ResourceType;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
@@ -25,7 +24,6 @@ import org.eclipse.om2m.commons.entities.AreaNwkDeviceInfoEntity;
 import org.eclipse.om2m.commons.entities.AreaNwkInfoEntity;
 import org.eclipse.om2m.commons.entities.DeviceInfoEntity;
 import org.eclipse.om2m.commons.entities.DynamicAuthorizationConsultationEntity;
-import org.eclipse.om2m.commons.entities.FlexContainerEntity;
 import org.eclipse.om2m.commons.entities.MgmtObjEntity;
 import org.eclipse.om2m.commons.entities.NodeEntity;
 import org.eclipse.om2m.commons.entities.ResourceEntity;
@@ -439,34 +437,10 @@ public class MgmtObjController extends Controller {
 					&& ! mgmtObjEntity.getMgmtDefinition().equals(mgmtObj.getMgmtDefinition())) {
 				throw new BadRequestException("unable to change the mgmtDefinition value");
 			}
-
-		} else {
-			// content might be null for FlexContainer representing a SDT action
 		}
 
 		mgmtObjEntity.setLastModifiedTime(DateUtil.now());
 		modifiedMgmtObj.setLastModifiedTime(mgmtObjEntity.getLastModifiedTime());
-
-//		// in case of update operation
-//		if (!isInternalNotify) {
-//			LOGGER.info("flexContainer.getResourceID=" + mgmtObjEntity.getResourceID());
-//			// check if a FlexContainerService exist
-//			FlexContainerService fcs = FlexContainerSelector.getFlexContainerService(
-//					/* request.getTo() */ /* UriUtil.toCseRelativeUri( */mgmtObjEntity.getResourceID()/* ) */);
-//			if (fcs != null) {
-//				try {
-//					fcs.setCustomAttributeValues(modifiedMgmtObj.getCustomAttributes(), request);
-//					// at this modifiedAttributes.getCustomAttributes() list
-//					// contains the new values of CustomAttribute
-//
-//				} catch (Om2mException e) {
-//					throw e;
-//				}
-//			}
-//		}
-
-		// at this point, we are sure there was no error when setting custom
-		// attribute parameter
 
 		response.setContent(modifiedMgmtObj);
 		// update the resource in the database
@@ -475,8 +449,8 @@ public class MgmtObjController extends Controller {
 		// commit and release lock
 		transaction.commit();
 
-//		Notifier.notify(mgmtObjEntity.getSubscriptions(), mgmtObjEntity, modifiedMgmtObj,
-//				ResourceStatus.UPDATED);
+		Notifier.notify(mgmtObjEntity.getSubscriptions(), mgmtObjEntity, modifiedMgmtObj,
+				ResourceStatus.UPDATED);
 
 		// set response status code
 		response.setResponseStatusCode(ResponseStatusCode.UPDATED);
@@ -502,11 +476,10 @@ public class MgmtObjController extends Controller {
 		transaction.lock(mgmtObjEntity);
 		
 		// check access control policies
-//		checkACP(mgmtObjEntity.getAccessControlPolicies(), request.getFrom(), Operation.DELETE);
 		checkPermissions(request, mgmtObjEntity, mgmtObjEntity.getAccessControlPolicies());
 
 		UriMapper.deleteUri(mgmtObjEntity.getHierarchicalURI());
-//		Notifier.notifyDeletion(mgmtObjEntity.getSubscriptions(), mgmtObjEntity);
+		Notifier.notifyDeletion(mgmtObjEntity.getSubscriptions(), mgmtObjEntity);
 
 		// delete the resource in the database
 		dbs.getDAOFactory().getMgmtObjDAO().delete(transaction, mgmtObjEntity);
