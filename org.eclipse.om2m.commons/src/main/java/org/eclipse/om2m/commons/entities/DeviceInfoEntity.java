@@ -88,7 +88,7 @@ public class DeviceInfoEntity extends MgmtObjEntity {
 	/** AccessControlPolicies linked to the MgmtObj */
 	@ManyToMany(fetch=FetchType.LAZY)
 	@JoinTable(
-			name = DBEntities.DVIACP_JOIN,
+			name = DBEntities.DVI_ACP_JOIN,
 			joinColumns = { @JoinColumn(name = DBEntities.DVI_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
 			inverseJoinColumns = { @JoinColumn(name = DBEntities.ACP_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
 			)
@@ -106,7 +106,7 @@ public class DeviceInfoEntity extends MgmtObjEntity {
 	// Database link to Subscriptions
 	@OneToMany(fetch = FetchType.LAZY, targetEntity = SubscriptionEntity.class, mappedBy="parentDvi")
 	@JoinTable(
-			name = DBEntities.DVISUB_JOIN,
+			name = DBEntities.DVI_SUB_JOIN,
 			joinColumns = { @JoinColumn(name = DBEntities.DVI_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
 			inverseJoinColumns = { @JoinColumn(name = DBEntities.SUB_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
 			)
@@ -115,7 +115,7 @@ public class DeviceInfoEntity extends MgmtObjEntity {
 	// Database link to Node
 	@ManyToOne(fetch = FetchType.LAZY, targetEntity = NodeEntity.class)
 	@JoinTable(
-			name = DBEntities.DVINOD_JOIN,
+			name = DBEntities.DVI_NOD_JOIN,
 			joinColumns = { @JoinColumn(name = DBEntities.DVI_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
 			inverseJoinColumns = { @JoinColumn(name = DBEntities.NOD_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
 			)
@@ -128,6 +128,7 @@ public class DeviceInfoEntity extends MgmtObjEntity {
 	/**
 	 * @return the subscriptions
 	 */
+	@Override
 	public List<SubscriptionEntity> getSubscriptions() {
 		if (this.subscriptions == null) {
 			this.subscriptions = new ArrayList<>();
@@ -145,6 +146,7 @@ public class DeviceInfoEntity extends MgmtObjEntity {
 	/**
 	 * @return the parentNode
 	 */
+	@Override
 	public NodeEntity getParentNode() {
 		return parentNode;
 	}
@@ -152,6 +154,7 @@ public class DeviceInfoEntity extends MgmtObjEntity {
 	/**
 	 * @param parentNode the parentNode to set
 	 */
+	@Override
 	public void setParentNode(NodeEntity parentNode) {
 		this.parentNode = parentNode;
 	}

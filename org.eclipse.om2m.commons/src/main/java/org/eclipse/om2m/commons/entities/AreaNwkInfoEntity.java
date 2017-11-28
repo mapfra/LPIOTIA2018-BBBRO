@@ -56,7 +56,7 @@ public class AreaNwkInfoEntity extends MgmtObjEntity {
 	// Database link to ACP
 	@ManyToMany(fetch = FetchType.LAZY, targetEntity = AccessControlPolicyEntity.class)
 	@JoinTable(
-			name = DBEntities.ANIACP_JOIN,
+			name = DBEntities.ANI_ACP_JOIN,
 			joinColumns = { @JoinColumn(name = DBEntities.ANI_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
 			inverseJoinColumns = { @JoinColumn(name = DBEntities.ACP_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
 			)
@@ -74,7 +74,7 @@ public class AreaNwkInfoEntity extends MgmtObjEntity {
 	// Database link to Subscriptions
 	@OneToMany(fetch = FetchType.LAZY, targetEntity = SubscriptionEntity.class, mappedBy="parentAni")
 	@JoinTable(
-			name = DBEntities.ANISUB_JOIN,
+			name = DBEntities.ANI_SUB_JOIN,
 			joinColumns = { @JoinColumn(name = DBEntities.ANI_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
 			inverseJoinColumns = { @JoinColumn(name = DBEntities.SUB_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
 			)
@@ -83,7 +83,7 @@ public class AreaNwkInfoEntity extends MgmtObjEntity {
 	// Database link to Node
 	@ManyToOne(fetch = FetchType.LAZY, targetEntity = NodeEntity.class)
 	@JoinTable(
-			name = DBEntities.ANINOD_JOIN,
+			name = DBEntities.ANI_NOD_JOIN,
 			joinColumns = { @JoinColumn(name = DBEntities.ANI_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
 			inverseJoinColumns = { @JoinColumn(name = DBEntities.NOD_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
 			)

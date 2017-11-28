@@ -113,6 +113,8 @@ public class DBEntities {
 
 	public static final String NODE_ENTITY = "NODE";
 
+	public static final String NODE_ANNC_ENTITY = "NODEA";
+
 	/**
 	 * Name used for the persisted (@link {@link CustomAttributeEntity} entity
 	 */
@@ -382,15 +384,22 @@ public class DBEntities {
 	public static final String REQ_JOIN_ID = "REQ_JOIN_ID";
 
 	// NODE - ACP
-	public static final String ACPNOD_JOIN = "NOD_ACP_JOIN";
+	public static final String ACP_NOD_JOIN = "NOD_ACP_JOIN";
 	public static final String NOD_JOIN_ID = "NOD_JOIN_ID";
-	public static final String CSBNOD_CH_JOIN = "CSB_NOD_CH_JOIN";
-	public static final String CSRNOD_CH_JOIN = "CSR_NOD_CH_JOIN";
-	public static final String NODSUB_JOIN = "NOD_SUB_JOIN";
+	public static final String CSB_NOD_CH_JOIN = "CSB_NOD_CH_JOIN";
+	public static final String CSR_NOD_CH_JOIN = "CSR_NOD_CH_JOIN";
+	public static final String NOD_SUB_JOIN = "NOD_SUB_JOIN";
+	
+	public static final String ACP_NODANNC_JOIN = "NODANNC_ACP_JOIN";
+	public static final String NODANNC_JOIN_ID = "NODANNC_JOIN_ID";
+	public static final String CSB_NODANNC_CH_JOIN = "CSB_NODANNC_CH_JOIN";
+	public static final String CSR_NODANNC_CH_JOIN = "CSR_NODANNC_CH_JOIN";
+	public static final String NODANNC_SUB_JOIN = "NODANNC_SUB_JOIN";
 	
 	// NODE - DAC
 	public static final String NOD_DAC_JOIN = "NOD_DAC_JOIN";
-	
+	public static final String NODANNC_DAC_JOIN = "NODANNC_DAC_JOIN";
+
 
 	// FCNT - CUSTOM_ATTRIBUTE
 	public static final String FCNT_CA_JOIN = "FCNT_CA_JOIN";
@@ -398,23 +407,26 @@ public class DBEntities {
 
 	// MGMT OBJ
 	// AreaNetworkInfo
-	public static final String ANISUB_JOIN = "ANI_SUB_JOIN";
-	public static final String ANIACP_JOIN = "ANI_ACP_JOIN";
+	public static final String ANI_ACP_JOIN = "ANI_ACP_JOIN";
 	public static final String ANI_DAC_JOIN = "ANI_DAC_JOIN";
 	public static final String ANI_JOIN_ID = "ANI_JOIN_ID";
-	public static final String ANINOD_JOIN = "ANI_NOD_JOIN";
+	public static final String ANI_SUB_JOIN = "ANI_SUB_JOIN";
+	public static final String ANI_NOD_JOIN = "ANI_NOD_JOIN";
+	public static final String ANI_NODANNC_JOIN = "ANI_NODANNC_JOIN";
 	// AreaNetworkDeviceInfo
-	public static final String ANDISUB_JOIN = "ANDI_SUB_JOIN";
-	public static final String ANDI_JOIN_ID = "ANDI_JOIN_ID";
-	public static final String ANDINOD_JOIN = "ANDI_NOD_JOIN";
-	public static final String ANDIACP_JOIN = "ANDI_ACP_JOIN";
+	public static final String ANDI_ACP_JOIN = "ANDI_ACP_JOIN";
 	public static final String ANDI_DAC_JOIN = "ANDI_DAC_JOIN";
+	public static final String ANDI_JOIN_ID = "ANDI_JOIN_ID";
+	public static final String ANDI_SUB_JOIN = "ANDI_SUB_JOIN";
+	public static final String ANDI_NOD_JOIN = "ANDI_NOD_JOIN";
+	public static final String ANDI_NODANNC_JOIN = "ANDI_NODANNC_JOIN";
 	// DeviceInfo
-	public static final String DVISUB_JOIN = "DVI_SUB_JOIN";
-	public static final String DVIACP_JOIN = "DVI_ACP_JOIN";
+	public static final String DVI_ACP_JOIN = "DVI_ACP_JOIN";
 	public static final String DVI_DAC_JOIN = "DVI_DAC_JOIN";
 	public static final String DVI_JOIN_ID = "DVI_JOIN_ID";
-	public static final String DVINOD_JOIN = "DVI_NOD_JOIN";
+	public static final String DVI_SUB_JOIN = "DVI_SUB_JOIN";
+	public static final String DVI_NOD_JOIN = "DVI_NOD_JOIN";
+	public static final String DVI_NODANNC_JOIN = "DVI_NODANNC_JOIN";
 
 	// ANNOUNCED RESOURCE
 	public static final String REMOTE_RESOURCE_ID = "REMOTE_RESOURCE_ID";

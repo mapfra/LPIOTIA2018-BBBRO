@@ -177,7 +177,7 @@ public class RemoteCSEEntity extends AnnounceableSubordinateEntity {
 	/** List of Nodes */
 	@OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.ALL})
 	@JoinTable(
-			name=DBEntities.CSRNOD_CH_JOIN,
+			name=DBEntities.CSR_NOD_CH_JOIN,
 			joinColumns={@JoinColumn(name=DBEntities.CSR_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)},
 			inverseJoinColumns={@JoinColumn(name=DBEntities.NOD_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)}
 			)

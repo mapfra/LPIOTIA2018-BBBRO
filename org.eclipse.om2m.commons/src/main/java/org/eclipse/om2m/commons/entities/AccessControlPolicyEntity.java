@@ -197,7 +197,7 @@ public class AccessControlPolicyEntity extends AnnounceableSubordinateEntity {
 	
 	@ManyToMany(fetch = FetchType.LAZY, targetEntity = NodeEntity.class)
 	@JoinTable(
-			name=DBEntities.ACPNOD_JOIN,
+			name=DBEntities.ACP_NOD_JOIN,
 			inverseJoinColumns={@JoinColumn(name=DBEntities.NOD_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)},
 			joinColumns={@JoinColumn(name=DBEntities.ACP_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)}
 			)
@@ -205,7 +205,7 @@ public class AccessControlPolicyEntity extends AnnounceableSubordinateEntity {
 	
 	@ManyToMany(fetch = FetchType.LAZY, targetEntity = AreaNwkInfoEntity.class)
 	@JoinTable(
-			name = DBEntities.ANIACP_JOIN,
+			name = DBEntities.ANI_ACP_JOIN,
 			inverseJoinColumns = { @JoinColumn(name = DBEntities.ANI_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
 			joinColumns = { @JoinColumn(name = DBEntities.ACP_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
 			)
@@ -213,7 +213,7 @@ public class AccessControlPolicyEntity extends AnnounceableSubordinateEntity {
 	
 	@ManyToMany(fetch = FetchType.LAZY, targetEntity = AreaNwkDeviceInfoEntity.class)
 	@JoinTable(
-			name = DBEntities.ANDIACP_JOIN,
+			name = DBEntities.ANDI_ACP_JOIN,
 			inverseJoinColumns = { @JoinColumn(name = DBEntities.ANDI_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
 			joinColumns = { @JoinColumn(name = DBEntities.ACP_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
 			)
@@ -221,7 +221,7 @@ public class AccessControlPolicyEntity extends AnnounceableSubordinateEntity {
 	
 	@ManyToMany(fetch = FetchType.LAZY, targetEntity = DeviceInfoEntity.class)
 	@JoinTable(
-			name = DBEntities.DVIACP_JOIN,
+			name = DBEntities.DVI_ACP_JOIN,
 			inverseJoinColumns = { @JoinColumn(name = DBEntities.DVI_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
 			joinColumns = { @JoinColumn(name = DBEntities.ACP_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
 			)

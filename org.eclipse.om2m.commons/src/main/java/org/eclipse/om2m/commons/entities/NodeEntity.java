@@ -46,7 +46,7 @@ public class NodeEntity extends AnnounceableSubordinateEntity {
 	// linked ACP
 	@ManyToMany(fetch=FetchType.LAZY)
 	@JoinTable(
-			name = DBEntities.ACPNOD_JOIN,
+			name = DBEntities.ACP_NOD_JOIN,
 			joinColumns = { @JoinColumn(name = DBEntities.NOD_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
 			inverseJoinColumns = { @JoinColumn(name = DBEntities.ACP_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
 			)
@@ -75,7 +75,7 @@ public class NodeEntity extends AnnounceableSubordinateEntity {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinTable(
-			name = DBEntities.CSBNOD_CH_JOIN,
+			name = DBEntities.CSB_NOD_CH_JOIN,
 			joinColumns = { @JoinColumn(name = DBEntities.NOD_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
 			inverseJoinColumns = { @JoinColumn(name = DBEntities.CSEB_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
 			)
@@ -83,7 +83,7 @@ public class NodeEntity extends AnnounceableSubordinateEntity {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinTable(
-			name = DBEntities.CSRNOD_CH_JOIN,
+			name = DBEntities.CSR_NOD_CH_JOIN,
 			joinColumns = { @JoinColumn(name = DBEntities.NOD_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
 			inverseJoinColumns = { @JoinColumn(name = DBEntities.CSR_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
 			)
@@ -91,7 +91,7 @@ public class NodeEntity extends AnnounceableSubordinateEntity {
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
 	@JoinTable(
-			name = DBEntities.NODSUB_JOIN,
+			name = DBEntities.NOD_SUB_JOIN,
 			joinColumns = { @JoinColumn(name = DBEntities.NOD_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
 			inverseJoinColumns = { @JoinColumn(name = DBEntities.SUB_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
 			)
@@ -100,7 +100,7 @@ public class NodeEntity extends AnnounceableSubordinateEntity {
 	// Database link to AreaNwkInfo Entity
 	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
 	@JoinTable(
-			name = DBEntities.ANINOD_JOIN,
+			name = DBEntities.ANI_NOD_JOIN,
 			inverseJoinColumns = { @JoinColumn(name = DBEntities.ANI_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
 			joinColumns = { @JoinColumn(name = DBEntities.NOD_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
 			)
@@ -109,7 +109,7 @@ public class NodeEntity extends AnnounceableSubordinateEntity {
 	// Database link to AreaNwkDeviceInfo entity
 	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
 	@JoinTable(
-			name = DBEntities.ANDINOD_JOIN,
+			name = DBEntities.ANDI_NOD_JOIN,
 			inverseJoinColumns = { @JoinColumn(name = DBEntities.ANDI_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
 			joinColumns = { @JoinColumn(name = DBEntities.NOD_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
 			)
@@ -118,7 +118,7 @@ public class NodeEntity extends AnnounceableSubordinateEntity {
 	// Database link to DeviceInfo entity
 	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
 	@JoinTable(
-			name = DBEntities.DVINOD_JOIN,
+			name = DBEntities.DVI_NOD_JOIN,
 			inverseJoinColumns = { @JoinColumn(name = DBEntities.DVI_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
 			joinColumns = { @JoinColumn(name = DBEntities.NOD_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
 			)
