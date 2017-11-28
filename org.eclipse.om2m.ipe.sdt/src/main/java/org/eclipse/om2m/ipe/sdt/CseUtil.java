@@ -9,23 +9,33 @@ package org.eclipse.om2m.ipe.sdt;
 
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.eclipse.om2m.commons.constants.AccessControl;
 import org.eclipse.om2m.commons.constants.Constants;
 import org.eclipse.om2m.commons.constants.MimeMediaType;
 import org.eclipse.om2m.commons.constants.Operation;
 import org.eclipse.om2m.commons.constants.ResourceType;
+import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.resource.AE;
 import org.eclipse.om2m.commons.resource.AEAnnc;
 import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
 import org.eclipse.om2m.commons.resource.AccessControlPolicy;
 import org.eclipse.om2m.commons.resource.AccessControlRule;
+import org.eclipse.om2m.commons.resource.DeviceInfo;
+import org.eclipse.om2m.commons.resource.Node;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
+import org.eclipse.om2m.commons.resource.Resource;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
 import org.eclipse.om2m.commons.resource.SetOfAcrs;
 import org.eclipse.om2m.commons.resource.Subscription;
 import org.eclipse.om2m.core.service.CseService;
 
 public class CseUtil {
+
+    private static final Log logger = LogFactory.getLog(CseUtil.class);
+    
+    static CseService cseService;
 
 	/**
 	 * Send a oM2M CREATE Application Entity request
@@ -40,19 +50,17 @@ public class CseUtil {
 	 *            name of the to be created application
 	 * @return ResponsePrimitive sent by the CSE
 	 */
-	public static ResponsePrimitive sendCreateApplicationEntityRequest(CseService cseService, AE ae,
+	public static ResponsePrimitive sendCreateApplicationEntityRequest(AE ae, 
 			String resourceLocation) {
 		RequestPrimitive request = new RequestPrimitive();
-
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 		request.setTo(resourceLocation);
 		request.setOperation(Operation.CREATE);
-		request.setRequestContentType(MimeMediaType.OBJ);
 		request.setResourceType(ResourceType.AE);
+		request.setRequestContentType(MimeMediaType.OBJ);
 		request.setReturnContentType(MimeMediaType.OBJ);
 		request.setContent(ae);
-
-		return sendRequest(cseService, request);
+		return cseService.doRequest(request);
 	}
 	
 	/**
@@ -66,18 +74,16 @@ public class CseUtil {
 	 *            location of the to be created application
 	 * @return ResponsePrimitive sent by the CSE
 	 */
-	public static ResponsePrimitive sendUpdateApplicationAnncEntityRequest(CseService cseService, AEAnnc aeAnnc,
+	public static ResponsePrimitive sendUpdateApplicationAnncEntityRequest(AEAnnc aeAnnc, 
 			String resourceLocation) {
 		RequestPrimitive request = new RequestPrimitive();
-
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 		request.setTo(resourceLocation);
 		request.setOperation(Operation.UPDATE);
 		request.setRequestContentType(MimeMediaType.OBJ);
 		request.setReturnContentType(MimeMediaType.OBJ);
 		request.setContent(aeAnnc);
-
-		return sendRequest(cseService, request);
+		return cseService.doRequest(request);
 	}
 	
 	/**
@@ -91,19 +97,17 @@ public class CseUtil {
 	 *            location of the to be created application
 	 * @return ResponsePrimitive sent by the CSE
 	 */
-	public static ResponsePrimitive sendCreateSubscriptionRequest(CseService cseService, Subscription subscription,
+	public static ResponsePrimitive sendCreateSubscriptionRequest(Subscription subscription, 
 			String resourceLocation) {
 		RequestPrimitive request = new RequestPrimitive();
-
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 		request.setTo(resourceLocation);
 		request.setOperation(Operation.CREATE);
-		request.setRequestContentType(MimeMediaType.OBJ);
 		request.setResourceType(ResourceType.SUBSCRIPTION);
+		request.setRequestContentType(MimeMediaType.OBJ);
 		request.setReturnContentType(MimeMediaType.OBJ);
 		request.setContent(subscription);
-
-		return sendRequest(cseService, request);
+		return cseService.doRequest(request);
 	}
 
 	/**
@@ -114,23 +118,41 @@ public class CseUtil {
 	 * @param resourceLocation location of the to be created resource
 	 * @return response sent by the CSE
 	 */
-	public static ResponsePrimitive sendCreateFlexContainerRequest(CseService cseService, AbstractFlexContainer flexContainer,
+	public static ResponsePrimitive sendCreateFlexContainerRequest(AbstractFlexContainer flexContainer, 
 			String resourceLocation) {
 		RequestPrimitive request = new RequestPrimitive();
-
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 		request.setTo(resourceLocation);
 		request.setOperation(Operation.CREATE);
-		request.setRequestContentType(MimeMediaType.OBJ);
 		request.setResourceType(ResourceType.FLEXCONTAINER);
+		request.setRequestContentType(MimeMediaType.OBJ);
 		request.setReturnContentType(MimeMediaType.OBJ);
 		request.setContent(flexContainer);
+		return cseService.doRequest(request);
+	}
 
-		return sendRequest(cseService, request);
+	/**
+	 * Send a UPDATE FlexContainer request
+	 * 
+	 * @param cseService CSE service
+	 * @param flexContainer flexContainer to be updated
+	 * @param resourceLocation location of the to be created resource
+	 * @return response sent by the CSE
+	 */
+	public static ResponsePrimitive sendUpdateFlexContainerRequest(AbstractFlexContainer flexContainer) { 
+		RequestPrimitive request = new RequestPrimitive();
+		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
+		request.setOperation(Operation.UPDATE);
+		request.setTo(flexContainer.getResourceID());
+		request.setResourceType(ResourceType.FLEXCONTAINER);
+		request.setRequestContentType(MimeMediaType.OBJ);
+		request.setReturnContentType(MimeMediaType.OBJ);
+		request.setContent(flexContainer);
+		return cseService.doRequest(request);
 	}
 	
-	public static ResponsePrimitive sendCreateDefaultACP(CseService cseService, String acpLocation, String acpName, List<String> labels) {
-		
+	public static ResponsePrimitive sendCreateDefaultACP(String acpLocation, 
+			String acpName, List<String> labels) {
 		AccessControlPolicy acp = new AccessControlPolicy();
 		acp.setName(acpName);
 		acp.getLabels().addAll(labels);
@@ -151,20 +173,53 @@ public class CseUtil {
 		acp.getSelfPrivileges().getAccessControlRule().add(acrSP);
 		
 		RequestPrimitive request = new RequestPrimitive();
-
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 		request.setTo(acpLocation);
 		request.setOperation(Operation.CREATE);
-		request.setRequestContentType(MimeMediaType.OBJ);
 		request.setResourceType(ResourceType.ACCESS_CONTROL_POLICY);
+		request.setRequestContentType(MimeMediaType.OBJ);
 		request.setReturnContentType(MimeMediaType.OBJ);
 		request.setContent(acp);
-
 		
-		
-		return sendRequest(cseService, request);
+		return cseService.doRequest(request);
 	}
-	
+
+	/**
+	 * Send a CREATE Node request
+	 * 
+	 * @param cseService CSE service
+	 * @param node the node to be created
+	 * @param devInfo the deviceInfo to be created (child of node)
+ 	 * @param baseLocation location of the to be created resource
+	 * @return response sent by the CSE
+	 */
+	public static ResponsePrimitive sendCreateNodeRequest(Node node, 
+			DeviceInfo devInfo, String baseLocation) {
+		RequestPrimitive request = new RequestPrimitive();
+		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
+		request.setTo(baseLocation);
+		request.setOperation(Operation.CREATE);
+		request.setResourceType(ResourceType.NODE);
+		request.setRequestContentType(MimeMediaType.OBJ);
+		request.setReturnContentType(MimeMediaType.OBJ);
+		request.setContent(node);
+
+		ResponsePrimitive resp = cseService.doRequest(request);
+		if (! resp.getResponseStatusCode().equals(ResponseStatusCode.CREATED))
+			return resp;
+		Node createdNode = (Node) resp.getContent();
+		
+		request = new RequestPrimitive();
+		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
+		request.setTo(createdNode.getResourceID());
+		request.setOperation(Operation.CREATE);
+		request.setResourceType(ResourceType.MGMT_OBJ);
+		request.setRequestContentType(MimeMediaType.OBJ);
+		request.setReturnContentType(MimeMediaType.OBJ);
+		request.setContent(devInfo);
+		return cseService.doRequest(request);
+	}
+
 	/**
 	 * Send a INTERNAL NOTIFY FlexContainer request
 	 * 
@@ -174,10 +229,9 @@ public class CseUtil {
 	 * 
 	 * @return response sent by the CSE
 	 */
-	public static ResponsePrimitive sendInternalNotifyFlexContainerRequest(CseService cseService, AbstractFlexContainer flexContainer,
+	public static ResponsePrimitive sendInternalNotifyFlexContainerRequest(AbstractFlexContainer flexContainer, 
 			String resourceLocation) {
 		RequestPrimitive request = new RequestPrimitive();
-
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 		request.setTo(resourceLocation);
 		request.setOperation(Operation.INTERNAL_NOTIFY);
@@ -185,10 +239,8 @@ public class CseUtil {
 		request.setResourceType(ResourceType.FLEXCONTAINER);
 		request.setReturnContentType(MimeMediaType.OBJ);
 		request.setContent(flexContainer);
-
-		return sendRequest(cseService, request);
+		return cseService.doRequest(request);
 	}
-	
 	
 	/**
 	 * Retrieve a resource
@@ -196,16 +248,14 @@ public class CseUtil {
 	 * @param uri
 	 * @return response
 	 */
-	public static ResponsePrimitive sendRetrieveRequest(CseService cseService, String uri) {
+	public static ResponsePrimitive sendRetrieveRequest(String uri) {
 		RequestPrimitive request = new RequestPrimitive();
-
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 		request.setTo(uri);
 		request.setOperation(Operation.RETRIEVE);
 		request.setRequestContentType(MimeMediaType.OBJ);
 		request.setReturnContentType(MimeMediaType.OBJ);
-
-		return sendRequest(cseService, request);
+		return cseService.doRequest(request);
 	}
 
 	/**
@@ -217,26 +267,12 @@ public class CseUtil {
 	 *            location of the to be deleted resource
 	 * @return ResponsePrimitive sent by the CSE
 	 */
-	public static ResponsePrimitive sendDeleteRequest(CseService cseService, String resourceLocation) {
+	public static ResponsePrimitive sendDeleteRequest(String resourceLocation) {
 		RequestPrimitive request = new RequestPrimitive();
-
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 		request.setTo(resourceLocation);
 		request.setOperation(Operation.DELETE);
-
-		return sendRequest(cseService, request);
-	}
-
-	/**
-	 * Send a request to the CSE
-	 * 
-	 * @param cseService
-	 *            CSe service
-	 * @param request
-	 *            request to be sent
-	 * @return ResponsePrimitive received from the CSE
-	 */
-	private static ResponsePrimitive sendRequest(CseService cseService, RequestPrimitive request) {
 		return cseService.doRequest(request);
 	}
+	
 }

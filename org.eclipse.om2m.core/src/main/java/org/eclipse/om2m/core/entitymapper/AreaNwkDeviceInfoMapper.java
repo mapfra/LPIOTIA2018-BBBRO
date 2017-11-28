@@ -46,7 +46,6 @@ public class AreaNwkDeviceInfoMapper extends EntityMapper<AreaNwkDeviceInfoEntit
 		resource.setAreaNwkId(entity.getAreaNwkId());
 		resource.setDescription(entity.getDescription());
 		resource.setDevID(entity.getDevID());
-		resource.setMgmtDefinition(entity.getMgmtDefinition());
 		resource.setName(entity.getName());
 		resource.setSleepDuration(entity.getSleepDuration());
 		resource.setSleepInterval(entity.getSleepInterval());
@@ -61,22 +60,16 @@ public class AreaNwkDeviceInfoMapper extends EntityMapper<AreaNwkDeviceInfoEntit
 	@Override
 	protected void mapChildResourceRef(AreaNwkDeviceInfoEntity entity,
 			AreaNwkDeviceInfo resource, int level, int offset) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	protected void mapChildResources(AreaNwkDeviceInfoEntity entity,
 			AreaNwkDeviceInfo resource, int level, int offset) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	protected AreaNwkDeviceInfo createResource() {
 		return new AreaNwkDeviceInfo();
 	}
-
-
 
 }

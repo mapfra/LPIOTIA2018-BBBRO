@@ -154,6 +154,9 @@ public class NodeController extends Controller {
 		if (node.getHostedCSELink() != null) {
 			nodeEntity.setHostedCSELink(node.getHostedCSELink());
 		}
+		if (node.getHostedAppLinks() != null) {
+			nodeEntity.setHostedAppLink(node.getHostedAppLinks());
+		}
 
 		String generatedId = generateId();
 		nodeEntity.setResourceID("/" + Constants.CSE_ID + "/" + ShortName.NODE + Constants.PREFIX_SEPERATOR + generatedId);;
@@ -184,10 +187,10 @@ public class NodeController extends Controller {
 			throw new ConflictException("Name already present in the parent collection.");
 		}
 		// persisting data
-		dbs.getDAOFactory().getNodeEntityDAO().create(transaction, nodeEntity);
+		dbs.getDAOFactory().getNodeDAO().create(transaction, nodeEntity);
 
 		// get the manage object
-		NodeEntity nodeDB = dbs.getDAOFactory().getNodeEntityDAO().find(transaction, nodeEntity.getResourceID());
+		NodeEntity nodeDB = dbs.getDAOFactory().getNodeDAO().find(transaction, nodeEntity.getResourceID());
 		childNodes.add(nodeDB);
 		dao.update(transaction, parentEntity);
 		transaction.commit();
@@ -319,7 +322,7 @@ public class NodeController extends Controller {
 		response.setContent(modifiedAttributes);
 		
 		// uptade the persisted resource
-		dbs.getDAOFactory().getNodeEntityDAO().update(transaction, nodeEntity);
+		dbs.getDAOFactory().getNodeDAO().update(transaction, nodeEntity);
 		// commit & close the db transaction
 		transaction.commit();
 		Notifier.notify(nodeEntity.getChildSubscriptions(), nodeEntity, ResourceStatus.UPDATED);
@@ -347,7 +350,7 @@ public class NodeController extends Controller {
 		Notifier.notifyDeletion(nodeEntity.getChildSubscriptions(), nodeEntity);
 
 		// delete the resource in the database
-		dbs.getDAOFactory().getNodeEntityDAO().delete(transaction, nodeEntity);
+		dbs.getDAOFactory().getNodeDAO().delete(transaction, nodeEntity);
 		// commit the transaction
 		transaction.commit();
 		// return the response

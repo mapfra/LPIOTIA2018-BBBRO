@@ -17,7 +17,6 @@ import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
 import org.eclipse.om2m.commons.resource.CustomAttribute;
 import org.eclipse.om2m.commons.resource.FlexContainer;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
-import org.eclipse.om2m.core.service.CseService;
 import org.eclipse.om2m.sdt.Module;
 import org.eclipse.om2m.sdt.events.SDTEventListener;
 import org.eclipse.om2m.sdt.events.SDTNotification;
@@ -34,15 +33,12 @@ public class ModuleSDTListener implements SDTEventListener {
 
     private static Log logger = LogFactory.getLog(ModuleSDTListener.class);
 
-	private final CseService cseService;
 	private final Module module;
 	private final String moduleFlexContainerLocation;
 
 	private ServiceRegistration<?> serviceRegistration;
 
-	public ModuleSDTListener(final Module pModule, final CseService pCseService,
-			final String pModuleFlexContainerLocation) {
-		this.cseService = pCseService;
+	public ModuleSDTListener(final Module pModule, final String pModuleFlexContainerLocation) {
 		this.module = pModule;
 		this.moduleFlexContainerLocation = pModuleFlexContainerLocation;
 	}
@@ -87,8 +83,8 @@ public class ModuleSDTListener implements SDTEventListener {
 		ca.setCustomAttributeValue((value != null ? value.toString() : null));
 		toBeUpdated.getCustomAttributes().add(ca);
 
-		ResponsePrimitive response = CseUtil.sendInternalNotifyFlexContainerRequest(cseService, 
-				toBeUpdated, moduleFlexContainerLocation);
+		ResponsePrimitive response = CseUtil.sendInternalNotifyFlexContainerRequest(toBeUpdated, 
+				moduleFlexContainerLocation);
 		if (! ResponseStatusCode.UPDATED.equals(response.getResponseStatusCode())) {
 			logger.info("unable to send INTERNAL NOTIFY request to flexContainer " 
 					+ moduleFlexContainerLocation + " : " + response.getContent(),

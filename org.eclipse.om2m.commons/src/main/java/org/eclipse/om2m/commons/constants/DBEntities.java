@@ -24,14 +24,16 @@ import org.eclipse.om2m.commons.entities.AccessControlOriginatorEntity;
 import org.eclipse.om2m.commons.entities.AccessControlRuleEntity;
 import org.eclipse.om2m.commons.entities.AeAnncEntity;
 import org.eclipse.om2m.commons.entities.AeEntity;
-import org.eclipse.om2m.commons.entities.CreatedAnnouncedResourceEntity;
 import org.eclipse.om2m.commons.entities.CSEBaseEntity;
 import org.eclipse.om2m.commons.entities.ContainerEntity;
 import org.eclipse.om2m.commons.entities.ContentInstanceEntity;
+import org.eclipse.om2m.commons.entities.CreatedAnnouncedResourceEntity;
 import org.eclipse.om2m.commons.entities.CustomAttributeEntity;
 import org.eclipse.om2m.commons.entities.DynamicAuthorizationConsultationEntity;
+import org.eclipse.om2m.commons.entities.FlexContainerAnncEntity;
 import org.eclipse.om2m.commons.entities.FlexContainerEntity;
 import org.eclipse.om2m.commons.entities.LabelEntity;
+import org.eclipse.om2m.commons.entities.MgmtObjEntity;
 import org.eclipse.om2m.commons.entities.PollingChannelEntity;
 import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
 import org.eclipse.om2m.commons.entities.SubscriptionEntity;
@@ -395,20 +397,24 @@ public class DBEntities {
 	public static final String CA_JOIN_ID = "CA_ID";
 
 	// MGMT OBJ
+	// AreaNetworkInfo
 	public static final String ANISUB_JOIN = "ANI_SUB_JOIN";
 	public static final String ANIACP_JOIN = "ANI_ACP_JOIN";
 	public static final String ANI_DAC_JOIN = "ANI_DAC_JOIN";
 	public static final String ANI_JOIN_ID = "ANI_JOIN_ID";
 	public static final String ANINOD_JOIN = "ANI_NOD_JOIN";
+	// AreaNetworkDeviceInfo
 	public static final String ANDISUB_JOIN = "ANDI_SUB_JOIN";
 	public static final String ANDI_JOIN_ID = "ANDI_JOIN_ID";
 	public static final String ANDINOD_JOIN = "ANDI_NOD_JOIN";
 	public static final String ANDIACP_JOIN = "ANDI_ACP_JOIN";
 	public static final String ANDI_DAC_JOIN = "ANDI_DAC_JOIN";
-	
-	public static final String MGMT_OBJECT_JOIN_ID = "MGMT_OBJECT_JOIN_ID";
-	public static final String MGMT_OBJECT_ACP_JOIN = "MGMT_OBJECT_ACP_JOIN";
-	public static final String MGMT_OBJECT_DAC_JOIN = "MGMT_OBJECT_DAC_JOIN";
+	// DeviceInfo
+	public static final String DVISUB_JOIN = "DVI_SUB_JOIN";
+	public static final String DVIACP_JOIN = "DVI_ACP_JOIN";
+	public static final String DVI_DAC_JOIN = "DVI_DAC_JOIN";
+	public static final String DVI_JOIN_ID = "DVI_JOIN_ID";
+	public static final String DVINOD_JOIN = "DVI_NOD_JOIN";
 
 	// ANNOUNCED RESOURCE
 	public static final String REMOTE_RESOURCE_ID = "REMOTE_RESOURCE_ID";

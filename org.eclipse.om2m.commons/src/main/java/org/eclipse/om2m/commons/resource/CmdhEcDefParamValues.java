@@ -36,6 +36,8 @@ import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.eclipse.om2m.commons.constants.ShortName;
+
 /**
  * <p>
  * Java class for anonymous complex type.
@@ -67,8 +69,8 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "", propOrder = { "applicableEventCategory",
 		"defaultRequestExpTime", "defaultResultExpTime", "defaultOpExecTime",
 		"defaultRespPersistence", "defaultDelAggregation" })
-@XmlRootElement(name = "cmdhEcDefParamValues")
-public class CmdhEcDefParamValues extends MgmtResource {
+@XmlRootElement(name = ShortName.CMDH_EC_DEF_PARAM_VALUES)
+public class CmdhEcDefParamValues extends MgmtObj {
 
 	@XmlList
 	@XmlElement(required = true)

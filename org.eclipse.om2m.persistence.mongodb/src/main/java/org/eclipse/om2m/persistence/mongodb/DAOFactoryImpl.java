@@ -20,6 +20,7 @@ import org.eclipse.om2m.commons.entities.FlexContainerAnncEntity;
 import org.eclipse.om2m.commons.entities.FlexContainerEntity;
 import org.eclipse.om2m.commons.entities.GroupEntity;
 import org.eclipse.om2m.commons.entities.LabelEntity;
+import org.eclipse.om2m.commons.entities.MgmtObjEntity;
 import org.eclipse.om2m.commons.entities.NodeEntity;
 import org.eclipse.om2m.commons.entities.PollingChannelEntity;
 import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
@@ -88,8 +89,14 @@ public class DAOFactoryImpl implements DAOFactory {
 	}
 
 	@Override
-	public DAO<NodeEntity> getNodeEntityDAO() {
+	public DAO<NodeEntity> getNodeDAO() {
 		return new DAOImpl<NodeEntity>(NodeEntity.class) {
+		};
+	}
+
+	@Override
+	public DAO<MgmtObjEntity> getMgmtObjDAO() {
+		return new DAOImpl<MgmtObjEntity>(MgmtObjEntity.class) {
 		};
 	}
 

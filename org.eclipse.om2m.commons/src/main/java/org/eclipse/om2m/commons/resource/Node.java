@@ -89,15 +89,21 @@ public class Node extends AnnounceableResource {
 	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
 	@XmlElement(required = true, name = ShortName.NODE_ID, namespace="")
 	protected String nodeID;
-	@XmlElement(name = ShortName.HOSTED_CSE_LINK)
+	
+	@XmlElement(name = ShortName.HOSTED_CSE_LINK, namespace="")
 	protected String hostedCSELink;
-	@XmlElement(name = ShortName.CHILD_RESOURCE)
+	
+	@XmlElement(name = ShortName.HOSTED_APP_LINK, namespace="")
+	protected String hostedAppLinks;
+	
+	@XmlElement(name = ShortName.CHILD_RESOURCE, namespace="")
 	protected List<ChildResourceRef> childResource;
+	
 	@XmlElements({
 			@XmlElement(name = ShortName.MEMORY, namespace = "http://www.onem2m.org/xml/protocols", type = Memory.class),
 			@XmlElement(name = ShortName.BATTERY, namespace = "http://www.onem2m.org/xml/protocols", type = Battery.class),
-			@XmlElement(name = ShortName.ANI, namespace = "http://www.onem2m.org/xml/protocols", type = AreaNwkInfo.class),
-			@XmlElement(name = ShortName.ANDI, namespace = "http://www.onem2m.org/xml/protocols", type = AreaNwkDeviceInfo.class),
+			@XmlElement(name = ShortName.AREA_NWK_INFO, namespace = "http://www.onem2m.org/xml/protocols", type = AreaNwkInfo.class),
+			@XmlElement(name = ShortName.AREA_NWK_DEVICE_INFO, namespace = "http://www.onem2m.org/xml/protocols", type = AreaNwkDeviceInfo.class),
 			@XmlElement(name = ShortName.FIRMWARE, namespace = "http://www.onem2m.org/xml/protocols", type = Firmware.class),
 			@XmlElement(name = ShortName.SOFTWARE, namespace = "http://www.onem2m.org/xml/protocols", type = Software.class),
 			@XmlElement(name = ShortName.DEVICE_INFO, namespace = "http://www.onem2m.org/xml/protocols", type = DeviceInfo.class),
@@ -107,7 +113,7 @@ public class Node extends AnnounceableResource {
 			@XmlElement(name = ShortName.CMDH_POLICY, namespace = "http://www.onem2m.org/xml/protocols", type = CmdhPolicy.class),
 			@XmlElement(name = ShortName.ACTIVE_CMDH_POLICY, namespace = "http://www.onem2m.org/xml/protocols", type = ActiveCmdhPolicy.class),
 			@XmlElement(name = ShortName.SUB, namespace = "http://www.onem2m.org/xml/protocols", type = Subscription.class) })
-	protected List<RegularResource> memoryOrBatteryOrAreaNwkInfo;
+	protected List<MgmtObj> mgmmtObjs;
 
 	/**
 	 * Gets the value of the nodeID property.
@@ -149,6 +155,27 @@ public class Node extends AnnounceableResource {
 	 */
 	public void setHostedCSELink(String value) {
 		this.hostedCSELink = value;
+	}
+
+	/**
+	 * Gets the value of the hostedAppLinks property.
+	 * 
+	 * @return possible object is {@link String }
+	 * 
+	 */
+	public String getHostedAppLinks() {
+		return hostedAppLinks;
+	}
+
+	/**
+	 * Sets the value of the hostedAppLinks property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link String }
+	 * 
+	 */
+	public void setHostedAppLinks(String value) {
+		this.hostedAppLinks = value;
 	}
 
 	/**
@@ -207,11 +234,11 @@ public class Node extends AnnounceableResource {
 	 * 
 	 * 
 	 */
-	public List<RegularResource> getMemoryOrBatteryOrAreaNwkInfo() {
-		if (memoryOrBatteryOrAreaNwkInfo == null) {
-			memoryOrBatteryOrAreaNwkInfo = new ArrayList<RegularResource>();
+	public List<MgmtObj> getMgmtObjs() {
+		if (mgmmtObjs == null) {
+			mgmmtObjs = new ArrayList<MgmtObj>();
 		}
-		return this.memoryOrBatteryOrAreaNwkInfo;
+		return this.mgmmtObjs;
 	}
 
 }

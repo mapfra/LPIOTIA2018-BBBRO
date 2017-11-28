@@ -57,7 +57,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "activeCmdhPolicyLink" })
 @XmlRootElement(name = "activeCmdhPolicy")
-public class ActiveCmdhPolicy extends MgmtResource {
+public class ActiveCmdhPolicy extends MgmtObj {
 
 	@XmlElement(required = true)
 	protected String activeCmdhPolicyLink;

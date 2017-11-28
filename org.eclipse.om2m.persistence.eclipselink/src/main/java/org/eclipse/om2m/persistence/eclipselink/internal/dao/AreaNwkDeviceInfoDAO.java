@@ -19,36 +19,29 @@
  *******************************************************************************/
 package org.eclipse.om2m.persistence.eclipselink.internal.dao;
 
-import java.util.List;
-
-import org.eclipse.om2m.commons.entities.CSEBaseEntity;
-import org.eclipse.om2m.commons.entities.LabelEntity;
+import org.eclipse.om2m.commons.entities.AreaNwkDeviceInfoEntity;
 import org.eclipse.om2m.commons.entities.NodeEntity;
-import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
 import org.eclipse.om2m.persistence.eclipselink.internal.DBTransactionJPAImpl;
 import org.eclipse.om2m.persistence.service.DBTransaction;
 
-public class NodeEntityDAO extends AbstractDAO<NodeEntity>{
+/**
+ * DAO for the Area Network Device Info Management Object
+ *
+ */
+public class AreaNwkDeviceInfoDAO extends AbstractDAO<AreaNwkDeviceInfoEntity> {
 
 	@Override
-	public NodeEntity find(DBTransaction dbTransaction, Object id) {
+	public AreaNwkDeviceInfoEntity find(DBTransaction dbTransaction, Object id) {
 		DBTransactionJPAImpl transaction = (DBTransactionJPAImpl) dbTransaction;
-		return transaction.getEm().find(NodeEntity.class, id);
+		return transaction.getEm().find(AreaNwkDeviceInfoEntity.class, id);
 	}
 
 	@Override
-	public void delete(DBTransaction dbTransaction, NodeEntity resource) {
+	public void delete(DBTransaction dbTransaction, AreaNwkDeviceInfoEntity resource) {
 		DBTransactionJPAImpl transaction = (DBTransactionJPAImpl) dbTransaction;
 		transaction.getEm().remove(resource);
-		transaction.getEm().getEntityManagerFactory().getCache().evict(CSEBaseEntity.class);
-		transaction.getEm().getEntityManagerFactory().getCache().evict(RemoteCSEEntity.class);
-	}
-	
-	@Override
-	public void update(DBTransaction dbTransaction, NodeEntity resource) {
-		List<LabelEntity> lbls = processLabels(dbTransaction, resource.getLabelsEntities());
-		resource.setLabelsEntities(lbls);
-		super.update(dbTransaction, resource);
+		// clean the cache
+		transaction.getEm().getEntityManagerFactory().getCache().evict(NodeEntity.class);
 	}
 
 }

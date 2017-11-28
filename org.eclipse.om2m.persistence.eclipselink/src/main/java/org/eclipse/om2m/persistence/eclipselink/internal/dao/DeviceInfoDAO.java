@@ -19,31 +19,29 @@
  *******************************************************************************/
 package org.eclipse.om2m.persistence.eclipselink.internal.dao;
 
-import org.eclipse.om2m.commons.entities.AreaNwkDeviceInfoEntity;
+import org.eclipse.om2m.commons.entities.DeviceInfoEntity;
 import org.eclipse.om2m.commons.entities.NodeEntity;
 import org.eclipse.om2m.persistence.eclipselink.internal.DBTransactionJPAImpl;
 import org.eclipse.om2m.persistence.service.DBTransaction;
 
 /**
- * DAO for the Area Network Device Info Management Object
+ * DAO for the Device Info Management Object
  *
  */
-public class AreaNwkInfoDeviceDAO extends AbstractDAO<AreaNwkDeviceInfoEntity> {
+public class DeviceInfoDAO extends AbstractDAO<DeviceInfoEntity> {
 
 	@Override
-	public AreaNwkDeviceInfoEntity find(DBTransaction dbTransaction, Object id) {
+	public DeviceInfoEntity find(DBTransaction dbTransaction, Object id) {
 		DBTransactionJPAImpl transaction = (DBTransactionJPAImpl) dbTransaction;
-		return transaction.getEm().find(AreaNwkDeviceInfoEntity.class, id);
+		return transaction.getEm().find(DeviceInfoEntity.class, id);
 	}
 
 	@Override
-	public void delete(DBTransaction dbTransaction,
-			AreaNwkDeviceInfoEntity resource) {
+	public void delete(DBTransaction dbTransaction, DeviceInfoEntity resource) {
 		DBTransactionJPAImpl transaction = (DBTransactionJPAImpl) dbTransaction;
 		transaction.getEm().remove(resource);
-		// clean the cache
+		// cleaning the cache
 		transaction.getEm().getEntityManagerFactory().getCache().evict(NodeEntity.class);
 	}
-
 
 }

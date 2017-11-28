@@ -37,6 +37,9 @@ import javax.xml.bind.annotation.XmlElementRefs;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.eclipse.om2m.commons.constants.MgmtDefinitionTypes;
+import org.eclipse.om2m.commons.constants.ShortName;
+
 /**
  * <p>
  * Java class for anonymous complex type.
@@ -69,8 +72,8 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "rest" })
-@XmlRootElement(name = "firmware")
-public class Firmware extends MgmtResource {
+@XmlRootElement(name = ShortName.FIRMWARE)
+public class Firmware extends MgmtObj {
 
 	@XmlElementRefs({
 			@XmlElementRef(name = "version", type = JAXBElement.class, required = false),
@@ -81,6 +84,12 @@ public class Firmware extends MgmtResource {
 			@XmlElementRef(name = "name", type = JAXBElement.class, required = false),
 			@XmlElementRef(name = "update", type = JAXBElement.class, required = false) })
 	protected List<Object> rest;
+	
+	
+	public Firmware() {
+		super();
+		setMgmtDefinition(MgmtDefinitionTypes.FIRMWARE);
+	}
 
 	/**
 	 * Gets the rest of the content model.

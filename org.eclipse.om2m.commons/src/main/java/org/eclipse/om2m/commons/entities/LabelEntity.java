@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.eclipse.om2m.commons.entities;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +29,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
 import org.eclipse.om2m.commons.constants.DBEntities;
+import org.eclipse.om2m.commons.constants.MgmtDefinitionTypes;
 import org.eclipse.om2m.commons.constants.ShortName;
 
 /**
@@ -87,6 +89,9 @@ public class LabelEntity {
 	
 	@ManyToMany(targetEntity = AreaNwkDeviceInfoEntity.class, mappedBy = "labelsEntities")
 	protected List<AreaNwkDeviceInfoEntity> linkedAndi;
+	
+	@ManyToMany(targetEntity = DeviceInfoEntity.class, mappedBy = "labelsEntities")
+	protected List<DeviceInfoEntity> linkedDvi;
 	
 	/**
 	 * @return the linkedSub
@@ -370,6 +375,33 @@ public class LabelEntity {
 	 */
 	public void setLinkedAndi(List<AreaNwkDeviceInfoEntity> linkedAndi) {
 		this.linkedAndi = linkedAndi;
+	}
+
+	/**
+	 * @return the linkedDvi
+	 */
+	public List<DeviceInfoEntity> getLinkedDvi() {
+		if (this.linkedDvi == null) {
+			this.linkedDvi = new ArrayList<>();
+		}
+		return linkedDvi;
+	}
+
+	/**
+	 * @param linkedDvi the linkedDvi to set
+	 */
+	public void setLinkedDvi(List<DeviceInfoEntity> linkedDvi) {
+		this.linkedDvi = linkedDvi;
+	}
+
+	public void addMgmtObj(MgmtObjEntity mgmtObjEntity) {
+		BigInteger mgmtDef = mgmtObjEntity.getMgmtDefinition();
+		if (mgmtDef.equals(MgmtDefinitionTypes.AREA_NWK_INFO))
+			getLinkedAni().add((AreaNwkInfoEntity) mgmtObjEntity);
+		else if (mgmtDef.equals(MgmtDefinitionTypes.AREA_NWK_DEVICE_INFO))
+			getLinkedAndi().add((AreaNwkDeviceInfoEntity) mgmtObjEntity);
+		else if (mgmtDef.equals(MgmtDefinitionTypes.DEVICE_INFO))
+			getLinkedDvi().add((DeviceInfoEntity) mgmtObjEntity);
 	}
 
 	@Override

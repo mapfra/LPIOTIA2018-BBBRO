@@ -10,6 +10,7 @@ import org.eclipse.om2m.commons.entities.AreaNwkInfoEntity;
 import org.eclipse.om2m.commons.entities.CSEBaseEntity;
 import org.eclipse.om2m.commons.entities.ContainerEntity;
 import org.eclipse.om2m.commons.entities.ContentInstanceEntity;
+import org.eclipse.om2m.commons.entities.DeviceInfoEntity;
 import org.eclipse.om2m.commons.entities.DynamicAuthorizationConsultationEntity;
 import org.eclipse.om2m.commons.entities.FlexContainerAnncEntity;
 import org.eclipse.om2m.commons.entities.FlexContainerEntity;
@@ -93,6 +94,12 @@ public class DynamicAuthorizationConsultationDAO extends AbstractDAO<DynamicAuth
 		for(AreaNwkInfoEntity anie : resource.getLinkedAreaNwkInfoEntities()) {
 			anie.getDynamicAuthorizationConsultations().remove(resource);
 			transaction.getEm().merge(anie);
+		}
+		
+		// remove link with DeviceInfo
+		for(DeviceInfoEntity dvie : resource.getLinkedDeviceInfoEntities()) {
+			dvie.getDynamicAuthorizationConsultations().remove(resource);
+			transaction.getEm().merge(dvie);
 		}
 		
 		// remove link with Container

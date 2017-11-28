@@ -203,7 +203,6 @@ public class AccessControlPolicyEntity extends AnnounceableSubordinateEntity {
 			)
 	protected List<PollingChannelEntity> linkedNod;
 	
-	// Database link to ACP
 	@ManyToMany(fetch = FetchType.LAZY, targetEntity = AreaNwkInfoEntity.class)
 	@JoinTable(
 			name = DBEntities.ANIACP_JOIN,
@@ -220,6 +219,14 @@ public class AccessControlPolicyEntity extends AnnounceableSubordinateEntity {
 			)
 	protected List<AreaNwkDeviceInfoEntity> areaNwkDeviceInfoEntities;
 	
+	@ManyToMany(fetch = FetchType.LAZY, targetEntity = DeviceInfoEntity.class)
+	@JoinTable(
+			name = DBEntities.DVIACP_JOIN,
+			inverseJoinColumns = { @JoinColumn(name = DBEntities.DVI_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
+			joinColumns = { @JoinColumn(name = DBEntities.ACP_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
+			)
+	protected List<DeviceInfoEntity> deviceInfoEntities;
+
 	
 	/**
 	 * @return the privileges
@@ -486,6 +493,22 @@ public class AccessControlPolicyEntity extends AnnounceableSubordinateEntity {
 		this.areaNwkDeviceInfoEntities = areaNwkDeviceInfoEntities;
 	}
 
+	/**
+	 * @return the deviceInfoEntities
+	 */
+	public List<DeviceInfoEntity> getDeviceInfoEntities() {
+		if (this.deviceInfoEntities == null) {
+			this.deviceInfoEntities = new ArrayList<>();
+		}
+		return deviceInfoEntities;
+	}
+
+	/**
+	 * @param deviceInfoEntities the deviceInfoEntities to set
+	 */
+	public void setDeviceInfoEntities(List<DeviceInfoEntity> deviceInfoEntities) {
+		this.deviceInfoEntities = deviceInfoEntities;
+	}
 
 	public List<DynamicAuthorizationConsultationEntity> getLinkedDynamicAuthorizationConsultation() {
 		if (linkedDynamicAuthorizationConsultation == null) {

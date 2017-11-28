@@ -36,6 +36,9 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.eclipse.om2m.commons.constants.MgmtDefinitionTypes;
+import org.eclipse.om2m.commons.constants.ShortName;
+
 /**
  * <p>
  * Java class for anonymous complex type.
@@ -69,8 +72,8 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "logTypeId", "logData", "logStatus",
 		"logStart", "logStop", "childResource", "subscription" })
-@XmlRootElement(name = "eventLog")
-public class EventLog extends MgmtResource {
+@XmlRootElement(name = ShortName.EVENT_LOG)
+public class EventLog extends MgmtObj {
 
 	@XmlElement(required = true)
 	protected BigInteger logTypeId;
@@ -83,6 +86,12 @@ public class EventLog extends MgmtResource {
 	protected List<ChildResourceRef> childResource;
 	@XmlElement(namespace = "http://www.onem2m.org/xml/protocols")
 	protected List<Subscription> subscription;
+	
+	
+	public EventLog() {
+		super();
+		setMgmtDefinition(MgmtDefinitionTypes.EVENT_LOG);
+	}
 
 	/**
 	 * Gets the value of the logTypeId property.

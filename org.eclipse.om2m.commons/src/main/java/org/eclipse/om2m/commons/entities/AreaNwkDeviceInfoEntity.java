@@ -37,12 +37,14 @@ import javax.persistence.OneToMany;
 import org.eclipse.om2m.commons.constants.DBEntities;
 import org.eclipse.om2m.commons.constants.MgmtDefinitionTypes;
 import org.eclipse.om2m.commons.constants.ShortName;
+import org.eclipse.om2m.commons.resource.AreaNwkDeviceInfo;
+import org.eclipse.om2m.commons.resource.MgmtObj;
 
 /**
  * Area Nwk Device Info entity - Specialization of MgmtObj
  *
  */
-@Entity(name = ShortName.ANDI)
+@Entity(name = ShortName.AREA_NWK_DEVICE_INFO)
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class AreaNwkDeviceInfoEntity extends MgmtObjEntity {
 
@@ -263,6 +265,19 @@ public class AreaNwkDeviceInfoEntity extends MgmtObjEntity {
 	@Override
 	public void setDynamicAuthorizationConsultations(List<DynamicAuthorizationConsultationEntity> list) {
 		this.dynamicAuthorizationConsultations = list;
+	}
+
+	@Override
+	public void fillFrom(MgmtObj mgmtObj) {
+		super.fillFrom(mgmtObj);
+		AreaNwkDeviceInfo andi = (AreaNwkDeviceInfo) mgmtObj;
+		this.devID = andi.getDevID();
+		this.devType = andi.getDevType();
+		this.areaNwkId = andi.getAreaNwkId();
+		this.sleepDuration = andi.getSleepDuration();
+		this.sleepInterval = andi.getSleepInterval();
+		this.status = andi.getStatus();
+		this.listOfNeighbors = andi.getListOfNeighbors();
 	}
 	
 }

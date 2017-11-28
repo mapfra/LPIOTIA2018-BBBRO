@@ -38,6 +38,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 
+import org.eclipse.om2m.commons.constants.ShortName;
+
 /**
  * <p>
  * Java class for anonymous complex type.
@@ -69,8 +71,8 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "", propOrder = { "order", "defEcValue", "requestOrigin",
 		"requestContext", "requestContextNotification",
 		"requestCharacteristics" })
-@XmlRootElement(name = "cmdhDefEcValue")
-public class CmdhDefEcValue extends MgmtResource {
+@XmlRootElement(name = ShortName.CMDH_DEF_EC_VALUE)
+public class CmdhDefEcValue extends MgmtObj {
 
 	@XmlElement(required = true)
 	@XmlSchemaType(name = "positiveInteger")

@@ -37,6 +37,8 @@ import javax.xml.bind.annotation.XmlElementRefs;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.eclipse.om2m.commons.constants.ShortName;
+
 /**
  * <p>
  * Java class for anonymous complex type.
@@ -62,8 +64,8 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "rest" })
-@XmlRootElement(name = "cmdhPolicy")
-public class CmdhPolicy extends MgmtResource {
+@XmlRootElement(name = ShortName.CMDH_POLICY)
+public class CmdhPolicy extends MgmtObj {
 
 	@XmlElementRefs({
 			@XmlElementRef(name = "mgmtLink", type = JAXBElement.class, required = false),

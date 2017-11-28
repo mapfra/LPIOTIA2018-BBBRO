@@ -36,6 +36,8 @@ import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.eclipse.om2m.commons.constants.ShortName;
+
 /**
  * <p>
  * Java class for anonymous complex type.
@@ -61,8 +63,8 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "applicableEventCategories", "mgmtLink" })
-@XmlRootElement(name = "cmdhNetworkAccessRules")
-public class CmdhNetworkAccessRules extends MgmtResource {
+@XmlRootElement(name = ShortName.CMDH_NETWORK_ACCESS_RULES)
+public class CmdhNetworkAccessRules extends MgmtObj {
 
 	@XmlList
 	@XmlElement(required = true)

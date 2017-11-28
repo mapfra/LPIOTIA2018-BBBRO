@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.eclipse.om2m.commons.entities;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +36,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import org.eclipse.om2m.commons.constants.DBEntities;
+import org.eclipse.om2m.commons.constants.MgmtDefinitionTypes;
 import org.eclipse.om2m.commons.constants.ShortName;
 
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -62,9 +64,14 @@ public class NodeEntity extends AnnounceableSubordinateEntity {
 	// node id
 	@Column(name = ShortName.NODE_ID)
 	protected String nodeID;
+
 	// hosted CSE LINK
 	@Column(name = ShortName.HOSTED_CSE_LINK)
 	protected String hostedCSELink;
+
+	// hosted APP LINK
+	@Column(name = ShortName.HOSTED_APP_LINK)
+	protected String hostedAppLink;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinTable(
@@ -107,6 +114,15 @@ public class NodeEntity extends AnnounceableSubordinateEntity {
 			joinColumns = { @JoinColumn(name = DBEntities.NOD_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
 			)
 	protected List<AreaNwkDeviceInfoEntity> childAreaNwkDeviceInfoEntities;
+	
+	// Database link to DeviceInfo entity
+	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+	@JoinTable(
+			name = DBEntities.DVINOD_JOIN,
+			inverseJoinColumns = { @JoinColumn(name = DBEntities.DVI_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
+			joinColumns = { @JoinColumn(name = DBEntities.NOD_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
+			)
+	protected List<DeviceInfoEntity> childDeviceInfoEntities;
 
 	/**
 	 * @return the accessControlPolicies
@@ -117,6 +133,7 @@ public class NodeEntity extends AnnounceableSubordinateEntity {
 		}
 		return linkedAcps;
 	}
+	
 	/**
 	 * @param accessControlPolicies the accessControlPolicies to set
 	 */
@@ -124,66 +141,91 @@ public class NodeEntity extends AnnounceableSubordinateEntity {
 			List<AccessControlPolicyEntity> accessControlPolicies) {
 		this.linkedAcps = accessControlPolicies;
 	}
+	
 	/**
 	 * @return the nodeID
 	 */
 	public String getNodeID() {
 		return nodeID;
 	}
+	
 	/**
 	 * @param nodeID the nodeID to set
 	 */
 	public void setNodeID(String nodeID) {
 		this.nodeID = nodeID;
 	}
+	
 	/**
 	 * @return the hostedCSELink
 	 */
 	public String getHostedCSELink() {
 		return hostedCSELink;
 	}
+	
 	/**
 	 * @param hostedCSELink the hostedCSELink to set
 	 */
 	public void setHostedCSELink(String hostedCSELink) {
 		this.hostedCSELink = hostedCSELink;
 	}
+	
+	/**
+	 * @return the hostedAppLink
+	 */
+	public String getHostedAppLink() {
+		return hostedAppLink;
+	}
+	
+	/**
+	 * @param hostedCSELink the hostedAppLink to set
+	 */
+	public void setHostedAppLink(String hostedAppLink) {
+		this.hostedAppLink = hostedAppLink;
+	}
+	
 	/**
 	 * @return the parentCsb
 	 */
 	public CSEBaseEntity getParentCsb() {
 		return parentCsb;
 	}
+	
 	/**
 	 * @param parentCsb the parentCsb to set
 	 */
 	public void setParentCsb(CSEBaseEntity parentCsb) {
 		this.parentCsb = parentCsb;
 	}
+	
 	/**
 	 * @return the parentCsr
 	 */
 	public CSEBaseEntity getParentCsr() {
 		return parentCsr;
 	}
+	
 	/**
 	 * @param parentCsr the parentCsr to set
 	 */
 	public void setParentCsr(CSEBaseEntity parentCsr) {
 		this.parentCsr = parentCsr;
 	}
+	
 	/**
 	 * @return the childSubscriptions
 	 */
 	public List<SubscriptionEntity> getChildSubscriptions() {
 		return childSubscriptions;
 	}
+	
 	/**
 	 * @param childSubscriptions the childSubscriptions to set
 	 */
 	public void setChildSubscriptions(List<SubscriptionEntity> childSubscriptions) {
 		this.childSubscriptions = childSubscriptions;
 	}
+	
 	/**
 	 * @return the childAreaNwkInfoEntities
 	 */
@@ -193,25 +235,46 @@ public class NodeEntity extends AnnounceableSubordinateEntity {
 		}
 		return childAreaNwkInfoEntities;
 	}
+	
 	/**
 	 * @param childAreaNwkInfoEntities the childAreaNwkInfoEntities to set
 	 */
-	public void setChildAreaNwkInfoEntities(
-			List<AreaNwkInfoEntity> childAreaNwkInfoEntities) {
+	public void setChildAreaNwkInfoEntities(List<AreaNwkInfoEntity> childAreaNwkInfoEntities) {
 		this.childAreaNwkInfoEntities = childAreaNwkInfoEntities;
 	}
+	
 	/**
 	 * @return the childAreaNwkDeviceInfoEntities
 	 */
 	public List<AreaNwkDeviceInfoEntity> getChildAreaNwkDeviceInfoEntities() {
+		if (this.childAreaNwkDeviceInfoEntities == null) {
+			this.childAreaNwkDeviceInfoEntities = new ArrayList<>();
+		}
 		return childAreaNwkDeviceInfoEntities;
 	}
+	
 	/**
 	 * @param childAreaNwkDeviceInfoEntities the childAreaNwkDeviceInfoEntities to set
 	 */
-	public void setChildAreaNwkDeviceInfoEntities(
-			List<AreaNwkDeviceInfoEntity> childAreaNwkDeviceInfoEntities) {
+	public void setChildAreaNwkDeviceInfoEntities(List<AreaNwkDeviceInfoEntity> childAreaNwkDeviceInfoEntities) {
 		this.childAreaNwkDeviceInfoEntities = childAreaNwkDeviceInfoEntities;
+	}
+	
+	/**
+	 * @return the childDeviceInfoEntities
+	 */
+	public List<DeviceInfoEntity> getChildDeviceInfoEntities() {
+		if (this.childDeviceInfoEntities == null) {
+			this.childDeviceInfoEntities = new ArrayList<>();
+		}
+		return childDeviceInfoEntities;
+	}
+	
+	/**
+	 * @param childDeviceInfoEntities the childDeviceInfoEntities to set
+	 */
+	public void setChildDeviceInfoEntities(List<DeviceInfoEntity> childDeviceInfoEntities) {
+		this.childDeviceInfoEntities = childDeviceInfoEntities;
 	}
 	
 	@Override
@@ -231,6 +294,16 @@ public class NodeEntity extends AnnounceableSubordinateEntity {
 	 */
 	public void setDynamicAuthorizationConsultations(List<DynamicAuthorizationConsultationEntity> list) {
 		this.dynamicAuthorizationConsultations = list;
+	}
+
+	public void addMgmtObj(MgmtObjEntity mgmtObjFromDB) {
+		BigInteger mgmtDef = mgmtObjFromDB.getMgmtDefinition();
+		if (mgmtDef.equals(MgmtDefinitionTypes.AREA_NWK_INFO))
+			getChildAreaNwkInfoEntities().add((AreaNwkInfoEntity) mgmtObjFromDB);
+		else if (mgmtDef.equals(MgmtDefinitionTypes.AREA_NWK_DEVICE_INFO))
+			getChildAreaNwkDeviceInfoEntities().add((AreaNwkDeviceInfoEntity) mgmtObjFromDB);
+		else if (mgmtDef.equals(MgmtDefinitionTypes.DEVICE_INFO))
+			getChildDeviceInfoEntities().add((DeviceInfoEntity) mgmtObjFromDB);
 	}
 
 }

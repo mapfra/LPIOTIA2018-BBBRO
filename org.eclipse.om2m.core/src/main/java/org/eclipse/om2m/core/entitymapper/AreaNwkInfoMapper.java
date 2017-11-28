@@ -43,7 +43,6 @@ public class AreaNwkInfoMapper extends EntityMapper<AreaNwkInfoEntity, AreaNwkIn
 		resource.setDescription(entity.getDescription());
 		resource.setExpirationTime(entity.getExpirationTime());
 		resource.setLastModifiedTime(entity.getLastModifiedTime());
-		resource.setMgmtDefinition(entity.getMgmtDefinition());
 		resource.setName(entity.getName());
 		resource.setParentID(entity.getParentID());
 		resource.setResourceID(entity.getResourceID());

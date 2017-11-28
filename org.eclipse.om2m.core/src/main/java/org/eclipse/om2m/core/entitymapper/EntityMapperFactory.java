@@ -30,6 +30,7 @@ import org.eclipse.om2m.commons.entities.AreaNwkInfoEntity;
 import org.eclipse.om2m.commons.entities.CSEBaseEntity;
 import org.eclipse.om2m.commons.entities.ContainerEntity;
 import org.eclipse.om2m.commons.entities.ContentInstanceEntity;
+import org.eclipse.om2m.commons.entities.DeviceInfoEntity;
 import org.eclipse.om2m.commons.entities.DynamicAuthorizationConsultationEntity;
 import org.eclipse.om2m.commons.entities.FlexContainerAnncEntity;
 import org.eclipse.om2m.commons.entities.FlexContainerEntity;
@@ -43,6 +44,8 @@ import org.eclipse.om2m.commons.entities.RequestEntity;
 import org.eclipse.om2m.commons.entities.SubscriptionEntity;
 import org.eclipse.om2m.commons.resource.AE;
 import org.eclipse.om2m.commons.resource.AEAnnc;
+import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
+import org.eclipse.om2m.commons.resource.AbstractFlexContainerAnnc;
 import org.eclipse.om2m.commons.resource.AccessControlPolicy;
 import org.eclipse.om2m.commons.resource.AnnounceableResource;
 import org.eclipse.om2m.commons.resource.AnnounceableSubordinateResource;
@@ -52,9 +55,8 @@ import org.eclipse.om2m.commons.resource.AreaNwkInfo;
 import org.eclipse.om2m.commons.resource.CSEBase;
 import org.eclipse.om2m.commons.resource.Container;
 import org.eclipse.om2m.commons.resource.ContentInstance;
+import org.eclipse.om2m.commons.resource.DeviceInfo;
 import org.eclipse.om2m.commons.resource.DynamicAuthorizationConsultation;
-import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
-import org.eclipse.om2m.commons.resource.AbstractFlexContainerAnnc;
 import org.eclipse.om2m.commons.resource.Group;
 import org.eclipse.om2m.commons.resource.Node;
 import org.eclipse.om2m.commons.resource.PollingChannel;
@@ -143,6 +145,11 @@ public class EntityMapperFactory {
 	public static EntityMapper<AreaNwkDeviceInfoEntity, AreaNwkDeviceInfo> getAreaNwkDeviceInfoMapper(){
 		return new AreaNwkDeviceInfoMapper();
 	}
+
+	/** Get the device info mapper */
+	public static EntityMapper<DeviceInfoEntity, DeviceInfo> getDeviceInfoMapper(){
+		return new DeviceInfoMapper();
+	}
 	
 	/** Get the AnnounceableSubordinate mapper */
 	public static EntityMapper<AnnounceableSubordinateEntity, AnnounceableSubordinateResource> getAnnounceableSubordinateMapper() {
@@ -219,6 +226,9 @@ public class EntityMapperFactory {
 		}
 		if (mgmtObj instanceof AreaNwkDeviceInfoEntity) {
 			return new AreaNwkDeviceInfoMapper();
+		}
+		if (mgmtObj instanceof DeviceInfoEntity) {
+			return new DeviceInfoMapper();
 		}
 		return null;
 	}

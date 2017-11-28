@@ -37,6 +37,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 
+import org.eclipse.om2m.commons.constants.MgmtDefinitionTypes;
+import org.eclipse.om2m.commons.constants.ShortName;
+
 /**
  * <p>
  * Java class for anonymous complex type.
@@ -67,8 +70,8 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "memAvailable", "memTotal", "childResource",
 		"subscription" })
-@XmlRootElement(name = "memory")
-public class Memory extends MgmtResource {
+@XmlRootElement(name = ShortName.MEMORY)
+public class Memory extends MgmtObj {
 
 	@XmlElement(required = true)
 	@XmlSchemaType(name = "unsignedLong")
@@ -79,6 +82,12 @@ public class Memory extends MgmtResource {
 	protected List<ChildResourceRef> childResource;
 	@XmlElement(namespace = "http://www.onem2m.org/xml/protocols")
 	protected List<Subscription> subscription;
+	
+	
+	public Memory() {
+		super();
+		setMgmtDefinition(MgmtDefinitionTypes.MEMORY);
+	}
 
 	/**
 	 * Gets the value of the memAvailable property.

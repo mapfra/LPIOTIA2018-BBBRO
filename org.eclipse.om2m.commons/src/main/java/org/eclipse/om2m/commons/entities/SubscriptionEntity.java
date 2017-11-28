@@ -194,6 +194,14 @@ public class SubscriptionEntity extends RegularResourceEntity {
 			)
 	protected AreaNwkDeviceInfoEntity parentAndi;
 	
+	@ManyToOne(fetch = FetchType.LAZY, targetEntity = DeviceInfoEntity.class)
+	@JoinTable(
+			name = DBEntities.DVISUB_JOIN,
+			inverseJoinColumns = { @JoinColumn(name = DBEntities.DVI_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
+			joinColumns = { @JoinColumn(name = DBEntities.SUB_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
+			)
+	protected DeviceInfoEntity parentDvi;
+	
 	// link to schedule entity
 	@OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, targetEntity = ScheduleEntity.class)
 	@JoinColumn(name = "sch_id")
@@ -510,6 +518,20 @@ public class SubscriptionEntity extends RegularResourceEntity {
 	 */
 	public void setParentAndi(AreaNwkDeviceInfoEntity parentAndi) {
 		this.parentAndi = parentAndi;
+	}
+	
+	/**
+	 * @return the parentDvi
+	 */
+	public DeviceInfoEntity getParentDvi() {
+		return parentDvi;
+	}
+
+	/**
+	 * @param parentDvi the parentDvi to set
+	 */
+	public void setParentDvi(DeviceInfoEntity parentDvi) {
+		this.parentDvi = parentDvi;
 	}
 
 	/**
