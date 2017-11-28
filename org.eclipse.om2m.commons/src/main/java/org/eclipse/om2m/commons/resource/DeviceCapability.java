@@ -35,6 +35,9 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.eclipse.om2m.commons.constants.MgmtDefinitionTypes;
+import org.eclipse.om2m.commons.constants.ShortName;
+
 /**
  * <p>
  * Java class for anonymous complex type.
@@ -70,8 +73,8 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "", propOrder = { "capabilityName", "attached",
 		"capabilityActionStatus", "currentState", "enable", "disable",
 		"childResource", "subscription" })
-@XmlRootElement(name = "deviceCapability")
-public class DeviceCapability extends MgmtResource {
+@XmlRootElement(name = ShortName.DEVICE_CAPABILITY)
+public class DeviceCapability extends MgmtObj {
 
 	@XmlElement(required = true)
 	protected String capabilityName;
@@ -84,6 +87,12 @@ public class DeviceCapability extends MgmtResource {
 	protected List<ChildResourceRef> childResource;
 	@XmlElement(namespace = "http://www.onem2m.org/xml/protocols")
 	protected List<Subscription> subscription;
+	
+	
+	public DeviceCapability() {
+		super();
+		setMgmtDefinition(MgmtDefinitionTypes.DEVICE_CAPABILITY);
+	}
 
 	/**
 	 * Gets the value of the capabilityName property.

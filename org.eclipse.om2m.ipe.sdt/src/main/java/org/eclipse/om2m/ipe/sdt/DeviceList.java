@@ -10,6 +10,8 @@ package org.eclipse.om2m.ipe.sdt;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.eclipse.om2m.sdt.Device;
 
 /**
@@ -21,7 +23,9 @@ import org.eclipse.om2m.sdt.Device;
 public class DeviceList implements DeviceListListener {
 	
 	private final static DeviceList INSTANCE = new DeviceList();
-	
+
+    private final static Log logger = LogFactory.getLog(DeviceList.class);
+
 	private List<Device> devices;
 	private List<DeviceListListener> listeners;
 	
@@ -87,7 +91,7 @@ public class DeviceList implements DeviceListListener {
 			try {
 				listenerToBeAdded.notifyNewDevice(device);
 			} catch (Exception e) {
-				// silent
+				logger.error("", e);
 			}
 		}
 	}
@@ -114,7 +118,7 @@ public class DeviceList implements DeviceListListener {
 			try {
 				listenerToBeRemoved.notifyDeviceRemoved(device);
 			} catch (Exception e) {
-				// silent
+				logger.error("", e);
 			}
 		}
 		
@@ -125,31 +129,32 @@ public class DeviceList implements DeviceListListener {
 	}
 
 	
-	@Override
 	/**
 	 * Retrieve all listeners and notify them about new device
 	 */
+	@Override
 	public void notifyNewDevice(Device newDevice) {
 		for(DeviceListListener listener : getListeners()) {
 			try {
 				listener.notifyNewDevice(newDevice);
 			} catch (Exception e) {
+				logger.error("", e);
 			}
 		}
 	}
 
-	@Override
 	/**
 	 * Retrieve all listeners and notify them about device removal
 	 */
+	@Override
 	public void notifyDeviceRemoved(Device toBeRemovedDevice) {
 		for(DeviceListListener listener : getListeners()) {
 			try {
 				listener.notifyDeviceRemoved(toBeRemovedDevice);
 			} catch (Exception e) {
+				logger.error("", e);
 			}
 		}
 	}
-
 
 }

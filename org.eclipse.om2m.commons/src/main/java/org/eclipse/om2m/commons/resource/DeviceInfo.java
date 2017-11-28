@@ -35,6 +35,9 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.eclipse.om2m.commons.constants.MgmtDefinitionTypes;
+import org.eclipse.om2m.commons.constants.ShortName;
+
 /**
  * <p>
  * Java class for anonymous complex type.
@@ -55,6 +58,17 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="fwVersion" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="swVersion" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="hwVersion" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="manufacturerDetailsLink" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="manufacturingDate" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="subModel" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="deviceName" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="osVersion" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="country" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="location" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="systemTime" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="supportURL" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="presentationURL" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="protocol" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;choice minOccurs="0">
  *           &lt;element name="childResource" type="{http://www.onem2m.org/xml/protocols}childResourceRef" maxOccurs="unbounded"/>
  *           &lt;element ref="{http://www.onem2m.org/xml/protocols}subscription" maxOccurs="unbounded"/>
@@ -68,29 +82,56 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "deviceLabel", "manufacturer", "model",
-		"deviceType", "fwVersion", "swVersion", "hwVersion", "childResource",
-		"subscription" })
-@XmlRootElement(name = "deviceInfo")
-public class DeviceInfo extends MgmtResource {
+@XmlType(name = "")
+@XmlRootElement(name = ShortName.DEVICE_INFO)
+public class DeviceInfo extends MgmtObj {
 
-	@XmlElement(required = true)
+	@XmlElement(required = true, name = ShortName.DEVICE_LABEL, namespace="")
 	protected String deviceLabel;
-	@XmlElement(required = true)
+	@XmlElement(required = true, name = ShortName.MANUFACTURER, namespace="")
 	protected String manufacturer;
-	@XmlElement(required = true)
+	@XmlElement(required = true, name = ShortName.DEVICE_MODEL, namespace="")
 	protected String model;
-	@XmlElement(required = true)
+	@XmlElement(required = true, name = ShortName.DEVICE_TYPE, namespace="")
 	protected String deviceType;
-	@XmlElement(required = true)
+
+	@XmlElement(name = ShortName.FW_VERSION, namespace="")
 	protected String fwVersion;
-	@XmlElement(required = true)
+	@XmlElement(name = ShortName.SW_VERSION, namespace="")
 	protected String swVersion;
-	@XmlElement(required = true)
+	@XmlElement(name = ShortName.HW_VERSION, namespace="")
 	protected String hwVersion;
-	protected List<ChildResourceRef> childResource;
-	@XmlElement(namespace = "http://www.onem2m.org/xml/protocols")
+	@XmlElement(name = ShortName.MANUF_DET_LINKS, namespace="")
+	protected String manufacturerDetailsLink;
+	@XmlElement(name = ShortName.MANUF_DATE, namespace="")
+	protected String manufacturingDate;
+	@XmlElement(name = ShortName.DEVICE_SUB_MODEL, namespace="")
+	protected String subModel;
+	@XmlElement(name = ShortName.DEVICE_NAME, namespace="")
+	protected String deviceName;
+	@XmlElement(name = ShortName.OS_VERSION, namespace="")
+	protected String osVersion;
+	@XmlElement(name = ShortName.COUNTRY, namespace="")
+	protected String country;
+	@XmlElement(name = ShortName.LOCATION, namespace="")
+	protected String location;
+	@XmlElement(name = ShortName.SYS_TIME, namespace="")
+	protected String systemTime;
+	@XmlElement(name = ShortName.SUPPORT_URL, namespace="")
+	protected String supportURL;
+	@XmlElement(name = ShortName.PRES_URL, namespace="")
+	protected String presentationURL;
+	@XmlElement(name = ShortName.PROTOCOL, namespace="")
+	protected String protocol;
+
+	@XmlElement(namespace = "http://www.onem2m.org/xml/protocols", name = ShortName.SUB)
 	protected List<Subscription> subscription;
+	
+	
+	public DeviceInfo() {
+		super();
+		setMgmtDefinition(MgmtDefinitionTypes.DEVICE_INFO);
+	}
 
 	/**
 	 * Gets the value of the deviceLabel property.
@@ -240,33 +281,157 @@ public class DeviceInfo extends MgmtResource {
 	}
 
 	/**
-	 * Gets the value of the childResource property.
-	 * 
-	 * <p>
-	 * This accessor method returns a reference to the live list, not a
-	 * snapshot. Therefore any modification you make to the returned list will
-	 * be present inside the JAXB object. This is why there is not a
-	 * <CODE>set</CODE> method for the childResource property.
-	 * 
-	 * <p>
-	 * For example, to add a new item, do as follows:
-	 * 
-	 * <pre>
-	 * getChildResource().add(newItem);
-	 * </pre>
-	 * 
-	 * 
-	 * <p>
-	 * Objects of the following type(s) are allowed in the list
-	 * {@link ChildResourceRef }
-	 * 
-	 * 
+	 * @return the manufacturerDetailsLink
 	 */
-	public List<ChildResourceRef> getChildResource() {
-		if (childResource == null) {
-			childResource = new ArrayList<ChildResourceRef>();
-		}
-		return this.childResource;
+	public String getManufacturerDetailsLink() {
+		return manufacturerDetailsLink;
+	}
+
+	/**
+	 * @param manufacturerDetailsLink the manufacturerDetailsLink to set
+	 */
+	public void setManufacturerDetailsLink(String manufacturerDetailsLink) {
+		this.manufacturerDetailsLink = manufacturerDetailsLink;
+	}
+
+	/**
+	 * @return the manufacturingDate
+	 */
+	public String getManufacturingDate() {
+		return manufacturingDate;
+	}
+
+	/**
+	 * @param manufacturingDate the manufacturingDate to set
+	 */
+	public void setManufacturingDate(String manufacturingDate) {
+		this.manufacturingDate = manufacturingDate;
+	}
+
+	/**
+	 * @return the subModel
+	 */
+	public String getSubModel() {
+		return subModel;
+	}
+
+	/**
+	 * @param subModel the subModel to set
+	 */
+	public void setSubModel(String subModel) {
+		this.subModel = subModel;
+	}
+
+	/**
+	 * @return the deviceName
+	 */
+	public String getDeviceName() {
+		return deviceName;
+	}
+
+	/**
+	 * @param deviceName the deviceName to set
+	 */
+	public void setDeviceName(String deviceName) {
+		this.deviceName = deviceName;
+	}
+
+	/**
+	 * @return the osVersion
+	 */
+	public String getOsVersion() {
+		return osVersion;
+	}
+
+	/**
+	 * @param osVersion the osVersion to set
+	 */
+	public void setOsVersion(String osVersion) {
+		this.osVersion = osVersion;
+	}
+
+	/**
+	 * @return the country
+	 */
+	public String getCountry() {
+		return country;
+	}
+
+	/**
+	 * @param country the country to set
+	 */
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	/**
+	 * @return the location
+	 */
+	public String getLocation() {
+		return location;
+	}
+
+	/**
+	 * @param location the location to set
+	 */
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	/**
+	 * @return the systemTime
+	 */
+	public String getSystemTime() {
+		return systemTime;
+	}
+
+	/**
+	 * @param systemTime the systemTime to set
+	 */
+	public void setSystemTime(String systemTime) {
+		this.systemTime = systemTime;
+	}
+
+	/**
+	 * @return the supportURL
+	 */
+	public String getSupportURL() {
+		return supportURL;
+	}
+
+	/**
+	 * @param supportURL the supportURL to set
+	 */
+	public void setSupportURL(String supportURL) {
+		this.supportURL = supportURL;
+	}
+
+	/**
+	 * @return the presentationURL
+	 */
+	public String getPresentationURL() {
+		return presentationURL;
+	}
+
+	/**
+	 * @param presentationURL the presentationURL to set
+	 */
+	public void setPresentationURL(String presentationURL) {
+		this.presentationURL = presentationURL;
+	}
+
+	/**
+	 * @return the protocol
+	 */
+	public String getProtocol() {
+		return protocol;
+	}
+
+	/**
+	 * @param protocol the protocol to set
+	 */
+	public void setProtocol(String protocol) {
+		this.protocol = protocol;
 	}
 
 	/**

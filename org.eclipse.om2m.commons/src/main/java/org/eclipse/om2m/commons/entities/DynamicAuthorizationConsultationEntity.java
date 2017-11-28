@@ -7,6 +7,7 @@
  *******************************************************************************/
 package org.eclipse.om2m.commons.entities;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +23,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 import org.eclipse.om2m.commons.constants.DBEntities;
+import org.eclipse.om2m.commons.constants.MgmtDefinitionTypes;
 import org.eclipse.om2m.commons.constants.ShortName;
 
 @Entity(name = DBEntities.DYNAMIC_AUTHORIZATION_CONSULTATION_ENTITY)
@@ -171,7 +173,15 @@ public class DynamicAuthorizationConsultationEntity extends RegularResourceEntit
 			inverseJoinColumns = { @JoinColumn(name = DBEntities.ANI_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
 			)
 	private List<AreaNwkInfoEntity> linkedAreaNwkInfoEntities;
-	
+
+	@ManyToMany(fetch=FetchType.LAZY)
+	@JoinTable(
+			name = DBEntities.DVI_DAC_JOIN,
+			joinColumns = { @JoinColumn(name = DBEntities.DAC_JOINID, referencedColumnName = ShortName.RESOURCE_ID) }, 
+			inverseJoinColumns = { @JoinColumn(name = DBEntities.DVI_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
+			)
+	private List<DeviceInfoEntity> linkedDeviceInfoEntities;
+
 	@ManyToMany(fetch=FetchType.LAZY)
 	@JoinTable(
 			name = DBEntities.NOD_DAC_JOIN,
@@ -414,6 +424,40 @@ public class DynamicAuthorizationConsultationEntity extends RegularResourceEntit
 	}
 
 	/**
+	 * @return the linkedAreaNwkInfoEntities
+	 */
+	public List<AreaNwkInfoEntity> getLinkedAreaNwkInfoEntities() {
+		if(linkedAreaNwkInfoEntities == null) {
+			linkedAreaNwkInfoEntities = new ArrayList<>();
+		}
+		return linkedAreaNwkInfoEntities;
+	}
+
+	/**
+	 * @param linkedAreaNwkInfoEntities the linkedAreaNwkInfoEntities to set
+	 */
+	public void setLinkedAreaNwkInfoEntities(List<AreaNwkInfoEntity> linkedAreaNwkInfoEntities) {
+		this.linkedAreaNwkInfoEntities = linkedAreaNwkInfoEntities;
+	}
+
+	/**
+	 * @return the linkedMgmtObjEntities
+	 */
+	public List<DeviceInfoEntity> getLinkedDeviceInfoEntities() {
+		if (linkedDeviceInfoEntities == null) {
+			linkedDeviceInfoEntities = new ArrayList<>();
+		}
+		return linkedDeviceInfoEntities;
+	}
+
+	/**
+	 * @param linkedMgmtObjEntities the linkedMgmtObjEntities to set
+	 */
+	public void setLinkedDeviceInfoEntities(List<DeviceInfoEntity> linkedMgmtObjEntities) {
+		this.linkedDeviceInfoEntities = linkedMgmtObjEntities;
+	}
+
+	/**
 	 * @return the linkedNodeEntities
 	 */
 	public List<NodeEntity> getLinkedNodeEntities() {
@@ -499,23 +543,6 @@ public class DynamicAuthorizationConsultationEntity extends RegularResourceEntit
 	}
 
 	/**
-	 * @return the linkedAreaNwkInfoEntities
-	 */
-	public List<AreaNwkInfoEntity> getLinkedAreaNwkInfoEntities() {
-		if(linkedAreaNwkInfoEntities == null) {
-			linkedAreaNwkInfoEntities = new ArrayList<>();
-		}
-		return linkedAreaNwkInfoEntities;
-	}
-
-	/**
-	 * @param linkedAreaNwkInfoEntities the linkedAreaNwkInfoEntities to set
-	 */
-	public void setLinkedAreaNwkInfoEntities(List<AreaNwkInfoEntity> linkedAreaNwkInfoEntities) {
-		this.linkedAreaNwkInfoEntities = linkedAreaNwkInfoEntities;
-	}
-
-	/**
 	 * @return the linkedCseBaseEntities
 	 */
 	public List<CSEBaseEntity> getLinkedCseBaseEntities() {
@@ -531,7 +558,15 @@ public class DynamicAuthorizationConsultationEntity extends RegularResourceEntit
 	public void setLinkedCseBaseEntities(List<CSEBaseEntity> linkedCseBaseEntities) {
 		this.linkedCseBaseEntities = linkedCseBaseEntities;
 	}
-	
-	
+
+	public void addMgmtObj(MgmtObjEntity mgmtObjEntity) {
+		BigInteger mgmtDef = mgmtObjEntity.getMgmtDefinition();
+		if (mgmtDef.equals(MgmtDefinitionTypes.AREA_NWK_INFO))
+			getLinkedAreaNwkInfoEntities().add((AreaNwkInfoEntity) mgmtObjEntity);
+		else if (mgmtDef.equals(MgmtDefinitionTypes.AREA_NWK_DEVICE_INFO))
+			getLinkedAreaNwkDeviceInfoEntities().add((AreaNwkDeviceInfoEntity) mgmtObjEntity);
+		else if (mgmtDef.equals(MgmtDefinitionTypes.DEVICE_INFO))
+			getLinkedDeviceInfoEntities().add((DeviceInfoEntity) mgmtObjEntity);
+	}
 	
 }

@@ -54,6 +54,7 @@ public class FlexContainerMapper extends EntityMapper<FlexContainerEntity, Abstr
 		resource.setOntologyRef(entity.getOntologyRef());
 		resource.setStateTag(entity.getStateTag());
 		resource.setContainerDefinition(entity.getContainerDefinition());
+		resource.setNodeLink(entity.getNodeLink());
 		
 		resource.setLongName(entity.getLongName());
 		resource.setShortName(entity.getShortName());
@@ -159,5 +160,4 @@ public class FlexContainerMapper extends EntityMapper<FlexContainerEntity, Abstr
 		resource.finalizeSerialization();
 	}
 
-	
 }

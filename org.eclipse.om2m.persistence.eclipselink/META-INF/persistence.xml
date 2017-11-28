@@ -35,6 +35,7 @@
 		<class>org.eclipse.om2m.commons.entities.AeAnncEntity</class>
 		<class>org.eclipse.om2m.commons.entities.AreaNwkDeviceInfoEntity</class>
 		<class>org.eclipse.om2m.commons.entities.AreaNwkInfoEntity</class>
+		<class>org.eclipse.om2m.commons.entities.DeviceInfoEntity</class>
 		<class>org.eclipse.om2m.commons.entities.CSEBaseEntity</class>
 		<class>org.eclipse.om2m.commons.entities.ContainerEntity</class>
 		<class>org.eclipse.om2m.commons.entities.DynamicAuthorizationConsultationEntity</class>

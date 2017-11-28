@@ -37,6 +37,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 
+import org.eclipse.om2m.commons.constants.MgmtDefinitionTypes;
+import org.eclipse.om2m.commons.constants.ShortName;
+
 /**
  * <p>
  * Java class for anonymous complex type.
@@ -61,22 +64,27 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "batteryLevel", "batteryStatus",
-		"childResource", "subscription" })
-@XmlRootElement(name = "battery")
-public class Battery extends MgmtResource {
+		"subscription" })
+@XmlRootElement(name = ShortName.BATTERY)
+public class Battery extends MgmtObj {
 
 	@XmlSchemaType(name = "unsignedInt")
+	@XmlElement(name = ShortName.BATTERY_LEVEL, namespace="")
 	protected long batteryLevel;
-	@XmlElement(required = true)
+	@XmlElement(name = ShortName.BATTERY_STATUS, required = true, namespace="")
 	protected BigInteger batteryStatus;
-	protected List<ChildResourceRef> childResource;
-	@XmlElement(namespace = "http://www.onem2m.org/xml/protocols")
+
+	@XmlElement(namespace = "http://www.onem2m.org/xml/protocols", name = ShortName.SUB)
 	protected List<Subscription> subscription;
+	
+	
+	public Battery() {
+		super();
+		setMgmtDefinition(MgmtDefinitionTypes.BATTERY);
+	}
 
 	/**
 	 * Gets the value of the batteryLevel property.
@@ -113,36 +121,6 @@ public class Battery extends MgmtResource {
 	 */
 	public void setBatteryStatus(BigInteger value) {
 		this.batteryStatus = value;
-	}
-
-	/**
-	 * Gets the value of the childResource property.
-	 * 
-	 * <p>
-	 * This accessor method returns a reference to the live list, not a
-	 * snapshot. Therefore any modification you make to the returned list will
-	 * be present inside the JAXB object. This is why there is not a
-	 * <CODE>set</CODE> method for the childResource property.
-	 * 
-	 * <p>
-	 * For example, to add a new item, do as follows:
-	 * 
-	 * <pre>
-	 * getChildResource().add(newItem);
-	 * </pre>
-	 * 
-	 * 
-	 * <p>
-	 * Objects of the following type(s) are allowed in the list
-	 * {@link ChildResourceRef }
-	 * 
-	 * 
-	 */
-	public List<ChildResourceRef> getChildResource() {
-		if (childResource == null) {
-			childResource = new ArrayList<ChildResourceRef>();
-		}
-		return this.childResource;
 	}
 
 	/**

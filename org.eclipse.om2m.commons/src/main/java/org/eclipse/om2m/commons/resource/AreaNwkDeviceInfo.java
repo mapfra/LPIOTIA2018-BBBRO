@@ -38,6 +38,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 
+import org.eclipse.om2m.commons.constants.MgmtDefinitionTypes;
 import org.eclipse.om2m.commons.constants.ShortName;
 
 /**
@@ -74,31 +75,35 @@ import org.eclipse.om2m.commons.constants.ShortName;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "")
-@XmlRootElement(name = ShortName.ANDI)
-public class AreaNwkDeviceInfo extends MgmtResource {
+@XmlRootElement(name = ShortName.AREA_NWK_DEVICE_INFO)
+public class AreaNwkDeviceInfo extends MgmtObj {
 
-	@XmlElement(required = true, name = ShortName.DEV_ID)
+	@XmlElement(required = true, name = ShortName.DEV_ID, namespace="")
 	protected String devID;
-	@XmlElement(required = true, name = ShortName.DEV_TYPE)
+	@XmlElement(required = true, name = ShortName.DEV_TYPE, namespace="")
 	protected String devType;
-	@XmlElement(required = true, name = ShortName.AREA_NWK_ID)
+	@XmlElement(required = true, name = ShortName.AREA_NWK_ID, namespace="")
 	@XmlSchemaType(name = "anyURI")
 	protected String areaNwkId;
 	@XmlSchemaType(name = "nonNegativeInteger")
-	@XmlElement(name = ShortName.SLEEP_INTERVAL)
+	@XmlElement(name = ShortName.SLEEP_INTERVAL, namespace="")
 	protected BigInteger sleepInterval;
 	@XmlSchemaType(name = "nonNegativeInteger")
-	@XmlElement(name = ShortName.SLEEP_DURATION)
+	@XmlElement(name = ShortName.SLEEP_DURATION, namespace="")
 	protected BigInteger sleepDuration;
-	@XmlElement(name = ShortName.STATUS)
+	@XmlElement(name = ShortName.STATUS, namespace="")
 	protected String status;
 	@XmlList
-	@XmlElement(required = true, name = ShortName.LIST_OF_NEIGHBORS)
+	@XmlElement(required = true, name = ShortName.LIST_OF_NEIGHBORS, namespace="")
 	protected List<String> listOfNeighbors;
-	@XmlElement(name = ShortName.CHILD_RESOURCE)
-	protected List<ChildResourceRef> childResource;
 	@XmlElement(namespace = "http://www.onem2m.org/xml/protocols", name = ShortName.SUB)
 	protected List<Subscription> subscription;
+	
+	
+	public AreaNwkDeviceInfo() {
+		super();
+		setMgmtDefinition(MgmtDefinitionTypes.AREA_NWK_DEVICE_INFO);
+	}
 
 	/**
 	 * Gets the value of the devID property.
@@ -253,36 +258,6 @@ public class AreaNwkDeviceInfo extends MgmtResource {
 			listOfNeighbors = new ArrayList<String>();
 		}
 		return this.listOfNeighbors;
-	}
-
-	/**
-	 * Gets the value of the childResource property.
-	 * 
-	 * <p>
-	 * This accessor method returns a reference to the live list, not a
-	 * snapshot. Therefore any modification you make to the returned list will
-	 * be present inside the JAXB object. This is why there is not a
-	 * <CODE>set</CODE> method for the childResource property.
-	 * 
-	 * <p>
-	 * For example, to add a new item, do as follows:
-	 * 
-	 * <pre>
-	 * getChildResource().add(newItem);
-	 * </pre>
-	 * 
-	 * 
-	 * <p>
-	 * Objects of the following type(s) are allowed in the list
-	 * {@link ChildResourceRef }
-	 * 
-	 * 
-	 */
-	public List<ChildResourceRef> getChildResource() {
-		if (childResource == null) {
-			childResource = new ArrayList<ChildResourceRef>();
-		}
-		return this.childResource;
 	}
 
 	/**

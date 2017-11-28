@@ -16,14 +16,17 @@ import org.eclipse.om2m.commons.constants.ResourceType;
 import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
 import org.eclipse.om2m.commons.entities.AeAnncEntity;
 import org.eclipse.om2m.commons.entities.AeEntity;
+import org.eclipse.om2m.commons.entities.AreaNwkDeviceInfoEntity;
 import org.eclipse.om2m.commons.entities.AreaNwkInfoEntity;
 import org.eclipse.om2m.commons.entities.CSEBaseEntity;
 import org.eclipse.om2m.commons.entities.ContainerEntity;
 import org.eclipse.om2m.commons.entities.ContentInstanceEntity;
+import org.eclipse.om2m.commons.entities.DeviceInfoEntity;
 import org.eclipse.om2m.commons.entities.FlexContainerAnncEntity;
 import org.eclipse.om2m.commons.entities.FlexContainerEntity;
 import org.eclipse.om2m.commons.entities.GroupEntity;
 import org.eclipse.om2m.commons.entities.LabelEntity;
+import org.eclipse.om2m.commons.entities.MgmtObjEntity;
 import org.eclipse.om2m.commons.entities.NodeEntity;
 import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
 import org.eclipse.om2m.persistence.mongodb.DBServiceImpl;
@@ -106,9 +109,8 @@ public class LabelEntityDao implements DAO<LabelEntity> {
 					labelEntity.getLinkedNodes().add(nodeEntity);
 					break;
 				case(ResourceType.MGMT_OBJ): 
-					AreaNwkInfoEntity areaNetworkInfoEntity = DBServiceImpl.getInstance().getGson().fromJson(element.toJson(), AreaNwkInfoEntity.class);
-					labelEntity.getLinkedAni().add(areaNetworkInfoEntity);
-//					result.addAll(labelEntity.getLinkedAndi());
+					MgmtObjEntity mgmtObjEntity = DBServiceImpl.getInstance().getGson().fromJson(element.toJson(), MgmtObjEntity.class);
+					labelEntity.addMgmtObj(mgmtObjEntity);
 					break;
 				default:
 					break;

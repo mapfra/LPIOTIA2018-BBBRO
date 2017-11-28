@@ -28,14 +28,11 @@ import java.util.List;
 
 import org.eclipse.om2m.commons.constants.DiscoveryResultType;
 import org.eclipse.om2m.commons.constants.FilterUsage;
-import org.eclipse.om2m.commons.constants.Operation;
 import org.eclipse.om2m.commons.constants.ResourceType;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
 import org.eclipse.om2m.commons.entities.AeAnncEntity;
 import org.eclipse.om2m.commons.entities.AeEntity;
-import org.eclipse.om2m.commons.entities.AreaNwkDeviceInfoEntity;
-import org.eclipse.om2m.commons.entities.AreaNwkInfoEntity;
 import org.eclipse.om2m.commons.entities.CSEBaseEntity;
 import org.eclipse.om2m.commons.entities.ContainerEntity;
 import org.eclipse.om2m.commons.entities.ContentInstanceEntity;
@@ -44,6 +41,7 @@ import org.eclipse.om2m.commons.entities.FlexContainerAnncEntity;
 import org.eclipse.om2m.commons.entities.FlexContainerEntity;
 import org.eclipse.om2m.commons.entities.GroupEntity;
 import org.eclipse.om2m.commons.entities.LabelEntity;
+import org.eclipse.om2m.commons.entities.MgmtObjEntity;
 import org.eclipse.om2m.commons.entities.NodeEntity;
 import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
 import org.eclipse.om2m.commons.entities.ResourceEntity;
@@ -58,11 +56,8 @@ import org.eclipse.om2m.commons.resource.FilterCriteria;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
 import org.eclipse.om2m.commons.resource.URIList;
-import org.eclipse.om2m.core.persistence.PersistenceService;
 import org.eclipse.om2m.core.router.Patterns;
 import org.eclipse.om2m.persistence.service.DAO;
-import org.eclipse.om2m.persistence.service.DBService;
-import org.eclipse.om2m.persistence.service.DBTransaction;
 
 /**
  * Controller for Discovery operation
@@ -102,7 +97,7 @@ public class DiscoveryController extends Controller {
 		// Get the filter criteria object from request primitive
 		FilterCriteria filter = request.getFilterCriteria();
 
-		if(filter.getFilterUsage().equals(FilterUsage.EVENT_NOTIFICATION_CRITERIA)){
+		if (filter.getFilterUsage().equals(FilterUsage.EVENT_NOTIFICATION_CRITERIA)){
 			throw new NotImplementedException("Event notification criteria is not implemented");
 		}
 
@@ -111,7 +106,7 @@ public class DiscoveryController extends Controller {
 		}
 
 		// Check the discovery result type
-		if(request.getDiscoveryResultType() == null){
+		if (request.getDiscoveryResultType() == null){
 			request.setDiscoveryResultType(DiscoveryResultType.HIERARCHICAL);
 		}		
 		if (request.getDiscoveryResultType().equals(DiscoveryResultType.CSEID_AND_RESOURCEID)){
@@ -178,8 +173,6 @@ public class DiscoveryController extends Controller {
 				} catch (AccessDeniedException e) {
 					// nothing to do
 				}
-					
-				
 			}
 		}
 
@@ -229,13 +222,7 @@ public class DiscoveryController extends Controller {
 		case ResourceType.NODE:
 			return ((NodeEntity) resourceEntity).getAccessControlPolicies();
 		case ResourceType.MGMT_OBJ:
-			if (resourceEntity instanceof AreaNwkInfoEntity) {
-				return ((AreaNwkInfoEntity) resourceEntity).getAccessControlPolicies();
-			}
-			if (resourceEntity instanceof AreaNwkDeviceInfoEntity) {
-				return ((AreaNwkDeviceInfoEntity) resourceEntity).getAccessControlPolicies();
-			}
-			return null;
+			return ((MgmtObjEntity)resourceEntity).getAccessControlPolicies();
 		default:
 			// TODO On implementing resource, add the reference here
 			return null;
@@ -283,6 +270,7 @@ public class DiscoveryController extends Controller {
 			case(ResourceType.MGMT_OBJ): 
 				result.addAll(labelEntity.getLinkedAni());
 				result.addAll(labelEntity.getLinkedAndi());
+				result.addAll(labelEntity.getLinkedDvi());
 				break;
 			case(ResourceType.SUBSCRIPTION):
 				result.addAll(labelEntity.getLinkedSub());
@@ -304,6 +292,7 @@ public class DiscoveryController extends Controller {
 			result.addAll(labelEntity.getLinkedNodes());
 			result.addAll(labelEntity.getLinkedAni());
 			result.addAll(labelEntity.getLinkedAndi());
+			result.addAll(labelEntity.getLinkedDvi());
 			result.addAll(labelEntity.getLinkedSub());
 		}
 		return result;

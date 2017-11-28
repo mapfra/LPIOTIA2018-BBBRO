@@ -35,6 +35,9 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.eclipse.om2m.commons.constants.MgmtDefinitionTypes;
+import org.eclipse.om2m.commons.constants.ShortName;
+
 /**
  * <p>
  * Java class for anonymous complex type.
@@ -65,14 +68,20 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "reboot", "factoryReset", "childResource",
 		"subscription" })
-@XmlRootElement(name = "reboot")
-public class Reboot extends MgmtResource {
+@XmlRootElement(name = ShortName.REBOOT)
+public class Reboot extends MgmtObj {
 
 	protected boolean reboot;
 	protected boolean factoryReset;
 	protected List<ChildResourceRef> childResource;
 	@XmlElement(namespace = "http://www.onem2m.org/xml/protocols")
 	protected List<Subscription> subscription;
+	
+	
+	public Reboot() {
+		super();
+		setMgmtDefinition(MgmtDefinitionTypes.REBOOT);
+	}
 
 	/**
 	 * Gets the value of the reboot property.

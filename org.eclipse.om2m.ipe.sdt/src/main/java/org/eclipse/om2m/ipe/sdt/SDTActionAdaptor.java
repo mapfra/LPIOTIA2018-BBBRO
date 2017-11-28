@@ -14,7 +14,6 @@ import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
 import org.eclipse.om2m.commons.resource.CustomAttribute;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.FlexContainerFactory;
-import org.eclipse.om2m.core.service.CseService;
 import org.eclipse.om2m.ipe.sdt.flexcontainerservice.ActionFlexContainerService;
 import org.eclipse.om2m.sdt.Action;
 import org.eclipse.om2m.sdt.Arg;
@@ -27,7 +26,6 @@ public class SDTActionAdaptor {
 	private static final String SEP = "/";
 
 	private final boolean hasToBeAnnounced;
-	private final CseService cseService;
 	private final String parentLocation;
 	private final String resourceLocation;
 	private final String resourceName;
@@ -37,9 +35,8 @@ public class SDTActionAdaptor {
 
 	private ActionFlexContainerService actionFlexContainerService;
 
-	public SDTActionAdaptor(final CseService pCseService, final Action pAction, 
+	public SDTActionAdaptor(final Action pAction, 
 			final String pParentLocation, final Module pModule, final String announceCseId, final boolean hasToBeAnnounced) {
-		this.cseService = pCseService;
 		this.hasToBeAnnounced = hasToBeAnnounced;
 		this.action = pAction;
 		this.parentLocation = pParentLocation;
@@ -72,8 +69,8 @@ public class SDTActionAdaptor {
 			actionFlexContainer.getCustomAttributes().add(customAttribute);
 		}
 
-		ResponsePrimitive response = CseUtil.sendCreateFlexContainerRequest(cseService, 
-				actionFlexContainer, parentLocation);
+		ResponsePrimitive response = CseUtil.sendCreateFlexContainerRequest(actionFlexContainer, 
+				parentLocation);
 		if (! response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {
 			logger.error("unable to create a FlexContainer for action " + action.getName() 
 					+ ":" + response.getContent(), null);
@@ -92,7 +89,7 @@ public class SDTActionAdaptor {
 	public void unpublishActionFromOM2MTree() {
 		logger.info("unpublishActionFromOM2MTree(name=" + this.action.getName() 
 				+ ", location=" + resourceLocation + ")");
-		CseUtil.sendDeleteRequest(cseService, resourceLocation);
+		CseUtil.sendDeleteRequest(resourceLocation);
 	}
 
 }

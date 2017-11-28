@@ -273,6 +273,11 @@ public class FlexContainerController extends Controller {
 			flexContainerEntity.setOntologyRef(flexContainer.getOntologyRef());
 		}
 
+		// nodeLink O
+		if (flexContainer.getNodeLink() != null) {
+			flexContainerEntity.setNodeLink(flexContainer.getNodeLink());
+		}
+
 		// custom attributes
 		for (CustomAttribute ca : flexContainer.getCustomAttributes()) {
 
@@ -511,6 +516,11 @@ public class FlexContainerController extends Controller {
 			if (flexContainer.getOntologyRef() != null) {
 				flexContainerEntity.setOntologyRef(flexContainer.getOntologyRef());
 				modifiedAttributes.setOntologyRef(flexContainer.getOntologyRef());
+			}
+			// nodeLink O
+			if (flexContainer.getNodeLink() != null) {
+				flexContainerEntity.setNodeLink(flexContainer.getNodeLink());
+				modifiedAttributes.setNodeLink(flexContainer.getNodeLink());
 			}
 
 			// containerDef

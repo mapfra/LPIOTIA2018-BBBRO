@@ -39,7 +39,6 @@ public class SDTModuleAdaptor {
 
 	private final boolean hasToBeAnnounced;
 	private final Module module;
-	private final CseService cseService;
 	private final String parentLocation;
 	private final String resourceLocation;
 	private final String announceCseId;
@@ -47,11 +46,9 @@ public class SDTModuleAdaptor {
 	private ModuleFlexContainerService moduleFlexContainerService;
 	private ModuleSDTListener moduleSDTListener;
 
-	public SDTModuleAdaptor(final Module pModule, final CseService pCseService, 
-			final String pParentLocation, final String pAnnounceCseId, final boolean hasToBeAnnounced) {
+	public SDTModuleAdaptor(final Module pModule, final String pParentLocation, final String pAnnounceCseId, final boolean hasToBeAnnounced) {
 		this.module = pModule;
 		this.hasToBeAnnounced = hasToBeAnnounced;
-		this.cseService = pCseService;
 		this.parentLocation = pParentLocation;
 		this.resourceLocation = this.parentLocation + SEP + this.module.getName();
 		this.announceCseId = pAnnounceCseId;
@@ -155,7 +152,7 @@ public class SDTModuleAdaptor {
 		}
 		logger.info("customAttributes: " + flexContainer.getCustomAttributes());
 
-		ResponsePrimitive resp = CseUtil.sendCreateFlexContainerRequest(cseService, flexContainer,
+		ResponsePrimitive resp = CseUtil.sendCreateFlexContainerRequest(flexContainer,
 				parentLocation);
 		if (! resp.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {
 			logger.error("publishModuleFromOM2MTree(name=" + this.module.getName() 
@@ -171,7 +168,7 @@ public class SDTModuleAdaptor {
 
 		// publish actions
 		for (Action action : module.getActions()) {
-			SDTActionAdaptor actionAdaptor = new SDTActionAdaptor(cseService, action, 
+			SDTActionAdaptor actionAdaptor = new SDTActionAdaptor(action, 
 					resourceLocation, module, announceCseId, hasToBeAnnounced);
 			if (actionAdaptor.publishActionIntoOM2MTree()) {
 				actions.put(action.getName(), actionAdaptor);
@@ -182,7 +179,7 @@ public class SDTModuleAdaptor {
 			}
 		}
 
-		moduleSDTListener = new ModuleSDTListener(module, cseService, resourceLocation);
+		moduleSDTListener = new ModuleSDTListener(module, resourceLocation);
 		moduleSDTListener.register();
 		return true;
 	}
@@ -204,7 +201,7 @@ public class SDTModuleAdaptor {
 		}
 
 		// remove Module FlexContainer
-		CseUtil.sendDeleteRequest(cseService, resourceLocation);
+		CseUtil.sendDeleteRequest(resourceLocation);
 	}
 
 }

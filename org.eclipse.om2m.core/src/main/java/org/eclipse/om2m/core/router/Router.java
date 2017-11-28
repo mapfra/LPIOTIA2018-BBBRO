@@ -39,12 +39,11 @@ import org.eclipse.om2m.commons.exceptions.BadRequestException;
 import org.eclipse.om2m.commons.exceptions.NotImplementedException;
 import org.eclipse.om2m.commons.exceptions.Om2mException;
 import org.eclipse.om2m.commons.exceptions.ResourceNotFoundException;
-import org.eclipse.om2m.commons.resource.DynamicAuthorizationConsultation;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
+import org.eclipse.om2m.core.controller.AEAnncController;
 import org.eclipse.om2m.core.controller.AEController;
 import org.eclipse.om2m.core.controller.AccessControlPolicyController;
-import org.eclipse.om2m.core.controller.AEAnncController;
 import org.eclipse.om2m.core.controller.CSEBaseController;
 import org.eclipse.om2m.core.controller.ContainerController;
 import org.eclipse.om2m.core.controller.ContentInstanceController;
@@ -57,6 +56,7 @@ import org.eclipse.om2m.core.controller.FlexContainerController;
 import org.eclipse.om2m.core.controller.GroupController;
 import org.eclipse.om2m.core.controller.LatestOldestController;
 import org.eclipse.om2m.core.controller.LatestOldestController.SortingPolicy;
+import org.eclipse.om2m.core.controller.MgmtObjController;
 import org.eclipse.om2m.core.controller.NodeController;
 import org.eclipse.om2m.core.controller.PollingChannelController;
 import org.eclipse.om2m.core.controller.PollingChannelUriController;
@@ -315,6 +315,9 @@ public class Router implements CseService {
 		if (patterns.match(patterns.NODE_PATTERN, uri)) {
 			return new NodeController();
 		}
+		if (patterns.match(patterns.NMGMT_OBJ_PATTERN, uri)) {
+			return new MgmtObjController();
+		}
 		if (patterns.match(patterns.SUBSCRIPTION_PATTERN, uri)){
 			return new SubscriptionController();
 		}
@@ -371,6 +374,8 @@ public class Router implements CseService {
 			return new AEAnncController();
 		case ResourceType.FLEXCONTAINER_ANNC:
 			return new FlexContainerAnncController();
+		case ResourceType.MGMT_OBJ:
+			return new MgmtObjController(); 
 		default : 
 			throw new NotImplementedException("ResourceType: " + resourceType + " is not implemented");
 		}
