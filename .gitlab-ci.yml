@@ -1,0 +1,9 @@
+
+image: registry.forge.orange-labs.fr/mpcy8647/org.eclipse.om2m:0.0.2
+
+build:
+  script: "mvn clean install -B"
+  tags:
+    - docker
+    - forge
+    - shared
