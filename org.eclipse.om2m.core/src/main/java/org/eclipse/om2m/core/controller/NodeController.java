@@ -207,7 +207,7 @@ public class NodeController extends Controller {
 		ResponsePrimitive response = new ResponsePrimitive(request);
 
 		// get the entity
-		NodeEntity nodeEntity = dbs.getDAOFactory().getNodeEntityDAO().find(transaction, request.getTargetId());
+		NodeEntity nodeEntity = dbs.getDAOFactory().getNodeDAO().find(transaction, request.getTargetId());
 		if (nodeEntity == null) {
 			throw new ResourceNotFoundException();
 		}
@@ -232,7 +232,7 @@ public class NodeController extends Controller {
 		ResponsePrimitive response = new ResponsePrimitive(request);
 
 		// retrieve the resource from database
-		NodeEntity nodeEntity = dbs.getDAOFactory().getNodeEntityDAO().find(transaction, request.getTargetId());
+		NodeEntity nodeEntity = dbs.getDAOFactory().getNodeDAO().find(transaction, request.getTargetId());
 		if (nodeEntity == null) {
 			throw new ResourceNotFoundException();
 		}
@@ -338,7 +338,7 @@ public class NodeController extends Controller {
 		ResponsePrimitive response = new ResponsePrimitive(request);
 
 		// retrieve the entity
-		NodeEntity nodeEntity = dbs.getDAOFactory().getNodeEntityDAO().find(transaction, request.getTargetId());
+		NodeEntity nodeEntity = dbs.getDAOFactory().getNodeDAO().find(transaction, request.getTargetId());
 		if (nodeEntity == null) {
 			throw new ResourceNotFoundException();
 		}
