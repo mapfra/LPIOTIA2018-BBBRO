@@ -1,16 +1,23 @@
-before_script:
-  - export HTTP_PROXY="proxy.rd.francetelecom.fr:3128"
-  - export HTTPS_PROXY="proxy.rd.francetelecom.fr:3128"
-  - export http_proxy="proxy.rd.francetelecom.fr:3128"
+image: registry.forge.orange-labs.fr/org.eclipse.om2m/om2m/com.orange.om2m.docker.builder:0.0.2
 
-image: registry.forge.orange-labs.fr/mpcy8647/org.eclipse.om2m:0.0.2
+stages:
+  - build
+  - test
+  - deploy
+
 
 build:
+  stage: build
   script: "mvn clean install -B"
-  variables: 
-    HTTP_PROXY: "proxy.rd.francetelecom.fr:3128"
-    HTTPS_PROXY: "proxy.rd.francetelecom.fr:3128"
   tags:
     - docker
     - forge
+    - shared
+    
+deploy:
+  stage: deploy
+  script: "mvn deploy -B -DaltDeploymentRepository=inhouse.snapshot::default::http://maven2.rd.francetelecom.fr/proxy/repository/inhouse.snapshot"
+  tags:
+    - docker
+    - innovation
     - shared
