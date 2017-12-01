@@ -27,8 +27,6 @@
 package org.eclipse.om2m.commons.resource;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -66,19 +64,15 @@ import org.eclipse.om2m.commons.constants.ShortName;
  * </pre>
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "batteryLevel", "batteryStatus",
-		"subscription" })
+@XmlType(name = "")
 @XmlRootElement(name = ShortName.BATTERY)
-public class Battery extends MgmtObj {
+public class Battery extends MgmtObjWithChildren {
 
 	@XmlSchemaType(name = "unsignedInt")
 	@XmlElement(name = ShortName.BATTERY_LEVEL, namespace="")
 	protected long batteryLevel;
 	@XmlElement(name = ShortName.BATTERY_STATUS, required = true, namespace="")
 	protected BigInteger batteryStatus;
-
-	@XmlElement(namespace = "http://www.onem2m.org/xml/protocols", name = ShortName.SUB)
-	protected List<Subscription> subscription;
 	
 	
 	public Battery() {
@@ -121,36 +115,6 @@ public class Battery extends MgmtObj {
 	 */
 	public void setBatteryStatus(BigInteger value) {
 		this.batteryStatus = value;
-	}
-
-	/**
-	 * Gets the value of the subscription property.
-	 * 
-	 * <p>
-	 * This accessor method returns a reference to the live list, not a
-	 * snapshot. Therefore any modification you make to the returned list will
-	 * be present inside the JAXB object. This is why there is not a
-	 * <CODE>set</CODE> method for the subscription property.
-	 * 
-	 * <p>
-	 * For example, to add a new item, do as follows:
-	 * 
-	 * <pre>
-	 * getSubscription().add(newItem);
-	 * </pre>
-	 * 
-	 * 
-	 * <p>
-	 * Objects of the following type(s) are allowed in the list
-	 * {@link Subscription }
-	 * 
-	 * 
-	 */
-	public List<Subscription> getSubscription() {
-		if (subscription == null) {
-			subscription = new ArrayList<Subscription>();
-		}
-		return this.subscription;
 	}
 
 }

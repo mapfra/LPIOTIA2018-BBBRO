@@ -457,6 +457,14 @@ public class DynamicAuthorizationConsultationEntity extends RegularResourceEntit
 		this.linkedDeviceInfoEntities = linkedMgmtObjEntities;
 	}
 
+	public List<MgmtObjEntity> getMgmtObjEntities() {
+		List<MgmtObjEntity> ret = new ArrayList<MgmtObjEntity>();
+		ret.addAll(getLinkedAreaNwkInfoEntities());
+		ret.addAll(getLinkedAreaNwkDeviceInfoEntities());
+		ret.addAll(getLinkedDeviceInfoEntities());
+		return ret;
+	}
+
 	/**
 	 * @return the linkedNodeEntities
 	 */
@@ -567,6 +575,16 @@ public class DynamicAuthorizationConsultationEntity extends RegularResourceEntit
 			getLinkedAreaNwkDeviceInfoEntities().add((AreaNwkDeviceInfoEntity) mgmtObjEntity);
 		else if (mgmtDef.equals(MgmtDefinitionTypes.DEVICE_INFO))
 			getLinkedDeviceInfoEntities().add((DeviceInfoEntity) mgmtObjEntity);
+	}
+
+	public void removeMgmtObj(MgmtObjEntity mgmtObjEntity) {
+		BigInteger mgmtDef = mgmtObjEntity.getMgmtDefinition();
+		if (mgmtDef.equals(MgmtDefinitionTypes.AREA_NWK_INFO))
+			getLinkedAreaNwkInfoEntities().remove((AreaNwkInfoEntity) mgmtObjEntity);
+		else if (mgmtDef.equals(MgmtDefinitionTypes.AREA_NWK_DEVICE_INFO))
+			getLinkedAreaNwkDeviceInfoEntities().remove((AreaNwkDeviceInfoEntity) mgmtObjEntity);
+		else if (mgmtDef.equals(MgmtDefinitionTypes.DEVICE_INFO))
+			getLinkedDeviceInfoEntities().remove((DeviceInfoEntity) mgmtObjEntity);
 	}
 	
 }

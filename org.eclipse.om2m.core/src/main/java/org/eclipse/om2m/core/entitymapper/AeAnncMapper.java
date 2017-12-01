@@ -13,18 +13,12 @@ import java.util.List;
 
 import org.eclipse.om2m.commons.constants.ResourceType;
 import org.eclipse.om2m.commons.constants.ResultContent;
-import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
 import org.eclipse.om2m.commons.entities.AeAnncEntity;
-import org.eclipse.om2m.commons.entities.ContainerEntity;
 import org.eclipse.om2m.commons.entities.FlexContainerAnncEntity;
-import org.eclipse.om2m.commons.entities.FlexContainerEntity;
 import org.eclipse.om2m.commons.entities.SubscriptionEntity;
 import org.eclipse.om2m.commons.resource.AEAnnc;
-import org.eclipse.om2m.commons.resource.AccessControlPolicy;
-import org.eclipse.om2m.commons.resource.ChildResourceRef;
-import org.eclipse.om2m.commons.resource.Container;
-import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
 import org.eclipse.om2m.commons.resource.AbstractFlexContainerAnnc;
+import org.eclipse.om2m.commons.resource.ChildResourceRef;
 import org.eclipse.om2m.commons.resource.Subscription;
 
 public class AeAnncMapper extends EntityMapper<AeAnncEntity, AEAnnc> {

@@ -26,7 +26,6 @@ import org.eclipse.om2m.commons.constants.CSEType;
 import org.eclipse.om2m.commons.constants.Constants;
 import org.eclipse.om2m.core.comm.RestClient;
 import org.eclipse.om2m.core.datamapper.DataMapperSelector;
-import org.eclipse.om2m.core.dynamicauthorization.DynamicAuthorizationSelector;
 import org.eclipse.om2m.core.flexcontainer.FlexContainerSelector;
 import org.eclipse.om2m.core.interworking.IpeSelector;
 import org.eclipse.om2m.core.persistence.PersistenceService;
@@ -43,7 +42,6 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.event.EventAdmin;
 import org.osgi.util.tracker.ServiceTracker;
-import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * Manages the starting and stopping of the bundle.

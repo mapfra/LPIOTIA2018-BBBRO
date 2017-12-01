@@ -27,14 +27,14 @@
 package org.eclipse.om2m.commons.resource;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+
+import org.eclipse.om2m.commons.constants.MgmtDefinitionTypes;
+import org.eclipse.om2m.commons.constants.ShortName;
 
 /**
  * <p>
@@ -67,9 +67,8 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "logTypeId", "logData", "logStatus",
-		"logStart", "logStop", "childResource", "subscription" })
-@XmlRootElement(name = "eventLogAnnc")
+@XmlType(name = "")
+@XmlRootElement(name = ShortName.EVENT_LOG_ANNC)
 public class EventLogAnnc extends AnnouncedMgmtResource {
 
 	protected BigInteger logTypeId;
@@ -77,9 +76,12 @@ public class EventLogAnnc extends AnnouncedMgmtResource {
 	protected BigInteger logStatus;
 	protected Boolean logStart;
 	protected Boolean logStop;
-	protected List<ChildResourceRef> childResource;
-	@XmlElement(namespace = "http://www.onem2m.org/xml/protocols")
-	protected List<Subscription> subscription;
+	
+	
+	public EventLogAnnc() {
+		super();
+		setMgmtDefinition(MgmtDefinitionTypes.EVENT_LOG);
+	}
 
 	/**
 	 * Gets the value of the logTypeId property.
@@ -184,66 +186,6 @@ public class EventLogAnnc extends AnnouncedMgmtResource {
 	 */
 	public void setLogStop(Boolean value) {
 		this.logStop = value;
-	}
-
-	/**
-	 * Gets the value of the childResource property.
-	 * 
-	 * <p>
-	 * This accessor method returns a reference to the live list, not a
-	 * snapshot. Therefore any modification you make to the returned list will
-	 * be present inside the JAXB object. This is why there is not a
-	 * <CODE>set</CODE> method for the childResource property.
-	 * 
-	 * <p>
-	 * For example, to add a new item, do as follows:
-	 * 
-	 * <pre>
-	 * getChildResource().add(newItem);
-	 * </pre>
-	 * 
-	 * 
-	 * <p>
-	 * Objects of the following type(s) are allowed in the list
-	 * {@link ChildResourceRef }
-	 * 
-	 * 
-	 */
-	public List<ChildResourceRef> getChildResource() {
-		if (childResource == null) {
-			childResource = new ArrayList<ChildResourceRef>();
-		}
-		return this.childResource;
-	}
-
-	/**
-	 * Gets the value of the subscription property.
-	 * 
-	 * <p>
-	 * This accessor method returns a reference to the live list, not a
-	 * snapshot. Therefore any modification you make to the returned list will
-	 * be present inside the JAXB object. This is why there is not a
-	 * <CODE>set</CODE> method for the subscription property.
-	 * 
-	 * <p>
-	 * For example, to add a new item, do as follows:
-	 * 
-	 * <pre>
-	 * getSubscription().add(newItem);
-	 * </pre>
-	 * 
-	 * 
-	 * <p>
-	 * Objects of the following type(s) are allowed in the list
-	 * {@link Subscription }
-	 * 
-	 * 
-	 */
-	public List<Subscription> getSubscription() {
-		if (subscription == null) {
-			subscription = new ArrayList<Subscription>();
-		}
-		return this.subscription;
 	}
 
 }

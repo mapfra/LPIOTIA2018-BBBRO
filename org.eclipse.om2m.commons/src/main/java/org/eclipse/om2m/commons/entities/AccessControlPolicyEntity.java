@@ -176,7 +176,6 @@ public class AccessControlPolicyEntity extends AnnounceableSubordinateEntity {
 			)
 	protected List<FlexContainerAnncEntity> linkedFlexCntAs;
 	
-	
 	// database link to subscription
 	@ManyToMany(fetch=FetchType.LAZY, cascade={CascadeType.ALL}, targetEntity = SubscriptionEntity.class)
 	@JoinTable(
@@ -201,7 +200,7 @@ public class AccessControlPolicyEntity extends AnnounceableSubordinateEntity {
 			inverseJoinColumns={@JoinColumn(name=DBEntities.NOD_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)},
 			joinColumns={@JoinColumn(name=DBEntities.ACP_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)}
 			)
-	protected List<PollingChannelEntity> linkedNod;
+	protected List<NodeEntity> linkedNodes;
 	
 	@ManyToMany(fetch = FetchType.LAZY, targetEntity = AreaNwkInfoEntity.class)
 	@JoinTable(
@@ -442,20 +441,20 @@ public class AccessControlPolicyEntity extends AnnounceableSubordinateEntity {
 	}
 
 	/**
-	 * @return the linkedNod
+	 * @return the linkedNodes
 	 */
-	public List<PollingChannelEntity> getLinkedNod() {
-		if (this.linkedNod == null) {
-			this.linkedNod = new ArrayList<>();
+	public List<NodeEntity> getLinkedNodes() {
+		if (this.linkedNodes == null) {
+			this.linkedNodes = new ArrayList<>();
 		}
-		return linkedNod;
+		return linkedNodes;
 	}
 
 	/**
-	 * @param linkedNod the linkedNod to set
+	 * @param linkedNodes the linkedNodes to set
 	 */
-	public void setLinkedNod(List<PollingChannelEntity> linkedNod) {
-		this.linkedNod = linkedNod;
+	public void setLinkedNodes(List<NodeEntity> linkedNodes) {
+		this.linkedNodes = linkedNodes;
 	}
 
 	/**
@@ -510,6 +509,14 @@ public class AccessControlPolicyEntity extends AnnounceableSubordinateEntity {
 		this.deviceInfoEntities = deviceInfoEntities;
 	}
 
+	public List<MgmtObjEntity> getMgmtObjEntities() {
+		List<MgmtObjEntity> ret = new ArrayList<MgmtObjEntity>();
+		ret.addAll(getAreaNwkInfoEntities());
+		ret.addAll(getAreaNwkDeviceInfoEntities());
+		ret.addAll(getDeviceInfoEntities());
+		return ret;
+	}
+
 	public List<DynamicAuthorizationConsultationEntity> getLinkedDynamicAuthorizationConsultation() {
 		if (linkedDynamicAuthorizationConsultation == null) {
 			linkedDynamicAuthorizationConsultation = new ArrayList<>();
@@ -522,8 +529,6 @@ public class AccessControlPolicyEntity extends AnnounceableSubordinateEntity {
 		this.linkedDynamicAuthorizationConsultation = linkedDynamicAuthorizationConsultation;
 	}
 
-	
-	
 	@Override
 	public List<DynamicAuthorizationConsultationEntity> getDynamicAuthorizationConsultations() {
 		if (dynamicConsultationAuthorizations == null) {
@@ -547,7 +552,4 @@ public class AccessControlPolicyEntity extends AnnounceableSubordinateEntity {
 			List<AccessControlPolicyEntity> accessControlPolicies) {
 	}
 	
-	
-	
-
 }

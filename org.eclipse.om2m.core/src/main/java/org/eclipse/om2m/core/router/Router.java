@@ -56,6 +56,7 @@ import org.eclipse.om2m.core.controller.FlexContainerController;
 import org.eclipse.om2m.core.controller.GroupController;
 import org.eclipse.om2m.core.controller.LatestOldestController;
 import org.eclipse.om2m.core.controller.LatestOldestController.SortingPolicy;
+import org.eclipse.om2m.core.controller.MgmtObjAnncController;
 import org.eclipse.om2m.core.controller.MgmtObjController;
 import org.eclipse.om2m.core.controller.NodeController;
 import org.eclipse.om2m.core.controller.PollingChannelController;
@@ -370,6 +371,8 @@ public class Router implements CseService {
 			return new FlexContainerAnncController();
 		case ResourceType.MGMT_OBJ:
 			return new MgmtObjController(); 
+		case ResourceType.MGMT_OBJ_ANNC:
+			return new MgmtObjAnncController(); 
 		default : 
 			throw new NotImplementedException("ResourceType: " + resourceType + " is not implemented");
 		}

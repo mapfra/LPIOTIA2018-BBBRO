@@ -325,7 +325,7 @@ public class NodeController extends Controller {
 		dbs.getDAOFactory().getNodeDAO().update(transaction, nodeEntity);
 		// commit & close the db transaction
 		transaction.commit();
-		Notifier.notify(nodeEntity.getChildSubscriptions(), nodeEntity, ResourceStatus.UPDATED);
+		Notifier.notify(nodeEntity.getSubscriptions(), nodeEntity, ResourceStatus.UPDATED);
 
 		// set response status code
 		response.setResponseStatusCode(ResponseStatusCode.UPDATED);
@@ -336,18 +336,19 @@ public class NodeController extends Controller {
 	public ResponsePrimitive doDelete(RequestPrimitive request) {
 		// Generic delete procedure
 		ResponsePrimitive response = new ResponsePrimitive(request);
-
 		// retrieve the entity
 		NodeEntity nodeEntity = dbs.getDAOFactory().getNodeEntityDAO().find(transaction, request.getTo());
 		if (nodeEntity == null) {
+			LOGGER.info("Delete node: not found");
 			throw new ResourceNotFoundException();
 		}
+		LOGGER.info("Delete node " + nodeEntity);
 
 		// check access control policies
 		checkACP(nodeEntity.getAccessControlPolicies(), request.getFrom(), Operation.DELETE);
 		
 		UriMapper.deleteUri(nodeEntity.getHierarchicalURI());
-		Notifier.notifyDeletion(nodeEntity.getChildSubscriptions(), nodeEntity);
+		Notifier.notifyDeletion(nodeEntity.getSubscriptions(), nodeEntity);
 
 		// delete the resource in the database
 		dbs.getDAOFactory().getNodeDAO().delete(transaction, nodeEntity);

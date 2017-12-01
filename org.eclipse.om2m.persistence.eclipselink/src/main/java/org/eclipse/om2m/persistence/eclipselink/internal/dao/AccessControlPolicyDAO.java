@@ -19,7 +19,6 @@
  *******************************************************************************/
 package org.eclipse.om2m.persistence.eclipselink.internal.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
@@ -28,6 +27,8 @@ import org.eclipse.om2m.commons.entities.AeEntity;
 import org.eclipse.om2m.commons.entities.FlexContainerAnncEntity;
 import org.eclipse.om2m.commons.entities.FlexContainerEntity;
 import org.eclipse.om2m.commons.entities.LabelEntity;
+import org.eclipse.om2m.commons.entities.MgmtObjEntity;
+import org.eclipse.om2m.commons.entities.NodeEntity;
 import org.eclipse.om2m.persistence.eclipselink.internal.DBTransactionJPAImpl;
 import org.eclipse.om2m.persistence.service.DBTransaction;
 
@@ -89,7 +90,17 @@ public class AccessControlPolicyDAO extends AbstractDAO<AccessControlPolicyEntit
 		for (FlexContainerAnncEntity entity : resource.getLinkedFlexContainerAs()) {
 			entity.getAccessControlPolicies().remove(resource);
 		}
-		
+
+		// remove node link
+		for (NodeEntity entity : resource.getLinkedNodes()) {
+			entity.getAccessControlPolicies().remove(resource);
+		}
+
+		// remove mgmt objects link
+		for (MgmtObjEntity entity : resource.getMgmtObjEntities()) {
+			entity.getAccessControlPolicies().remove(resource);
+		}
+
 		if (resource.getParentAE() != null) {
 			resource.getParentAE().getChildAccessControlPolicies().remove(resource);
 		}

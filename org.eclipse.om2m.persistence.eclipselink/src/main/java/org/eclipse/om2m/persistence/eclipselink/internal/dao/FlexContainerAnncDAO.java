@@ -2,7 +2,6 @@ package org.eclipse.om2m.persistence.eclipselink.internal.dao;
 
 import java.util.List;
 
-import org.eclipse.om2m.commons.entities.AeAnncEntity;
 import org.eclipse.om2m.commons.entities.FlexContainerAnncEntity;
 import org.eclipse.om2m.commons.entities.LabelEntity;
 import org.eclipse.om2m.persistence.eclipselink.internal.DBTransactionJPAImpl;

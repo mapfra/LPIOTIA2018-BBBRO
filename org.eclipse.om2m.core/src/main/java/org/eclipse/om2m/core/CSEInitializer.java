@@ -22,7 +22,6 @@ package org.eclipse.om2m.core;
 import java.math.BigInteger;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.logging.Log;
@@ -45,7 +44,6 @@ import org.eclipse.om2m.commons.resource.AccessControlPolicy;
 import org.eclipse.om2m.commons.resource.RemoteCSE;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
-import org.eclipse.om2m.commons.resource.ResponseTypeInfo;
 import org.eclipse.om2m.commons.utils.Util.DateUtil;
 import org.eclipse.om2m.core.comm.RestClient;
 import org.eclipse.om2m.core.controller.Controller;

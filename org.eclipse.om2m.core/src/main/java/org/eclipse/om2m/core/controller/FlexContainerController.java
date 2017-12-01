@@ -9,8 +9,6 @@ package org.eclipse.om2m.core.controller;
 
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.eclipse.om2m.commons.constants.Constants;
 import org.eclipse.om2m.commons.constants.MimeMediaType;
 import org.eclipse.om2m.commons.constants.ResourceStatus;
@@ -31,8 +29,8 @@ import org.eclipse.om2m.commons.exceptions.ConflictException;
 import org.eclipse.om2m.commons.exceptions.NotPermittedAttrException;
 import org.eclipse.om2m.commons.exceptions.Om2mException;
 import org.eclipse.om2m.commons.exceptions.ResourceNotFoundException;
-import org.eclipse.om2m.commons.resource.CustomAttribute;
 import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
+import org.eclipse.om2m.commons.resource.CustomAttribute;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.FlexContainerFactory;
@@ -54,9 +52,6 @@ import org.eclipse.om2m.persistence.service.DAO;
  *
  */
 public class FlexContainerController extends Controller {
-
-	/** Logger */
-	private static Log LOGGER = LogFactory.getLog(FlexContainerController.class);
 
 	/**
 	 * Create the resource in the system according to the representation
@@ -280,7 +275,6 @@ public class FlexContainerController extends Controller {
 
 		// custom attributes
 		for (CustomAttribute ca : flexContainer.getCustomAttributes()) {
-
 			flexContainerEntity.createOrUpdateCustomAttribute(ca.getCustomAttributeName(),
 					ca.getCustomAttributeValue());
 		}
@@ -593,8 +587,10 @@ public class FlexContainerController extends Controller {
 		FlexContainerEntity flexContainerEntity = dbs.getDAOFactory().getFlexContainerDAO().find(transaction,
 				request.getTo());
 		if (flexContainerEntity == null) {
+			LOGGER.info("Delete flexCnt: not found");
 			throw new ResourceNotFoundException("Resource not found");
 		}
+		LOGGER.info("Delete flexCnt " + flexContainerEntity);
 
 		// lock entity
 		transaction.lock(flexContainerEntity);
@@ -610,6 +606,8 @@ public class FlexContainerController extends Controller {
 		dbs.getDAOFactory().getFlexContainerDAO().delete(transaction, flexContainerEntity);
 		// commit the transaction & release lock
 		transaction.commit();
+		
+		String nodeLink = flexContainerEntity.getNodeLink();
 
 		// deannounce
 		Announcer.deAnnounce(flexContainerEntity.getAnnounceTo(), flexContainerEntity,

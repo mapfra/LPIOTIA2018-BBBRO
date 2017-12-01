@@ -25,16 +25,14 @@ import org.eclipse.om2m.commons.entities.AeAnncEntity;
 import org.eclipse.om2m.commons.entities.AeEntity;
 import org.eclipse.om2m.commons.entities.AnnounceableSubordinateEntity;
 import org.eclipse.om2m.commons.entities.AnnouncedResourceEntity;
-import org.eclipse.om2m.commons.entities.AreaNwkDeviceInfoEntity;
-import org.eclipse.om2m.commons.entities.AreaNwkInfoEntity;
 import org.eclipse.om2m.commons.entities.CSEBaseEntity;
 import org.eclipse.om2m.commons.entities.ContainerEntity;
 import org.eclipse.om2m.commons.entities.ContentInstanceEntity;
-import org.eclipse.om2m.commons.entities.DeviceInfoEntity;
 import org.eclipse.om2m.commons.entities.DynamicAuthorizationConsultationEntity;
 import org.eclipse.om2m.commons.entities.FlexContainerAnncEntity;
 import org.eclipse.om2m.commons.entities.FlexContainerEntity;
 import org.eclipse.om2m.commons.entities.GroupEntity;
+import org.eclipse.om2m.commons.entities.MgmtObjAnncEntity;
 import org.eclipse.om2m.commons.entities.MgmtObjEntity;
 import org.eclipse.om2m.commons.entities.NodeEntity;
 import org.eclipse.om2m.commons.entities.PollingChannelEntity;
@@ -49,15 +47,14 @@ import org.eclipse.om2m.commons.resource.AbstractFlexContainerAnnc;
 import org.eclipse.om2m.commons.resource.AccessControlPolicy;
 import org.eclipse.om2m.commons.resource.AnnounceableResource;
 import org.eclipse.om2m.commons.resource.AnnounceableSubordinateResource;
+import org.eclipse.om2m.commons.resource.AnnouncedMgmtResource;
 import org.eclipse.om2m.commons.resource.AnnouncedResource;
-import org.eclipse.om2m.commons.resource.AreaNwkDeviceInfo;
-import org.eclipse.om2m.commons.resource.AreaNwkInfo;
 import org.eclipse.om2m.commons.resource.CSEBase;
 import org.eclipse.om2m.commons.resource.Container;
 import org.eclipse.om2m.commons.resource.ContentInstance;
-import org.eclipse.om2m.commons.resource.DeviceInfo;
 import org.eclipse.om2m.commons.resource.DynamicAuthorizationConsultation;
 import org.eclipse.om2m.commons.resource.Group;
+import org.eclipse.om2m.commons.resource.MgmtObj;
 import org.eclipse.om2m.commons.resource.Node;
 import org.eclipse.om2m.commons.resource.PollingChannel;
 import org.eclipse.om2m.commons.resource.RegularResource;
@@ -75,10 +72,12 @@ public class EntityMapperFactory {
 	public static EntityMapper<CSEBaseEntity, CSEBase> getCseBaseMapper() {
 		return new CseBaseMapper();
 	}
+	
 	/** Get the AE mapper */
 	public static EntityMapper<AeEntity, AE> getAEMapper(){
 		return new AeMapper();
 	}
+	
 	public static EntityMapper<AeAnncEntity, AEAnnc> getAEAnncMapper() {
 		return new AeAnncMapper();
 	}
@@ -87,6 +86,7 @@ public class EntityMapperFactory {
 	public static EntityMapper<AccessControlPolicyEntity,AccessControlPolicy> getAcpMapper(){
 		return new AcpMapper();
 	}
+	
 	/** Get the Container mapper */
 	public static EntityMapper<ContainerEntity, Container> getContainerMapper(){
 		return new ContainerMapper();
@@ -101,6 +101,7 @@ public class EntityMapperFactory {
 	public static EntityMapper<FlexContainerEntity, AbstractFlexContainer> getFlexContainerMapper(){
 		return new FlexContainerMapper();
 	}
+	
 	/** Get the FlexContainerAnnc mapper */
 	public static EntityMapper<FlexContainerAnncEntity, AbstractFlexContainerAnnc> getFlexContainerAnncMapper(){
 		return new FlexContainerAnncMapper();
@@ -110,14 +111,17 @@ public class EntityMapperFactory {
 	public static EntityMapper<ContentInstanceEntity, ContentInstance> getContentInstanceMapper(){
 		return new ContentInstanceMapper();
 	}
+	
 	/** Get the group mapper */
 	public static EntityMapper<GroupEntity, Group> getGroupMapper(){
 		return new GroupMapper();
 	}
+	
 	/** Get the node mapper */
 	public static EntityMapper<NodeEntity, Node> getNodeMapper() {
 		return new NodeMapper();
 	}
+	
 	/** Get the Remote CSE mapper */
 	public static EntityMapper<RemoteCSEEntity, RemoteCSE> getRemoteCseMapper(){
 		return new RemoteCSEMapper();
@@ -126,6 +130,7 @@ public class EntityMapperFactory {
 	public static EntityMapper<SubscriptionEntity, Subscription> getSubscriptionMapper(){
 		return new SubscriptionMapper();
 	}
+	
 	/** Get the Polling channel mapper */
 	public static EntityMapper<PollingChannelEntity, PollingChannel> getPollingChannelMapper() {
 		return new PollingChannelMapper();
@@ -136,21 +141,16 @@ public class EntityMapperFactory {
 		return new RequestMapper();
 	}
 
-	/** Get the Area Nwk info mapper */
-	public static EntityMapper<AreaNwkInfoEntity, AreaNwkInfo> getAreaNwkInfoMapper(){
-		return new AreaNwkInfoMapper();
+	/** Get the MgmtObj mapper */
+	public static EntityMapper<MgmtObjEntity, MgmtObj> getMapperForMgmtObj() {
+		return new MgmtObjMapper();
 	}
 
-	/** Get the Area Nwk device info mapper */
-	public static EntityMapper<AreaNwkDeviceInfoEntity, AreaNwkDeviceInfo> getAreaNwkDeviceInfoMapper(){
-		return new AreaNwkDeviceInfoMapper();
+	/** Get the MgmtObjAnnc mapper */
+	public static EntityMapper<MgmtObjAnncEntity, AnnouncedMgmtResource> getMapperForMgmtObjAnnc() {
+		return new MgmtObjAnncMapper();
 	}
 
-	/** Get the device info mapper */
-	public static EntityMapper<DeviceInfoEntity, DeviceInfo> getDeviceInfoMapper(){
-		return new DeviceInfoMapper();
-	}
-	
 	/** Get the AnnounceableSubordinate mapper */
 	public static EntityMapper<AnnounceableSubordinateEntity, AnnounceableSubordinateResource> getAnnounceableSubordinateMapper() {
 		return new AnnounceableSubordinateMapper();
@@ -208,29 +208,12 @@ public class EntityMapperFactory {
 		case ResourceType.REQUEST:
 			return new RequestMapper();
 		case ResourceType.MGMT_OBJ:
-			throw new IllegalArgumentException("Cannot get Mapper for MGMT OBJ");
+			return new MgmtObjMapper();
+		case ResourceType.MGMT_OBJ_ANNC:
+			return new MgmtObjAnncMapper();
 		default:
 			return null;
 		}
 	}
 	
-	/**
-	 * Get the entity mapper for specific mgmtObj entity
-	 * @param mgmtObj
-	 * @return entity mapper
-	 */
-	@SuppressWarnings("rawtypes")
-	public static EntityMapper getMapperForMgmtObj(MgmtObjEntity mgmtObj) {
-		if (mgmtObj instanceof AreaNwkInfoEntity) {
-			return new AreaNwkInfoMapper();
-		}
-		if (mgmtObj instanceof AreaNwkDeviceInfoEntity) {
-			return new AreaNwkDeviceInfoMapper();
-		}
-		if (mgmtObj instanceof DeviceInfoEntity) {
-			return new DeviceInfoMapper();
-		}
-		return null;
-	}
-
 }

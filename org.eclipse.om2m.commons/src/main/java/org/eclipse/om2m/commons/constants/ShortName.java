@@ -19,8 +19,6 @@
  *******************************************************************************/
 package org.eclipse.om2m.commons.constants;
 
-import java.math.BigInteger;
-
 /**
  * Regroup the short names for resource names & attributes etc.
  *

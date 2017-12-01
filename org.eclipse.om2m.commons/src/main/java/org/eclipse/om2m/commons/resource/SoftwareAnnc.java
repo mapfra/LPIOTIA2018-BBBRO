@@ -37,6 +37,8 @@ import javax.xml.bind.annotation.XmlElementRefs;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.eclipse.om2m.commons.constants.ShortName;
+
 /**
  * <p>
  * Java class for anonymous complex type.
@@ -72,8 +74,8 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "rest" })
-@XmlRootElement(name = "softwareAnnc")
+@XmlType(name = "")
+@XmlRootElement(name = ShortName.SOFTWARE_ANNC)
 public class SoftwareAnnc extends AnnouncedMgmtResource {
 
 	@XmlElementRefs({

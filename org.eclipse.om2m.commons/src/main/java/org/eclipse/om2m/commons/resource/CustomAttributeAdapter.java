@@ -7,7 +7,6 @@
  *******************************************************************************/
 package org.eclipse.om2m.commons.resource;
 
-import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;

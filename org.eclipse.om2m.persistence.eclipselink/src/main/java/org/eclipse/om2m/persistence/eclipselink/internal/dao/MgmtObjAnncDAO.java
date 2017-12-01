@@ -9,22 +9,23 @@ package org.eclipse.om2m.persistence.eclipselink.internal.dao;
 
 import java.math.BigInteger;
 
-import org.eclipse.om2m.commons.constants.MgmtDefinitionTypes;
 import org.eclipse.om2m.commons.entities.AreaNwkDeviceInfoEntity;
 import org.eclipse.om2m.commons.entities.AreaNwkInfoEntity;
 import org.eclipse.om2m.commons.entities.DeviceInfoEntity;
+import org.eclipse.om2m.commons.entities.MgmtObjAnncEntity;
 import org.eclipse.om2m.commons.entities.MgmtObjEntity;
 import org.eclipse.om2m.commons.entities.NodeEntity;
 import org.eclipse.om2m.persistence.eclipselink.internal.DBTransactionJPAImpl;
 import org.eclipse.om2m.persistence.service.DBTransaction;
 
-public class MgmtObjDAO extends AbstractDAO<MgmtObjEntity> {
+public class MgmtObjAnncDAO extends AbstractDAO<MgmtObjAnncEntity> {
 	
 	private AbstractDAO<DeviceInfoEntity> deviceInfoDAO;
 	private AbstractDAO<AreaNwkInfoEntity> areaNwkInfoDAO;
 	private AbstractDAO<AreaNwkDeviceInfoEntity> areaNwkDeviceInfoDAO;
 	
-	public MgmtObjDAO() {
+	
+	public MgmtObjAnncDAO() {
 		deviceInfoDAO = new AbstractDAO<DeviceInfoEntity>() {
 			@Override
 			public DeviceInfoEntity find(DBTransaction dbTransaction, Object id) {
@@ -60,34 +61,37 @@ public class MgmtObjDAO extends AbstractDAO<MgmtObjEntity> {
 	}
 
 	@Override
-	public void create(DBTransaction dbTransaction, MgmtObjEntity resource) {
+	public void create(DBTransaction dbTransaction, MgmtObjAnncEntity resource) {
+		// TODO
 		BigInteger mgd = resource.getMgmtDefinition();
-		if (mgd.equals(MgmtDefinitionTypes.AREA_NWK_INFO))
-			areaNwkInfoDAO.create(dbTransaction, (AreaNwkInfoEntity) resource);
-		else if (mgd.equals(MgmtDefinitionTypes.AREA_NWK_DEVICE_INFO))
-			areaNwkDeviceInfoDAO.create(dbTransaction, (AreaNwkDeviceInfoEntity) resource);
-		else if (mgd.equals(MgmtDefinitionTypes.DEVICE_INFO))
-			deviceInfoDAO.create(dbTransaction, (DeviceInfoEntity) resource);
-		else 
+//		if (mgd.equals(MgmtDefinitionTypes.AREA_NWK_INFO))
+//			areaNwkInfoDAO.create(dbTransaction, (AreaNwkInfoEntity) resource);
+//		else if (mgd.equals(MgmtDefinitionTypes.AREA_NWK_DEVICE_INFO))
+//			areaNwkDeviceInfoDAO.create(dbTransaction, (AreaNwkDeviceInfoEntity) resource);
+//		else if (mgd.equals(MgmtDefinitionTypes.DEVICE_INFO))
+//			deviceInfoDAO.create(dbTransaction, (DeviceInfoEntity) resource);
+//		else 
 			throw new UnsupportedOperationException("Not implemented");
 	}
 
 	@Override
-	public MgmtObjEntity find(DBTransaction dbTransaction, Object id) {
+	public MgmtObjAnncEntity find(DBTransaction dbTransaction, Object id) {
+		// TODO
 		MgmtObjEntity ret = deviceInfoDAO.find(dbTransaction, id);
-		if (ret != null) return ret;
-		ret = areaNwkInfoDAO.find(dbTransaction, id);
-		if (ret != null) return ret;
-		ret = areaNwkDeviceInfoDAO.find(dbTransaction, id);
-		if (ret != null) return ret;
+//		if (ret != null) return ret;
+//		ret = areaNwkInfoDAO.find(dbTransaction, id);
+//		if (ret != null) return ret;
+//		ret = areaNwkDeviceInfoDAO.find(dbTransaction, id);
+//		if (ret != null) return ret;
 		return null;
 	}
 
 	@Override
-	public void delete(DBTransaction dbTransaction, MgmtObjEntity resource) {
+	public void delete(DBTransaction dbTransaction, MgmtObjAnncEntity resource) {
 		DBTransactionJPAImpl transaction = (DBTransactionJPAImpl) dbTransaction;
-		if (resource.getParentNode() != null)
-			resource.getParentNode().removeMgmtObj(resource);
+//		if (resource.getParentAE() != null) {
+//			resource.getParentAE().getChildFlexContainers().remove(resource);
+//		}
 		transaction.getEm().remove(resource);
 		// cleaning the cache
 		transaction.getEm().getEntityManagerFactory().getCache().evict(NodeEntity.class);

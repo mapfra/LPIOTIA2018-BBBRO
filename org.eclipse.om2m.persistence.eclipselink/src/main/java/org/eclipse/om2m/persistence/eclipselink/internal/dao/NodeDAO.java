@@ -28,7 +28,7 @@ import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
 import org.eclipse.om2m.persistence.eclipselink.internal.DBTransactionJPAImpl;
 import org.eclipse.om2m.persistence.service.DBTransaction;
 
-public class NodeDAO extends AbstractDAO<NodeEntity>{
+public class NodeDAO extends AbstractDAO<NodeEntity> {
 
 	@Override
 	public NodeEntity find(DBTransaction dbTransaction, Object id) {
@@ -51,9 +51,6 @@ public class NodeDAO extends AbstractDAO<NodeEntity>{
 		resource.setLabelsEntities(lbls);
 		transaction.getEm().merge(resource);
 		super.update(dbTransaction, resource);
-//		List<LabelEntity> lbls = processLabels(dbTransaction, resource.getLabelsEntities());
-//		resource.setLabelsEntities(lbls);
-//		super.update(dbTransaction, resource);
 	}
 
 }

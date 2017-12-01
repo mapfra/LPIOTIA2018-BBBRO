@@ -24,16 +24,12 @@ import java.util.List;
 
 import org.eclipse.om2m.commons.constants.ResourceType;
 import org.eclipse.om2m.commons.constants.ResultContent;
-import org.eclipse.om2m.commons.entities.AreaNwkDeviceInfoEntity;
-import org.eclipse.om2m.commons.entities.AreaNwkInfoEntity;
-import org.eclipse.om2m.commons.entities.DeviceInfoEntity;
 import org.eclipse.om2m.commons.entities.MgmtObjEntity;
 import org.eclipse.om2m.commons.entities.NodeEntity;
-import org.eclipse.om2m.commons.resource.AreaNwkDeviceInfo;
-import org.eclipse.om2m.commons.resource.AreaNwkInfo;
+import org.eclipse.om2m.commons.entities.SubscriptionEntity;
 import org.eclipse.om2m.commons.resource.ChildResourceRef;
-import org.eclipse.om2m.commons.resource.DeviceInfo;
 import org.eclipse.om2m.commons.resource.Node;
+import org.eclipse.om2m.commons.resource.Subscription;
 
 /**
  * Mapper for Node resource - entity
@@ -41,15 +37,11 @@ import org.eclipse.om2m.commons.resource.Node;
  */
 public class NodeMapper extends EntityMapper<NodeEntity, Node> {
 
-	private AreaNwkInfoMapper areaNwkInfoMapper;
-	private AreaNwkDeviceInfoMapper areaNwkDeviceInfoMapper;
-	private DeviceInfoMapper deviceInfoMapper;
+	private MgmtObjMapper mgmtObjMapper;
 	
 	public NodeMapper() {
 		super();
-		areaNwkDeviceInfoMapper = new AreaNwkDeviceInfoMapper();
-		areaNwkInfoMapper = new AreaNwkInfoMapper();
-		deviceInfoMapper = new DeviceInfoMapper();
+		mgmtObjMapper = new MgmtObjMapper();
 	}
 
 	@Override
@@ -75,21 +67,21 @@ public class NodeMapper extends EntityMapper<NodeEntity, Node> {
 		if (level == 0) {
 			return childRefs;
 		}
+
+		// add child ref subscription
+		for (SubscriptionEntity sub : entity.getSubscriptions()){
+			ChildResourceRef child = new ChildResourceRef();
+			child.setResourceName(sub.getName());
+			child.setType(ResourceType.SUBSCRIPTION);
+			child.setValue(sub.getResourceID());
+			childRefs.add(child);
+			childRefs.addAll(new SubscriptionMapper().getChildResourceRef(sub, level - 1, offset - 1));
+		}
 		
-		// add child area nwk info entities
-		for (AreaNwkInfoEntity aniEntity : entity.getChildAreaNwkInfoEntities()) {
-			childRefs.add(createChildResourceRef(aniEntity));
-			childRefs.addAll(areaNwkInfoMapper.getChildResourceRef(aniEntity, level - 1, offset - 1));
-		}
-		// add child area nwk device info entities
-		for (AreaNwkDeviceInfoEntity andiEntity : entity.getChildAreaNwkDeviceInfoEntities()) {
-			childRefs.add(createChildResourceRef(andiEntity));
-			childRefs.addAll(areaNwkDeviceInfoMapper.getChildResourceRef(andiEntity, level - 1, offset - 1));
-		}
-		// add child device info entities
-		for (DeviceInfoEntity dviEntity : entity.getChildDeviceInfoEntities()) {
-			childRefs.add(createChildResourceRef(dviEntity));
-			childRefs.addAll(deviceInfoMapper.getChildResourceRef(dviEntity, level - 1, offset - 1));
+		// add mgmt obj entities
+		for (MgmtObjEntity mgmtObj : entity.getMgmtObjEntities()) {
+			childRefs.add(createChildResourceRef(mgmtObj));
+			childRefs.addAll(mgmtObjMapper.getChildResourceRef(mgmtObj, level - 1, offset - 1));
 		}
 		
 		return childRefs;
@@ -102,23 +94,15 @@ public class NodeMapper extends EntityMapper<NodeEntity, Node> {
 
 	@Override
 	protected void mapChildResources(NodeEntity entity, Node resource, int level, int offset) {
-		// add child area nwk info entities
-		for (AreaNwkInfoEntity aniEntity : entity.getChildAreaNwkInfoEntities()) {
-			AreaNwkInfo aniRes = areaNwkInfoMapper.mapEntityToResource(aniEntity, 
-					ResultContent.ATTRIBUTES, level - 1, offset - 1);
-			resource.getMgmtObjs().add(aniRes);
+		// add child ref subscription
+		for (SubscriptionEntity sub : entity.getSubscriptions()){
+			Subscription subRes = new SubscriptionMapper().mapEntityToResource(sub, ResultContent.ATTRIBUTES, level - 1, offset - 1);
+			resource.getSubscriptions().add(subRes);
 		}
-		// add child area nwk device info entities
-		for (AreaNwkDeviceInfoEntity andiEntity : entity.getChildAreaNwkDeviceInfoEntities()) {
-			AreaNwkDeviceInfo andiRes = areaNwkDeviceInfoMapper.mapEntityToResource(andiEntity, 
-					ResultContent.ATTRIBUTES, level - 1, offset - 1);
-			resource.getMgmtObjs().add(andiRes);
-		}
-		// add child device info entities
-		for (DeviceInfoEntity dviEntity : entity.getChildDeviceInfoEntities()) {
-			DeviceInfo dviRes = deviceInfoMapper.mapEntityToResource(dviEntity, 
-					ResultContent.ATTRIBUTES, level - 1, offset - 1);
-			resource.getMgmtObjs().add(dviRes);
+		// add mgmt obj entities
+		for (MgmtObjEntity mgmtObj : entity.getMgmtObjEntities()) {
+			resource.getMgmtObjs().add(mgmtObjMapper.mapEntityToResource(mgmtObj, 
+					ResultContent.ATTRIBUTES, level - 1, offset - 1));
 		}
 	}
 
