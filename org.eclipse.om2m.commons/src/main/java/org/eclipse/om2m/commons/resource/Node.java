@@ -98,7 +98,10 @@ public class Node extends AnnounceableResource {
 	
 	@XmlElement(name = ShortName.CHILD_RESOURCE, namespace="")
 	protected List<ChildResourceRef> childResource;
-	
+
+	@XmlElement(namespace = "http://www.onem2m.org/xml/protocols", name = ShortName.SUB)
+	protected List<Subscription> subscriptions;
+
 	@XmlElements({
 			@XmlElement(name = ShortName.MEMORY, namespace = "http://www.onem2m.org/xml/protocols", type = Memory.class),
 			@XmlElement(name = ShortName.BATTERY, namespace = "http://www.onem2m.org/xml/protocols", type = Battery.class),
@@ -206,6 +209,36 @@ public class Node extends AnnounceableResource {
 			childResource = new ArrayList<ChildResourceRef>();
 		}
 		return this.childResource;
+	}
+
+	/**
+	 * Gets the value of the subscription property.
+	 * 
+	 * <p>
+	 * This accessor method returns a reference to the live list, not a
+	 * snapshot. Therefore any modification you make to the returned list will
+	 * be present inside the JAXB object. This is why there is not a
+	 * <CODE>set</CODE> method for the subscription property.
+	 * 
+	 * <p>
+	 * For example, to add a new item, do as follows:
+	 * 
+	 * <pre>
+	 * getSubscription().add(newItem);
+	 * </pre>
+	 * 
+	 * 
+	 * <p>
+	 * Objects of the following type(s) are allowed in the list
+	 * {@link Subscription }
+	 * 
+	 * 
+	 */
+	public List<Subscription> getSubscriptions() {
+		if (subscriptions == null) {
+			subscriptions = new ArrayList<Subscription>();
+		}
+		return this.subscriptions;
 	}
 
 	/**

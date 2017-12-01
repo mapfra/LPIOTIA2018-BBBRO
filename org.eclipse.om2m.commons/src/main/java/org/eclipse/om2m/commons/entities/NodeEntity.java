@@ -95,7 +95,7 @@ public class NodeEntity extends AnnounceableSubordinateEntity {
 			joinColumns = { @JoinColumn(name = DBEntities.NOD_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
 			inverseJoinColumns = { @JoinColumn(name = DBEntities.SUB_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
 			)
-	protected List<SubscriptionEntity> childSubscriptions;
+	protected List<SubscriptionEntity> subscriptions;
 
 	// Database link to AreaNwkInfo Entity
 	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
@@ -215,15 +215,15 @@ public class NodeEntity extends AnnounceableSubordinateEntity {
 	/**
 	 * @return the childSubscriptions
 	 */
-	public List<SubscriptionEntity> getChildSubscriptions() {
-		return childSubscriptions;
+	public List<SubscriptionEntity> getSubscriptions() {
+		return subscriptions;
 	}
 	
 	/**
 	 * @param childSubscriptions the childSubscriptions to set
 	 */
-	public void setChildSubscriptions(List<SubscriptionEntity> childSubscriptions) {
-		this.childSubscriptions = childSubscriptions;
+	public void setSubscriptions(List<SubscriptionEntity> subscriptions) {
+		this.subscriptions = subscriptions;
 	}
 	
 	/**
@@ -276,7 +276,15 @@ public class NodeEntity extends AnnounceableSubordinateEntity {
 	public void setChildDeviceInfoEntities(List<DeviceInfoEntity> childDeviceInfoEntities) {
 		this.childDeviceInfoEntities = childDeviceInfoEntities;
 	}
-	
+
+	public List<MgmtObjEntity> getMgmtObjEntities() {
+		List<MgmtObjEntity> ret = new ArrayList<MgmtObjEntity>();
+		ret.addAll(getChildAreaNwkInfoEntities());
+		ret.addAll(getChildAreaNwkDeviceInfoEntities());
+		ret.addAll(getChildDeviceInfoEntities());
+		return ret;
+	}
+
 	@Override
 	/**
 	 * Retrieve linked dynamicAuthorizationConsultations
@@ -296,14 +304,24 @@ public class NodeEntity extends AnnounceableSubordinateEntity {
 		this.dynamicAuthorizationConsultations = list;
 	}
 
-	public void addMgmtObj(MgmtObjEntity mgmtObjFromDB) {
-		BigInteger mgmtDef = mgmtObjFromDB.getMgmtDefinition();
+	public void addMgmtObj(MgmtObjEntity mgmtObj) {
+		BigInteger mgmtDef = mgmtObj.getMgmtDefinition();
 		if (mgmtDef.equals(MgmtDefinitionTypes.AREA_NWK_INFO))
-			getChildAreaNwkInfoEntities().add((AreaNwkInfoEntity) mgmtObjFromDB);
+			getChildAreaNwkInfoEntities().add((AreaNwkInfoEntity) mgmtObj);
 		else if (mgmtDef.equals(MgmtDefinitionTypes.AREA_NWK_DEVICE_INFO))
-			getChildAreaNwkDeviceInfoEntities().add((AreaNwkDeviceInfoEntity) mgmtObjFromDB);
+			getChildAreaNwkDeviceInfoEntities().add((AreaNwkDeviceInfoEntity) mgmtObj);
 		else if (mgmtDef.equals(MgmtDefinitionTypes.DEVICE_INFO))
-			getChildDeviceInfoEntities().add((DeviceInfoEntity) mgmtObjFromDB);
+			getChildDeviceInfoEntities().add((DeviceInfoEntity) mgmtObj);
+	}
+
+	public void removeMgmtObj(MgmtObjEntity mgmtObj) {
+		BigInteger mgmtDef = mgmtObj.getMgmtDefinition();
+		if (mgmtDef.equals(MgmtDefinitionTypes.AREA_NWK_INFO))
+			getChildAreaNwkInfoEntities().remove((AreaNwkInfoEntity) mgmtObj);
+		else if (mgmtDef.equals(MgmtDefinitionTypes.AREA_NWK_DEVICE_INFO))
+			getChildAreaNwkDeviceInfoEntities().remove((AreaNwkDeviceInfoEntity) mgmtObj);
+		else if (mgmtDef.equals(MgmtDefinitionTypes.DEVICE_INFO))
+			getChildDeviceInfoEntities().remove((DeviceInfoEntity) mgmtObj);
 	}
 
 }

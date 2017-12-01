@@ -38,6 +38,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 
+import org.eclipse.om2m.commons.constants.MgmtDefinitionTypes;
+import org.eclipse.om2m.commons.constants.ShortName;
+
 /**
  * <p>
  * Java class for anonymous complex type.
@@ -71,26 +74,40 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "devID", "devType", "areaNwkId",
-		"sleepInterval", "sleepDuration", "status", "listOfNeighbors",
-		"childResource", "subscription" })
-@XmlRootElement(name = "areaNwkDeviceInfoAnnc")
+@XmlType(name = "")
+@XmlRootElement(name = ShortName.AREA_NWK_DEVICE_INFO_ANNC)
 public class AreaNwkDeviceInfoAnnc extends AnnouncedMgmtResource {
 
-	protected String devID;
-	protected String devType;
-	@XmlSchemaType(name = "anyURI")
-	protected String areaNwkId;
+	@XmlElement(required = false, name = ShortName.DEV_ID, namespace="")
+ 	protected String devID;
+	
+	@XmlElement(required = false, name = ShortName.DEV_TYPE, namespace="")
+ 	protected String devType;
+	
+	@XmlElement(required = false, name = ShortName.AREA_NWK_ID, namespace="")
+ 	@XmlSchemaType(name = "anyURI")
+ 	protected String areaNwkId;
+ 	
 	@XmlSchemaType(name = "nonNegativeInteger")
-	protected BigInteger sleepInterval;
+	@XmlElement(name = ShortName.SLEEP_INTERVAL, namespace="")
+ 	protected BigInteger sleepInterval;
+ 	
 	@XmlSchemaType(name = "nonNegativeInteger")
-	protected BigInteger sleepDuration;
-	protected String status;
+	@XmlElement(name = ShortName.SLEEP_DURATION, namespace="")
+ 	protected BigInteger sleepDuration;
+	
+	@XmlElement(name = ShortName.STATUS, namespace="")
+ 	protected String status;
+ 	
 	@XmlList
-	protected List<String> listOfNeighbors;
-	protected List<ChildResourceRef> childResource;
-	@XmlElement(namespace = "http://www.onem2m.org/xml/protocols")
-	protected List<Subscription> subscription;
+	@XmlElement(required = false, name = ShortName.LIST_OF_NEIGHBORS, namespace="")
+ 	protected List<String> listOfNeighbors;
+
+		
+	public AreaNwkDeviceInfoAnnc() {
+		super();
+		setMgmtDefinition(MgmtDefinitionTypes.AREA_NWK_DEVICE_INFO);
+	}
 
 	/**
 	 * Gets the value of the devID property.
@@ -245,66 +262,6 @@ public class AreaNwkDeviceInfoAnnc extends AnnouncedMgmtResource {
 			listOfNeighbors = new ArrayList<String>();
 		}
 		return this.listOfNeighbors;
-	}
-
-	/**
-	 * Gets the value of the childResource property.
-	 * 
-	 * <p>
-	 * This accessor method returns a reference to the live list, not a
-	 * snapshot. Therefore any modification you make to the returned list will
-	 * be present inside the JAXB object. This is why there is not a
-	 * <CODE>set</CODE> method for the childResource property.
-	 * 
-	 * <p>
-	 * For example, to add a new item, do as follows:
-	 * 
-	 * <pre>
-	 * getChildResource().add(newItem);
-	 * </pre>
-	 * 
-	 * 
-	 * <p>
-	 * Objects of the following type(s) are allowed in the list
-	 * {@link ChildResourceRef }
-	 * 
-	 * 
-	 */
-	public List<ChildResourceRef> getChildResource() {
-		if (childResource == null) {
-			childResource = new ArrayList<ChildResourceRef>();
-		}
-		return this.childResource;
-	}
-
-	/**
-	 * Gets the value of the subscription property.
-	 * 
-	 * <p>
-	 * This accessor method returns a reference to the live list, not a
-	 * snapshot. Therefore any modification you make to the returned list will
-	 * be present inside the JAXB object. This is why there is not a
-	 * <CODE>set</CODE> method for the subscription property.
-	 * 
-	 * <p>
-	 * For example, to add a new item, do as follows:
-	 * 
-	 * <pre>
-	 * getSubscription().add(newItem);
-	 * </pre>
-	 * 
-	 * 
-	 * <p>
-	 * Objects of the following type(s) are allowed in the list
-	 * {@link Subscription }
-	 * 
-	 * 
-	 */
-	public List<Subscription> getSubscription() {
-		if (subscription == null) {
-			subscription = new ArrayList<Subscription>();
-		}
-		return this.subscription;
 	}
 
 }

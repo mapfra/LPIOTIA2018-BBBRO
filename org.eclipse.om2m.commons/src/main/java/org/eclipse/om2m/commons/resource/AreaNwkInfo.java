@@ -69,7 +69,7 @@ import org.eclipse.om2m.commons.constants.ShortName;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "")
 @XmlRootElement(name = ShortName.AREA_NWK_INFO)
-public class AreaNwkInfo extends MgmtObj {
+public class AreaNwkInfo extends MgmtObjWithChildren {
 
 	@XmlElement(name = ShortName.AREA_NWK_TYPE, required = true, namespace="")
 	protected String areaNwkType;
@@ -77,9 +77,6 @@ public class AreaNwkInfo extends MgmtObj {
 	@XmlList
 	@XmlElement(name = ShortName.LIST_DEVICES, required = true, namespace="")
 	protected List<String> listOfDevices;
-
-	@XmlElement(name = ShortName.SUB, namespace = "http://www.onem2m.org/xml/protocols")
-	protected List<Subscription> subscription;
 
 	
 	public AreaNwkInfo() {
@@ -135,36 +132,6 @@ public class AreaNwkInfo extends MgmtObj {
 			listOfDevices = new ArrayList<String>();
 		}
 		return this.listOfDevices;
-	}
-
-	/**
-	 * Gets the value of the subscription property.
-	 * 
-	 * <p>
-	 * This accessor method returns a reference to the live list, not a
-	 * snapshot. Therefore any modification you make to the returned list will
-	 * be present inside the JAXB object. This is why there is not a
-	 * <CODE>set</CODE> method for the subscription property.
-	 * 
-	 * <p>
-	 * For example, to add a new item, do as follows:
-	 * 
-	 * <pre>
-	 * getSubscription().add(newItem);
-	 * </pre>
-	 * 
-	 * 
-	 * <p>
-	 * Objects of the following type(s) are allowed in the list
-	 * {@link Subscription }
-	 * 
-	 * 
-	 */
-	public List<Subscription> getSubscription() {
-		if (subscription == null) {
-			subscription = new ArrayList<Subscription>();
-		}
-		return this.subscription;
 	}
 
 }

@@ -37,6 +37,8 @@ import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 
+import org.eclipse.om2m.commons.constants.ShortName;
+
 /**
  * <p>
  * Java class for announcedMgmtResource complex type.
@@ -63,21 +65,32 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "announcedMgmtResource", propOrder = { "mgmtDefinition",
-		"objectIDs", "objectPaths", "description" })
+@XmlType(name = "announcedMgmtResource")
 @XmlSeeAlso({ EventLogAnnc.class, RebootAnnc.class, DeviceCapabilityAnnc.class,
 		DeviceInfoAnnc.class, SoftwareAnnc.class, FirmwareAnnc.class,
 		AreaNwkDeviceInfoAnnc.class, AreaNwkInfoAnnc.class, BatteryAnnc.class,
 		MemoryAnnc.class })
 public class AnnouncedMgmtResource extends AnnouncedResource {
 
-	@XmlElement(required = true)
-	protected BigInteger mgmtDefinition;
-	@XmlList
+	@XmlElement(name = ShortName.MGMT_DEF, required = true, namespace="")
+ 	protected BigInteger mgmtDefinition;
+
+ 	@XmlList
+	@XmlElement(name = ShortName.OBJ_IDS, namespace="")
 	protected List<String> objectIDs;
-	@XmlList
+
+ 	@XmlList
+	@XmlElement(name = ShortName.OBJ_PATHS, namespace="")
 	protected List<String> objectPaths;
+
+	@XmlElement(name = ShortName.DESCRIPTION, namespace="")
 	protected String description;
+	
+	@XmlElement(name = ShortName.CHILD_RESOURCE, namespace="")
+	protected List<ChildResourceRef> childResource;
+
+	@XmlElement(namespace = "http://www.onem2m.org/xml/protocols", name = ShortName.SUB)
+	protected List<Subscription> subscriptions;
 
 	/**
 	 * Gets the value of the mgmtDefinition property.
@@ -96,7 +109,7 @@ public class AnnouncedMgmtResource extends AnnouncedResource {
 	 *            allowed object is {@link BigInteger }
 	 * 
 	 */
-	public void setMgmtDefinition(BigInteger value) {
+	protected void setMgmtDefinition(BigInteger value) {
 		this.mgmtDefinition = value;
 	}
 
@@ -177,6 +190,66 @@ public class AnnouncedMgmtResource extends AnnouncedResource {
 	 */
 	public void setDescription(String value) {
 		this.description = value;
+	}
+
+	/**
+	 * Gets the value of the childResource property.
+	 * 
+	 * <p>
+	 * This accessor method returns a reference to the live list, not a
+	 * snapshot. Therefore any modification you make to the returned list will
+	 * be present inside the JAXB object. This is why there is not a
+	 * <CODE>set</CODE> method for the childResource property.
+	 * 
+	 * <p>
+	 * For example, to add a new item, do as follows:
+	 * 
+	 * <pre>
+	 * getChildResource().add(newItem);
+	 * </pre>
+	 * 
+	 * 
+	 * <p>
+	 * Objects of the following type(s) are allowed in the list
+	 * {@link ChildResourceRef }
+	 * 
+	 * 
+	 */
+	public List<ChildResourceRef> getChildResource() {
+		if (childResource == null) {
+			childResource = new ArrayList<ChildResourceRef>();
+		}
+		return this.childResource;
+	}
+
+	/**
+	 * Gets the value of the subscription property.
+	 * 
+	 * <p>
+	 * This accessor method returns a reference to the live list, not a
+	 * snapshot. Therefore any modification you make to the returned list will
+	 * be present inside the JAXB object. This is why there is not a
+	 * <CODE>set</CODE> method for the subscription property.
+	 * 
+	 * <p>
+	 * For example, to add a new item, do as follows:
+	 * 
+	 * <pre>
+	 * getSubscription().add(newItem);
+	 * </pre>
+	 * 
+	 * 
+	 * <p>
+	 * Objects of the following type(s) are allowed in the list
+	 * {@link Subscription }
+	 * 
+	 * 
+	 */
+	public List<Subscription> getSubscriptions() {
+		if (subscriptions == null) {
+			subscriptions = new ArrayList<Subscription>();
+		}
+		return this.subscriptions;
 	}
 
 }

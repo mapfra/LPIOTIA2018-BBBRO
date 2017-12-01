@@ -32,7 +32,6 @@ import org.eclipse.om2m.commons.constants.ResultContent;
 import org.eclipse.om2m.commons.entities.AccessControlOriginatorEntity;
 import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
 import org.eclipse.om2m.commons.entities.AccessControlRuleEntity;
-import org.eclipse.om2m.commons.entities.MgmtObjEntity;
 import org.eclipse.om2m.commons.entities.ResourceEntity;
 import org.eclipse.om2m.commons.exceptions.AccessDeniedException;
 import org.eclipse.om2m.commons.exceptions.BadRequestException;
@@ -338,9 +337,7 @@ public abstract class Controller {
 
 	protected void setLocationAndCreationContent(RequestPrimitive request, 
 			ResponsePrimitive response, ResourceEntity entity) {
-		EntityMapper mapper = (entity instanceof MgmtObjEntity)
-				? EntityMapperFactory.getMapperForMgmtObj((MgmtObjEntity) entity)
-				: EntityMapperFactory.getMapperFromResourceType(entity.getResourceType().intValue());
+		EntityMapper mapper = EntityMapperFactory.getMapperFromResourceType(entity.getResourceType().intValue());
 		setLocationAndCreationContent(request, response, entity, mapper);
 	}
 

@@ -75,9 +75,9 @@ import org.eclipse.om2m.commons.constants.ShortName;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "rest" })
+@XmlType(name = "")
 @XmlRootElement(name = ShortName.SOFTWARE)
-public class Software extends MgmtObj {
+public class Software extends MgmtObjWithChildren {
 
 	@XmlElementRefs({
 			@XmlElementRef(name = "activeStatus", type = JAXBElement.class, required = false),

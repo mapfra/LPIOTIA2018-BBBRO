@@ -19,7 +19,6 @@ import java.util.List;
 import javax.persistence.Query;
 
 import org.eclipse.om2m.commons.constants.DBEntities;
-import org.eclipse.om2m.commons.constants.ShortName;
 import org.eclipse.om2m.commons.entities.ContentInstanceEntity;
 import org.eclipse.om2m.persistence.eclipselink.internal.DBTransactionJPAImpl;
 import org.eclipse.om2m.persistence.service.DBTransaction;

@@ -38,7 +38,6 @@ import org.eclipse.om2m.commons.entities.AeEntity;
 import org.eclipse.om2m.commons.entities.CSEBaseEntity;
 import org.eclipse.om2m.commons.entities.ContainerEntity;
 import org.eclipse.om2m.commons.entities.GroupEntity;
-import org.eclipse.om2m.commons.entities.MgmtObjEntity;
 import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
 import org.eclipse.om2m.commons.entities.ResourceEntity;
 import org.eclipse.om2m.commons.entities.ScheduleEntity;
@@ -267,15 +266,9 @@ public class Notifier {
 
 			// Get the representation of the content
 			Resource serializableResource;
-			EntityMapper mapper ;
-			if (sub.getNotificationContentType() != null){
-				if (resource.getResourceType().equals(ResourceType.MGMT_OBJ)) {
-					mapper = EntityMapperFactory.getMapperForMgmtObj((MgmtObjEntity) resource);
-				} else {
-					mapper = EntityMapperFactory.
-							getMapperFromResourceType(resource.getResourceType().intValue());
-				}
-				if(sub.getNotificationContentType().equals(NotificationContentType.MODIFIED_ATTRIBUTES)){
+			if (sub.getNotificationContentType() != null) {
+				EntityMapper mapper = EntityMapperFactory.getMapperFromResourceType(resource.getResourceType().intValue());
+				if (sub.getNotificationContentType().equals(NotificationContentType.MODIFIED_ATTRIBUTES)) {
 					Representation representation = new Representation();
 					if (modifiedOnlyResource != null) {
 						// Gregory BONNARDEL - 26 Avril 2016

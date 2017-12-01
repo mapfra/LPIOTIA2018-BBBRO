@@ -70,10 +70,9 @@ import org.eclipse.om2m.commons.constants.ShortName;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "logTypeId", "logData", "logStatus",
-		"logStart", "logStop", "childResource", "subscription" })
+@XmlType(name = "")
 @XmlRootElement(name = ShortName.EVENT_LOG)
-public class EventLog extends MgmtObj {
+public class EventLog extends MgmtObjWithChildren {
 
 	@XmlElement(required = true)
 	protected BigInteger logTypeId;
@@ -83,7 +82,6 @@ public class EventLog extends MgmtObj {
 	protected BigInteger logStatus;
 	protected boolean logStart;
 	protected boolean logStop;
-	protected List<ChildResourceRef> childResource;
 	@XmlElement(namespace = "http://www.onem2m.org/xml/protocols")
 	protected List<Subscription> subscription;
 	
@@ -186,36 +184,6 @@ public class EventLog extends MgmtObj {
 	 */
 	public void setLogStop(boolean value) {
 		this.logStop = value;
-	}
-
-	/**
-	 * Gets the value of the childResource property.
-	 * 
-	 * <p>
-	 * This accessor method returns a reference to the live list, not a
-	 * snapshot. Therefore any modification you make to the returned list will
-	 * be present inside the JAXB object. This is why there is not a
-	 * <CODE>set</CODE> method for the childResource property.
-	 * 
-	 * <p>
-	 * For example, to add a new item, do as follows:
-	 * 
-	 * <pre>
-	 * getChildResource().add(newItem);
-	 * </pre>
-	 * 
-	 * 
-	 * <p>
-	 * Objects of the following type(s) are allowed in the list
-	 * {@link ChildResourceRef }
-	 * 
-	 * 
-	 */
-	public List<ChildResourceRef> getChildResource() {
-		if (childResource == null) {
-			childResource = new ArrayList<ChildResourceRef>();
-		}
-		return this.childResource;
 	}
 
 	/**

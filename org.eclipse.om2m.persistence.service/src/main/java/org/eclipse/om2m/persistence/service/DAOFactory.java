@@ -19,8 +19,6 @@
  *******************************************************************************/
 package org.eclipse.om2m.persistence.service;
 
-import java.math.BigInteger;
-
 import org.eclipse.om2m.commons.entities.AccessControlOriginatorEntity;
 import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
 import org.eclipse.om2m.commons.entities.AeAnncEntity;
@@ -34,6 +32,7 @@ import org.eclipse.om2m.commons.entities.FlexContainerAnncEntity;
 import org.eclipse.om2m.commons.entities.FlexContainerEntity;
 import org.eclipse.om2m.commons.entities.GroupEntity;
 import org.eclipse.om2m.commons.entities.LabelEntity;
+import org.eclipse.om2m.commons.entities.MgmtObjAnncEntity;
 import org.eclipse.om2m.commons.entities.MgmtObjEntity;
 import org.eclipse.om2m.commons.entities.NodeEntity;
 import org.eclipse.om2m.commons.entities.PollingChannelEntity;
@@ -96,5 +95,7 @@ public interface DAOFactory {
 	public abstract DAO<DynamicAuthorizationConsultationEntity> getDynamicAuthorizationDAO();
 
 	public abstract DAO<ContentInstanceEntity> getOldestDAO();
+
+	public abstract DAO<MgmtObjAnncEntity> getMgmtObjAnncDAO();
 
 }

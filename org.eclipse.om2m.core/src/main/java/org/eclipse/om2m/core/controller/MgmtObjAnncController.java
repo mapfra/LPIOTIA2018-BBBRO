@@ -21,7 +21,7 @@ import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.constants.ShortName;
 import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
 import org.eclipse.om2m.commons.entities.DynamicAuthorizationConsultationEntity;
-import org.eclipse.om2m.commons.entities.MgmtObjEntity;
+import org.eclipse.om2m.commons.entities.MgmtObjAnncEntity;
 import org.eclipse.om2m.commons.entities.NodeEntity;
 import org.eclipse.om2m.commons.entities.ResourceEntity;
 import org.eclipse.om2m.commons.entities.SubscriptionEntity;
@@ -29,11 +29,10 @@ import org.eclipse.om2m.commons.exceptions.BadRequestException;
 import org.eclipse.om2m.commons.exceptions.ConflictException;
 import org.eclipse.om2m.commons.exceptions.NotImplementedException;
 import org.eclipse.om2m.commons.exceptions.ResourceNotFoundException;
-import org.eclipse.om2m.commons.resource.MgmtObj;
+import org.eclipse.om2m.commons.resource.AnnouncedMgmtResource;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
 import org.eclipse.om2m.commons.utils.Util.DateUtil;
-import org.eclipse.om2m.core.announcer.Announcer;
 import org.eclipse.om2m.core.datamapper.DataMapperSelector;
 import org.eclipse.om2m.core.entitymapper.EntityMapperFactory;
 import org.eclipse.om2m.core.notifier.Notifier;
@@ -46,10 +45,10 @@ import org.eclipse.om2m.persistence.service.DAO;
  * Controller for the MgmtObj Resource
  *
  */
-public class MgmtObjController extends Controller {
+public class MgmtObjAnncController extends Controller {
 
 	/** Logger */
-	private static Log LOGGER = LogFactory.getLog(MgmtObjController.class);
+	private static Log LOGGER = LogFactory.getLog(MgmtObjAnncController.class);
 
 	/**
 	 * Create the resource in the system according to the representation
@@ -113,15 +112,15 @@ public class MgmtObjController extends Controller {
 		LOGGER.info("content: " + request.getContent());
 		LOGGER.info("parent node: " + nodeEntity);
 		// get the object from the representation
-		MgmtObj mgmtObj = null;
+		AnnouncedMgmtResource mgmtObj = null;
 		try {
 			String payload = null;
 			if (request.getRequestContentType().equals(MimeMediaType.OBJ)) {
-				mgmtObj = (MgmtObj) request.getContent();
+				mgmtObj = (AnnouncedMgmtResource) request.getContent();
 				// need to create the payload in order to validate it
 				payload = DataMapperSelector.getDataMapperList().get(contentFormat).objToString(mgmtObj);
 			} else {
-				mgmtObj = (MgmtObj) DataMapperSelector.getDataMapperList()
+				mgmtObj = (AnnouncedMgmtResource) DataMapperSelector.getDataMapperList()
 						.get(request.getRequestContentType()).stringToObj((String) request.getContent());
 				if (request.getRequestContentType().equals(contentFormat)) {
 					payload = (String) request.getContent();
@@ -150,9 +149,9 @@ public class MgmtObjController extends Controller {
 		BigInteger mgmtDef = mgmtObj.getMgmtDefinition();
 
 		// creating the corresponding entity
-		MgmtObjEntity mgmtObjEntity = MgmtObjEntity.create(mgmtDef);
+		MgmtObjAnncEntity mgmtObjEntity = MgmtObjAnncEntity.create(mgmtDef);
 
-		ControllerUtil.CreateUtil.fillEntityFromAnnounceableResource(mgmtObj, mgmtObjEntity);
+		ControllerUtil.CreateUtil.fillEntityFromGenericResource(mgmtObj, mgmtObjEntity);
 		
 		mgmtObjEntity.fillFrom(mgmtObj);
 
@@ -193,37 +192,25 @@ public class MgmtObjController extends Controller {
 
 		// create the mgmtObj in the DB
 		LOGGER.info("persist " + mgmtObjEntity + " ");
-		dbs.getDAOFactory().getMgmtObjDAO().create(transaction, mgmtObjEntity);
+		dbs.getDAOFactory().getMgmtObjAnncDAO().create(transaction, mgmtObjEntity);
 		// retrieve the managed object from DB
-		MgmtObjEntity mgmtObjFromDB = dbs.getDAOFactory().getMgmtObjDAO().find(transaction,
+		MgmtObjAnncEntity mgmtObjFromDB = dbs.getDAOFactory().getMgmtObjAnncDAO().find(transaction,
 				mgmtObjEntity.getResourceID());
 		
 		LOGGER.info("Created entity: " + mgmtObjFromDB);
 		
-		nodeEntity.addMgmtObj(mgmtObjFromDB);
+//		nodeEntity.addMgmtObj(mgmtObjFromDB); TODO
 		nodeDao.update(transaction, nodeEntity);
 
 		// update link with mgmtObjEntity - DacEntity
 		for (DynamicAuthorizationConsultationEntity dace : mgmtObjFromDB.getDynamicAuthorizationConsultations()) {
 			DynamicAuthorizationConsultationEntity daceFromDB = dbs.getDAOFactory().getDynamicAuthorizationDAO().find(transaction, dace.getResourceID());
-			daceFromDB.addMgmtObj(mgmtObjFromDB);
+//			daceFromDB.addMgmtObj(mgmtObjFromDB); TODO
 			dbs.getDAOFactory().getDynamicAuthorizationDAO().update(transaction, daceFromDB);
 		}
 
 		// commit the transaction & release lock
 		transaction.commit();
-
-		if ((mgmtObj.getAnnounceTo() != null) && ! mgmtObj.getAnnounceTo().isEmpty()) {
-			mgmtObj.setName(mgmtObjFromDB.getName());
-			mgmtObj.setResourceID(mgmtObjFromDB.getResourceID());
-			mgmtObj.setResourceType(ResourceType.MGMT_OBJ);
-			mgmtObj.setParentID(mgmtObjFromDB.getParentID());
-			String hierachicalURI = mgmtObjFromDB.getHierarchicalURI();
-			String remoteLocation = hierachicalURI
-					.substring(("/" + Constants.CSE_ID + "/" + Constants.CSE_NAME + "/").length());
-			Announcer.announce(mgmtObj.getAnnounceTo(), mgmtObj.getAnnouncedAttribute(), mgmtObj,
-					request.getFrom(), remoteLocation);
-		}
 
 		Notifier.notify(subscriptions, mgmtObjFromDB, ResourceStatus.CHILD_CREATED);
 
@@ -247,7 +234,7 @@ public class MgmtObjController extends Controller {
 		ResponsePrimitive response = new ResponsePrimitive(request);
 
 		// Check existence of the resource
-		MgmtObjEntity mgmtObjEntity = dbs.getDAOFactory().getMgmtObjDAO().find(transaction,
+		MgmtObjAnncEntity mgmtObjEntity = dbs.getDAOFactory().getMgmtObjAnncDAO().find(transaction,
 				request.getTo());
 		if (mgmtObjEntity == null) {
 			throw new ResourceNotFoundException("Resource not found");
@@ -260,7 +247,8 @@ public class MgmtObjController extends Controller {
 		checkPermissions(request, mgmtObjEntity, mgmtObjEntity.getAccessControlPolicies());
 
 		// Mapping the entity with the exchange resource
-		MgmtObj mgmtObj = (MgmtObj) EntityMapperFactory.getMapperForMgmtObj()
+		AnnouncedMgmtResource mgmtObj = (AnnouncedMgmtResource) 
+			EntityMapperFactory.getMapperForMgmtObjAnnc()
 				.mapEntityToResource(mgmtObjEntity, request);
 
 		response.setContent(mgmtObj);
@@ -309,7 +297,7 @@ public class MgmtObjController extends Controller {
 		ResponsePrimitive response = new ResponsePrimitive(request);
 
 		// retrieve the resource from database
-		MgmtObjEntity mgmtObjEntity = dbs.getDAOFactory().getMgmtObjDAO().find(transaction,
+		MgmtObjAnncEntity mgmtObjEntity = dbs.getDAOFactory().getMgmtObjAnncDAO().find(transaction,
 				request.getTo());
 
 		// lock current object
@@ -324,23 +312,24 @@ public class MgmtObjController extends Controller {
 			checkPermissions(request, mgmtObjEntity, mgmtObjEntity.getAccessControlPolicies());
 		}
 
-		MgmtObj modifiedMgmtObj = (MgmtObj) EntityMapperFactory.getMapperForMgmtObj()
+		AnnouncedMgmtResource modifiedMgmtObj = (AnnouncedMgmtResource) 
+			EntityMapperFactory.getMapperForMgmtObjAnnc()
 				.mapEntityToResource(mgmtObjEntity, request);
 		// check if content is present
 		if (request.getContent() != null) {
 			// create the java object from the resource representation
 			// get the object from the representation
-			MgmtObj mgmtObj = null;
+			AnnouncedMgmtResource mgmtObj = null;
 			try {
 				String payload = null;
 				if (request.getRequestContentType().equals(MimeMediaType.OBJ)) {
-					mgmtObj = (MgmtObj) request.getContent();
+					mgmtObj = (AnnouncedMgmtResource) request.getContent();
 					// need to create the payload in order to validate it
 					payload = DataMapperSelector.getDataMapperList().get(contentFormat)
 							.objToString(mgmtObj);
 
 				} else {
-					mgmtObj = (MgmtObj) DataMapperSelector.getDataMapperList()
+					mgmtObj = (AnnouncedMgmtResource) DataMapperSelector.getDataMapperList()
 							.get(request.getRequestContentType()).stringToObj((String) request.getContent());
 
 					if (request.getRequestContentType().equals(contentFormat)) {
@@ -393,7 +382,12 @@ public class MgmtObjController extends Controller {
 				// update link with mgmtObjEntity - DacEntity
 				for(DynamicAuthorizationConsultationEntity dace : mgmtObjEntity.getDynamicAuthorizationConsultations()) {
 					DynamicAuthorizationConsultationEntity daceFromDB = dbs.getDAOFactory().getDynamicAuthorizationDAO().find(transaction, dace.getResourceID());
-					daceFromDB.addMgmtObj(mgmtObjEntity);
+//					if (mgmtObj instanceof DeviceInfo) TODO
+//						daceFromDB.getLinkedDeviceInfoEntities().add((DeviceInfoEntity) mgmtObjEntity);
+//					else if (mgmtObj instanceof AreaNwkDeviceInfo)
+//						daceFromDB.getLinkedAreaNwkDeviceInfoEntities().add((AreaNwkDeviceInfoEntity) mgmtObjEntity);
+//					else if (mgmtObj instanceof AreaNwkInfo)
+//						daceFromDB.getLinkedAreaNwkInfoEntities().add((AreaNwkInfoEntity) mgmtObjEntity);
 					dbs.getDAOFactory().getDynamicAuthorizationDAO().update(transaction, daceFromDB);
 				}
 			}
@@ -408,18 +402,6 @@ public class MgmtObjController extends Controller {
 				mgmtObjEntity.setExpirationTime(mgmtObj.getExpirationTime());
 				modifiedMgmtObj.setExpirationTime(mgmtObj.getExpirationTime());
 			}
-			// announceTo O
-			if (! mgmtObj.getAnnounceTo().isEmpty()) {
-				mgmtObjEntity.getAnnounceTo().clear();
-				mgmtObjEntity.getAnnounceTo().addAll(mgmtObj.getAnnounceTo());
-				modifiedMgmtObj.getAnnounceTo().addAll(mgmtObj.getAnnounceTo());
-			}
-			// announcedAttribute O
-			if (! mgmtObj.getAnnouncedAttribute().isEmpty()) {
-				mgmtObjEntity.getAnnouncedAttribute().clear();
-				mgmtObjEntity.getAnnouncedAttribute().addAll(mgmtObj.getAnnouncedAttribute());
-				modifiedMgmtObj.getAnnouncedAttribute().addAll(mgmtObj.getAnnouncedAttribute());
-			}
 
 			// mgmtDefinition
 			if ((mgmtObj.getMgmtDefinition() != null)
@@ -433,7 +415,7 @@ public class MgmtObjController extends Controller {
 
 		response.setContent(modifiedMgmtObj);
 		// update the resource in the database
-		dbs.getDAOFactory().getMgmtObjDAO().update(transaction, mgmtObjEntity);
+		dbs.getDAOFactory().getMgmtObjAnncDAO().update(transaction, mgmtObjEntity);
 
 		// commit and release lock
 		transaction.commit();
@@ -455,7 +437,7 @@ public class MgmtObjController extends Controller {
 		ResponsePrimitive response = new ResponsePrimitive(request);
 
 		// retrieve the corresponding resource from database
-		MgmtObjEntity mgmtObjEntity = dbs.getDAOFactory().getMgmtObjDAO().find(transaction,
+		MgmtObjAnncEntity mgmtObjEntity = dbs.getDAOFactory().getMgmtObjAnncDAO().find(transaction,
 				request.getTo());
 		if (mgmtObjEntity == null) {
 			throw new ResourceNotFoundException("Resource not found");
@@ -471,13 +453,9 @@ public class MgmtObjController extends Controller {
 		Notifier.notifyDeletion(mgmtObjEntity.getSubscriptions(), mgmtObjEntity);
 
 		// delete the resource in the database
-		dbs.getDAOFactory().getMgmtObjDAO().delete(transaction, mgmtObjEntity);
+		dbs.getDAOFactory().getMgmtObjAnncDAO().delete(transaction, mgmtObjEntity);
 		// commit the transaction & release lock
 		transaction.commit();
-
-		// deannounce
-		Announcer.deAnnounce(mgmtObjEntity.getAnnounceTo(), mgmtObjEntity,
-				Constants.ADMIN_REQUESTING_ENTITY);
 
 		// return the response
 		response.setResponseStatusCode(ResponseStatusCode.DELETED);
