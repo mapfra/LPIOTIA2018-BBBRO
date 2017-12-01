@@ -3,7 +3,7 @@ before_script:
   - export HTTPS_PROXY="proxy.rd.francetelecom.fr:3128"
   - export http_proxy="proxy.rd.francetelecom.fr:3128"
 
-image: registry.forge.orange-labs.fr/mpcy8647/org.eclipse.om2m:0.0.2
+image: registry.forge.orange-labs.fr/org.eclipse.om2m/om2m/com.orange.om2m.docker.builder:0.0.1
 
 build:
   script: "mvn clean install -B"
