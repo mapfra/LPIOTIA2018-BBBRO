@@ -24,6 +24,7 @@ import org.eclipse.om2m.commons.entities.AeAnncEntity;
 import org.eclipse.om2m.commons.entities.AeEntity;
 import org.eclipse.om2m.commons.entities.CSEBaseEntity;
 import org.eclipse.om2m.commons.entities.ContainerAnncEntity;
+import org.eclipse.om2m.commons.entities.ContainerEntity;
 import org.eclipse.om2m.commons.entities.DynamicAuthorizationConsultationEntity;
 import org.eclipse.om2m.commons.entities.FlexContainerAnncEntity;
 import org.eclipse.om2m.commons.entities.FlexContainerEntity;
@@ -264,7 +265,7 @@ public class ResourceSerializerDeserializer<T extends ResourceEntity> implements
 			t = (T) new FlexContainerEntity();
 			break;
 		case ResourceType.CONTAINER:
-			t = (T) new ContainerAnncEntity();
+			t = (T) new ContainerEntity();
 			break;
 		case ResourceType.REMOTE_CSE:
 			t = (T) new RemoteCSEEntity();
