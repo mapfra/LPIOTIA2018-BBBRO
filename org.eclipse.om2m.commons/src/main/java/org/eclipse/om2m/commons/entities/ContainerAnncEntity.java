@@ -26,13 +26,14 @@ import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 
+import org.eclipse.om2m.commons.constants.DBEntities;
 import org.eclipse.om2m.commons.constants.ShortName;
 
 /**
  * Container announced JPA entity
  *
  */
-@Entity(name = ShortName.CNT_ANNC)
+@Entity(name = DBEntities.CONTAINER_ANNC_ENTITY)
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class ContainerAnncEntity extends ResourceEntity {
 

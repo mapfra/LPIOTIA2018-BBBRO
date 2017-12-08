@@ -79,6 +79,9 @@ public class DBEntities {
 
 	/** Name used for the persisted {@link ContainerEntity} entity */
 	public static final String CONTAINER_ENTITY = "CNT";
+	
+	/** Name used for the persisted {@link ContainerEntity} entity */
+	public static final String CONTAINER_ANNC_ENTITY = "CNTA";
 
 	/** Name used to the persisted {@link FlexContainerEntity} entity */
 	public static final String FLEXCONTAINER_ENTITY = "FCNT";
