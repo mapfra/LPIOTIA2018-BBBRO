@@ -17,8 +17,12 @@
         François Aïssaoui : Developer
    
     New contributors :
+        Sebastien BOLLE <sebastien.bolle@orange.com>
+        Gregory BONNARDEL <gbonnardel.ext@orange.com>
+        Cyrille BAREAU <cyrille.bareau@orange.com>
  -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<artifactId>org.eclipse.om2m</artifactId>
@@ -29,42 +33,78 @@
 	<packaging>eclipse-repository</packaging>
 	<name>org.eclipse.om2m :: in product</name>
 	<build>
- 		<plugins>
-  			<plugin>
-   				<groupId>org.eclipse.tycho</groupId>
-   				<artifactId>tycho-p2-director-plugin</artifactId>
-   				<version>${tycho.version}</version>
-   				<executions>
-    				<execution>
-     					<id>materialize-products</id>
-     					<goals>
-      						<goal>materialize-products</goal>
-     					</goals>
-    				</execution>
-   				</executions>
-  			</plugin>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-p2-director-plugin</artifactId>
+				<version>${tycho.version}</version>
+				<executions>
+					<execution>
+						<id>materialize-products</id>
+						<phase>package</phase>
+						<goals>
+							<goal>materialize-products</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
 				<version>1.1</version>
 				<executions>
 					<execution>
-						<phase>install</phase>
+						<phase>package</phase>
 						<goals>
 							<goal>run</goal>
 						</goals>
 						<configuration>
 							<tasks>
 								<echo>Copying scripts into in product</echo>
-								<copy file="${basedir}/script" tofile="${basedir}/target/products/in-cse/${osgi.os}/${osgi.ws}/${osgi.arch}/start.sh"/>
-								<copy file="${basedir}/script" tofile="${basedir}/target/products/in-cse/${osgi.os}/${osgi.ws}/${osgi.arch}/start.bat"/>
-								<copy file="${basedir}/log4j.configuration" tofile="${basedir}/target/products/in-cse/${osgi.os}/${osgi.ws}/${osgi.arch}/log4j.configuration"/>
+								<copy file="${basedir}/script"
+									tofile="${basedir}/target/products/in-cse/${osgi.os}/${osgi.ws}/${osgi.arch}/start.sh" />
+								<copy file="${basedir}/script"
+									tofile="${basedir}/target/products/in-cse/${osgi.os}/${osgi.ws}/${osgi.arch}/start.bat" />
+								<copy file="${basedir}/log4j.configuration"
+									tofile="${basedir}/target/products/in-cse/${osgi.os}/${osgi.ws}/${osgi.arch}/log4j.configuration" />
 							</tasks>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
- 		</plugins>
- 	</build>
- 
+		</plugins>
+	</build>
+
+	<profiles>
+		<profile>
+			<id>docker</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>com.spotify</groupId>
+						<artifactId>docker-maven-plugin</artifactId>
+						<version>1.0.0</version>
+						<executions>
+							<execution>
+								<phase>package</phase>
+								<goals>
+									<goal>build</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<imageName>org.eclipse.om2m.site.incse</imageName>
+							<dockerDirectory>.</dockerDirectory>
+							<resources>
+								<resource>
+									<targetPath>/</targetPath>
+									<directory>${project.build.directory}</directory>
+								</resource>
+							</resources>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>

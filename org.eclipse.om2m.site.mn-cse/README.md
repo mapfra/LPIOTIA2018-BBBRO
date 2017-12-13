@@ -15,12 +15,16 @@ The following folders are exposed as Docker volumes:
 
 Build image
 -----------
-
 docker build -t org.eclipse.om2m.site.mncse .
-
 
 
 Run container
 -------------
 docker run --rm -it -p 8282:8282 org.eclipse.om2m.site.mncse 
 Optionnally, you can mount volumes /mncse/configurations & /mncse/configuration
+
+
+Build with maven
+----------------
+Docker image can be built with maven. Enable "docker" profile:
+mvn clean install -Pdocker
