@@ -94,7 +94,7 @@
 						</executions>
 						<configuration>
 							<imageName>org.eclipse.om2m.site.incse</imageName>
-							<dockerDirectory>.</dockerDirectory>
+							<dockerDirectory>${basedir}</dockerDirectory>
 							<resources>
 								<resource>
 									<targetPath>/</targetPath>
