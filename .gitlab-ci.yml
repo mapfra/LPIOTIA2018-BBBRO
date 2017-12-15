@@ -1,4 +1,8 @@
-image: registry.forge.orange-labs.fr/org.eclipse.om2m/om2m/com.orange.om2m.docker.builder:0.0.2
+image: registry.forge.orange-labs.fr/org.eclipse.om2m/om2m/com.orange.om2m.docker.builder:0.0.4
+
+cache:
+  paths:
+    - .m2
 
 stages:
   - build
@@ -8,16 +12,21 @@ stages:
 
 build:
   stage: build
-  script: "mvn clean install -B"
+  script: 
+    - "nohup dockerd&"
+    - "mvn clean install -Dmaven.repo.local=./.m2/repository -B -s /root/.m2/settings.xml"
   tags:
-    - docker
-    - forge
+    - docker-privileged
+    - rsc
     - shared
     
 deploy:
   stage: deploy
-  script: "mvn deploy -B -DaltDeploymentRepository=inhouse.snapshot::default::http://maven2.rd.francetelecom.fr/proxy/repository/inhouse.snapshot"
+  script: 
+    - "nohup dockerd&"
+    - "mvn deploy -B -Dmaven.repo.local=./.m2/repository -s /root/.m2/settings.xml -DaltDeploymentRepository=inhouse.snapshot::default::http://maven2.rd.francetelecom.fr/proxy/repository/inhouse.snapshot -Pdocker"
+    - "rm -fr .m2"
   tags:
-    - docker
-    - innovation
+    - docker-privileged
+    - rsc
     - shared
