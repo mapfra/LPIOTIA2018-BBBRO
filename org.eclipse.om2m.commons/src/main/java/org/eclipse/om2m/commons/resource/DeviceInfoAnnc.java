@@ -55,6 +55,17 @@ import org.eclipse.om2m.commons.constants.ShortName;
  *         &lt;element name="fwVersion" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="swVersion" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="hwVersion" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="manufacturerDetailsLink" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="manufacturingDate" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="subModel" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="deviceName" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="osVersion" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="country" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="location" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="systemTime" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="supportURL" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="presentationURL" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="protocol" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;choice minOccurs="0">
  *           &lt;element name="childResource" type="{http://www.onem2m.org/xml/protocols}childResourceRef" maxOccurs="unbounded"/>
  *           &lt;element ref="{http://www.onem2m.org/xml/protocols}subscription" maxOccurs="unbounded"/>
@@ -70,7 +81,7 @@ import org.eclipse.om2m.commons.constants.ShortName;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "")
 @XmlRootElement(name = ShortName.DEVICE_INFO_ANNC)
-public class DeviceInfoAnnc extends AnnouncedMgmtResource {
+public class DeviceInfoAnnc extends MgmtObjAnncWithChildren {
 
 	@XmlElement(required = true, name = ShortName.DEVICE_LABEL, namespace="")
 	protected String deviceLabel;
@@ -109,13 +120,13 @@ public class DeviceInfoAnnc extends AnnouncedMgmtResource {
 	protected String presentationURL;
 	@XmlElement(name = ShortName.PROTOCOL, namespace="")
 	protected String protocol;
-
+	
 	
 	public DeviceInfoAnnc() {
 		super();
 		setMgmtDefinition(MgmtDefinitionTypes.DEVICE_INFO);
 	}
-	
+
 	/**
 	 * Gets the value of the deviceLabel property.
 	 * 

@@ -30,7 +30,6 @@ import org.eclipse.om2m.commons.constants.MgmtDefinitionTypes;
 import org.eclipse.om2m.commons.constants.ShortName;
 import org.eclipse.om2m.commons.exceptions.BadRequestException;
 import org.eclipse.om2m.commons.resource.AnnouncedMgmtResource;
-import org.eclipse.om2m.commons.resource.MgmtObj;
 
 /**
  * Generic common attributes for management objects entities
@@ -122,18 +121,17 @@ public abstract class MgmtObjAnncEntity extends AnnouncedResourceEntity {
 	}
 
 	public static MgmtObjAnncEntity create(BigInteger mgmtDef) {
-		// TODO
-//		if (mgmtDef.equals(MgmtDefinitionTypes.AREA_NWK_INFO))
-//			return new AreaNwkInfoEntity();
-//		if (mgmtDef.equals(MgmtDefinitionTypes.AREA_NWK_DEVICE_INFO))
-//			return new AreaNwkDeviceInfoEntity();
-//		if (mgmtDef.equals(MgmtDefinitionTypes.DEVICE_INFO))
-//			return new DeviceInfoEntity();
+		if (mgmtDef.equals(MgmtDefinitionTypes.AREA_NWK_INFO))
+			return new AreaNwkInfoAnncEntity();
+		if (mgmtDef.equals(MgmtDefinitionTypes.AREA_NWK_DEVICE_INFO))
+			return new AreaNwkDeviceInfoAnncEntity();
+		if (mgmtDef.equals(MgmtDefinitionTypes.DEVICE_INFO))
+			return new DeviceInfoAnncEntity();
 		throw new BadRequestException("Not implemented");
 	}
 
-	abstract public NodeEntity getParentNode();
-	abstract public void setParentNode(NodeEntity parentNode);
+	abstract public NodeAnncEntity getParentNode();
+	abstract public void setParentNode(NodeAnncEntity parentNode);
 	abstract public List<AccessControlPolicyEntity> getAccessControlPolicies();
 	abstract public List<SubscriptionEntity> getSubscriptions();
 

@@ -38,6 +38,8 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.eclipse.om2m.commons.constants.ShortName;
+
 /**
  * <p>
  * Java class for anonymous complex type.
@@ -78,29 +80,36 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "nodeID", "hostedCSELink", "childResource",
-		"memoryAnncOrBatteryAnncOrAreaNwkInfoAnnc" })
-@XmlRootElement(name = "nodeAnnc")
-public class NodeAnnc extends AnnounceableResource {
+@XmlType(name = "")
+@XmlRootElement(name = ShortName.NODE_ANNC)
+public class NodeAnnc extends AnnouncedMgmtResource {
 
-	@XmlElement(required = true)
 	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+	@XmlElement(required = true, name = ShortName.NODE_ID, namespace="")
 	protected String nodeID;
+	
+	@XmlElement(name = ShortName.HOSTED_CSE_LINK, namespace="")
 	protected String hostedCSELink;
+	
+	@XmlElement(name = ShortName.HOSTED_APP_LINK, namespace="")
+	protected String hostedAppLinks;
+
+	@XmlElement(name = ShortName.CHILD_RESOURCE, namespace="")
 	protected List<ChildResourceRef> childResource;
+	
 	@XmlElements({
-			@XmlElement(name = "memoryAnnc", namespace = "http://www.onem2m.org/xml/protocols", type = MemoryAnnc.class),
-			@XmlElement(name = "batteryAnnc", namespace = "http://www.onem2m.org/xml/protocols", type = BatteryAnnc.class),
-			@XmlElement(name = "areaNwkInfoAnnc", namespace = "http://www.onem2m.org/xml/protocols", type = AreaNwkInfoAnnc.class),
-			@XmlElement(name = "areaNwkDeviceInfoAnnc", namespace = "http://www.onem2m.org/xml/protocols", type = AreaNwkDeviceInfoAnnc.class),
-			@XmlElement(name = "firmwareAnnc", namespace = "http://www.onem2m.org/xml/protocols", type = FirmwareAnnc.class),
-			@XmlElement(name = "softwareAnnc", namespace = "http://www.onem2m.org/xml/protocols", type = SoftwareAnnc.class),
-			@XmlElement(name = "deviceInfoAnnc", namespace = "http://www.onem2m.org/xml/protocols", type = DeviceInfoAnnc.class),
-			@XmlElement(name = "deviceCapabilityAnnc", namespace = "http://www.onem2m.org/xml/protocols", type = DeviceCapabilityAnnc.class),
-			@XmlElement(name = "rebootAnnc", namespace = "http://www.onem2m.org/xml/protocols", type = RebootAnnc.class),
-			@XmlElement(name = "eventLogAnnc", namespace = "http://www.onem2m.org/xml/protocols", type = EventLogAnnc.class),
-			@XmlElement(name = "subscription", namespace = "http://www.onem2m.org/xml/protocols", type = Subscription.class) })
-	protected List<Resource> memoryAnncOrBatteryAnncOrAreaNwkInfoAnnc;
+		@XmlElement(name = ShortName.MEMORY_ANNC, namespace = "http://www.onem2m.org/xml/protocols", type = MemoryAnnc.class),
+		@XmlElement(name = ShortName.BATTERY_ANNC, namespace = "http://www.onem2m.org/xml/protocols", type = BatteryAnnc.class),
+		@XmlElement(name = ShortName.AREA_NWK_INFO_ANNC, namespace = "http://www.onem2m.org/xml/protocols", type = AreaNwkInfoAnnc.class),
+		@XmlElement(name = ShortName.AREA_NWK_DEVICE_INFO_ANNC, namespace = "http://www.onem2m.org/xml/protocols", type = AreaNwkDeviceInfoAnnc.class),
+		@XmlElement(name = ShortName.FIRMWARE_ANNC, namespace = "http://www.onem2m.org/xml/protocols", type = FirmwareAnnc.class),
+		@XmlElement(name = ShortName.SOFTWARE_ANNC, namespace = "http://www.onem2m.org/xml/protocols", type = SoftwareAnnc.class),
+		@XmlElement(name = ShortName.DEVICE_INFO_ANNC, namespace = "http://www.onem2m.org/xml/protocols", type = DeviceInfoAnnc.class),
+		@XmlElement(name = ShortName.DEVICE_CAPABILITY_ANNC, namespace = "http://www.onem2m.org/xml/protocols", type = DeviceCapabilityAnnc.class),
+		@XmlElement(name = ShortName.REBOOT_ANNC, namespace = "http://www.onem2m.org/xml/protocols", type = RebootAnnc.class),
+		@XmlElement(name = ShortName.EVENT_LOG_ANNC, namespace = "http://www.onem2m.org/xml/protocols", type = EventLogAnnc.class),
+		@XmlElement(name = ShortName.SUB, namespace = "http://www.onem2m.org/xml/protocols", type = Subscription.class) })
+	protected List<AnnouncedMgmtResource> mgmmtObjs;
 
 	/**
 	 * Gets the value of the nodeID property.
@@ -201,11 +210,25 @@ public class NodeAnnc extends AnnounceableResource {
 	 * 
 	 * 
 	 */
-	public List<Resource> getMemoryAnncOrBatteryAnncOrAreaNwkInfoAnnc() {
-		if (memoryAnncOrBatteryAnncOrAreaNwkInfoAnnc == null) {
-			memoryAnncOrBatteryAnncOrAreaNwkInfoAnnc = new ArrayList<Resource>();
+	public List<AnnouncedMgmtResource> getMgmtObjs() {
+		if (mgmmtObjs == null) {
+			mgmmtObjs = new ArrayList<AnnouncedMgmtResource>();
 		}
-		return this.memoryAnncOrBatteryAnncOrAreaNwkInfoAnnc;
+		return this.mgmmtObjs;
+	}
+
+	/**
+	 * @return the hostedAppLinks
+	 */
+	public String getHostedAppLinks() {
+		return hostedAppLinks;
+	}
+
+	/**
+	 * @param hostedAppLinks the hostedAppLinks to set
+	 */
+	public void setHostedAppLinks(String hostedAppLinks) {
+		this.hostedAppLinks = hostedAppLinks;
 	}
 
 }

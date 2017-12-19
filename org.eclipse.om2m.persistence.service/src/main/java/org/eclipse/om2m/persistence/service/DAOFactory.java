@@ -34,6 +34,7 @@ import org.eclipse.om2m.commons.entities.GroupEntity;
 import org.eclipse.om2m.commons.entities.LabelEntity;
 import org.eclipse.om2m.commons.entities.MgmtObjAnncEntity;
 import org.eclipse.om2m.commons.entities.MgmtObjEntity;
+import org.eclipse.om2m.commons.entities.NodeAnncEntity;
 import org.eclipse.om2m.commons.entities.NodeEntity;
 import org.eclipse.om2m.commons.entities.PollingChannelEntity;
 import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
@@ -95,6 +96,8 @@ public interface DAOFactory {
 	public abstract DAO<DynamicAuthorizationConsultationEntity> getDynamicAuthorizationDAO();
 
 	public abstract DAO<ContentInstanceEntity> getOldestDAO();
+
+	public abstract DAO<NodeAnncEntity> getNodeAnncDAO();
 
 	public abstract DAO<MgmtObjAnncEntity> getMgmtObjAnncDAO();
 

@@ -58,6 +58,7 @@ import org.eclipse.om2m.core.controller.LatestOldestController;
 import org.eclipse.om2m.core.controller.LatestOldestController.SortingPolicy;
 import org.eclipse.om2m.core.controller.MgmtObjAnncController;
 import org.eclipse.om2m.core.controller.MgmtObjController;
+import org.eclipse.om2m.core.controller.NodeAnncController;
 import org.eclipse.om2m.core.controller.NodeController;
 import org.eclipse.om2m.core.controller.PollingChannelController;
 import org.eclipse.om2m.core.controller.PollingChannelUriController;
@@ -316,8 +317,14 @@ public class Router implements CseService {
 		if (patterns.match(patterns.NODE_PATTERN, uri)) {
 			return new NodeController();
 		}
+		if (patterns.match(patterns.NODE_ANNC_PATTERN, uri)) {
+			return new NodeAnncController();
+		}
 		if (patterns.match(patterns.NMGMT_OBJ_PATTERN, uri)) {
 			return new MgmtObjController();
+		}
+		if (patterns.match(patterns.NMGMT_OBJ_ANNC_PATTERN, uri)) {
+			return new MgmtObjAnncController();
 		}
 		if (patterns.match(patterns.SUBSCRIPTION_PATTERN, uri)){
 			return new SubscriptionController();
@@ -379,6 +386,8 @@ public class Router implements CseService {
 			return new MgmtObjController(); 
 		case ResourceType.MGMT_OBJ_ANNC:
 			return new MgmtObjAnncController(); 
+		case ResourceType.NODE_ANNC:
+			return new NodeAnncController();
 		default : 
 			throw new NotImplementedException("ResourceType: " + resourceType + " is not implemented");
 		}

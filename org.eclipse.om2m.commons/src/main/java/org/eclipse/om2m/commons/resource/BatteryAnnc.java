@@ -34,6 +34,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 
+import org.eclipse.om2m.commons.constants.MgmtDefinitionTypes;
 import org.eclipse.om2m.commons.constants.ShortName;
 
 /**
@@ -66,12 +67,17 @@ import org.eclipse.om2m.commons.constants.ShortName;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "")
 @XmlRootElement(name = ShortName.BATTERY_ANNC)
-public class BatteryAnnc extends AnnouncedMgmtResource {
+public class BatteryAnnc extends MgmtObjAnncWithChildren {
 
 	@XmlSchemaType(name = "unsignedInt")
 	protected Long batteryLevel;
-
 	protected BigInteger batteryStatus;
+	
+	
+	public BatteryAnnc() {
+		super();
+		setMgmtDefinition(MgmtDefinitionTypes.BATTERY);
+	}
 
 	/**
 	 * Gets the value of the batteryLevel property.

@@ -37,10 +37,8 @@ public class AeAnncMapper extends EntityMapper<AeAnncEntity, AEAnnc> {
 		resource.setExpirationTime(entity.getExpirationTime());
 		resource.setAppName(entity.getAppName());
 		resource.setNodeLink(entity.getNodeLink());
-		resource.setLink(entity.getLink());
 		resource.setOntologyRef(entity.getOntologyRef());
 		resource.getPointOfAccess().addAll(entity.getPointOfAccess());
-
 	}
 
 	@Override
@@ -50,10 +48,7 @@ public class AeAnncMapper extends EntityMapper<AeAnncEntity, AEAnnc> {
 	
 	@Override
 	protected List<ChildResourceRef> getChildResourceRef(AeAnncEntity entity, int level, int offset) {
-		
-		
 		List<ChildResourceRef> childRefs = new ArrayList<>();
-		
 		if (level == 0) {
 			return childRefs;
 		}
@@ -65,7 +60,6 @@ public class AeAnncMapper extends EntityMapper<AeAnncEntity, AEAnnc> {
 			child.setValue(flexContainerEntity.getResourceID());
 			child.setSpid(flexContainerEntity.getContainerDefinition());
 			childRefs.add(child);
-			
 			childRefs.addAll(new FlexContainerAnncMapper().getChildResourceRef(flexContainerEntity, level - 1, offset - 1));
 		}
 
@@ -76,7 +70,6 @@ public class AeAnncMapper extends EntityMapper<AeAnncEntity, AEAnnc> {
 			child.setType(BigInteger.valueOf(ResourceType.SUBSCRIPTION));
 			child.setValue(sub.getResourceID());
 			childRefs.add(child);
-			
 			childRefs.addAll(new SubscriptionMapper().getChildResourceRef(sub, level - 1, offset - 1));
 		}
 		
@@ -85,7 +78,6 @@ public class AeAnncMapper extends EntityMapper<AeAnncEntity, AEAnnc> {
 
 	@Override
 	protected void mapChildResources(AeAnncEntity entity, AEAnnc resource, int level, int offset) {
-
 		if (level == 0) {
 			return;
 		}

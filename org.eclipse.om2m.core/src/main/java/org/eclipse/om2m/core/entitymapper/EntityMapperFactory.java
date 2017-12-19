@@ -34,6 +34,7 @@ import org.eclipse.om2m.commons.entities.FlexContainerEntity;
 import org.eclipse.om2m.commons.entities.GroupEntity;
 import org.eclipse.om2m.commons.entities.MgmtObjAnncEntity;
 import org.eclipse.om2m.commons.entities.MgmtObjEntity;
+import org.eclipse.om2m.commons.entities.NodeAnncEntity;
 import org.eclipse.om2m.commons.entities.NodeEntity;
 import org.eclipse.om2m.commons.entities.PollingChannelEntity;
 import org.eclipse.om2m.commons.entities.RegularResourceEntity;
@@ -56,6 +57,7 @@ import org.eclipse.om2m.commons.resource.DynamicAuthorizationConsultation;
 import org.eclipse.om2m.commons.resource.Group;
 import org.eclipse.om2m.commons.resource.MgmtObj;
 import org.eclipse.om2m.commons.resource.Node;
+import org.eclipse.om2m.commons.resource.NodeAnnc;
 import org.eclipse.om2m.commons.resource.PollingChannel;
 import org.eclipse.om2m.commons.resource.RegularResource;
 import org.eclipse.om2m.commons.resource.RemoteCSE;
@@ -121,11 +123,15 @@ public class EntityMapperFactory {
 	public static EntityMapper<NodeEntity, Node> getNodeMapper() {
 		return new NodeMapper();
 	}
+	public static EntityMapper<NodeAnncEntity, NodeAnnc> getNodeAnncMapper() {
+		return new NodeAnncMapper();
+	}
 	
 	/** Get the Remote CSE mapper */
 	public static EntityMapper<RemoteCSEEntity, RemoteCSE> getRemoteCseMapper(){
 		return new RemoteCSEMapper();
 	}
+	
 	/** Get the Subscription mapper */
 	public static EntityMapper<SubscriptionEntity, Subscription> getSubscriptionMapper(){
 		return new SubscriptionMapper();
@@ -199,6 +205,8 @@ public class EntityMapperFactory {
 			return new GroupMapper();
 		case ResourceType.NODE:
 			return new NodeMapper();
+		case ResourceType.NODE_ANNC:
+			return new NodeAnncMapper();
 		case ResourceType.REMOTE_CSE:
 			return new RemoteCSEMapper();
 		case ResourceType.SUBSCRIPTION:

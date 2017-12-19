@@ -336,11 +336,11 @@ public class AEController extends Controller {
 		// Commit the DB transaction & release lock
 		transaction.commit();
 		
-		if ((ae.getAnnounceTo() != null) && (!ae.getAnnounceTo().isEmpty())) {
+		if (! ae.getAnnounceTo().isEmpty()) {
 			ae.setName(aeDB.getName());
 			ae.setResourceID(aeDB.getResourceID());
 			ae.setResourceType(ResourceType.AE);
-			Announcer.announce(ae.getAnnounceTo(), ae.getAnnouncedAttribute(), ae, request.getFrom(), "");
+			Announcer.announce(ae, request.getFrom(), "");
 		}
 
 		// Create the response
@@ -604,7 +604,7 @@ public class AEController extends Controller {
 		
 		// deannounce
 		
-		Announcer.deAnnounce(aeEntity.getAnnounceTo(), aeEntity, Constants.ADMIN_REQUESTING_ENTITY);
+		Announcer.deAnnounce(aeEntity, Constants.ADMIN_REQUESTING_ENTITY);
 
 		// Return rsc
 		response.setResponseStatusCode(ResponseStatusCode.DELETED);

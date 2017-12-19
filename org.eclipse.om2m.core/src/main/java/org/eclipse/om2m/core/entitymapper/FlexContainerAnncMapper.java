@@ -44,7 +44,7 @@ public class FlexContainerAnncMapper extends EntityMapper<FlexContainerAnncEntit
 		resource.setOntologyRef(entity.getOntologyRef());
 		resource.setStateTag(entity.getStateTag());
 		resource.setContainerDefinition(entity.getContainerDefinition());
-		
+		resource.setNodeLink(entity.getNodeLink());
 	}
 	
 	@Override
@@ -104,11 +104,9 @@ public class FlexContainerAnncMapper extends EntityMapper<FlexContainerAnncEntit
 			resource.getFlexContainerOrContainerOrSubscription().add(subRes);
 		}
 		
-		
 		// add child ref with containers
 		
 		resource.finalizeSerialization();
 	}
-
 	
 }

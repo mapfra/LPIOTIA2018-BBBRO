@@ -76,34 +76,28 @@ import org.eclipse.om2m.commons.constants.ShortName;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "")
 @XmlRootElement(name = ShortName.AREA_NWK_DEVICE_INFO_ANNC)
-public class AreaNwkDeviceInfoAnnc extends AnnouncedMgmtResource {
+public class AreaNwkDeviceInfoAnnc extends MgmtObjAnncWithChildren {
 
 	@XmlElement(required = false, name = ShortName.DEV_ID, namespace="")
- 	protected String devID;
-	
+	protected String devID;
 	@XmlElement(required = false, name = ShortName.DEV_TYPE, namespace="")
- 	protected String devType;
-	
+	protected String devType;
 	@XmlElement(required = false, name = ShortName.AREA_NWK_ID, namespace="")
- 	@XmlSchemaType(name = "anyURI")
- 	protected String areaNwkId;
- 	
+	@XmlSchemaType(name = "anyURI")
+	protected String areaNwkId;
 	@XmlSchemaType(name = "nonNegativeInteger")
 	@XmlElement(name = ShortName.SLEEP_INTERVAL, namespace="")
- 	protected BigInteger sleepInterval;
- 	
+	protected BigInteger sleepInterval;
 	@XmlSchemaType(name = "nonNegativeInteger")
 	@XmlElement(name = ShortName.SLEEP_DURATION, namespace="")
- 	protected BigInteger sleepDuration;
-	
+	protected BigInteger sleepDuration;
 	@XmlElement(name = ShortName.STATUS, namespace="")
- 	protected String status;
- 	
+	protected String status;
 	@XmlList
 	@XmlElement(required = false, name = ShortName.LIST_OF_NEIGHBORS, namespace="")
- 	protected List<String> listOfNeighbors;
-
-		
+	protected List<String> listOfNeighbors;
+	
+	
 	public AreaNwkDeviceInfoAnnc() {
 		super();
 		setMgmtDefinition(MgmtDefinitionTypes.AREA_NWK_DEVICE_INFO);

@@ -68,7 +68,7 @@ import org.eclipse.om2m.commons.constants.ShortName;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "")
 @XmlRootElement(name = ShortName.DEVICE_CAPABILITY_ANNC)
-public class DeviceCapabilityAnnc extends AnnouncedMgmtResource {
+public class DeviceCapabilityAnnc extends MgmtObjAnncWithChildren {
 
 	protected String capabilityName;
 	protected Boolean attached;

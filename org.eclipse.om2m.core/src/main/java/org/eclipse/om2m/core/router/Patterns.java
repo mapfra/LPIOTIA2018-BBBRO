@@ -20,7 +20,6 @@
 
 package org.eclipse.om2m.core.router;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.om2m.commons.constants.Constants;
@@ -34,6 +33,8 @@ import org.eclipse.om2m.persistence.service.DBService;
  */
 public class Patterns implements Constants {
 	
+//	private static Log LOGGER = LogFactory.getLog(Patterns.class);
+
 	/** All short name for filtering */
 	private static final String ALL_SHORT_NAMES = ShortName.ACP + "|" + ShortName.AE + "|" + ShortName.CNT +
 			"|" + ShortName.CIN + "|" + ShortName.REMOTE_CSE + "|" + ShortName.LATEST + "|" + ShortName.OLDEST +
@@ -98,7 +99,11 @@ public class Patterns implements Constants {
     
     public final Pattern NODE_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.NODE + Constants.PREFIX_SEPERATOR + ID_STRING);
     
+    public final Pattern NODE_ANNC_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.NODE_ANNC + Constants.PREFIX_SEPERATOR + ID_STRING);
+    
     public final Pattern NMGMT_OBJ_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.MGO + Constants.PREFIX_SEPERATOR + ID_STRING);
+    
+    public final Pattern NMGMT_OBJ_ANNC_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.MGOA + Constants.PREFIX_SEPERATOR + ID_STRING);
 
     /** Non-hierarchical URI pattern */
     public final Pattern NON_HIERARCHICAL_PATTERN = Pattern.compile(
@@ -118,11 +123,7 @@ public class Patterns implements Constants {
 	 */
 	public boolean match(Pattern pattern, String uri) {
 	    // Match uri with pattern
-	    Matcher m = pattern.matcher(uri);
-	    if (!m.matches()){
-	        return false;
-	    }
-	    return true;
+		return pattern.matcher(uri).matches();
 	}
 	
 	/**
@@ -180,9 +181,15 @@ public class Patterns implements Constants {
 		if (match(NMGMT_OBJ_PATTERN, uri)) {
 			return db.getDAOFactory().getMgmtObjDAO();
 		}
+		if (match(NODE_ANNC_PATTERN, uri)) {
+			return db.getDAOFactory().getNodeAnncDAO();
+		}
+		if (match(NMGMT_OBJ_ANNC_PATTERN, uri)) {
+			return db.getDAOFactory().getMgmtObjAnncDAO();
+		}
 		return null;
 	}
-	
+
 	/**
 	 * Method used to check the validity of the resource name provided
 	 * @param resourceName

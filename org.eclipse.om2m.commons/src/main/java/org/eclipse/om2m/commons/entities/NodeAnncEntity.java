@@ -1,21 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2013-2016 LAAS-CNRS (www.laas.fr)
- * 7 Colonel Roche 31077 Toulouse - France
- *
+ * Copyright (c) 2014, 2017 Orange.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
- * Initial Contributors:
- *     Thierry Monteil : Project manager, technical co-manager
- *     Mahdi Ben Alaya : Technical co-manager
- *     Samir Medjiah : Technical co-manager
- *     Khalil Drira : Strategy expert
- *     Guillaume Garzone : Developer
- *     François Aïssaoui : Developer
- *
- * New contributors :
  *******************************************************************************/
 package org.eclipse.om2m.commons.entities;
 
@@ -40,23 +28,23 @@ import org.eclipse.om2m.commons.constants.MgmtDefinitionTypes;
 import org.eclipse.om2m.commons.constants.ShortName;
 
 @Inheritance(strategy = InheritanceType.JOINED)
-@Entity(name = DBEntities.NODE_ENTITY)
-public class NodeEntity extends AnnounceableSubordinateEntity {
+@Entity(name = DBEntities.NODE_ANNC_ENTITY)
+public class NodeAnncEntity extends AnnouncedResourceEntity {
 
 	// linked ACP
 	@ManyToMany(fetch=FetchType.LAZY)
 	@JoinTable(
-			name = DBEntities.ACP_NOD_JOIN,
-			joinColumns = { @JoinColumn(name = DBEntities.NOD_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
+			name = DBEntities.ACP_NODANNC_JOIN,
+			joinColumns = { @JoinColumn(name = DBEntities.NODANNC_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
 			inverseJoinColumns = { @JoinColumn(name = DBEntities.ACP_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
 			)
 	protected List<AccessControlPolicyEntity> linkedAcps;
 	
 	/** List of DynamicAuthorizationConsultations*/
-	@ManyToMany(fetch=FetchType.LAZY, mappedBy="linkedNodeEntities")
+	@ManyToMany(fetch=FetchType.LAZY, mappedBy="linkedNodeAnncEntities")
 	@JoinTable(
-			name = DBEntities.NOD_DAC_JOIN,
-			joinColumns = { @JoinColumn(name = DBEntities.NOD_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
+			name = DBEntities.NODANNC_DAC_JOIN,
+			joinColumns = { @JoinColumn(name = DBEntities.NODANNC_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
 			inverseJoinColumns = { @JoinColumn(name = DBEntities.DAC_JOINID, referencedColumnName = ShortName.RESOURCE_ID) }
 			)
 	protected List<DynamicAuthorizationConsultationEntity> dynamicAuthorizationConsultations;
@@ -73,56 +61,56 @@ public class NodeEntity extends AnnounceableSubordinateEntity {
 	@Column(name = ShortName.HOSTED_APP_LINK)
 	protected String hostedAppLink;
 
-	@ManyToOne(fetch=FetchType.LAZY, targetEntity=CSEBaseEntity.class)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinTable(
-			name = DBEntities.CSB_NOD_CH_JOIN,
-			joinColumns = { @JoinColumn(name = DBEntities.NOD_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
+			name = DBEntities.CSB_NODANNC_CH_JOIN,
+			joinColumns = { @JoinColumn(name = DBEntities.NODANNC_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
 			inverseJoinColumns = { @JoinColumn(name = DBEntities.CSEB_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
 			)
 	protected CSEBaseEntity parentCsb;
 
-	@ManyToOne(fetch=FetchType.LAZY, targetEntity=RemoteCSEEntity.class)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinTable(
-			name = DBEntities.CSR_NOD_CH_JOIN,
-			joinColumns = { @JoinColumn(name = DBEntities.NOD_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
+			name = DBEntities.CSR_NODANNC_CH_JOIN,
+			joinColumns = { @JoinColumn(name = DBEntities.NODANNC_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
 			inverseJoinColumns = { @JoinColumn(name = DBEntities.CSR_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
 			)
 	protected RemoteCSEEntity parentCsr;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
 	@JoinTable(
-			name = DBEntities.NOD_SUB_JOIN,
-			joinColumns = { @JoinColumn(name = DBEntities.NOD_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
+			name = DBEntities.NODANNC_SUB_JOIN,
+			joinColumns = { @JoinColumn(name = DBEntities.NODANNC_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
 			inverseJoinColumns = { @JoinColumn(name = DBEntities.SUB_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
 			)
-	protected List<SubscriptionEntity> subscriptions;
+	protected List<SubscriptionEntity> childSubscriptions;
 
 	// Database link to AreaNwkInfo Entity
 	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
 	@JoinTable(
-			name = DBEntities.ANI_NOD_JOIN,
+			name = DBEntities.ANI_NODANNC_JOIN,
 			inverseJoinColumns = { @JoinColumn(name = DBEntities.ANI_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
-			joinColumns = { @JoinColumn(name = DBEntities.NOD_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
+			joinColumns = { @JoinColumn(name = DBEntities.NODANNC_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
 			)
-	protected List<AreaNwkInfoEntity> childAreaNwkInfoEntities;
+	protected List<AreaNwkInfoAnncEntity> childAreaNwkInfoEntities;
 	
 	// Database link to AreaNwkDeviceInfo entity
 	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
 	@JoinTable(
-			name = DBEntities.ANDI_NOD_JOIN,
+			name = DBEntities.ANDI_NODANNC_JOIN,
 			inverseJoinColumns = { @JoinColumn(name = DBEntities.ANDI_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
-			joinColumns = { @JoinColumn(name = DBEntities.NOD_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
+			joinColumns = { @JoinColumn(name = DBEntities.NODANNC_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
 			)
-	protected List<AreaNwkDeviceInfoEntity> childAreaNwkDeviceInfoEntities;
+	protected List<AreaNwkDeviceInfoAnncEntity> childAreaNwkDeviceInfoEntities;
 	
 	// Database link to DeviceInfo entity
 	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
 	@JoinTable(
-			name = DBEntities.DVI_NOD_JOIN,
+			name = DBEntities.DVI_NODANNC_JOIN,
 			inverseJoinColumns = { @JoinColumn(name = DBEntities.DVI_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
-			joinColumns = { @JoinColumn(name = DBEntities.NOD_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
+			joinColumns = { @JoinColumn(name = DBEntities.NODANNC_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
 			)
-	protected List<DeviceInfoEntity> childDeviceInfoEntities;
+	protected List<DeviceInfoAnncEntity> childDeviceInfoEntities;
 
 	/**
 	 * @return the accessControlPolicies
@@ -137,8 +125,7 @@ public class NodeEntity extends AnnounceableSubordinateEntity {
 	/**
 	 * @param accessControlPolicies the accessControlPolicies to set
 	 */
-	public void setAccessControlPolicies(
-			List<AccessControlPolicyEntity> accessControlPolicies) {
+	public void setAccessControlPolicies(List<AccessControlPolicyEntity> accessControlPolicies) {
 		this.linkedAcps = accessControlPolicies;
 	}
 	
@@ -215,21 +202,21 @@ public class NodeEntity extends AnnounceableSubordinateEntity {
 	/**
 	 * @return the childSubscriptions
 	 */
-	public List<SubscriptionEntity> getSubscriptions() {
-		return subscriptions;
+	public List<SubscriptionEntity> getChildSubscriptions() {
+		return childSubscriptions;
 	}
 	
 	/**
 	 * @param childSubscriptions the childSubscriptions to set
 	 */
-	public void setSubscriptions(List<SubscriptionEntity> subscriptions) {
-		this.subscriptions = subscriptions;
+	public void setChildSubscriptions(List<SubscriptionEntity> childSubscriptions) {
+		this.childSubscriptions = childSubscriptions;
 	}
 	
 	/**
 	 * @return the childAreaNwkInfoEntities
 	 */
-	public List<AreaNwkInfoEntity> getChildAreaNwkInfoEntities() {
+	public List<AreaNwkInfoAnncEntity> getChildAreaNwkInfoEntities() {
 		if (this.childAreaNwkInfoEntities == null) {
 			this.childAreaNwkInfoEntities = new ArrayList<>();
 		}
@@ -239,14 +226,14 @@ public class NodeEntity extends AnnounceableSubordinateEntity {
 	/**
 	 * @param childAreaNwkInfoEntities the childAreaNwkInfoEntities to set
 	 */
-	public void setChildAreaNwkInfoEntities(List<AreaNwkInfoEntity> childAreaNwkInfoEntities) {
+	public void setChildAreaNwkInfoAnncEntities(List<AreaNwkInfoAnncEntity> childAreaNwkInfoEntities) {
 		this.childAreaNwkInfoEntities = childAreaNwkInfoEntities;
 	}
 	
 	/**
 	 * @return the childAreaNwkDeviceInfoEntities
 	 */
-	public List<AreaNwkDeviceInfoEntity> getChildAreaNwkDeviceInfoEntities() {
+	public List<AreaNwkDeviceInfoAnncEntity> getChildAreaNwkDeviceInfoEntities() {
 		if (this.childAreaNwkDeviceInfoEntities == null) {
 			this.childAreaNwkDeviceInfoEntities = new ArrayList<>();
 		}
@@ -256,14 +243,14 @@ public class NodeEntity extends AnnounceableSubordinateEntity {
 	/**
 	 * @param childAreaNwkDeviceInfoEntities the childAreaNwkDeviceInfoEntities to set
 	 */
-	public void setChildAreaNwkDeviceInfoEntities(List<AreaNwkDeviceInfoEntity> childAreaNwkDeviceInfoEntities) {
+	public void setChildAreaNwkDeviceInfoAnncEntities(List<AreaNwkDeviceInfoAnncEntity> childAreaNwkDeviceInfoEntities) {
 		this.childAreaNwkDeviceInfoEntities = childAreaNwkDeviceInfoEntities;
 	}
 	
 	/**
 	 * @return the childDeviceInfoEntities
 	 */
-	public List<DeviceInfoEntity> getChildDeviceInfoEntities() {
+	public List<DeviceInfoAnncEntity> getChildDeviceInfoEntities() {
 		if (this.childDeviceInfoEntities == null) {
 			this.childDeviceInfoEntities = new ArrayList<>();
 		}
@@ -273,18 +260,10 @@ public class NodeEntity extends AnnounceableSubordinateEntity {
 	/**
 	 * @param childDeviceInfoEntities the childDeviceInfoEntities to set
 	 */
-	public void setChildDeviceInfoEntities(List<DeviceInfoEntity> childDeviceInfoEntities) {
+	public void setChildDeviceInfoAnncEntities(List<DeviceInfoAnncEntity> childDeviceInfoEntities) {
 		this.childDeviceInfoEntities = childDeviceInfoEntities;
 	}
-
-	public List<MgmtObjEntity> getMgmtObjEntities() {
-		List<MgmtObjEntity> ret = new ArrayList<MgmtObjEntity>();
-		ret.addAll(getChildAreaNwkInfoEntities());
-		ret.addAll(getChildAreaNwkDeviceInfoEntities());
-		ret.addAll(getChildDeviceInfoEntities());
-		return ret;
-	}
-
+	
 	@Override
 	/**
 	 * Retrieve linked dynamicAuthorizationConsultations
@@ -304,24 +283,32 @@ public class NodeEntity extends AnnounceableSubordinateEntity {
 		this.dynamicAuthorizationConsultations = list;
 	}
 
-	public void addMgmtObj(MgmtObjEntity mgmtObj) {
-		BigInteger mgmtDef = mgmtObj.getMgmtDefinition();
-		if (mgmtDef.equals(MgmtDefinitionTypes.AREA_NWK_INFO))
-			getChildAreaNwkInfoEntities().add((AreaNwkInfoEntity) mgmtObj);
-		else if (mgmtDef.equals(MgmtDefinitionTypes.AREA_NWK_DEVICE_INFO))
-			getChildAreaNwkDeviceInfoEntities().add((AreaNwkDeviceInfoEntity) mgmtObj);
-		else if (mgmtDef.equals(MgmtDefinitionTypes.DEVICE_INFO))
-			getChildDeviceInfoEntities().add((DeviceInfoEntity) mgmtObj);
+	public List<MgmtObjAnncEntity> getMgmtObjEntities() {
+		List<MgmtObjAnncEntity> ret = new ArrayList<MgmtObjAnncEntity>();
+		ret.addAll(getChildAreaNwkInfoEntities());
+		ret.addAll(getChildAreaNwkDeviceInfoEntities());
+		ret.addAll(getChildDeviceInfoEntities());
+		return ret;
 	}
 
-	public void removeMgmtObj(MgmtObjEntity mgmtObj) {
+	public void addMgmtObj(MgmtObjAnncEntity mgmtObj) {
 		BigInteger mgmtDef = mgmtObj.getMgmtDefinition();
 		if (mgmtDef.equals(MgmtDefinitionTypes.AREA_NWK_INFO))
-			getChildAreaNwkInfoEntities().remove((AreaNwkInfoEntity) mgmtObj);
+			getChildAreaNwkInfoEntities().add((AreaNwkInfoAnncEntity) mgmtObj);
 		else if (mgmtDef.equals(MgmtDefinitionTypes.AREA_NWK_DEVICE_INFO))
-			getChildAreaNwkDeviceInfoEntities().remove((AreaNwkDeviceInfoEntity) mgmtObj);
+			getChildAreaNwkDeviceInfoEntities().add((AreaNwkDeviceInfoAnncEntity) mgmtObj);
 		else if (mgmtDef.equals(MgmtDefinitionTypes.DEVICE_INFO))
-			getChildDeviceInfoEntities().remove((DeviceInfoEntity) mgmtObj);
+			getChildDeviceInfoEntities().add((DeviceInfoAnncEntity) mgmtObj);
+	}
+
+	public void removeMgmtObj(MgmtObjAnncEntity mgmtObj) {
+		BigInteger mgmtDef = mgmtObj.getMgmtDefinition();
+		if (mgmtDef.equals(MgmtDefinitionTypes.AREA_NWK_INFO))
+			getChildAreaNwkInfoEntities().remove((AreaNwkInfoAnncEntity) mgmtObj);
+		else if (mgmtDef.equals(MgmtDefinitionTypes.AREA_NWK_DEVICE_INFO))
+			getChildAreaNwkDeviceInfoEntities().remove((AreaNwkDeviceInfoAnncEntity) mgmtObj);
+		else if (mgmtDef.equals(MgmtDefinitionTypes.DEVICE_INFO))
+			getChildDeviceInfoEntities().remove((DeviceInfoAnncEntity) mgmtObj);
 	}
 
 }

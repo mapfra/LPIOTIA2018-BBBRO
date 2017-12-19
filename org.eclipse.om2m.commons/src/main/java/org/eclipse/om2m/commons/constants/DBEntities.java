@@ -33,6 +33,7 @@ import org.eclipse.om2m.commons.entities.DynamicAuthorizationConsultationEntity;
 import org.eclipse.om2m.commons.entities.FlexContainerAnncEntity;
 import org.eclipse.om2m.commons.entities.FlexContainerEntity;
 import org.eclipse.om2m.commons.entities.LabelEntity;
+import org.eclipse.om2m.commons.entities.MgmtObjEntity;
 import org.eclipse.om2m.commons.entities.PollingChannelEntity;
 import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
 import org.eclipse.om2m.commons.entities.SubscriptionEntity;
@@ -429,13 +430,28 @@ public class DBEntities {
 	public static final String LOCAL_RESOURCE_ID = "LOCAL_RESOURCE_ID";
 	public static final String ANNOUNCE_CSE_ID = "ANNOUNCE_CSE_ID";
 
-//	// RegularResource-AccessControlPolicies
-//	public static final String REGULARRESOURCE_ACP_JOIN = "REGULARRESOURCE_ACP_JOIN";
-//	public static final String REGULARRESOURCE_JOINID = "REGULARRESOURCE_JOINID";
-//
-//	// AnnouncedResource-AccessControlPolicies
-//	public static final String ANNOUNCEDRESOURCE_ACP_JOIN = "REGULARRESOURCE_ACP_JOIN";
-//	public static final String ANNOUNCEDRESOURCE_JOINID = "REGULARRESOURCE_JOINID";
+	// Announced MGMT OBJ
+	// AreaNetworkAnncInfo
+	public static final String ANIA_ACP_JOIN = "ANIA_ACP_JOIN";
+	public static final String ANIA_DAC_JOIN = "ANIA_DAC_JOIN";
+	public static final String ANIA_JOIN_ID = "ANIA_JOIN_ID";
+	public static final String ANIA_SUB_JOIN = "ANIA_SUB_JOIN";
+	public static final String ANIA_NOD_JOIN = "ANIA_NOD_JOIN";
+	public static final String ANIA_NODANNC_JOIN = "ANIA_NODANNC_JOIN";
+	// AreaNetworkAnncDeviceInfo
+	public static final String ANDIA_ACP_JOIN = "ANDIA_ACP_JOIN";
+	public static final String ANDIA_DAC_JOIN = "ANDIA_DAC_JOIN";
+	public static final String ANDIA_JOIN_ID = "ANDIA_JOIN_ID";
+	public static final String ANDIA_SUB_JOIN = "ANDIA_SUB_JOIN";
+	public static final String ANDIA_NOD_JOIN = "ANDIA_NOD_JOIN";
+	public static final String ANDIA_NODANNC_JOIN = "ANDIA_NODANNC_JOIN";
+	// AnncDeviceInfo
+	public static final String DVIA_ACP_JOIN = "DVIA_ACP_JOIN";
+	public static final String DVIA_DAC_JOIN = "DVIA_DAC_JOIN";
+	public static final String DVIA_JOIN_ID = "DVIA_JOIN_ID";
+	public static final String DVIA_SUB_JOIN = "DVIA_SUB_JOIN";
+	public static final String DVIA_NOD_JOIN = "DVIA_NOD_JOIN";
+	public static final String DVIA_NODANNC_JOIN = "DVIA_NODANNC_JOIN";
 
 	// DynamicAuthorisationConsultation DAC
 	public static final String DAC_JOINID = "DAC_JOINID";

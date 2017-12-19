@@ -9,6 +9,8 @@ package org.eclipse.om2m.core.controller;
 
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.eclipse.om2m.commons.constants.Constants;
 import org.eclipse.om2m.commons.constants.MimeMediaType;
 import org.eclipse.om2m.commons.constants.ResourceStatus;
@@ -52,6 +54,9 @@ import org.eclipse.om2m.persistence.service.DAO;
  *
  */
 public class FlexContainerController extends Controller {
+
+	/** Logger */
+	private static Log LOGGER = LogFactory.getLog(FlexContainerController.class);
 
 	/**
 	 * Create the resource in the system according to the representation
@@ -299,7 +304,7 @@ public class FlexContainerController extends Controller {
 		// commit the transaction & release lock
 		transaction.commit();
 
-		if ((flexContainer.getAnnounceTo() != null) && (!flexContainer.getAnnounceTo().isEmpty())) {
+		if (! flexContainer.getAnnounceTo().isEmpty()) {
 			flexContainer.setName(flexContainerFromDB.getName());
 			flexContainer.setResourceID(flexContainerFromDB.getResourceID());
 			flexContainer.setResourceType(ResourceType.FLEXCONTAINER);
@@ -307,8 +312,7 @@ public class FlexContainerController extends Controller {
 			String hierachicalURI = flexContainerFromDB.getHierarchicalURI();
 			String remoteLocation = hierachicalURI
 					.substring(("/" + Constants.CSE_ID + "/" + Constants.CSE_NAME + "/").length());
-			Announcer.announce(flexContainer.getAnnounceTo(), flexContainer.getAnnouncedAttribute(), flexContainer,
-					request.getFrom(), remoteLocation);
+			Announcer.announce(flexContainer, request.getFrom(), remoteLocation);
 		}
 
 		Notifier.notify(subscriptions, flexContainerFromDB, ResourceStatus.CHILD_CREATED);
@@ -410,9 +414,11 @@ public class FlexContainerController extends Controller {
 			checkPermissions(request, flexContainerEntity, flexContainerEntity.getAccessControlPolicies());
 		}
 
-		AbstractFlexContainer modifiedAttributes = /*new FlexContainer()*/ FlexContainerFactory.getSpecializationFlexContainer(flexContainerEntity.getShortName());
+		AbstractFlexContainer modifiedFlexCtr = FlexContainerFactory.getSpecializationFlexContainer(flexContainerEntity.getShortName());
 		// check if content is present
-		if (request.getContent() != null) {
+		if (request.getContent() == null) {
+			// content might be null for FlexContainer representing a SDT action
+		} else {
 			// create the java object from the resource representation
 			// get the object from the representation
 			AbstractFlexContainer flexContainer = null;
@@ -423,16 +429,13 @@ public class FlexContainerController extends Controller {
 					// need to create the payload in order to validate it
 					payload = DataMapperSelector.getDataMapperList().get(contentFormat)
 							.objToString(flexContainer);
-
 				} else {
 					flexContainer = (AbstractFlexContainer) DataMapperSelector.getDataMapperList()
 							.get(request.getRequestContentType()).stringToObj((String) request.getContent());
-
 					if (request.getRequestContentType().equals(contentFormat)) {
 						payload = (String) request.getContent();
 					} else {
-						// need to create the XML payload in order to validate
-						// it
+						// need to create the XML payload in order to validate it
 						payload = DataMapperSelector.getDataMapperList().get(contentFormat)
 								.objToString(flexContainer);
 					}
@@ -442,7 +445,6 @@ public class FlexContainerController extends Controller {
 				if (contentFormat.equals(MimeMediaType.XML)) {
 					FlexContainerXMLValidator.validateXMLPayload(payload, flexContainer.getContainerDefinition());
 				}
-
 			} catch (ClassCastException e) {
 				throw new BadRequestException("Incorrect resource representation in content", e);
 			}
@@ -467,7 +469,7 @@ public class FlexContainerController extends Controller {
 				flexContainerEntity.getAccessControlPolicies().clear();
 				flexContainerEntity.setAccessControlPolicies(
 						ControllerUtil.buildAcpEntityList(flexContainer.getAccessControlPolicyIDs(), transaction));
-				modifiedAttributes.getAccessControlPolicyIDs().addAll(flexContainer.getAccessControlPolicyIDs());
+				modifiedFlexCtr.getAccessControlPolicyIDs().addAll(flexContainer.getAccessControlPolicyIDs());
 			}
 			
 			// dynamicAuthorizationConsultationIDs O
@@ -486,37 +488,36 @@ public class FlexContainerController extends Controller {
 			// labels O
 			if (!flexContainer.getLabels().isEmpty()) {
 				flexContainerEntity.setLabelsEntitiesFromSring(flexContainer.getLabels());
-				modifiedAttributes.getLabels().addAll(flexContainer.getLabels());
+				modifiedFlexCtr.getLabels().addAll(flexContainer.getLabels());
 			}
 			// expirationTime O
 			if (flexContainer.getExpirationTime() != null) {
 				flexContainerEntity.setExpirationTime(flexContainer.getExpirationTime());
-				modifiedAttributes.setExpirationTime(flexContainer.getExpirationTime());
+				modifiedFlexCtr.setExpirationTime(flexContainer.getExpirationTime());
 			}
 			// announceTo O
 			if (!flexContainer.getAnnounceTo().isEmpty()) {
 				// TODO Announcement in AE update
 				flexContainerEntity.getAnnounceTo().clear();
 				flexContainerEntity.getAnnounceTo().addAll(flexContainer.getAnnounceTo());
-				modifiedAttributes.getAnnounceTo().addAll(flexContainer.getAnnounceTo());
+				modifiedFlexCtr.getAnnounceTo().addAll(flexContainer.getAnnounceTo());
 			}
 			// announcedAttribute O
 			if (!flexContainer.getAnnouncedAttribute().isEmpty()) {
 				flexContainerEntity.getAnnouncedAttribute().clear();
 				flexContainerEntity.getAnnouncedAttribute().addAll(flexContainer.getAnnouncedAttribute());
-				modifiedAttributes.getAnnouncedAttribute().addAll(flexContainer.getAnnouncedAttribute());
+				modifiedFlexCtr.getAnnouncedAttribute().addAll(flexContainer.getAnnouncedAttribute());
 			}
 			// ontologyRef O
 			if (flexContainer.getOntologyRef() != null) {
 				flexContainerEntity.setOntologyRef(flexContainer.getOntologyRef());
-				modifiedAttributes.setOntologyRef(flexContainer.getOntologyRef());
+				modifiedFlexCtr.setOntologyRef(flexContainer.getOntologyRef());
 			}
 			// nodeLink O
 			if (flexContainer.getNodeLink() != null) {
 				flexContainerEntity.setNodeLink(flexContainer.getNodeLink());
-				modifiedAttributes.setNodeLink(flexContainer.getNodeLink());
+				modifiedFlexCtr.setNodeLink(flexContainer.getNodeLink());
 			}
-
 			// containerDef
 			if ((flexContainer.getContainerDefinition() != null)
 					&& (!flexContainerEntity.getContainerDefinition().equals(flexContainer.getContainerDefinition()))) {
@@ -529,28 +530,23 @@ public class FlexContainerController extends Controller {
 					flexContainerEntity.createOrUpdateCustomAttribute(ca.getCustomAttributeName(),
 							ca.getCustomAttributeValue());
 				}
-				modifiedAttributes.setCustomAttributes(flexContainer.getCustomAttributes());
+				modifiedFlexCtr.setCustomAttributes(flexContainer.getCustomAttributes());
 			}
-
-		} else {
-			// content might be null for FlexContainer representing a SDT action
 		}
 
 		flexContainerEntity.setLastModifiedTime(DateUtil.now());
-		modifiedAttributes.setLastModifiedTime(flexContainerEntity.getLastModifiedTime());
+		modifiedFlexCtr.setLastModifiedTime(flexContainerEntity.getLastModifiedTime());
 
 		// in case of update operation
 		if (!isInternalNotify) {
-			LOGGER.info("flexContainer.getResourceID=" + flexContainerEntity.getResourceID());
 			// check if a FlexContainerService exist
 			FlexContainerService fcs = FlexContainerSelector.getFlexContainerService(
 					/* request.getTo() */ /* UriUtil.toCseRelativeUri( */flexContainerEntity.getResourceID()/* ) */);
 			if (fcs != null) {
 				try {
-					fcs.setCustomAttributeValues(modifiedAttributes.getCustomAttributes(), request);
+					fcs.setCustomAttributeValues(modifiedFlexCtr.getCustomAttributes(), request);
 					// at this modifiedAttributes.getCustomAttributes() list
 					// contains the new values of CustomAttribute
-
 				} catch (Om2mException e) {
 					throw e;
 				}
@@ -560,14 +556,14 @@ public class FlexContainerController extends Controller {
 		// at this point, we are sure there was no error when setting custom
 		// attribute parameter
 
-		response.setContent(modifiedAttributes);
+		response.setContent(modifiedFlexCtr);
 		// update the resource in the database
 		dbs.getDAOFactory().getFlexContainerDAO().update(transaction, flexContainerEntity);
 
 		// commit and release lock
 		transaction.commit();
 
-		Notifier.notify(flexContainerEntity.getSubscriptions(), flexContainerEntity, modifiedAttributes,
+		Notifier.notify(flexContainerEntity.getSubscriptions(), flexContainerEntity, modifiedFlexCtr,
 				ResourceStatus.UPDATED);
 
 		// set response status code
@@ -590,7 +586,6 @@ public class FlexContainerController extends Controller {
 			LOGGER.info("Delete flexCnt: not found");
 			throw new ResourceNotFoundException("Resource not found");
 		}
-		LOGGER.info("Delete flexCnt " + flexContainerEntity);
 
 		// lock entity
 		transaction.lock(flexContainerEntity);
@@ -607,11 +602,8 @@ public class FlexContainerController extends Controller {
 		// commit the transaction & release lock
 		transaction.commit();
 		
-		String nodeLink = flexContainerEntity.getNodeLink();
-
 		// deannounce
-		Announcer.deAnnounce(flexContainerEntity.getAnnounceTo(), flexContainerEntity,
-				Constants.ADMIN_REQUESTING_ENTITY);
+		Announcer.deAnnounce(flexContainerEntity, Constants.ADMIN_REQUESTING_ENTITY);
 
 		// return the response
 		response.setResponseStatusCode(ResponseStatusCode.DELETED);

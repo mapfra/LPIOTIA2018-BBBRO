@@ -19,25 +19,38 @@
  *******************************************************************************/
 package org.eclipse.om2m.core.announcer;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.om2m.commons.constants.Constants;
+import org.eclipse.om2m.commons.constants.MgmtDefinitionTypes;
 import org.eclipse.om2m.commons.constants.MimeMediaType;
 import org.eclipse.om2m.commons.constants.Operation;
 import org.eclipse.om2m.commons.constants.ResourceType;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
+import org.eclipse.om2m.commons.constants.ShortName;
+import org.eclipse.om2m.commons.entities.AnnounceableSubordinateEntity;
 import org.eclipse.om2m.commons.entities.CreatedAnnouncedResourceEntity;
 import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
-import org.eclipse.om2m.commons.entities.ResourceEntity;
 import org.eclipse.om2m.commons.exceptions.NotImplementedException;
 import org.eclipse.om2m.commons.resource.AE;
 import org.eclipse.om2m.commons.resource.AEAnnc;
 import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
 import org.eclipse.om2m.commons.resource.AbstractFlexContainerAnnc;
 import org.eclipse.om2m.commons.resource.AnnounceableResource;
+import org.eclipse.om2m.commons.resource.AnnouncedMgmtResource;
 import org.eclipse.om2m.commons.resource.AnnouncedResource;
+import org.eclipse.om2m.commons.resource.AreaNwkDeviceInfo;
+import org.eclipse.om2m.commons.resource.AreaNwkDeviceInfoAnnc;
+import org.eclipse.om2m.commons.resource.AreaNwkInfo;
+import org.eclipse.om2m.commons.resource.AreaNwkInfoAnnc;
+import org.eclipse.om2m.commons.resource.DeviceInfo;
+import org.eclipse.om2m.commons.resource.DeviceInfoAnnc;
+import org.eclipse.om2m.commons.resource.MgmtObj;
+import org.eclipse.om2m.commons.resource.Node;
+import org.eclipse.om2m.commons.resource.NodeAnnc;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.FlexContainerFactory;
@@ -56,6 +69,8 @@ import org.eclipse.om2m.persistence.service.util.AnnouncedResourceUtil;
 public class Announcer implements Constants {
 	/** Logger */
 	private static Log LOGGER = LogFactory.getLog(Announcer.class);
+	
+	private static final String SUFFIX = "_Annc";
 
 	/**
 	 * Announces the created resource.
@@ -70,25 +85,24 @@ public class Announcer implements Constants {
 	 *            - requesting entity
 	 * @return
 	 */
-	public static List<String> announce(List<String> announceTo, List<String> announceToAttribute,
-			AnnounceableResource toBeAnnounced, String requestingEntity, String remoteDestination) {
-
+	public static List<String> announce(AnnounceableResource toBeAnnounced, String requestingEntity, String remoteDestination) {
 		AnnouncedResource announcedResource = null;
-
-		switch (toBeAnnounced.getResourceType().intValue()) {
+		LOGGER.info("announce " + toBeAnnounced + " with " + toBeAnnounced.getAnnouncedAttribute());
+		int type = toBeAnnounced.getResourceType().intValue();
+		switch (type) {
 		case ResourceType.AE:
-			AEAnnc aeAnnc = new AEAnnc();
-			aeAnnc.setAppID(((AE) toBeAnnounced).getAppID());
-			announcedResource = aeAnnc;
-			break;
+			announcedResource = createAEAnnc((AE)toBeAnnounced); break;
 		case ResourceType.FLEXCONTAINER:
-			AbstractFlexContainer afc = (AbstractFlexContainer) toBeAnnounced;
-			AbstractFlexContainerAnnc flexContainerAnnc = FlexContainerFactory.getSpecializationFlexContainerAnnc(afc.getShortName() + "Annc");
-			announcedResource = flexContainerAnnc;
+			announcedResource = createFlexContainerAnnc((AbstractFlexContainer)toBeAnnounced); break;
+		case ResourceType.NODE:
+			announcedResource = createNodeAnnc((Node)toBeAnnounced); break;
+		case ResourceType.MGMT_OBJ:
+			announcedResource = createMgmtObjAnnc((MgmtObj)toBeAnnounced); break;
 		default:
+			throw new NotImplementedException("Not implemented " + type);
 		}
 		
-		announcedResource.setName(toBeAnnounced.getName() + "_Annc");
+		announcedResource.setName(toBeAnnounced.getName() + SUFFIX);
 
 		// get the database service
 		DBService dbs = PersistenceService.getInstance().getDbService();
@@ -103,17 +117,13 @@ public class Announcer implements Constants {
 		// link
 		announcedResource.setLink(toBeAnnounced.getResourceID());
 
-		for (String cseId : announceTo) {
-
+		for (String cseId : toBeAnnounced.getAnnounceTo()) { 
 			RemoteCSEEntity remoteCSE = dbs.getDAOFactory().getRemoteCSEbyCseIdDAO().find(transaction, cseId);
 			RequestPrimitive request = new RequestPrimitive();
-
 			CreatedAnnouncedResourceEntity parentResource = dao.find(transaction, toBeAnnounced.getParentID(), cseId);
 			if (parentResource != null) {
-
 				request.setTargetId(parentResource.getRemoteAnnouncedId());
 			} else {
-
 				if (!remoteDestination.startsWith("/")) {
 					remoteDestination = "/" + remoteDestination;
 				}
@@ -122,16 +132,8 @@ public class Announcer implements Constants {
 			}
 			
 			request.setOperation(Operation.CREATE);
-			switch (toBeAnnounced.getResourceType().intValue()) {
-			case ResourceType.AE:
-				request.setResourceType(ResourceType.AE_ANNC);
-				break;
-			case ResourceType.FLEXCONTAINER:
-				request.setResourceType(ResourceType.FLEXCONTAINER_ANNC);
-				break;
-			default:
-				throw new NotImplementedException("");
-			}
+			request.setResourceType(BigInteger.valueOf(
+					toBeAnnounced.getResourceType().intValue() + 10000));
 			request.setContent(announcedResource);
 			request.setRequestContentType(MimeMediaType.OBJ);
 			request.setReturnContentType(MimeMediaType.OBJ);
@@ -148,9 +150,7 @@ public class Announcer implements Constants {
 				announcedResourceEntity.setRemoteAnnouncedId(ar.getResourceID());
 
 				dao.create(transaction, announcedResourceEntity);
-
 			}
-
 		}
 
 		transaction.commit();
@@ -169,8 +169,7 @@ public class Announcer implements Constants {
 	 * @param requestingEntity
 	 *            - Requesting Entity
 	 */
-	public static void deAnnounce(List<String> announceTo, ResourceEntity toBeDeAnnounced, String requestingEntity) {
-
+	public static void deAnnounce(AnnounceableSubordinateEntity toBeDeAnnounced, String requestingEntity) {
 		// get the database service
 		DBService dbs = PersistenceService.getInstance().getDbService();
 		DBTransaction transaction = dbs.getDbTransaction();
@@ -178,22 +177,150 @@ public class Announcer implements Constants {
 
 		AnnouncedResourceUtil announceResourceUtil = dbs.getDBUtilManager().getAnnouncedResourceUtil();
 
-		for (String cseId : announceTo) {
-
-			CreatedAnnouncedResourceEntity are = announceResourceUtil.find(transaction, toBeDeAnnounced.getResourceID(),
-					cseId);
+		for (String cseId : toBeDeAnnounced.getAnnounceTo()) {
+			CreatedAnnouncedResourceEntity are = announceResourceUtil.find(transaction, 
+					toBeDeAnnounced.getResourceID(), cseId);
 			if (are != null) {
 				RequestPrimitive request = new RequestPrimitive();
 				request.setTargetId(are.getRemoteAnnouncedId());
 				request.setOperation(Operation.DELETE);
 				request.setFrom(requestingEntity);
 				Redirector.retarget(request);
-
 				announceResourceUtil.delete(transaction, are);
 			}
-
 		}
 		transaction.commit();
 		transaction.close();
 	}
+	
+	private static AnnouncedResource createAEAnnc(AE res) {
+		AEAnnc annc = new AEAnnc();
+		// Mandatory Announced
+		annc.setExpirationTime(res.getExpirationTime());
+//		annc.getAccessControlPolicyIDs().addAll(res.getAccessControlPolicyIDs());
+		annc.getLabels().addAll(res.getLabels());
+		// Optionally Announced
+		for (String aa : res.getAnnouncedAttribute()) {
+			switch(aa) {
+			case ShortName.APP_NAME: annc.setAppName(res.getAppName()); break;
+			case ShortName.APP_ID: annc.setAppID(res.getAppID()); break;
+			case ShortName.AE_ID: annc.setAEID(res.getAEID()); break;
+			case ShortName.POA: annc.getPointOfAccess().addAll(res.getPointOfAccess()); break;
+			case ShortName.ONTOLOGY_REF: annc.setOntologyRef(res.getOntologyRef()); break;
+			case ShortName.NODE_LINK: annc.setNodeLink(res.getNodeLink()); break;
+			}
+		}
+		return annc;
+	}
+
+	private static AnnouncedResource createFlexContainerAnnc(AbstractFlexContainer res) {
+		AbstractFlexContainerAnnc annc = FlexContainerFactory.getSpecializationFlexContainerAnnc(res.getShortName() + "Annc");
+		// Mandatory Announced
+		annc.setExpirationTime(res.getExpirationTime());
+//		annc.getAccessControlPolicyIDs().addAll(res.getAccessControlPolicyIDs());
+		annc.getLabels().addAll(res.getLabels());
+		for (String aa : res.getAnnouncedAttribute()) {
+			switch(aa) {
+			case ShortName.STATETAG: annc.setStateTag(res.getStateTag()); break;
+			case ShortName.ONTOLOGY_REF: annc.setOntologyRef(res.getOntologyRef()); break;
+			case ShortName.NODE_LINK: annc.setNodeLink(res.getNodeLink() + SUFFIX); break;
+			}
+		}
+		return annc;
+	}
+
+	private static AnnouncedResource createNodeAnnc(Node res) {
+		NodeAnnc annc = new NodeAnnc();
+		// Mandatory Announced
+		annc.setExpirationTime(res.getExpirationTime());
+//		annc.getAccessControlPolicyIDs().addAll(res.getAccessControlPolicyIDs());
+		annc.getLabels().addAll(res.getLabels());
+		annc.setNodeID(res.getNodeID());
+		// Optionally Announced
+		for (String aa : res.getAnnouncedAttribute()) {
+			switch(aa) {
+			case ShortName.HOSTED_CSE_LINK: annc.setHostedCSELink(res.getHostedCSELink()); break;
+			case ShortName.HOSTED_APP_LINK: annc.setHostedAppLinks(res.getHostedAppLinks() + SUFFIX); break;
+			}
+		}
+		return annc;
+	}
+
+	private static AnnouncedResource createMgmtObjAnnc(MgmtObj res) {
+		AnnouncedMgmtResource annc = null;
+		BigInteger type = res.getMgmtDefinition();
+		if (type.equals(MgmtDefinitionTypes.AREA_NWK_INFO)) {
+			AreaNwkInfo ani = (AreaNwkInfo) res;
+			AreaNwkInfoAnnc ania = new AreaNwkInfoAnnc();
+			annc = ania;
+			for (String aa : res.getAnnouncedAttribute()) {
+				switch(aa) {
+				case ShortName.AREA_NWK_TYPE: ania.setAreaNwkType(ani.getAreaNwkType()); break;
+				}
+			}
+		}
+		else if (type.equals(MgmtDefinitionTypes.AREA_NWK_DEVICE_INFO)) {
+			AreaNwkDeviceInfo andi = (AreaNwkDeviceInfo) res;
+			AreaNwkDeviceInfoAnnc andia = new AreaNwkDeviceInfoAnnc();
+			annc = andia;
+			for (String aa : res.getAnnouncedAttribute()) {
+				switch(aa) {
+				case ShortName.DEV_ID: andia.setDevID(andi.getDevID()); break;
+				case ShortName.DEV_TYPE: andia.setDevType(andi.getDevType()); break;
+				case ShortName.AREA_NWK_ID: andia.setAreaNwkId(andi.getAreaNwkId()); break;
+				case ShortName.SLEEP_INTERVAL: andia.setSleepInterval(andi.getSleepInterval()); break;
+				case ShortName.SLEEP_DURATION: andia.setSleepDuration(andi.getSleepDuration()); break;
+				case ShortName.STATUS: andia.setStatus(andi.getStatus()); break;
+				}
+			}
+		}
+		else if (type.equals(MgmtDefinitionTypes.DEVICE_INFO)) {
+			DeviceInfo di = (DeviceInfo) res;
+			DeviceInfoAnnc dia = new DeviceInfoAnnc();
+			annc = dia;
+			for (String aa : res.getAnnouncedAttribute()) {
+				switch(aa) {
+				case ShortName.DEVICE_LABEL: dia.setDeviceLabel(di.getDeviceLabel()); break;
+				case ShortName.MANUFACTURER: dia.setManufacturer(di.getManufacturer()); break;
+				case ShortName.DEVICE_MODEL: dia.setModel(di.getModel()); break;
+				case ShortName.DEVICE_TYPE: dia.setDeviceType(di.getDeviceType()); break;
+				case ShortName.FW_VERSION: dia.setFwVersion(di.getFwVersion()); break;
+				case ShortName.HW_VERSION: dia.setHwVersion(di.getHwVersion()); break;
+				case ShortName.OS_VERSION: dia.setOsVersion(di.getOsVersion()); break;
+				}
+			}
+		}
+		//	else if (type.equals(MgmtDefinitionTypes.FIRMWARE))
+		//		return new FirmwareAnnc();
+		//	else if (type.equals(MgmtDefinitionTypes.SOFTWARE))
+		//		return new SoftwareAnnc();
+		//	else if (type.equals(MgmtDefinitionTypes.MEMORY))
+		//		return new MemoryAnnc();
+		//	else if (type.equals(MgmtDefinitionTypes.BATTERY))
+		//		return new BatteryAnnc();
+		//	else if (type.equals(MgmtDefinitionTypes.DEVICE_CAPABILITY))
+		//		return new DeviceCapabilityAnnc();
+		//	else if (type.equals(MgmtDefinitionTypes.REBOOT))
+		//		return new RebootAnnc();
+		//	else if (type.equals(MgmtDefinitionTypes.EVENT_LOG))
+		//		return new EventLogAnnc();
+		
+		// Common attributes
+		if (annc != null) {
+			// Mandatory Announced
+			annc.setExpirationTime(res.getExpirationTime());
+//			annc.getAccessControlPolicyIDs().addAll(res.getAccessControlPolicyIDs());
+			annc.getLabels().addAll(res.getLabels());
+			// Optionally Announced
+			for (String aa : res.getAnnouncedAttribute()) {
+				switch(aa) {
+				case ShortName.OBJ_IDS: annc.getObjectIDs().addAll(res.getObjectIDs()); break;
+				case ShortName.OBJ_PATHS: annc.getObjectPaths().addAll(res.getObjectPaths()); break;
+				case ShortName.DESCRIPTION: annc.setDescription(res.getDescription()); break;
+				}
+			}
+		}
+		return annc;
+	}
+
 }

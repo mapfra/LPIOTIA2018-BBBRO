@@ -69,7 +69,7 @@ import org.eclipse.om2m.commons.constants.ShortName;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "")
 @XmlRootElement(name = ShortName.EVENT_LOG_ANNC)
-public class EventLogAnnc extends AnnouncedMgmtResource {
+public class EventLogAnnc extends MgmtObjAnncWithChildren {
 
 	protected BigInteger logTypeId;
 	protected String logData;

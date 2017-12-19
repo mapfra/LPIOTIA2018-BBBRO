@@ -15,6 +15,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.om2m.commons.constants.Constants;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
+import org.eclipse.om2m.commons.constants.ShortName;
 import org.eclipse.om2m.commons.resource.AE;
 import org.eclipse.om2m.commons.resource.AEAnnc;
 import org.eclipse.om2m.commons.resource.AccessControlPolicy;
@@ -112,6 +113,9 @@ public class SDTIpeApplication implements DeviceListListener {
 		ae.getPointOfAccess().add(POA);
 		if (hasToBeAnnounced) {
 			ae.getAnnounceTo().add(SEP + remoteCseId);
+			ae.getAnnouncedAttribute().add(ShortName.APP_ID);
+			ae.getAnnouncedAttribute().add(ShortName.APP_NAME);
+			ae.getAnnouncedAttribute().add(ShortName.NODE_LINK);
 		}
 
 		ResponsePrimitive resp = null;

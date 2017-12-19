@@ -86,6 +86,15 @@ public class CSEBaseEntity extends ResourceEntity {
 			)
 	protected List<NodeEntity> childNodes;
 	
+	/** List of Nodes */
+	@OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.ALL})
+	@JoinTable(
+			name=DBEntities.CSB_NODANNC_CH_JOIN,
+			joinColumns={@JoinColumn(name=DBEntities.CSEB_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)},
+			inverseJoinColumns={@JoinColumn(name=DBEntities.NODANNC_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)}
+			)
+	protected List<NodeAnncEntity> childAnncNodes;
+	
 	
 	// TODO list of mgmtCmd
 	// TODO list of location policy
@@ -445,6 +454,23 @@ public class CSEBaseEntity extends ResourceEntity {
 	 */
 	public void setChildNodes(List<NodeEntity> childNodes) {
 		this.childNodes = childNodes;
+	}
+	
+	/**
+	 * @return the childNodes
+	 */
+	public List<NodeAnncEntity> getChildAnncNodes() {
+		if (childAnncNodes == null) {
+			childAnncNodes = new ArrayList<NodeAnncEntity>();
+		}
+		return childAnncNodes;
+	}
+
+	/**
+	 * @param childNodes the childNodes to set
+	 */
+	public void setChildAnncNodes(List<NodeAnncEntity> childNodes) {
+		this.childAnncNodes = childNodes;
 	}
 
 	

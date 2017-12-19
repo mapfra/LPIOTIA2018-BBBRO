@@ -222,6 +222,38 @@ public class DynamicAuthorizationConsultationEntity extends RegularResourceEntit
 			)
 	private List<AeAnncEntity> linkedAeAnncEntities;
 	
+	@ManyToMany(fetch=FetchType.LAZY)
+	@JoinTable(
+			name = DBEntities.ANDIA_DAC_JOIN,
+			joinColumns = { @JoinColumn(name = DBEntities.DAC_JOINID, referencedColumnName = ShortName.RESOURCE_ID) }, 
+			inverseJoinColumns = { @JoinColumn(name = DBEntities.ANDIA_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
+			)
+	private List<AreaNwkDeviceInfoAnncEntity> linkedAreaNwkDeviceInfoAnncEntities;
+	
+	@ManyToMany(fetch=FetchType.LAZY)
+	@JoinTable(
+			name = DBEntities.ANIA_DAC_JOIN,
+			joinColumns = { @JoinColumn(name = DBEntities.DAC_JOINID, referencedColumnName = ShortName.RESOURCE_ID) }, 
+			inverseJoinColumns = { @JoinColumn(name = DBEntities.ANIA_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
+			)
+	private List<AreaNwkInfoAnncEntity> linkedAreaNwkInfoAnncEntities;
+
+	@ManyToMany(fetch=FetchType.LAZY)
+	@JoinTable(
+			name = DBEntities.DVIA_DAC_JOIN,
+			joinColumns = { @JoinColumn(name = DBEntities.DAC_JOINID, referencedColumnName = ShortName.RESOURCE_ID) }, 
+			inverseJoinColumns = { @JoinColumn(name = DBEntities.DVIA_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
+			)
+	private List<DeviceInfoAnncEntity> linkedDeviceInfoAnncEntities;
+	
+	@ManyToMany(fetch=FetchType.LAZY)
+	@JoinTable(
+			name = DBEntities.NODANNC_DAC_JOIN,
+			joinColumns = { @JoinColumn(name = DBEntities.DAC_JOINID, referencedColumnName = ShortName.RESOURCE_ID) }, 
+			inverseJoinColumns = { @JoinColumn(name = DBEntities.NODANNC_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
+			)
+	private List<NodeAnncEntity> linkedNodeAnncEntities;
+
 	
 	public List<AccessControlPolicyEntity> getAccessControlPolicies() {
 		if (accessControlPolicyIDs == null) {
@@ -457,12 +489,55 @@ public class DynamicAuthorizationConsultationEntity extends RegularResourceEntit
 		this.linkedDeviceInfoEntities = linkedMgmtObjEntities;
 	}
 
-	public List<MgmtObjEntity> getMgmtObjEntities() {
-		List<MgmtObjEntity> ret = new ArrayList<MgmtObjEntity>();
-		ret.addAll(getLinkedAreaNwkInfoEntities());
-		ret.addAll(getLinkedAreaNwkDeviceInfoEntities());
-		ret.addAll(getLinkedDeviceInfoEntities());
-		return ret;
+	/**
+	 * @return the linkedMgmtObjEntities
+	 */
+	public List<AreaNwkDeviceInfoAnncEntity> getLinkedAreaNwkDeviceInfoAnncEntities() {
+		if (linkedAreaNwkDeviceInfoAnncEntities == null) {
+			linkedAreaNwkDeviceInfoAnncEntities = new ArrayList<>();
+		}
+		return linkedAreaNwkDeviceInfoAnncEntities;
+	}
+
+	/**
+	 * @param linkedMgmtObjEntities the linkedMgmtObjEntities to set
+	 */
+	public void setLinkedAreaNwkDeviceInfoAnncEntities(List<AreaNwkDeviceInfoAnncEntity> linkedMgmtObjEntities) {
+		this.linkedAreaNwkDeviceInfoAnncEntities = linkedMgmtObjEntities;
+	}
+
+	/**
+	 * @return the linkedAreaNwkInfoEntities
+	 */
+	public List<AreaNwkInfoAnncEntity> getLinkedAreaNwkInfoAnncEntities() {
+		if(linkedAreaNwkInfoAnncEntities == null) {
+			linkedAreaNwkInfoAnncEntities = new ArrayList<>();
+		}
+		return linkedAreaNwkInfoAnncEntities;
+	}
+
+	/**
+	 * @param linkedAreaNwkInfoEntities the linkedAreaNwkInfoEntities to set
+	 */
+	public void setLinkedAreaNwkInfoAnncEntities(List<AreaNwkInfoAnncEntity> linkedAreaNwkInfoEntities) {
+		this.linkedAreaNwkInfoAnncEntities = linkedAreaNwkInfoEntities;
+	}
+
+	/**
+	 * @return the linkedMgmtObjEntities
+	 */
+	public List<DeviceInfoAnncEntity> getLinkedDeviceInfoAnncEntities() {
+		if (linkedDeviceInfoAnncEntities == null) {
+			linkedDeviceInfoAnncEntities = new ArrayList<>();
+		}
+		return linkedDeviceInfoAnncEntities;
+	}
+
+	/**
+	 * @param linkedMgmtObjEntities the linkedMgmtObjEntities to set
+	 */
+	public void setLinkedDeviceInfoAnncEntities(List<DeviceInfoAnncEntity> linkedMgmtObjEntities) {
+		this.linkedDeviceInfoAnncEntities = linkedMgmtObjEntities;
 	}
 
 	/**
@@ -480,6 +555,23 @@ public class DynamicAuthorizationConsultationEntity extends RegularResourceEntit
 	 */
 	public void setLinkedNodeEntities(List<NodeEntity> linkedNodeEntities) {
 		this.linkedNodeEntities = linkedNodeEntities;
+	}
+
+	/**
+	 * @return the linkedNodeAnncEntities
+	 */
+	public List<NodeAnncEntity> getLinkedNodeAnncEntities() {
+		if (linkedNodeAnncEntities == null) {
+			linkedNodeAnncEntities = new ArrayList<>();
+		}
+		return linkedNodeAnncEntities;
+	}
+
+	/**
+	 * @param linkedNodeEntities the linkedNodeAnncEntities to set
+	 */
+	public void setLinkedNodeAnncEntities(List<NodeAnncEntity> linkedNodeEntities) {
+		this.linkedNodeAnncEntities = linkedNodeEntities;
 	}
 
 	/**
@@ -585,6 +677,42 @@ public class DynamicAuthorizationConsultationEntity extends RegularResourceEntit
 			getLinkedAreaNwkDeviceInfoEntities().remove((AreaNwkDeviceInfoEntity) mgmtObjEntity);
 		else if (mgmtDef.equals(MgmtDefinitionTypes.DEVICE_INFO))
 			getLinkedDeviceInfoEntities().remove((DeviceInfoEntity) mgmtObjEntity);
+	}
+
+	public void addMgmtObj(MgmtObjAnncEntity mgmtObjEntity) {
+		BigInteger mgmtDef = mgmtObjEntity.getMgmtDefinition();
+		if (mgmtDef.equals(MgmtDefinitionTypes.AREA_NWK_INFO))
+			getLinkedAreaNwkInfoAnncEntities().add((AreaNwkInfoAnncEntity) mgmtObjEntity);
+		else if (mgmtDef.equals(MgmtDefinitionTypes.AREA_NWK_DEVICE_INFO))
+			getLinkedAreaNwkDeviceInfoAnncEntities().add((AreaNwkDeviceInfoAnncEntity) mgmtObjEntity);
+		else if (mgmtDef.equals(MgmtDefinitionTypes.DEVICE_INFO))
+			getLinkedDeviceInfoAnncEntities().add((DeviceInfoAnncEntity) mgmtObjEntity);
+	}
+
+	public void removeMgmtObj(MgmtObjAnncEntity mgmtObjEntity) {
+		BigInteger mgmtDef = mgmtObjEntity.getMgmtDefinition();
+		if (mgmtDef.equals(MgmtDefinitionTypes.AREA_NWK_INFO))
+			getLinkedAreaNwkInfoAnncEntities().remove((AreaNwkInfoAnncEntity) mgmtObjEntity);
+		else if (mgmtDef.equals(MgmtDefinitionTypes.AREA_NWK_DEVICE_INFO))
+			getLinkedAreaNwkDeviceInfoAnncEntities().remove((AreaNwkDeviceInfoAnncEntity) mgmtObjEntity);
+		else if (mgmtDef.equals(MgmtDefinitionTypes.DEVICE_INFO))
+			getLinkedDeviceInfoAnncEntities().remove((DeviceInfoAnncEntity) mgmtObjEntity);
+	}
+
+	public List<MgmtObjEntity> getMgmtObjEntities() {
+		List<MgmtObjEntity> ret = new ArrayList<MgmtObjEntity>();
+		ret.addAll(getLinkedAreaNwkDeviceInfoEntities());
+		ret.addAll(getLinkedAreaNwkInfoEntities());
+		ret.addAll(getLinkedDeviceInfoEntities());
+		return ret;
+	}
+
+	public List<MgmtObjAnncEntity> getMgmtObjAnncEntities() {
+		List<MgmtObjAnncEntity> ret = new ArrayList<MgmtObjAnncEntity>();
+		ret.addAll(getLinkedAreaNwkDeviceInfoAnncEntities());
+		ret.addAll(getLinkedAreaNwkInfoAnncEntities());
+		ret.addAll(getLinkedDeviceInfoAnncEntities());
+		return ret;
 	}
 	
 }

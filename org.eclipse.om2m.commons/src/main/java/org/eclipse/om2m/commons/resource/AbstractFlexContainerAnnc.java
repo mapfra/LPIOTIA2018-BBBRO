@@ -127,6 +127,9 @@ public class AbstractFlexContainerAnnc extends AnnouncedResource {
 	@XmlSchemaType(name = "anyURI")
 	@XmlElement(name = ShortName.CONTAINER_DEFINITION, namespace="")
 	protected String containerDefinition;
+	@XmlSchemaType(name = "anyURI")
+	@XmlElement(name = ShortName.NODE_LINK, required = false, namespace="")
+	protected String nodeLink;
 	@XmlElement(name = ShortName.CHILD_RESOURCE, namespace="")
 	protected List<ChildResourceRef> childResource;
 	@XmlElements({
@@ -344,7 +347,28 @@ public class AbstractFlexContainerAnnc extends AnnouncedResource {
 		}
 		return this.flexContainerOrContainerOrSubscription;
 	}
-	
+
+	/**
+	 * Gets the value of the nodeLink property.
+	 * 
+	 * @return possible object is {@link String }
+	 * 
+	 */
+	public String getNodeLink() {
+		return nodeLink;
+	}
+
+	/**
+	 * Sets the value of the nodeLink property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link String }
+	 * 
+	 */
+	public void setNodeLink(String value) {
+		this.nodeLink = value;
+	}
+
 	public void finalizeSerialization() {
 		// do nothing
 		// should be overwrote 

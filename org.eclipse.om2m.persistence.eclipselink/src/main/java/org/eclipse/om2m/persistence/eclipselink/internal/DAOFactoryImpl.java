@@ -33,6 +33,7 @@ import org.eclipse.om2m.commons.entities.GroupEntity;
 import org.eclipse.om2m.commons.entities.LabelEntity;
 import org.eclipse.om2m.commons.entities.MgmtObjAnncEntity;
 import org.eclipse.om2m.commons.entities.MgmtObjEntity;
+import org.eclipse.om2m.commons.entities.NodeAnncEntity;
 import org.eclipse.om2m.commons.entities.NodeEntity;
 import org.eclipse.om2m.commons.entities.PollingChannelEntity;
 import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
@@ -57,6 +58,7 @@ import org.eclipse.om2m.persistence.eclipselink.internal.dao.GroupDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.LabelDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.MgmtObjAnncDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.MgmtObjDAO;
+import org.eclipse.om2m.persistence.eclipselink.internal.dao.NodeAnncDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.NodeDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.OldestDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.PollingChannelDAO;
@@ -190,10 +192,15 @@ public class DAOFactoryImpl implements DAOFactory {
 	public DAO<DynamicAuthorizationConsultationEntity> getDynamicAuthorizationDAO() {
 		return new DynamicAuthorizationConsultationDAO();
 	}
-
+	
 	@Override
 	public DAO<ContentInstanceEntity> getOldestDAO() {
 		return new OldestDAO();
+	}
+
+	@Override
+	public DAO<NodeAnncEntity> getNodeAnncDAO() {
+		return new NodeAnncDAO();
 	}
 
 	@Override

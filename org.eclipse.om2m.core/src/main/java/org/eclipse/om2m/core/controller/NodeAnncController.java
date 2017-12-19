@@ -1,21 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2013-2016 LAAS-CNRS (www.laas.fr)
- * 7 Colonel Roche 31077 Toulouse - France
- *
+ * Copyright (c) 2014, 2017 Orange.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
- * Initial Contributors:
- *     Thierry Monteil : Project manager, technical co-manager
- *     Mahdi Ben Alaya : Technical co-manager
- *     Samir Medjiah : Technical co-manager
- *     Khalil Drira : Strategy expert
- *     Guillaume Garzone : Developer
- *     François Aïssaoui : Developer
- *
- * New contributors :
  *******************************************************************************/
 package org.eclipse.om2m.core.controller;
 
@@ -31,19 +19,19 @@ import org.eclipse.om2m.commons.constants.ResourceType;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.constants.ShortName;
 import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
+import org.eclipse.om2m.commons.entities.AeAnncEntity;
 import org.eclipse.om2m.commons.entities.CSEBaseEntity;
-import org.eclipse.om2m.commons.entities.NodeEntity;
+import org.eclipse.om2m.commons.entities.NodeAnncEntity;
 import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
 import org.eclipse.om2m.commons.entities.ResourceEntity;
 import org.eclipse.om2m.commons.entities.SubscriptionEntity;
 import org.eclipse.om2m.commons.exceptions.BadRequestException;
 import org.eclipse.om2m.commons.exceptions.ConflictException;
 import org.eclipse.om2m.commons.exceptions.ResourceNotFoundException;
-import org.eclipse.om2m.commons.resource.Node;
+import org.eclipse.om2m.commons.resource.NodeAnnc;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
 import org.eclipse.om2m.commons.utils.Util.DateUtil;
-import org.eclipse.om2m.core.announcer.Announcer;
 import org.eclipse.om2m.core.datamapper.DataMapperSelector;
 import org.eclipse.om2m.core.entitymapper.EntityMapperFactory;
 import org.eclipse.om2m.core.notifier.Notifier;
@@ -58,10 +46,10 @@ import org.eclipse.om2m.persistence.service.DAO;
  * Controller for Node resource
  *
  */
-public class NodeController extends Controller {
+public class NodeAnncController extends Controller {
 
 	/** Logger */
-	private static Log LOGGER = LogFactory.getLog(NodeController.class);
+	private static Log LOGGER = LogFactory.getLog(NodeAnncController.class);
 
 	@Override
 	public ResponsePrimitive doCreate(RequestPrimitive request) {
@@ -87,31 +75,31 @@ public class NodeController extends Controller {
 
 		// retrieve the parent
 		DAO<ResourceEntity> dao = (DAO<ResourceEntity>) patterns.getDAO(request.getTargetId(), dbs);
-		if (dao == null){
+		if (dao == null) {
 			throw new ResourceNotFoundException("Cannot find parent resource");
 		}
 
 		// Get the parent entity
 		ResourceEntity parentEntity = (ResourceEntity) dao.find(transaction, request.getTargetId());
 		// Check the parent existence
-		if (parentEntity == null){
+		if (parentEntity == null) {
 			throw new ResourceNotFoundException("Cannot find parent resource");
 		}
 
-		List<NodeEntity> childNodes = null;
+		List<NodeAnncEntity> childNodes = null;
 		List<AccessControlPolicyEntity> acpsToCheck = null;
 		List<SubscriptionEntity> subscriptions = null;
 		// case parent is csb
 		if (parentEntity.getResourceType().intValue() == ResourceType.CSE_BASE) {
 			CSEBaseEntity csb = (CSEBaseEntity) parentEntity;
-			childNodes = csb.getChildNodes();
+			childNodes = csb.getChildAnncNodes();
 			acpsToCheck = csb.getAccessControlPolicies();
 			subscriptions = csb.getSubscriptions();
 		}
 		// case parent is csr
-		else if (parentEntity.getResourceType().intValue() == ResourceType.REMOTE_CSE) {
+		if (parentEntity.getResourceType().intValue() == ResourceType.REMOTE_CSE) {
 			RemoteCSEEntity remoteCse = (RemoteCSEEntity) parentEntity;
-			childNodes = remoteCse.getChildNodes();
+			childNodes = remoteCse.getChildAnncNodes();
 			acpsToCheck = remoteCse.getAccessControlPolicies();
 			subscriptions = remoteCse.getSubscriptions();
 		}
@@ -121,30 +109,30 @@ public class NodeController extends Controller {
 
 		response = new ResponsePrimitive(request);
 		// check if content is present
-		if (request.getContent() == null){
+		if (request.getContent() == null) {
 			throw new BadRequestException("A content is required for Container creation");
 		}
 
 		// get the object from the representation
-		Node node = null;
+		NodeAnnc node = null;
 		try{
-			if (request.getRequestContentType().equals(MimeMediaType.OBJ)){
-				node = (Node) request.getContent();
+			if (request.getRequestContentType().equals(MimeMediaType.OBJ)) {
+				node = (NodeAnnc) request.getContent();
 			} else {
-				node = (Node)DataMapperSelector.getDataMapperList()
+				node = (NodeAnnc)DataMapperSelector.getDataMapperList()
 						.get(request.getRequestContentType()).stringToObj((String)request.getContent());				
 			}
 
-		} catch (ClassCastException e){
+		} catch (ClassCastException e) {
 			throw new BadRequestException("Incorrect resource representation in content", e);
 		}
-		if (node == null){
+		if (node == null) {
 			throw new BadRequestException("Error in provided content");
 		}
 
-		NodeEntity nodeEntity = new NodeEntity();
+		NodeAnncEntity nodeEntity = new NodeAnncEntity();
 		// check attributes
-		ControllerUtil.CreateUtil.fillEntityFromAnnounceableResource(node, nodeEntity);
+		ControllerUtil.CreateUtil.fillEntityFromGenericResource(node, nodeEntity);
 
 		/*
 		 * nodeID					M
@@ -164,21 +152,29 @@ public class NodeController extends Controller {
 		}
 
 		String generatedId = generateId();
-		nodeEntity.setResourceID("/" + Constants.CSE_ID + "/" + ShortName.NODE + Constants.PREFIX_SEPERATOR + generatedId);;
+		// Set other parameters
+		nodeEntity.setResourceID("/" + Constants.CSE_ID + "/" +
+				ShortName.NODE_ANNC + Constants.PREFIX_SEPERATOR + generatedId);
+		nodeEntity.setParentCsr((RemoteCSEEntity) parentEntity);
+
 		nodeEntity.setCreationTime(DateUtil.now());
 		nodeEntity.setLastModifiedTime(DateUtil.now());
 		nodeEntity.setParentID(parentEntity.getResourceID());
-		nodeEntity.setResourceType(ResourceType.NODE);
-	
-		if (node.getName() != null){
-			if (!patterns.checkResourceName(node.getName())){
+		nodeEntity.setResourceType(ResourceType.NODE_ANNC);
+
+		if (dbs.getDAOFactory().getNodeAnncDAO().find(transaction, nodeEntity.getResourceID()) != null) {
+			throw new ConflictException("Already registered");
+		}
+
+		if (node.getName() != null) {
+			if (!patterns.checkResourceName(node.getName())) {
 				throw new BadRequestException("Name provided is incorrect. Must be:" + patterns.ID_STRING);
 			}
 			nodeEntity.setName(node.getName());
 		} else {
-			nodeEntity.setName(ShortName.NODE + "_" + generatedId);
+			nodeEntity.setName(ShortName.NODE_ANNC + "_" + generatedId);
 		}
-		nodeEntity.setHierarchicalURI(parentEntity.getHierarchicalURI()+ "/" + nodeEntity.getName());
+		nodeEntity.setHierarchicalURI(parentEntity.getHierarchicalURI() + "/" + nodeEntity.getName());
 
 		// set acps
 		if (!node.getAccessControlPolicyIDs().isEmpty()) {
@@ -186,27 +182,27 @@ public class NodeController extends Controller {
 		} else {
 			nodeEntity.getAccessControlPolicies().addAll(acpsToCheck);
 		}
+		
+		// dynamicAuthorizationConsultationIDs O
+		if (!node.getDynamicAuthorizationConsultationIDs().isEmpty()) {
+			nodeEntity.setDynamicAuthorizationConsultations(
+					ControllerUtil.buildDacEntityList(node.getDynamicAuthorizationConsultationIDs(), transaction));
+		} 
 
 		// storing the hierarchical uri
-		if (!UriMapper.addNewUri(nodeEntity.getHierarchicalURI(), nodeEntity.getResourceID(), ResourceType.NODE)){
+		if (!UriMapper.addNewUri(nodeEntity.getHierarchicalURI(), nodeEntity.getResourceID(), ResourceType.NODE_ANNC)) {
 			throw new ConflictException("Name already present in the parent collection.");
 		}
-		// persisting data
-		dbs.getDAOFactory().getNodeDAO().create(transaction, nodeEntity);
 
-		// get the manage object
-		NodeEntity nodeDB = dbs.getDAOFactory().getNodeDAO().find(transaction, nodeEntity.getResourceID());
+		// persisting data
+		dbs.getDAOFactory().getNodeAnncDAO().create(transaction, nodeEntity);
+
+		// get the managed object
+		NodeAnncEntity nodeDB = dbs.getDAOFactory().getNodeAnncDAO().find(transaction, nodeEntity.getResourceID());
+		// Add the AE to the parentEntity list
 		childNodes.add(nodeDB);
 		dao.update(transaction, parentEntity);
 		transaction.commit();
-
-		if (! node.getAnnounceTo().isEmpty()) {
-			node.setName(nodeDB.getName());
-			node.setResourceID(nodeDB.getResourceID());
-			node.setResourceType(ResourceType.NODE);
-			node.setParentID(nodeDB.getParentID());
-			Announcer.announce(node, request.getFrom(), "");
-		}
 
 		Notifier.notify(subscriptions, nodeDB, ResourceStatus.CHILD_CREATED);
 		response.setResponseStatusCode(ResponseStatusCode.CREATED);
@@ -220,7 +216,7 @@ public class NodeController extends Controller {
 		ResponsePrimitive response = new ResponsePrimitive(request);
 
 		// get the entity
-		NodeEntity nodeEntity = dbs.getDAOFactory().getNodeDAO().find(transaction, request.getTargetId());
+		NodeAnncEntity nodeEntity = dbs.getDAOFactory().getNodeAnncDAO().find(transaction, request.getTo());
 		if (nodeEntity == null) {
 			throw new ResourceNotFoundException();
 		}
@@ -231,7 +227,7 @@ public class NodeController extends Controller {
 		
 		response = new ResponsePrimitive(request);
 		// map the entity with the representation resource
-		Node node = EntityMapperFactory.getNodeMapper().mapEntityToResource(nodeEntity, request);
+		NodeAnnc node = EntityMapperFactory.getNodeAnncMapper().mapEntityToResource(nodeEntity, request);
 		response.setContent(node);
 		// set status code
 		response.setResponseStatusCode(ResponseStatusCode.OK);
@@ -245,7 +241,7 @@ public class NodeController extends Controller {
 		ResponsePrimitive response = new ResponsePrimitive(request);
 
 		// retrieve the resource from database
-		NodeEntity nodeEntity = dbs.getDAOFactory().getNodeDAO().find(transaction, request.getTargetId());
+		NodeAnncEntity nodeEntity = dbs.getDAOFactory().getNodeAnncDAO().find(transaction, request.getTo());
 		if (nodeEntity == null) {
 			throw new ResourceNotFoundException();
 		}
@@ -260,19 +256,19 @@ public class NodeController extends Controller {
 
 		// create the java object from the resource representation
 		// get the object from the representation
-		Node node = null;
+		NodeAnnc node = null;
 		try{
-			if (request.getRequestContentType().equals(MimeMediaType.OBJ)){
-				node = (Node) request.getContent();
+			if (request.getRequestContentType().equals(MimeMediaType.OBJ)) {
+				node = (NodeAnnc) request.getContent();
 			} else {
-				node = (Node)DataMapperSelector.getDataMapperList()
+				node = (NodeAnnc)DataMapperSelector.getDataMapperList()
 						.get(request.getRequestContentType()).stringToObj((String)request.getContent());				
 			}
 
-		} catch (ClassCastException e){
+		} catch (ClassCastException e) {
 			throw new BadRequestException("Incorrect resource representation in content", e);
 		}
-		if (node == null){
+		if (node == null) {
 			throw new BadRequestException("Error in provided content");
 		}
 
@@ -286,19 +282,19 @@ public class NodeController extends Controller {
 		// lastModifiedTime				NP
 		UpdateUtil.checkNotPermittedParameters(node);
 		// hostedCseLink				NP
-		if(node.getHostedCSELink() != null){
+		if (node.getHostedCSELink() != null) {
 			throw new BadRequestException("HostedCSELink is NP");
 		}
 
-		Node modifiedAttributes = new Node();
+		NodeAnnc modifiedAttributes = new NodeAnnc();
 		// labels						O
-		if(!node.getLabels().isEmpty()){
+		if (!node.getLabels().isEmpty()) {
 			nodeEntity.setLabelsEntitiesFromSring(node.getLabels());
 			modifiedAttributes.getLabels().addAll(node.getLabels());
 		}
 		// accessControlPolicyIDs		O
-		if(!node.getAccessControlPolicyIDs().isEmpty()){
-			for(AccessControlPolicyEntity acpe : nodeEntity.getAccessControlPolicies()){
+		if (!node.getAccessControlPolicyIDs().isEmpty()) {
+			for(AccessControlPolicyEntity acpe : nodeEntity.getAccessControlPolicies()) {
 				checkSelfACP(acpe, request.getFrom(), Operation.UPDATE);
 			}
 			nodeEntity.getAccessControlPolicies().clear();
@@ -306,22 +302,9 @@ public class NodeController extends Controller {
 			modifiedAttributes.getAccessControlPolicyIDs().addAll(node.getAccessControlPolicyIDs());
 		}
 		// expirationTime			O
-		if (node.getExpirationTime() != null){
+		if (node.getExpirationTime() != null) {
 			nodeEntity.setExpirationTime(node.getExpirationTime());
 			modifiedAttributes.setExpirationTime(node.getExpirationTime());
-		}
-		// announceTo				O
-		if(!node.getAnnounceTo().isEmpty()){
-			// TODO Announcement in AE update
-			nodeEntity.getAnnounceTo().clear();
-			nodeEntity.getAnnounceTo().addAll(node.getAnnounceTo());
-			modifiedAttributes.getAnnounceTo().addAll(node.getAnnounceTo());
-		}
-		// announcedAttribute		O
-		if(!node.getAnnouncedAttribute().isEmpty()){
-			nodeEntity.getAnnouncedAttribute().clear();
-			nodeEntity.getAnnouncedAttribute().addAll(node.getAnnouncedAttribute());
-			modifiedAttributes.getAnnouncedAttribute().addAll(node.getAnnouncedAttribute());
 		}
 
 		// nodeID					O
@@ -335,10 +318,10 @@ public class NodeController extends Controller {
 		response.setContent(modifiedAttributes);
 		
 		// uptade the persisted resource
-		dbs.getDAOFactory().getNodeDAO().update(transaction, nodeEntity);
+		dbs.getDAOFactory().getNodeAnncDAO().update(transaction, nodeEntity);
 		// commit & close the db transaction
 		transaction.commit();
-		Notifier.notify(nodeEntity.getSubscriptions(), nodeEntity, ResourceStatus.UPDATED);
+		Notifier.notify(nodeEntity.getChildSubscriptions(), nodeEntity, ResourceStatus.UPDATED);
 
 		// set response status code
 		response.setResponseStatusCode(ResponseStatusCode.UPDATED);
@@ -349,10 +332,10 @@ public class NodeController extends Controller {
 	public ResponsePrimitive doDelete(RequestPrimitive request) {
 		// Generic delete procedure
 		ResponsePrimitive response = new ResponsePrimitive(request);
+
 		// retrieve the entity
-		NodeEntity nodeEntity = dbs.getDAOFactory().getNodeDAO().find(transaction, request.getTargetId());
+		NodeAnncEntity nodeEntity = dbs.getDAOFactory().getNodeAnncDAO().find(transaction, request.getTo());
 		if (nodeEntity == null) {
-			LOGGER.info("Delete node: not found");
 			throw new ResourceNotFoundException();
 		}
 
@@ -360,16 +343,12 @@ public class NodeController extends Controller {
 		checkACP(nodeEntity.getAccessControlPolicies(), request.getFrom(), Operation.DELETE);
 		
 		UriMapper.deleteUri(nodeEntity.getHierarchicalURI());
-		Notifier.notifyDeletion(nodeEntity.getSubscriptions(), nodeEntity);
+		Notifier.notifyDeletion(nodeEntity.getChildSubscriptions(), nodeEntity);
 
 		// delete the resource in the database
-		dbs.getDAOFactory().getNodeDAO().delete(transaction, nodeEntity);
+		dbs.getDAOFactory().getNodeAnncDAO().delete(transaction, nodeEntity);
 		// commit the transaction
 		transaction.commit();
-
-		// deannounce
-		Announcer.deAnnounce(nodeEntity, Constants.ADMIN_REQUESTING_ENTITY);
-
 		// return the response
 		response.setResponseStatusCode(ResponseStatusCode.DELETED);
 		return response;

@@ -79,7 +79,7 @@ public class DeviceCapability extends MgmtObjWithChildren {
 	protected boolean currentState;
 	protected Boolean enable;
 	protected Boolean disable;
-
+	
 	
 	public DeviceCapability() {
 		super();

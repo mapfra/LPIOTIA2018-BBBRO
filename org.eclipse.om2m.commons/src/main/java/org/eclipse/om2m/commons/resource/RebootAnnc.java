@@ -31,6 +31,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.eclipse.om2m.commons.constants.MgmtDefinitionTypes;
 import org.eclipse.om2m.commons.constants.ShortName;
 
 /**
@@ -63,10 +64,16 @@ import org.eclipse.om2m.commons.constants.ShortName;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "")
 @XmlRootElement(name = ShortName.REBOOT_ANNC)
-public class RebootAnnc extends AnnouncedMgmtResource {
+public class RebootAnnc extends MgmtObjAnncWithChildren {
 
 	protected Boolean reboot;
 	protected Boolean factoryReset;
+	
+	
+	public RebootAnnc() {
+		super();
+		setMgmtDefinition(MgmtDefinitionTypes.REBOOT);
+	}
 
 	/**
 	 * Gets the value of the reboot property.

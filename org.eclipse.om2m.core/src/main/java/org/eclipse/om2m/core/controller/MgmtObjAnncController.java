@@ -22,7 +22,7 @@ import org.eclipse.om2m.commons.constants.ShortName;
 import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
 import org.eclipse.om2m.commons.entities.DynamicAuthorizationConsultationEntity;
 import org.eclipse.om2m.commons.entities.MgmtObjAnncEntity;
-import org.eclipse.om2m.commons.entities.NodeEntity;
+import org.eclipse.om2m.commons.entities.NodeAnncEntity;
 import org.eclipse.om2m.commons.entities.ResourceEntity;
 import org.eclipse.om2m.commons.entities.SubscriptionEntity;
 import org.eclipse.om2m.commons.exceptions.BadRequestException;
@@ -42,7 +42,7 @@ import org.eclipse.om2m.core.util.ControllerUtil;
 import org.eclipse.om2m.persistence.service.DAO;
 
 /**
- * Controller for the MgmtObj Resource
+ * Controller for the MgmtObjAnnc Resource
  *
  */
 public class MgmtObjAnncController extends Controller {
@@ -57,7 +57,7 @@ public class MgmtObjAnncController extends Controller {
 	@Override
 	public ResponsePrimitive doCreate(RequestPrimitive request) {
 		/*
-		 * MgmtObj creation procedure
+		 * MgmtObjAnnc creation procedure
 		 * 
 		 * @resourceName NP resourceType NP resourceID NP parentID NP
 		 * accessControlPolicyIDs O creationTime NP expirationTime O
@@ -85,32 +85,28 @@ public class MgmtObjAnncController extends Controller {
 		if (parentEntity == null) {
 			throw new ResourceNotFoundException("Cannot find parent resource");
 		}
+		if (parentEntity.getResourceType().intValue() != (ResourceType.NODE_ANNC)) {
+			throw new NotImplementedException("Parent should be NodeAnnc: " + parentEntity);
+		}
 
 		// lock parent
 		transaction.lock(parentEntity);
 
-		if (parentEntity.getResourceType().intValue() == (ResourceType.NODE_ANNC)) {
-			throw new NotImplementedException("Parent is Node Annc, not implemented yet.");
-		}
-
 		// parent is Node
-		NodeEntity nodeEntity = (NodeEntity) parentEntity;
+		NodeAnncEntity nodeEntity = (NodeAnncEntity) parentEntity;
 
 		// get lists to change in the method corresponding to specific object
 		List<AccessControlPolicyEntity> acpsToCheck = nodeEntity.getAccessControlPolicies();
 //		List<DynamicAuthorizationConsultationEntity> dacsToCheck = null;
-		List<SubscriptionEntity> subscriptions = nodeEntity.getSubscriptions();
+		List<SubscriptionEntity> subscriptions = nodeEntity.getChildSubscriptions();
 
 		// check access control policy of the originator
 		checkPermissions(request, nodeEntity, acpsToCheck);
 		
 		// check if content is present
 		if (request.getContent() == null) {
-			throw new BadRequestException("A content is requiered for MgmtObj creation");
+			throw new BadRequestException("A content is requiered for MgmtObjAnnc creation");
 		}
-		LOGGER.info("contentType: " + request.getRequestContentType());
-		LOGGER.info("content: " + request.getContent());
-		LOGGER.info("parent node: " + nodeEntity);
 		// get the object from the representation
 		AnnouncedMgmtResource mgmtObj = null;
 		try {
@@ -129,7 +125,6 @@ public class MgmtObjAnncController extends Controller {
 					payload = DataMapperSelector.getDataMapperList().get(contentFormat).objToString(mgmtObj);
 				}
 			}
-			LOGGER.info("payload: " + payload);
 
 			// validate XML payload
 //			if (contentFormat.equals(MimeMediaType.XML)) {
@@ -144,7 +139,6 @@ public class MgmtObjAnncController extends Controller {
 		if (mgmtObj == null) {
 			throw new BadRequestException("Error in provided content");
 		}
-		else LOGGER.info("MgmtObj: " + mgmtObj.getClass() +  ": " + mgmtObj);
 		
 		BigInteger mgmtDef = mgmtObj.getMgmtDefinition();
 
@@ -165,11 +159,11 @@ public class MgmtObjAnncController extends Controller {
 		} else {
 			mgmtObjEntity.setName(MgmtDefinitionTypes.getShortName(mgmtDef) + "_" + generatedId);
 		}
-		mgmtObjEntity.setResourceID("/" + Constants.CSE_ID + "/" + ShortName.MGO 
+		mgmtObjEntity.setResourceID("/" + Constants.CSE_ID + "/" + ShortName.MGOA
 				+ Constants.PREFIX_SEPERATOR + generatedId);
 		mgmtObjEntity.setHierarchicalURI(parentEntity.getHierarchicalURI() + "/" + mgmtObjEntity.getName());
 		mgmtObjEntity.setParentID(parentEntity.getResourceID());
-		mgmtObjEntity.setResourceType(ResourceType.MGMT_OBJ);
+		mgmtObjEntity.setResourceType(ResourceType.MGMT_OBJ_ANNC);
 
 		// accessControlPolicyIDs O
 		if (! mgmtObj.getAccessControlPolicyIDs().isEmpty()) {
@@ -186,26 +180,23 @@ public class MgmtObjAnncController extends Controller {
 		}
 
 		if (! UriMapper.addNewUri(mgmtObjEntity.getHierarchicalURI(), mgmtObjEntity.getResourceID(),
-				ResourceType.MGMT_OBJ)) {
+				ResourceType.MGMT_OBJ_ANNC)) {
 			throw new ConflictException("Name already present in the parent collection.");
 		}
 
 		// create the mgmtObj in the DB
-		LOGGER.info("persist " + mgmtObjEntity + " ");
 		dbs.getDAOFactory().getMgmtObjAnncDAO().create(transaction, mgmtObjEntity);
 		// retrieve the managed object from DB
 		MgmtObjAnncEntity mgmtObjFromDB = dbs.getDAOFactory().getMgmtObjAnncDAO().find(transaction,
 				mgmtObjEntity.getResourceID());
 		
-		LOGGER.info("Created entity: " + mgmtObjFromDB);
-		
-//		nodeEntity.addMgmtObj(mgmtObjFromDB); TODO
+		nodeEntity.addMgmtObj(mgmtObjFromDB);
 		nodeDao.update(transaction, nodeEntity);
 
 		// update link with mgmtObjEntity - DacEntity
 		for (DynamicAuthorizationConsultationEntity dace : mgmtObjFromDB.getDynamicAuthorizationConsultations()) {
 			DynamicAuthorizationConsultationEntity daceFromDB = dbs.getDAOFactory().getDynamicAuthorizationDAO().find(transaction, dace.getResourceID());
-//			daceFromDB.addMgmtObj(mgmtObjFromDB); TODO
+			daceFromDB.addMgmtObj(mgmtObjFromDB);
 			dbs.getDAOFactory().getDynamicAuthorizationDAO().update(transaction, daceFromDB);
 		}
 
@@ -312,7 +303,7 @@ public class MgmtObjAnncController extends Controller {
 			checkPermissions(request, mgmtObjEntity, mgmtObjEntity.getAccessControlPolicies());
 		}
 
-		AnnouncedMgmtResource modifiedMgmtObj = (AnnouncedMgmtResource) 
+		AnnouncedMgmtResource modifiedMgmtObjAnnc = (AnnouncedMgmtResource) 
 			EntityMapperFactory.getMapperForMgmtObjAnnc()
 				.mapEntityToResource(mgmtObjEntity, request);
 		// check if content is present
@@ -371,7 +362,7 @@ public class MgmtObjAnncController extends Controller {
 				mgmtObjEntity.getAccessControlPolicies().clear();
 				mgmtObjEntity.setAccessControlPolicies(
 						ControllerUtil.buildAcpEntityList(mgmtObj.getAccessControlPolicyIDs(), transaction));
-				modifiedMgmtObj.getAccessControlPolicyIDs().addAll(mgmtObj.getAccessControlPolicyIDs());
+				modifiedMgmtObjAnnc.getAccessControlPolicyIDs().addAll(mgmtObj.getAccessControlPolicyIDs());
 			}
 			
 			// dynamicAuthorizationConsultationIDs O
@@ -380,14 +371,9 @@ public class MgmtObjAnncController extends Controller {
 						ControllerUtil.buildDacEntityList(mgmtObj.getDynamicAuthorizationConsultationIDs(), transaction));
 				
 				// update link with mgmtObjEntity - DacEntity
-				for(DynamicAuthorizationConsultationEntity dace : mgmtObjEntity.getDynamicAuthorizationConsultations()) {
+				for (DynamicAuthorizationConsultationEntity dace : mgmtObjEntity.getDynamicAuthorizationConsultations()) {
 					DynamicAuthorizationConsultationEntity daceFromDB = dbs.getDAOFactory().getDynamicAuthorizationDAO().find(transaction, dace.getResourceID());
-//					if (mgmtObj instanceof DeviceInfo) TODO
-//						daceFromDB.getLinkedDeviceInfoEntities().add((DeviceInfoEntity) mgmtObjEntity);
-//					else if (mgmtObj instanceof AreaNwkDeviceInfo)
-//						daceFromDB.getLinkedAreaNwkDeviceInfoEntities().add((AreaNwkDeviceInfoEntity) mgmtObjEntity);
-//					else if (mgmtObj instanceof AreaNwkInfo)
-//						daceFromDB.getLinkedAreaNwkInfoEntities().add((AreaNwkInfoEntity) mgmtObjEntity);
+					daceFromDB.addMgmtObj(mgmtObjEntity);
 					dbs.getDAOFactory().getDynamicAuthorizationDAO().update(transaction, daceFromDB);
 				}
 			}
@@ -395,12 +381,12 @@ public class MgmtObjAnncController extends Controller {
 			// labels O
 			if (! mgmtObj.getLabels().isEmpty()) {
 				mgmtObjEntity.setLabelsEntitiesFromSring(mgmtObj.getLabels());
-				modifiedMgmtObj.getLabels().addAll(mgmtObj.getLabels());
+				modifiedMgmtObjAnnc.getLabels().addAll(mgmtObj.getLabels());
 			}
 			// expirationTime O
 			if (mgmtObj.getExpirationTime() != null) {
 				mgmtObjEntity.setExpirationTime(mgmtObj.getExpirationTime());
-				modifiedMgmtObj.setExpirationTime(mgmtObj.getExpirationTime());
+				modifiedMgmtObjAnnc.setExpirationTime(mgmtObj.getExpirationTime());
 			}
 
 			// mgmtDefinition
@@ -411,16 +397,16 @@ public class MgmtObjAnncController extends Controller {
 		}
 
 		mgmtObjEntity.setLastModifiedTime(DateUtil.now());
-		modifiedMgmtObj.setLastModifiedTime(mgmtObjEntity.getLastModifiedTime());
+		modifiedMgmtObjAnnc.setLastModifiedTime(mgmtObjEntity.getLastModifiedTime());
 
-		response.setContent(modifiedMgmtObj);
+		response.setContent(modifiedMgmtObjAnnc);
 		// update the resource in the database
 		dbs.getDAOFactory().getMgmtObjAnncDAO().update(transaction, mgmtObjEntity);
 
 		// commit and release lock
 		transaction.commit();
 
-		Notifier.notify(mgmtObjEntity.getSubscriptions(), mgmtObjEntity, modifiedMgmtObj,
+		Notifier.notify(mgmtObjEntity.getSubscriptions(), mgmtObjEntity, modifiedMgmtObjAnnc,
 				ResourceStatus.UPDATED);
 
 		// set response status code

@@ -75,24 +75,23 @@ public class MgmtObjController extends Controller {
 		ResponsePrimitive response = new ResponsePrimitive(request);
 
 		// get the dao of the parent
-		DAO<ResourceEntity> nodeDao = (DAO<ResourceEntity>) patterns.getDAO(request.getTo(), dbs);
-		if (nodeDao == null) {
+		DAO<ResourceEntity> dao = (DAO<ResourceEntity>) patterns.getDAO(request.getTo(), dbs);
+		if (dao == null) {
 			throw new ResourceNotFoundException("Cannot find parent resource");
 		}
 
 		// get the parent entity
-		ResourceEntity parentEntity = (ResourceEntity) nodeDao.find(transaction, request.getTo());
+		ResourceEntity parentEntity = (ResourceEntity) dao.find(transaction, request.getTo());
 		// check the parent existence
 		if (parentEntity == null) {
 			throw new ResourceNotFoundException("Cannot find parent resource");
 		}
-
-		// lock parent
-		transaction.lock(parentEntity);
-
 		if (parentEntity.getResourceType().intValue() == (ResourceType.NODE_ANNC)) {
 			throw new NotImplementedException("Parent is Node Annc, not implemented yet.");
 		}
+
+		// lock parent
+		transaction.lock(parentEntity);
 
 		// parent is Node
 		NodeEntity nodeEntity = (NodeEntity) parentEntity;
@@ -109,9 +108,6 @@ public class MgmtObjController extends Controller {
 		if (request.getContent() == null) {
 			throw new BadRequestException("A content is requiered for MgmtObj creation");
 		}
-		LOGGER.info("contentType: " + request.getRequestContentType());
-		LOGGER.info("content: " + request.getContent());
-		LOGGER.info("parent node: " + nodeEntity);
 		// get the object from the representation
 		MgmtObj mgmtObj = null;
 		try {
@@ -145,7 +141,6 @@ public class MgmtObjController extends Controller {
 		if (mgmtObj == null) {
 			throw new BadRequestException("Error in provided content");
 		}
-		else LOGGER.info("MgmtObj: " + mgmtObj.getClass() +  ": " + mgmtObj);
 		
 		BigInteger mgmtDef = mgmtObj.getMgmtDefinition();
 
@@ -192,16 +187,13 @@ public class MgmtObjController extends Controller {
 		}
 
 		// create the mgmtObj in the DB
-		LOGGER.info("persist " + mgmtObjEntity + " ");
 		dbs.getDAOFactory().getMgmtObjDAO().create(transaction, mgmtObjEntity);
 		// retrieve the managed object from DB
 		MgmtObjEntity mgmtObjFromDB = dbs.getDAOFactory().getMgmtObjDAO().find(transaction,
 				mgmtObjEntity.getResourceID());
 		
-		LOGGER.info("Created entity: " + mgmtObjFromDB);
-		
 		nodeEntity.addMgmtObj(mgmtObjFromDB);
-		nodeDao.update(transaction, nodeEntity);
+		dao.update(transaction, nodeEntity);
 
 		// update link with mgmtObjEntity - DacEntity
 		for (DynamicAuthorizationConsultationEntity dace : mgmtObjFromDB.getDynamicAuthorizationConsultations()) {
@@ -213,7 +205,7 @@ public class MgmtObjController extends Controller {
 		// commit the transaction & release lock
 		transaction.commit();
 
-		if ((mgmtObj.getAnnounceTo() != null) && ! mgmtObj.getAnnounceTo().isEmpty()) {
+		if (! mgmtObj.getAnnounceTo().isEmpty()) {
 			mgmtObj.setName(mgmtObjFromDB.getName());
 			mgmtObj.setResourceID(mgmtObjFromDB.getResourceID());
 			mgmtObj.setResourceType(ResourceType.MGMT_OBJ);
@@ -221,8 +213,7 @@ public class MgmtObjController extends Controller {
 			String hierachicalURI = mgmtObjFromDB.getHierarchicalURI();
 			String remoteLocation = hierachicalURI
 					.substring(("/" + Constants.CSE_ID + "/" + Constants.CSE_NAME + "/").length());
-			Announcer.announce(mgmtObj.getAnnounceTo(), mgmtObj.getAnnouncedAttribute(), mgmtObj,
-					request.getFrom(), remoteLocation);
+			Announcer.announce(mgmtObj, request.getFrom(), remoteLocation);
 		}
 
 		Notifier.notify(subscriptions, mgmtObjFromDB, ResourceStatus.CHILD_CREATED);
@@ -476,8 +467,7 @@ public class MgmtObjController extends Controller {
 		transaction.commit();
 
 		// deannounce
-		Announcer.deAnnounce(mgmtObjEntity.getAnnounceTo(), mgmtObjEntity,
-				Constants.ADMIN_REQUESTING_ENTITY);
+		Announcer.deAnnounce(mgmtObjEntity, Constants.ADMIN_REQUESTING_ENTITY);
 
 		// return the response
 		response.setResponseStatusCode(ResponseStatusCode.DELETED);

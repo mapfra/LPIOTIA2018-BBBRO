@@ -45,6 +45,7 @@ import org.eclipse.om2m.commons.resource.ChildResourceRef;
 import org.eclipse.om2m.commons.resource.Container;
 import org.eclipse.om2m.commons.resource.DynamicAuthorizationConsultation;
 import org.eclipse.om2m.commons.resource.Group;
+import org.eclipse.om2m.commons.resource.Node;
 import org.eclipse.om2m.commons.resource.RemoteCSE;
 import org.eclipse.om2m.commons.resource.Request;
 import org.eclipse.om2m.commons.resource.Subscription;
@@ -249,6 +250,11 @@ public class CseBaseMapper extends EntityMapper<CSEBaseEntity, CSEBase> {
 		for (SubscriptionEntity sub : entity.getSubscriptions()) {
 			Subscription subRes = new SubscriptionMapper().mapEntityToResource(sub, ResultContent.ATTRIBUTES_AND_CHILD_RES, level - 1, offset - 1);
 			resource.getRemoteCSEOrNodeOrAE().add(subRes);
+		}
+		// adding node refs
+		for (NodeEntity node : entity.getChildNodes()) {
+			Node nodeRes = new NodeMapper().mapEntityToResource(node, ResultContent.ATTRIBUTES_AND_CHILD_RES, level - 1, offset - 1);
+			resource.getRemoteCSEOrNodeOrAE().add(nodeRes);
 		}
 		// adding request refs
 		for (RequestEntity req : entity.getChildReq()) {

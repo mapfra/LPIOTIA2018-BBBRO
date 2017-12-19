@@ -33,30 +33,34 @@
 		<class>org.eclipse.om2m.commons.entities.AccessControlRuleEntity</class>
 		<class>org.eclipse.om2m.commons.entities.AeEntity</class>
 		<class>org.eclipse.om2m.commons.entities.AeAnncEntity</class>
+		<class>org.eclipse.om2m.commons.entities.AnnouncedResourceEntity</class>
 		<class>org.eclipse.om2m.commons.entities.AreaNwkDeviceInfoEntity</class>
+		<class>org.eclipse.om2m.commons.entities.AreaNwkDeviceInfoAnncEntity</class>
 		<class>org.eclipse.om2m.commons.entities.AreaNwkInfoEntity</class>
-		<class>org.eclipse.om2m.commons.entities.DeviceInfoEntity</class>
-		<class>org.eclipse.om2m.commons.entities.CSEBaseEntity</class>
+		<class>org.eclipse.om2m.commons.entities.AreaNwkInfoAnncEntity</class>
 		<class>org.eclipse.om2m.commons.entities.ContainerEntity</class>
+		<class>org.eclipse.om2m.commons.entities.ContentInstanceEntity</class>
+		<class>org.eclipse.om2m.commons.entities.CreatedAnnouncedResourceEntity</class>
+		<class>org.eclipse.om2m.commons.entities.CSEBaseEntity</class>
+		<class>org.eclipse.om2m.commons.entities.CustomAttributeEntity</class>
+		<class>org.eclipse.om2m.commons.entities.ContainerAnncEntity</class>
+		<class>org.eclipse.om2m.commons.entities.DeviceInfoEntity</class>
+		<class>org.eclipse.om2m.commons.entities.DeviceInfoAnncEntity</class>
 		<class>org.eclipse.om2m.commons.entities.DynamicAuthorizationConsultationEntity</class>
 		<class>org.eclipse.om2m.commons.entities.FlexContainerEntity</class>
 		<class>org.eclipse.om2m.commons.entities.FlexContainerAnncEntity</class>
-		<class>org.eclipse.om2m.commons.entities.CustomAttributeEntity</class>
-		<class>org.eclipse.om2m.commons.entities.ContainerAnncEntity</class>
-		<class>org.eclipse.om2m.commons.entities.ContentInstanceEntity</class>
 		<class>org.eclipse.om2m.commons.entities.GroupEntity</class>
 		<class>org.eclipse.om2m.commons.entities.LabelEntity</class>
 		<class>org.eclipse.om2m.commons.entities.NodeEntity</class>
+		<class>org.eclipse.om2m.commons.entities.NodeAnncEntity</class>
 		<class>org.eclipse.om2m.commons.entities.PollingChannelEntity</class>
+		<class>org.eclipse.om2m.commons.entities.RegularResourceEntity</class>
 		<class>org.eclipse.om2m.commons.entities.RemoteCSEEntity</class>
 		<class>org.eclipse.om2m.commons.entities.RemoteCseAnncEntity</class>
 		<class>org.eclipse.om2m.commons.entities.RequestEntity</class>
 		<class>org.eclipse.om2m.commons.entities.ScheduleEntity</class>
 		<class>org.eclipse.om2m.commons.entities.SubscriptionEntity</class>
 		<class>org.eclipse.om2m.commons.entities.UriMapperEntity</class>
-		<class>org.eclipse.om2m.commons.entities.CreatedAnnouncedResourceEntity</class>
-		<class>org.eclipse.om2m.commons.entities.RegularResourceEntity</class>
-		<class>org.eclipse.om2m.commons.entities.AnnouncedResourceEntity</class>
 
 		<properties>
 			<!-- Actions performed at the start of the platform -->

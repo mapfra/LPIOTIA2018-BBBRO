@@ -67,7 +67,7 @@ import org.eclipse.om2m.commons.constants.ShortName;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "")
 @XmlRootElement(name = ShortName.MEMORY_ANNC)
-public class MemoryAnnc extends AnnouncedMgmtResource {
+public class MemoryAnnc extends MgmtObjAnncWithChildren {
 
 	@XmlSchemaType(name = "unsignedLong")
 	protected BigInteger memAvailable;

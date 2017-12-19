@@ -13,7 +13,9 @@ import org.eclipse.om2m.commons.entities.FlexContainerAnncEntity;
 import org.eclipse.om2m.commons.entities.FlexContainerEntity;
 import org.eclipse.om2m.commons.entities.GroupEntity;
 import org.eclipse.om2m.commons.entities.LabelEntity;
+import org.eclipse.om2m.commons.entities.MgmtObjAnncEntity;
 import org.eclipse.om2m.commons.entities.MgmtObjEntity;
+import org.eclipse.om2m.commons.entities.NodeAnncEntity;
 import org.eclipse.om2m.commons.entities.NodeEntity;
 import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
 import org.eclipse.om2m.commons.entities.ScheduleEntity;
@@ -87,6 +89,10 @@ public class DynamicAuthorizationConsultationDAO extends AbstractDAO<DynamicAuth
 			mgmtObj.getDynamicAuthorizationConsultations().remove(resource);
 			transaction.getEm().merge(mgmtObj);
 		}
+		for(MgmtObjAnncEntity mgmtObj : resource.getMgmtObjAnncEntities()) {
+			mgmtObj.getDynamicAuthorizationConsultations().remove(resource);
+			transaction.getEm().merge(mgmtObj);
+		}
 		
 		// remove link with Container
 		for(ContainerEntity ce : resource.getLinkedContainerEntities()) {
@@ -132,6 +138,10 @@ public class DynamicAuthorizationConsultationDAO extends AbstractDAO<DynamicAuth
 		
 		// remove link with node
 		for(NodeEntity ne : resource.getLinkedNodeEntities()) {
+			ne.getDynamicAuthorizationConsultations().remove(resource);
+			transaction.getEm().merge(ne);
+		}
+		for(NodeAnncEntity ne : resource.getLinkedNodeAnncEntities()) {
 			ne.getDynamicAuthorizationConsultations().remove(resource);
 			transaction.getEm().merge(ne);
 		}

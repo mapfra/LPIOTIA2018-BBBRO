@@ -17,7 +17,9 @@ import org.eclipse.om2m.commons.entities.DynamicAuthorizationConsultationEntity;
 import org.eclipse.om2m.commons.entities.FlexContainerAnncEntity;
 import org.eclipse.om2m.commons.entities.FlexContainerEntity;
 import org.eclipse.om2m.commons.entities.GroupEntity;
+import org.eclipse.om2m.commons.entities.MgmtObjAnncEntity;
 import org.eclipse.om2m.commons.entities.MgmtObjEntity;
+import org.eclipse.om2m.commons.entities.NodeAnncEntity;
 import org.eclipse.om2m.commons.entities.NodeEntity;
 import org.eclipse.om2m.commons.entities.PollingChannelEntity;
 import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
@@ -195,13 +197,18 @@ public class DynamicAuthorizationConsultationUtilImpl implements DynamicAuthoriz
 		case ResourceType.MGMT_OBJ:
 			MgmtObjEntity mgmtObjEntity = DBServiceJPAImpl.getInstance().getDAOFactory()
 				.getMgmtObjDAO().find(dbTransaction, resourceId);
-			resourceEntity = mgmtObjEntity;
-			if (mgmtObjEntity != null) {
-				daces.addAll(mgmtObjEntity.getDynamicAuthorizationConsultations());
-			}
+		resourceEntity = mgmtObjEntity;
+		if (mgmtObjEntity != null) {
+			daces.addAll(mgmtObjEntity.getDynamicAuthorizationConsultations());
+		}
 			break;
 		case ResourceType.MGMT_OBJ_ANNC:
-			// TODO ?
+			MgmtObjAnncEntity mgmtObjAnncEntity = DBServiceJPAImpl.getInstance().getDAOFactory()
+				.getMgmtObjAnncDAO().find(dbTransaction, resourceId);
+			resourceEntity = mgmtObjAnncEntity;
+			if (mgmtObjAnncEntity != null) {
+				daces.addAll(mgmtObjAnncEntity.getDynamicAuthorizationConsultations());
+			}
 			break;
 		case ResourceType.NODE:
 			NodeEntity nodeEntity = DBServiceJPAImpl.getInstance().getDAOFactory().getNodeDAO().find(dbTransaction, resourceId);
@@ -211,7 +218,11 @@ public class DynamicAuthorizationConsultationUtilImpl implements DynamicAuthoriz
 			}
 			break;
 		case ResourceType.NODE_ANNC:
-			// TODO ?
+			NodeAnncEntity nodeAnncEntity = DBServiceJPAImpl.getInstance().getDAOFactory().getNodeAnncDAO().find(dbTransaction, resourceId);
+			resourceEntity = nodeAnncEntity;
+			if (nodeAnncEntity != null) {
+				daces.addAll(nodeAnncEntity.getDynamicAuthorizationConsultations());
+			}
 			break;
 		case ResourceType.POLLING_CHANNEL:
 			PollingChannelEntity pollingChannelEntity = DBServiceJPAImpl.getInstance().getDAOFactory().getPollingChannelDAO().find(dbTransaction, resourceId);

@@ -71,9 +71,9 @@ import org.eclipse.om2m.commons.constants.ShortName;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "")
+@XmlType(name = "", propOrder = { "rest" })
 @XmlRootElement(name = ShortName.FIRMWARE_ANNC)
-public class FirmwareAnnc extends AnnouncedMgmtResource {
+public class FirmwareAnnc extends MgmtObjAnncWithChildren {
 
 	@XmlElementRefs({
 			@XmlElementRef(name = "childResource", type = JAXBElement.class, required = false),
