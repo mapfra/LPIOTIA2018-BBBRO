@@ -76,9 +76,8 @@ public class CSEBaseEntity extends ResourceEntity {
 	protected String nodeLink;
 
 	
-	
 	/** List of Nodes */
-	@OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.ALL})
+	@OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.ALL}, mappedBy="parentCsb")
 	@JoinTable(
 			name=DBEntities.CSB_NOD_CH_JOIN,
 			joinColumns={@JoinColumn(name=DBEntities.CSEB_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)},
@@ -87,7 +86,7 @@ public class CSEBaseEntity extends ResourceEntity {
 	protected List<NodeEntity> childNodes;
 	
 	/** List of Nodes */
-	@OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.ALL})
+	@OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.ALL}, mappedBy="parentCsb")
 	@JoinTable(
 			name=DBEntities.CSB_NODANNC_CH_JOIN,
 			joinColumns={@JoinColumn(name=DBEntities.CSEB_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)},

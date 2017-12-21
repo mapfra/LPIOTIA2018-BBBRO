@@ -85,7 +85,7 @@ public class Announcer implements Constants {
 	 *            - requesting entity
 	 * @return
 	 */
-	public static List<String> announce(AnnounceableResource toBeAnnounced, String requestingEntity, String remoteDestination) {
+	public static void announce(AnnounceableResource toBeAnnounced, String requestingEntity, String remoteDestination) {
 		AnnouncedResource announcedResource = null;
 		LOGGER.info("announce " + toBeAnnounced + " with " + toBeAnnounced.getAnnouncedAttribute());
 		int type = toBeAnnounced.getResourceType().intValue();
@@ -155,8 +155,6 @@ public class Announcer implements Constants {
 
 		transaction.commit();
 		transaction.close();
-
-		return null;
 	}
 
 	/**

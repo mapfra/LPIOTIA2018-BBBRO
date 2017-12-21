@@ -163,8 +163,9 @@ public class MgmtObjController extends Controller {
 		}
 		mgmtObjEntity.setResourceID("/" + Constants.CSE_ID + "/" + ShortName.MGO 
 				+ Constants.PREFIX_SEPERATOR + generatedId);
-		mgmtObjEntity.setHierarchicalURI(parentEntity.getHierarchicalURI() + "/" + mgmtObjEntity.getName());
-		mgmtObjEntity.setParentID(parentEntity.getResourceID());
+		mgmtObjEntity.setParentNode(nodeEntity);
+		mgmtObjEntity.setHierarchicalURI(nodeEntity.getHierarchicalURI() + "/" + mgmtObjEntity.getName());
+		mgmtObjEntity.setParentID(nodeEntity.getResourceID());
 		mgmtObjEntity.setResourceType(ResourceType.MGMT_OBJ);
 
 		// accessControlPolicyIDs O
@@ -467,7 +468,9 @@ public class MgmtObjController extends Controller {
 		transaction.commit();
 
 		// deannounce
-		Announcer.deAnnounce(mgmtObjEntity, Constants.ADMIN_REQUESTING_ENTITY);
+		if (! mgmtObjEntity.getAnnounceTo().isEmpty()) {
+			Announcer.deAnnounce(mgmtObjEntity, Constants.ADMIN_REQUESTING_ENTITY);
+		}
 
 		// return the response
 		response.setResponseStatusCode(ResponseStatusCode.DELETED);

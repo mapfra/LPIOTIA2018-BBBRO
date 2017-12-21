@@ -39,9 +39,18 @@ public class NodeDAO extends AbstractDAO<NodeEntity> {
 	@Override
 	public void delete(DBTransaction dbTransaction, NodeEntity resource) {
 		DBTransactionJPAImpl transaction = (DBTransactionJPAImpl) dbTransaction;
+		for (LabelEntity label : resource.getLabelsEntities()) {
+			label.getLinkedNodes().remove(resource);
+		}
+		if (resource.getParentCsb() != null) {
+			resource.getParentCsb().getChildNodes().remove(resource);
+		}
+		if (resource.getParentCsr() != null) {
+			resource.getParentCsr().getChildNodes().remove(resource);
+		}
 		transaction.getEm().remove(resource);
-		transaction.getEm().getEntityManagerFactory().getCache().evict(CSEBaseEntity.class);
-		transaction.getEm().getEntityManagerFactory().getCache().evict(RemoteCSEEntity.class);
+//		transaction.getEm().getEntityManagerFactory().getCache().evict(CSEBaseEntity.class);
+//		transaction.getEm().getEntityManagerFactory().getCache().evict(RemoteCSEEntity.class);
 	}
 	
 	@Override

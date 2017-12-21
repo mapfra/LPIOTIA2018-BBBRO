@@ -155,12 +155,16 @@ public class NodeAnncController extends Controller {
 		// Set other parameters
 		nodeEntity.setResourceID("/" + Constants.CSE_ID + "/" +
 				ShortName.NODE_ANNC + Constants.PREFIX_SEPERATOR + generatedId);
-		nodeEntity.setParentCsr((RemoteCSEEntity) parentEntity);
 
 		nodeEntity.setCreationTime(DateUtil.now());
 		nodeEntity.setLastModifiedTime(DateUtil.now());
 		nodeEntity.setParentID(parentEntity.getResourceID());
 		nodeEntity.setResourceType(ResourceType.NODE_ANNC);
+		if (parentEntity.getResourceType().intValue() == ResourceType.CSE_BASE) {
+			nodeEntity.setParentCsb((CSEBaseEntity) parentEntity);
+		} else if (parentEntity.getResourceType().intValue() == ResourceType.REMOTE_CSE) {
+			nodeEntity.setParentCsr((RemoteCSEEntity) parentEntity);
+		}
 
 		if (dbs.getDAOFactory().getNodeAnncDAO().find(transaction, nodeEntity.getResourceID()) != null) {
 			throw new ConflictException("Already registered");

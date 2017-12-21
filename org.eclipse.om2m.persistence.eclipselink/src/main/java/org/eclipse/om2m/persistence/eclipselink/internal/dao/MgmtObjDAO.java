@@ -90,7 +90,7 @@ public class MgmtObjDAO extends AbstractDAO<MgmtObjEntity> {
 			resource.getParentNode().removeMgmtObj(resource);
 		transaction.getEm().remove(resource);
 		// cleaning the cache
-		transaction.getEm().getEntityManagerFactory().getCache().evict(NodeEntity.class);
+//		transaction.getEm().getEntityManagerFactory().getCache().evict(NodeEntity.class);
 	}
 
 }

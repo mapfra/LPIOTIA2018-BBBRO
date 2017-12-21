@@ -63,6 +63,7 @@ public class NodeController extends Controller {
 	/** Logger */
 	private static Log LOGGER = LogFactory.getLog(NodeController.class);
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public ResponsePrimitive doCreate(RequestPrimitive request) {
 		/*
@@ -86,17 +87,20 @@ public class NodeController extends Controller {
 		Patterns patterns = new Patterns();
 
 		// retrieve the parent
-		DAO<ResourceEntity> dao = (DAO<ResourceEntity>) patterns.getDAO(request.getTargetId(), dbs);
-		if (dao == null){
+		DAO<ResourceEntity> parentDao = (DAO<ResourceEntity>) patterns.getDAO(request.getTargetId(), dbs);
+		if (parentDao == null) {
 			throw new ResourceNotFoundException("Cannot find parent resource");
 		}
 
 		// Get the parent entity
-		ResourceEntity parentEntity = (ResourceEntity) dao.find(transaction, request.getTargetId());
+		ResourceEntity parentEntity = (ResourceEntity) parentDao.find(transaction, request.getTargetId());
 		// Check the parent existence
-		if (parentEntity == null){
+		if (parentEntity == null) {
 			throw new ResourceNotFoundException("Cannot find parent resource");
 		}
+
+		// lock parent
+		transaction.lock(parentEntity);
 
 		List<NodeEntity> childNodes = null;
 		List<AccessControlPolicyEntity> acpsToCheck = null;
@@ -117,7 +121,8 @@ public class NodeController extends Controller {
 		}
 
 		// check access control policy of the originator
-		checkACP(acpsToCheck, request.getFrom(), Operation.CREATE);
+//		checkACP(acpsToCheck, request.getFrom(), Operation.CREATE);
+		checkPermissions(request, parentEntity, acpsToCheck);
 
 		response = new ResponsePrimitive(request);
 		// check if content is present
@@ -169,7 +174,12 @@ public class NodeController extends Controller {
 		nodeEntity.setLastModifiedTime(DateUtil.now());
 		nodeEntity.setParentID(parentEntity.getResourceID());
 		nodeEntity.setResourceType(ResourceType.NODE);
-	
+		if (parentEntity.getResourceType().intValue() == ResourceType.CSE_BASE) {
+			nodeEntity.setParentCsb((CSEBaseEntity) parentEntity);
+		} else if (parentEntity.getResourceType().intValue() == ResourceType.REMOTE_CSE) {
+			nodeEntity.setParentCsr((RemoteCSEEntity) parentEntity);
+		}
+
 		if (node.getName() != null){
 			if (!patterns.checkResourceName(node.getName())){
 				throw new BadRequestException("Name provided is incorrect. Must be:" + patterns.ID_STRING);
@@ -192,12 +202,13 @@ public class NodeController extends Controller {
 			throw new ConflictException("Name already present in the parent collection.");
 		}
 		// persisting data
-		dbs.getDAOFactory().getNodeDAO().create(transaction, nodeEntity);
+		DAO<NodeEntity> nodeDao = dbs.getDAOFactory().getNodeDAO();
+		nodeDao.create(transaction, nodeEntity);
 
 		// get the manage object
-		NodeEntity nodeDB = dbs.getDAOFactory().getNodeDAO().find(transaction, nodeEntity.getResourceID());
+		NodeEntity nodeDB = nodeDao.find(transaction, nodeEntity.getResourceID());
 		childNodes.add(nodeDB);
-		dao.update(transaction, parentEntity);
+		parentDao.update(transaction, parentEntity);
 		transaction.commit();
 
 		if (! node.getAnnounceTo().isEmpty()) {
@@ -245,7 +256,8 @@ public class NodeController extends Controller {
 		ResponsePrimitive response = new ResponsePrimitive(request);
 
 		// retrieve the resource from database
-		NodeEntity nodeEntity = dbs.getDAOFactory().getNodeDAO().find(transaction, request.getTargetId());
+		DAO<NodeEntity> nodeDao = dbs.getDAOFactory().getNodeDAO();
+		NodeEntity nodeEntity = nodeDao.find(transaction, request.getTargetId());
 		if (nodeEntity == null) {
 			throw new ResourceNotFoundException();
 		}
@@ -335,7 +347,7 @@ public class NodeController extends Controller {
 		response.setContent(modifiedAttributes);
 		
 		// uptade the persisted resource
-		dbs.getDAOFactory().getNodeDAO().update(transaction, nodeEntity);
+		nodeDao.update(transaction, nodeEntity);
 		// commit & close the db transaction
 		transaction.commit();
 		Notifier.notify(nodeEntity.getSubscriptions(), nodeEntity, ResourceStatus.UPDATED);
@@ -350,25 +362,32 @@ public class NodeController extends Controller {
 		// Generic delete procedure
 		ResponsePrimitive response = new ResponsePrimitive(request);
 		// retrieve the entity
-		NodeEntity nodeEntity = dbs.getDAOFactory().getNodeDAO().find(transaction, request.getTargetId());
+		DAO<NodeEntity> nodeDao = dbs.getDAOFactory().getNodeDAO();
+		NodeEntity nodeEntity = nodeDao.find(transaction, request.getTargetId());
 		if (nodeEntity == null) {
 			LOGGER.info("Delete node: not found");
 			throw new ResourceNotFoundException();
 		}
 
+		// lock entity
+		transaction.lock(nodeEntity);
+
 		// check access control policies
-		checkACP(nodeEntity.getAccessControlPolicies(), request.getFrom(), Operation.DELETE);
+//		checkACP(nodeEntity.getAccessControlPolicies(), request.getFrom(), Operation.DELETE);
+		checkPermissions(request, nodeEntity, nodeEntity.getAccessControlPolicies());
 		
 		UriMapper.deleteUri(nodeEntity.getHierarchicalURI());
 		Notifier.notifyDeletion(nodeEntity.getSubscriptions(), nodeEntity);
 
 		// delete the resource in the database
-		dbs.getDAOFactory().getNodeDAO().delete(transaction, nodeEntity);
+		nodeDao.delete(transaction, nodeEntity);
 		// commit the transaction
 		transaction.commit();
 
 		// deannounce
-		Announcer.deAnnounce(nodeEntity, Constants.ADMIN_REQUESTING_ENTITY);
+		if (! nodeEntity.getAnnounceTo().isEmpty()) {
+			Announcer.deAnnounce(nodeEntity, Constants.ADMIN_REQUESTING_ENTITY);
+		}
 
 		// return the response
 		response.setResponseStatusCode(ResponseStatusCode.DELETED);

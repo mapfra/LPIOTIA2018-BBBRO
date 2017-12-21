@@ -603,9 +603,9 @@ public class AEController extends Controller {
 		transaction.commit();
 		
 		// deannounce
-		
-		Announcer.deAnnounce(aeEntity, Constants.ADMIN_REQUESTING_ENTITY);
-
+		if (! aeEntity.getAnnounceTo().isEmpty()) {
+			Announcer.deAnnounce(aeEntity, Constants.ADMIN_REQUESTING_ENTITY);
+		}
 		// Return rsc
 		response.setResponseStatusCode(ResponseStatusCode.DELETED);
 		return response;

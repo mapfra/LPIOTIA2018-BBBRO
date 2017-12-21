@@ -116,7 +116,7 @@ public class NodeEntity extends AnnounceableSubordinateEntity {
 	protected List<AreaNwkDeviceInfoEntity> childAreaNwkDeviceInfoEntities;
 	
 	// Database link to DeviceInfo entity
-	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, mappedBy="parentNode")
 	@JoinTable(
 			name = DBEntities.DVI_NOD_JOIN,
 			inverseJoinColumns = { @JoinColumn(name = DBEntities.DVI_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 

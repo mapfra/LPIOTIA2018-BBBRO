@@ -603,7 +603,9 @@ public class FlexContainerController extends Controller {
 		transaction.commit();
 		
 		// deannounce
-		Announcer.deAnnounce(flexContainerEntity, Constants.ADMIN_REQUESTING_ENTITY);
+		if (! flexContainerEntity.getAnnounceTo().isEmpty()) {
+			Announcer.deAnnounce(flexContainerEntity, Constants.ADMIN_REQUESTING_ENTITY);
+		}
 
 		// return the response
 		response.setResponseStatusCode(ResponseStatusCode.DELETED);
