@@ -9,25 +9,26 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 	var timerForNotifications = null;
 	
 	$scope.imgModules = {
-			'temperature':'temp.jpg',
-			'noise':'noise.jpg',
-			'relativeHumidity':'humidity.png',
-			'atmosphericPressureSensor':'pressure.jpg',
-			'extendedCarbonDioxideSensor':'co2.png',
-			'contactSensor':'open_door_35.png',
-			'motionSensor':'motion_sensor.png',
-			'energyConsumption': 'power_consumption.png'
+		'temperature':'temp.jpg',
+		'noise':'noise.jpg',
+		'relativeHumidity':'humidity.png',
+		'atmosphericPressureSensor':'pressure.jpg',
+		'extendedCarbonDioxideSensor':'co2.png',
+		'contactSensor':'open_door_35.png',
+		'motionSensor':'motion_sensor.png',
+		'energyConsumption': 'power_consumption.png'
 	};
 	
 	$scope.moduleFilterDefinition = {
-			'temperature':'curT0',
-			'noise':'noise',
-			'relativeHumidity':'relHy',
-			'atmosphericPressureSensor':'atmPe',
-			'extendedCarbonDioxideSensor':'cDeVe',
-			'contactSensor':'alarm',
-			'motionSensor':'alarm',
-			'energyConsumption':'power'
+		'temperature':'curT0',
+		'noise':'noise',
+		'relativeHumidity':'relHy',
+		'atmosphericPressureSensor':'atmPe',
+		'extendedCarbonDioxideSensor':'cDeVe',
+		'contactSensor':'alarm',
+		'motionSensor':'alarm',
+		'energyConsumption':'power',
+		'numberValue': 'numVe'
 	};
 	
 	$scope.datapointsNamePerModule = {
@@ -45,7 +46,8 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 		"energyConsumption" : ["volte", "currt", "power"],
 		"lock" : ["dooLk", "opeOy"],
 		"battery" : ["discg", "charg", "level", "capay"],
-		"doorStatus": ["dooSt"]
+		"doorStatus": ["dooSt"],
+		"numberValue": ["numVe"]
 	};
 
 	$scope.devices = {};
@@ -69,9 +71,9 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 	
 	$scope.load = function() {
 		var req = {
-				method: 'GET',
-				url: $scope.urlBase + '/Home_Monitoring_Application/in-cse/context',
-				params: {sessionId: $scope.sessionId}
+			method: 'GET',
+			url: $scope.urlBase + '/Home_Monitoring_Application/in-cse/context',
+			params: {sessionId: $scope.sessionId}
 		};
 		$http(req).success(function (response, status, headers, config)  {
 			$scope.cseContext = response;
@@ -88,19 +90,19 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 	// default polling interval in ms
 	var defaultModulePolling = 180000;
 
-	// blacklist module  polling interval in ms
-	var blModules = ["runMode","streaming","colour","colourSaturation","faultDetection"];
-
-	// fast polling interval in ms
-	var fastModulePolling = 3000;
-	var fastModules = ["binarySwitch","energyConsumption","lock"];
+//	// blacklist module  polling interval in ms
+//	var blModules = ["runMode","streaming","colour","colourSaturation","faultDetection"];
+//
+//	// fast polling interval in ms
+//	var fastModulePolling = 3000;
+//	var fastModules = ["binarySwitch","energyConsumption","lock"];
 	
 	$scope.getDevicesAsArray = function() {
 		return Object.values($scope.devices);
 	};
 	
 	$scope.getModulesFromDevice = function(device) {
-		console.log("getModules called");
+		console.log("getModules for " + device.name);
 		return Object.values(device.modules);
 	};
 
@@ -109,10 +111,7 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 	};
 
 	$scope.switchFilter = function (module) {
-		if (!((module.name === 'binarySwitch') || (module.name === 'lock'))) {
-			return false;
-		}
-		return true; 
+		return (module.name === 'binarySwitch') || (module.name === 'lock');
 	};
 
 	//filter to remove any device which contains a streaming module from the display device list
@@ -126,14 +125,14 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 	/*************************************************/
 	$scope.getDevices = function() {
 		var req = {
-				method: 'GET',
-				url: $scope.urlBase + '/' + $scope.cseContext 
-					+ '?fu=1&drt=2&lbl=object.type/device',
-				headers: {
-					'Content-Type': 'application/json',
-					'Accept': 'application/json',
-					'X-M2M-Origin': $scope.credentials
-				}
+			method: 'GET',
+			url: $scope.urlBase + '/' + $scope.cseContext 
+				+ '?fu=1&drt=2&lbl=object.type/device',
+			headers: {
+				'Content-Type': 'application/json',
+				'Accept': 'application/json',
+				'X-M2M-Origin': $scope.credentials
+			}
 		};
 		$http(req).success(function (response, status, headers, config)  {
 			
@@ -153,14 +152,14 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 				var deviceRi = newDevices[i];
 				
 				var getDeviceReq = {
-						method: 'GET',
-						url: $scope.urlBase + '/~' + deviceRi + '?rcn=7',
-						headers: {
-							'Content-Type': 'application/json',
-							'Accept': 'application/json',
-							'X-M2M-Origin': $scope.credentials
-						}, 
-						deviceRi: deviceRi // add device ri in request
+					method: 'GET',
+					url: $scope.urlBase + '/~' + deviceRi + '?rcn=7',
+					headers: {
+						'Content-Type': 'application/json',
+						'Accept': 'application/json',
+						'X-M2M-Origin': $scope.credentials
+					}, 
+					deviceRi: deviceRi // add device ri in request
 				};
 
 				$http(getDeviceReq).success(function (response, status, headers, config)  {
@@ -201,7 +200,6 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 					// add new device in devices list
 					$scope.devices[deviceRi] = device;
 
-
 					// get all the modules for the given device
 					$scope.getModules(device);
 				}).error(function (response, status, headers, config) {
@@ -221,15 +219,15 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 	$scope.getModules = function (device) {
 		
 		var getModulesRiReq = {
-				method: 'GET',
-				url: $scope.urlBase + '/' + $scope.cseContext 
-				+ '?fu=1&drt=2&lbl=object.type/module&lbl=device.id/' + device.id,
-				headers: {
-					'Content-Type': 'application/json',
-					'Accept': 'application/json',
-					'X-M2M-Origin': $scope.credentials
-				},
-				device: device
+			method: 'GET',
+			url: $scope.urlBase + '/' + $scope.cseContext 
+			+ '?fu=1&drt=2&lbl=device.id/' + device.id,
+			headers: {
+				'Content-Type': 'application/json',
+				'Accept': 'application/json',
+				'X-M2M-Origin': $scope.credentials
+			},
+			device: device
 		};
 		
 		$http(getModulesRiReq).success(function (response, status, headers, config)  {
@@ -256,14 +254,14 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 	$scope.getModule = function (device, moduleRi) {
 		
 		var getModuleReq = {
-				method: 'GET',
-				url: $scope.urlBase + '/~' + moduleRi + '?rcn=7',
-				headers: {
-					'Content-Type': 'application/json',
-					'Accept': 'application/json',
-					'X-M2M-Origin':$scope.credentials
-				},
-				device: device
+			method: 'GET',
+			url: $scope.urlBase + '/~' + moduleRi + '?rcn=7',
+			headers: {
+				'Content-Type': 'application/json',
+				'Accept': 'application/json',
+				'X-M2M-Origin':$scope.credentials
+			},
+			device: device
 		};
 		
 		$http(getModuleReq).success(function (response, status, headers, config)  {
@@ -283,7 +281,7 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 			module.id = id;
 			module.ri = root.ri;
 			module.name = moduleName;
-			module.img = 'images/'+$scope.getImageModule(moduleName);
+			module.img = 'images/' + $scope.getImageModule(moduleName);
 			// fill the class with the module name to define the text color. see css file.
 			module.colorClass = tab[tab.length -1];
 
@@ -295,8 +293,6 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 				module.isReadOnly = false;
 			}
 			
-			
-
 			// create the attributes
 			var dpNames = $scope.datapointsNamePerModule[module.name];
 			if (dpNames) {
@@ -307,14 +303,11 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 				);
 			}
 			
-
 			var propName = $scope.getPropValueModule(moduleName);
 			if (propName) {
 				module.value = module.datapoints[propName].value;	
 			}
 			 
-
-
 			if (module.name === 'streaming') {
 				var index = $scope.getCamModuleIndex(module.id);
 				if (index == -1) {
@@ -344,15 +337,15 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 	
 	$scope.createSubscription = function(toBeSubscribedResource) {
 		req = {
-				method : 'POST',
-				url : $scope.urlBase + '/Home_Monitoring_Application/in-cse/context',
-				data : {
-							resourceId:toBeSubscribedResource,
-							sessionId: $scope.sessionId
-						},
-				headers : {
-					'Content-Type' : 'application/json'
-				}
+			method : 'POST',
+			url : $scope.urlBase + '/Home_Monitoring_Application/in-cse/context',
+			data : {
+				resourceId:toBeSubscribedResource,
+				sessionId: $scope.sessionId
+			},
+			headers : {
+				'Content-Type' : 'application/json'
+			}
 		};
 		// don't care about response
 		$http(req);
@@ -361,104 +354,94 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 	
 	$scope.getNotifications = function() {
 		req = {
-				method : 'GET',
-				url : $scope.urlBase + '/Home_Monitoring_Application/in-cse/context/notifications',
-				params: {sessionId: $scope.sessionId},
-				headers : {
-					'Accept' : 'application/json'
-				}
+			method : 'GET',
+			url : $scope.urlBase + '/Home_Monitoring_Application/in-cse/context/notifications',
+			params: {sessionId: $scope.sessionId},
+			headers : {
+				'Accept' : 'application/json'
+			}
 		};
 		
 		$http(req).success(
-				function(response, status, headers, config) {
-					// for each notification --> update device & module model
-					 var notifications = response;
-					 // notifications is an array
-					notifications.forEach(
-							function(notification) {
-								console.log(notification);
-								var sgn = notification["m2m:sgn"];
-								var nev = null;
-								if (sgn !== null) {
-									nev = sgn["m2m:nev"];
-								}
-								var rep = null;
-								if (nev != null) {
-									rep = nev["m2m:rep"];
-								}
-								
-								var moduleRep = null;
-								if (rep != null) {
-									var key = $scope.getRootKey(rep);
-									moduleRep = rep[key];
-								}
-								
-								if (moduleRep != null) {
-									var internalModule = $scope.getModuleByRi(moduleRep.ri, moduleRep.pi);
-									console.log(internalModule);
-									
-									
-									var propValueModule = $scope.getPropValueModule(internalModule.name);
-									if (propValueModule) {
-										var value = moduleRep[propValueModule];
-										if (internalModule.value) {
-											internalModule.value = value;
-										}
-									}
-									
-									if (moduleRep.powSe) {
-										console.log('powSe value:' + moduleRep.powSe);
-										var datapoints = internalModule.datapoints;
-										var powSeValue = (moduleRep.powSe === 'true');
-										datapoints.powSe.value = powSeValue;
-										if (internalModule.state != powSeValue) {
-											internalModule.state = powSeValue;
-										}
-										
-										console.log('powSe updated!!!!!!!!!!!!!!!!!');
-									}
-									
-									if (moduleRep.dooLk) {
-										console.log('dooLk value:' + moduleRep.dooLk);
-										var datapoints = internalModule.datapoints;
-										var dooLkValue = (moduleRep.dooLk ==='true');
-										datapoints.dooLk.value = dooLkValue;
-										if (internalModule.state != dooLkValue) {
-											internalModule.state = dooLkValue;
-										}
-									}
-									
-									// put background red
-									// here we need to be carefull with device = moduleRep.pi
-									// as we have announced device.
-									device = $scope.getDeviceByRi(moduleRep.pi);
-									if (device) {
-										
-
-											$scope.removeColor(device);													
-											
-									}
-									
-									
+			function(response, status, headers, config) {
+				// for each notification --> update device & module model
+				var notifications = response;
+				// notifications is an array
+				notifications.forEach(
+					function(notification) {
+						console.log(notification);
+						var sgn = notification["m2m:sgn"];
+						var nev = null;
+						if (sgn !== null) {
+							nev = sgn["m2m:nev"];
+						}
+						var rep = null;
+						if (nev != null) {
+							rep = nev["m2m:rep"];
+						}
+						
+						var moduleRep = null;
+						if (rep != null) {
+							var key = $scope.getRootKey(rep);
+							moduleRep = rep[key];
+						}
+						
+						if (moduleRep != null) {
+							var internalModule = $scope.getModuleByRi(moduleRep.ri, moduleRep.pi);
+							console.log(internalModule);
+							
+							var propValueModule = $scope.getPropValueModule(internalModule.name);
+							if (propValueModule) {
+								var value = moduleRep[propValueModule];
+								if (internalModule.value) {
+									internalModule.value = value;
 								}
 							}
-						);
-				}
+							
+							if (moduleRep.powSe) {
+								console.log('powSe value:' + moduleRep.powSe);
+								var datapoints = internalModule.datapoints;
+								var powSeValue = (moduleRep.powSe === 'true');
+								datapoints.powSe.value = powSeValue;
+								if (internalModule.state != powSeValue) {
+									internalModule.state = powSeValue;
+								}
+								console.log('powSe updated!!!!!!!!!!!!!!!!!');
+							}
+							
+							if (moduleRep.dooLk) {
+								console.log('dooLk value:' + moduleRep.dooLk);
+								var datapoints = internalModule.datapoints;
+								var dooLkValue = (moduleRep.dooLk ==='true');
+								datapoints.dooLk.value = dooLkValue;
+								if (internalModule.state != dooLkValue) {
+									internalModule.state = dooLkValue;
+								}
+							}
+							
+							// put background red
+							// here we need to be carefull with device = moduleRep.pi
+							// as we have announced device.
+							device = $scope.getDeviceByRi(moduleRep.pi);
+							if (device) {
+								$scope.removeColor(device);													
+							}
+						}
+					}
+				);
+			}
 		);
 	}
 	
 	$scope.removeColor = function(d) {
-		
-		d.isUpdated=true;
+		d.isUpdated = true;
 		// remove background after 1,5s
-		
 		$timeout(
 				function() {
 					d.isUpdated = false;
 				}, 
 				1500
 		);
-		
 	}
 	
 	// called when the user clicks on the witch widget in the HMI
@@ -474,66 +457,67 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 				var lk = switchModule.state;
 				// switch on/off
 				req = {
-						method : 'PUT',
-						url : switchModule.url,
-						data : '{\"hd:lock\": {\"dooLk\": \"' + lk + '\"}}',
-						headers : {
-							'Content-Type' : 'application/json',
-							'X-M2M-Origin' : $scope.credentials
-						},
-						valueToBeSet: lk,
-						currentSwitch: switchModule
+					method : 'PUT',
+					url : switchModule.url,
+					data : '{\"hd:lock\": {\"dooLk\": \"' + lk + '\"}}',
+					headers : {
+						'Content-Type' : 'application/json',
+						'X-M2M-Origin' : $scope.credentials
+					},
+					valueToBeSet: lk,
+					currentSwitch: switchModule
 				};
 				$http(req).success(function(response, status, headers, config) {
-						console.log("binary lock state changed");
-						
-						// config = switchModule
-						config.currentSwitch.hideSpinning = true;
-						if (config.currentSwitch.state !== config.valueToBeSet) {
-							config.currentSwitch.state = config.valueToBeSet;	
-						}
-						
-						var datapoints = config.currentSwitch.datapoints;
-						datapoints.dooLk.value = config.valueToBeSet;
-						console.log("door lock state changed");
-						
-					}).error(function(response, status, headers, config) {
-						console.log("error on lock state change action");
-						config.currentSwitch.hideSpinning = true;
-						config.currentSwitch.state = !config.valueToBeSet;
-						
-					});
+					console.log("binary lock state changed");
+					
+					// config = switchModule
+					config.currentSwitch.hideSpinning = true;
+					if (config.currentSwitch.state !== config.valueToBeSet) {
+						config.currentSwitch.state = config.valueToBeSet;	
+					}
+					
+					var datapoints = config.currentSwitch.datapoints;
+					datapoints.dooLk.value = config.valueToBeSet;
+					console.log("door lock state changed");
+					
+				}).error(function(response, status, headers, config) {
+					console.log("error on lock state change action");
+					config.currentSwitch.hideSpinning = true;
+					config.currentSwitch.state = !config.valueToBeSet;
+					
+				});
 			}			
 		} else if (switchModule.name === 'binarySwitch') {
 			switchModule.newState = switchModule.state;
 			req = {
-					method : 'PUT',
-					url : switchModule.url,
-					data : '{\"hd:binSh\": {\"powSe\": \"' + switchModule.state + '\"}}',
-					headers : {
-						'Content-Type' : 'application/json',
-						'X-M2M-Origin' : $scope.credentials
-					}, 
-					valueToBeSet : switchModule.state,
-					currentSwitch : switchModule
-					
+				method : 'PUT',
+				url : switchModule.url,
+				data : '{\"hd:binSh\": {\"powSe\": \"' + switchModule.state + '\"}}',
+				headers : {
+					'Content-Type' : 'application/json',
+					'X-M2M-Origin' : $scope.credentials
+				}, 
+				valueToBeSet : switchModule.state,
+				currentSwitch : switchModule
 			};
 			$http(req).success(
-					function(response, status, headers, config) {
-						// binarySwitchModule.state = !binarySwitchModule.state;
-						config.currentSwitch.hideSpinning = true;
-						if (config.currentSwitch.state !== config.valueToBeSet) {
-							config.currentSwitch.state = config.valueToBeSet;	
-						}
-						
-						var datapoints = config.currentSwitch.datapoints;
-						datapoints.powSe.value = config.valueToBeSet;
-						console.log("binary switch state changed");
-					}).error(function(response, status, headers, config) {
-							config.currentSwitch.hideSpinning = true;
-							config.currentSwitch.state = !config.valueToBeSet;
-							console.log("error on binary switch state change action");
-						});
+				function(response, status, headers, config) {
+					// binarySwitchModule.state = !binarySwitchModule.state;
+					config.currentSwitch.hideSpinning = true;
+					if (config.currentSwitch.state !== config.valueToBeSet) {
+						config.currentSwitch.state = config.valueToBeSet;	
+					}
+					
+					var datapoints = config.currentSwitch.datapoints;
+					datapoints.powSe.value = config.valueToBeSet;
+					console.log("binary switch state changed");
+				})
+				.error(function(response, status, headers, config) {
+					config.currentSwitch.hideSpinning = true;
+					config.currentSwitch.state = !config.valueToBeSet;
+					console.log("error on binary switch state change action");
+				}
+			);
 		}
 	}
 
@@ -782,12 +766,12 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 	
 	var init = function () {
 		var req = {
-				method: 'GET',
-				url: '../security/cred',
-				params : {sessionId: $scope.sessionId},
-				headers: {
-					'Content-Type': 'application/json'
-				}
+			method: 'GET',
+			url: '../security/cred',
+			params : {sessionId: $scope.sessionId},
+			headers: {
+				'Content-Type': 'application/json'
+			}
 		};
 		$http(req).success(function (response, status, headers, config)  {
 			$scope.credentials = response.credentials;
