@@ -22,10 +22,9 @@ import org.eclipse.om2m.commons.resource.AEAnnc;
 import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
 import org.eclipse.om2m.commons.resource.AccessControlPolicy;
 import org.eclipse.om2m.commons.resource.AccessControlRule;
-import org.eclipse.om2m.commons.resource.DeviceInfo;
+import org.eclipse.om2m.commons.resource.MgmtObj;
 import org.eclipse.om2m.commons.resource.Node;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
-import org.eclipse.om2m.commons.resource.Resource;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
 import org.eclipse.om2m.commons.resource.SetOfAcrs;
 import org.eclipse.om2m.commons.resource.Subscription;
@@ -193,8 +192,7 @@ public class CseUtil {
  	 * @param baseLocation location of the to be created resource
 	 * @return response sent by the CSE
 	 */
-	public static ResponsePrimitive sendCreateNodeRequest(Node node, 
-			DeviceInfo devInfo, String baseLocation) {
+	public static ResponsePrimitive sendCreateNodeRequest(Node node, String baseLocation) {
 		RequestPrimitive request = new RequestPrimitive();
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 		request.setTo(baseLocation);
@@ -209,15 +207,18 @@ public class CseUtil {
 			return resp;
 		Node createdNode = (Node) resp.getContent();
 		
-		request = new RequestPrimitive();
-		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
-		request.setTo(createdNode.getResourceID());
-		request.setOperation(Operation.CREATE);
-		request.setResourceType(ResourceType.MGMT_OBJ);
-		request.setRequestContentType(MimeMediaType.OBJ);
-		request.setReturnContentType(MimeMediaType.OBJ);
-		request.setContent(devInfo);
-		return cseService.doRequest(request);
+		for (MgmtObj mgmtObj : node.getMgmtObjs()) {
+			request = new RequestPrimitive();
+			request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
+			request.setTo(createdNode.getResourceID());
+			request.setOperation(Operation.CREATE);
+			request.setResourceType(ResourceType.MGMT_OBJ);
+			request.setRequestContentType(MimeMediaType.OBJ);
+			request.setReturnContentType(MimeMediaType.OBJ);
+			request.setContent(mgmtObj);
+			cseService.doRequest(request);
+		}
+		return resp;
 	}
 
 	/**

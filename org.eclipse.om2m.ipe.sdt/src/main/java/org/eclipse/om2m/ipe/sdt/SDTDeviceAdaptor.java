@@ -15,9 +15,9 @@ import org.apache.commons.logging.LogFactory;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.constants.ShortName;
 import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
+import org.eclipse.om2m.commons.resource.AreaNwkDeviceInfo;
 import org.eclipse.om2m.commons.resource.CustomAttribute;
 import org.eclipse.om2m.commons.resource.DeviceInfo;
-import org.eclipse.om2m.commons.resource.MgmtObj;
 import org.eclipse.om2m.commons.resource.Node;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.FlexContainerFactory;
@@ -103,8 +103,18 @@ public class SDTDeviceAdaptor {
 		node.setNodeID(nodeName);
 		node.setName(nodeName);
 		node.getAccessControlPolicyIDs().add(adminAcpResource);
+		node.getLabels().add("object.type/node");
+		node.getLabels().add("name/" + nodeName);
 		DeviceInfo devInfo = new DeviceInfo();
 		node.getMgmtObjs().add(devInfo);
+		
+		AreaNwkDeviceInfo nwkDeviceInfo = new AreaNwkDeviceInfo();
+		node.getMgmtObjs().add(nwkDeviceInfo);
+		nwkDeviceInfo.setAreaNwkId("TBD");
+		nwkDeviceInfo.setDevID(this.device.getName());
+		nwkDeviceInfo.setDevType("SDT");
+		
+		logger.info("Node mgmtObjs: " + node.getMgmtObjs());
 
 		if (hasToBeAnnounced) {
 			flexContainer.getAnnounceTo().add(SEP + announceCseId);
@@ -183,15 +193,15 @@ public class SDTDeviceAdaptor {
 			return false;
 		}
 		flexContainer = (AbstractFlexContainer) response.getContent();
-		
 		node.setHostedAppLinks(flexContainer.getName());
-		response = CseUtil.sendCreateNodeRequest(node, devInfo, baseLocation);
+		
+		response = CseUtil.sendCreateNodeRequest(node, baseLocation);
 		if (! response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {
 			logger.error("unable to create a Node for SDT Device "
 					+ deviceName + " : " + response.getContent(), null);
 			return false;
 		}
-		nodeLocation = ((MgmtObj)response.getContent()).getParentID();
+		nodeLocation = ((Node)response.getContent()).getResourceID();
 		
 		// Modules (must be done now because Device FlexContainer is the parent of each Module)
 		for (Module module : this.device.getModules()) {
