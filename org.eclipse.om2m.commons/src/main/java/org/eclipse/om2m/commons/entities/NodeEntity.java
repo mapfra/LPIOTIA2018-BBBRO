@@ -98,7 +98,7 @@ public class NodeEntity extends AnnounceableSubordinateEntity {
 	protected List<SubscriptionEntity> subscriptions;
 
 	// Database link to AreaNwkInfo Entity
-	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, mappedBy="parentNode")
 	@JoinTable(
 			name = DBEntities.ANI_NOD_JOIN,
 			inverseJoinColumns = { @JoinColumn(name = DBEntities.ANI_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
@@ -107,7 +107,7 @@ public class NodeEntity extends AnnounceableSubordinateEntity {
 	protected List<AreaNwkInfoEntity> childAreaNwkInfoEntities;
 	
 	// Database link to AreaNwkDeviceInfo entity
-	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, mappedBy="parentNode")
 	@JoinTable(
 			name = DBEntities.ANDI_NOD_JOIN,
 			inverseJoinColumns = { @JoinColumn(name = DBEntities.ANDI_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
