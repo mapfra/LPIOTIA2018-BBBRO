@@ -379,7 +379,7 @@ public class ShortName {
 	// Attributes for Node
 	public static final String NODE_ID = "ni";
 	public static final String HOSTED_CSE_LINK = "hcl";
-	public static final String HOSTED_APP_LINK = "hapl";
+	public static final String HOSTED_SRV_LINK = "hsl";
 	
 	// Short names for mgmt objects generic attributes
 	public static final String DESCRIPTION = "des";

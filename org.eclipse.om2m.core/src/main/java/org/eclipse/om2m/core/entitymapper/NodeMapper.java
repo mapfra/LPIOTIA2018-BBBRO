@@ -57,7 +57,7 @@ public class NodeMapper extends EntityMapper<NodeEntity, Node> {
 		// node attribute
 		resource.setNodeID(entity.getNodeID());
 		resource.setHostedCSELink(entity.getHostedCSELink());
-		resource.setHostedAppLinks(entity.getHostedAppLink());
+		resource.setHostedServiceLinks(entity.getHostedServiceLinks());
 	}
 	
 	@Override

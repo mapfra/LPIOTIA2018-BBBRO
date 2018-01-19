@@ -70,8 +70,8 @@ public class NodeEntity extends AnnounceableSubordinateEntity {
 	protected String hostedCSELink;
 
 	// hosted APP LINK
-	@Column(name = ShortName.HOSTED_APP_LINK)
-	protected String hostedAppLink;
+	@Column(name = ShortName.HOSTED_SRV_LINK)
+	protected String hostedServiceLinks;
 
 	@ManyToOne(fetch=FetchType.LAZY, targetEntity=CSEBaseEntity.class)
 	@JoinTable(
@@ -173,15 +173,15 @@ public class NodeEntity extends AnnounceableSubordinateEntity {
 	/**
 	 * @return the hostedAppLink
 	 */
-	public String getHostedAppLink() {
-		return hostedAppLink;
+	public String getHostedServiceLinks() {
+		return hostedServiceLinks;
 	}
 	
 	/**
 	 * @param hostedCSELink the hostedAppLink to set
 	 */
-	public void setHostedAppLink(String hostedAppLink) {
-		this.hostedAppLink = hostedAppLink;
+	public void setHostedServiceLinks(String hostedServiceLinks) {
+		this.hostedServiceLinks = hostedServiceLinks;
 	}
 	
 	/**

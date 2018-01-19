@@ -93,8 +93,8 @@ public class Node extends AnnounceableResource {
 	@XmlElement(name = ShortName.HOSTED_CSE_LINK, namespace="")
 	protected String hostedCSELink;
 	
-	@XmlElement(name = ShortName.HOSTED_APP_LINK, namespace="")
-	protected String hostedAppLinks;
+	@XmlElement(name = ShortName.HOSTED_SRV_LINK, namespace="")
+	protected String hostedServiceLinks;
 	
 	@XmlElement(name = ShortName.CHILD_RESOURCE, namespace="")
 	protected List<ChildResourceRef> childResource;
@@ -166,8 +166,8 @@ public class Node extends AnnounceableResource {
 	 * @return possible object is {@link String }
 	 * 
 	 */
-	public String getHostedAppLinks() {
-		return hostedAppLinks;
+	public String getHostedServiceLinks() {
+		return hostedServiceLinks;
 	}
 
 	/**
@@ -177,8 +177,8 @@ public class Node extends AnnounceableResource {
 	 *            allowed object is {@link String }
 	 * 
 	 */
-	public void setHostedAppLinks(String value) {
-		this.hostedAppLinks = value;
+	public void setHostedServiceLinks(String value) {
+		this.hostedServiceLinks = value;
 	}
 
 	/**

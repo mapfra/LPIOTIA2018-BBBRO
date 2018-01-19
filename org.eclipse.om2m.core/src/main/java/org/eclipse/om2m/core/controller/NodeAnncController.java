@@ -107,7 +107,6 @@ public class NodeAnncController extends Controller {
 		// check access control policy of the originator
 		checkACP(acpsToCheck, request.getFrom(), Operation.CREATE);
 
-		response = new ResponsePrimitive(request);
 		// check if content is present
 		if (request.getContent() == null) {
 			throw new BadRequestException("A content is required for Container creation");
@@ -115,7 +114,7 @@ public class NodeAnncController extends Controller {
 
 		// get the object from the representation
 		NodeAnnc node = null;
-		try{
+		try {
 			if (request.getRequestContentType().equals(MimeMediaType.OBJ)) {
 				node = (NodeAnnc) request.getContent();
 			} else {
@@ -134,6 +133,12 @@ public class NodeAnncController extends Controller {
 		// check attributes
 		ControllerUtil.CreateUtil.fillEntityFromGenericResource(node, nodeEntity);
 
+		if (node.getLink() == null) {
+			throw new BadRequestException("Link is Mandatory");
+		} else {
+			nodeEntity.setLink(node.getLink());
+		}
+
 		/*
 		 * nodeID					M
 		 * hostedCSELink			O
@@ -147,8 +152,8 @@ public class NodeAnncController extends Controller {
 		if (node.getHostedCSELink() != null) {
 			nodeEntity.setHostedCSELink(node.getHostedCSELink());
 		}
-		if (node.getHostedAppLinks() != null) {
-			nodeEntity.setHostedAppLink(node.getHostedAppLinks());
+		if (node.getHostedServiceLinks() != null) {
+			nodeEntity.setHostedServiceLinks(node.getHostedServiceLinks());
 		}
 
 		String generatedId = generateId();
@@ -220,7 +225,8 @@ public class NodeAnncController extends Controller {
 		ResponsePrimitive response = new ResponsePrimitive(request);
 
 		// get the entity
-		NodeAnncEntity nodeEntity = dbs.getDAOFactory().getNodeAnncDAO().find(transaction, request.getTo());
+		NodeAnncEntity nodeEntity = dbs.getDAOFactory().getNodeAnncDAO().find(transaction, 
+				request.getTargetId());
 		if (nodeEntity == null) {
 			throw new ResourceNotFoundException();
 		}
@@ -245,7 +251,7 @@ public class NodeAnncController extends Controller {
 		ResponsePrimitive response = new ResponsePrimitive(request);
 
 		// retrieve the resource from database
-		NodeAnncEntity nodeEntity = dbs.getDAOFactory().getNodeAnncDAO().find(transaction, request.getTo());
+		NodeAnncEntity nodeEntity = dbs.getDAOFactory().getNodeAnncDAO().find(transaction, request.getTargetId());
 		if (nodeEntity == null) {
 			throw new ResourceNotFoundException();
 		}
@@ -338,7 +344,7 @@ public class NodeAnncController extends Controller {
 		ResponsePrimitive response = new ResponsePrimitive(request);
 
 		// retrieve the entity
-		NodeAnncEntity nodeEntity = dbs.getDAOFactory().getNodeAnncDAO().find(transaction, request.getTo());
+		NodeAnncEntity nodeEntity = dbs.getDAOFactory().getNodeAnncDAO().find(transaction, request.getTargetId());
 		if (nodeEntity == null) {
 			throw new ResourceNotFoundException();
 		}

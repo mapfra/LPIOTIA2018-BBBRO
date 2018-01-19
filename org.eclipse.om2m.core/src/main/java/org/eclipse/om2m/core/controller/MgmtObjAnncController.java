@@ -80,7 +80,7 @@ public class MgmtObjAnncController extends Controller {
 		}
 
 		// get the parent entity
-		ResourceEntity parentEntity = (ResourceEntity) nodeDao.find(transaction, request.getTo());
+		ResourceEntity parentEntity = (ResourceEntity) nodeDao.find(transaction, request.getTargetId());
 		// check the parent existence
 		if (parentEntity == null) {
 			throw new ResourceNotFoundException("Cannot find parent resource");
@@ -90,7 +90,7 @@ public class MgmtObjAnncController extends Controller {
 		}
 
 		// lock parent
-		transaction.lock(parentEntity);
+//		transaction.lock(parentEntity);
 
 		// parent is Node
 		NodeAnncEntity nodeEntity = (NodeAnncEntity) parentEntity;
@@ -146,7 +146,13 @@ public class MgmtObjAnncController extends Controller {
 		MgmtObjAnncEntity mgmtObjEntity = MgmtObjAnncEntity.create(mgmtDef);
 
 		ControllerUtil.CreateUtil.fillEntityFromGenericResource(mgmtObj, mgmtObjEntity);
-		
+
+		if (mgmtObj.getLink() == null) {
+			throw new BadRequestException("Link is Mandatory");
+		} else {
+			mgmtObjEntity.setLink(mgmtObj.getLink());
+		}
+
 		mgmtObjEntity.fillFrom(mgmtObj);
 
 		String generatedId = generateId("", "");
@@ -161,9 +167,11 @@ public class MgmtObjAnncController extends Controller {
 		}
 		mgmtObjEntity.setResourceID("/" + Constants.CSE_ID + "/" + ShortName.MGOA
 				+ Constants.PREFIX_SEPERATOR + generatedId);
-		mgmtObjEntity.setHierarchicalURI(parentEntity.getHierarchicalURI() + "/" + mgmtObjEntity.getName());
-		mgmtObjEntity.setParentID(parentEntity.getResourceID());
+		mgmtObjEntity.setHierarchicalURI(nodeEntity.getHierarchicalURI() + "/" + mgmtObjEntity.getName());
+		mgmtObjEntity.setParentID(nodeEntity.getResourceID());
 		mgmtObjEntity.setResourceType(ResourceType.MGMT_OBJ_ANNC);
+		mgmtObjEntity.setCreationTime(DateUtil.now());
+		mgmtObjEntity.setLastModifiedTime(DateUtil.now());
 
 		// accessControlPolicyIDs O
 		if (! mgmtObj.getAccessControlPolicyIDs().isEmpty()) {
@@ -226,7 +234,7 @@ public class MgmtObjAnncController extends Controller {
 
 		// Check existence of the resource
 		MgmtObjAnncEntity mgmtObjEntity = dbs.getDAOFactory().getMgmtObjAnncDAO().find(transaction,
-				request.getTo());
+				request.getTargetId());
 		if (mgmtObjEntity == null) {
 			throw new ResourceNotFoundException("Resource not found");
 		}
@@ -289,7 +297,7 @@ public class MgmtObjAnncController extends Controller {
 
 		// retrieve the resource from database
 		MgmtObjAnncEntity mgmtObjEntity = dbs.getDAOFactory().getMgmtObjAnncDAO().find(transaction,
-				request.getTo());
+				request.getTargetId());
 
 		// lock current object
 		transaction.lock(mgmtObjEntity);
@@ -424,7 +432,7 @@ public class MgmtObjAnncController extends Controller {
 
 		// retrieve the corresponding resource from database
 		MgmtObjAnncEntity mgmtObjEntity = dbs.getDAOFactory().getMgmtObjAnncDAO().find(transaction,
-				request.getTo());
+				request.getTargetId());
 		if (mgmtObjEntity == null) {
 			throw new ResourceNotFoundException("Resource not found");
 		}

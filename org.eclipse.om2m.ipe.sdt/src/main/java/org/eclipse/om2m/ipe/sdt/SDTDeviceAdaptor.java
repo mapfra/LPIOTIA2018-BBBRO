@@ -121,13 +121,16 @@ public class SDTDeviceAdaptor {
 			flexContainer.getAnnouncedAttribute().add(ShortName.NODE_LINK);
 			
 			node.getAnnounceTo().add(SEP + announceCseId);
-			node.getAnnouncedAttribute().add(ShortName.HOSTED_APP_LINK);
+			node.getAnnouncedAttribute().add(ShortName.HOSTED_SRV_LINK);
 			
 			devInfo.getAnnounceTo().add(SEP + announceCseId);
 			devInfo.getAnnouncedAttribute().add(ShortName.MANUFACTURER);
 			devInfo.getAnnouncedAttribute().add(ShortName.DEVICE_LABEL);
 			devInfo.getAnnouncedAttribute().add(ShortName.DEVICE_MODEL);
 			devInfo.getAnnouncedAttribute().add(ShortName.DEVICE_TYPE);
+			
+			nwkDeviceInfo.getAnnounceTo().add(SEP + announceCseId);
+			nwkDeviceInfo.getAnnouncedAttribute().add(ShortName.DEV_TYPE);
 		}
 
 		// SDT properties are customAttribute of the device FlexContainer
@@ -193,7 +196,7 @@ public class SDTDeviceAdaptor {
 			return false;
 		}
 		flexContainer = (AbstractFlexContainer) response.getContent();
-		node.setHostedAppLinks(flexContainer.getName());
+		node.setHostedServiceLinks(flexContainer.getName());
 		
 		response = CseUtil.sendCreateNodeRequest(node, baseLocation);
 		if (! response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {

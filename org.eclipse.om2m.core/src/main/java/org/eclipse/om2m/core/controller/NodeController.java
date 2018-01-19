@@ -164,8 +164,8 @@ public class NodeController extends Controller {
 		if (node.getHostedCSELink() != null) {
 			nodeEntity.setHostedCSELink(node.getHostedCSELink());
 		}
-		if (node.getHostedAppLinks() != null) {
-			nodeEntity.setHostedAppLink(node.getHostedAppLinks());
+		if (node.getHostedServiceLinks() != null) {
+			nodeEntity.setHostedServiceLinks(node.getHostedServiceLinks());
 		}
 
 		String generatedId = generateId();

@@ -41,7 +41,9 @@ import org.eclipse.om2m.commons.entities.FlexContainerAnncEntity;
 import org.eclipse.om2m.commons.entities.FlexContainerEntity;
 import org.eclipse.om2m.commons.entities.GroupEntity;
 import org.eclipse.om2m.commons.entities.LabelEntity;
+import org.eclipse.om2m.commons.entities.MgmtObjAnncEntity;
 import org.eclipse.om2m.commons.entities.MgmtObjEntity;
+import org.eclipse.om2m.commons.entities.NodeAnncEntity;
 import org.eclipse.om2m.commons.entities.NodeEntity;
 import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
 import org.eclipse.om2m.commons.entities.ResourceEntity;
@@ -221,8 +223,12 @@ public class DiscoveryController extends Controller {
 			return ((FlexContainerAnncEntity) resourceEntity).getAccessControlPolicies();
 		case ResourceType.NODE:
 			return ((NodeEntity) resourceEntity).getAccessControlPolicies();
+		case ResourceType.NODE_ANNC:
+			return ((NodeAnncEntity) resourceEntity).getAccessControlPolicies();
 		case ResourceType.MGMT_OBJ:
 			return ((MgmtObjEntity)resourceEntity).getAccessControlPolicies();
+		case ResourceType.MGMT_OBJ_ANNC:
+			return ((MgmtObjAnncEntity)resourceEntity).getAccessControlPolicies();
 		default:
 			// TODO On implementing resource, add the reference here
 			return null;
@@ -267,10 +273,18 @@ public class DiscoveryController extends Controller {
 			case(ResourceType.NODE): 
 				result.addAll(labelEntity.getLinkedNodes());
 				break;
+			case(ResourceType.NODE_ANNC): 
+				result.addAll(labelEntity.getLinkedNodesA());
+				break;
 			case(ResourceType.MGMT_OBJ): 
 				result.addAll(labelEntity.getLinkedAni());
 				result.addAll(labelEntity.getLinkedAndi());
 				result.addAll(labelEntity.getLinkedDvi());
+				break;
+			case(ResourceType.MGMT_OBJ_ANNC): 
+				result.addAll(labelEntity.getLinkedAniA());
+				result.addAll(labelEntity.getLinkedAndiA());
+				result.addAll(labelEntity.getLinkedDviA());
 				break;
 			case(ResourceType.SUBSCRIPTION):
 				result.addAll(labelEntity.getLinkedSub());
@@ -290,9 +304,13 @@ public class DiscoveryController extends Controller {
 			result.addAll(labelEntity.getLinkedFcntA());
 			result.addAll(labelEntity.getLinkedACP());
 			result.addAll(labelEntity.getLinkedNodes());
+			result.addAll(labelEntity.getLinkedNodesA());
 			result.addAll(labelEntity.getLinkedAni());
+			result.addAll(labelEntity.getLinkedAniA());
 			result.addAll(labelEntity.getLinkedAndi());
+			result.addAll(labelEntity.getLinkedAndiA());
 			result.addAll(labelEntity.getLinkedDvi());
+			result.addAll(labelEntity.getLinkedDviA());
 			result.addAll(labelEntity.getLinkedSub());
 		}
 		return result;

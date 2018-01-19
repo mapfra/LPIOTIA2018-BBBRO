@@ -44,7 +44,7 @@ public class NodeAnncMapper extends EntityMapper<NodeAnncEntity, NodeAnnc> {
 		// node attribute
 		resource.setNodeID(entity.getNodeID());
 		resource.setHostedCSELink(entity.getHostedCSELink());
-		resource.setHostedAppLinks(entity.getHostedAppLink());
+		resource.setHostedServiceLinks(entity.getHostedServiceLinks());
 	}
 	
 	@Override

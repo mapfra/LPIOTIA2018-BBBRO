@@ -81,7 +81,7 @@ public class MgmtObjController extends Controller {
 		}
 
 		// get the parent entity
-		ResourceEntity parentEntity = (ResourceEntity) dao.find(transaction, request.getTo());
+		ResourceEntity parentEntity = (ResourceEntity) dao.find(transaction, request.getTargetId());
 		// check the parent existence
 		if (parentEntity == null) {
 			throw new ResourceNotFoundException("Cannot find parent resource");
@@ -211,10 +211,7 @@ public class MgmtObjController extends Controller {
 			mgmtObj.setResourceID(mgmtObjFromDB.getResourceID());
 			mgmtObj.setResourceType(ResourceType.MGMT_OBJ);
 			mgmtObj.setParentID(mgmtObjFromDB.getParentID());
-			String hierachicalURI = mgmtObjFromDB.getHierarchicalURI();
-			String remoteLocation = hierachicalURI
-					.substring(("/" + Constants.CSE_ID + "/" + Constants.CSE_NAME + "/").length());
-			Announcer.announce(mgmtObj, request.getFrom(), remoteLocation);
+			Announcer.announce(mgmtObj, request.getFrom(), "");
 		}
 
 		Notifier.notify(subscriptions, mgmtObjFromDB, ResourceStatus.CHILD_CREATED);
@@ -240,7 +237,7 @@ public class MgmtObjController extends Controller {
 
 		// Check existence of the resource
 		MgmtObjEntity mgmtObjEntity = dbs.getDAOFactory().getMgmtObjDAO().find(transaction,
-				request.getTo());
+				request.getTargetId());
 		if (mgmtObjEntity == null) {
 			throw new ResourceNotFoundException("Resource not found");
 		}
@@ -302,7 +299,7 @@ public class MgmtObjController extends Controller {
 
 		// retrieve the resource from database
 		MgmtObjEntity mgmtObjEntity = dbs.getDAOFactory().getMgmtObjDAO().find(transaction,
-				request.getTo());
+				request.getTargetId());
 
 		// lock current object
 		transaction.lock(mgmtObjEntity);
@@ -448,7 +445,7 @@ public class MgmtObjController extends Controller {
 
 		// retrieve the corresponding resource from database
 		MgmtObjEntity mgmtObjEntity = dbs.getDAOFactory().getMgmtObjDAO().find(transaction,
-				request.getTo());
+				request.getTargetId());
 		if (mgmtObjEntity == null) {
 			throw new ResourceNotFoundException("Resource not found");
 		}

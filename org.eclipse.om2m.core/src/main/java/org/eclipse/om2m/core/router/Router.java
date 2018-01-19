@@ -176,12 +176,12 @@ public class Router implements CseService {
 				LOGGER.info("Request targeting another CSE, forwarding to Redirector: " + request.getTo());
 				return Redirector.retarget(request);
 			}
-			LOGGER.info("Request handling in the current CSE: " + request.getTo());
+			LOGGER.info("Request handling in the current CSE: " + request.getTargetId());
 
 			Controller controller = null ; 
 			// Case of hierarchical URI, retrieve the non-hierarchical URI of the resource
-			if (patterns.match(patterns.HIERARCHICAL_PATTERN, request.getTargetId())){
-				if(request.getTargetId().contains(patterns.FANOUT_POINT_MATCH + "/")){
+			if (patterns.match(patterns.HIERARCHICAL_PATTERN, request.getTargetId())) {
+				if (request.getTargetId().contains(patterns.FANOUT_POINT_MATCH + "/")) {
 					int foptIndex = request.getTargetId().indexOf(patterns.FANOUT_POINT_MATCH);
 					String uri = request.getTargetId().substring(0, foptIndex);
 					String suffix = request.getTargetId()
@@ -192,27 +192,28 @@ public class Router implements CseService {
 					controller = new FanOutPointController(suffix);
 					request.setTargetId(uri);
 					LOGGER.info("Fan Out request received: [grp uri: " + uri + ", suffix: " + suffix + "]");
-				} if (request.getTargetId().endsWith(patterns.FANOUT_POINT_MATCH)) {
+				} 
+				else if (request.getTargetId().endsWith(patterns.FANOUT_POINT_MATCH)) {
 					controller = new FanOutPointController();
 					request.setTargetId(request.getTargetId().replaceAll(patterns.FANOUT_POINT_MATCH, ""));
 					LOGGER.info("Fan Out request received: [grp uri: " + request.getTargetId()+ "]");
 				} 
-				if(request.getTargetId().endsWith("/" + ShortName.LATEST)){
+				else if (request.getTargetId().endsWith("/" + ShortName.LATEST)) {
 					controller = new LatestOldestController(SortingPolicy.LATEST);
 					request.setTargetId(request.getTargetId() + "/");
 					request.setTargetId(request.getTargetId().replace("/"+ShortName.LATEST+"/", ""));
 				}
-				if (request.getTargetId().endsWith("/" + ShortName.OLDEST)){
+				else if (request.getTargetId().endsWith("/" + ShortName.OLDEST)) {
 					controller = new LatestOldestController(SortingPolicy.OLDEST);
 					request.setTargetId(request.getTargetId() + "/");
 					request.setTargetId(request.getTargetId().replace("/"+ShortName.OLDEST+"/", ""));
 				}
 				String nonHierarchicalUri = UriMapper.getNonHierarchicalUri(request.getTargetId());
-				if (nonHierarchicalUri == null){
+				if (nonHierarchicalUri == null) {
 					throw new ResourceNotFoundException("Resource not found");
 				}
 				request.setTargetId(nonHierarchicalUri);
-				LOGGER.debug("Changing to unstructured uri for routing to: " + request.getTargetId());
+				LOGGER.info("Changing to unstructured uri for routing to: " + request.getTargetId());
 			}
 
 			// Notify case

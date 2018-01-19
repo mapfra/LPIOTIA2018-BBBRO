@@ -85,7 +85,8 @@ public class Announcer implements Constants {
 	 *            - requesting entity
 	 * @return
 	 */
-	public static void announce(AnnounceableResource toBeAnnounced, String requestingEntity, String remoteDestination) {
+	public static void announce(AnnounceableResource toBeAnnounced, 
+			String requestingEntity, String remoteDestination) {
 		AnnouncedResource announcedResource = null;
 		LOGGER.info("announce " + toBeAnnounced + " with " + toBeAnnounced.getAnnouncedAttribute());
 		int type = toBeAnnounced.getResourceType().intValue();
@@ -238,7 +239,7 @@ public class Announcer implements Constants {
 		for (String aa : res.getAnnouncedAttribute()) {
 			switch(aa) {
 			case ShortName.HOSTED_CSE_LINK: annc.setHostedCSELink(res.getHostedCSELink()); break;
-			case ShortName.HOSTED_APP_LINK: annc.setHostedAppLinks(res.getHostedAppLinks() + SUFFIX); break;
+			case ShortName.HOSTED_SRV_LINK: annc.setHostedServiceLinks(res.getHostedServiceLinks() + SUFFIX); break;
 			}
 		}
 		return annc;
