@@ -109,7 +109,7 @@
 						</executions>
 						<configuration>
 							<imageName>org.eclipse.om2m.site.mncse</imageName>
-							<dockerDirectory>.</dockerDirectory>
+							<dockerDirectory>${basedir}</dockerDirectory>
 							<resources>
 								<resource>
 									<targetPath>/</targetPath>
