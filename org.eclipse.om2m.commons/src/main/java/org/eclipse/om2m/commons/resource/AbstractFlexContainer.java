@@ -64,36 +64,6 @@ import org.eclipse.om2m.commons.resource.flexcontainerspec.*;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlSeeAlso({DeviceLightFlexContainer.class,
-	DeviceSmartElectricMeterFlexContainer.class, DeviceWaterHeaterFlexContainer.class,
-	DeviceCameraFlexContainer.class, DeviceCoffeeMachineFlexContainer.class,
-	DeviceContactDetectorFlexContainer.class, DeviceDoorFlexContainer.class,
-	DeviceFloodDetectorFlexContainer.class, DeviceGasValveFlexContainer.class,
-	DeviceMotionDetectorFlexContainer.class, DeviceSmokeDetectorFlexContainer.class,
-	DeviceSmokeExtractorFlexContainer.class, DeviceSwitchButtonFlexContainer.class,
-	DeviceTemperatureDetectorFlexContainer.class, DeviceThermostatFlexContainer.class,
-	DeviceWarningDeviceFlexContainer.class,
-	DeviceWaterValveFlexContainer.class, DeviceWeatherStationFlexContainer.class,
-	DeviceThermostatFlexContainer.class, 
-	AlarmSpeakerFlexContainer.class, AudioVolumeFlexContainer.class,
-	BinarySwitchFlexContainer.class, BoilerFlexContainer.class,
-	BrightnessFlexContainer.class, ClockFlexContainer.class,
-	ColourFlexContainer.class, ColourSaturationFlexContainer.class,
-	DoorStatusFlexContainer.class, EnergyConsumptionFlexContainer.class,
-	EnergyGenerationFlexContainer.class, FaultDetectionFlexContainer.class,
-	RelativeHumidityFlexContainer.class, RunModeFlexContainer.class,
-	SmokeSensorFlexContainer.class, TemperatureFlexContainer.class,
-	WaterLevelFlexContainer.class, WaterSensorFlexContainer.class,
-	AtmosphericPressureSensorFlexContainer.class, BrewingFlexContainer.class,
-	ContactSensorFlexContainer.class, ExtendedCarbonDioxideSensorFlexContainer.class,
-	FoamingFlexContainer.class, GrinderFlexContainer.class,
-	NoiseFlexContainer.class, PersonSensorFlexContainer.class,
-	StreamingFlexContainer.class, LockFlexContainer.class,
-	BatteryFlexContainer.class,
-	LiquidLevelFlexContainer.class, TimerFlexContainer.class,
-	ToggleFlexContainer.class, DeviceNumberDeviceFlexContainer.class, NumberValueFlexContainer.class,
-	DecrementNumberValueFlexContainer.class, IncrementNumberValueFlexContainer.class, 
-	ResetNumberValueFlexContainer.class})
 public abstract class AbstractFlexContainer extends AnnounceableResource {
 	
 	@XmlTransient
