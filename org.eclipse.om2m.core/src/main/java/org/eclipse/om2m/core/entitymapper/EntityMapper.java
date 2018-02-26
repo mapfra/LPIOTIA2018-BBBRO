@@ -24,18 +24,9 @@ import java.util.List;
 
 import org.eclipse.om2m.commons.constants.Operation;
 import org.eclipse.om2m.commons.constants.ResultContent;
-import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
-import org.eclipse.om2m.commons.entities.AnnounceableSubordinateEntity;
-import org.eclipse.om2m.commons.entities.AnnouncedResourceEntity;
-import org.eclipse.om2m.commons.entities.DynamicAuthorizationConsultationEntity;
 import org.eclipse.om2m.commons.entities.LabelEntity;
-import org.eclipse.om2m.commons.entities.RegularResourceEntity;
 import org.eclipse.om2m.commons.entities.ResourceEntity;
-import org.eclipse.om2m.commons.resource.AnnounceableResource;
-import org.eclipse.om2m.commons.resource.AnnounceableSubordinateResource;
-import org.eclipse.om2m.commons.resource.AnnouncedResource;
 import org.eclipse.om2m.commons.resource.ChildResourceRef;
-import org.eclipse.om2m.commons.resource.RegularResource;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.Resource;
 

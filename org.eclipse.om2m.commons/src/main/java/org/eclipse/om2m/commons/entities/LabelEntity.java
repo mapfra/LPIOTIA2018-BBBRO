@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.eclipse.om2m.commons.entities;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +29,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
 import org.eclipse.om2m.commons.constants.DBEntities;
+import org.eclipse.om2m.commons.constants.MgmtDefinitionTypes;
 import org.eclipse.om2m.commons.constants.ShortName;
 
 /**
@@ -82,11 +84,26 @@ public class LabelEntity {
 	@ManyToMany(targetEntity = NodeEntity.class, mappedBy = "labelsEntities")
 	protected List<NodeEntity> linkedNodes;
 	
+	@ManyToMany(targetEntity = NodeAnncEntity.class, mappedBy = "labelsEntities")
+	protected List<NodeAnncEntity> linkedNodesA;
+	
 	@ManyToMany(targetEntity = AreaNwkInfoEntity.class, mappedBy = "labelsEntities")
 	protected List<AreaNwkInfoEntity> linkedAni;
 	
+	@ManyToMany(targetEntity = AreaNwkInfoAnncEntity.class, mappedBy = "labelsEntities")
+	protected List<AreaNwkInfoAnncEntity> linkedAniA;
+	
 	@ManyToMany(targetEntity = AreaNwkDeviceInfoEntity.class, mappedBy = "labelsEntities")
 	protected List<AreaNwkDeviceInfoEntity> linkedAndi;
+	
+	@ManyToMany(targetEntity = AreaNwkDeviceInfoAnncEntity.class, mappedBy = "labelsEntities")
+	protected List<AreaNwkDeviceInfoAnncEntity> linkedAndiA;
+	
+	@ManyToMany(targetEntity = DeviceInfoEntity.class, mappedBy = "labelsEntities")
+	protected List<DeviceInfoEntity> linkedDvi;
+	
+	@ManyToMany(targetEntity = DeviceInfoAnncEntity.class, mappedBy = "labelsEntities")
+	protected List<DeviceInfoAnncEntity> linkedDviA;
 	
 	/**
 	 * @return the linkedSub
@@ -318,9 +335,6 @@ public class LabelEntity {
 		this.linkedPch = linkedPch;
 	}
 	
-	
-	
-
 	/**
 	 * @return the linkedNode
 	 */
@@ -336,6 +350,23 @@ public class LabelEntity {
 	 */
 	public void setLinkedNodes(List<NodeEntity> linkedNode) {
 		this.linkedNodes = linkedNode;
+	}
+	
+	/**
+	 * @return the linkedNode
+	 */
+	public List<NodeAnncEntity> getLinkedNodesA() {
+		if (this.linkedNodesA == null) {
+			this.linkedNodesA = new ArrayList<>();
+		}
+		return linkedNodesA;
+	}
+
+	/**
+	 * @param linkedNode the linkedNode to set
+	 */
+	public void setLinkedNodesA(List<NodeAnncEntity> linkedNode) {
+		this.linkedNodesA = linkedNode;
 	}
 
 	/**
@@ -356,6 +387,23 @@ public class LabelEntity {
 	}
 
 	/**
+	 * @return the linkedAni
+	 */
+	public List<AreaNwkInfoAnncEntity> getLinkedAniA() {
+		if (this.linkedAniA == null) {
+			this.linkedAniA = new ArrayList<>();
+		}
+		return linkedAniA;
+	}
+
+	/**
+	 * @param linkedAni the linkedAni to set
+	 */
+	public void setLinkedAniA(List<AreaNwkInfoAnncEntity> linkedAni) {
+		this.linkedAniA = linkedAni;
+	}
+
+	/**
 	 * @return the linkedAndi
 	 */
 	public List<AreaNwkDeviceInfoEntity> getLinkedAndi() {
@@ -370,6 +418,77 @@ public class LabelEntity {
 	 */
 	public void setLinkedAndi(List<AreaNwkDeviceInfoEntity> linkedAndi) {
 		this.linkedAndi = linkedAndi;
+	}
+
+	/**
+	 * @return the linkedAndi
+	 */
+	public List<AreaNwkDeviceInfoAnncEntity> getLinkedAndiA() {
+		if (this.linkedAndiA == null) {
+			this.linkedAndiA = new ArrayList<>();
+		}
+		return linkedAndiA;
+	}
+
+	/**
+	 * @param linkedAndi the linkedAndi to set
+	 */
+	public void setLinkedAndiA(List<AreaNwkDeviceInfoAnncEntity> linkedAndi) {
+		this.linkedAndiA = linkedAndi;
+	}
+
+	/**
+	 * @return the linkedDvi
+	 */
+	public List<DeviceInfoEntity> getLinkedDvi() {
+		if (this.linkedDvi == null) {
+			this.linkedDvi = new ArrayList<>();
+		}
+		return linkedDvi;
+	}
+
+	/**
+	 * @param linkedDvi the linkedDvi to set
+	 */
+	public void setLinkedDvi(List<DeviceInfoEntity> linkedDvi) {
+		this.linkedDvi = linkedDvi;
+	}
+
+	/**
+	 * @return the linkedDvi
+	 */
+	public List<DeviceInfoAnncEntity> getLinkedDviA() {
+		if (this.linkedDviA == null) {
+			this.linkedDviA = new ArrayList<>();
+		}
+		return linkedDviA;
+	}
+
+	/**
+	 * @param linkedDvi the linkedDvi to set
+	 */
+	public void setLinkedDviA(List<DeviceInfoAnncEntity> linkedDvi) {
+		this.linkedDviA = linkedDvi;
+	}
+
+	public void addMgmtObj(MgmtObjEntity mgmtObjEntity) {
+		BigInteger mgmtDef = mgmtObjEntity.getMgmtDefinition();
+		if (mgmtDef.equals(MgmtDefinitionTypes.AREA_NWK_INFO))
+			getLinkedAni().add((AreaNwkInfoEntity) mgmtObjEntity);
+		else if (mgmtDef.equals(MgmtDefinitionTypes.AREA_NWK_DEVICE_INFO))
+			getLinkedAndi().add((AreaNwkDeviceInfoEntity) mgmtObjEntity);
+		else if (mgmtDef.equals(MgmtDefinitionTypes.DEVICE_INFO))
+			getLinkedDvi().add((DeviceInfoEntity) mgmtObjEntity);
+	}
+
+	public void addMgmtObjA(MgmtObjAnncEntity mgmtObjAnncEntity) {
+		BigInteger mgmtDef = mgmtObjAnncEntity.getMgmtDefinition();
+		if (mgmtDef.equals(MgmtDefinitionTypes.AREA_NWK_INFO))
+			getLinkedAniA().add((AreaNwkInfoAnncEntity) mgmtObjAnncEntity);
+		else if (mgmtDef.equals(MgmtDefinitionTypes.AREA_NWK_DEVICE_INFO))
+			getLinkedAndiA().add((AreaNwkDeviceInfoAnncEntity) mgmtObjAnncEntity);
+		else if (mgmtDef.equals(MgmtDefinitionTypes.DEVICE_INFO))
+			getLinkedDviA().add((DeviceInfoAnncEntity) mgmtObjAnncEntity);
 	}
 
 	@Override

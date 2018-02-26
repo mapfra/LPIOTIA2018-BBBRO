@@ -64,36 +64,6 @@ import org.eclipse.om2m.commons.resource.flexcontainerspec.*;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlSeeAlso({DeviceLightFlexContainer.class,
-	DeviceSmartElectricMeterFlexContainer.class, DeviceWaterHeaterFlexContainer.class,
-	DeviceCameraFlexContainer.class, DeviceCoffeeMachineFlexContainer.class,
-	DeviceContactDetectorFlexContainer.class, DeviceDoorFlexContainer.class,
-	DeviceFloodDetectorFlexContainer.class, DeviceGasValveFlexContainer.class,
-	DeviceMotionDetectorFlexContainer.class, DeviceSmokeDetectorFlexContainer.class,
-	DeviceSmokeExtractorFlexContainer.class, DeviceSwitchButtonFlexContainer.class,
-	DeviceTemperatureDetectorFlexContainer.class, DeviceThermostatFlexContainer.class,
-	DeviceWarningDeviceFlexContainer.class,
-	DeviceWaterValveFlexContainer.class, DeviceWeatherStationFlexContainer.class,
-	DeviceThermostatFlexContainer.class, 
-	AlarmSpeakerFlexContainer.class, AudioVolumeFlexContainer.class,
-	BinarySwitchFlexContainer.class, BoilerFlexContainer.class,
-	BrightnessFlexContainer.class, ClockFlexContainer.class,
-	ColourFlexContainer.class, ColourSaturationFlexContainer.class,
-	DoorStatusFlexContainer.class, EnergyConsumptionFlexContainer.class,
-	EnergyGenerationFlexContainer.class, FaultDetectionFlexContainer.class,
-	RelativeHumidityFlexContainer.class, RunModeFlexContainer.class,
-	SmokeSensorFlexContainer.class, TemperatureFlexContainer.class,
-	WaterLevelFlexContainer.class, WaterSensorFlexContainer.class,
-	AtmosphericPressureSensorFlexContainer.class, BrewingFlexContainer.class,
-	ContactSensorFlexContainer.class, ExtendedCarbonDioxideSensorFlexContainer.class,
-	FoamingFlexContainer.class, GrinderFlexContainer.class,
-	NoiseFlexContainer.class, PersonSensorFlexContainer.class,
-	StreamingFlexContainer.class, LockFlexContainer.class,
-	BatteryFlexContainer.class,
-	LiquidLevelFlexContainer.class, TimerFlexContainer.class,
-	ToggleFlexContainer.class, DeviceNumberDeviceFlexContainer.class, NumberValueFlexContainer.class,
-	DecrementNumberValueFlexContainer.class, IncrementNumberValueFlexContainer.class, 
-	ResetNumberValueFlexContainer.class})
 public abstract class AbstractFlexContainer extends AnnounceableResource {
 	
 	@XmlTransient
@@ -105,16 +75,25 @@ public abstract class AbstractFlexContainer extends AnnounceableResource {
 	@XmlElement(name = ShortName.STATETAG, required = true, namespace="")
 	@XmlSchemaType(name = "nonNegativeInteger")
 	protected BigInteger stateTag;
+	
 	@XmlElement(name = ShortName.CREATOR, required = false, namespace="")
 	protected String creator;
+	
 	@XmlSchemaType(name = "anyURI")
 	@XmlElement(name = ShortName.ONTOLOGY_REF, required = false, namespace="")
 	protected String ontologyRef;
+	
 	@XmlSchemaType(name="anyURI")
-	@XmlElement(name = ShortName.CONTAINER_DEFINITION, required=true, namespace="")
+	@XmlElement(name = ShortName.CONTAINER_DEFINITION, required = true, namespace="")
 	protected String containerDefinition;
+
+	@XmlSchemaType(name = "anyURI")
+	@XmlElement(name = ShortName.NODE_LINK, required = false, namespace="")
+	protected String nodeLink;
+
 	@XmlElement(name = ShortName.CHILD_RESOURCE, namespace="")
 	protected List<ChildResourceRef> childResource;
+	
 	@XmlElements({
 //			@XmlElement(name = ShortName.CNT, namespace = "http://www.onem2m.org/xml/protocols", type = Container.class),
 //			@XmlElement(name = ShortName.FCNT, namespace = "http://www.onem2m.org/xml/protocols", type = AbstractFlexContainer.class),
@@ -318,6 +297,27 @@ public abstract class AbstractFlexContainer extends AnnounceableResource {
 	 */
 	public void setContainerDefinition(String value) {
 		this.containerDefinition = value;
+	}
+
+	/**
+	 * Gets the value of the nodeLink property.
+	 * 
+	 * @return possible object is {@link String }
+	 * 
+	 */
+	public String getNodeLink() {
+		return nodeLink;
+	}
+
+	/**
+	 * Sets the value of the nodeLink property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link String }
+	 * 
+	 */
+	public void setNodeLink(String value) {
+		this.nodeLink = value;
 	}
 
 	/**

@@ -13,18 +13,12 @@ import java.util.List;
 
 import org.eclipse.om2m.commons.constants.ResourceType;
 import org.eclipse.om2m.commons.constants.ResultContent;
-import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
 import org.eclipse.om2m.commons.entities.AeAnncEntity;
-import org.eclipse.om2m.commons.entities.ContainerEntity;
 import org.eclipse.om2m.commons.entities.FlexContainerAnncEntity;
-import org.eclipse.om2m.commons.entities.FlexContainerEntity;
 import org.eclipse.om2m.commons.entities.SubscriptionEntity;
 import org.eclipse.om2m.commons.resource.AEAnnc;
-import org.eclipse.om2m.commons.resource.AccessControlPolicy;
-import org.eclipse.om2m.commons.resource.ChildResourceRef;
-import org.eclipse.om2m.commons.resource.Container;
-import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
 import org.eclipse.om2m.commons.resource.AbstractFlexContainerAnnc;
+import org.eclipse.om2m.commons.resource.ChildResourceRef;
 import org.eclipse.om2m.commons.resource.Subscription;
 
 public class AeAnncMapper extends EntityMapper<AeAnncEntity, AEAnnc> {
@@ -43,10 +37,8 @@ public class AeAnncMapper extends EntityMapper<AeAnncEntity, AEAnnc> {
 		resource.setExpirationTime(entity.getExpirationTime());
 		resource.setAppName(entity.getAppName());
 		resource.setNodeLink(entity.getNodeLink());
-		resource.setLink(entity.getLink());
 		resource.setOntologyRef(entity.getOntologyRef());
 		resource.getPointOfAccess().addAll(entity.getPointOfAccess());
-
 	}
 
 	@Override
@@ -56,10 +48,7 @@ public class AeAnncMapper extends EntityMapper<AeAnncEntity, AEAnnc> {
 	
 	@Override
 	protected List<ChildResourceRef> getChildResourceRef(AeAnncEntity entity, int level, int offset) {
-		
-		
 		List<ChildResourceRef> childRefs = new ArrayList<>();
-		
 		if (level == 0) {
 			return childRefs;
 		}
@@ -71,7 +60,6 @@ public class AeAnncMapper extends EntityMapper<AeAnncEntity, AEAnnc> {
 			child.setValue(flexContainerEntity.getResourceID());
 			child.setSpid(flexContainerEntity.getContainerDefinition());
 			childRefs.add(child);
-			
 			childRefs.addAll(new FlexContainerAnncMapper().getChildResourceRef(flexContainerEntity, level - 1, offset - 1));
 		}
 
@@ -82,7 +70,6 @@ public class AeAnncMapper extends EntityMapper<AeAnncEntity, AEAnnc> {
 			child.setType(BigInteger.valueOf(ResourceType.SUBSCRIPTION));
 			child.setValue(sub.getResourceID());
 			childRefs.add(child);
-			
 			childRefs.addAll(new SubscriptionMapper().getChildResourceRef(sub, level - 1, offset - 1));
 		}
 		
@@ -91,7 +78,6 @@ public class AeAnncMapper extends EntityMapper<AeAnncEntity, AEAnnc> {
 
 	@Override
 	protected void mapChildResources(AeAnncEntity entity, AEAnnc resource, int level, int offset) {
-
 		if (level == 0) {
 			return;
 		}

@@ -24,14 +24,16 @@ import org.eclipse.om2m.commons.entities.AccessControlOriginatorEntity;
 import org.eclipse.om2m.commons.entities.AccessControlRuleEntity;
 import org.eclipse.om2m.commons.entities.AeAnncEntity;
 import org.eclipse.om2m.commons.entities.AeEntity;
-import org.eclipse.om2m.commons.entities.CreatedAnnouncedResourceEntity;
 import org.eclipse.om2m.commons.entities.CSEBaseEntity;
 import org.eclipse.om2m.commons.entities.ContainerEntity;
 import org.eclipse.om2m.commons.entities.ContentInstanceEntity;
+import org.eclipse.om2m.commons.entities.CreatedAnnouncedResourceEntity;
 import org.eclipse.om2m.commons.entities.CustomAttributeEntity;
 import org.eclipse.om2m.commons.entities.DynamicAuthorizationConsultationEntity;
+import org.eclipse.om2m.commons.entities.FlexContainerAnncEntity;
 import org.eclipse.om2m.commons.entities.FlexContainerEntity;
 import org.eclipse.om2m.commons.entities.LabelEntity;
+import org.eclipse.om2m.commons.entities.MgmtObjEntity;
 import org.eclipse.om2m.commons.entities.PollingChannelEntity;
 import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
 import org.eclipse.om2m.commons.entities.SubscriptionEntity;
@@ -110,6 +112,8 @@ public class DBEntities {
 	public static final String REQUEST_ENTITY = "REQ";
 
 	public static final String NODE_ENTITY = "NODE";
+
+	public static final String NODE_ANNC_ENTITY = "NODEA";
 
 	/**
 	 * Name used for the persisted (@link {@link CustomAttributeEntity} entity
@@ -380,48 +384,77 @@ public class DBEntities {
 	public static final String REQ_JOIN_ID = "REQ_JOIN_ID";
 
 	// NODE - ACP
-	public static final String ACPNOD_JOIN = "NOD_ACP_JOIN";
+	public static final String ACP_NOD_JOIN = "NOD_ACP_JOIN";
 	public static final String NOD_JOIN_ID = "NOD_JOIN_ID";
-	public static final String CSBNOD_CH_JOIN = "CSB_NOD_CH_JOIN";
-	public static final String CSRNOD_CH_JOIN = "CSR_NOD_CH_JOIN";
-	public static final String NODSUB_JOIN = "NOD_SUB_JOIN";
+	public static final String CSB_NOD_CH_JOIN = "CSB_NOD_CH_JOIN";
+	public static final String CSR_NOD_CH_JOIN = "CSR_NOD_CH_JOIN";
+	public static final String NOD_SUB_JOIN = "NOD_SUB_JOIN";
+	
+	public static final String ACP_NODANNC_JOIN = "NODANNC_ACP_JOIN";
+	public static final String NODANNC_JOIN_ID = "NODANNC_JOIN_ID";
+	public static final String CSB_NODANNC_CH_JOIN = "CSB_NODANNC_CH_JOIN";
+	public static final String CSR_NODANNC_CH_JOIN = "CSR_NODANNC_CH_JOIN";
+	public static final String NODANNC_SUB_JOIN = "NODANNC_SUB_JOIN";
 	
 	// NODE - DAC
 	public static final String NOD_DAC_JOIN = "NOD_DAC_JOIN";
-	
+	public static final String NODANNC_DAC_JOIN = "NODANNC_DAC_JOIN";
+
 
 	// FCNT - CUSTOM_ATTRIBUTE
 	public static final String FCNT_CA_JOIN = "FCNT_CA_JOIN";
 	public static final String CA_JOIN_ID = "CA_ID";
 
 	// MGMT OBJ
-	public static final String ANISUB_JOIN = "ANI_SUB_JOIN";
-	public static final String ANIACP_JOIN = "ANI_ACP_JOIN";
+	// AreaNetworkInfo
+	public static final String ANI_ACP_JOIN = "ANI_ACP_JOIN";
 	public static final String ANI_DAC_JOIN = "ANI_DAC_JOIN";
 	public static final String ANI_JOIN_ID = "ANI_JOIN_ID";
-	public static final String ANINOD_JOIN = "ANI_NOD_JOIN";
-	public static final String ANDISUB_JOIN = "ANDI_SUB_JOIN";
-	public static final String ANDI_JOIN_ID = "ANDI_JOIN_ID";
-	public static final String ANDINOD_JOIN = "ANDI_NOD_JOIN";
-	public static final String ANDIACP_JOIN = "ANDI_ACP_JOIN";
+	public static final String ANI_SUB_JOIN = "ANI_SUB_JOIN";
+	public static final String ANI_NOD_JOIN = "ANI_NOD_JOIN";
+	public static final String ANI_NODANNC_JOIN = "ANI_NODANNC_JOIN";
+	// AreaNetworkDeviceInfo
+	public static final String ANDI_ACP_JOIN = "ANDI_ACP_JOIN";
 	public static final String ANDI_DAC_JOIN = "ANDI_DAC_JOIN";
-	
-	public static final String MGMT_OBJECT_JOIN_ID = "MGMT_OBJECT_JOIN_ID";
-	public static final String MGMT_OBJECT_ACP_JOIN = "MGMT_OBJECT_ACP_JOIN";
-	public static final String MGMT_OBJECT_DAC_JOIN = "MGMT_OBJECT_DAC_JOIN";
+	public static final String ANDI_JOIN_ID = "ANDI_JOIN_ID";
+	public static final String ANDI_SUB_JOIN = "ANDI_SUB_JOIN";
+	public static final String ANDI_NOD_JOIN = "ANDI_NOD_JOIN";
+	public static final String ANDI_NODANNC_JOIN = "ANDI_NODANNC_JOIN";
+	// DeviceInfo
+	public static final String DVI_ACP_JOIN = "DVI_ACP_JOIN";
+	public static final String DVI_DAC_JOIN = "DVI_DAC_JOIN";
+	public static final String DVI_JOIN_ID = "DVI_JOIN_ID";
+	public static final String DVI_SUB_JOIN = "DVI_SUB_JOIN";
+	public static final String DVI_NOD_JOIN = "DVI_NOD_JOIN";
+	public static final String DVI_NODANNC_JOIN = "DVI_NODANNC_JOIN";
 
 	// ANNOUNCED RESOURCE
 	public static final String REMOTE_RESOURCE_ID = "REMOTE_RESOURCE_ID";
 	public static final String LOCAL_RESOURCE_ID = "LOCAL_RESOURCE_ID";
 	public static final String ANNOUNCE_CSE_ID = "ANNOUNCE_CSE_ID";
 
-//	// RegularResource-AccessControlPolicies
-//	public static final String REGULARRESOURCE_ACP_JOIN = "REGULARRESOURCE_ACP_JOIN";
-//	public static final String REGULARRESOURCE_JOINID = "REGULARRESOURCE_JOINID";
-//
-//	// AnnouncedResource-AccessControlPolicies
-//	public static final String ANNOUNCEDRESOURCE_ACP_JOIN = "REGULARRESOURCE_ACP_JOIN";
-//	public static final String ANNOUNCEDRESOURCE_JOINID = "REGULARRESOURCE_JOINID";
+	// Announced MGMT OBJ
+	// AreaNetworkAnncInfo
+	public static final String ANIA_ACP_JOIN = "ANIA_ACP_JOIN";
+	public static final String ANIA_DAC_JOIN = "ANIA_DAC_JOIN";
+	public static final String ANIA_JOIN_ID = "ANIA_JOIN_ID";
+	public static final String ANIA_SUB_JOIN = "ANIA_SUB_JOIN";
+	public static final String ANIA_NOD_JOIN = "ANIA_NOD_JOIN";
+	public static final String ANIA_NODANNC_JOIN = "ANIA_NODANNC_JOIN";
+	// AreaNetworkAnncDeviceInfo
+	public static final String ANDIA_ACP_JOIN = "ANDIA_ACP_JOIN";
+	public static final String ANDIA_DAC_JOIN = "ANDIA_DAC_JOIN";
+	public static final String ANDIA_JOIN_ID = "ANDIA_JOIN_ID";
+	public static final String ANDIA_SUB_JOIN = "ANDIA_SUB_JOIN";
+	public static final String ANDIA_NOD_JOIN = "ANDIA_NOD_JOIN";
+	public static final String ANDIA_NODANNC_JOIN = "ANDIA_NODANNC_JOIN";
+	// AnncDeviceInfo
+	public static final String DVIA_ACP_JOIN = "DVIA_ACP_JOIN";
+	public static final String DVIA_DAC_JOIN = "DVIA_DAC_JOIN";
+	public static final String DVIA_JOIN_ID = "DVIA_JOIN_ID";
+	public static final String DVIA_SUB_JOIN = "DVIA_SUB_JOIN";
+	public static final String DVIA_NOD_JOIN = "DVIA_NOD_JOIN";
+	public static final String DVIA_NODANNC_JOIN = "DVIA_NODANNC_JOIN";
 
 	// DynamicAuthorisationConsultation DAC
 	public static final String DAC_JOINID = "DAC_JOINID";

@@ -106,42 +106,6 @@ public class ShortName {
 	public static final String STCG = "stcg";
 	/** Short name for Subscription resource */
 	public static final String SUB = "sub";
-	/** Short name for Firmware resource */
-	public static final String FWR = "fwr";
-	/** Short name for Software resource */
-	public static final String SWR = "swr";
-	/** Short name for Memory resource */
-	public static final String MEM = "mem";
-	/** Short name for AreaNwkInfo resource */
-	public static final String ANI = "ani";
-	/** Short name for AreaNwkDeviceInfo resource */
-	public static final String ANDI = "andi";
-	/** Short name for DeviceInfo resource */
-	public static final String DVI = "dvi";
-	/** Short name for DeviceCapability resource */
-	public static final String DVC = "dvc";
-	/** Short name for Reboot resource */
-	public static final String RBT = "rbt";
-	/** Short name for EventLog resource */
-	public static final String EVL = "evl";
-	/** Short name for CmdhPolicy resource */
-	public static final String CMP = "cmp";
-	/** Short name for ActiveCmdhPolicy resource */
-	public static final String ACMP = "acmp";
-	/** Short name for CmdhDefaults resource */
-	public static final String CMDF = "cmdf";
-	/** Short name for CmdhDefEcValue resource */
-	public static final String CMDV = "cmdv";
-	/** Short name for CmdhEcDefParamValues resource */
-	public static final String CMPV = "cmpv";
-	/** Short name for CmdhLimits resource */
-	public static final String CML = "cml";
-	/** Short name for CmdhNetworksAccessRules resource */
-	public static final String CMNR = "cmnr";
-	/** Short name for CmdhNwAccessRule resource */
-	public static final String CMWR = "cmwr";
-	/** Short name for CmdhBuffer resource */
-	public static final String CMBF = "cmbf";
 
 	// Resource attributes short names
 	/** Short name for Resource ID attribute */
@@ -219,8 +183,6 @@ public class ShortName {
 	/** Short name for circ region attribute */
 	public static final String ACCR = "accr";
 	
-	
-	
 	// Attributes for Application Entity
 	/** Short name for App Name Attribute */
 	public static final String APP_NAME = "apn";
@@ -253,11 +215,9 @@ public class ShortName {
 	/** Short name for current number of instances attribute */	
 	public static final String CURRENT_NUMBER_OF_INSTANCES = "cni";
 	
-	
 	// Attributes for FlexContainerEntity
 	/** Short name for ContainerDefinition attribute */
 	public static final String CONTAINER_DEFINITION = "cnd";
-	
 	
 	// Attributes for Content Instance
 	/** Short name for ContentSize attribute */
@@ -419,6 +379,7 @@ public class ShortName {
 	// Attributes for Node
 	public static final String NODE_ID = "ni";
 	public static final String HOSTED_CSE_LINK = "hcl";
+	public static final String HOSTED_SRV_LINK = "hsl";
 	
 	// Short names for mgmt objects generic attributes
 	public static final String DESCRIPTION = "des";
@@ -427,17 +388,38 @@ public class ShortName {
 	public static final String OBJ_PATHS = "obps";
 	
 	// Short names for mgmt objects specialization
-	public static final String MEMORY = "mem";
+	public static final String AREA_NWK_DEVICE_INFO = "andi";
+	public static final String AREA_NWK_INFO = "ani";
 	public static final String BATTERY = "bat";
-	public static final String FIRMWARE = "fwr";
-	public static final String SOFTWARE = "swr";
-	public static final String DEVICE_INFO = "dvi";
 	public static final String DEVICE_CAPABILITY = "dvc";
-	public static final String REBOOT = "rbo";
+	public static final String DEVICE_INFO = "dvi";
 	public static final String EVENT_LOG = "evl";
-	public static final String CMDH_POLICY = "cmp";
-	public static final String ACTIVE_CMDH_POLICY = "acmp";
+	public static final String FIRMWARE = "fwr";
+	public static final String MEMORY = "mem";
+	public static final String REBOOT = "rbo";
+	public static final String SOFTWARE = "swr";
 	
+	public static final String AREA_NWK_DEVICE_INFO_ANNC = "andiA";
+	public static final String AREA_NWK_INFO_ANNC = "aniA";
+	public static final String BATTERY_ANNC = "batA";
+	public static final String DEVICE_CAPABILITY_ANNC = "dvcA";
+	public static final String DEVICE_INFO_ANNC = "dviA";
+	public static final String EVENT_LOG_ANNC = "evlA";
+	public static final String FIRMWARE_ANNC = "fwrA";
+	public static final String MEMORY_ANNC = "memA";
+	public static final String REBOOT_ANNC = "rboA";
+	public static final String SOFTWARE_ANNC = "swrA";
+	
+	public static final String ACTIVE_CMDH_POLICY = "acmp";
+	public static final String CMDH_POLICY = "cmp";
+	public static final String CMDH_DEFAULTS = "cmdf";
+	public static final String CMDH_DEF_EC_VALUE= "cmdv";
+	public static final String CMDH_EC_DEF_PARAM_VALUES = "cmpv";
+	public static final String CMDH_LIMITS = "cml";
+	public static final String CMDH_NETWORK_ACCESS_RULES = "cmnr";
+	public static final String CMDH_NW_ACCESS_RULE = "cmwr";
+	public static final String CMDH_BUFFER = "cmbf";
+
 	// Short names for Custom Attributes
 	public static final String CUSTOM_ATTRIBUTE_NAME = "can";
 	public static final String CUSTOM_ATTRIBUTE_TYPE = "cat";
@@ -455,7 +437,31 @@ public class ShortName {
 	public static final String SLEEP_INTERVAL = "sli";
 	public static final String SLEEP_DURATION = "sld";
 	public static final String LIST_OF_NEIGHBORS = "lnh";
-	
+
+	// short names for device info
+	public static final String DEVICE_LABEL = "dlb";
+	public static final String DEVICE_TYPE = "dty";
+	public static final String DEVICE_MODEL = "mod";
+	public static final String MANUFACTURER = "man";
+	public static final String FW_VERSION = "fwv";
+	public static final String SW_VERSION = "swv";
+	public static final String HW_VERSION = "hwv";
+	public static final String OS_VERSION = "osv";
+	public static final String MANUF_DET_LINKS = "mfdtl";
+	public static final String MANUF_DATE = "mfDte";
+	public static final String DEVICE_SUB_MODEL = "sumod";
+	public static final String DEVICE_NAME = "dnm";
+	public static final String COUNTRY = "ctry";
+	public static final String LOCATION = "loc";
+	public static final String SYS_TIME = "syst";
+	public static final String SUPPORT_URL = "surl";
+	public static final String PRES_URL = "purl";
+	public static final String PROTOCOL = "prtl";
+
+	// short names for battery
+	public static final String BATTERY_LEVEL = "btl";
+	public static final String BATTERY_STATUS = "bts";
+
 	// short name for URI List
 	public static final String URI_LIST = "uril";
 	

@@ -36,12 +36,14 @@ import javax.persistence.OneToMany;
 import org.eclipse.om2m.commons.constants.DBEntities;
 import org.eclipse.om2m.commons.constants.MgmtDefinitionTypes;
 import org.eclipse.om2m.commons.constants.ShortName;
+import org.eclipse.om2m.commons.resource.AreaNwkInfo;
+import org.eclipse.om2m.commons.resource.MgmtObj;
 
 /**
  * Area Network Info Entity - Specialization of MgmtObj
  *
  */
-@Entity(name = ShortName.ANI)
+@Entity(name = ShortName.AREA_NWK_INFO)
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class AreaNwkInfoEntity extends MgmtObjEntity {
 	
@@ -54,7 +56,7 @@ public class AreaNwkInfoEntity extends MgmtObjEntity {
 	// Database link to ACP
 	@ManyToMany(fetch = FetchType.LAZY, targetEntity = AccessControlPolicyEntity.class)
 	@JoinTable(
-			name = DBEntities.ANIACP_JOIN,
+			name = DBEntities.ANI_ACP_JOIN,
 			joinColumns = { @JoinColumn(name = DBEntities.ANI_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
 			inverseJoinColumns = { @JoinColumn(name = DBEntities.ACP_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
 			)
@@ -72,7 +74,7 @@ public class AreaNwkInfoEntity extends MgmtObjEntity {
 	// Database link to Subscriptions
 	@OneToMany(fetch = FetchType.LAZY, targetEntity = SubscriptionEntity.class, mappedBy="parentAni")
 	@JoinTable(
-			name = DBEntities.ANISUB_JOIN,
+			name = DBEntities.ANI_SUB_JOIN,
 			joinColumns = { @JoinColumn(name = DBEntities.ANI_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
 			inverseJoinColumns = { @JoinColumn(name = DBEntities.SUB_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
 			)
@@ -81,7 +83,7 @@ public class AreaNwkInfoEntity extends MgmtObjEntity {
 	// Database link to Node
 	@ManyToOne(fetch = FetchType.LAZY, targetEntity = NodeEntity.class)
 	@JoinTable(
-			name = DBEntities.ANINOD_JOIN,
+			name = DBEntities.ANI_NOD_JOIN,
 			joinColumns = { @JoinColumn(name = DBEntities.ANI_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
 			inverseJoinColumns = { @JoinColumn(name = DBEntities.NOD_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
 			)
@@ -140,6 +142,20 @@ public class AreaNwkInfoEntity extends MgmtObjEntity {
 	}
 
 	/**
+	 * @return the parentNode
+	 */
+	public NodeEntity getParentNode() {
+		return parentNode;
+	}
+
+	/**
+	 * @param parentNode the parentNode to set
+	 */
+	public void setParentNode(NodeEntity parentNode) {
+		this.parentNode = parentNode;
+	}
+
+	/**
 	 * @return the subscriptions
 	 */
 	public List<SubscriptionEntity> getSubscriptions() {
@@ -168,6 +184,14 @@ public class AreaNwkInfoEntity extends MgmtObjEntity {
 	@Override
 	public void setDynamicAuthorizationConsultations(List<DynamicAuthorizationConsultationEntity> list) {
 		this.dynamicAuthorizationConsultations = list;
+	}
+
+	@Override
+	public void fillFrom(MgmtObj mgmtObj) {
+		super.fillFrom(mgmtObj);
+		AreaNwkInfo ani = (AreaNwkInfo) mgmtObj;
+		this.areaNwkType = ani.getAreaNwkType();
+		this.listOfDevices = ani.getListOfDevices();
 	}
 	
 }

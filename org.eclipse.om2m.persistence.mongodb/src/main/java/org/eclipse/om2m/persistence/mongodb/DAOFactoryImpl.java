@@ -20,6 +20,9 @@ import org.eclipse.om2m.commons.entities.FlexContainerAnncEntity;
 import org.eclipse.om2m.commons.entities.FlexContainerEntity;
 import org.eclipse.om2m.commons.entities.GroupEntity;
 import org.eclipse.om2m.commons.entities.LabelEntity;
+import org.eclipse.om2m.commons.entities.MgmtObjAnncEntity;
+import org.eclipse.om2m.commons.entities.MgmtObjEntity;
+import org.eclipse.om2m.commons.entities.NodeAnncEntity;
 import org.eclipse.om2m.commons.entities.NodeEntity;
 import org.eclipse.om2m.commons.entities.PollingChannelEntity;
 import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
@@ -88,8 +91,14 @@ public class DAOFactoryImpl implements DAOFactory {
 	}
 
 	@Override
-	public DAO<NodeEntity> getNodeEntityDAO() {
+	public DAO<NodeEntity> getNodeDAO() {
 		return new DAOImpl<NodeEntity>(NodeEntity.class) {
+		};
+	}
+
+	@Override
+	public DAO<MgmtObjEntity> getMgmtObjDAO() {
+		return new DAOImpl<MgmtObjEntity>(MgmtObjEntity.class) {
 		};
 	}
 
@@ -151,16 +160,27 @@ public class DAOFactoryImpl implements DAOFactory {
 	
 	@Override
 	public DAO<DynamicAuthorizationConsultationEntity> getDynamicAuthorizationDAO() {
-		return  new DAOImpl<DynamicAuthorizationConsultationEntity>(DynamicAuthorizationConsultationEntity.class) {
+		return new DAOImpl<DynamicAuthorizationConsultationEntity>(DynamicAuthorizationConsultationEntity.class) {
 		};
 	}
 
 	@Override
 	public DAO<ContentInstanceEntity> getOldestDAO() {
-		return  new DAOImpl<ContentInstanceEntity>(ContentInstanceEntity.class) {
+		return new DAOImpl<ContentInstanceEntity>(ContentInstanceEntity.class) {
 		};
 	}
 
+	@Override
+	public DAO<NodeAnncEntity> getNodeAnncDAO() {
+		return new DAOImpl<NodeAnncEntity>(NodeAnncEntity.class) {
+		};
+	}
+
+	@Override
+	public DAO<MgmtObjAnncEntity> getMgmtObjAnncDAO() {
+		return new DAOImpl<MgmtObjAnncEntity>(MgmtObjAnncEntity.class) {
+		};
+	}
 	
 	@Override
 	public DAO<ContainerEntity> getContainerByResourceNameDAO() {

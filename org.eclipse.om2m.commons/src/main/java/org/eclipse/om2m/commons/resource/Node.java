@@ -89,15 +89,24 @@ public class Node extends AnnounceableResource {
 	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
 	@XmlElement(required = true, name = ShortName.NODE_ID, namespace="")
 	protected String nodeID;
-	@XmlElement(name = ShortName.HOSTED_CSE_LINK)
+	
+	@XmlElement(name = ShortName.HOSTED_CSE_LINK, namespace="")
 	protected String hostedCSELink;
-	@XmlElement(name = ShortName.CHILD_RESOURCE)
+	
+	@XmlElement(name = ShortName.HOSTED_SRV_LINK, namespace="")
+	protected String hostedServiceLinks;
+	
+	@XmlElement(name = ShortName.CHILD_RESOURCE, namespace="")
 	protected List<ChildResourceRef> childResource;
+
+	@XmlElement(namespace = "http://www.onem2m.org/xml/protocols", name = ShortName.SUB)
+	protected List<Subscription> subscriptions;
+
 	@XmlElements({
 			@XmlElement(name = ShortName.MEMORY, namespace = "http://www.onem2m.org/xml/protocols", type = Memory.class),
 			@XmlElement(name = ShortName.BATTERY, namespace = "http://www.onem2m.org/xml/protocols", type = Battery.class),
-			@XmlElement(name = ShortName.ANI, namespace = "http://www.onem2m.org/xml/protocols", type = AreaNwkInfo.class),
-			@XmlElement(name = ShortName.ANDI, namespace = "http://www.onem2m.org/xml/protocols", type = AreaNwkDeviceInfo.class),
+			@XmlElement(name = ShortName.AREA_NWK_INFO, namespace = "http://www.onem2m.org/xml/protocols", type = AreaNwkInfo.class),
+			@XmlElement(name = ShortName.AREA_NWK_DEVICE_INFO, namespace = "http://www.onem2m.org/xml/protocols", type = AreaNwkDeviceInfo.class),
 			@XmlElement(name = ShortName.FIRMWARE, namespace = "http://www.onem2m.org/xml/protocols", type = Firmware.class),
 			@XmlElement(name = ShortName.SOFTWARE, namespace = "http://www.onem2m.org/xml/protocols", type = Software.class),
 			@XmlElement(name = ShortName.DEVICE_INFO, namespace = "http://www.onem2m.org/xml/protocols", type = DeviceInfo.class),
@@ -107,7 +116,7 @@ public class Node extends AnnounceableResource {
 			@XmlElement(name = ShortName.CMDH_POLICY, namespace = "http://www.onem2m.org/xml/protocols", type = CmdhPolicy.class),
 			@XmlElement(name = ShortName.ACTIVE_CMDH_POLICY, namespace = "http://www.onem2m.org/xml/protocols", type = ActiveCmdhPolicy.class),
 			@XmlElement(name = ShortName.SUB, namespace = "http://www.onem2m.org/xml/protocols", type = Subscription.class) })
-	protected List<RegularResource> memoryOrBatteryOrAreaNwkInfo;
+	protected List<MgmtObj> mgmmtObjs;
 
 	/**
 	 * Gets the value of the nodeID property.
@@ -152,6 +161,27 @@ public class Node extends AnnounceableResource {
 	}
 
 	/**
+	 * Gets the value of the hostedAppLinks property.
+	 * 
+	 * @return possible object is {@link String }
+	 * 
+	 */
+	public String getHostedServiceLinks() {
+		return hostedServiceLinks;
+	}
+
+	/**
+	 * Sets the value of the hostedAppLinks property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link String }
+	 * 
+	 */
+	public void setHostedServiceLinks(String value) {
+		this.hostedServiceLinks = value;
+	}
+
+	/**
 	 * Gets the value of the childResource property.
 	 * 
 	 * <p>
@@ -182,6 +212,36 @@ public class Node extends AnnounceableResource {
 	}
 
 	/**
+	 * Gets the value of the subscription property.
+	 * 
+	 * <p>
+	 * This accessor method returns a reference to the live list, not a
+	 * snapshot. Therefore any modification you make to the returned list will
+	 * be present inside the JAXB object. This is why there is not a
+	 * <CODE>set</CODE> method for the subscription property.
+	 * 
+	 * <p>
+	 * For example, to add a new item, do as follows:
+	 * 
+	 * <pre>
+	 * getSubscription().add(newItem);
+	 * </pre>
+	 * 
+	 * 
+	 * <p>
+	 * Objects of the following type(s) are allowed in the list
+	 * {@link Subscription }
+	 * 
+	 * 
+	 */
+	public List<Subscription> getSubscriptions() {
+		if (subscriptions == null) {
+			subscriptions = new ArrayList<Subscription>();
+		}
+		return this.subscriptions;
+	}
+
+	/**
 	 * Gets the value of the memoryOrBatteryOrAreaNwkInfo property.
 	 * 
 	 * <p>
@@ -207,11 +267,11 @@ public class Node extends AnnounceableResource {
 	 * 
 	 * 
 	 */
-	public List<RegularResource> getMemoryOrBatteryOrAreaNwkInfo() {
-		if (memoryOrBatteryOrAreaNwkInfo == null) {
-			memoryOrBatteryOrAreaNwkInfo = new ArrayList<RegularResource>();
+	public List<MgmtObj> getMgmtObjs() {
+		if (mgmmtObjs == null) {
+			mgmmtObjs = new ArrayList<MgmtObj>();
 		}
-		return this.memoryOrBatteryOrAreaNwkInfo;
+		return this.mgmmtObjs;
 	}
 
 }

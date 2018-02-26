@@ -48,15 +48,12 @@ import org.eclipse.om2m.commons.utils.Util.DateUtil;
 import org.eclipse.om2m.core.datamapper.DataMapperSelector;
 import org.eclipse.om2m.core.entitymapper.EntityMapperFactory;
 import org.eclipse.om2m.core.notifier.Notifier;
-import org.eclipse.om2m.core.persistence.PersistenceService;
 import org.eclipse.om2m.core.remotecse.RemoteCseService;
 import org.eclipse.om2m.core.router.Patterns;
 import org.eclipse.om2m.core.urimapper.UriMapper;
 import org.eclipse.om2m.core.util.ControllerUtil;
 import org.eclipse.om2m.core.util.ControllerUtil.UpdateUtil;
 import org.eclipse.om2m.persistence.service.DAO;
-import org.eclipse.om2m.persistence.service.DBService;
-import org.eclipse.om2m.persistence.service.DBTransaction;
 
 /**
  * Controller for remote CSE

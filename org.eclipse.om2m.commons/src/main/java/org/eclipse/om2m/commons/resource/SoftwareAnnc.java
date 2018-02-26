@@ -37,6 +37,9 @@ import javax.xml.bind.annotation.XmlElementRefs;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.eclipse.om2m.commons.constants.MgmtDefinitionTypes;
+import org.eclipse.om2m.commons.constants.ShortName;
+
 /**
  * <p>
  * Java class for anonymous complex type.
@@ -73,8 +76,8 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "rest" })
-@XmlRootElement(name = "softwareAnnc")
-public class SoftwareAnnc extends AnnouncedMgmtResource {
+@XmlRootElement(name = ShortName.SOFTWARE_ANNC)
+public class SoftwareAnnc extends MgmtObjAnncWithChildren {
 
 	@XmlElementRefs({
 			@XmlElementRef(name = "deactivate", type = JAXBElement.class, required = false),
@@ -89,6 +92,12 @@ public class SoftwareAnnc extends AnnouncedMgmtResource {
 			@XmlElementRef(name = "version", type = JAXBElement.class, required = false),
 			@XmlElementRef(name = "install", type = JAXBElement.class, required = false) })
 	protected List<Object> rest;
+	
+	
+	public SoftwareAnnc() {
+		super();
+		setMgmtDefinition(MgmtDefinitionTypes.SOFTWARE);
+	}
 
 	/**
 	 * Gets the rest of the content model.

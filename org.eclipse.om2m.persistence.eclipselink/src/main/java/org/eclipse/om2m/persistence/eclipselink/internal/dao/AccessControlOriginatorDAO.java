@@ -35,21 +35,10 @@ public class AccessControlOriginatorDAO extends AbstractDAO<AccessControlOrigina
 	@Override
 	public AccessControlOriginatorEntity find(DBTransaction dbTransaction, Object id) {
 		DBTransactionJPAImpl transaction = (DBTransactionJPAImpl) dbTransaction;
-
-
 		List<AccessControlOriginatorEntity> acoes = transaction.getEm().createQuery("select a from "
 				+ DBEntities.ACCESSCONTROLORIGINATOR_ENTITY + " a where a.originatorID =\'" + id + "\'")
 				.getResultList();
-
-		for (AccessControlOriginatorEntity acoe : acoes) {
-		}
-		if (acoes.size() > 0) {
-
-			return acoes.get(0);
-		} else {
-			return null;
-		}
-
+		return acoes.isEmpty() ? null : acoes.get(0);
 	}
 
 	@Override

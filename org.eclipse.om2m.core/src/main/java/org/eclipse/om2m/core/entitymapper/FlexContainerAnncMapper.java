@@ -12,11 +12,10 @@ import java.util.List;
 
 import org.eclipse.om2m.commons.constants.ResourceType;
 import org.eclipse.om2m.commons.constants.ResultContent;
-import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
 import org.eclipse.om2m.commons.entities.FlexContainerAnncEntity;
 import org.eclipse.om2m.commons.entities.SubscriptionEntity;
-import org.eclipse.om2m.commons.resource.ChildResourceRef;
 import org.eclipse.om2m.commons.resource.AbstractFlexContainerAnnc;
+import org.eclipse.om2m.commons.resource.ChildResourceRef;
 import org.eclipse.om2m.commons.resource.Subscription;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.FlexContainerFactory;
 
@@ -45,7 +44,7 @@ public class FlexContainerAnncMapper extends EntityMapper<FlexContainerAnncEntit
 		resource.setOntologyRef(entity.getOntologyRef());
 		resource.setStateTag(entity.getStateTag());
 		resource.setContainerDefinition(entity.getContainerDefinition());
-		
+		resource.setNodeLink(entity.getNodeLink());
 	}
 	
 	@Override
@@ -105,11 +104,9 @@ public class FlexContainerAnncMapper extends EntityMapper<FlexContainerAnncEntit
 			resource.getFlexContainerOrContainerOrSubscription().add(subRes);
 		}
 		
-		
 		// add child ref with containers
 		
 		resource.finalizeSerialization();
 	}
-
 	
 }

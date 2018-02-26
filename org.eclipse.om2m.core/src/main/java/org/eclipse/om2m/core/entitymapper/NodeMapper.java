@@ -24,13 +24,12 @@ import java.util.List;
 
 import org.eclipse.om2m.commons.constants.ResourceType;
 import org.eclipse.om2m.commons.constants.ResultContent;
-import org.eclipse.om2m.commons.entities.AreaNwkDeviceInfoEntity;
-import org.eclipse.om2m.commons.entities.AreaNwkInfoEntity;
+import org.eclipse.om2m.commons.entities.MgmtObjEntity;
 import org.eclipse.om2m.commons.entities.NodeEntity;
-import org.eclipse.om2m.commons.resource.AreaNwkDeviceInfo;
-import org.eclipse.om2m.commons.resource.AreaNwkInfo;
+import org.eclipse.om2m.commons.entities.SubscriptionEntity;
 import org.eclipse.om2m.commons.resource.ChildResourceRef;
 import org.eclipse.om2m.commons.resource.Node;
+import org.eclipse.om2m.commons.resource.Subscription;
 
 /**
  * Mapper for Node resource - entity
@@ -38,46 +37,51 @@ import org.eclipse.om2m.commons.resource.Node;
  */
 public class NodeMapper extends EntityMapper<NodeEntity, Node> {
 
+	private MgmtObjMapper mgmtObjMapper;
+	
+	public NodeMapper() {
+		super();
+		mgmtObjMapper = new MgmtObjMapper();
+	}
+
 	@Override
 	protected void mapAttributes(NodeEntity entity, Node resource, int level, int offset) {
-		
 		if (level < 0) {
 			return;
 		}
 		
 		// announceableResource attributes
-		EntityMapperFactory.getAnnounceableSubordonateEntity_AnnounceableResourceMapper().mapAttributes(entity, resource, level, offset);
+		EntityMapperFactory.getAnnounceableSubordonateEntity_AnnounceableResourceMapper()
+			.mapAttributes(entity, resource, level, offset);
 		
 		// node attribute
 		resource.setNodeID(entity.getNodeID());
 		resource.setHostedCSELink(entity.getHostedCSELink());
+		resource.setHostedServiceLinks(entity.getHostedServiceLinks());
 	}
 	
 	@Override
-	protected List<ChildResourceRef> getChildResourceRef(NodeEntity entity, int level, int offset) {
+	protected List<ChildResourceRef> getChildResourceRef(NodeEntity entity, 
+			int level, int offset) {
 		List<ChildResourceRef> childRefs = new ArrayList<>();
-		
 		if (level == 0) {
 			return childRefs;
 		}
-		
-		// add child area nwk info entities
-		for (AreaNwkInfoEntity aniEntity : entity.getChildAreaNwkInfoEntities()) {
-			ChildResourceRef chref = new ChildResourceRef();
-			chref.setResourceName(aniEntity.getName());
-			chref.setType(ResourceType.MGMT_OBJ);
-			chref.setValue(aniEntity.getResourceID());
-			childRefs.add(chref);
-			childRefs.addAll(new AreaNwkInfoMapper().getChildResourceRef(aniEntity, level - 1, offset - 1));
+
+		// add child ref subscription
+		for (SubscriptionEntity sub : entity.getSubscriptions()){
+			ChildResourceRef child = new ChildResourceRef();
+			child.setResourceName(sub.getName());
+			child.setType(ResourceType.SUBSCRIPTION);
+			child.setValue(sub.getResourceID());
+			childRefs.add(child);
+			childRefs.addAll(new SubscriptionMapper().getChildResourceRef(sub, level - 1, offset - 1));
 		}
-		// add child area nwk device info entities
-		for (AreaNwkDeviceInfoEntity andiEntity : entity.getChildAreaNwkDeviceInfoEntities()) {
-			ChildResourceRef chref = new ChildResourceRef();
-			chref.setResourceName(andiEntity.getName());
-			chref.setType(ResourceType.MGMT_OBJ);
-			chref.setValue(andiEntity.getResourceID());
-			childRefs.add(chref);
-			childRefs.addAll(new AreaNwkDeviceInfoMapper().getChildResourceRef(andiEntity, level - 1, offset - 1));
+		
+		// add mgmt obj entities
+		for (MgmtObjEntity mgmtObj : entity.getMgmtObjEntities()) {
+			childRefs.add(createChildResourceRef(mgmtObj));
+			childRefs.addAll(mgmtObjMapper.getChildResourceRef(mgmtObj, level - 1, offset - 1));
 		}
 		
 		return childRefs;
@@ -90,15 +94,15 @@ public class NodeMapper extends EntityMapper<NodeEntity, Node> {
 
 	@Override
 	protected void mapChildResources(NodeEntity entity, Node resource, int level, int offset) {
-		// add child area nwk info entities
-		for (AreaNwkInfoEntity aniEntity : entity.getChildAreaNwkInfoEntities()) {
-			AreaNwkInfo aniRes = new AreaNwkInfoMapper().mapEntityToResource(aniEntity, ResultContent.ATTRIBUTES, level - 1, offset - 1);
-			resource.getMemoryOrBatteryOrAreaNwkInfo().add(aniRes);
+		// add child ref subscription
+		for (SubscriptionEntity sub : entity.getSubscriptions()){
+			Subscription subRes = new SubscriptionMapper().mapEntityToResource(sub, ResultContent.ATTRIBUTES, level - 1, offset - 1);
+			resource.getSubscriptions().add(subRes);
 		}
-		// add child area nwk device info entities
-		for (AreaNwkDeviceInfoEntity andiEntity : entity.getChildAreaNwkDeviceInfoEntities()) {
-			AreaNwkDeviceInfo andiRes = new AreaNwkDeviceInfoMapper().mapEntityToResource(andiEntity, ResultContent.ATTRIBUTES, level - 1, offset - 1);
-			resource.getMemoryOrBatteryOrAreaNwkInfo().add(andiRes);
+		// add mgmt obj entities
+		for (MgmtObjEntity mgmtObj : entity.getMgmtObjEntities()) {
+			resource.getMgmtObjs().add(mgmtObjMapper.mapEntityToResource(mgmtObj, 
+					ResultContent.ATTRIBUTES, level - 1, offset - 1));
 		}
 	}
 
@@ -107,4 +111,12 @@ public class NodeMapper extends EntityMapper<NodeEntity, Node> {
 		return new Node();
 	}
 
+	private final ChildResourceRef createChildResourceRef(MgmtObjEntity entity) {
+		ChildResourceRef chref = new ChildResourceRef();
+		chref.setResourceName(entity.getName());
+		chref.setType(ResourceType.MGMT_OBJ);
+		chref.setValue(entity.getResourceID());
+		return chref;
+	}
+	
 }

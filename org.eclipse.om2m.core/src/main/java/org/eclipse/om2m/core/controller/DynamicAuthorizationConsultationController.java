@@ -7,7 +7,6 @@
  *******************************************************************************/
 package org.eclipse.om2m.core.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.om2m.commons.constants.Constants;

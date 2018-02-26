@@ -29,7 +29,7 @@ public enum DeviceType implements Identifiers {
 	
 	deviceDoor(100, "deviceDoor", "deviceDoor", "devDr"),
 	deviceSmokeExtractor(101, "deviceSmokeExtractor", "deviceSmokeExtractor", "dSeEr"),
-	deviceSwitchButton(102, "deviceSwitchButton", "deviceSwitchButton", "dShBn"),
+	deviceSwitchButton(102, "deviceSwitchButton", "deviceSwitchButton", "deSBn"),
 	deviceWarningDevice(103, "deviceWarningDevice", "deviceWarningDevice", "deWDe"),
 	
 	deviceGasValve(200, "deviceGasValve", "deviceGasValve", "dGsVe"),

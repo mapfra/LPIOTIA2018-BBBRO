@@ -38,7 +38,6 @@ import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.XmlValue;
 
 import org.eclipse.om2m.commons.constants.ShortName;
 
@@ -125,7 +124,7 @@ public class CSEBase extends Resource {
 
 	@XmlElements({
 			@XmlElement(name = ShortName.REMOTE_CSE, namespace = "http://www.onem2m.org/xml/protocols", type = RemoteCSE.class),
-			@XmlElement(name = "node", namespace = "http://www.onem2m.org/xml/protocols", type = Node.class),
+			@XmlElement(name = ShortName.NODE, namespace = "http://www.onem2m.org/xml/protocols", type = Node.class),
 			@XmlElement(name = ShortName.AE, namespace = "http://www.onem2m.org/xml/protocols", type = AE.class),
 			@XmlElement(name = ShortName.CNT, namespace = "http://www.onem2m.org/xml/protocols", type = Container.class),
 			@XmlElement(name = ShortName.GROUP, namespace = "http://www.onem2m.org/xml/protocols", type = Group.class),

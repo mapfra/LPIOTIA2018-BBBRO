@@ -11,7 +11,6 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.AssociationOverride;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -35,7 +34,6 @@ public class FlexContainerAnncEntity extends AnnouncedResourceEntity {
 	@Column(name="shortName")
 	protected String shortName;
 	
-
 	@Column(name = ShortName.STATETAG)
 	protected BigInteger stateTag;
 	@Column(name = ShortName.CREATOR)
@@ -44,7 +42,9 @@ public class FlexContainerAnncEntity extends AnnouncedResourceEntity {
 	protected String ontologyRef;
 	@Column(name = ShortName.CONTAINER_DEFINITION)
 	protected String containerDefinition;
-	
+	@Column(name=ShortName.NODE_LINK)
+	protected String nodeLink;
+
 	/** List of DynamicAuthorizationConsultations*/
 	@ManyToMany(fetch=FetchType.LAZY, mappedBy="linkedFlexContainerAnncEntities")
 	@JoinTable(
@@ -264,6 +264,12 @@ public class FlexContainerAnncEntity extends AnnouncedResourceEntity {
 		this.parentAeAnnc = parentAeAnnc;
 	}
 
-	
+	public String getNodeLink() {
+		return nodeLink;		
+	}
+
+	public void setNodeLink(String nodeLink) {
+		this.nodeLink = nodeLink;
+	}
 	
 }

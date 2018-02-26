@@ -5,8 +5,6 @@ import java.util.List;
 import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
 import org.eclipse.om2m.commons.entities.AeAnncEntity;
 import org.eclipse.om2m.commons.entities.AeEntity;
-import org.eclipse.om2m.commons.entities.AreaNwkDeviceInfoEntity;
-import org.eclipse.om2m.commons.entities.AreaNwkInfoEntity;
 import org.eclipse.om2m.commons.entities.CSEBaseEntity;
 import org.eclipse.om2m.commons.entities.ContainerEntity;
 import org.eclipse.om2m.commons.entities.ContentInstanceEntity;
@@ -15,6 +13,9 @@ import org.eclipse.om2m.commons.entities.FlexContainerAnncEntity;
 import org.eclipse.om2m.commons.entities.FlexContainerEntity;
 import org.eclipse.om2m.commons.entities.GroupEntity;
 import org.eclipse.om2m.commons.entities.LabelEntity;
+import org.eclipse.om2m.commons.entities.MgmtObjAnncEntity;
+import org.eclipse.om2m.commons.entities.MgmtObjEntity;
+import org.eclipse.om2m.commons.entities.NodeAnncEntity;
 import org.eclipse.om2m.commons.entities.NodeEntity;
 import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
 import org.eclipse.om2m.commons.entities.ScheduleEntity;
@@ -83,16 +84,14 @@ public class DynamicAuthorizationConsultationDAO extends AbstractDAO<DynamicAuth
 			transaction.getEm().merge(ae);
 		}
 		
-		// remove link with AreaNwkDeviceInfo
-		for(AreaNwkDeviceInfoEntity andie : resource.getLinkedAreaNwkDeviceInfoEntities()) {
-			andie.getDynamicAuthorizationConsultations().remove(resource);
-			transaction.getEm().merge(andie);
+		// remove link with Mgmt Objs
+		for(MgmtObjEntity mgmtObj : resource.getMgmtObjEntities()) {
+			mgmtObj.getDynamicAuthorizationConsultations().remove(resource);
+			transaction.getEm().merge(mgmtObj);
 		}
-		
-		// remove link with AreaNwkInfo 
-		for(AreaNwkInfoEntity anie : resource.getLinkedAreaNwkInfoEntities()) {
-			anie.getDynamicAuthorizationConsultations().remove(resource);
-			transaction.getEm().merge(anie);
+		for(MgmtObjAnncEntity mgmtObj : resource.getMgmtObjAnncEntities()) {
+			mgmtObj.getDynamicAuthorizationConsultations().remove(resource);
+			transaction.getEm().merge(mgmtObj);
 		}
 		
 		// remove link with Container
@@ -139,6 +138,10 @@ public class DynamicAuthorizationConsultationDAO extends AbstractDAO<DynamicAuth
 		
 		// remove link with node
 		for(NodeEntity ne : resource.getLinkedNodeEntities()) {
+			ne.getDynamicAuthorizationConsultations().remove(resource);
+			transaction.getEm().merge(ne);
+		}
+		for(NodeAnncEntity ne : resource.getLinkedNodeAnncEntities()) {
 			ne.getDynamicAuthorizationConsultations().remove(resource);
 			transaction.getEm().merge(ne);
 		}

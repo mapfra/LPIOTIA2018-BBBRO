@@ -13,33 +13,40 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
+import org.eclipse.om2m.commons.constants.ShortName;
 import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
+import org.eclipse.om2m.commons.resource.AreaNwkDeviceInfo;
 import org.eclipse.om2m.commons.resource.CustomAttribute;
+import org.eclipse.om2m.commons.resource.DeviceInfo;
+import org.eclipse.om2m.commons.resource.Node;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.FlexContainerFactory;
-import org.eclipse.om2m.core.service.CseService;
 import org.eclipse.om2m.sdt.Device;
 import org.eclipse.om2m.sdt.Module;
 import org.eclipse.om2m.sdt.Property;
+import org.eclipse.om2m.sdt.home.types.PropertyType;
 
 public class SDTDeviceAdaptor {
 
-    private static Log logger = LogFactory.getLog(SDTDeviceAdaptor.class);
+    private static final Log logger = LogFactory.getLog(SDTDeviceAdaptor.class);
 
 	private static final String SEP = "/";
 	private static final String DEVICE_PREFIX = "DEVICE_";
+	private static final String NODE_PREFIX = "NODE_";
 	
 	private final boolean hasToBeAnnounced;
 	private final String parentLocation;
+	private final String baseLocation;
 	private final String resourceLocation;
-	private final String resourceName;
+	private final String deviceName;
+	private final String nodeName;
 	private final Device device;
 	private final String adminAcpResource;
-	private final CseService cseService;
 	private final String announceCseId;
 	private final String remoteCseName;
 	private boolean isPublished = false;
 	private final Map<Module, SDTModuleAdaptor> modules;
+	private String nodeLocation;
 
 	/**
 	 * 
@@ -47,30 +54,31 @@ public class SDTDeviceAdaptor {
 	 * @param pResourceName
 	 * @param pDevice
 	 */
-	public SDTDeviceAdaptor(final String pParentLocation, final Device pDevice, 
-			final CseService pCseService, final String pAdminAcpResource, 
+	public SDTDeviceAdaptor(final String pParentLocation, final String baseLocation,
+			final Device pDevice, final String pAdminAcpResource, 
 			final String pAnnounceCseId, final String pRemoteCseName, final boolean hasToBeAnnounced) {
 		this.parentLocation = pParentLocation;
+		this.baseLocation = baseLocation;
 		this.hasToBeAnnounced = hasToBeAnnounced;
 		this.device = pDevice;
-		this.resourceName = DEVICE_PREFIX + device.getId();
-		this.resourceLocation = parentLocation + SEP + resourceName;
-		this.cseService = pCseService;
+		this.deviceName = DEVICE_PREFIX + device.getId();
+		this.nodeName = NODE_PREFIX + device.getId();
+		this.resourceLocation = parentLocation + SEP + deviceName;
 		this.announceCseId = pAnnounceCseId;
 		this.remoteCseName = pRemoteCseName;
 		this.adminAcpResource = pAdminAcpResource;
-		modules = new HashMap<>();
+		modules = new HashMap<Module, SDTModuleAdaptor>();
 	}
 
 	/**
 	 * Publish the SDT Device as a FlexContainer entity into the oneM2M tree
 	 */
 	public boolean publishIntoOM2MTree() {
-		logger.info("publishIntoOM2MTree(flexContainerName=" + resourceName 
+		logger.info("publishIntoOM2MTree(flexContainerName=" + deviceName 
 				+ ", parentLocation:" + parentLocation);
 		
 		AbstractFlexContainer flexContainer = FlexContainerFactory.getSpecializationFlexContainer(device.getShortDefinitionName());
-		flexContainer.setName(resourceName);
+		flexContainer.setName(deviceName);
 		// set container definition with the value of the Device definition
 		flexContainer.setContainerDefinition(device.getDefinition());
 				
@@ -78,9 +86,6 @@ public class SDTDeviceAdaptor {
 		flexContainer.setLongName(device.getLongDefinitionName());
 		flexContainer.setShortName(device.getShortDefinitionName());
 		flexContainer.getAccessControlPolicyIDs().add(adminAcpResource);
-		if (hasToBeAnnounced) {
-			flexContainer.getAnnounceTo().add(SEP + announceCseId);
-		}
 		
 		// labels
 		flexContainer.getLabels().add("id/" + this.device.getId());
@@ -93,6 +98,40 @@ public class SDTDeviceAdaptor {
 		// if we reach this point, we are sure the FlexContainer resource has
 		// been created into the oneM2M tree
 		isPublished = true;
+		
+		Node node = new Node();
+		node.setNodeID(nodeName);
+		node.setName(nodeName);
+		node.getAccessControlPolicyIDs().add(adminAcpResource);
+		node.getLabels().add("object.type/node");
+		node.getLabels().add("name/" + nodeName);
+		DeviceInfo devInfo = new DeviceInfo();
+		node.getMgmtObjs().add(devInfo);
+		
+		AreaNwkDeviceInfo nwkDeviceInfo = new AreaNwkDeviceInfo();
+		node.getMgmtObjs().add(nwkDeviceInfo);
+		nwkDeviceInfo.setAreaNwkId("TBD");
+		nwkDeviceInfo.setDevID(this.device.getName());
+		nwkDeviceInfo.setDevType("SDT");
+		
+		logger.info("Node mgmtObjs: " + node.getMgmtObjs());
+
+		if (hasToBeAnnounced) {
+			flexContainer.getAnnounceTo().add(SEP + announceCseId);
+			flexContainer.getAnnouncedAttribute().add(ShortName.NODE_LINK);
+			
+			node.getAnnounceTo().add(SEP + announceCseId);
+			node.getAnnouncedAttribute().add(ShortName.HOSTED_SRV_LINK);
+			
+			devInfo.getAnnounceTo().add(SEP + announceCseId);
+			devInfo.getAnnouncedAttribute().add(ShortName.MANUFACTURER);
+			devInfo.getAnnouncedAttribute().add(ShortName.DEVICE_LABEL);
+			devInfo.getAnnouncedAttribute().add(ShortName.DEVICE_MODEL);
+			devInfo.getAnnouncedAttribute().add(ShortName.DEVICE_TYPE);
+			
+			nwkDeviceInfo.getAnnounceTo().add(SEP + announceCseId);
+			nwkDeviceInfo.getAnnouncedAttribute().add(ShortName.DEV_TYPE);
+		}
 
 		// SDT properties are customAttribute of the device FlexContainer
 		for (Property sdtProperty : device.getProperties()) {
@@ -100,32 +139,76 @@ public class SDTDeviceAdaptor {
 				+ ", value=" + sdtProperty.getValue() + ", type=" + sdtProperty.getType() + ")");
 
 			if (sdtProperty.getType() != null) {
-				
+			
 				if ((sdtProperty.getValue() == null) && (sdtProperty.isOptional())) {
 					// do not add this property because it is null and optional
 					continue;
 				}
-				
-				CustomAttribute customAttributeForSdtProperty = new CustomAttribute();
-				customAttributeForSdtProperty.setCustomAttributeName(sdtProperty.getShortName());
-				customAttributeForSdtProperty.setCustomAttributeValue(sdtProperty.getValue());
-
-				logger.info("new Property CustomAttribute (" + customAttributeForSdtProperty + ")");
-				flexContainer.getCustomAttributes().add(customAttributeForSdtProperty);
+				String shortName = sdtProperty.getShortName();
+				if (shortName.equals(PropertyType.deviceSerialNum.getShortName())) {
+					devInfo.setDeviceLabel(sdtProperty.getValue());
+				} else if (shortName.equals(PropertyType.deviceFirmwareVersion.getShortName())) {
+					devInfo.setFwVersion(sdtProperty.getValue());
+				} else if (shortName.equals(PropertyType.deviceManufacturer.getShortName())) {
+					devInfo.setManufacturer(sdtProperty.getValue());
+				} else if (shortName.equals(PropertyType.deviceModelName.getShortName())) {
+					devInfo.setModel(sdtProperty.getValue());
+				} else if (shortName.equals(PropertyType.deviceType.getShortName())) {
+					devInfo.setDeviceType(sdtProperty.getValue());
+				} else if (shortName.equals(PropertyType.hardwareVersion.getShortName())) {
+					devInfo.setHwVersion(sdtProperty.getValue());
+				} else if (shortName.equals(PropertyType.manufacturerDetailsLink.getShortName())) {
+					devInfo.setManufacturerDetailsLink(sdtProperty.getValue());
+				} else if (shortName.equals(PropertyType.osVersion.getShortName())) {
+					devInfo.setOsVersion(sdtProperty.getValue());
+				} else if (shortName.equals(PropertyType.location.getShortName())) {
+					devInfo.setLocation(sdtProperty.getValue());
+				} else if (shortName.equals(PropertyType.country.getShortName())) {
+					devInfo.setCountry(sdtProperty.getValue());
+				} else if (shortName.equals(PropertyType.dateOfManufacture.getShortName())) {
+					devInfo.setManufacturingDate(sdtProperty.getValue());
+				} else if (shortName.equals(PropertyType.supportURL.getShortName())) {
+					devInfo.setSupportURL(sdtProperty.getValue());
+				} else if (shortName.equals(PropertyType.deviceSubModelName.getShortName())) {
+					devInfo.setSubModel(sdtProperty.getValue());
+				} else if (shortName.equals(PropertyType.deviceName.getShortName())) {
+					devInfo.setDeviceName(sdtProperty.getValue());
+				} else if (shortName.equals(PropertyType.presentationURL.getShortName())) {
+					devInfo.setPresentationURL(sdtProperty.getValue());
+				} else if (shortName.equals(PropertyType.protocol.getShortName())) {
+					devInfo.setProtocol(sdtProperty.getValue());
+				} else {
+					CustomAttribute customAttributeForSdtProperty = new CustomAttribute();
+					customAttributeForSdtProperty.setCustomAttributeName(shortName);
+					customAttributeForSdtProperty.setCustomAttributeValue(sdtProperty.getValue());
+					logger.info("new Property CustomAttribute (" + customAttributeForSdtProperty + ")");
+					flexContainer.getCustomAttributes().add(customAttributeForSdtProperty);
+				}
 			}
 		}
 		
-		ResponsePrimitive response = CseUtil.sendCreateFlexContainerRequest(cseService, 
-				flexContainer, parentLocation);
+		flexContainer.setNodeLink(nodeName);
+		ResponsePrimitive response = CseUtil.sendCreateFlexContainerRequest(flexContainer, 
+				parentLocation);
 		if (! response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {
 			logger.error("unable to create a FlexContainer for SDT Device "
-					+ resourceName + " : " + response.getContent(), null);
+					+ deviceName + " : " + response.getContent(), null);
 			return false;
 		}
-
+		flexContainer = (AbstractFlexContainer) response.getContent();
+		node.setHostedServiceLinks(flexContainer.getName());
+		
+		response = CseUtil.sendCreateNodeRequest(node, baseLocation);
+		if (! response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {
+			logger.error("unable to create a Node for SDT Device "
+					+ deviceName + " : " + response.getContent(), null);
+			return false;
+		}
+		nodeLocation = ((Node)response.getContent()).getResourceID();
+		
 		// Modules (must be done now because Device FlexContainer is the parent of each Module)
 		for (Module module : this.device.getModules()) {
-			SDTModuleAdaptor sdtModuleAdaptor = new SDTModuleAdaptor(module, cseService, 
+			SDTModuleAdaptor sdtModuleAdaptor = new SDTModuleAdaptor(module, 
 					resourceLocation, announceCseId, hasToBeAnnounced);
 			if (sdtModuleAdaptor.publishModuleIntoOM2MTree()) {
 				modules.put(module, sdtModuleAdaptor);
@@ -149,7 +232,9 @@ public class SDTDeviceAdaptor {
 			module.unpublishModuleFromOM2MTree();
 		}
 		// send DELETE request for Device FlexContainer
-		CseUtil.sendDeleteRequest(cseService, resourceLocation);
+		CseUtil.sendDeleteRequest(resourceLocation);
+		// send DELETE request for Device Node
+		CseUtil.sendDeleteRequest(nodeLocation);
 	}
 
 }

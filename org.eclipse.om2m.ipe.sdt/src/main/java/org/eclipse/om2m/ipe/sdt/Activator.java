@@ -44,7 +44,6 @@ public class Activator implements EventHandler {
 	private boolean isSDTIPEStarted = false;
 
 	private SDTIpeApplication sdtIPEApplication;
-	private CseService cseService;
 
 	private static BundleContext bundleContext;
 
@@ -85,12 +84,12 @@ public class Activator implements EventHandler {
 
 	protected void setCseService(CseService cseService) {
 		logger.info("setCseService");
-		this.cseService = cseService;
+		CseUtil.cseService = cseService;
 	}
 
 	protected void unsetCseService(CseService pCseService) {
 		logger.info("unsetCseService");
-		this.cseService = null;
+		CseUtil.cseService = null;
 	}
 
 	protected void setDevice(Device device) {
@@ -122,7 +121,7 @@ public class Activator implements EventHandler {
 			// unregister a previous version
 			unregisterSdtIpeApplication();
 		}
-		sdtIPEApplication = new SDTIpeApplication(cseService, announceCseId, cseName, ipeUnder, hasToBeAnnounced);
+		sdtIPEApplication = new SDTIpeApplication(announceCseId, cseName, ipeUnder, hasToBeAnnounced);
 		sdtIPEApplication.publishSDTIPEApplication();
 		DeviceList.getInstance().addListenerAndSend(sdtIPEApplication);
 	}
@@ -267,8 +266,7 @@ public class Activator implements EventHandler {
 		ResponsePrimitive response = null;
 		// check 3 times
 		for (int i = 0; i < 3; i++) {
-			response = CseUtil.sendRetrieveRequest(cseService,
-					"/" + remoteCseId + "/" + remoteCseName + "/" + Constants.CSE_NAME);
+			response = CseUtil.sendRetrieveRequest("/" + remoteCseId + "/" + remoteCseName + "/" + Constants.CSE_NAME);
 			if (ResponseStatusCode.OK.equals(response.getResponseStatusCode())) {
 				break;
 			}

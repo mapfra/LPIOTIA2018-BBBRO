@@ -366,11 +366,11 @@ public class ObjectFactory {
 	}
 
 	/**
-	 * Create an instance of {@link MgmtResource }
+	 * Create an instance of {@link MgmtObj }
 	 * 
 	 */
-	public MgmtResource createMgmtResource() {
-		return new MgmtResource();
+	public MgmtObj createMgmtResource() {
+		return new MgmtObj();
 	}
 
 	/**

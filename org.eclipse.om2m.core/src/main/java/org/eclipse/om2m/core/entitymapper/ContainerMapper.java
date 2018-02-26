@@ -26,15 +26,14 @@ import java.util.List;
 import org.eclipse.om2m.commons.constants.ResourceType;
 import org.eclipse.om2m.commons.constants.ResultContent;
 import org.eclipse.om2m.commons.constants.ShortName;
-import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
 import org.eclipse.om2m.commons.entities.ContainerEntity;
 import org.eclipse.om2m.commons.entities.ContentInstanceEntity;
 import org.eclipse.om2m.commons.entities.FlexContainerEntity;
 import org.eclipse.om2m.commons.entities.SubscriptionEntity;
+import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
 import org.eclipse.om2m.commons.resource.ChildResourceRef;
 import org.eclipse.om2m.commons.resource.Container;
 import org.eclipse.om2m.commons.resource.ContentInstance;
-import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
 import org.eclipse.om2m.commons.resource.Subscription;
 
 public class ContainerMapper extends EntityMapper<ContainerEntity, Container>{

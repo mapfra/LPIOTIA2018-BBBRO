@@ -24,15 +24,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.OneToMany;
 
-import org.eclipse.om2m.commons.constants.DBEntities;
+import org.eclipse.om2m.commons.constants.MgmtDefinitionTypes;
 import org.eclipse.om2m.commons.constants.ShortName;
+import org.eclipse.om2m.commons.exceptions.BadRequestException;
+import org.eclipse.om2m.commons.resource.MgmtObj;
 
 /**
  * Generic common attributes for management objects entities
@@ -43,13 +40,16 @@ public abstract class MgmtObjEntity extends AnnounceableSubordinateEntity {
 
 	@Column (name = ShortName.MGMT_DEF)
 	protected BigInteger mgmtDefinition;
+	
 	@Column(name = ShortName.OBJ_IDS)
 	protected List<String> objectIDs;
+	
 	@Column(name = ShortName.OBJ_PATHS)
 	protected List<String> objectPaths;
+	
 	@Column(name = ShortName.DESCRIPTION)
 	protected String description;
-	
+
 	
 	/**
 	 * @return the mgmtDefinition
@@ -57,6 +57,7 @@ public abstract class MgmtObjEntity extends AnnounceableSubordinateEntity {
 	public BigInteger getMgmtDefinition() {
 		return mgmtDefinition;
 	}
+	
 	/**
 	 * @return the objectIDs
 	 */
@@ -66,12 +67,14 @@ public abstract class MgmtObjEntity extends AnnounceableSubordinateEntity {
 		}
 		return objectIDs;
 	}
+	
 	/**
 	 * @param objectIDs the objectIDs to set
 	 */
 	public void setObjectIDs(List<String> objectIDs) {
 		this.objectIDs = objectIDs;
 	}
+	
 	/**
 	 * @return the objectPaths
 	 */
@@ -81,29 +84,55 @@ public abstract class MgmtObjEntity extends AnnounceableSubordinateEntity {
 		}
 		return objectPaths;
 	}
+	
 	/**
 	 * @param objectPaths the objectPaths to set
 	 */
 	public void setObjectPaths(List<String> objectPaths) {
 		this.objectPaths = objectPaths;
 	}
+	
 	/**
 	 * @return the description
 	 */
 	public String getDescription() {
 		return description;
 	}
+	
 	/**
 	 * @param description the description to set
 	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
 	/**
 	 * @param mgmtDefinition the mgmtDefinition to set
 	 */
 	public void setMgmtDefinition(BigInteger mgmtDefinition) {
 		this.mgmtDefinition = mgmtDefinition;
 	}
+
+	public void fillFrom(MgmtObj mgmtObj) {
+		this.mgmtDefinition = mgmtObj.getMgmtDefinition();
+		this.description = mgmtObj.getDescription();
+		this.objectIDs = mgmtObj.getObjectIDs();
+		this.objectPaths = mgmtObj.getObjectPaths();
+	}
+
+	public static MgmtObjEntity create(BigInteger mgmtDef) {
+		if (mgmtDef.equals(MgmtDefinitionTypes.AREA_NWK_INFO))
+			return new AreaNwkInfoEntity();
+		if (mgmtDef.equals(MgmtDefinitionTypes.AREA_NWK_DEVICE_INFO))
+			return new AreaNwkDeviceInfoEntity();
+		if (mgmtDef.equals(MgmtDefinitionTypes.DEVICE_INFO))
+			return new DeviceInfoEntity();
+		throw new BadRequestException("Not implemented");
+	}
+
+	abstract public NodeEntity getParentNode();
+	abstract public void setParentNode(NodeEntity parentNode);
+	abstract public List<AccessControlPolicyEntity> getAccessControlPolicies();
+	abstract public List<SubscriptionEntity> getSubscriptions();
 
 }

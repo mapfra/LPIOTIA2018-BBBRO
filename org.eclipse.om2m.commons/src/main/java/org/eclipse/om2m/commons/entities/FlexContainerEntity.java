@@ -58,6 +58,8 @@ public class FlexContainerEntity extends AnnounceableSubordinateEntity{
 	protected String ontologyRef;
 	@Column(name=ShortName.CONTAINER_DEFINITION)
 	protected String containerDefinition;
+	@Column(name=ShortName.NODE_LINK)
+	protected String nodeLink;
 	
 	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
 	@JoinTable(
@@ -361,6 +363,14 @@ public class FlexContainerEntity extends AnnounceableSubordinateEntity{
 	 */
 	public void setParentCSR(CSEBaseEntity parentCSR) {
 		this.parentCSR = parentCSR;
+	}
+
+	public String getNodeLink() {
+		return nodeLink;		
+	}
+
+	public void setNodeLink(String nodeLink) {
+		this.nodeLink = nodeLink;
 	}
 
 	/**

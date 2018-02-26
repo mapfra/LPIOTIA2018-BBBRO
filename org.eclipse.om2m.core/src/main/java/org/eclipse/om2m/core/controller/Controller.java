@@ -32,14 +32,11 @@ import org.eclipse.om2m.commons.constants.ResultContent;
 import org.eclipse.om2m.commons.entities.AccessControlOriginatorEntity;
 import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
 import org.eclipse.om2m.commons.entities.AccessControlRuleEntity;
-import org.eclipse.om2m.commons.entities.DynamicAuthorizationConsultationEntity;
 import org.eclipse.om2m.commons.entities.ResourceEntity;
 import org.eclipse.om2m.commons.exceptions.AccessDeniedException;
 import org.eclipse.om2m.commons.exceptions.BadRequestException;
 import org.eclipse.om2m.commons.exceptions.Om2mException;
 import org.eclipse.om2m.commons.exceptions.ResourceNotFoundException;
-import org.eclipse.om2m.commons.resource.AccessControlPolicy;
-import org.eclipse.om2m.commons.resource.AccessControlRule;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.Resource;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
@@ -339,15 +336,15 @@ public abstract class Controller {
 	}
 
 	protected void setLocationAndCreationContent(RequestPrimitive request, 
-			ResponsePrimitive response, ResourceEntity entity){
-		setLocationAndCreationContent(request, response, entity, EntityMapperFactory.
-						getMapperFromResourceType(entity.getResourceType().intValue()));
+			ResponsePrimitive response, ResourceEntity entity) {
+		EntityMapper mapper = EntityMapperFactory.getMapperFromResourceType(entity.getResourceType().intValue());
+		setLocationAndCreationContent(request, response, entity, mapper);
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected void setLocationAndCreationContent(RequestPrimitive request, 
-			ResponsePrimitive response, ResourceEntity entity, @SuppressWarnings("rawtypes") EntityMapper mapper){
-		if(request.getResultContent()!= null){
+			ResponsePrimitive response, ResourceEntity entity, EntityMapper mapper) {
+		if (request.getResultContent() != null) {
 			if (request.getResultContent().equals(ResultContent.HIERARCHICAL_ADRESS)
 					|| request.getResultContent().equals(ResultContent.HIERARCHICAL_AND_ATTRIBUTES)){
 				response.setLocation(entity.getHierarchicalURI());

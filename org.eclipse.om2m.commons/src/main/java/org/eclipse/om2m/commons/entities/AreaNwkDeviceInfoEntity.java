@@ -37,12 +37,14 @@ import javax.persistence.OneToMany;
 import org.eclipse.om2m.commons.constants.DBEntities;
 import org.eclipse.om2m.commons.constants.MgmtDefinitionTypes;
 import org.eclipse.om2m.commons.constants.ShortName;
+import org.eclipse.om2m.commons.resource.AreaNwkDeviceInfo;
+import org.eclipse.om2m.commons.resource.MgmtObj;
 
 /**
  * Area Nwk Device Info entity - Specialization of MgmtObj
  *
  */
-@Entity(name = ShortName.ANDI)
+@Entity(name = ShortName.AREA_NWK_DEVICE_INFO)
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class AreaNwkDeviceInfoEntity extends MgmtObjEntity {
 
@@ -64,7 +66,7 @@ public class AreaNwkDeviceInfoEntity extends MgmtObjEntity {
 	/** AccessControlPolicies linked to the MgmtObj */
 	@ManyToMany(fetch=FetchType.LAZY)
 	@JoinTable(
-			name = DBEntities.ANDIACP_JOIN,
+			name = DBEntities.ANDI_ACP_JOIN,
 			joinColumns = { @JoinColumn(name = DBEntities.ANDI_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
 			inverseJoinColumns = { @JoinColumn(name = DBEntities.ACP_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
 			)
@@ -83,7 +85,7 @@ public class AreaNwkDeviceInfoEntity extends MgmtObjEntity {
 	// Database link to Subscriptions
 	@OneToMany(fetch = FetchType.LAZY, targetEntity = SubscriptionEntity.class, mappedBy="parentAndi")
 	@JoinTable(
-			name = DBEntities.ANDISUB_JOIN,
+			name = DBEntities.ANDI_SUB_JOIN,
 			joinColumns = { @JoinColumn(name = DBEntities.ANDI_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
 			inverseJoinColumns = { @JoinColumn(name = DBEntities.SUB_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
 			)
@@ -92,7 +94,7 @@ public class AreaNwkDeviceInfoEntity extends MgmtObjEntity {
 	// Database link to Node
 	@ManyToOne(fetch = FetchType.LAZY, targetEntity = NodeEntity.class)
 	@JoinTable(
-			name = DBEntities.ANDINOD_JOIN,
+			name = DBEntities.ANDI_NOD_JOIN,
 			joinColumns = { @JoinColumn(name = DBEntities.ANDI_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }, 
 			inverseJoinColumns = { @JoinColumn(name = DBEntities.NOD_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
 			)
@@ -263,6 +265,19 @@ public class AreaNwkDeviceInfoEntity extends MgmtObjEntity {
 	@Override
 	public void setDynamicAuthorizationConsultations(List<DynamicAuthorizationConsultationEntity> list) {
 		this.dynamicAuthorizationConsultations = list;
+	}
+
+	@Override
+	public void fillFrom(MgmtObj mgmtObj) {
+		super.fillFrom(mgmtObj);
+		AreaNwkDeviceInfo andi = (AreaNwkDeviceInfo) mgmtObj;
+		this.devID = andi.getDevID();
+		this.devType = andi.getDevType();
+		this.areaNwkId = andi.getAreaNwkId();
+		this.sleepDuration = andi.getSleepDuration();
+		this.sleepInterval = andi.getSleepInterval();
+		this.status = andi.getStatus();
+		this.listOfNeighbors = andi.getListOfNeighbors();
 	}
 	
 }

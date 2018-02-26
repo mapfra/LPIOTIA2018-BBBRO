@@ -40,6 +40,8 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.eclipse.om2m.commons.constants.ShortName;
+
 /**
  * <p>
  * Java class for anonymous complex type.
@@ -85,8 +87,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 		"requestContextNotification", "requestCharacteristics",
 		"limitsEventCategory", "limitsRequestExpTime", "limitsResultExpTime",
 		"limitsOpExecTime", "limitsRespPersistence", "limitsDelAggregation" })
-@XmlRootElement(name = "cmdhLimits")
-public class CmdhLimits extends MgmtResource {
+@XmlRootElement(name = ShortName.CMDH_LIMITS)
+public class CmdhLimits extends MgmtObj {
 
 	@XmlElement(required = true)
 	@XmlSchemaType(name = "positiveInteger")

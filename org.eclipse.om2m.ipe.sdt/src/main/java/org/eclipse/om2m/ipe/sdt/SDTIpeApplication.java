@@ -15,11 +15,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.om2m.commons.constants.Constants;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
+import org.eclipse.om2m.commons.constants.ShortName;
 import org.eclipse.om2m.commons.resource.AE;
 import org.eclipse.om2m.commons.resource.AEAnnc;
 import org.eclipse.om2m.commons.resource.AccessControlPolicy;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
-import org.eclipse.om2m.core.service.CseService;
 import org.eclipse.om2m.sdt.Device;
 
 public class SDTIpeApplication implements DeviceListListener {
@@ -32,8 +32,6 @@ public class SDTIpeApplication implements DeviceListListener {
 	private static final String DEFAULT_APPLICATION_LOCATION = DEFAULT_BASE_LOCATION + SEP + APPLICATION_NAME;
 
 	private static final String POA = "sdt";
-
-	private final CseService cseService;
 
 	private final Map<Device, SDTDeviceAdaptor> devices = new HashMap<>();
 
@@ -48,9 +46,8 @@ public class SDTIpeApplication implements DeviceListListener {
 	private AccessControlPolicy remoteAdminAccessControlPolicy;
 	private AE registeredAe;
 
-	public SDTIpeApplication(final CseService pCseService, final String announceCseId, final String pRemoteCseName,
+	public SDTIpeApplication(final String announceCseId, final String pRemoteCseName,
 			final boolean ipeUnder, final boolean hasToBeAnnounced) {
-		cseService = pCseService;
 		this.remoteCseId = announceCseId;
 		this.remoteCseName = pRemoteCseName;
 		this.ipeUnderAnnouncedResource = ipeUnder;
@@ -74,8 +71,10 @@ public class SDTIpeApplication implements DeviceListListener {
 	private boolean addSDTDevice(Device device) {
 		logger.info("add SDT Device (id:" + device.getId() + ", name=" + device.getName() + ") into oneM2M");
 
-		SDTDeviceAdaptor sdtDeviceAdaptor = new SDTDeviceAdaptor(sdtIpeApplicationLocation, device, cseService,
-				adminAccessControlPolicy.getResourceID(), remoteCseId, remoteCseName, hasToBeAnnounced);
+		SDTDeviceAdaptor sdtDeviceAdaptor = new SDTDeviceAdaptor(sdtIpeApplicationLocation, 
+				sdtIpeBaseLocation, device, 
+				adminAccessControlPolicy.getResourceID(), 
+				remoteCseId, remoteCseName, hasToBeAnnounced);
 		if (sdtDeviceAdaptor.publishIntoOM2MTree()) {
 			synchronized (devices) {
 				devices.put(device, sdtDeviceAdaptor);
@@ -114,12 +113,15 @@ public class SDTIpeApplication implements DeviceListListener {
 		ae.getPointOfAccess().add(POA);
 		if (hasToBeAnnounced) {
 			ae.getAnnounceTo().add(SEP + remoteCseId);
+			ae.getAnnouncedAttribute().add(ShortName.APP_ID);
+			ae.getAnnouncedAttribute().add(ShortName.APP_NAME);
+			ae.getAnnouncedAttribute().add(ShortName.NODE_LINK);
 		}
 
 		ResponsePrimitive resp = null;
 		try {
 			for (int i = 0; i < 3; i++) {
-				resp = CseUtil.sendCreateApplicationEntityRequest(cseService, ae, sdtIpeBaseLocation);
+				resp = CseUtil.sendCreateApplicationEntityRequest(ae, sdtIpeBaseLocation);
 	
 				if (ResponseStatusCode.CREATED.equals(resp.getResponseStatusCode())) {
 					 // nothing do 
@@ -145,13 +147,13 @@ public class SDTIpeApplication implements DeviceListListener {
 			registeredAe = (AE) resp.getContent();
 		}
 
-		ResponsePrimitive response = CseUtil.sendCreateDefaultACP(cseService, sdtIpeBaseLocation,
+		ResponsePrimitive response = CseUtil.sendCreateDefaultACP(sdtIpeBaseLocation,
 				"ACP_Device_Admin_" + System.currentTimeMillis(), new ArrayList<String>());
 		adminAccessControlPolicy = (AccessControlPolicy) response.getContent();
 
 		if (/*(remoteCseId != null) && (remoteCseName != null)*/ hasToBeAnnounced) {
 			// remote ACP_Device_Admin
-			response = CseUtil.sendCreateDefaultACP(cseService,
+			response = CseUtil.sendCreateDefaultACP(
 					SEP + remoteCseId + SEP + remoteCseName + SEP + Constants.CSE_NAME,
 					"Remote_ACP_Device_Admin" + System.currentTimeMillis(), new ArrayList<String>());
 			remoteAdminAccessControlPolicy = (AccessControlPolicy) response.getContent();
@@ -159,7 +161,7 @@ public class SDTIpeApplication implements DeviceListListener {
 			// update SDT_IPE_ANNC
 			AEAnnc sdtIpeAnnc = new AEAnnc();
 			sdtIpeAnnc.getAccessControlPolicyIDs().add(remoteAdminAccessControlPolicy.getResourceID());
-			CseUtil.sendUpdateApplicationAnncEntityRequest(cseService, sdtIpeAnnc,
+			CseUtil.sendUpdateApplicationAnncEntityRequest(sdtIpeAnnc,
 					SEP + remoteCseId + SEP + remoteCseName + SEP + Constants.CSE_NAME + "/SDT_IPE_Annc");
 		}
 	}
@@ -170,7 +172,7 @@ public class SDTIpeApplication implements DeviceListListener {
 	protected void deleteIpeApplicationEntity() {
 		logger.info("delete ipe application");
 		if (registeredAe != null) { 
-			ResponsePrimitive response = CseUtil.sendDeleteRequest(cseService, registeredAe.getResourceID()/* sdtIpeApplicationLocation*/);
+			ResponsePrimitive response = CseUtil.sendDeleteRequest(registeredAe.getResourceID()/* sdtIpeApplicationLocation*/);
 			if (!response.getResponseStatusCode().equals(ResponseStatusCode.DELETED)) {
 				// log only
 				// no need to throw an exception
@@ -181,11 +183,11 @@ public class SDTIpeApplication implements DeviceListListener {
 		
 
 		if (adminAccessControlPolicy != null) {
-			CseUtil.sendDeleteRequest(cseService, adminAccessControlPolicy.getResourceID());
+			CseUtil.sendDeleteRequest(adminAccessControlPolicy.getResourceID());
 			adminAccessControlPolicy = null;
 		}
 		if (remoteAdminAccessControlPolicy != null) {
-			CseUtil.sendDeleteRequest(cseService, remoteAdminAccessControlPolicy.getResourceID());
+			CseUtil.sendDeleteRequest(remoteAdminAccessControlPolicy.getResourceID());
 			remoteAdminAccessControlPolicy = null;
 		}
 	}

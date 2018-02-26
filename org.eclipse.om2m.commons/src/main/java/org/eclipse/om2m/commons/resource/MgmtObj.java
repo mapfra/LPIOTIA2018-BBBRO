@@ -73,17 +73,20 @@ import org.eclipse.om2m.commons.constants.ShortName;
 		CmdhDefEcValue.class, CmdhNwAccessRule.class, Firmware.class,
 		AreaNwkInfo.class, Software.class, CmdhDefaults.class,
 		CmdhNetworkAccessRules.class })
-public class MgmtResource extends AnnounceableResource {
+public class MgmtObj extends AnnounceableResource {
 
-	@XmlElement(name = ShortName.MGMT_DEF, required = true)
+	@XmlElement(name = ShortName.MGMT_DEF, required = true, namespace="")
 	protected BigInteger mgmtDefinition;
+	
 	@XmlList
-	@XmlElement(name = ShortName.OBJ_IDS)
+	@XmlElement(name = ShortName.OBJ_IDS, namespace="")
 	protected List<String> objectIDs;
+	
 	@XmlList
-	@XmlElement(name = ShortName.OBJ_PATHS)
+	@XmlElement(name = ShortName.OBJ_PATHS, namespace="")
 	protected List<String> objectPaths;
-	@XmlElement(name = ShortName.DESCRIPTION)
+	
+	@XmlElement(name = ShortName.DESCRIPTION, namespace="")
 	protected String description;
 
 	/**
@@ -103,7 +106,7 @@ public class MgmtResource extends AnnounceableResource {
 	 *            allowed object is {@link BigInteger }
 	 * 
 	 */
-	public void setMgmtDefinition(BigInteger value) {
+	protected void setMgmtDefinition(BigInteger value) {
 		this.mgmtDefinition = value;
 	}
 

@@ -17,97 +17,11 @@ import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlSchemaType;
-import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.eclipse.om2m.commons.constants.ShortName;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.AlarmSpeakerFlexContainerAnnc;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.AtmosphericPressureSensorFlexContainerAnnc;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.AudioVolumeFlexContainerAnnc;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.BatteryFlexContainerAnnc;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.BinarySwitchFlexContainerAnnc;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.BoilerFlexContainerAnnc;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.BrewingFlexContainerAnnc;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.BrightnessFlexContainerAnnc;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.ClockFlexContainerAnnc;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.ColourFlexContainerAnnc;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.ColourSaturationFlexContainerAnnc;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.ContactSensorFlexContainerAnnc;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.DecrementNumberValueFlexContainerAnnc;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceCameraFlexContainerAnnc;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceCoffeeMachineFlexContainerAnnc;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceContactDetectorFlexContainerAnnc;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceDoorFlexContainerAnnc;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceFloodDetectorFlexContainerAnnc;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceGasValveFlexContainerAnnc;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceLightFlexContainerAnnc;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceMotionDetectorFlexContainerAnnc;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceNumberDeviceFlexContainerAnnc;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceSmartElectricMeterFlexContainerAnnc;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceSmokeDetectorFlexContainerAnnc;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceSmokeExtractorFlexContainerAnnc;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceSwitchButtonFlexContainerAnnc;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceTemperatureDetectorFlexContainerAnnc;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceThermostatFlexContainerAnnc;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceWarningDeviceFlexContainerAnnc;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceWaterHeaterFlexContainerAnnc;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceWaterValveFlexContainerAnnc;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceWeatherStationFlexContainerAnnc;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.DoorStatusFlexContainerAnnc;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.EnergyConsumptionFlexContainerAnnc;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.EnergyGenerationFlexContainerAnnc;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.ExtendedCarbonDioxideSensorFlexContainerAnnc;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.FaultDetectionFlexContainerAnnc;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.FoamingFlexContainerAnnc;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.GrinderFlexContainerAnnc;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.IncrementNumberValueFlexContainerAnnc;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.LiquidLevelFlexContainerAnnc;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.LockFlexContainerAnnc;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.NoiseFlexContainerAnnc;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.NumberValueFlexContainerAnnc;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.PersonSensorFlexContainerAnnc;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.RelativeHumidityFlexContainerAnnc;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.ResetNumberValueFlexContainerAnnc;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.RunModeFlexContainerAnnc;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.SmokeSensorFlexContainerAnnc;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.StreamingFlexContainerAnnc;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.TemperatureFlexContainerAnnc;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.TimerFlexContainerAnnc;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.ToggleFlexContainerAnnc;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.WaterLevelFlexContainerAnnc;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.WaterSensorFlexContainerAnnc;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlSeeAlso({DeviceLightFlexContainerAnnc.class,
-	DeviceSmartElectricMeterFlexContainerAnnc.class, DeviceWaterHeaterFlexContainerAnnc.class,
-	DeviceCameraFlexContainerAnnc.class, DeviceCoffeeMachineFlexContainerAnnc.class,
-	DeviceContactDetectorFlexContainerAnnc.class, DeviceDoorFlexContainerAnnc.class,
-	DeviceFloodDetectorFlexContainerAnnc.class, DeviceGasValveFlexContainerAnnc.class,
-	DeviceMotionDetectorFlexContainerAnnc.class, DeviceSmokeDetectorFlexContainerAnnc.class,
-	DeviceSmokeExtractorFlexContainerAnnc.class, DeviceSwitchButtonFlexContainerAnnc.class,
-	DeviceTemperatureDetectorFlexContainerAnnc.class, DeviceThermostatFlexContainerAnnc.class,
-	DeviceWarningDeviceFlexContainerAnnc.class,
-	DeviceWaterValveFlexContainerAnnc.class, DeviceWeatherStationFlexContainerAnnc.class,
-	DeviceThermostatFlexContainerAnnc.class, DeviceNumberDeviceFlexContainerAnnc.class,
-	AlarmSpeakerFlexContainerAnnc.class, AudioVolumeFlexContainerAnnc.class,
-	BinarySwitchFlexContainerAnnc.class, BoilerFlexContainerAnnc.class,
-	BrightnessFlexContainerAnnc.class, ClockFlexContainerAnnc.class,
-	ColourFlexContainerAnnc.class, ColourSaturationFlexContainerAnnc.class,
-	DoorStatusFlexContainerAnnc.class, EnergyConsumptionFlexContainerAnnc.class,
-	EnergyGenerationFlexContainerAnnc.class, FaultDetectionFlexContainerAnnc.class,
-	RelativeHumidityFlexContainerAnnc.class, RunModeFlexContainerAnnc.class,
-	SmokeSensorFlexContainerAnnc.class, TemperatureFlexContainerAnnc.class,
-	WaterLevelFlexContainerAnnc.class, WaterSensorFlexContainerAnnc.class,
-	AtmosphericPressureSensorFlexContainerAnnc.class, BrewingFlexContainerAnnc.class,
-	ContactSensorFlexContainerAnnc.class, ExtendedCarbonDioxideSensorFlexContainerAnnc.class,
-	FoamingFlexContainerAnnc.class, GrinderFlexContainerAnnc.class,
-	NoiseFlexContainerAnnc.class, PersonSensorFlexContainerAnnc.class,
-	StreamingFlexContainerAnnc.class, LockFlexContainerAnnc.class,
-	BatteryFlexContainerAnnc.class,
-	LiquidLevelFlexContainerAnnc.class, TimerFlexContainerAnnc.class,
-	NumberValueFlexContainerAnnc.class, IncrementNumberValueFlexContainerAnnc.class,
-	DecrementNumberValueFlexContainerAnnc.class, ResetNumberValueFlexContainerAnnc.class,
-	ToggleFlexContainerAnnc.class})
 public class AbstractFlexContainerAnnc extends AnnouncedResource {
 	
 	@XmlTransient
@@ -127,6 +41,9 @@ public class AbstractFlexContainerAnnc extends AnnouncedResource {
 	@XmlSchemaType(name = "anyURI")
 	@XmlElement(name = ShortName.CONTAINER_DEFINITION, namespace="")
 	protected String containerDefinition;
+	@XmlSchemaType(name = "anyURI")
+	@XmlElement(name = ShortName.NODE_LINK, required = false, namespace="")
+	protected String nodeLink;
 	@XmlElement(name = ShortName.CHILD_RESOURCE, namespace="")
 	protected List<ChildResourceRef> childResource;
 	@XmlElements({
@@ -344,7 +261,28 @@ public class AbstractFlexContainerAnnc extends AnnouncedResource {
 		}
 		return this.flexContainerOrContainerOrSubscription;
 	}
-	
+
+	/**
+	 * Gets the value of the nodeLink property.
+	 * 
+	 * @return possible object is {@link String }
+	 * 
+	 */
+	public String getNodeLink() {
+		return nodeLink;
+	}
+
+	/**
+	 * Sets the value of the nodeLink property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link String }
+	 * 
+	 */
+	public void setNodeLink(String value) {
+		this.nodeLink = value;
+	}
+
 	public void finalizeSerialization() {
 		// do nothing
 		// should be overwrote 

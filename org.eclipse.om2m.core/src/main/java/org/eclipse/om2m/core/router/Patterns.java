@@ -20,7 +20,6 @@
 
 package org.eclipse.om2m.core.router;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.om2m.commons.constants.Constants;
@@ -34,22 +33,27 @@ import org.eclipse.om2m.persistence.service.DBService;
  */
 public class Patterns implements Constants {
 	
+//	private static Log LOGGER = LogFactory.getLog(Patterns.class);
+
 	/** All short name for filtering */
-	public final String ALL_SHORT_NAMES = ShortName.ACP+"|"+ShortName.AE+"|"+ShortName.CNT+
-			"|"+ShortName.CIN + "|" + ShortName.REMOTE_CSE + "|" + ShortName.LATEST + "|" + ShortName.OLDEST +
+	private static final String ALL_SHORT_NAMES = ShortName.ACP + "|" + ShortName.AE + "|" + ShortName.CNT +
+			"|" + ShortName.CIN + "|" + ShortName.REMOTE_CSE + "|" + ShortName.LATEST + "|" + ShortName.OLDEST +
 			"|" + ShortName.GROUP + "|" + ShortName.FANOUTPOINT + "|" + ShortName.SUB + "|" + ShortName.PCH + 
-			"|" + ShortName.POLLING_CHANNEL_URI + "|" + ShortName.REQ + "|" + ShortName.NODE +
-			"|" + ShortName.ANI + "|" + ShortName.ANDI + "|" + ShortName.FCNT + "|" + ShortName.DAC;
+			"|" + ShortName.POLLING_CHANNEL_URI + "|" + ShortName.REQ + 
+			"|" + ShortName.NODE + "|" + ShortName.MGO + 
+			"|" + ShortName.FCNT + "|" + ShortName.DAC;
 	
-	public final String NON_HIERARCHICAL_ID = "(" + Constants.PREFIX_SEPERATOR +"(\\b\\w+\\b)?)" ;
-	
-	public final Pattern UNAUTHORIZED_NAMES = Pattern.compile(ShortName.ACP + NON_HIERARCHICAL_ID + "?|" + 
-					ShortName.AE + NON_HIERARCHICAL_ID + "?|" + ShortName.CNT + NON_HIERARCHICAL_ID + "?|" +
-					ShortName.CIN + NON_HIERARCHICAL_ID + "?|" + ShortName.REMOTE_CSE + NON_HIERARCHICAL_ID + "?|" +
-					ShortName.LATEST + NON_HIERARCHICAL_ID + "?|" + ShortName.OLDEST + NON_HIERARCHICAL_ID + "?|" +
-					ShortName.GROUP + NON_HIERARCHICAL_ID + "?|" + ShortName.FANOUTPOINT + NON_HIERARCHICAL_ID + "?|" +
-					ShortName.SUB + NON_HIERARCHICAL_ID + "?|" + ShortName.PCH + "?|" + ShortName.POLLING_CHANNEL_URI + 
-					"?|" + ShortName.REQ + "?|" + ShortName.NODE + "?|" + ShortName.FCNT + "?|" + ShortName.DAC + "?");
+//	private static final String NON_HIERARCHICAL_ID = "(" + Constants.PREFIX_SEPERATOR +"(\\b\\w+\\b)?)" ;
+//	
+//	private static final Pattern UNAUTHORIZED_NAMES = Pattern.compile(ShortName.ACP + NON_HIERARCHICAL_ID + "?|" + 
+//					ShortName.AE + NON_HIERARCHICAL_ID + "?|" + ShortName.CNT + NON_HIERARCHICAL_ID + "?|" +
+//					ShortName.CIN + NON_HIERARCHICAL_ID + "?|" + ShortName.REMOTE_CSE + NON_HIERARCHICAL_ID + "?|" +
+//					ShortName.LATEST + NON_HIERARCHICAL_ID + "?|" + ShortName.OLDEST + NON_HIERARCHICAL_ID + "?|" +
+//					ShortName.GROUP + NON_HIERARCHICAL_ID + "?|" + ShortName.FANOUTPOINT + NON_HIERARCHICAL_ID + "?|" +
+//					ShortName.SUB + NON_HIERARCHICAL_ID + "?|" + ShortName.PCH + "?|" + 
+//					ShortName.POLLING_CHANNEL_URI + "?|" + ShortName.REQ + "?|" + 
+//					ShortName.NODE + "?|" + ShortName.MGO + "?|" + 
+//					ShortName.FCNT + "?|" + ShortName.DAC + "?");
 	
 	/** Main id string */
 	public final String ID_STRING = "([A-Za-z0-9_\\-~#]|\\.)+";
@@ -94,10 +98,12 @@ public class Patterns implements Constants {
     public final String FANOUT_POINT_MATCH = "/" + ShortName.FANOUTPOINT ;
     
     public final Pattern NODE_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.NODE + Constants.PREFIX_SEPERATOR + ID_STRING);
-
-    public final Pattern AREA_NW_INFO_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.ANI + Constants.PREFIX_SEPERATOR + ID_STRING);
-
-	public final Pattern AREA_NWK_DEVICE_INFO_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.ANDI + Constants.PREFIX_SEPERATOR + ID_STRING);
+    
+    public final Pattern NODE_ANNC_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.NODE_ANNC + Constants.PREFIX_SEPERATOR + ID_STRING);
+    
+    public final Pattern NMGMT_OBJ_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.MGO + Constants.PREFIX_SEPERATOR + ID_STRING);
+    
+    public final Pattern NMGMT_OBJ_ANNC_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.MGOA + Constants.PREFIX_SEPERATOR + ID_STRING);
 
     /** Non-hierarchical URI pattern */
     public final Pattern NON_HIERARCHICAL_PATTERN = Pattern.compile(
@@ -117,11 +123,7 @@ public class Patterns implements Constants {
 	 */
 	public boolean match(Pattern pattern, String uri) {
 	    // Match uri with pattern
-	    Matcher m = pattern.matcher(uri);
-	    if (!m.matches()){
-	        return false;
-	    }
-	    return true;
+		return pattern.matcher(uri).matches();
 	}
 	
 	/**
@@ -174,11 +176,20 @@ public class Patterns implements Constants {
 			return db.getDAOFactory().getRequestEntityDAO();
 		}
 		if (match(NODE_PATTERN, uri)) {
-			return db.getDAOFactory().getNodeEntityDAO();
+			return db.getDAOFactory().getNodeDAO();
+		}
+		if (match(NMGMT_OBJ_PATTERN, uri)) {
+			return db.getDAOFactory().getMgmtObjDAO();
+		}
+		if (match(NODE_ANNC_PATTERN, uri)) {
+			return db.getDAOFactory().getNodeAnncDAO();
+		}
+		if (match(NMGMT_OBJ_ANNC_PATTERN, uri)) {
+			return db.getDAOFactory().getMgmtObjAnncDAO();
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Method used to check the validity of the resource name provided
 	 * @param resourceName

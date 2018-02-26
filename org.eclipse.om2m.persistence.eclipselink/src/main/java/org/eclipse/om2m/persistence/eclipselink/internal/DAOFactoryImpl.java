@@ -23,14 +23,17 @@ import org.eclipse.om2m.commons.entities.AccessControlOriginatorEntity;
 import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
 import org.eclipse.om2m.commons.entities.AeAnncEntity;
 import org.eclipse.om2m.commons.entities.AeEntity;
-import org.eclipse.om2m.commons.entities.CreatedAnnouncedResourceEntity;
-import org.eclipse.om2m.commons.entities.DynamicAuthorizationConsultationEntity;
 import org.eclipse.om2m.commons.entities.CSEBaseEntity;
 import org.eclipse.om2m.commons.entities.ContainerEntity;
 import org.eclipse.om2m.commons.entities.ContentInstanceEntity;
+import org.eclipse.om2m.commons.entities.CreatedAnnouncedResourceEntity;
+import org.eclipse.om2m.commons.entities.DynamicAuthorizationConsultationEntity;
 import org.eclipse.om2m.commons.entities.FlexContainerEntity;
 import org.eclipse.om2m.commons.entities.GroupEntity;
 import org.eclipse.om2m.commons.entities.LabelEntity;
+import org.eclipse.om2m.commons.entities.MgmtObjAnncEntity;
+import org.eclipse.om2m.commons.entities.MgmtObjEntity;
+import org.eclipse.om2m.commons.entities.NodeAnncEntity;
 import org.eclipse.om2m.commons.entities.NodeEntity;
 import org.eclipse.om2m.commons.entities.PollingChannelEntity;
 import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
@@ -39,21 +42,24 @@ import org.eclipse.om2m.commons.entities.SubscriptionEntity;
 import org.eclipse.om2m.commons.entities.UriMapperEntity;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.AccessControlOriginatorDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.AccessControlPolicyDAO;
-import org.eclipse.om2m.persistence.eclipselink.internal.dao.AeByAppIdDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.AeAnncDAO;
+import org.eclipse.om2m.persistence.eclipselink.internal.dao.AeByAppIdDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.AeDAO;
-import org.eclipse.om2m.persistence.eclipselink.internal.dao.CreatedAnnouncedResourceDAO;
-import org.eclipse.om2m.persistence.eclipselink.internal.dao.DynamicAuthorizationConsultationDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.CSEBaseDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.ContainerByNameDAO;
-import org.eclipse.om2m.persistence.eclipselink.internal.dao.DescContainerByParentDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.ContainerDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.ContentInstanceDAO;
+import org.eclipse.om2m.persistence.eclipselink.internal.dao.CreatedAnnouncedResourceDAO;
+import org.eclipse.om2m.persistence.eclipselink.internal.dao.DescContainerByParentDAO;
+import org.eclipse.om2m.persistence.eclipselink.internal.dao.DynamicAuthorizationConsultationDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.FlexContainerAnncDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.FlexContainerDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.GroupDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.LabelDAO;
-import org.eclipse.om2m.persistence.eclipselink.internal.dao.NodeEntityDAO;
+import org.eclipse.om2m.persistence.eclipselink.internal.dao.MgmtObjAnncDAO;
+import org.eclipse.om2m.persistence.eclipselink.internal.dao.MgmtObjDAO;
+import org.eclipse.om2m.persistence.eclipselink.internal.dao.NodeAnncDAO;
+import org.eclipse.om2m.persistence.eclipselink.internal.dao.NodeDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.OldestDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.PollingChannelDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.RemoteCSEByIdDAO;
@@ -153,16 +159,19 @@ public class DAOFactoryImpl implements DAOFactory {
 	}
 
 	@Override
-	public DAO<NodeEntity> getNodeEntityDAO() {
-		return new NodeEntityDAO();
+	public DAO<NodeEntity> getNodeDAO() {
+		return new NodeDAO();
+	}
+
+	@Override
+	public DAO<MgmtObjEntity> getMgmtObjDAO() {
+		return new MgmtObjDAO();
 	}
 
 	@Override
 	public DAO<AccessControlOriginatorEntity> getAccessControlOriginatorDAO() {
 		return new AccessControlOriginatorDAO();
 	}
-
-
 	
 	@Override
 	public DAO<AeAnncEntity> getAeAnncDAO() {
@@ -183,9 +192,20 @@ public class DAOFactoryImpl implements DAOFactory {
 	public DAO<DynamicAuthorizationConsultationEntity> getDynamicAuthorizationDAO() {
 		return new DynamicAuthorizationConsultationDAO();
 	}
-
+	
 	@Override
 	public DAO<ContentInstanceEntity> getOldestDAO() {
 		return new OldestDAO();
 	}
+
+	@Override
+	public DAO<NodeAnncEntity> getNodeAnncDAO() {
+		return new NodeAnncDAO();
+	}
+
+	@Override
+	public DAO<MgmtObjAnncEntity> getMgmtObjAnncDAO() {
+		return new MgmtObjAnncDAO();
+	}
+
 }

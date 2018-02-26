@@ -76,15 +76,23 @@ public class CSEBaseEntity extends ResourceEntity {
 	protected String nodeLink;
 
 	
-	
 	/** List of Nodes */
-	@OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.ALL})
+	@OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.ALL}, mappedBy="parentCsb")
 	@JoinTable(
-			name=DBEntities.CSBNOD_CH_JOIN,
+			name=DBEntities.CSB_NOD_CH_JOIN,
 			joinColumns={@JoinColumn(name=DBEntities.CSEB_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)},
 			inverseJoinColumns={@JoinColumn(name=DBEntities.NOD_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)}
 			)
 	protected List<NodeEntity> childNodes;
+	
+	/** List of Nodes */
+	@OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.ALL}, mappedBy="parentCsb")
+	@JoinTable(
+			name=DBEntities.CSB_NODANNC_CH_JOIN,
+			joinColumns={@JoinColumn(name=DBEntities.CSEB_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)},
+			inverseJoinColumns={@JoinColumn(name=DBEntities.NODANNC_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)}
+			)
+	protected List<NodeAnncEntity> childAnncNodes;
 	
 	
 	// TODO list of mgmtCmd
@@ -445,6 +453,23 @@ public class CSEBaseEntity extends ResourceEntity {
 	 */
 	public void setChildNodes(List<NodeEntity> childNodes) {
 		this.childNodes = childNodes;
+	}
+	
+	/**
+	 * @return the childNodes
+	 */
+	public List<NodeAnncEntity> getChildAnncNodes() {
+		if (childAnncNodes == null) {
+			childAnncNodes = new ArrayList<NodeAnncEntity>();
+		}
+		return childAnncNodes;
+	}
+
+	/**
+	 * @param childNodes the childNodes to set
+	 */
+	public void setChildAnncNodes(List<NodeAnncEntity> childNodes) {
+		this.childAnncNodes = childNodes;
 	}
 
 	

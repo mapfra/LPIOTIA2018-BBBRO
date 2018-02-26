@@ -29,9 +29,7 @@ import org.eclipse.om2m.commons.constants.ResourceStatus;
 import org.eclipse.om2m.commons.constants.ResourceType;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.constants.ShortName;
-import org.eclipse.om2m.commons.entities.AccessControlOriginatorEntity;
 import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
-import org.eclipse.om2m.commons.entities.AccessControlRuleEntity;
 import org.eclipse.om2m.commons.entities.AeEntity;
 import org.eclipse.om2m.commons.entities.CSEBaseEntity;
 import org.eclipse.om2m.commons.entities.DynamicAuthorizationConsultationEntity;
@@ -338,11 +336,11 @@ public class AEController extends Controller {
 		// Commit the DB transaction & release lock
 		transaction.commit();
 		
-		if ((ae.getAnnounceTo() != null) && (!ae.getAnnounceTo().isEmpty())) {
+		if (! ae.getAnnounceTo().isEmpty()) {
 			ae.setName(aeDB.getName());
 			ae.setResourceID(aeDB.getResourceID());
 			ae.setResourceType(ResourceType.AE);
-			Announcer.announce(ae.getAnnounceTo(), ae.getAnnouncedAttribute(), ae, request.getFrom(), "");
+			Announcer.announce(ae, request.getFrom(), "");
 		}
 
 		// Create the response
@@ -605,9 +603,9 @@ public class AEController extends Controller {
 		transaction.commit();
 		
 		// deannounce
-		
-		Announcer.deAnnounce(aeEntity.getAnnounceTo(), aeEntity, Constants.ADMIN_REQUESTING_ENTITY);
-
+		if (! aeEntity.getAnnounceTo().isEmpty()) {
+			Announcer.deAnnounce(aeEntity, Constants.ADMIN_REQUESTING_ENTITY);
+		}
 		// Return rsc
 		response.setResponseStatusCode(ResponseStatusCode.DELETED);
 		return response;

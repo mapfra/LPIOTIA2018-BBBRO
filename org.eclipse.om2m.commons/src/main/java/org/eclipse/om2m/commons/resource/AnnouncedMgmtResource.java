@@ -37,6 +37,8 @@ import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 
+import org.eclipse.om2m.commons.constants.ShortName;
+
 /**
  * <p>
  * Java class for announcedMgmtResource complex type.
@@ -71,12 +73,18 @@ import javax.xml.bind.annotation.XmlType;
 		MemoryAnnc.class })
 public class AnnouncedMgmtResource extends AnnouncedResource {
 
-	@XmlElement(required = true)
+	@XmlElement(name = ShortName.MGMT_DEF, required = true, namespace="")
 	protected BigInteger mgmtDefinition;
+	
 	@XmlList
+	@XmlElement(name = ShortName.OBJ_IDS, namespace="")
 	protected List<String> objectIDs;
+	
 	@XmlList
+	@XmlElement(name = ShortName.OBJ_PATHS, namespace="")
 	protected List<String> objectPaths;
+	
+	@XmlElement(name = ShortName.DESCRIPTION, namespace="")
 	protected String description;
 
 	/**
@@ -96,7 +104,7 @@ public class AnnouncedMgmtResource extends AnnouncedResource {
 	 *            allowed object is {@link BigInteger }
 	 * 
 	 */
-	public void setMgmtDefinition(BigInteger value) {
+	protected void setMgmtDefinition(BigInteger value) {
 		this.mgmtDefinition = value;
 	}
 

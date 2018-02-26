@@ -175,13 +175,22 @@ public class RemoteCSEEntity extends AnnounceableSubordinateEntity {
 	protected ScheduleEntity linkedSchedule;
 	
 	/** List of Nodes */
-	@OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.ALL})
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="parentCsr")
 	@JoinTable(
-			name=DBEntities.CSRNOD_CH_JOIN,
+			name=DBEntities.CSR_NOD_CH_JOIN,
 			joinColumns={@JoinColumn(name=DBEntities.CSR_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)},
 			inverseJoinColumns={@JoinColumn(name=DBEntities.NOD_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)}
 			)
 	protected List<NodeEntity> childNodes;
+
+	/** List of announced Nodes */
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="parentCsr")
+	@JoinTable(
+			name=DBEntities.CSR_NODANNC_CH_JOIN,
+			joinColumns={@JoinColumn(name=DBEntities.CSR_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)},
+			inverseJoinColumns={@JoinColumn(name=DBEntities.NODANNC_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)}
+			)
+	protected List<NodeAnncEntity> childAnncNodes;
 	
 	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL,mappedBy="parentRemoteCse")
 	@JoinTable(
@@ -494,6 +503,9 @@ public class RemoteCSEEntity extends AnnounceableSubordinateEntity {
 	 * @return the childNodes
 	 */
 	public List<NodeEntity> getChildNodes() {
+		if (this.childNodes == null) {
+			this.childNodes = new ArrayList<>();
+		}
 		return childNodes;
 	}
 
@@ -502,6 +514,23 @@ public class RemoteCSEEntity extends AnnounceableSubordinateEntity {
 	 */
 	public void setChildNodes(List<NodeEntity> childNodes) {
 		this.childNodes = childNodes;
+	}
+
+	/**
+	 * @return the childNodes
+	 */
+	public List<NodeAnncEntity> getChildAnncNodes() {
+		if (this.childAnncNodes == null) {
+			this.childAnncNodes = new ArrayList<>();
+		}
+		return childAnncNodes;
+	}
+
+	/**
+	 * @param childNodes the childNodes to set
+	 */
+	public void setChildAnncNodes(List<NodeAnncEntity> childNodes) {
+		this.childAnncNodes = childNodes;
 	}
 
 	/**
