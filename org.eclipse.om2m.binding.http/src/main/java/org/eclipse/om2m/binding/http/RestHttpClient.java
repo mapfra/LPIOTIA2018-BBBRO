@@ -81,13 +81,14 @@ public class RestHttpClient implements RestClientService {
 		LOGGER.info("Sending request: " + requestPrimitive);
 		CloseableHttpClient httpClient = HttpClientBuilder.create()
 				.disableAutomaticRetries()
+				.useSystemProperties()
 				.build();
 		ResponsePrimitive responsePrimitive = new ResponsePrimitive(requestPrimitive);    	
 		HttpUriRequest method = null;
 		
 		// Retrieve the url
 		String url = requestPrimitive.getTo();
-		if(!url.startsWith(protocol+"://")){
+		if(!url.startsWith(protocol/*+"://"*/)){
 			if (url.startsWith("://")){
 				url = protocol + url;
 			} else if (url.startsWith("//")){
@@ -162,6 +163,13 @@ public class RestHttpClient implements RestClientService {
 						requestPrimitive.getFrom());
 			}
 			
+			// add any custom headers (request.httpHeaders)
+			if (!requestPrimitive.getHttpHeaders().isEmpty()) {
+				for(String httpHeaderKey : requestPrimitive.getHttpHeaders().keySet()) {
+					method.addHeader(httpHeaderKey, requestPrimitive.getHttpHeaders().get(httpHeaderKey));
+				}
+			}
+			
 			// Add the content type header with the resource type for create operation
 			if (requestPrimitive.getResourceType() != null){
 				contentTypeHeader += ";ty=" + requestPrimitive.getResourceType().toString();
@@ -184,6 +192,7 @@ public class RestHttpClient implements RestClientService {
 				headers += h.toString() + "\n" ;
 			}
 			LOGGER.info("Headers:\n" + headers);
+			
 			
 			HttpResponse httpResponse = httpClient.execute(method);
 			int statusCode = httpResponse.getStatusLine().getStatusCode();

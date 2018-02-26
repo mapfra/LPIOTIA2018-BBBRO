@@ -139,6 +139,8 @@ public class RequestPrimitive {
 	protected String mqttUri;
 	@XmlTransient
 	protected boolean mqttResponseExpected = true;
+	@XmlTransient
+	protected Map<String, String> httpHeaders;
 
 	/**
 	 * @return the queryStrings
@@ -598,6 +600,13 @@ public class RequestPrimitive {
 	public void setMqttResponseExpected(boolean mqttResponseExpected) {
 		this.mqttResponseExpected = mqttResponseExpected;
 	}
+	
+	public Map<String, String> getHttpHeaders() {
+		if (httpHeaders == null) {
+			httpHeaders = new HashMap<>();
+		}
+		return httpHeaders;
+	}
 
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
@@ -672,6 +681,7 @@ public class RequestPrimitive {
 		result.resultPersistence = this.resultPersistence;
 		result.returnContentType = this.returnContentType;
 		result.to = this.to;
+		result.httpHeaders = this.httpHeaders;
 		return result;
 	}
 
