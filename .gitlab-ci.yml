@@ -1,4 +1,4 @@
-image: registry.forge.orange-labs.fr/org.eclipse.om2m/om2m/com.orange.om2m.docker.builder:0.0.4
+image: registry.forge.orange-labs.fr/org.eclipse.om2m/om2m/com.orange.om2m.docker.builder:0.0.5
 
 cache:
   paths:
