@@ -57,7 +57,7 @@
 				<executions>
 					<execution>
 						<id>remove-old-p2-repo</id>
-						<phase>package</phase>
+						<phase>deploy</phase>
 						<goals>
 							<goal>sshexec</goal>
 						</goals>
