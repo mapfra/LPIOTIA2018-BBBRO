@@ -71,7 +71,6 @@ public class Battery extends MgmtObjWithChildren {
 	@XmlSchemaType(name = "unsignedInt")
 	@XmlElement(name = ShortName.BATTERY_LEVEL, namespace="")
 	protected long batteryLevel;
-	
 	@XmlElement(name = ShortName.BATTERY_STATUS, required = true, namespace="")
 	protected BigInteger batteryStatus;
 	

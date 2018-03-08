@@ -69,20 +69,20 @@ import org.eclipse.om2m.commons.constants.ShortName;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "")
 @XmlRootElement(name = ShortName.AREA_NWK_INFO_ANNC)
-public class AreaNwkInfoAnnc extends MgmtObjAnncWithChildren {
+public class AreaNwkInfoAnnc extends AnnouncedMgmtResource {
 
 	@XmlElement(name = ShortName.AREA_NWK_TYPE, required = false, namespace="")
-	protected String areaNwkType;
-
-	@XmlList
-	@XmlElement(name = ShortName.LIST_DEVICES, required = false, namespace="")
-	protected List<String> listOfDevices;
-
+ 	protected String areaNwkType;
 	
-	public AreaNwkInfoAnnc() {
-		super();
-		setMgmtDefinition(MgmtDefinitionTypes.AREA_NWK_INFO);
-	}
+ 	@XmlList
+	@XmlElement(name = ShortName.LIST_DEVICES, required = false, namespace="")
+ 	protected List<String> listOfDevices;
+ 	 
+ 	
+ 	public AreaNwkInfoAnnc() {
+ 		super();
+ 		setMgmtDefinition(MgmtDefinitionTypes.AREA_NWK_INFO);
+ 	}
 
 	/**
 	 * Gets the value of the areaNwkType property.

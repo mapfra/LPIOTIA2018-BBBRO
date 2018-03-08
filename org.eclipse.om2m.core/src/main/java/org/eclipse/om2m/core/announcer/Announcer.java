@@ -34,6 +34,7 @@ import org.eclipse.om2m.commons.constants.ShortName;
 import org.eclipse.om2m.commons.entities.AnnounceableSubordinateEntity;
 import org.eclipse.om2m.commons.entities.CreatedAnnouncedResourceEntity;
 import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
+import org.eclipse.om2m.commons.entities.ResourceEntity;
 import org.eclipse.om2m.commons.exceptions.NotImplementedException;
 import org.eclipse.om2m.commons.resource.AE;
 import org.eclipse.om2m.commons.resource.AEAnnc;
