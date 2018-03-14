@@ -355,7 +355,6 @@ public class CSEInitializer implements Constants {
 		ruleEntity.setDiscovery(true);
 		ruleEntity.getAccessControlOriginators()
 				.add(new AccessControlOriginatorEntity(Constants.GUEST_REQUESTING_ENTITY));
-		ruleEntity.getAccessControlOriginators().add(new AccessControlOriginatorEntity(AccessControl.ORIGINATOR_ALL));
 		acp.getPrivileges().add(ruleEntity);
 
 		acpAdminId = acp.getResourceID();
