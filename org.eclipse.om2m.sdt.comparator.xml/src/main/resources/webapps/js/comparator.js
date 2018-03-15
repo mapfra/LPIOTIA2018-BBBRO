@@ -14,6 +14,8 @@ gemDelegate.controller('delegationController', function($scope, $http, $window) 
 	$scope.my_tree = tree = {};
 	$scope.my_tree2 = tree2 = {};
 	$scope.devices = [];
+	
+	$scope.guestCredentials = "guest:guest";
 
 	$scope.imgPath = "dot.png";
 
@@ -53,7 +55,7 @@ gemDelegate.controller('delegationController', function($scope, $http, $window) 
 				url: $scope.urlBase+'/~' + $scope.context + '/?fu=1&lbl=object.type/device',
 				headers: {
 					'Accept': 'application/xml',
-					'X-M2M-Origin':'admin:admin'
+					'X-M2M-Origin': $scope.guestCredentials
 				}
 		};
 		$http(req).success(function (response, status, headers, config) {
