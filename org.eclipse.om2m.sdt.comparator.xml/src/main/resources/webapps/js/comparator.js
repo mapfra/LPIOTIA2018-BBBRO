@@ -104,7 +104,8 @@ gemDelegate.controller('delegationController', function($scope, $http, $window) 
 						}
 					}
 					
-					req.url = $scope.urlBase+'/~' + $scope.context +'/?fu=1&lbl=object.type/module&lbl=device.id/'+id;
+					// config.data.link contains the uri of the device
+					req.url = $scope.urlBase+'/~' + config.data.link +'/?fu=1&lbl=object.type/module';
 					req.data = config.data;
 					
 					//get all the modules for the given device
