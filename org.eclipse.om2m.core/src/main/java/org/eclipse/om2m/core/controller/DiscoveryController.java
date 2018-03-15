@@ -24,6 +24,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.om2m.commons.constants.DiscoveryResultType;
@@ -126,7 +127,7 @@ public class DiscoveryController extends Controller {
 				LabelEntity labelEntity = dbs.getDAOFactory().getLabelDAO().find(transaction, label);
 
 				if (labelEntity != null) {
-					List<ResourceEntity> allFoundResources = stackLabelResources(labelEntity, filter);
+					List<ResourceEntity> allFoundResources = stackLabelResources(labelEntity, filter, resourceEntity.getHierarchicalURI());
 					for (ResourceEntity resEntity : allFoundResources) {
 						UriMapperEntity uriEntity = new UriMapperEntity();
 						uriEntity.setHierarchicalUri(resEntity.getHierarchicalURI());
@@ -235,7 +236,7 @@ public class DiscoveryController extends Controller {
 		}
 	}
 
-	private List<ResourceEntity> stackLabelResources(LabelEntity labelEntity, FilterCriteria filter) {
+	private List<ResourceEntity> stackLabelResources(LabelEntity labelEntity, FilterCriteria filter, String baseUri) {
 		List<ResourceEntity> result = new ArrayList<>();
 		BigInteger rty = filter.getResourceType();
 		if (rty != null){
@@ -313,6 +314,14 @@ public class DiscoveryController extends Controller {
 			result.addAll(labelEntity.getLinkedDviA());
 			result.addAll(labelEntity.getLinkedSub());
 		}
+		
+		for(Iterator<ResourceEntity> it = result.iterator(); it.hasNext();) {
+			ResourceEntity re = it.next();
+			if (!re.getHierarchicalURI().startsWith(baseUri)) {
+				it.remove();
+			}
+		}
+		
 		return result;
 	}
 
