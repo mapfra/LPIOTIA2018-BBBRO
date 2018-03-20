@@ -24,6 +24,11 @@
 	<artifactId>com.orange.om2m.p2.repo</artifactId>
 	<packaging>eclipse-repository</packaging>
 	<name>org.eclipse.om2m :: Orange's p2 repo</name>
+	
+	<properties>
+		<repo>default</repo>
+	</properties>
+	
 	<build>
 		<extensions>
 			<extension>
@@ -52,7 +57,7 @@
 					<includes>*/**</includes>
 					<excludes>pom.xml</excludes>
 					<url>dhsa.forge.orange-labs.fr</url>
-					<toDir>/home/groups/dhsa/htdocs/p2</toDir>
+					<toDir>/home/groups/dhsa/htdocs/p2/${repo}</toDir>
 				</configuration>
 				<executions>
 					<execution>
@@ -63,7 +68,7 @@
 						</goals>
 						<configuration>
 							<commands>
-								<command>rm -rf /home/groups/dhsa/htdocs/p2/*</command>
+								<command>rm -rf /home/groups/dhsa/htdocs/p2/${repo}</command>
 							</commands>
 						</configuration>
 					</execution>

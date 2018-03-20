@@ -24,7 +24,7 @@ deploy:
   stage: deploy
   script: 
     - "nohup dockerd&"
-    - "mvn deploy -B -Dmaven.repo.local=./.m2/repository -s /root/.m2/settings.xml -DaltDeploymentRepository=inhouse.snapshot::default::http://maven2.rd.francetelecom.fr/proxy/repository/inhouse.snapshot -Pdocker"
+    - "mvn deploy -B -Dmaven.repo.local=./.m2/repository -s /root/.m2/settings.xml -DaltDeploymentRepository=inhouse.snapshot::default::http://maven2.rd.francetelecom.fr/proxy/repository/inhouse.snapshot -Drepo=${CI_COMMIT_REF_NAME} -Pdocker"
     - "rm -fr .m2"
   tags:
     - docker-privileged
