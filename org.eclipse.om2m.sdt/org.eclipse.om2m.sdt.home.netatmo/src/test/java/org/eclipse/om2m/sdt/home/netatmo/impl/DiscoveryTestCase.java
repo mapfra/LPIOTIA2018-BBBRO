@@ -9,6 +9,7 @@ package org.eclipse.om2m.sdt.home.netatmo.impl;
 
 import java.io.FileInputStream;
 import java.util.Dictionary;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.Properties;
@@ -20,7 +21,7 @@ import junit.framework.TestCase;
 
 public class DiscoveryTestCase extends TestCase {
 
-	private Dictionary<String, String> configuration;
+	private Map<String, String> configuration;
 
 	@Override
 	protected void setUp() throws Exception {
@@ -29,7 +30,7 @@ public class DiscoveryTestCase extends TestCase {
 		Properties properties = new Properties();
 		properties.load(new FileInputStream("src/test/resources/netatmo.sdt.driver.properties"));
 
-		configuration = new Hashtable<>();
+		configuration = new HashMap();
 		configuration.put(Discovery.CONFIG_CLIENT_ID, properties.getProperty(Discovery.CONFIG_CLIENT_ID));
 		configuration.put(Discovery.CONFIG_CLIENT_SECRET, properties.getProperty(Discovery.CONFIG_CLIENT_SECRET));
 		configuration.put(Discovery.CONFIG_USERNAME, properties.getProperty(Discovery.CONFIG_USERNAME));

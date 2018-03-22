@@ -53,7 +53,7 @@ public class Discovery {
 	private boolean useLocalUrl = false;
 	
 	@SuppressWarnings("rawtypes")
-	public Discovery(Dictionary properties) {
+	public Discovery(Map properties) {
 		
 		// retrieve useLocalUrl
 		Object useLocalUrlProp = properties.get(CONFIG_CAMERA_USE_LOCAL_URL);
