@@ -13,11 +13,11 @@ public enum ActionType implements Identifiers {
 	
 	activateClockTimer(1, "timer.activateClockTimer", "activateClockTimer", "acCTr"),
 	deactivateClockTimer(2, "timer.deactivateClockTimer", "deactivateClockTimer","deCTr"),
-	downChannel(3, "televisionchannel.downChannel", "downChannel", "dowCl"),
-	downVolume(4, "audiovolume.downVolume", "downVolume", "dowVe"),
-	toggle(5, "binaryswitch.toggle", "toggle", "togge"),
-	upChannel(6, "televisionchannel.upChannel", "upChannel", "uphCl"),
-	upVolume(7, "audiovolume.upVolume", "upVolume", "upVol"),
+	downChannel(3, "televisionChannel.downChannel", "downChannel", "dowCl"),
+	downVolume(4, "audioVolume.downVolume", "downVolume", "dowVe"),
+	toggle(5, "binarySwitch.toggle", "toggle", "togge"),
+	upChannel(6, "televisionChannel.upChannel", "upChannel", "uphCl"),
+	upVolume(7, "audioVolume.upVolume", "upVolume", "upVol"),
 	
 	resetNumberValue(8,"numbervalue.resetNumberValue", "resetNumberValue", "reNVe"), 					// Added by Andreas Kraft
 	incrementNumberValue(9, "numbervalue.incrementNumberValue", "incrementNumberValue", "inNVe"), 		// Added by Andreas Kraft
