@@ -7,7 +7,7 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 	var cameraCanceler = $q.defer();
 	var timerForDevicesUpdate = null;
 	var timerForNotifications = null;
-	
+
 	$scope.imgModules = {
 		'temperature':'temp.jpg',
 		'noise':'noise.jpg',
@@ -18,7 +18,7 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 		'motionSensor':'motion_sensor.png',
 		'energyConsumption': 'power_consumption.png'
 	};
-	
+
 	$scope.moduleFilterDefinition = {
 		'temperature':'curT0',
 		'noise':'noise',
@@ -30,8 +30,10 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 		'energyConsumption':'power',
 		'numberValue': 'numVe'
 	};
-	
+
 	$scope.datapointsNamePerModule = {
+		"brightness": ["brigs"],
+		"colourSaturation": ["colSn"],
 		"binarySwitch" : ["powSe"],
 		"temperature" : ["minVe", "unit", "curT0", "maxVe"],
 		"noise" : ["noise"],
@@ -39,10 +41,10 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 		"atmosphericPressureSensor" : ["atmPe"],
 		"relativeHumidity" : ["relHy"],
 		"contactSensor" : ["alarm"],
-		"streaming" : ["frmt", "psWd", "login", "url"], 
+		"streaming" : ["frmt", "psWd", "login", "url"],
 		"personSensor" : ["detPs"],
 		"motionSensor" : ["alarm"],
-		"colour" : ["colour"],
+		"colour" : ["red", "green", "blue"],
 		"energyConsumption" : ["volte", "currt", "power"],
 		"lock" : ["dooLk", "opeOy"],
 		"battery" : ["discg", "charg", "level", "capay"],
@@ -61,14 +63,17 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 	$scope.imgPath = "dot.png";
 
 	$scope.urlBase = window.location.protocol + "//" + window.location.host;
-	
+
 	$scope.cseContext = "~/in-cse/in-name";
-	
+
 	$scope.name="";
-	
+
 	$scope.currentUrl = new URL(window.location);
 	$scope.sessionId = $scope.currentUrl.searchParams.get("sessionId");
-	
+
+	$scope.changeHueRGBInterval = null;
+    $scope.clickedModule = {};
+
 	$scope.load = function() {
 		var req = {
 			method: 'GET',
@@ -78,8 +83,8 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 		$http(req).success(function (response, status, headers, config)  {
 			$scope.cseContext = response;
 		});
-		
-	
+
+
 	}; /*"~/dt-in-cse/dt-in-name"*/ /* ~/cseId/cseName */
 	$scope.load();
 
@@ -96,26 +101,30 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 //	// fast polling interval in ms
 //	var fastModulePolling = 3000;
 //	var fastModules = ["binarySwitch","energyConsumption","lock"];
-	
+
 	$scope.getDevicesAsArray = function() {
 		return Object.values($scope.devices);
 	};
-	
+
 	$scope.getModulesFromDevice = function(device) {
 		console.log("getModules for " + device.name);
 		return Object.values(device.modules);
 	};
 
-	$scope.moduleFilter = function (module) { 
-		return module.value !== ''; 
+	$scope.moduleFilter = function (module) {
+		return module.value !== '';
 	};
 
 	$scope.switchFilter = function (module) {
 		return (module.name === 'binarySwitch') || (module.name === 'lock');
 	};
 
+	$scope.colorFilter = function (module) {
+		return (module.name === 'colour');
+	};
+
 	//filter to remove any device which contains a streaming module from the display device list
-	$scope.deviceFilter = function (device) { 
+	$scope.deviceFilter = function (device) {
 		if (device.desc === '') {
 			return false;
 		}
@@ -126,7 +135,7 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 	$scope.getDevices = function() {
 		var req = {
 			method: 'GET',
-			url: $scope.urlBase + '/' + $scope.cseContext 
+			url: $scope.urlBase + '/' + $scope.cseContext
 				+ '?fu=1&drt=2&lbl=object.type/device',
 			headers: {
 				'Content-Type': 'application/json',
@@ -135,22 +144,22 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 			}
 		};
 		$http(req).success(function (response, status, headers, config)  {
-			
+
 			var jsonData = response;
 			var key = $scope.getRootKey(jsonData);
 			var devices;
 			devices = jsonData[key];
 			// devices is an array containing device FlexContainer resourceId
-			
-			// remove old devices 
+
+			// remove old devices
 			$scope.removeOldDevices(devices);
 
-			// treat new discovered devices			
+			// treat new discovered devices
 			var newDevices = $scope.getNewDevices(devices);
 			// newDevices is an array containg new-device FlexContainer resourceId
 			for (i=0; i<newDevices.length; i++) {
 				var deviceRi = newDevices[i];
-				
+
 				var getDeviceReq = {
 					method: 'GET',
 					url: $scope.urlBase + '/~' + deviceRi + '?rcn=7',
@@ -158,12 +167,12 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 						'Content-Type': 'application/json',
 						'Accept': 'application/json',
 						'X-M2M-Origin': $scope.credentials
-					}, 
+					},
 					deviceRi: deviceRi // add device ri in request
 				};
 
 				$http(getDeviceReq).success(function (response, status, headers, config)  {
-					
+
 					var device = {'id':'', 'name':'','desc':'',
 							'modules':{},'properties':[]};
 					var jsonData = response;
@@ -196,7 +205,7 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 								'value':value});
 						}
 					}
-					
+
 					// add new device in devices list
 					$scope.devices[deviceRi] = device;
 
@@ -210,17 +219,17 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 			console.log("error getDevices " + response);
 			// called asynchronously if an error occurs
 			// or server returns response with an error status.
-			
-			// this is not a big issue here 
+
+			// this is not a big issue here
 			// as the device will be detected again as a new device
 		});
 	};
 
 	$scope.getModules = function (device) {
-		
+
 		var getModulesRiReq = {
 			method: 'GET',
-			url: $scope.urlBase + '/' + $scope.cseContext 
+			url: $scope.urlBase + '/' + $scope.cseContext
 			+ '?fu=1&drt=2&lbl=device.id/' + device.id,
 			headers: {
 				'Content-Type': 'application/json',
@@ -229,30 +238,30 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 			},
 			device: device
 		};
-		
+
 		$http(getModulesRiReq).success(function (response, status, headers, config)  {
-			var jsonData = response;	
+			var jsonData = response;
 			var key = $scope.getRootKey(jsonData);
 			var modules = jsonData[key];
 			// modules is an array. It contains module resource id
-			
+
 			// TODO : fix issue related to missing modules
 			// in some cases (access right), some modules take time to become available.
-			
+
 			modules.forEach(
 				function(moduleRi) {
 					// retrieve module data
 					$scope.getModule(config.device, moduleRi);
-				}	
+				}
 			);
-			
+
 		}).error(function (response, status, headers, config)  {
 			console.log("error getModules " + response);
 		});
 	}
 
 	$scope.getModule = function (device, moduleRi) {
-		
+
 		var getModuleReq = {
 			method: 'GET',
 			url: $scope.urlBase + '/~' + moduleRi + '?rcn=7',
@@ -263,12 +272,12 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 			},
 			device: device
 		};
-		
+
 		$http(getModuleReq).success(function (response, status, headers, config)  {
 			var jsonData = response;
 			var key = $scope.getRootKey(jsonData);
 			var root = jsonData[key];
-			
+
 			var module = {'id':'','name':'','colorClass':'','datapoints':{},
 					'actions':[],'img':'','value':'','interval': {},'started':false,
 					'url':config.url,'deviceName':config.device.name,'hideSpinning':true, 'state':false};
@@ -292,7 +301,7 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 			} else {
 				module.isReadOnly = false;
 			}
-			
+
 			// create the attributes
 			var dpNames = $scope.datapointsNamePerModule[module.name];
 			if (dpNames) {
@@ -302,12 +311,12 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 					}
 				);
 			}
-			
+
 			var propName = $scope.getPropValueModule(moduleName);
 			if (propName) {
-				module.value = module.datapoints[propName].value;	
+				module.value = module.datapoints[propName].value;
 			}
-			 
+
 			if (module.name === 'streaming') {
 				var index = $scope.getCamModuleIndex(module.id);
 				if (index == -1) {
@@ -317,24 +326,38 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 					$scope.loadWebcam(module);
 				}
 			}
-			
+
 			if (module.name === 'binarySwitch') {
 				module.state = (module.datapoints.powSe.value === 'true') ;
 			}
-			
+
 			if (module.name === 'lock') {
 				module.state = (module.datapoints.dooLk.value === 'true')
 			}
 
+			if (module.name === 'brightness') {
+				module.brightness = module.datapoints.brigs.value;
+//                module.colorPicker = {};
+			}
+
+			if (module.name === 'colourSaturation') {
+				module.colourSaturation = module.datapoints.colSn.value;
+//                module.colorPicker = {};
+			}
+
+			if (module.name === 'colour') {
+				module.colorPicker = {};
+			}
+
 			// add module in device
 			config.device.modules[module.ri] = module;
-			
+
 			$scope.createSubscription(root.ri);
 		}).error(function (response, status, headers, config)  {
 			console.log("error getModule " + response);
 		});
 	}
-	
+
 	$scope.createSubscription = function(toBeSubscribedResource) {
 		req = {
 			method : 'POST',
@@ -349,9 +372,9 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 		};
 		// don't care about response
 		$http(req);
-		
+
 	}
-	
+
 	$scope.getNotifications = function() {
 		req = {
 			method : 'GET',
@@ -361,7 +384,7 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 				'Accept' : 'application/json'
 			}
 		};
-		
+
 		$http(req).success(
 			function(response, status, headers, config) {
 				// for each notification --> update device & module model
@@ -379,17 +402,17 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 						if (nev != null) {
 							rep = nev["m2m:rep"];
 						}
-						
+
 						var moduleRep = null;
 						if (rep != null) {
 							var key = $scope.getRootKey(rep);
 							moduleRep = rep[key];
 						}
-						
+
 						if (moduleRep != null) {
 							var internalModule = $scope.getModuleByRi(moduleRep.ri, moduleRep.pi);
 							console.log(internalModule);
-							
+
 							var propValueModule = $scope.getPropValueModule(internalModule.name);
 							if (propValueModule) {
 								var value = moduleRep[propValueModule];
@@ -397,7 +420,7 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 									internalModule.value = value;
 								}
 							}
-							
+
 							if (moduleRep.powSe) {
 								console.log('powSe value:' + moduleRep.powSe);
 								var datapoints = internalModule.datapoints;
@@ -408,7 +431,7 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 								}
 								console.log('powSe updated!!!!!!!!!!!!!!!!!');
 							}
-							
+
 							if (moduleRep.dooLk) {
 								console.log('dooLk value:' + moduleRep.dooLk);
 								var datapoints = internalModule.datapoints;
@@ -418,13 +441,65 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 									internalModule.state = dooLkValue;
 								}
 							}
-							
+
+							if (moduleRep.brigs) {
+								console.log('brigs value:' + moduleRep.brigs);
+								var datapoints = internalModule.datapoints;
+								var brigsValue = moduleRep.brigs;
+								datapoints.brigs.value = brigsValue;
+								if (internalModule.brightness != brigsValue) {
+									internalModule.brightness = brigsValue;
+								}
+								console.log('Brightness updated!!!!!!!!!!!!!!!!!');
+							}
+
+							if (moduleRep.colSn) {
+								console.log('colSn value:' + moduleRep.colSn);
+								var datapoints = internalModule.datapoints;
+								var colSnValue = moduleRep.colSn;
+								datapoints.colSn.value = colSnValue;
+								if (internalModule.colourSaturation != colSnValue) {
+									internalModule.colourSaturation = colSnValue;
+								}
+								console.log('Saturation updated!!!!!!!!!!!!!!!!!');
+							}
+
+							if (moduleRep.red) {
+								console.log('Color red value:' + moduleRep.red);
+								var datapoints = internalModule.datapoints;
+								var redValue = moduleRep.red;
+								datapoints.red.value = redValue;
+							}
+
+							if (moduleRep.green) {
+								console.log('Color green value:' + moduleRep.green);
+								var datapoints = internalModule.datapoints;
+								var greenValue = moduleRep.green;
+								datapoints.green.value = greenValue;
+							}
+
+							if (moduleRep.blue) {
+								console.log('Color blue value:' + moduleRep.blue);
+								var datapoints = internalModule.datapoints;
+								var blueValue = moduleRep.blue;
+								datapoints.blue.value = blueValue;
+							}
+
+							if (moduleRep.red || moduleRep.green || moduleRep.blue) {
+								var pickerRGB = internalModule.colorPicker.getRGB();
+								var om2mRGB = [parseInt(internalModule.datapoints.red.value), parseInt(internalModule.datapoints.green.value), parseInt(internalModule.datapoints.blue.value)];
+								if (pickerRGB[0] != om2mRGB[0] || pickerRGB[1] != om2mRGB[1] || pickerRGB[2] != om2mRGB[2])
+								{
+									internalModule.colorPicker.setRGB(om2mRGB[0], om2mRGB[1], om2mRGB[2]);
+								}
+							}
+
 							// put background red
 							// here we need to be carefull with device = moduleRep.pi
 							// as we have announced device.
 							device = $scope.getDeviceByRi(moduleRep.pi);
 							if (device) {
-								$scope.removeColor(device);													
+								$scope.removeColor(device);
 							}
 						}
 					}
@@ -432,18 +507,18 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 			}
 		);
 	}
-	
+
 	$scope.removeColor = function(d) {
 		d.isUpdated = true;
 		// remove background after 1,5s
 		$timeout(
 				function() {
 					d.isUpdated = false;
-				}, 
+				},
 				1500
 		);
 	}
-	
+
 	// called when the user clicks on the witch widget in the HMI
 	$scope.changeState = function(device,switchModule) {
 		var req;
@@ -469,24 +544,24 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 				};
 				$http(req).success(function(response, status, headers, config) {
 					console.log("binary lock state changed");
-					
+
 					// config = switchModule
 					config.currentSwitch.hideSpinning = true;
 					if (config.currentSwitch.state !== config.valueToBeSet) {
-						config.currentSwitch.state = config.valueToBeSet;	
+						config.currentSwitch.state = config.valueToBeSet;
 					}
-					
+
 					var datapoints = config.currentSwitch.datapoints;
 					datapoints.dooLk.value = config.valueToBeSet;
 					console.log("door lock state changed");
-					
+
 				}).error(function(response, status, headers, config) {
 					console.log("error on lock state change action");
 					config.currentSwitch.hideSpinning = true;
 					config.currentSwitch.state = !config.valueToBeSet;
-					
+
 				});
-			}			
+			}
 		} else if (switchModule.name === 'binarySwitch') {
 			switchModule.newState = switchModule.state;
 			req = {
@@ -496,7 +571,7 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 				headers : {
 					'Content-Type' : 'application/json',
 					'X-M2M-Origin' : $scope.credentials
-				}, 
+				},
 				valueToBeSet : switchModule.state,
 				currentSwitch : switchModule
 			};
@@ -505,9 +580,9 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 					// binarySwitchModule.state = !binarySwitchModule.state;
 					config.currentSwitch.hideSpinning = true;
 					if (config.currentSwitch.state !== config.valueToBeSet) {
-						config.currentSwitch.state = config.valueToBeSet;	
+						config.currentSwitch.state = config.valueToBeSet;
 					}
-					
+
 					var datapoints = config.currentSwitch.datapoints;
 					datapoints.powSe.value = config.valueToBeSet;
 					console.log("binary switch state changed");
@@ -527,7 +602,7 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 			if (labelValue.contains('id/')) {
 				return labelValue.replace('id/','');
 			}
-		}		
+		}
 		return null;
 	}
 
@@ -554,7 +629,7 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 	$scope.getRootKey = function(rootObj) {
 		for (var key in rootObj) {
 			return key;
-		}		
+		}
 		return null;
 	}
 
@@ -566,12 +641,12 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 		var propName = $scope.moduleFilterDefinition[moduleName];
 		return propName;
 	}
-	
+
 	$scope.getPropValueFromDevice = function (device, propName) {
 		for (var i = 0; i< device.properties.length; i++) {
 			if (device.properties[i].name == propName) {
 				return device.properties[i].value;
-			}					
+			}
 		}
 		return null;
 	}
@@ -584,12 +659,12 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 				newDevices.push(device);
 			}
 		});
-		
+
 		return newDevices;
 	}
 
 	$scope.removeOldDevices = function(deviceList) {
-		
+
 		for(deviceRi in $scope.devices) {
 			if (!deviceList.includes(deviceRi)) {
 				// the device must be removed from the $scope.devices object
@@ -597,7 +672,7 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 				delete $scope.devices[deviceRi];
 			}
 		}
-		
+
 //		var registeredDevice,returnDevice,returnDeviceId;
 //		var sortedDeviceList = [];
 //		var found;
@@ -610,7 +685,7 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 //					found = true;
 //					break;
 //				}
-//			}			
+//			}
 //			if (found) {
 //				sortedDeviceList.push(registeredDevice);
 //			} else {
@@ -707,7 +782,7 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 				if ($scope.mjpegPlayer != null) {
 					$scope.mjpegPlayer.stop();
 					$scope.mjpegPlayer = null;
-				}											
+				}
 
 				$scope.mjpegPlayer = new MJPEG.Player("player", url);
 				$scope.mjpegPlayer.start();
@@ -717,7 +792,7 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 			}
 		}
 	}
-	
+
 	$scope.getValueFromModule = function (module, propName) {
 		return module.datapoints[propName].value;
 	}
@@ -738,7 +813,7 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 	$scope.test2 = function(device,switchModule) {
 		$scope.hide=true;
 	}
-	
+
 	$scope.getModuleByRi = function(moduleResourceId, deviceResourceId) {
 		device = $scope.getDeviceByRi(deviceResourceId);
 		module = null;
@@ -747,7 +822,7 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 		}
 		return module;
 	}
-	
+
 	$scope.getDeviceByRi = function (deviceResourceId) {
 		device =  $scope.devices[deviceResourceId];
 		if (!device) {
@@ -760,10 +835,94 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 				}
 			}
 		}
-		
+
 		return device;
 	}
-	
+
+
+    $scope.startHueRGBChange = function(module) {
+
+        $scope.clickedModule = module;
+
+        // bind to mouseup event to stopHueRGBChange
+        angular.element(document).bind('mouseup', $scope.stopHueRGBChange);
+        angular.element(document).bind('mouseleave', $scope.stopHueRGBChange);
+
+        // start interval
+        if($scope.changeHueRGBInterval !== null || $scope.changeHueRGBInterval !== undefined) {
+            $interval.cancel($scope.changeHueRGBInterval);
+        }
+        $scope.changeHueRGBInterval = $interval($scope.changeHueRGB, 1000);
+
+    }
+
+    $scope.stopHueRGBChange = function() {
+        angular.element(document).unbind('mouseup', $scope.stopHueRGBChange);
+        angular.element(document).unbind('mouseleave', $scope.stopHueRGBChange);
+        if($scope.changeHueRGBInterval !== null || $scope.changeHueRGBInterval !== undefined) {
+            $interval.cancel($scope.changeHueRGBInterval);
+        }
+        $scope.changeHueRGBInterval = null;
+        $scope.changeHueRGB();
+    }
+
+    $scope.changeHueRGB = function() {
+        var newColor = document.getElementById('picker'+ $scope.clickedModule.id +"_color").style.backgroundColor;
+        console.log("Setting new Hue RGB" + newColor);
+
+		var colourModule = $scope.clickedModule;
+		var rgb = colourModule.colorPicker.getRGB();
+		var req = {
+			method : 'PUT',
+			url : colourModule.url,
+			data : '{"hd:color": {"red": "' + rgb[0] + '","green": "' + rgb[1] + '","blue": "' + rgb[2] + '"}}',
+			headers : {
+				'Content-Type' : 'application/json',
+				'X-M2M-Origin' : $scope.credentials
+			},
+			valueToBeSet : colourModule.state,
+			currentModule : colourModule
+		};
+		$http(req).success(
+			function(response, status, headers, config) {
+				// binarySwitchModule.state = !binarySwitchModule.state;
+				config.currentModule.hideSpinning = true;
+				if (config.currentModule.state !== config.valueToBeSet) {
+					config.currentModule.state = config.valueToBeSet;
+				}
+				console.log("color changed");
+			})
+			.error(function(response, status, headers, config) {
+				config.currentModule.hideSpinning = true;
+				config.currentModule.state = !config.valueToBeSet;
+				console.log("error on color change action");
+			}
+			);
+    }
+
+	$scope.picker_id = function (module) {
+
+		var pickerId = "picker" + module.id;
+		return pickerId;
+	}
+
+	$scope.color_jq = function (module) {
+
+		var global_number_of_lights = module.id;
+		var newHueName = 'global_Value_picker'+global_number_of_lights+'_hue';
+
+		if(window[newHueName]=== undefined)
+			window[newHueName] = 0.99;
+
+		$(document).ready(function() {
+			$('#picker'+global_number_of_lights).farbtastic('#picker'+global_number_of_lights+'_color');
+			module.colorPicker = $.farbtastic('#picker'+global_number_of_lights);
+			if(module.colorPicker.color === null)
+				module.colorPicker.setRGB(module.datapoints.red.value, module.datapoints.green.value, module.datapoints.blue.value);
+		});
+	}
+
+
 	var init = function () {
 		var req = {
 			method: 'GET',
@@ -783,7 +942,26 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 	};
 
 	init();
-});
+
+}).directive('numberFormatter', function() {
+        return {
+            restrict: 'A',
+            require: '^ngModel',
+            link: function(scope, element, attrs, ngModel) {
+            	if(ngModel !== undefined) {
+                    ngModel.$parsers.push(function (val) {
+                        return Number(val);
+                    });
+                    ngModel.$formatters.push(function (val) {
+                        return Number(val);
+                    });
+                }
+            }
+        };
+    }
+);
+
+
 
 function jsonp_callback() {
 	alert("jsonp_callback");

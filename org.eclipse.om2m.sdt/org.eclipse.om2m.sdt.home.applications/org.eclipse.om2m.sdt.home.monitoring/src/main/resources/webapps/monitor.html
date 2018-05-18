@@ -18,6 +18,12 @@
 		<link rel="stylesheet" href="../webapps/css/style.css">
 		<link rel="stylesheet" href="../webapps/css/angular-ui-switch.css">
 		<link rel="stylesheet" href="../webapps/css/bootstrap-3.0.1.min.css">
+		<!-- WN Part -->
+	 <script type="text/javascript" src="../webapps/js/jquery.js"></script>
+		<script type="text/javascript" src="../webapps/js/farbtastic.js"></script>
+		<link rel="stylesheet" href="../webapps/css/farbtastic.css" type="text/css" />
+		<!-- End WN Part -->
+		
 		
 		<script src="../webapps/js/angular.min.js"></script>
 		<script src="../webapps/js/angular-ui-switch.js"></script>
@@ -98,6 +104,30 @@
 										</td>
 									</tr>
 								</table>
+								
+								<div class="pickerContainer" ng-repeat="module in getModulesFromDevice(device) | filter: colorFilter">
+								
+											<!-- 	<div id="{{color_(module)}}"> </div> -->
+												
+												<div id="{{picker_id(module)}}" class="picker">
+													<div class="farbtastic"><div class="color"  id="{{picker_id(module)}}_color"></div> 
+														<div class="wheel" ng-mousedown="startHueRGBChange(module)"></div><div class="h-marker marker" ng-mousedown="startHueRGBChange(module)"></div>
+													</div>
+												</div>
+
+												<div class="sliders">
+													<label id="{{picker_id(module)}}_label_saturation" class="slidersLables">Saturation ({{module.colorPicker.hsl[1]*100 | number:0}}%)</label>
+													<div class="slider"> 
+														<input id="{{picker_id(module)}}_slider_saturation"  type="range" min="0.01" max="0.99" step="0.01" ng-change="module.colorPicker.setHSL(module.colorPicker.hsl)" ng-model="module.colorPicker.hsl[1]" ng-mousedown="startHueRGBChange(module)" number-formatter/>
+													</div>
+													<div id="{{picker_id(module)}}_TestArea1"></div> 
+													<label id="{{picker_id(module)}}_label_lumination" class="slidersLables">Lumination ({{module.colorPicker.hsl[2]*100 | number:0}}%)</label>
+													<div class="slider"><input id="{{picker_id(module)}}_slider_lumination"  type="range" min="0.01" max="0.99" step="0.01" ng-change="module.colorPicker.setHSL(module.colorPicker.hsl)" ng-model="module.colorPicker.hsl[2]" ng-mousedown="startHueRGBChange(module)" number-formatter/></div>
+													<div id="{{picker_id(module)}}_TestArea2"></div> 
+												</div>
+												{{color_jq(module)}}
+
+								</div>
 							</li>
 						</ul>
 					</form>

@@ -255,7 +255,8 @@ h3 {
 	font-size: 18px;
 	overflow: hidden;
 }
-.right_side li div {float: left;}
+/*change wn float*/
+.right_side li div {/*float: left;*/}
 .right_side li i {float: left; margin-right: 10px;}
 .lamp {
 	background: url('../images/icons.png') no-repeat -13px -68px;
