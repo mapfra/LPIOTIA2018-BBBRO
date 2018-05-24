@@ -172,6 +172,7 @@
 		<module>org.eclipse.om2m.ipe.sample</module>
 		<module>org.eclipse.om2m.das.testsuite</module>
 		<module>org.eclipse.om2m.testsuite.flexcontainer</module>
+		<module>protocols</module>
 		<module>org.eclipse.om2m.sdt</module>
 		<module>org.eclipse.om2m.ipe.sdt</module>
 		<module>org.eclipse.om2m.ipe.sample.sdt</module>

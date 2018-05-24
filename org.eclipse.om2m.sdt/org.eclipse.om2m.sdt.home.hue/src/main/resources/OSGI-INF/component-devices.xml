@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.2.0"
+	name="HueActivator" immediate="true">
+	
+	<implementation class="org.eclipse.om2m.sdt.home.hue.Activator" />
+    	
+    <reference name="log" cardinality="1..1" interface="org.osgi.service.log.LogService" 
+        bind="setLog" unbind="unsetLog" />
+
+	<reference name="HueLightDevice" cardinality="0..n" policy="dynamic"
+        interface="org.eclipse.om2m.hue.api.HueLightDevice" 
+        bind="setHueLightDevice" unbind="unsetHueLightDevice" />
+
+	<reference name="HueBridgeDevice" cardinality="0..n" policy="dynamic"
+        interface="org.eclipse.om2m.hue.api.HueBridgeDevice" 
+        bind="setHueBridgeDevice" unbind="unsetHueBridgeDevice" />
+		
+</scr:component>

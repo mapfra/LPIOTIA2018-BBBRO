@@ -17,6 +17,7 @@ import org.eclipse.om2m.sdt.home.mocked.modules.MockedBinarySwitch;
 import org.eclipse.om2m.sdt.home.mocked.modules.MockedColour;
 import org.eclipse.om2m.sdt.home.mocked.modules.MockedFaultDetection;
 import org.eclipse.om2m.sdt.home.mocked.modules.MockedRunMode;
+import org.eclipse.om2m.sdt.home.modules.Brightness;
 import org.eclipse.om2m.sdt.home.modules.ColourSaturation;
 import org.eclipse.om2m.sdt.home.types.DatapointType;
 import org.osgi.framework.ServiceRegistration;
@@ -55,6 +56,21 @@ public class MockedLight extends Light implements MockedDevice {
 				}
 			})
 		);
+
+		addModule(new Brightness("brightness_" + id, domain, 
+			new IntegerDataPoint(DatapointType.brightness) {
+				private Integer v = new Integer((int)(Math.random() * 100));
+				@Override
+				public void doSetValue(Integer value) throws DataPointException {
+					v = value;
+				}
+				@Override
+				public Integer doGetValue() throws DataPointException {
+					return v;
+				}
+			})
+		);
+
 	}
 
 	public void registerDevice() {

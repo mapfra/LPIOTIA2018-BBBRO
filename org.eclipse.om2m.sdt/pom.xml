@@ -42,6 +42,7 @@
 		<module>org.eclipse.om2m.sdt.home.driver</module>
 		<module>org.eclipse.om2m.sdt.home.enocean</module>
 		<module>org.eclipse.om2m.sdt.home.cloud</module>
+		<module>org.eclipse.om2m.sdt.home.hue</module>
 		<module>org.eclipse.om2m.sdt.home.lifx</module>
 		<module>org.eclipse.om2m.sdt.home.netatmo</module> 
 		<module>org.eclipse.om2m.sdt.home.smartercoffee</module>
