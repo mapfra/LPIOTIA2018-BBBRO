@@ -16,8 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-//var global_Value_Hue = 0.99 ;
-//var global_number_of_lights = 0;
+
 function writeNewLightModule ()
 {
 	var htmlText='<div id="picker'+global_number_of_lights+'" class="picker">'+
@@ -110,11 +109,6 @@ jQuery._farbtastic = function (container, callback) {
   // Store farbtastic object
   var fb = this;
 
-  // Insert markup
- // $(container).html('<div class="farbtastic"><div class="color"></div><div class="wheel"></div><div class="overlay"></div><div class="h-marker marker"></div><div class="sl-marker marker"></div><div class="sl2-marker"></div></div>');
- //$(container).html('<div class="farbtastic"><div class="color"></div><div class="wheel"></div><div class="overlay"></div><div class="h-marker marker"></div></div>');
-  // $(container).html('<div class="farbtastic"><div class="color"  id="color"></div><div class="wheel"></div><div class="h-marker marker"></div></div>');
-
   var e = $('.farbtastic', container);
   fb.wheel = $('.wheel', container).get(0);
   // Dimensions
@@ -176,6 +170,7 @@ jQuery._farbtastic = function (container, callback) {
       fb.color = color;
       fb.rgb = unpack;
       fb.hsl = fb.RGBToHSL(fb.rgb);
+	  fb.hsv = fb.HSLToHSV(fb.hsl);
       fb.updateDisplay();
     }
     return this;
@@ -186,6 +181,7 @@ jQuery._farbtastic = function (container, callback) {
    */
   fb.setHSL = function (hsl) {
     fb.hsl = hsl.map(Number);
+	fb.hsv = fb.HSLToHSV(fb.hsl);
     fb.rgb = fb.HSLToRGB(fb.hsl);
     fb.color = fb.pack(fb.rgb);
     fb.updateDisplay();
@@ -198,6 +194,19 @@ jQuery._farbtastic = function (container, callback) {
   fb.setRGB = function (r, g, b) {
 	fb.rgb = [r/255, g/255, b/255];
     fb.hsl = fb.RGBToHSL(fb.rgb);
+	fb.hsv = fb.HSLToHSV(fb.hsl);
+    fb.color = fb.pack(fb.rgb);
+    fb.updateDisplay();
+    return this;
+  }
+  
+    /**
+   * Change color with HSV triplet [0..1, 0..1, 0..1]
+   */
+  fb.setHSV = function (hsv) {
+	fb.hsv = hsv.map(Number);
+	fb.hsl = fb.HSVToHSL(fb.hsv);
+    fb.rgb = fb.HSLToRGB(fb.hsl);
     fb.color = fb.pack(fb.rgb);
     fb.updateDisplay();
     return this;
@@ -298,22 +307,11 @@ jQuery._farbtastic = function (container, callback) {
     if (fb.circleDrag) {
       var hue = Math.atan2(pos.x, -pos.y) / 6.28;
       if (hue < 0) hue += 1;
-      fb.setHSL([hue, (document.getElementById(container.id+"_slider_saturation").value), (document.getElementById(container.id+"_slider_lumination").value)]);
-	  //document.getElementById("picker1_label_lumination").innerHTML = ' ' + 'global_Value_'+container.id+'_hue';
+//      fb.setHSL([hue, (document.getElementById(container.id+"_slider_saturation").value), (document.getElementById(container.id+"_slider_lumination").value)]);
+	  fb.setHSL([hue, fb.hsl[1], fb.hsl[2]]);
 	  window['global_Value_'+container.id+'_hue']=hue;
-	  //global_Value_Hue = hue;
     }
-    else {
 
-	
-      /*
-      var sat = Math.max(0, Math.min(1, -(pos.x / fb.square2) + .5));
-      var lum = Math.max(0, Math.min(1, -(pos.y / fb.square2) + .5));
-      fb.setHSL([fb.hsl[0], sat, lum]);
-      */
-
-
-    }
     return false;
   }
 
@@ -331,20 +329,13 @@ jQuery._farbtastic = function (container, callback) {
    * Update the markers and styles
    */
   fb.updateDisplay = function () {
+	  
     // Markers
     var angle = fb.hsl[0] * 6.28;
     $('.h-marker', e).css({
       left: Math.round(Math.sin(angle) * fb.radius + fb.width / 2) + 'px',
       top: Math.round(-Math.cos(angle) * fb.radius + fb.width / 2) + 'px'
     });
-
-   /* $('.sl-marker', e).css({
-      left: Math.round(fb.square * (.5 - fb.hsl[1]) + fb.width / 2) + 'px',
-      top: Math.round(fb.square * (.5 - fb.hsl[2]) + fb.width / 2) + 'px'
-    });*/
-    
-
-    
 
     // Saturation/Luminance gradient
     $('.color', e).css('backgroundColor', fb.pack(fb.HSLToRGB([fb.hsl[0], 1, 0.5])));
@@ -406,6 +397,22 @@ jQuery._farbtastic = function (container, callback) {
     }
   }
 
+  fb.HSLToHSV = function (hsl) {
+    var h = hsl[0];
+	var v = hsl[2]+hsl[1]*(hsl[2]<.5?hsl[2]:1-hsl[2])
+	var s = 2*hsl[1]*(hsl[2]<.5?hsl[2]:1-hsl[2])/v;
+    return [h, s, v];
+  }
+  
+  fb.HSVToHSL = function (hsv) {
+    var h = hsv[0];
+	var l = (2-hsv[1])*hsv[2]/2;
+	var s = 0;
+	if (l>0)
+		s = hsv[1]*hsv[2]/(l<0.5?2*l:2-2*l); 
+    return [h, s, l];
+  }
+  
   fb.HSLToRGB = function (hsl) {
     var m1, m2, r, g, b;
     var h = hsl[0], s = hsl[1], l = hsl[2];

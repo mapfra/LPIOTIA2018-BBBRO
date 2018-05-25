@@ -336,17 +336,18 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 			}
 
 			if (module.name === 'brightness') {
-				module.brightness = module.datapoints.brigs.value;
+				module.brightness = parseInt(module.datapoints.brigs.value);
 //                module.colorPicker = {};
 			}
 
 			if (module.name === 'colourSaturation') {
-				module.colourSaturation = module.datapoints.colSn.value;
+				module.colourSaturation = parseInt(module.datapoints.colSn.value);
 //                module.colorPicker = {};
 			}
 
 			if (module.name === 'colour') {
 				module.colorPicker = {};
+				config.device.colourModule = module;
 			}
 
 			// add module in device
@@ -445,9 +446,14 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 							if (moduleRep.brigs) {
 								console.log('brigs value:' + moduleRep.brigs);
 								var datapoints = internalModule.datapoints;
-								var brigsValue = moduleRep.brigs;
-								datapoints.brigs.value = brigsValue;
-								if (internalModule.brightness != brigsValue) {
+								datapoints.brigs.value = moduleRep.brigs;
+								var brigsValue = parseInt(moduleRep.brigs);
+
+								var moduleParent = $scope.getDeviceByRi(moduleRep.pi);
+								if(moduleParent && moduleParent.colourModule){
+									var colorPicker = moduleParent.colourModule.colorPicker;
+									colorPicker.setHSV([colorPicker.hsv[0], colorPicker.hsv[1], (brigsValue<100 ? brigsValue + 1  : brigsValue)/100]);
+								} else if (internalModule.brightness != brigsValue) {
 									internalModule.brightness = brigsValue;
 								}
 								console.log('Brightness updated!!!!!!!!!!!!!!!!!');
@@ -456,10 +462,15 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 							if (moduleRep.colSn) {
 								console.log('colSn value:' + moduleRep.colSn);
 								var datapoints = internalModule.datapoints;
-								var colSnValue = moduleRep.colSn;
-								datapoints.colSn.value = colSnValue;
-								if (internalModule.colourSaturation != colSnValue) {
-									internalModule.colourSaturation = colSnValue;
+								datapoints.colSn.value = moduleRep.colSn;
+								var colSnValue = parseInt(moduleRep.colSn);
+								
+								var moduleParent = $scope.getDeviceByRi(moduleRep.pi);
+								if(moduleParent && moduleParent.colourModule){
+									var colorPicker = moduleParent.colourModule.colorPicker;
+								colorPicker.setHSV([colorPicker.hsv[0], (colSnValue<100 ? colSnValue + 1  : colSnValue)/100, colorPicker.hsv[2]]);
+								} else if (internalModule.colourSaturation != colSnValue) {
+									internalModule.colourSaturation = colSnValue;										
 								}
 								console.log('Saturation updated!!!!!!!!!!!!!!!!!');
 							}
@@ -492,6 +503,7 @@ angular.module('app', ['uiSwitch']).controller('MainController', function($scope
 								{
 									internalModule.colorPicker.setRGB(om2mRGB[0], om2mRGB[1], om2mRGB[2]);
 								}
+								console.log('Color updated!!!!!!!!!!!!!!!!!');
 							}
 
 							// put background red
