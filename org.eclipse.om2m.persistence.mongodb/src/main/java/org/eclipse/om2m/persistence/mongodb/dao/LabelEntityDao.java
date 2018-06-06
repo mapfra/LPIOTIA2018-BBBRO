@@ -1,9 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2016 Orange.
+ * Copyright (c) 2014 - 2018 Orange.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    BAREAU Cyrille <cyrille.bareau@orange.com>, 
+ *    BONNARDEL Gregory <gbonnardel.ext@orange.com>, 
  *******************************************************************************/
 package org.eclipse.om2m.persistence.mongodb.dao;
 
@@ -28,6 +32,7 @@ import org.eclipse.om2m.commons.entities.MgmtObjEntity;
 import org.eclipse.om2m.commons.entities.NodeAnncEntity;
 import org.eclipse.om2m.commons.entities.NodeEntity;
 import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
+import org.eclipse.om2m.persistence.mongodb.Constants;
 import org.eclipse.om2m.persistence.mongodb.DBServiceImpl;
 import org.eclipse.om2m.persistence.service.DAO;
 import org.eclipse.om2m.persistence.service.DBTransaction;
@@ -35,7 +40,7 @@ import org.eclipse.om2m.persistence.service.DBTransaction;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCursor;
 
-public class LabelEntityDao implements DAO<LabelEntity> {
+public class LabelEntityDao implements DAO<LabelEntity>, Constants {
 	
 	private static final Log LOGGER = LogFactory.getLog(LabelEntityDao.class);
 
@@ -51,16 +56,14 @@ public class LabelEntityDao implements DAO<LabelEntity> {
 		//{"LabelsEntities" : {"label":"object.type/module"}}
 		LabelEntity labelEntity = null;
 		
-		FindIterable<Document> elements = DBServiceImpl.getInstance().getResourceCollection().find(eq("LabelsEntities", eq("label", id)));
+		FindIterable<Document> elements = DBServiceImpl.getInstance().getResourceCollection()
+				.find(eq("LabelsEntities", eq("label", id)));
 		
 		if (elements != null) {
 			labelEntity = new LabelEntity((String) id);
-			
-			for(MongoCursor<Document> cursor = elements.iterator(); cursor.hasNext();) {
+			for (MongoCursor<Document> cursor = elements.iterator(); cursor.hasNext();) {
 				Document element = cursor.next();
-				
-				Integer resourceType = element.getInteger("ResourceType");
-				
+				Integer resourceType = element.getInteger(RES_TYPE);
 				switch (resourceType) {
 				case ResourceType.AE:
 					AeEntity aeEntity = DBServiceImpl.getInstance().getGson().fromJson(element.toJson(), AeEntity.class);

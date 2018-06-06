@@ -13,9 +13,6 @@ Import-Package: javax.persistence,
  org.eclipse.om2m.commons.constants,
  org.eclipse.om2m.commons.entities,
  org.eclipse.om2m.commons.resource,
- org.eclipse.om2m.datamapping.service,
- org.eclipse.om2m.persistence.eclipselink.internal.dao,
  org.eclipse.om2m.persistence.service,
  org.eclipse.om2m.persistence.service.util,
- org.osgi.framework,
- org.osgi.util.tracker
+ org.osgi.framework

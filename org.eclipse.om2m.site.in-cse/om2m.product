@@ -124,8 +124,8 @@
       <property name="org.eclipse.om2m.dbDriver" value="org.h2.Driver" />
       <property name="org.eclipse.om2m.dbPassword" value="om2m" />
       <property name="org.eclipse.om2m.dbReset" value="false" />
-      <property name="org.eclipse.om2m.dbUrl" value="jdbc:h2:./database/indb;MULTI_THREADED=1" />
-      <property name="org.eclipse.om2m.dbUrl_mongodb" value="127.0.0.1" />
+      <!-- EclipseLink -->	<property name="org.eclipse.om2m.dbUrl" value="jdbc:h2:./database/indb;MULTI_THREADED=1" /> 
+      <!-- MongoDB -->		<!--property name="org.eclipse.om2m.dbUrl" value="127.0.0.1" /--> 
       <property name="org.eclipse.om2m.dbUser" value="om2m" />
       <property name="org.eclipse.om2m.globalContext" value="" />
       <property name="org.eclipse.om2m.guestRequestingEntity" value="guest:guest" />

@@ -1,9 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2016 Orange.
+ * Copyright (c) 2014 - 2018 Orange.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    BAREAU Cyrille <cyrille.bareau@orange.com>, 
+ *    BONNARDEL Gregory <gbonnardel.ext@orange.com>, 
  *******************************************************************************/
 package org.eclipse.om2m.persistence.mongodb;
 
@@ -29,7 +33,7 @@ public class DBTransactionImpl implements DBTransaction {
 
 	public DBTransactionImpl() {
 		uuid = UUID.randomUUID();
-		lockedObjects = new HashSet<>();
+		lockedObjects = new HashSet<String>();
 	}
 
 	@Override
@@ -39,8 +43,8 @@ public class DBTransactionImpl implements DBTransaction {
 
 	@Override
 	public void commit() {
-		LOGGER.info("commit() for trasaction " + uuid);
-		Set<String> currentLockedObjects = new HashSet<>();
+		LOGGER.info("commit() for transaction " + uuid);
+		Set<String> currentLockedObjects = new HashSet<String>();
 		synchronized (lockedObjects) {
 			currentLockedObjects.addAll(lockedObjects);
 		}
@@ -60,55 +64,43 @@ public class DBTransactionImpl implements DBTransaction {
 
 	@Override
 	public void lock(Object object) {
-		LOGGER.info("lock()");;
-		
-		ResourceEntity resourceEntityToBeLocked = null;
-		if (object instanceof ResourceEntity) {
-			resourceEntityToBeLocked = (ResourceEntity) object;
-		}
-
-		if (resourceEntityToBeLocked != null) {
-			// handle lock
-			String resourceId = resourceEntityToBeLocked.getResourceID();
-
-			LOGGER.info("request lock for " + resourceId + " by transaction " + uuid);
-			
-			// add global lock (blocking call for 10s max
-			if (addGlobalLock(resourceId)) {
-				synchronized (lockedObjects) {
-					lockedObjects.add(resourceId);
-				}
-			} else {
-				throw new RuntimeException("unable to acquire lock for resource " + resourceId + " by transaction " + uuid);
-			}
-
-		} else {
+		if (object == null)
 			// does nothing ?
-			throw new RuntimeException();
-		}
+			throw new RuntimeException("Null object");
 
+		LOGGER.debug("lock " + object);
+		if (! (object instanceof ResourceEntity))
+			// does nothing ?
+			throw new RuntimeException("Not a ResourceEntity: " + object);
+		
+		// handle lock
+		String resId = ((ResourceEntity) object).getResourceID();
+		LOGGER.info("request lock for " + resId + " by transaction " + uuid);
+
+		// add global lock (blocking call for 10s max
+		if (addGlobalLock(resId)) {
+			synchronized (lockedObjects) {
+				lockedObjects.add(resId);
+			}
+		} else {
+			throw new RuntimeException("unable to acquire lock for resource " 
+					+ resId + " by transaction " + uuid);
+		}
 	}
 
 	@Override
 	public void unlock(Object object) {
 		LOGGER.info("unlock object=" + object + " for transaction " + uuid);
-		ResourceEntity resourceEntityToBeLocked = null;
 		if (object instanceof ResourceEntity) {
-			resourceEntityToBeLocked = (ResourceEntity) object;
-		}
-
-		if (resourceEntityToBeLocked != null) {
-			String resourceId = resourceEntityToBeLocked.getResourceID();
-			unlock(resourceId);
-			
+			unlock(((ResourceEntity) object).getResourceID());
 		}
 	}
 	
-	private void unlock(String resourceId) {
-		LOGGER.debug("try to unlock " + resourceId + " by transaction " + uuid);
+	private void unlock(String resId) {
+		LOGGER.debug("try to unlock " + resId + " by transaction " + uuid);
 		synchronized (lockedObjects) {
-			 if (lockedObjects.remove(resourceId)) {
-				 removeGlobalLock(resourceId);
+			 if (lockedObjects.remove(resId)) {
+				 removeGlobalLock(resId);
 			 }
 		}
 	}
@@ -124,21 +116,20 @@ public class DBTransactionImpl implements DBTransaction {
 	/**
 	 * Check if a global lock exists for the provided resourceId
 	 * 
-	 * @param resourceId
+	 * @param resId
 	 * @return true if a lock exists for this resourceId
-	 */
-	private static boolean isExistingLock(final String resourceId) {
+	 * /
+	private static boolean isExistingLock(final String resId) {
 		synchronized (GLOBAL_LOCKED_OBJECTS) {
-			return GLOBAL_LOCKED_OBJECTS.contains(resourceId);
+			return GLOBAL_LOCKED_OBJECTS.contains(resId);
 		}
-	}
+	}*/
 
-	private synchronized static boolean addGlobalLock(final String resourceId) {
+	private synchronized static boolean addGlobalLock(final String resId) {
 		synchronized (GLOBAL_LOCKED_OBJECTS) {
-
 			long initialTime = System.currentTimeMillis();
 			while (System.currentTimeMillis() < initialTime + 10000) {
-				if (GLOBAL_LOCKED_OBJECTS.contains(resourceId)) {
+				if (GLOBAL_LOCKED_OBJECTS.contains(resId)) {
 					try {
 						GLOBAL_LOCKED_OBJECTS.wait(1000);
 					} catch (InterruptedException e) {
@@ -146,20 +137,18 @@ public class DBTransactionImpl implements DBTransaction {
 					}
 				}
 
-				if (!GLOBAL_LOCKED_OBJECTS.contains(resourceId)) {
-					GLOBAL_LOCKED_OBJECTS.add(resourceId);
+				if (!GLOBAL_LOCKED_OBJECTS.contains(resId)) {
+					GLOBAL_LOCKED_OBJECTS.add(resId);
 					return true;
 				}
 			}
-
 		}
-
 		return false;
 	}
 
-	private synchronized static void removeGlobalLock(final String resourceId) {
+	private synchronized static void removeGlobalLock(final String resId) {
 		synchronized (GLOBAL_LOCKED_OBJECTS) {
-			GLOBAL_LOCKED_OBJECTS.remove(resourceId);
+			GLOBAL_LOCKED_OBJECTS.remove(resId);
 			GLOBAL_LOCKED_OBJECTS.notifyAll();
 		}
 	}

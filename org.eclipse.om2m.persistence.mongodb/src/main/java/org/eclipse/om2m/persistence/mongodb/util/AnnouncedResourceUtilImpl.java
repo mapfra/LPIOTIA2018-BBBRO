@@ -1,9 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2016 Orange.
+ * Copyright (c) 2014 - 2018 Orange.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    BAREAU Cyrille <cyrille.bareau@orange.com>, 
+ *    BONNARDEL Gregory <gbonnardel.ext@orange.com>, 
  *******************************************************************************/
 package org.eclipse.om2m.persistence.mongodb.util;
 
@@ -49,18 +53,17 @@ public class AnnouncedResourceUtilImpl implements AnnouncedResourceUtil {
 		// convert transaction
 		DBTransactionImpl dbTransactionImpl = (DBTransactionImpl) dbTransaction;
 
-		Document doc = DBServiceImpl.getInstance().getAnnounceCollection().find(and(eq(DBEntities.LOCAL_RESOURCE_ID, localAnnounceableId),
-				eq(DBEntities.ANNOUNCE_CSE_ID, announceCseId))).first();
+		Document doc = DBServiceImpl.getInstance().getAnnounceCollection()
+				.find(and(eq(DBEntities.LOCAL_RESOURCE_ID, localAnnounceableId),
+						  eq(DBEntities.ANNOUNCE_CSE_ID, announceCseId))).first();
+		if (doc == null)
+			return null;
 		
-		CreatedAnnouncedResourceEntity entity = null;
-		if (doc != null) {
-			entity = new CreatedAnnouncedResourceEntity();
-			entity.setAnnounceCseId(doc.getString(DBEntities.ANNOUNCE_CSE_ID));
-			entity.setId(doc.getLong("id"));
-			entity.setLocalAnnounceableId(doc.getString(DBEntities.LOCAL_RESOURCE_ID));
-			entity.setRemoteAnnouncedId(doc.getString(DBEntities.REMOTE_RESOURCE_ID));
-		}
-
+		CreatedAnnouncedResourceEntity entity = new CreatedAnnouncedResourceEntity();
+		entity.setAnnounceCseId(doc.getString(DBEntities.ANNOUNCE_CSE_ID));
+		entity.setId(doc.getLong("id"));
+		entity.setLocalAnnounceableId(doc.getString(DBEntities.LOCAL_RESOURCE_ID));
+		entity.setRemoteAnnouncedId(doc.getString(DBEntities.REMOTE_RESOURCE_ID));
 		return entity;
 	}
 
