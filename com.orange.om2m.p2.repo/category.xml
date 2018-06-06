@@ -114,6 +114,15 @@
    <bundle id="org.eclipse.om2m.webapp.resourcesbrowser.xml" version="1.1.0.qualifier">
       <category name="om2m"/>
    </bundle>
+   <bundle id="org.eclipse.om2m.sdt.home.hue" version="1.1.0.qualifier">
+      <category name="om2m"/>
+   </bundle>
+   <bundle id="org.eclipse.om2m.hue.api" version="1.1.0.qualifier">
+      <category name="om2m"/>
+   </bundle>
+   <bundle id="org.eclipse.om2m.hue.impl" version="1.1.0.qualifier">
+      <category name="om2m"/>
+   </bundle>
    <category-def name="om2m" label="om2m">
       <description>
          om2m p2 repository
