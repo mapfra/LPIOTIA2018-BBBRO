@@ -32,7 +32,6 @@
 	</prerequisites>
 
 	<modules>
-		<!--module>com.orange.basedriver.hue</module-->
 		<module>org.eclipse.om2m.protocols.hue</module>
 	</modules>
 
