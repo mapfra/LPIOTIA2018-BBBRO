@@ -76,7 +76,7 @@ import org.eclipse.om2m.commons.constants.ShortName;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "")
 @XmlRootElement(name = ShortName.AREA_NWK_DEVICE_INFO_ANNC)
-public class AreaNwkDeviceInfoAnnc extends AnnouncedMgmtResource {
+public class AreaNwkDeviceInfoAnnc extends MgmtObjAnncWithChildren {
 
 	@XmlElement(required = false, name = ShortName.DEV_ID, namespace="")
  	protected String devID;

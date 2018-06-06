@@ -31,6 +31,8 @@ import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
 
+import org.eclipse.om2m.commons.constants.ShortName;
+
 /**
  * Home made discovery result class.
  *
@@ -60,12 +62,10 @@ public class DiscoveryResult {
 		this.references = references;
 	}
 
-
-
 	@XmlAccessorType(XmlAccessType.FIELD)
 	public static class ResourceRef {
 		
-		@XmlAttribute(name="ty")
+		@XmlAttribute(name=ShortName.RESOURCE_TYPE)
 		public BigInteger resourceType;
 		
 		@XmlValue

@@ -91,12 +91,13 @@ public class ContentInstanceController extends Controller {
 		Patterns patterns = new Patterns();
 
 		// get the dao of the parent
-		DAO<?> dao = (DAO<?>) patterns.getDAO(request.getTo(), dbs);
-		if (dao == null) {
+		@SuppressWarnings("unchecked")
+		DAO<ResourceEntity> parentDAO = (DAO<ResourceEntity>) patterns.getDAO(request.getTo(), dbs);
+		if (parentDAO == null) {
 			throw new ResourceNotFoundException("Cannot find parent resource");
 		}
 		// get the parent entity
-		ResourceEntity parentEntity = (ResourceEntity)dao.find(transaction, request.getTo());
+		ResourceEntity parentEntity = parentDAO.find(transaction, request.getTo());
 		// check the parent existence
 		if (parentEntity == null) {
 			throw new ResourceNotFoundException("Cannot find parent resource");
@@ -112,9 +113,8 @@ public class ContentInstanceController extends Controller {
 			ContainerEntity container = (ContainerEntity) parentEntity;
 			acpsToCheck = container.getAccessControlPolicies();
 			subscriptions = container.getSubscriptions();
-		}
-		// case parent is ContainerAnnc
-		if (parentEntity.getResourceType().intValue() == (ResourceType.CONTAINER_ANNC)) {
+		} else if (parentEntity.getResourceType().intValue() == (ResourceType.CONTAINER_ANNC)) {
+			// case parent is ContainerAnnc
 			throw new NotImplementedException("Parent is Container Annc, not implemented yet.");
 		}
 		
@@ -171,7 +171,8 @@ public class ContentInstanceController extends Controller {
 		}
 
 		String generatedId = generateId("", "");
-		cinEntity.setResourceID("/" + Constants.CSE_ID + "/" + ShortName.CIN + Constants.PREFIX_SEPERATOR + generatedId);
+		cinEntity.setResourceID("/" + Constants.CSE_ID + "/" + ShortName.CIN 
+				+ Constants.PREFIX_SEPERATOR + generatedId);
 		// check & set resource name if present
 		if (cin.getName() != null){
 			if (!patterns.checkResourceName(cin.getName())){
@@ -182,7 +183,8 @@ public class ContentInstanceController extends Controller {
 			cinEntity.setName(ShortName.CIN + "_" + generatedId);
 		}
 		cinEntity.setHierarchicalURI(parentEntity.getHierarchicalURI() + "/" + cinEntity.getName());
-		if (!UriMapper.addNewUri(cinEntity.getHierarchicalURI(), cinEntity.getResourceID(), ResourceType.CONTENT_INSTANCE)){
+		if (! UriMapper.addNewUri(cinEntity.getHierarchicalURI(), cinEntity.getResourceID(), 
+				ResourceType.CONTENT_INSTANCE)) {
 			throw new ConflictException("Name already present in the parent collection.");
 		}
 
@@ -209,17 +211,19 @@ public class ContentInstanceController extends Controller {
 		if (cin.getOntologyRef() != null){
 			cinEntity.setOntologyRef(cin.getOntologyRef());
 		}
+		
+		DAO<ContentInstanceEntity> ciDAO = dbs.getDAOFactory().getContentInstanceDAO();
 
 		// case parent is Container
 		if (parentEntity.getResourceType().intValue() == (ResourceType.CONTAINER)) {
 			ContainerEntity container = (ContainerEntity) parentEntity;
-			if (container.getMaxNrOfInstances()!= null ){
+			if (container.getMaxNrOfInstances() != null) {
 				if (container.getCurrentNrOfInstances().intValue() >= container.getMaxNrOfInstances().intValue()) {
 					LOGGER.info("Deleting oldest content instance due to container size limit");
-					ContentInstanceEntity cinent = dbs.getDAOFactory().getOldestDAO().find(transaction, request.getTo());
-					dbs.getDAOFactory().getContentInstanceDAO().delete(transaction,cinent);
-					UriMapper.deleteUri(cinent.getHierarchicalURI());	
-				}else{
+					ContentInstanceEntity oldCI = dbs.getDAOFactory().getOldestDAO().find(transaction, request.getTo());
+					ciDAO.delete(transaction, oldCI);
+					UriMapper.deleteUri(oldCI.getHierarchicalURI());	
+				} else {
 					container.setCurrentNrOfInstances(BigInteger.valueOf(container.getCurrentNrOfInstances().intValue()+1));
 				}
 			}
@@ -235,7 +239,8 @@ public class ContentInstanceController extends Controller {
 		}
 
 		// create the contentInstance in the DB
-		dbs.getDAOFactory().getContentInstanceDAO().create(transaction, cinEntity);
+		ciDAO.create(transaction, cinEntity);
+
 		// commit the transaction
 		transaction.commit();
 
@@ -318,13 +323,17 @@ public class ContentInstanceController extends Controller {
 
 		UriMapper.deleteUri(cin.getHierarchicalURI());
 		
-		DAO<?> dao = (DAO<?>) patterns.getDAO(cin.getParentID(), dbs);
-		ResourceEntity parentEntity = (ResourceEntity)dao.find(transaction, cin.getParentID());
-		ContainerEntity container = (ContainerEntity) parentEntity;
-
-		container.setCurrentNrOfInstances(BigInteger.valueOf(container.getCurrentNrOfInstances().intValue()-1));
-		dbs.getDAOFactory().getContainerDAO().update(transaction, container);
-		
+		@SuppressWarnings("unchecked")
+		DAO<ResourceEntity> parentDAO = (DAO<ResourceEntity>) patterns.getDAO(cin.getParentID(), dbs);
+		ResourceEntity parentEntity = parentDAO.find(transaction, cin.getParentID());
+		if (parentEntity.getResourceType().intValue() == (ResourceType.CONTAINER)) {
+			ContainerEntity container = (ContainerEntity) parentEntity;
+			int nbI = container.getCurrentNrOfInstances().intValue();
+			container.setCurrentNrOfInstances(BigInteger.valueOf(nbI-1));
+			dbs.getDAOFactory().getContainerDAO().update(transaction, container);
+		} else {
+			throw new NotImplementedException("Parent is Container Annc, not implemented yet.");
+		}
 		Notifier.notifyDeletion(null, cin);
 
 		// delete the resource

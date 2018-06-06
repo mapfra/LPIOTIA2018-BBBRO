@@ -77,6 +77,7 @@ public class MgmtObjMapper extends EntityMapper<MgmtObjEntity, MgmtObj> {
 	private void mapSpecificAttributes(AreaNwkDeviceInfoEntity entity, AreaNwkDeviceInfo resource) {
 		resource.setAreaNwkId(entity.getAreaNwkId());
 		resource.setDevID(entity.getDevID());
+		resource.setDevType(entity.getDevType());
 		resource.setSleepDuration(entity.getSleepDuration());
 		resource.setSleepInterval(entity.getSleepInterval());
 		resource.setStatus(entity.getStatus());

@@ -66,7 +66,8 @@ public class LatestOldestController extends Controller{
 		ResponsePrimitive response = new ResponsePrimitive(request);
 
 		// Check existence of the resource
-		ContainerEntity containerEntity = dbs.getDAOFactory().getContainerDAO().find(transaction, request.getTo());
+		ContainerEntity containerEntity = dbs.getDAOFactory().getContainerDAO()
+				.find(transaction, request.getTo());
 		if (containerEntity == null) {
 			throw new ResourceNotFoundException("Resource not found");
 		}
@@ -77,13 +78,13 @@ public class LatestOldestController extends Controller{
 		checkACP(acpList, request.getFrom(), request.getOperation());
 
 		ContentInstanceEntity cinEntity = null;
-		if (containerEntity.getChildContentInstances().isEmpty()) {
+		List<ContentInstanceEntity> instances = containerEntity.getChildContentInstances();
+		if (instances.isEmpty()) {
 			throw new ResourceNotFoundException("Resource not found");
 		}
-		switch(this.policy){
+		switch(this.policy) {
 		case LATEST:
-			cinEntity = containerEntity.getChildContentInstances().get(
-					containerEntity.getChildContentInstances().size()-1);
+			cinEntity = instances.get(instances.size()-1);
 			break;
 		case OLDEST:
 			cinEntity = dbs.getDAOFactory().getOldestDAO().find(transaction, request.getTo());
@@ -93,7 +94,8 @@ public class LatestOldestController extends Controller{
 		}
 
 		// mapping the entity with the exchange resource
-		ContentInstance cin = EntityMapperFactory.getContentInstanceMapper().mapEntityToResource(cinEntity, request);		
+		ContentInstance cin = EntityMapperFactory.getContentInstanceMapper()
+				.mapEntityToResource(cinEntity, request);		
 		response.setContent(cin);
 		response.setResponseStatusCode(ResponseStatusCode.OK);
 		return response;
@@ -112,7 +114,8 @@ public class LatestOldestController extends Controller{
 
 
 		// Check existence of the resource
-		ContainerEntity containerEntity = dbs.getDAOFactory().getContainerDAO().find(transaction, request.getTo());
+		ContainerEntity containerEntity = dbs.getDAOFactory().getContainerDAO().
+				find(transaction, request.getTo());
 		if (containerEntity == null) {
 			throw new ResourceNotFoundException();
 		}
@@ -122,17 +125,17 @@ public class LatestOldestController extends Controller{
 		List<AccessControlPolicyEntity> acpList = containerEntity.getAccessControlPolicies();
 		checkACP(acpList, request.getFrom(), request.getOperation());
 
-		if (containerEntity.getChildContentInstances().isEmpty()) {
+		List<ContentInstanceEntity> instances = containerEntity.getChildContentInstances();
+		if (instances.isEmpty()) {
 			throw new ResourceNotFoundException();
 		}
 		ContentInstanceEntity cinEntity = null;
-		switch(this.policy){
+		switch(this.policy) {
 		case LATEST:
-			cinEntity = containerEntity.getChildContentInstances().get(
-					containerEntity.getChildContentInstances().size()-1);
+			cinEntity = instances.get(instances.size()-1);
 			break;
 		case OLDEST:
-			cinEntity = containerEntity.getChildContentInstances().get(0);
+			cinEntity = instances.get(0);
 			break;
 		default:
 			break;
@@ -142,16 +145,15 @@ public class LatestOldestController extends Controller{
 		ResourceEntity parentEntity = (ResourceEntity)dao.find(transaction, cinEntity.getParentID());
 
 		ContainerEntity container = (ContainerEntity) parentEntity;
-
-		container.setCurrentNrOfInstances(BigInteger.valueOf(container.getCurrentNrOfInstances().intValue()-1));
+		int nbI = container.getCurrentNrOfInstances().intValue();
+		container.setCurrentNrOfInstances(BigInteger.valueOf(nbI-1));
 
 		dbs.getDAOFactory().getContainerDAO().update(transaction, container);
 
 		Notifier.notifyDeletion(null, cinEntity);
 		
 		dbs.getDAOFactory().getContentInstanceDAO().delete(transaction, cinEntity);
-		transaction.commit();
-		
+		transaction.commit();		
 		
 		response.setResponseStatusCode(ResponseStatusCode.DELETED);
 		return response;

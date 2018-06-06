@@ -69,7 +69,7 @@ import org.eclipse.om2m.commons.constants.ShortName;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "")
 @XmlRootElement(name = ShortName.AREA_NWK_INFO_ANNC)
-public class AreaNwkInfoAnnc extends AnnouncedMgmtResource {
+public class AreaNwkInfoAnnc extends MgmtObjAnncWithChildren {
 
 	@XmlElement(name = ShortName.AREA_NWK_TYPE, required = false, namespace="")
  	protected String areaNwkType;

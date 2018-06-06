@@ -216,7 +216,7 @@ public class NodeAnncEntity extends AnnouncedResourceEntity {
 	/**
 	 * @return the childAreaNwkInfoEntities
 	 */
-	public List<AreaNwkInfoAnncEntity> getChildAreaNwkInfoEntities() {
+	public List<AreaNwkInfoAnncEntity> getChildAreaNwkInfoAnncEntities() {
 		if (this.childAreaNwkInfoEntities == null) {
 			this.childAreaNwkInfoEntities = new ArrayList<>();
 		}
@@ -233,7 +233,7 @@ public class NodeAnncEntity extends AnnouncedResourceEntity {
 	/**
 	 * @return the childAreaNwkDeviceInfoEntities
 	 */
-	public List<AreaNwkDeviceInfoAnncEntity> getChildAreaNwkDeviceInfoEntities() {
+	public List<AreaNwkDeviceInfoAnncEntity> getChildAreaNwkDeviceInfoAnncEntities() {
 		if (this.childAreaNwkDeviceInfoEntities == null) {
 			this.childAreaNwkDeviceInfoEntities = new ArrayList<>();
 		}
@@ -250,7 +250,7 @@ public class NodeAnncEntity extends AnnouncedResourceEntity {
 	/**
 	 * @return the childDeviceInfoEntities
 	 */
-	public List<DeviceInfoAnncEntity> getChildDeviceInfoEntities() {
+	public List<DeviceInfoAnncEntity> getChildDeviceInfoAnncEntities() {
 		if (this.childDeviceInfoEntities == null) {
 			this.childDeviceInfoEntities = new ArrayList<>();
 		}
@@ -285,30 +285,30 @@ public class NodeAnncEntity extends AnnouncedResourceEntity {
 
 	public List<MgmtObjAnncEntity> getMgmtObjEntities() {
 		List<MgmtObjAnncEntity> ret = new ArrayList<MgmtObjAnncEntity>();
-		ret.addAll(getChildAreaNwkInfoEntities());
-		ret.addAll(getChildAreaNwkDeviceInfoEntities());
-		ret.addAll(getChildDeviceInfoEntities());
+		ret.addAll(getChildAreaNwkInfoAnncEntities());
+		ret.addAll(getChildAreaNwkDeviceInfoAnncEntities());
+		ret.addAll(getChildDeviceInfoAnncEntities());
 		return ret;
 	}
 
 	public void addMgmtObj(MgmtObjAnncEntity mgmtObj) {
 		BigInteger mgmtDef = mgmtObj.getMgmtDefinition();
 		if (mgmtDef.equals(MgmtDefinitionTypes.AREA_NWK_INFO))
-			getChildAreaNwkInfoEntities().add((AreaNwkInfoAnncEntity) mgmtObj);
+			getChildAreaNwkInfoAnncEntities().add((AreaNwkInfoAnncEntity) mgmtObj);
 		else if (mgmtDef.equals(MgmtDefinitionTypes.AREA_NWK_DEVICE_INFO))
-			getChildAreaNwkDeviceInfoEntities().add((AreaNwkDeviceInfoAnncEntity) mgmtObj);
+			getChildAreaNwkDeviceInfoAnncEntities().add((AreaNwkDeviceInfoAnncEntity) mgmtObj);
 		else if (mgmtDef.equals(MgmtDefinitionTypes.DEVICE_INFO))
-			getChildDeviceInfoEntities().add((DeviceInfoAnncEntity) mgmtObj);
+			getChildDeviceInfoAnncEntities().add((DeviceInfoAnncEntity) mgmtObj);
 	}
 
 	public void removeMgmtObj(MgmtObjAnncEntity mgmtObj) {
 		BigInteger mgmtDef = mgmtObj.getMgmtDefinition();
 		if (mgmtDef.equals(MgmtDefinitionTypes.AREA_NWK_INFO))
-			getChildAreaNwkInfoEntities().remove((AreaNwkInfoAnncEntity) mgmtObj);
+			getChildAreaNwkInfoAnncEntities().remove((AreaNwkInfoAnncEntity) mgmtObj);
 		else if (mgmtDef.equals(MgmtDefinitionTypes.AREA_NWK_DEVICE_INFO))
-			getChildAreaNwkDeviceInfoEntities().remove((AreaNwkDeviceInfoAnncEntity) mgmtObj);
+			getChildAreaNwkDeviceInfoAnncEntities().remove((AreaNwkDeviceInfoAnncEntity) mgmtObj);
 		else if (mgmtDef.equals(MgmtDefinitionTypes.DEVICE_INFO))
-			getChildDeviceInfoEntities().remove((DeviceInfoAnncEntity) mgmtObj);
+			getChildDeviceInfoAnncEntities().remove((DeviceInfoAnncEntity) mgmtObj);
 	}
 
 }

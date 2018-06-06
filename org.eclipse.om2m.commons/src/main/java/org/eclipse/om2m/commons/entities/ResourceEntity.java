@@ -29,6 +29,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.MappedSuperclass;
 
+import org.eclipse.om2m.commons.constants.DBEntities;
 import org.eclipse.om2m.commons.constants.ShortName;
 
 /**
@@ -55,7 +56,7 @@ public class ResourceEntity {
 	
 	@Column(name=ShortName.RESOURCE_NAME)
 	protected String name;
-	@Column(name="huri")
+	@Column(name=DBEntities.HIERARCHICAL_URI)
 	protected String hierarchicalURI;
 
 	/**

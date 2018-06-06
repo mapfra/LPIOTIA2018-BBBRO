@@ -32,15 +32,14 @@ import org.eclipse.om2m.persistence.service.DBTransaction;
 public class ContentInstanceDAO extends AbstractDAO<ContentInstanceEntity> {
 
 	@Override
-	public void create(DBTransaction dbTransaction,
-			ContentInstanceEntity resource) {
+	public void create(DBTransaction dbTransaction, ContentInstanceEntity resource) {
 		DBTransactionJPAImpl transaction = (DBTransactionJPAImpl) dbTransaction;
 		super.create(dbTransaction, resource);
 		// evict cache of possible parent entities
 		transaction.getEm().getEntityManagerFactory().getCache().evict(ContainerEntity.class);
-		// TODO do the same for the containerAnnc when implemented
-
+		transaction.getEm().getEntityManagerFactory().getCache().evict(ContainerAnncEntity.class);
 	}
+	
 	@Override
 	public ContentInstanceEntity find(DBTransaction dbTransaction, Object id) {
 		DBTransactionJPAImpl transaction = (DBTransactionJPAImpl) dbTransaction;
@@ -55,7 +54,5 @@ public class ContentInstanceDAO extends AbstractDAO<ContentInstanceEntity> {
 		transaction.getEm().getEntityManagerFactory().getCache().evict(ContainerEntity.class);
 		transaction.getEm().getEntityManagerFactory().getCache().evict(ContainerAnncEntity.class);
 	}
-
-
 
 }
