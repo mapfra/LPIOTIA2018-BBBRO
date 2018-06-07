@@ -8,11 +8,17 @@
 * Contributors:
 *    BAREAU Cyrille <cyrille.bareau@orange.com>
 *    BONNARDEL Gregory <gbonnardel.ext@orange.com>
-*    OSKO Tomasz <tomasz.osko@orange.com>
+*    BORAWSKI Pawel <pawel.borawski@orange.com>
 *    RATUSZEK Przemyslaw <przemyslaw.ratuszek@orange.com>
+*    WIERZBOWSKI Jacek <jacek.wierzbowski@orange.com>
 *******************************************************************************/
 package org.eclipse.om2m.hue.impl;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.Inet4Address;
@@ -391,12 +397,11 @@ public class HueBasedriver implements ManagedService {
 		}
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public void updated(final Dictionary properties) throws ConfigurationException {
-//	@Modified
-//	protected void modified(Map<String, Object> properties) {
-		Logger.info("Updating Hue Bridge connection upon the config file " + properties);
 		closeSockets();
+		Logger.info("Updating Hue Bridge connection upon the config file");
 		try {
 			cancelMSearchTimer();
 		} catch (Exception e) {
@@ -406,46 +411,41 @@ public class HueBasedriver implements ManagedService {
 			// enable SSDP discovery
 			Logger.info("No found properties... Try SSDP discovery");
 			initMSearchTimer();
-			return;
-		}
-		boolean enableSSDPDiscovery = false;
-		try {
-			enableSSDPDiscovery = Boolean.valueOf(
-					properties.get(ENABLE_SSDP_DISCOVERY).toString()).booleanValue();
-		} catch (Exception ignored) {
-		}
-		if (enableSSDPDiscovery) {
-			// launch thread
-			initMSearchTimer();
-		}
-		final String descriptionUrl = (String) properties.get(HUE_BRIDGE_DESCRIPTION_URL);
-		final String userId = (String) properties.get(HUE_BRIDGE_USER_ID);
-		Logger.info("Config file description url: " + descriptionUrl 
-				+ ", config file user id: " + userId);
-		if (userId == null || userId == "") {
-			Logger.warn("No userId for Hue Bridge update...");
-		}
-		if (descriptionUrl == null) {
-			Logger.warn("No description...");
 		} else {
-//			bridgeRegistrationThread = new Thread() {
-//				public void run() {
-//					try {
-//						String newUserId = discovery.processHueBridge(descriptionUrl, userId);
-//						if (newUserId != null && !newUserId.equals(userId)) {
-//							updatePropertiesFile(properties.get(SERVICE_ID) + ".properties", 
-//									HUE_BRIDGE_USER_ID, newUserId);
-//						}
-//					} catch (IOException e) {
-//						Logger.warn("Error processing new bridge", e);
-//					}
-//				}
-//			};
-//
-//			bridgeRegistrationThread.run();
-		}	
+			try {
+				if (Boolean.valueOf(properties.get(ENABLE_SSDP_DISCOVERY).toString())) {
+					initMSearchTimer();
+					return;
+				}
+			} catch (Exception ignored) {
+			}
+			final String descriptionUrl = (String) properties.get(HUE_BRIDGE_DESCRIPTION_URL);
+			final String userId = (String) properties.get(HUE_BRIDGE_USER_ID);
+			Logger.info("Config file description url: " + descriptionUrl 
+					+ ", config file user id: " + userId);
+			if (userId == null || userId == "") {
+				Logger.warn("No userId for Hue Bridge update...");
+			}
+			if (descriptionUrl == null) {
+				Logger.warn("No description...");
+			} else {
+				bridgeRegistrationThread = new Thread() {
+					public void run() {
+						try {
+							String newUserId = discovery.processHueBridge(descriptionUrl, userId);
+							if (newUserId != null && !newUserId.equals(userId)) {
+								updatePropertiesFile(properties.get(SERVICE_ID) + ".properties",
+										HUE_BRIDGE_USER_ID, newUserId);
+							}
+						} catch (IOException e) {
+							Logger.warn("Error processing new bridge", e);
+						}
+					}
+				};
+				bridgeRegistrationThread.run();
+			}	
+		}
 	}
-
 	
 	/**
 	 * Set property and save in (config) file
@@ -453,7 +453,7 @@ public class HueBasedriver implements ManagedService {
 	 * @param filename: name of config file from configurations/services/ directory 
 	 * @param key: name of the property to update
 	 * @param value: value to update
-	 * /
+	 */
 	protected void updatePropertiesFile(String filename, String key, String value) {
         try {
             File file = new File("configurations/services/" + filename);
@@ -479,6 +479,5 @@ public class HueBasedriver implements ManagedService {
             Logger.error("Error while updating the: " + filename + " file, to save the: " + key + " property", e);
         }
     }
-    */
 
 }

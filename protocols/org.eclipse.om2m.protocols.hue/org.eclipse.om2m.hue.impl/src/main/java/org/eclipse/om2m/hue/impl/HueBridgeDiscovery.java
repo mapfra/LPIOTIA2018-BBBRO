@@ -8,8 +8,9 @@
 * Contributors:
 *    BAREAU Cyrille <cyrille.bareau@orange.com>
 *    BONNARDEL Gregory <gbonnardel.ext@orange.com>
-*    OSKO Tomasz <tomasz.osko@orange.com>
+*    BORAWSKI Pawel <pawel.borawski@orange.com>
 *    RATUSZEK Przemyslaw <przemyslaw.ratuszek@orange.com>
+*    WIERZBOWSKI Jacek <jacek.wierzbowski@orange.com>
 *******************************************************************************/
 package org.eclipse.om2m.hue.impl;
 
@@ -124,10 +125,15 @@ public class HueBridgeDiscovery {
     }
 
     // Called when user id was specified in config file
-    public String processHueBridge(final String location, final String userId) throws IOException {
-        Logger.info("ProcessHueBridge with userId: " + userId);
-        this.userId = userId;
-        return processHueBridge(location);        
+    public String processHueBridge(final String location, final String id) throws IOException {
+        try {
+			Logger.info("ProcessHueBridge with userId: " + userId);
+			this.userId = (id == null) ? "" : id;
+			return processHueBridge(location);
+		} catch (Throwable e) {
+			Logger.warn("", e);
+			throw new IOException(e);
+		}        
     }
 
     @SuppressWarnings("unchecked")

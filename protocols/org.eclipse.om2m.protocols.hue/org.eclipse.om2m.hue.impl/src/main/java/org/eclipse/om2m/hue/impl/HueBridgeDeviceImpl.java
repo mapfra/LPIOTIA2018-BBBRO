@@ -8,8 +8,9 @@
 * Contributors:
 *    BAREAU Cyrille <cyrille.bareau@orange.com>
 *    BONNARDEL Gregory <gbonnardel.ext@orange.com>
-*    OSKO Tomasz <tomasz.osko@orange.com>
+*    BORAWSKI Pawel <pawel.borawski@orange.com>
 *    RATUSZEK Przemyslaw <przemyslaw.ratuszek@orange.com>
+*    WIERZBOWSKI Jacek <jacek.wierzbowski@orange.com>
 *******************************************************************************/
 package org.eclipse.om2m.hue.impl;
 
@@ -79,7 +80,7 @@ public class HueBridgeDeviceImpl extends HueDeviceImpl implements HueBridgeDevic
     @SuppressWarnings("unchecked")
 	public HueBridgeDeviceImpl(final String location, final String description, Optional<String> userId) {
         super(description);
-        Logger.info("HueBridgeDeviceImpl instation. User name: " + userId.get());
+        Logger.info("HueBridgeDeviceImpl installation. User name: " + userId.get());
         this.location = location;
         this.lights = new ArrayList<HueLightDevice>();
         this.controllerAvailable = false;

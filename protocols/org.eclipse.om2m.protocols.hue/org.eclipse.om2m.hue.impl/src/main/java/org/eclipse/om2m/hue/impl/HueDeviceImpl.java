@@ -8,8 +8,9 @@
 * Contributors:
 *    BAREAU Cyrille <cyrille.bareau@orange.com>
 *    BONNARDEL Gregory <gbonnardel.ext@orange.com>
-*    OSKO Tomasz <tomasz.osko@orange.com>
+*    BORAWSKI Pawel <pawel.borawski@orange.com>
 *    RATUSZEK Przemyslaw <przemyslaw.ratuszek@orange.com>
+*    WIERZBOWSKI Jacek <jacek.wierzbowski@orange.com>
 *******************************************************************************/
 package org.eclipse.om2m.hue.impl;
 
@@ -68,9 +69,7 @@ abstract public class HueDeviceImpl implements HueDevice, HueConstants {
 		try {
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder builder = factory.newDocumentBuilder();
-
 			Document document = builder.parse(new InputSource(new StringReader(xml_description)));
-
 			NodeList nodeList = document.getChildNodes();
 			// node list contains the child node of the "root" tag
 
@@ -142,7 +141,8 @@ abstract public class HueDeviceImpl implements HueDevice, HueConstants {
 					}
 				}
 			}
-		} catch (Exception e) {
+			Logger.debug("props: " + properties);
+		} catch (Throwable e) {
 			Logger.warn("Unknown Error", e);
 		}
 	}

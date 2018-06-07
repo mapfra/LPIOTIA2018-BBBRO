@@ -8,8 +8,9 @@
 * Contributors:
 *    BAREAU Cyrille <cyrille.bareau@orange.com>
 *    BONNARDEL Gregory <gbonnardel.ext@orange.com>
-*    OSKO Tomasz <tomasz.osko@orange.com>
+*    BORAWSKI Pawel <pawel.borawski@orange.com>
 *    RATUSZEK Przemyslaw <przemyslaw.ratuszek@orange.com>
+*    WIERZBOWSKI Jacek <jacek.wierzbowski@orange.com>
 *******************************************************************************/
 package org.eclipse.om2m.hue.impl.controller;
 

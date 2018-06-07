@@ -8,8 +8,9 @@
 * Contributors:
 *    BAREAU Cyrille <cyrille.bareau@orange.com>
 *    BONNARDEL Gregory <gbonnardel.ext@orange.com>
-*    OSKO Tomasz <tomasz.osko@orange.com>
+*    BORAWSKI Pawel <pawel.borawski@orange.com>
 *    RATUSZEK Przemyslaw <przemyslaw.ratuszek@orange.com>
+*    WIERZBOWSKI Jacek <jacek.wierzbowski@orange.com>
 *******************************************************************************/
 package org.eclipse.om2m.hue.impl.controller;
 
@@ -109,6 +110,8 @@ public class Controller implements HueConstants {
                 if (!resp.substring(3, 8).equals(ERROR)) {
                     JSONArray response = (JSONArray) parser.parse(resp);
                     this.userName = String.valueOf(((JSONObject) ((JSONObject) response.get(0)).get("success")).get("username"));
+                    pairWithBridge = false;
+                    Logger.info("Bridge paired for user: " + userName);
                     return;
                 }
                 Logger.warn("Pairing failed, retrying...");
@@ -377,12 +380,12 @@ public class Controller implements HueConstants {
     }
 
     private final String sendRequest(final String req) throws HueException, UnknownHueGatewayException {
-        Logger.info("Sending request to: " + IP + "/api/" + userName + "/" + req);
+        Logger.debug("Sending request to: " + IP + "/api/" + userName + "/" + req);
         return Utils.sendGetRequest(IP + "/api/" + userName, req);
     }
     
     private final String sendPairRequest(final String req, final String body) throws HueException, UnknownHueGatewayException {
-        Logger.info("Sending request to: " + IP + "/api/ with body: " + body);
+        Logger.debug("Sending request to: " + IP + "/api/ with body: " + body);
         return Utils.sendPostRequest(IP + "/api", req, body);
     }
 
