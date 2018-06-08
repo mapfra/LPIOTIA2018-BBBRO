@@ -39,7 +39,99 @@ import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 
 import org.eclipse.om2m.commons.constants.ShortName;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.*;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.ActivateClockTimerFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.AlarmSensorFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.AlarmSpeakerFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.AtmosphericPressureSensorFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.AudioVideoInputFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.AudioVolumeFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.BatteryFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.BinarySwitchFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.BioElectricalImpedanceAnalysisFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.BoilerFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.BrewingFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.BrightnessFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.ClockFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.ColourFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.ColourSaturationFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.ContactSensorFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DeactivateClockTimerFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DecrementNumberValueFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceAirConditionerFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceCameraFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceClothesWasherFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceCoffeeMachineFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceContactDetectorFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceDoorFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceElectricVehicleChargerFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceFloodDetectorFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceGasValveFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceLightFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceMicrogenerationFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceMotionDetectorFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceNumberDeviceFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceOvenFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceRefrigeratorFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceRobotCleanerFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceSmartElectricMeterFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceSmokeDetectorFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceSmokeExtractorFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceStorageBatteryFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceSwitchButtonFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceTelevisionFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceTemperatureDetectorFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceThermostatFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceWarningDeviceFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceWaterHeaterFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceWaterValveFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceWeatherStationFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DoorStatusFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DownChannelFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DownVolumeFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.ElectricVehicleConnectorFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.EnergyConsumptionFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.EnergyGenerationFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.ExtendedCarbonDioxideSensorFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.FaultDetectionFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.FoamingFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.GrinderFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.HeightFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.HotWaterSupplyFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.IncrementNumberValueFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.KeepWarmFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.KeypadFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.LiquidLevelFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.LockFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.MotionSensorFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.NoiseFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.NumberValueFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.OximeterFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.PersonSensorFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.PowerSaveFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.PushButtonFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.RecorderFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.RefrigerationFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.RelativeHumidityFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.ResetNumberValueFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.RinseLevelFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.RunModeFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.SignalStrengthFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.SmokeSensorFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.SpinLevelFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.StreamingFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.TelevisionChannelFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.TemperatureAlarmFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.TemperatureFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.TimerFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.ToggleFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.TurboFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.UpChannelFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.UpVolumeFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.WaterFlowFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.WaterLevelFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.WaterSensorFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.WeightFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.WindFlexContainer;
 
 /**
  * <p>
@@ -82,86 +174,135 @@ import org.eclipse.om2m.commons.resource.flexcontainerspec.*;
 @XmlType(name = "")
 @XmlRootElement(name = ShortName.AE)
 public class AE extends AnnounceableResource {
+	
 	@XmlElement(name = ShortName.APP_NAME, required=false, namespace="")
 	protected String appName;
+	
 	@XmlElement(name = ShortName.APP_ID, required = true, namespace="")
 	protected String appID;
+	
 	@XmlElement(name = ShortName.AE_ID, required = true, namespace="")
 	protected String aeid;
+	
 	@XmlList
 	@XmlElement(name = ShortName.POA, required=false, namespace="")
 	protected List<String> pointOfAccess;
+	
 	@XmlSchemaType(name = "anyURI")
 	@XmlElement(name = ShortName.ONTOLOGY_REF, required=false, namespace="")
 	protected String ontologyRef;
+	
 	@XmlSchemaType(name = "anyURI")
 	@XmlElement(name = ShortName.NODE_LINK, required=false, namespace="")
 	protected String nodeLink;
+	
 	@XmlElement(name = ShortName.CHILD_RESOURCE, namespace="")
 	protected List<ChildResourceRef> childResource;
+	
 	@XmlElement(name = ShortName.REQUEST_REACHABILITY, required=true, namespace="")
 	protected Boolean requestReachability;
+	
 	@XmlElements({
-			@XmlElement(name = ShortName.CNT, namespace = "http://www.onem2m.org/xml/protocols", type = Container.class),
-			@XmlElement(name = ShortName.GROUP, namespace = "http://www.onem2m.org/xml/protocols", type = Group.class),
-			@XmlElement(name = ShortName.ACP, namespace = "http://www.onem2m.org/xml/protocols", type = AccessControlPolicy.class),
-			@XmlElement(name = ShortName.SUB, namespace = "http://www.onem2m.org/xml/protocols", type = Subscription.class),
-			@XmlElement(name = ShortName.PCH, namespace = "http://www.onem2m.org/xml/protocols", type = PollingChannel.class),
-			@XmlElement(name =  ShortName.FCNT, type = AbstractFlexContainer.class),
-			@XmlElement(name = DeviceLightFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DeviceLightFlexContainer.class),
-			@XmlElement(name = DeviceSmartElectricMeterFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DeviceSmartElectricMeterFlexContainer.class),
-			@XmlElement(name = DeviceWaterHeaterFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DeviceWaterHeaterFlexContainer.class),
-			@XmlElement(name = DeviceCameraFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DeviceCameraFlexContainer.class),
-			@XmlElement(name = DeviceCoffeeMachineFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DeviceCoffeeMachineFlexContainer.class),
-			@XmlElement(name = DeviceContactDetectorFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DeviceContactDetectorFlexContainer.class),
-			@XmlElement(name = DeviceDoorFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DeviceDoorFlexContainer.class),
-			@XmlElement(name = DeviceFloodDetectorFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DeviceFloodDetectorFlexContainer.class),
-			@XmlElement(name = DeviceGasValveFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DeviceGasValveFlexContainer.class),
-			@XmlElement(name = DeviceMotionDetectorFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DeviceMotionDetectorFlexContainer.class),
-			@XmlElement(name = DeviceSmokeDetectorFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DeviceSmokeDetectorFlexContainer.class),
-			@XmlElement(name = DeviceSmokeExtractorFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DeviceSmokeExtractorFlexContainer.class),
-			@XmlElement(name = DeviceSwitchButtonFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DeviceSwitchButtonFlexContainer.class),
-			@XmlElement(name = DeviceTemperatureDetectorFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DeviceTemperatureDetectorFlexContainer.class),
-			@XmlElement(name = DeviceThermostatFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DeviceThermostatFlexContainer.class),
-			@XmlElement(name = DeviceWarningDeviceFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DeviceWarningDeviceFlexContainer.class),
-			@XmlElement(name = DeviceWaterValveFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DeviceWaterValveFlexContainer.class),
-			@XmlElement(name = DeviceWeatherStationFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DeviceWeatherStationFlexContainer.class),
-			@XmlElement(name = AlarmSpeakerFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = AlarmSpeakerFlexContainer.class),
-			@XmlElement(name = AudioVolumeFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = AudioVolumeFlexContainer.class),
-			@XmlElement(name = BinarySwitchFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = BinarySwitchFlexContainer.class),
-			@XmlElement(name = BoilerFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = BoilerFlexContainer.class),
-			@XmlElement(name = BrightnessFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = BrightnessFlexContainer.class),
-			@XmlElement(name = ClockFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = ClockFlexContainer.class),
-			@XmlElement(name = ColourFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = ColourFlexContainer.class),
-			@XmlElement(name = ColourSaturationFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = ColourSaturationFlexContainer.class),
-			@XmlElement(name = DoorStatusFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DoorStatusFlexContainer.class),
-			@XmlElement(name = EnergyConsumptionFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = EnergyConsumptionFlexContainer.class),
-			@XmlElement(name = EnergyGenerationFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = EnergyGenerationFlexContainer.class),
-			@XmlElement(name = FaultDetectionFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = FaultDetectionFlexContainer.class),
-			@XmlElement(name = RelativeHumidityFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = RelativeHumidityFlexContainer.class),
-			@XmlElement(name = RunModeFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = RunModeFlexContainer.class),
-			@XmlElement(name = SmokeSensorFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = SmokeSensorFlexContainer.class),
-			@XmlElement(name = TemperatureFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = TemperatureFlexContainer.class),
-			@XmlElement(name = WaterLevelFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = WaterLevelFlexContainer.class),
-			@XmlElement(name = WaterSensorFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = WaterSensorFlexContainer.class),
-			@XmlElement(name = AtmosphericPressureSensorFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = AtmosphericPressureSensorFlexContainer.class),
-			@XmlElement(name = BrewingFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = BrewingFlexContainer.class),
-			@XmlElement(name = ContactSensorFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = ContactSensorFlexContainer.class),
-			@XmlElement(name = ExtendedCarbonDioxideSensorFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = ExtendedCarbonDioxideSensorFlexContainer.class),
-			@XmlElement(name = FoamingFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = FoamingFlexContainer.class),
-			@XmlElement(name = GrinderFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = GrinderFlexContainer.class),
-			@XmlElement(name = NoiseFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = NoiseFlexContainer.class),
-			@XmlElement(name = PersonSensorFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = PersonSensorFlexContainer.class),
-			@XmlElement(name = StreamingFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = StreamingFlexContainer.class),
-			@XmlElement(name = LockFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = LockFlexContainer.class),
-			@XmlElement(name = TimerFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = TimerFlexContainer.class),
-			@XmlElement(name = ToggleFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = ToggleFlexContainer.class),
-			@XmlElement(name = DeviceNumberDeviceFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DeviceNumberDeviceFlexContainer.class),
-			@XmlElement(name = NumberValueFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = NumberValueFlexContainer.class),
-			@XmlElement(name = DecrementNumberValueFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DecrementNumberValueFlexContainer.class),
-			@XmlElement(name = IncrementNumberValueFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = IncrementNumberValueFlexContainer.class),
-			@XmlElement(name = ResetNumberValueFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = ResetNumberValueFlexContainer.class)
-			})
+		@XmlElement(name = ShortName.CNT, namespace = "http://www.onem2m.org/xml/protocols", type = Container.class),
+		@XmlElement(name = ShortName.GROUP, namespace = "http://www.onem2m.org/xml/protocols", type = Group.class),
+		@XmlElement(name = ShortName.ACP, namespace = "http://www.onem2m.org/xml/protocols", type = AccessControlPolicy.class),
+		@XmlElement(name = ShortName.SUB, namespace = "http://www.onem2m.org/xml/protocols", type = Subscription.class),
+		@XmlElement(name = ShortName.PCH, namespace = "http://www.onem2m.org/xml/protocols", type = PollingChannel.class),
+		@XmlElement(name =  ShortName.FCNT, type = AbstractFlexContainer.class),
+		@XmlElement(name = AlarmSpeakerFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = AlarmSpeakerFlexContainer.class),
+		@XmlElement(name = AudioVideoInputFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = AudioVideoInputFlexContainer.class),
+		@XmlElement(name = AudioVolumeFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = AudioVolumeFlexContainer.class),
+		@XmlElement(name = UpVolumeFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = UpVolumeFlexContainer.class),
+		@XmlElement(name = DownVolumeFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DownVolumeFlexContainer.class),
+		@XmlElement(name = BatteryFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = BatteryFlexContainer.class),
+		@XmlElement(name = BinarySwitchFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = BinarySwitchFlexContainer.class),
+		@XmlElement(name = ToggleFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = ToggleFlexContainer.class),
+		@XmlElement(name = BioElectricalImpedanceAnalysisFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = BioElectricalImpedanceAnalysisFlexContainer.class),
+		@XmlElement(name = BoilerFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = BoilerFlexContainer.class),
+		@XmlElement(name = BrightnessFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = BrightnessFlexContainer.class),
+		@XmlElement(name = ClockFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = ClockFlexContainer.class),
+		@XmlElement(name = ColourFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = ColourFlexContainer.class),
+		@XmlElement(name = ColourSaturationFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = ColourSaturationFlexContainer.class),
+		@XmlElement(name = DoorStatusFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DoorStatusFlexContainer.class),
+		@XmlElement(name = ElectricVehicleConnectorFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = ElectricVehicleConnectorFlexContainer.class),
+		@XmlElement(name = EnergyConsumptionFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = EnergyConsumptionFlexContainer.class),
+		@XmlElement(name = EnergyGenerationFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = EnergyGenerationFlexContainer.class),
+		@XmlElement(name = FaultDetectionFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = FaultDetectionFlexContainer.class),
+		@XmlElement(name = HeightFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = HeightFlexContainer.class),
+		@XmlElement(name = HotWaterSupplyFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = HotWaterSupplyFlexContainer.class),
+		@XmlElement(name = KeypadFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = KeypadFlexContainer.class),
+		@XmlElement(name = MotionSensorFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = MotionSensorFlexContainer.class),
+		@XmlElement(name = OximeterFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = OximeterFlexContainer.class),
+		@XmlElement(name = PowerSaveFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = PowerSaveFlexContainer.class),
+		@XmlElement(name = PushButtonFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = PushButtonFlexContainer.class),
+		@XmlElement(name = RecorderFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = RecorderFlexContainer.class),
+		@XmlElement(name = RefrigerationFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = RefrigerationFlexContainer.class),
+		@XmlElement(name = RelativeHumidityFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = RelativeHumidityFlexContainer.class),
+		@XmlElement(name = RinseLevelFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = RinseLevelFlexContainer.class),
+		@XmlElement(name = RunModeFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = RunModeFlexContainer.class),
+		@XmlElement(name = SignalStrengthFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = SignalStrengthFlexContainer.class),
+		@XmlElement(name = SmokeSensorFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = SmokeSensorFlexContainer.class),
+		@XmlElement(name = SpinLevelFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = SpinLevelFlexContainer.class),
+		@XmlElement(name = TelevisionChannelFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = TelevisionChannelFlexContainer.class),
+		@XmlElement(name = UpChannelFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = UpChannelFlexContainer.class),
+		@XmlElement(name = DownChannelFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DownChannelFlexContainer.class),
+		@XmlElement(name = TemperatureFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = TemperatureFlexContainer.class),
+		@XmlElement(name = TemperatureAlarmFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = TemperatureAlarmFlexContainer.class),
+		@XmlElement(name = TimerFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = TimerFlexContainer.class),
+		@XmlElement(name = ActivateClockTimerFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = ActivateClockTimerFlexContainer.class),
+		@XmlElement(name = DeactivateClockTimerFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DeactivateClockTimerFlexContainer.class),
+		@XmlElement(name = TurboFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = TurboFlexContainer.class),
+		@XmlElement(name = WaterFlowFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = WaterFlowFlexContainer.class),
+		@XmlElement(name = WaterLevelFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = WaterLevelFlexContainer.class),
+		@XmlElement(name = WaterSensorFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = WaterSensorFlexContainer.class),
+		@XmlElement(name = WeightFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = WeightFlexContainer.class),
+		@XmlElement(name = WindFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = WindFlexContainer.class),
+		@XmlElement(name = StreamingFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = StreamingFlexContainer.class),
+		@XmlElement(name = PersonSensorFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = PersonSensorFlexContainer.class),
+		@XmlElement(name = BrewingFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = BrewingFlexContainer.class),
+		@XmlElement(name = LiquidLevelFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = LiquidLevelFlexContainer.class),
+		@XmlElement(name = GrinderFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = GrinderFlexContainer.class),
+		@XmlElement(name = FoamingFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = FoamingFlexContainer.class),
+		@XmlElement(name = KeepWarmFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = KeepWarmFlexContainer.class),
+		@XmlElement(name = ContactSensorFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = ContactSensorFlexContainer.class),
+		@XmlElement(name = AlarmSensorFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = AlarmSensorFlexContainer.class),
+		@XmlElement(name = LockFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = LockFlexContainer.class),
+		@XmlElement(name = AtmosphericPressureSensorFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = AtmosphericPressureSensorFlexContainer.class),
+		@XmlElement(name = NoiseFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = NoiseFlexContainer.class),
+		@XmlElement(name = ExtendedCarbonDioxideSensorFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = ExtendedCarbonDioxideSensorFlexContainer.class),
+		@XmlElement(name = NumberValueFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = NumberValueFlexContainer.class),
+		@XmlElement(name = DecrementNumberValueFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DecrementNumberValueFlexContainer.class),
+		@XmlElement(name = IncrementNumberValueFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = IncrementNumberValueFlexContainer.class),
+		@XmlElement(name = ResetNumberValueFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = ResetNumberValueFlexContainer.class),
+		@XmlElement(name = DeviceAirConditionerFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DeviceAirConditionerFlexContainer.class),
+		@XmlElement(name = DeviceClothesWasherFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DeviceClothesWasherFlexContainer.class),
+		@XmlElement(name = DeviceElectricVehicleChargerFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DeviceElectricVehicleChargerFlexContainer.class),
+		@XmlElement(name = DeviceLightFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DeviceLightFlexContainer.class),
+		@XmlElement(name = DeviceMicrogenerationFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DeviceMicrogenerationFlexContainer.class),
+		@XmlElement(name = DeviceOvenFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DeviceOvenFlexContainer.class),
+		@XmlElement(name = DeviceRefrigeratorFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DeviceRefrigeratorFlexContainer.class),
+		@XmlElement(name = DeviceRobotCleanerFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DeviceRobotCleanerFlexContainer.class),
+		@XmlElement(name = DeviceSmartElectricMeterFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DeviceSmartElectricMeterFlexContainer.class),
+		@XmlElement(name = DeviceStorageBatteryFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DeviceStorageBatteryFlexContainer.class),
+		@XmlElement(name = DeviceTelevisionFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DeviceTelevisionFlexContainer.class),
+		@XmlElement(name = DeviceThermostatFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DeviceThermostatFlexContainer.class),
+		@XmlElement(name = DeviceWaterHeaterFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DeviceWaterHeaterFlexContainer.class),
+		@XmlElement(name = DeviceCameraFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DeviceCameraFlexContainer.class),
+		@XmlElement(name = DeviceCoffeeMachineFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DeviceCoffeeMachineFlexContainer.class),
+		@XmlElement(name = DeviceContactDetectorFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DeviceContactDetectorFlexContainer.class),
+		@XmlElement(name = DeviceDoorFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DeviceDoorFlexContainer.class),
+		@XmlElement(name = DeviceFloodDetectorFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DeviceFloodDetectorFlexContainer.class),
+		@XmlElement(name = DeviceGasValveFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DeviceGasValveFlexContainer.class),
+		@XmlElement(name = DeviceMotionDetectorFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DeviceMotionDetectorFlexContainer.class),
+		@XmlElement(name = DeviceSmokeDetectorFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DeviceSmokeDetectorFlexContainer.class),
+		@XmlElement(name = DeviceSmokeExtractorFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DeviceSmokeExtractorFlexContainer.class),
+		@XmlElement(name = DeviceSwitchButtonFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DeviceSwitchButtonFlexContainer.class),
+		@XmlElement(name = DeviceTemperatureDetectorFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DeviceTemperatureDetectorFlexContainer.class),
+		@XmlElement(name = DeviceWarningDeviceFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DeviceWarningDeviceFlexContainer.class),
+		@XmlElement(name = DeviceWaterValveFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DeviceWaterValveFlexContainer.class),
+		@XmlElement(name = DeviceWeatherStationFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DeviceWeatherStationFlexContainer.class),
+		@XmlElement(name = DeviceNumberDeviceFlexContainer.SHORT_NAME, namespace="http://www.onem2m.org/xml/protocols/homedomain", type = DeviceNumberDeviceFlexContainer.class)
+	})
 	protected List<Resource> containerOrGroupOrAccessControlPolicy;
 
 	/**
