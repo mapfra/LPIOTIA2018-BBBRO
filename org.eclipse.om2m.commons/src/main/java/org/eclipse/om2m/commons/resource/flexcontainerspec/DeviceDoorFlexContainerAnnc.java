@@ -11,7 +11,7 @@ Device : DeviceDoorAnnc
 
 A door is a door.
 
-Created: 2017-09-28 17:26:40
+Created: 2018-06-11 12:14:18
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -72,7 +72,7 @@ public class DeviceDoorFlexContainerAnnc extends AbstractFlexContainerAnnc {
 		
 	}
 	
-	@XmlElement(name="batty", required=true, type=BatteryFlexContainerAnnc.class)
+	@XmlElement(name="batty", required=true, type=BatteryFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BatteryFlexContainer battery;
 	
 	
@@ -86,7 +86,7 @@ public class DeviceDoorFlexContainerAnnc extends AbstractFlexContainerAnnc {
 		return battery;
 	}
 	
-	@XmlElement(name="battyAnnc", required=true, type=BatteryFlexContainerAnnc.class)
+	@XmlElement(name="battyAnnc", required=true, type=BatteryFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BatteryFlexContainerAnnc batteryAnnc;
 	
 	
@@ -100,7 +100,7 @@ public class DeviceDoorFlexContainerAnnc extends AbstractFlexContainerAnnc {
 		return batteryAnnc;
 	}
 	
-	@XmlElement(name="dooSs", required=true, type=DoorStatusFlexContainerAnnc.class)
+	@XmlElement(name="dooSs", required=true, type=DoorStatusFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private DoorStatusFlexContainer doorStatus;
 	
 	
@@ -114,7 +114,7 @@ public class DeviceDoorFlexContainerAnnc extends AbstractFlexContainerAnnc {
 		return doorStatus;
 	}
 	
-	@XmlElement(name="dooSsAnnc", required=true, type=DoorStatusFlexContainerAnnc.class)
+	@XmlElement(name="dooSsAnnc", required=true, type=DoorStatusFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private DoorStatusFlexContainerAnnc doorStatusAnnc;
 	
 	
@@ -128,7 +128,7 @@ public class DeviceDoorFlexContainerAnnc extends AbstractFlexContainerAnnc {
 		return doorStatusAnnc;
 	}
 	
-	@XmlElement(name="lock", required=true, type=LockFlexContainerAnnc.class)
+	@XmlElement(name="lock", required=true, type=LockFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private LockFlexContainer lock;
 	
 	
@@ -142,7 +142,7 @@ public class DeviceDoorFlexContainerAnnc extends AbstractFlexContainerAnnc {
 		return lock;
 	}
 	
-	@XmlElement(name="lockAnnc", required=true, type=LockFlexContainerAnnc.class)
+	@XmlElement(name="lockAnnc", required=true, type=LockFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private LockFlexContainerAnnc lockAnnc;
 	
 	

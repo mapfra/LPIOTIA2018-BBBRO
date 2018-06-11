@@ -11,7 +11,7 @@ ModuleClass : Brightness
 
 This ModuleClass describes the brightness of a light, e.g. from  a lamp. Brightness is scaled as a percentage. A lamp or a monitor  can be adjusted to a level of light between very dim (0% is the  minimum brightness) and very bright (100% is the maximum  brightness).
 
-Created: 2017-09-28 17:26:40
+Created: 2018-06-11 12:14:17
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;

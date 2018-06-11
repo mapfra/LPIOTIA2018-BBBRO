@@ -11,7 +11,7 @@ Device : DeviceTelevisionAnnc
 
 A stelevision (TV) is a home appliance used to show audio and visual content such as broadcasting programs and network streaming. This TV information model provides capabilities to control and monitor TV specific resources.
 
-Created: 2017-09-28 17:26:40
+Created: 2018-06-11 12:14:18
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -81,7 +81,7 @@ public class DeviceTelevisionFlexContainerAnnc extends AbstractFlexContainerAnnc
 		
 	}
 	
-	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainerAnnc.class)
+	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BinarySwitchFlexContainer binarySwitch;
 	
 	
@@ -95,7 +95,7 @@ public class DeviceTelevisionFlexContainerAnnc extends AbstractFlexContainerAnnc
 		return binarySwitch;
 	}
 	
-	@XmlElement(name="binShAnnc", required=true, type=BinarySwitchFlexContainerAnnc.class)
+	@XmlElement(name="binShAnnc", required=true, type=BinarySwitchFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BinarySwitchFlexContainerAnnc binarySwitchAnnc;
 	
 	
@@ -109,7 +109,7 @@ public class DeviceTelevisionFlexContainerAnnc extends AbstractFlexContainerAnnc
 		return binarySwitchAnnc;
 	}
 	
-	@XmlElement(name="audVe", required=true, type=AudioVolumeFlexContainerAnnc.class)
+	@XmlElement(name="audVe", required=true, type=AudioVolumeFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private AudioVolumeFlexContainer audioVolume;
 	
 	
@@ -123,7 +123,7 @@ public class DeviceTelevisionFlexContainerAnnc extends AbstractFlexContainerAnnc
 		return audioVolume;
 	}
 	
-	@XmlElement(name="audVeAnnc", required=true, type=AudioVolumeFlexContainerAnnc.class)
+	@XmlElement(name="audVeAnnc", required=true, type=AudioVolumeFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private AudioVolumeFlexContainerAnnc audioVolumeAnnc;
 	
 	
@@ -137,7 +137,7 @@ public class DeviceTelevisionFlexContainerAnnc extends AbstractFlexContainerAnnc
 		return audioVolumeAnnc;
 	}
 	
-	@XmlElement(name="telCl", required=true, type=TelevisionChannelFlexContainerAnnc.class)
+	@XmlElement(name="telCl", required=true, type=TelevisionChannelFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private TelevisionChannelFlexContainer televisionChannel;
 	
 	
@@ -151,7 +151,7 @@ public class DeviceTelevisionFlexContainerAnnc extends AbstractFlexContainerAnnc
 		return televisionChannel;
 	}
 	
-	@XmlElement(name="telClAnnc", required=true, type=TelevisionChannelFlexContainerAnnc.class)
+	@XmlElement(name="telClAnnc", required=true, type=TelevisionChannelFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private TelevisionChannelFlexContainerAnnc televisionChannelAnnc;
 	
 	
@@ -165,7 +165,7 @@ public class DeviceTelevisionFlexContainerAnnc extends AbstractFlexContainerAnnc
 		return televisionChannelAnnc;
 	}
 	
-	@XmlElement(name="auVIt", required=true, type=AudioVideoInputFlexContainerAnnc.class)
+	@XmlElement(name="auVIt", required=true, type=AudioVideoInputFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private AudioVideoInputFlexContainer audioVideoInput;
 	
 	
@@ -179,7 +179,7 @@ public class DeviceTelevisionFlexContainerAnnc extends AbstractFlexContainerAnnc
 		return audioVideoInput;
 	}
 	
-	@XmlElement(name="auVItAnnc", required=true, type=AudioVideoInputFlexContainerAnnc.class)
+	@XmlElement(name="auVItAnnc", required=true, type=AudioVideoInputFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private AudioVideoInputFlexContainerAnnc audioVideoInputAnnc;
 	
 	

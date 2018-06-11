@@ -11,7 +11,7 @@ ModuleClass : EnergyConsumption
 
 This ModuleClass describes the energy consumed by the device  since power up. One particular use case for energyConsumption  ModuleClass is smart meter.
 
-Created: 2017-09-28 17:26:40
+Created: 2018-06-11 12:14:17
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;

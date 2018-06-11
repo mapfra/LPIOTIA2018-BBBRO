@@ -11,7 +11,7 @@ Device : DeviceMicrogenerationAnnc
 
 A microgeneration is a Home Energy Management System (HEMS) device that is used to create energy. Examples of microgeneration devices are photovoltaics device or fuel cells.
 
-Created: 2017-09-28 17:26:40
+Created: 2018-06-11 12:14:18
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -81,7 +81,7 @@ public class DeviceMicrogenerationFlexContainerAnnc extends AbstractFlexContaine
 		
 	}
 	
-	@XmlElement(name="fauDn", required=true, type=FaultDetectionFlexContainerAnnc.class)
+	@XmlElement(name="fauDn", required=true, type=FaultDetectionFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private FaultDetectionFlexContainer faultDetection;
 	
 	
@@ -95,7 +95,7 @@ public class DeviceMicrogenerationFlexContainerAnnc extends AbstractFlexContaine
 		return faultDetection;
 	}
 	
-	@XmlElement(name="fauDnAnnc", required=true, type=FaultDetectionFlexContainerAnnc.class)
+	@XmlElement(name="fauDnAnnc", required=true, type=FaultDetectionFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private FaultDetectionFlexContainerAnnc faultDetectionAnnc;
 	
 	
@@ -109,7 +109,7 @@ public class DeviceMicrogenerationFlexContainerAnnc extends AbstractFlexContaine
 		return faultDetectionAnnc;
 	}
 	
-	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainerAnnc.class)
+	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BinarySwitchFlexContainer binarySwitch;
 	
 	
@@ -123,7 +123,7 @@ public class DeviceMicrogenerationFlexContainerAnnc extends AbstractFlexContaine
 		return binarySwitch;
 	}
 	
-	@XmlElement(name="binShAnnc", required=true, type=BinarySwitchFlexContainerAnnc.class)
+	@XmlElement(name="binShAnnc", required=true, type=BinarySwitchFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BinarySwitchFlexContainerAnnc binarySwitchAnnc;
 	
 	
@@ -137,7 +137,7 @@ public class DeviceMicrogenerationFlexContainerAnnc extends AbstractFlexContaine
 		return binarySwitchAnnc;
 	}
 	
-	@XmlElement(name="runMe", required=true, type=RunModeFlexContainerAnnc.class)
+	@XmlElement(name="runMe", required=true, type=RunModeFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private RunModeFlexContainer runMode;
 	
 	
@@ -151,7 +151,7 @@ public class DeviceMicrogenerationFlexContainerAnnc extends AbstractFlexContaine
 		return runMode;
 	}
 	
-	@XmlElement(name="runMeAnnc", required=true, type=RunModeFlexContainerAnnc.class)
+	@XmlElement(name="runMeAnnc", required=true, type=RunModeFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private RunModeFlexContainerAnnc runModeAnnc;
 	
 	
@@ -165,7 +165,7 @@ public class DeviceMicrogenerationFlexContainerAnnc extends AbstractFlexContaine
 		return runModeAnnc;
 	}
 	
-	@XmlElement(name="eneGn", required=true, type=EnergyGenerationFlexContainerAnnc.class)
+	@XmlElement(name="eneGn", required=true, type=EnergyGenerationFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private EnergyGenerationFlexContainer energyGeneration;
 	
 	
@@ -179,7 +179,7 @@ public class DeviceMicrogenerationFlexContainerAnnc extends AbstractFlexContaine
 		return energyGeneration;
 	}
 	
-	@XmlElement(name="eneGnAnnc", required=true, type=EnergyGenerationFlexContainerAnnc.class)
+	@XmlElement(name="eneGnAnnc", required=true, type=EnergyGenerationFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private EnergyGenerationFlexContainerAnnc energyGenerationAnnc;
 	
 	

@@ -11,7 +11,7 @@ Device : DeviceSmokeExtractorAnnc
 
 A SmokeExtractor is a device that is able to extract fire.
 
-Created: 2017-09-28 17:26:40
+Created: 2018-06-11 12:14:18
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -63,7 +63,7 @@ public class DeviceSmokeExtractorFlexContainerAnnc extends AbstractFlexContainer
 		
 	}
 	
-	@XmlElement(name="fauDn", required=true, type=FaultDetectionFlexContainerAnnc.class)
+	@XmlElement(name="fauDn", required=true, type=FaultDetectionFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private FaultDetectionFlexContainer faultDetection;
 	
 	
@@ -77,7 +77,7 @@ public class DeviceSmokeExtractorFlexContainerAnnc extends AbstractFlexContainer
 		return faultDetection;
 	}
 	
-	@XmlElement(name="fauDnAnnc", required=true, type=FaultDetectionFlexContainerAnnc.class)
+	@XmlElement(name="fauDnAnnc", required=true, type=FaultDetectionFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private FaultDetectionFlexContainerAnnc faultDetectionAnnc;
 	
 	
@@ -91,7 +91,7 @@ public class DeviceSmokeExtractorFlexContainerAnnc extends AbstractFlexContainer
 		return faultDetectionAnnc;
 	}
 	
-	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainerAnnc.class)
+	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BinarySwitchFlexContainer binarySwitch;
 	
 	
@@ -105,7 +105,7 @@ public class DeviceSmokeExtractorFlexContainerAnnc extends AbstractFlexContainer
 		return binarySwitch;
 	}
 	
-	@XmlElement(name="binShAnnc", required=true, type=BinarySwitchFlexContainerAnnc.class)
+	@XmlElement(name="binShAnnc", required=true, type=BinarySwitchFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BinarySwitchFlexContainerAnnc binarySwitchAnnc;
 	
 	

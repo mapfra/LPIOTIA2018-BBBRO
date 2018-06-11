@@ -11,7 +11,7 @@ Device : DeviceOvenAnnc
 
 An oven is a home appliance used to roast and heat food in a complete stove. This information model is applicable to different types of ovens: gas ovens, electrical ovens, steam ovens, microwave ovens, etc. This information model provides capabilities to interact with specific functions and resources of ovens.
 
-Created: 2017-09-28 17:26:40
+Created: 2018-06-11 12:14:18
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -81,7 +81,7 @@ public class DeviceOvenFlexContainerAnnc extends AbstractFlexContainerAnnc {
 		
 	}
 	
-	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainerAnnc.class)
+	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BinarySwitchFlexContainer binarySwitch;
 	
 	
@@ -95,7 +95,7 @@ public class DeviceOvenFlexContainerAnnc extends AbstractFlexContainerAnnc {
 		return binarySwitch;
 	}
 	
-	@XmlElement(name="binShAnnc", required=true, type=BinarySwitchFlexContainerAnnc.class)
+	@XmlElement(name="binShAnnc", required=true, type=BinarySwitchFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BinarySwitchFlexContainerAnnc binarySwitchAnnc;
 	
 	
@@ -109,7 +109,7 @@ public class DeviceOvenFlexContainerAnnc extends AbstractFlexContainerAnnc {
 		return binarySwitchAnnc;
 	}
 	
-	@XmlElement(name="runMe", required=true, type=RunModeFlexContainerAnnc.class)
+	@XmlElement(name="runMe", required=true, type=RunModeFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private RunModeFlexContainer runMode;
 	
 	
@@ -123,7 +123,7 @@ public class DeviceOvenFlexContainerAnnc extends AbstractFlexContainerAnnc {
 		return runMode;
 	}
 	
-	@XmlElement(name="runMeAnnc", required=true, type=RunModeFlexContainerAnnc.class)
+	@XmlElement(name="runMeAnnc", required=true, type=RunModeFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private RunModeFlexContainerAnnc runModeAnnc;
 	
 	
@@ -137,7 +137,7 @@ public class DeviceOvenFlexContainerAnnc extends AbstractFlexContainerAnnc {
 		return runModeAnnc;
 	}
 	
-	@XmlElement(name="timer", required=true, type=TimerFlexContainerAnnc.class)
+	@XmlElement(name="timer", required=true, type=TimerFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private TimerFlexContainer timer;
 	
 	
@@ -151,7 +151,7 @@ public class DeviceOvenFlexContainerAnnc extends AbstractFlexContainerAnnc {
 		return timer;
 	}
 	
-	@XmlElement(name="timerAnnc", required=true, type=TimerFlexContainerAnnc.class)
+	@XmlElement(name="timerAnnc", required=true, type=TimerFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private TimerFlexContainerAnnc timerAnnc;
 	
 	
@@ -165,7 +165,7 @@ public class DeviceOvenFlexContainerAnnc extends AbstractFlexContainerAnnc {
 		return timerAnnc;
 	}
 	
-	@XmlElement(name="tempe", required=true, type=TemperatureFlexContainerAnnc.class)
+	@XmlElement(name="tempe", required=true, type=TemperatureFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private TemperatureFlexContainer temperature;
 	
 	
@@ -179,7 +179,7 @@ public class DeviceOvenFlexContainerAnnc extends AbstractFlexContainerAnnc {
 		return temperature;
 	}
 	
-	@XmlElement(name="tempeAnnc", required=true, type=TemperatureFlexContainerAnnc.class)
+	@XmlElement(name="tempeAnnc", required=true, type=TemperatureFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private TemperatureFlexContainerAnnc temperatureAnnc;
 	
 	

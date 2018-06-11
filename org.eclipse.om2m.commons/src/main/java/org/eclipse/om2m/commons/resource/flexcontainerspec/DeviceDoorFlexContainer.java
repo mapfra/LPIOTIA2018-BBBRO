@@ -11,7 +11,7 @@ Device : DeviceDoor
 
 A door is a door.
 
-Created: 2017-09-28 17:26:40
+Created: 2018-06-11 12:14:18
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -57,7 +57,7 @@ public class DeviceDoorFlexContainer extends AbstractFlexContainer {
 		}
 	}
 	
-	@XmlElement(name="batty", required=true, type=BatteryFlexContainer.class)
+	@XmlElement(name="batty", required=true, type=BatteryFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BatteryFlexContainer battery;
 	
 	
@@ -71,7 +71,7 @@ public class DeviceDoorFlexContainer extends AbstractFlexContainer {
 		return battery;
 	}
 	
-	@XmlElement(name="dooSs", required=true, type=DoorStatusFlexContainer.class)
+	@XmlElement(name="dooSs", required=true, type=DoorStatusFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private DoorStatusFlexContainer doorStatus;
 	
 	
@@ -85,7 +85,7 @@ public class DeviceDoorFlexContainer extends AbstractFlexContainer {
 		return doorStatus;
 	}
 	
-	@XmlElement(name="lock", required=true, type=LockFlexContainer.class)
+	@XmlElement(name="lock", required=true, type=LockFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private LockFlexContainer lock;
 	
 	

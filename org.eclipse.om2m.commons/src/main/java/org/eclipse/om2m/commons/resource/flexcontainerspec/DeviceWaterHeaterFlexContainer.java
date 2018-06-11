@@ -11,7 +11,7 @@ Device : DeviceWaterHeater
 
 A water heater is a device that is used to provide hot water through home facilities.
 
-Created: 2017-09-28 17:26:40
+Created: 2018-06-11 12:14:18
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -69,7 +69,7 @@ public class DeviceWaterHeaterFlexContainer extends AbstractFlexContainer {
 		}
 	}
 	
-	@XmlElement(name="fauDn", required=true, type=FaultDetectionFlexContainer.class)
+	@XmlElement(name="fauDn", required=true, type=FaultDetectionFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private FaultDetectionFlexContainer faultDetection;
 	
 	
@@ -83,7 +83,7 @@ public class DeviceWaterHeaterFlexContainer extends AbstractFlexContainer {
 		return faultDetection;
 	}
 	
-	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainer.class)
+	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BinarySwitchFlexContainer binarySwitch;
 	
 	
@@ -97,7 +97,7 @@ public class DeviceWaterHeaterFlexContainer extends AbstractFlexContainer {
 		return binarySwitch;
 	}
 	
-	@XmlElement(name="runMe", required=true, type=RunModeFlexContainer.class)
+	@XmlElement(name="runMe", required=true, type=RunModeFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private RunModeFlexContainer runMode;
 	
 	
@@ -111,7 +111,7 @@ public class DeviceWaterHeaterFlexContainer extends AbstractFlexContainer {
 		return runMode;
 	}
 	
-	@XmlElement(name="clock", required=true, type=ClockFlexContainer.class)
+	@XmlElement(name="clock", required=true, type=ClockFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private ClockFlexContainer clock;
 	
 	
@@ -125,7 +125,7 @@ public class DeviceWaterHeaterFlexContainer extends AbstractFlexContainer {
 		return clock;
 	}
 	
-	@XmlElement(name="boilr", required=true, type=BoilerFlexContainer.class)
+	@XmlElement(name="boilr", required=true, type=BoilerFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BoilerFlexContainer boiler;
 	
 	
@@ -139,7 +139,7 @@ public class DeviceWaterHeaterFlexContainer extends AbstractFlexContainer {
 		return boiler;
 	}
 	
-	@XmlElement(name="hoWSy", required=true, type=HotWaterSupplyFlexContainer.class)
+	@XmlElement(name="hoWSy", required=true, type=HotWaterSupplyFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private HotWaterSupplyFlexContainer hotWaterSupply;
 	
 	

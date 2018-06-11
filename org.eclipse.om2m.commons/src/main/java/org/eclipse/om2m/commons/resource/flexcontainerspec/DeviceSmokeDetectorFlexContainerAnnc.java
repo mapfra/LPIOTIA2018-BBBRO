@@ -11,7 +11,7 @@ Device : DeviceSmokeDetectorAnnc
 
 A SmokeDetector is a device that triggers alarm in case of fire detection.
 
-Created: 2017-09-28 17:26:40
+Created: 2018-06-11 12:14:18
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -54,7 +54,7 @@ public class DeviceSmokeDetectorFlexContainerAnnc extends AbstractFlexContainerA
 		
 	}
 	
-	@XmlElement(name="smoSr", required=true, type=SmokeSensorFlexContainerAnnc.class)
+	@XmlElement(name="smoSr", required=true, type=SmokeSensorFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private SmokeSensorFlexContainer smokeSensor;
 	
 	
@@ -68,7 +68,7 @@ public class DeviceSmokeDetectorFlexContainerAnnc extends AbstractFlexContainerA
 		return smokeSensor;
 	}
 	
-	@XmlElement(name="smoSrAnnc", required=true, type=SmokeSensorFlexContainerAnnc.class)
+	@XmlElement(name="smoSrAnnc", required=true, type=SmokeSensorFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private SmokeSensorFlexContainerAnnc smokeSensorAnnc;
 	
 	

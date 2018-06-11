@@ -11,7 +11,7 @@ Action : downChannel
 
 Change the current channel to the previous channel in the  stored list of available channels. If the current channel is the  first one in the list, the new set channel may be the last one in  the list.
 
-Created: 2017-09-28 17:26:40
+Created: 2018-06-11 12:14:18
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;

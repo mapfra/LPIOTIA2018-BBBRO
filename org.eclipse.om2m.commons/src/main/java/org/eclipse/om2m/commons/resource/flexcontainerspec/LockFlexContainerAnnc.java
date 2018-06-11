@@ -11,7 +11,7 @@ ModuleClass : LockAnnc
 
 This ModuleClass manages lock feature.
 
-Created: 2017-09-28 17:26:40
+Created: 2018-06-11 12:14:18
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;

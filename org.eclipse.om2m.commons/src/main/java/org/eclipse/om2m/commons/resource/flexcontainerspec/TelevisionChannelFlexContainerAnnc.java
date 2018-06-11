@@ -11,7 +11,7 @@ ModuleClass : TelevisionChannelAnnc
 
 This ModuleClass provides capabilities to set and get channels  of a device that has a channel list.
 
-Created: 2017-09-28 17:26:40
+Created: 2018-06-11 12:14:18
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -53,7 +53,7 @@ public class TelevisionChannelFlexContainerAnnc extends AbstractFlexContainerAnn
 		}
 	}
 	
-	@XmlElement(name=UpChannelFlexContainerAnnc.SHORT_NAME, required=true, type=UpChannelFlexContainerAnnc.class)
+	@XmlElement(name=UpChannelFlexContainerAnnc.SHORT_NAME, required=true, type=UpChannelFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private UpChannelFlexContainerAnnc upChannelAnnc;
 	
 	
@@ -67,7 +67,7 @@ public class TelevisionChannelFlexContainerAnnc extends AbstractFlexContainerAnn
 		return upChannelAnnc;
 	}
 	
-	@XmlElement(name=DownChannelFlexContainerAnnc.SHORT_NAME, required=true, type=DownChannelFlexContainerAnnc.class)
+	@XmlElement(name=DownChannelFlexContainerAnnc.SHORT_NAME, required=true, type=DownChannelFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private DownChannelFlexContainerAnnc downChannelAnnc;
 	
 	

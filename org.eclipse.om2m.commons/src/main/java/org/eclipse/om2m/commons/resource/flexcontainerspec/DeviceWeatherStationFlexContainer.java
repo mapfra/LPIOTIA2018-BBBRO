@@ -11,7 +11,7 @@ Device : DeviceWeatherStation
 
 A WeatherStation is a device that provides weather information.
 
-Created: 2017-09-28 17:26:40
+Created: 2018-06-11 12:14:18
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -65,7 +65,7 @@ public class DeviceWeatherStationFlexContainer extends AbstractFlexContainer {
 		}
 	}
 	
-	@XmlElement(name="tempe", required=true, type=TemperatureFlexContainer.class)
+	@XmlElement(name="tempe", required=true, type=TemperatureFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private TemperatureFlexContainer temperature;
 	
 	
@@ -79,7 +79,7 @@ public class DeviceWeatherStationFlexContainer extends AbstractFlexContainer {
 		return temperature;
 	}
 	
-	@XmlElement(name="relHy", required=true, type=RelativeHumidityFlexContainer.class)
+	@XmlElement(name="relHy", required=true, type=RelativeHumidityFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private RelativeHumidityFlexContainer relativeHumidity;
 	
 	
@@ -93,7 +93,7 @@ public class DeviceWeatherStationFlexContainer extends AbstractFlexContainer {
 		return relativeHumidity;
 	}
 	
-	@XmlElement(name="atPSr", required=true, type=AtmosphericPressureSensorFlexContainer.class)
+	@XmlElement(name="atPSr", required=true, type=AtmosphericPressureSensorFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private AtmosphericPressureSensorFlexContainer atmosphericPressureSensor;
 	
 	
@@ -107,7 +107,7 @@ public class DeviceWeatherStationFlexContainer extends AbstractFlexContainer {
 		return atmosphericPressureSensor;
 	}
 	
-	@XmlElement(name="noise", required=true, type=NoiseFlexContainer.class)
+	@XmlElement(name="noise", required=true, type=NoiseFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private NoiseFlexContainer noise;
 	
 	
@@ -121,7 +121,7 @@ public class DeviceWeatherStationFlexContainer extends AbstractFlexContainer {
 		return noise;
 	}
 	
-	@XmlElement(name="eCDSr", required=true, type=ExtendedCarbonDioxideSensorFlexContainer.class)
+	@XmlElement(name="eCDSr", required=true, type=ExtendedCarbonDioxideSensorFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private ExtendedCarbonDioxideSensorFlexContainer extendedCarbonDioxideSensor;
 	
 	

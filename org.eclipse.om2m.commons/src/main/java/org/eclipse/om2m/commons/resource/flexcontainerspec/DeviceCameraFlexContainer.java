@@ -11,7 +11,7 @@ Device : DeviceCamera
 
 A Camera is a device that provides video streaming feature.
 
-Created: 2017-09-28 17:26:40
+Created: 2018-06-11 12:14:18
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -57,7 +57,7 @@ public class DeviceCameraFlexContainer extends AbstractFlexContainer {
 		}
 	}
 	
-	@XmlElement(name="motSr", required=true, type=MotionSensorFlexContainer.class)
+	@XmlElement(name="motSr", required=true, type=MotionSensorFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private MotionSensorFlexContainer motionSensor;
 	
 	
@@ -71,7 +71,7 @@ public class DeviceCameraFlexContainer extends AbstractFlexContainer {
 		return motionSensor;
 	}
 	
-	@XmlElement(name="streg", required=true, type=StreamingFlexContainer.class)
+	@XmlElement(name="streg", required=true, type=StreamingFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private StreamingFlexContainer streaming;
 	
 	
@@ -85,7 +85,7 @@ public class DeviceCameraFlexContainer extends AbstractFlexContainer {
 		return streaming;
 	}
 	
-	@XmlElement(name="perSr", required=true, type=PersonSensorFlexContainer.class)
+	@XmlElement(name="perSr", required=true, type=PersonSensorFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private PersonSensorFlexContainer personSensor;
 	
 	

@@ -11,7 +11,7 @@ Device : DeviceAirConditionerAnnc
 
 An air conditioner is a home appliance used to alter the properties of air (primarily temperature and humidity) to more comfortable conditions. This air conditioner information model provides capabilities to control and monitor air conditioner specific functions and resources.
 
-Created: 2017-09-28 17:26:40
+Created: 2018-06-11 12:14:18
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -99,7 +99,7 @@ public class DeviceAirConditionerFlexContainerAnnc extends AbstractFlexContainer
 		
 	}
 	
-	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainerAnnc.class)
+	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BinarySwitchFlexContainer binarySwitch;
 	
 	
@@ -113,7 +113,7 @@ public class DeviceAirConditionerFlexContainerAnnc extends AbstractFlexContainer
 		return binarySwitch;
 	}
 	
-	@XmlElement(name="binShAnnc", required=true, type=BinarySwitchFlexContainerAnnc.class)
+	@XmlElement(name="binShAnnc", required=true, type=BinarySwitchFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BinarySwitchFlexContainerAnnc binarySwitchAnnc;
 	
 	
@@ -127,7 +127,7 @@ public class DeviceAirConditionerFlexContainerAnnc extends AbstractFlexContainer
 		return binarySwitchAnnc;
 	}
 	
-	@XmlElement(name="runMe", required=true, type=RunModeFlexContainerAnnc.class)
+	@XmlElement(name="runMe", required=true, type=RunModeFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private RunModeFlexContainer runMode;
 	
 	
@@ -141,7 +141,7 @@ public class DeviceAirConditionerFlexContainerAnnc extends AbstractFlexContainer
 		return runMode;
 	}
 	
-	@XmlElement(name="runMeAnnc", required=true, type=RunModeFlexContainerAnnc.class)
+	@XmlElement(name="runMeAnnc", required=true, type=RunModeFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private RunModeFlexContainerAnnc runModeAnnc;
 	
 	
@@ -155,7 +155,7 @@ public class DeviceAirConditionerFlexContainerAnnc extends AbstractFlexContainer
 		return runModeAnnc;
 	}
 	
-	@XmlElement(name="tempe", required=true, type=TemperatureFlexContainerAnnc.class)
+	@XmlElement(name="tempe", required=true, type=TemperatureFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private TemperatureFlexContainer temperature;
 	
 	
@@ -169,7 +169,7 @@ public class DeviceAirConditionerFlexContainerAnnc extends AbstractFlexContainer
 		return temperature;
 	}
 	
-	@XmlElement(name="tempeAnnc", required=true, type=TemperatureFlexContainerAnnc.class)
+	@XmlElement(name="tempeAnnc", required=true, type=TemperatureFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private TemperatureFlexContainerAnnc temperatureAnnc;
 	
 	
@@ -183,7 +183,7 @@ public class DeviceAirConditionerFlexContainerAnnc extends AbstractFlexContainer
 		return temperatureAnnc;
 	}
 	
-	@XmlElement(name="timer", required=true, type=TimerFlexContainerAnnc.class)
+	@XmlElement(name="timer", required=true, type=TimerFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private TimerFlexContainer timer;
 	
 	
@@ -197,7 +197,7 @@ public class DeviceAirConditionerFlexContainerAnnc extends AbstractFlexContainer
 		return timer;
 	}
 	
-	@XmlElement(name="timerAnnc", required=true, type=TimerFlexContainerAnnc.class)
+	@XmlElement(name="timerAnnc", required=true, type=TimerFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private TimerFlexContainerAnnc timerAnnc;
 	
 	
@@ -211,7 +211,7 @@ public class DeviceAirConditionerFlexContainerAnnc extends AbstractFlexContainer
 		return timerAnnc;
 	}
 	
-	@XmlElement(name="turbo", required=true, type=TurboFlexContainerAnnc.class)
+	@XmlElement(name="turbo", required=true, type=TurboFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private TurboFlexContainer turbo;
 	
 	
@@ -225,7 +225,7 @@ public class DeviceAirConditionerFlexContainerAnnc extends AbstractFlexContainer
 		return turbo;
 	}
 	
-	@XmlElement(name="turboAnnc", required=true, type=TurboFlexContainerAnnc.class)
+	@XmlElement(name="turboAnnc", required=true, type=TurboFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private TurboFlexContainerAnnc turboAnnc;
 	
 	
@@ -239,7 +239,7 @@ public class DeviceAirConditionerFlexContainerAnnc extends AbstractFlexContainer
 		return turboAnnc;
 	}
 	
-	@XmlElement(name="wind", required=true, type=WindFlexContainerAnnc.class)
+	@XmlElement(name="wind", required=true, type=WindFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private WindFlexContainer wind;
 	
 	
@@ -253,7 +253,7 @@ public class DeviceAirConditionerFlexContainerAnnc extends AbstractFlexContainer
 		return wind;
 	}
 	
-	@XmlElement(name="windAnnc", required=true, type=WindFlexContainerAnnc.class)
+	@XmlElement(name="windAnnc", required=true, type=WindFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private WindFlexContainerAnnc windAnnc;
 	
 	

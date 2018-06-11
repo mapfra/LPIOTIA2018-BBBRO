@@ -11,7 +11,7 @@ Device : DeviceLightAnnc
 
 A light is a device that is used to control the state of an illumination device.
 
-Created: 2017-09-28 17:26:40
+Created: 2018-06-11 12:14:18
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -99,7 +99,7 @@ public class DeviceLightFlexContainerAnnc extends AbstractFlexContainerAnnc {
 		
 	}
 	
-	@XmlElement(name="fauDn", required=true, type=FaultDetectionFlexContainerAnnc.class)
+	@XmlElement(name="fauDn", required=true, type=FaultDetectionFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private FaultDetectionFlexContainer faultDetection;
 	
 	
@@ -113,7 +113,7 @@ public class DeviceLightFlexContainerAnnc extends AbstractFlexContainerAnnc {
 		return faultDetection;
 	}
 	
-	@XmlElement(name="fauDnAnnc", required=true, type=FaultDetectionFlexContainerAnnc.class)
+	@XmlElement(name="fauDnAnnc", required=true, type=FaultDetectionFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private FaultDetectionFlexContainerAnnc faultDetectionAnnc;
 	
 	
@@ -127,7 +127,7 @@ public class DeviceLightFlexContainerAnnc extends AbstractFlexContainerAnnc {
 		return faultDetectionAnnc;
 	}
 	
-	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainerAnnc.class)
+	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BinarySwitchFlexContainer binarySwitch;
 	
 	
@@ -141,7 +141,7 @@ public class DeviceLightFlexContainerAnnc extends AbstractFlexContainerAnnc {
 		return binarySwitch;
 	}
 	
-	@XmlElement(name="binShAnnc", required=true, type=BinarySwitchFlexContainerAnnc.class)
+	@XmlElement(name="binShAnnc", required=true, type=BinarySwitchFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BinarySwitchFlexContainerAnnc binarySwitchAnnc;
 	
 	
@@ -155,7 +155,7 @@ public class DeviceLightFlexContainerAnnc extends AbstractFlexContainerAnnc {
 		return binarySwitchAnnc;
 	}
 	
-	@XmlElement(name="runMe", required=true, type=RunModeFlexContainerAnnc.class)
+	@XmlElement(name="runMe", required=true, type=RunModeFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private RunModeFlexContainer runMode;
 	
 	
@@ -169,7 +169,7 @@ public class DeviceLightFlexContainerAnnc extends AbstractFlexContainerAnnc {
 		return runMode;
 	}
 	
-	@XmlElement(name="runMeAnnc", required=true, type=RunModeFlexContainerAnnc.class)
+	@XmlElement(name="runMeAnnc", required=true, type=RunModeFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private RunModeFlexContainerAnnc runModeAnnc;
 	
 	
@@ -183,7 +183,7 @@ public class DeviceLightFlexContainerAnnc extends AbstractFlexContainerAnnc {
 		return runModeAnnc;
 	}
 	
-	@XmlElement(name="color", required=true, type=ColourFlexContainerAnnc.class)
+	@XmlElement(name="color", required=true, type=ColourFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private ColourFlexContainer colour;
 	
 	
@@ -197,7 +197,7 @@ public class DeviceLightFlexContainerAnnc extends AbstractFlexContainerAnnc {
 		return colour;
 	}
 	
-	@XmlElement(name="colorAnnc", required=true, type=ColourFlexContainerAnnc.class)
+	@XmlElement(name="colorAnnc", required=true, type=ColourFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private ColourFlexContainerAnnc colourAnnc;
 	
 	
@@ -211,7 +211,7 @@ public class DeviceLightFlexContainerAnnc extends AbstractFlexContainerAnnc {
 		return colourAnnc;
 	}
 	
-	@XmlElement(name="colSn", required=true, type=ColourSaturationFlexContainerAnnc.class)
+	@XmlElement(name="colSn", required=true, type=ColourSaturationFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private ColourSaturationFlexContainer colourSaturation;
 	
 	
@@ -225,7 +225,7 @@ public class DeviceLightFlexContainerAnnc extends AbstractFlexContainerAnnc {
 		return colourSaturation;
 	}
 	
-	@XmlElement(name="colSnAnnc", required=true, type=ColourSaturationFlexContainerAnnc.class)
+	@XmlElement(name="colSnAnnc", required=true, type=ColourSaturationFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private ColourSaturationFlexContainerAnnc colourSaturationAnnc;
 	
 	
@@ -239,7 +239,7 @@ public class DeviceLightFlexContainerAnnc extends AbstractFlexContainerAnnc {
 		return colourSaturationAnnc;
 	}
 	
-	@XmlElement(name="brigs", required=true, type=BrightnessFlexContainerAnnc.class)
+	@XmlElement(name="brigs", required=true, type=BrightnessFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BrightnessFlexContainer brightness;
 	
 	
@@ -253,7 +253,7 @@ public class DeviceLightFlexContainerAnnc extends AbstractFlexContainerAnnc {
 		return brightness;
 	}
 	
-	@XmlElement(name="brigsAnnc", required=true, type=BrightnessFlexContainerAnnc.class)
+	@XmlElement(name="brigsAnnc", required=true, type=BrightnessFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BrightnessFlexContainerAnnc brightnessAnnc;
 	
 	

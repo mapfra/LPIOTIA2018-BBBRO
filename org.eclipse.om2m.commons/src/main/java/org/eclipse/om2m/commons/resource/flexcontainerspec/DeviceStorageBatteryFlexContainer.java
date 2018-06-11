@@ -11,7 +11,7 @@ Device : DeviceStorageBattery
 
 A storage battery is a HEMS device that is used to provide the home with electrical energy.
 
-Created: 2017-09-28 17:26:40
+Created: 2018-06-11 12:14:18
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -61,7 +61,7 @@ public class DeviceStorageBatteryFlexContainer extends AbstractFlexContainer {
 		}
 	}
 	
-	@XmlElement(name="fauDn", required=true, type=FaultDetectionFlexContainer.class)
+	@XmlElement(name="fauDn", required=true, type=FaultDetectionFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private FaultDetectionFlexContainer faultDetection;
 	
 	
@@ -75,7 +75,7 @@ public class DeviceStorageBatteryFlexContainer extends AbstractFlexContainer {
 		return faultDetection;
 	}
 	
-	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainer.class)
+	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BinarySwitchFlexContainer binarySwitch;
 	
 	
@@ -89,7 +89,7 @@ public class DeviceStorageBatteryFlexContainer extends AbstractFlexContainer {
 		return binarySwitch;
 	}
 	
-	@XmlElement(name="runMe", required=true, type=RunModeFlexContainer.class)
+	@XmlElement(name="runMe", required=true, type=RunModeFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private RunModeFlexContainer runMode;
 	
 	
@@ -103,7 +103,7 @@ public class DeviceStorageBatteryFlexContainer extends AbstractFlexContainer {
 		return runMode;
 	}
 	
-	@XmlElement(name="batty", required=true, type=BatteryFlexContainer.class)
+	@XmlElement(name="batty", required=true, type=BatteryFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BatteryFlexContainer battery;
 	
 	

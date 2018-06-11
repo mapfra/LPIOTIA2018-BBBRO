@@ -11,7 +11,7 @@ Device : DeviceRobotCleanerAnnc
 
 A robot cleaner is an autonomous robotic vacuum cleaner that has intelligent programming and a limited vacuum cleaning system. This robot cleaner information model provides capabilities to control and monitor robot cleaner specific functions and resources.
 
-Created: 2017-09-28 17:26:40
+Created: 2018-06-11 12:14:18
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -81,7 +81,7 @@ public class DeviceRobotCleanerFlexContainerAnnc extends AbstractFlexContainerAn
 		
 	}
 	
-	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainerAnnc.class)
+	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BinarySwitchFlexContainer binarySwitch;
 	
 	
@@ -95,7 +95,7 @@ public class DeviceRobotCleanerFlexContainerAnnc extends AbstractFlexContainerAn
 		return binarySwitch;
 	}
 	
-	@XmlElement(name="binShAnnc", required=true, type=BinarySwitchFlexContainerAnnc.class)
+	@XmlElement(name="binShAnnc", required=true, type=BinarySwitchFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BinarySwitchFlexContainerAnnc binarySwitchAnnc;
 	
 	
@@ -109,7 +109,7 @@ public class DeviceRobotCleanerFlexContainerAnnc extends AbstractFlexContainerAn
 		return binarySwitchAnnc;
 	}
 	
-	@XmlElement(name="runMe", required=true, type=RunModeFlexContainerAnnc.class)
+	@XmlElement(name="runMe", required=true, type=RunModeFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private RunModeFlexContainer runMode;
 	
 	
@@ -123,7 +123,7 @@ public class DeviceRobotCleanerFlexContainerAnnc extends AbstractFlexContainerAn
 		return runMode;
 	}
 	
-	@XmlElement(name="runMeAnnc", required=true, type=RunModeFlexContainerAnnc.class)
+	@XmlElement(name="runMeAnnc", required=true, type=RunModeFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private RunModeFlexContainerAnnc runModeAnnc;
 	
 	
@@ -137,7 +137,7 @@ public class DeviceRobotCleanerFlexContainerAnnc extends AbstractFlexContainerAn
 		return runModeAnnc;
 	}
 	
-	@XmlElement(name="batty", required=true, type=BatteryFlexContainerAnnc.class)
+	@XmlElement(name="batty", required=true, type=BatteryFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BatteryFlexContainer battery;
 	
 	
@@ -151,7 +151,7 @@ public class DeviceRobotCleanerFlexContainerAnnc extends AbstractFlexContainerAn
 		return battery;
 	}
 	
-	@XmlElement(name="battyAnnc", required=true, type=BatteryFlexContainerAnnc.class)
+	@XmlElement(name="battyAnnc", required=true, type=BatteryFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BatteryFlexContainerAnnc batteryAnnc;
 	
 	
@@ -165,7 +165,7 @@ public class DeviceRobotCleanerFlexContainerAnnc extends AbstractFlexContainerAn
 		return batteryAnnc;
 	}
 	
-	@XmlElement(name="timer", required=true, type=TimerFlexContainerAnnc.class)
+	@XmlElement(name="timer", required=true, type=TimerFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private TimerFlexContainer timer;
 	
 	
@@ -179,7 +179,7 @@ public class DeviceRobotCleanerFlexContainerAnnc extends AbstractFlexContainerAn
 		return timer;
 	}
 	
-	@XmlElement(name="timerAnnc", required=true, type=TimerFlexContainerAnnc.class)
+	@XmlElement(name="timerAnnc", required=true, type=TimerFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private TimerFlexContainerAnnc timerAnnc;
 	
 	

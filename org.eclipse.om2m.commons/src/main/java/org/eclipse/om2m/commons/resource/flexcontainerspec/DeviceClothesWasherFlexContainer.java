@@ -11,7 +11,7 @@ Device : DeviceClothesWasher
 
 A clothes washer is a home appliance that is used to wash laundry, such as clothing and sheets. This information model provides capabilities to interact with specific functions and resources of clothes washers.
 
-Created: 2017-09-28 17:26:40
+Created: 2018-06-11 12:14:18
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -77,7 +77,7 @@ public class DeviceClothesWasherFlexContainer extends AbstractFlexContainer {
 		}
 	}
 	
-	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainer.class)
+	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BinarySwitchFlexContainer binarySwitch;
 	
 	
@@ -91,7 +91,7 @@ public class DeviceClothesWasherFlexContainer extends AbstractFlexContainer {
 		return binarySwitch;
 	}
 	
-	@XmlElement(name="timer", required=true, type=TimerFlexContainer.class)
+	@XmlElement(name="timer", required=true, type=TimerFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private TimerFlexContainer timer;
 	
 	
@@ -105,7 +105,7 @@ public class DeviceClothesWasherFlexContainer extends AbstractFlexContainer {
 		return timer;
 	}
 	
-	@XmlElement(name="runMe", required=true, type=RunModeFlexContainer.class)
+	@XmlElement(name="runMe", required=true, type=RunModeFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private RunModeFlexContainer runMode;
 	
 	
@@ -119,7 +119,7 @@ public class DeviceClothesWasherFlexContainer extends AbstractFlexContainer {
 		return runMode;
 	}
 	
-	@XmlElement(name="tempe", required=true, type=TemperatureFlexContainer.class)
+	@XmlElement(name="tempe", required=true, type=TemperatureFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private TemperatureFlexContainer temperature;
 	
 	
@@ -133,7 +133,7 @@ public class DeviceClothesWasherFlexContainer extends AbstractFlexContainer {
 		return temperature;
 	}
 	
-	@XmlElement(name="watLl", required=true, type=WaterLevelFlexContainer.class)
+	@XmlElement(name="watLl", required=true, type=WaterLevelFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private WaterLevelFlexContainer waterLevel;
 	
 	
@@ -147,7 +147,7 @@ public class DeviceClothesWasherFlexContainer extends AbstractFlexContainer {
 		return waterLevel;
 	}
 	
-	@XmlElement(name="rinLl", required=true, type=RinseLevelFlexContainer.class)
+	@XmlElement(name="rinLl", required=true, type=RinseLevelFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private RinseLevelFlexContainer rinseLevel;
 	
 	
@@ -161,7 +161,7 @@ public class DeviceClothesWasherFlexContainer extends AbstractFlexContainer {
 		return rinseLevel;
 	}
 	
-	@XmlElement(name="watFw", required=true, type=WaterFlowFlexContainer.class)
+	@XmlElement(name="watFw", required=true, type=WaterFlowFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private WaterFlowFlexContainer waterFlow;
 	
 	
@@ -175,7 +175,7 @@ public class DeviceClothesWasherFlexContainer extends AbstractFlexContainer {
 		return waterFlow;
 	}
 	
-	@XmlElement(name="spiLl", required=true, type=SpinLevelFlexContainer.class)
+	@XmlElement(name="spiLl", required=true, type=SpinLevelFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private SpinLevelFlexContainer spinLevel;
 	
 	

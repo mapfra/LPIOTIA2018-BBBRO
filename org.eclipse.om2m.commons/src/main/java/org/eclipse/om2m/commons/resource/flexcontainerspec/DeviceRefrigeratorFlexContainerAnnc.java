@@ -11,7 +11,7 @@ Device : DeviceRefrigeratorAnnc
 
 A refrigerator is a home appliance used to store food at temperatures which are a few degrees above the freezing point of water. This information model provides capabilities to interact with specific functions and resource of refrigerators.
 
-Created: 2017-09-28 17:26:40
+Created: 2018-06-11 12:14:18
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -81,7 +81,7 @@ public class DeviceRefrigeratorFlexContainerAnnc extends AbstractFlexContainerAn
 		
 	}
 	
-	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainerAnnc.class)
+	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BinarySwitchFlexContainer binarySwitch;
 	
 	
@@ -95,7 +95,7 @@ public class DeviceRefrigeratorFlexContainerAnnc extends AbstractFlexContainerAn
 		return binarySwitch;
 	}
 	
-	@XmlElement(name="binShAnnc", required=true, type=BinarySwitchFlexContainerAnnc.class)
+	@XmlElement(name="binShAnnc", required=true, type=BinarySwitchFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BinarySwitchFlexContainerAnnc binarySwitchAnnc;
 	
 	
@@ -109,7 +109,7 @@ public class DeviceRefrigeratorFlexContainerAnnc extends AbstractFlexContainerAn
 		return binarySwitchAnnc;
 	}
 	
-	@XmlElement(name="powSe", required=true, type=PowerSaveFlexContainerAnnc.class)
+	@XmlElement(name="powSe", required=true, type=PowerSaveFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private PowerSaveFlexContainer powerSave;
 	
 	
@@ -123,7 +123,7 @@ public class DeviceRefrigeratorFlexContainerAnnc extends AbstractFlexContainerAn
 		return powerSave;
 	}
 	
-	@XmlElement(name="powSeAnnc", required=true, type=PowerSaveFlexContainerAnnc.class)
+	@XmlElement(name="powSeAnnc", required=true, type=PowerSaveFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private PowerSaveFlexContainerAnnc powerSaveAnnc;
 	
 	
@@ -137,7 +137,7 @@ public class DeviceRefrigeratorFlexContainerAnnc extends AbstractFlexContainerAn
 		return powerSaveAnnc;
 	}
 	
-	@XmlElement(name="dooSs", required=true, type=DoorStatusFlexContainerAnnc.class)
+	@XmlElement(name="dooSs", required=true, type=DoorStatusFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private DoorStatusFlexContainer doorStatus;
 	
 	
@@ -151,7 +151,7 @@ public class DeviceRefrigeratorFlexContainerAnnc extends AbstractFlexContainerAn
 		return doorStatus;
 	}
 	
-	@XmlElement(name="dooSsAnnc", required=true, type=DoorStatusFlexContainerAnnc.class)
+	@XmlElement(name="dooSsAnnc", required=true, type=DoorStatusFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private DoorStatusFlexContainerAnnc doorStatusAnnc;
 	
 	
@@ -165,7 +165,7 @@ public class DeviceRefrigeratorFlexContainerAnnc extends AbstractFlexContainerAn
 		return doorStatusAnnc;
 	}
 	
-	@XmlElement(name="refrn", required=true, type=RefrigerationFlexContainerAnnc.class)
+	@XmlElement(name="refrn", required=true, type=RefrigerationFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private RefrigerationFlexContainer refrigeration;
 	
 	
@@ -179,7 +179,7 @@ public class DeviceRefrigeratorFlexContainerAnnc extends AbstractFlexContainerAn
 		return refrigeration;
 	}
 	
-	@XmlElement(name="refrnAnnc", required=true, type=RefrigerationFlexContainerAnnc.class)
+	@XmlElement(name="refrnAnnc", required=true, type=RefrigerationFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private RefrigerationFlexContainerAnnc refrigerationAnnc;
 	
 	
