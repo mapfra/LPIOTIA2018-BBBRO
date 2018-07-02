@@ -17,6 +17,7 @@ package org.eclipse.om2m.hue.impl;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -33,6 +34,7 @@ import java.util.Dictionary;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
+import java.util.Properties;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -457,23 +459,14 @@ public class HueBasedriver implements ManagedService {
 	protected void updatePropertiesFile(String filename, String key, String value) {
         try {
             File file = new File("configurations/services/" + filename);
-            Logger.info("Updating the: " + filename + " file, to save the: " + key + " property");
+            Properties properties = new Properties();
             FileReader fr = new FileReader(file);
-            BufferedReader br = new BufferedReader(fr);
-            ArrayList<String> lines = new ArrayList<String>();
-            String line = br.readLine();
-            while (line != null) {
-            	if (line.contains(key)) {
-                    line = key + " " + value;
-                }
-                lines.add(line);
-                line = br.readLine();
-            }
-            fr.close();
-            FileWriter fw = new FileWriter(file);
-            BufferedWriter out = new BufferedWriter(fw);
-            out.write(lines.toString().replace("[", "").replace("]", "").replace(", ", "\n"));
-            out.close();
+            properties.load(fr);
+            
+            Logger.info("Updating the: " + filename + " file, to save the: " + key + " property");
+            properties.setProperty(key, value);
+            properties.store(new FileOutputStream(file), "");
+            
         }
         catch (IOException e) {
             Logger.error("Error while updating the: " + filename + " file, to save the: " + key + " property", e);
