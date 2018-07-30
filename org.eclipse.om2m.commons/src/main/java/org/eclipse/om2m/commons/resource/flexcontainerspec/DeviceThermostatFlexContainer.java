@@ -11,7 +11,7 @@ Device : DeviceThermostat
 
 A thermostat is used to control the ambient temperature of rooms within for example a house. This information model provides capabilities to interact with specific functions of thermostats.
 
-Created: 2017-09-28 17:26:40
+Created: 2018-06-11 12:14:18
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -57,7 +57,7 @@ public class DeviceThermostatFlexContainer extends AbstractFlexContainer {
 		}
 	}
 	
-	@XmlElement(name="runMe", required=true, type=RunModeFlexContainer.class)
+	@XmlElement(name="runMe", required=true, type=RunModeFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private RunModeFlexContainer runMode;
 	
 	
@@ -71,7 +71,7 @@ public class DeviceThermostatFlexContainer extends AbstractFlexContainer {
 		return runMode;
 	}
 	
-	@XmlElement(name="timer", required=true, type=TimerFlexContainer.class)
+	@XmlElement(name="timer", required=true, type=TimerFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private TimerFlexContainer timer;
 	
 	
@@ -85,7 +85,7 @@ public class DeviceThermostatFlexContainer extends AbstractFlexContainer {
 		return timer;
 	}
 	
-	@XmlElement(name="tempe", required=true, type=TemperatureFlexContainer.class)
+	@XmlElement(name="tempe", required=true, type=TemperatureFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private TemperatureFlexContainer temperature;
 	
 	

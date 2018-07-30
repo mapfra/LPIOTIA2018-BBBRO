@@ -11,7 +11,7 @@ ModuleClass : RefrigerationAnnc
 
 This ModuleClass describes a refrigeration function. This is not  a Refrigerator device. The filter state is a read-only value  providing the percentage life time remaining for the water filter.  RapidFreeze is a boolean that controls the rapid freeze capability  if present. RapidCool is a boolean that controls the rapid cool  capability if present. Defrost is a boolean that controls the  defrost cycle if present.
 
-Created: 2017-09-28 17:26:40
+Created: 2018-06-11 12:14:17
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;

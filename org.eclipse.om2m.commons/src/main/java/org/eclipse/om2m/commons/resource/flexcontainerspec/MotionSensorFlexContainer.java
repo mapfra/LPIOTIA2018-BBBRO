@@ -11,7 +11,7 @@ ModuleClass : MotionSensor
 
 This ModuleClass provides the capabilities to indicates the  occurrence of a motion and raises an alarm if the triggering  criterion is met.
 
-Created: 2017-09-28 17:26:40
+Created: 2018-06-11 12:14:17
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;

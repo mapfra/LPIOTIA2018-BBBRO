@@ -11,7 +11,7 @@ Device : DeviceSwitchButtonAnnc
 
 A SwitchButton is a device that provides button.
 
-Created: 2017-09-28 17:26:40
+Created: 2018-06-11 12:14:18
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -54,7 +54,7 @@ public class DeviceSwitchButtonFlexContainerAnnc extends AbstractFlexContainerAn
 		
 	}
 	
-	@XmlElement(name="butSh", required=true, type=PushButtonFlexContainerAnnc.class)
+	@XmlElement(name="butSh", required=true, type=PushButtonFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private PushButtonFlexContainer buttonSwitch;
 	
 	
@@ -68,7 +68,7 @@ public class DeviceSwitchButtonFlexContainerAnnc extends AbstractFlexContainerAn
 		return buttonSwitch;
 	}
 	
-	@XmlElement(name="butShAnnc", required=true, type=PushButtonFlexContainerAnnc.class)
+	@XmlElement(name="butShAnnc", required=true, type=PushButtonFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private PushButtonFlexContainerAnnc buttonSwitchAnnc;
 	
 	

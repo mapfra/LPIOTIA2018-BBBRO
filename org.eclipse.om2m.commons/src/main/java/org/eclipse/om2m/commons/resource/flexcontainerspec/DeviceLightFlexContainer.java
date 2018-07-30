@@ -11,7 +11,7 @@ Device : DeviceLight
 
 A light is a device that is used to control the state of an illumination device.
 
-Created: 2017-09-28 17:26:40
+Created: 2018-06-11 12:14:18
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -69,7 +69,7 @@ public class DeviceLightFlexContainer extends AbstractFlexContainer {
 		}
 	}
 	
-	@XmlElement(name="fauDn", required=true, type=FaultDetectionFlexContainer.class)
+	@XmlElement(name="fauDn", required=true, type=FaultDetectionFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private FaultDetectionFlexContainer faultDetection;
 	
 	
@@ -83,7 +83,7 @@ public class DeviceLightFlexContainer extends AbstractFlexContainer {
 		return faultDetection;
 	}
 	
-	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainer.class)
+	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BinarySwitchFlexContainer binarySwitch;
 	
 	
@@ -97,7 +97,7 @@ public class DeviceLightFlexContainer extends AbstractFlexContainer {
 		return binarySwitch;
 	}
 	
-	@XmlElement(name="runMe", required=true, type=RunModeFlexContainer.class)
+	@XmlElement(name="runMe", required=true, type=RunModeFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private RunModeFlexContainer runMode;
 	
 	
@@ -111,7 +111,7 @@ public class DeviceLightFlexContainer extends AbstractFlexContainer {
 		return runMode;
 	}
 	
-	@XmlElement(name="color", required=true, type=ColourFlexContainer.class)
+	@XmlElement(name="color", required=true, type=ColourFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private ColourFlexContainer colour;
 	
 	
@@ -125,7 +125,7 @@ public class DeviceLightFlexContainer extends AbstractFlexContainer {
 		return colour;
 	}
 	
-	@XmlElement(name="colSn", required=true, type=ColourSaturationFlexContainer.class)
+	@XmlElement(name="colSn", required=true, type=ColourSaturationFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private ColourSaturationFlexContainer colourSaturation;
 	
 	
@@ -139,7 +139,7 @@ public class DeviceLightFlexContainer extends AbstractFlexContainer {
 		return colourSaturation;
 	}
 	
-	@XmlElement(name="brigs", required=true, type=BrightnessFlexContainer.class)
+	@XmlElement(name="brigs", required=true, type=BrightnessFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BrightnessFlexContainer brightness;
 	
 	

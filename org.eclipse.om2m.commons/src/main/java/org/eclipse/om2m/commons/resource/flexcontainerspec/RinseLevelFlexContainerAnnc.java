@@ -11,7 +11,7 @@ ModuleClass : RinseLevelAnnc
 
 This ModuleClass provides capabilities to control and monitor  the level of rinse. It is intended to be part of object which uses  rinse such as a washing machine.
 
-Created: 2017-09-28 17:26:40
+Created: 2018-06-11 12:14:18
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;

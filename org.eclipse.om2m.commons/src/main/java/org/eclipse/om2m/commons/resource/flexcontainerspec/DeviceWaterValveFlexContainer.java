@@ -11,7 +11,7 @@ Device : DeviceWaterValve
 
 A WaterValve is a device that controls liquid flux.
 
-Created: 2017-09-28 17:26:40
+Created: 2018-06-11 12:14:18
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -49,7 +49,7 @@ public class DeviceWaterValveFlexContainer extends AbstractFlexContainer {
 		}
 	}
 	
-	@XmlElement(name="watLl", required=true, type=LiquidLevelFlexContainer.class)
+	@XmlElement(name="watLl", required=true, type=LiquidLevelFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private LiquidLevelFlexContainer waterLevel;
 	
 	

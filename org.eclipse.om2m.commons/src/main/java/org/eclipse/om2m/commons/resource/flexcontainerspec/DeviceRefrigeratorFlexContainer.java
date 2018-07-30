@@ -11,7 +11,7 @@ Device : DeviceRefrigerator
 
 A refrigerator is a home appliance used to store food at temperatures which are a few degrees above the freezing point of water. This information model provides capabilities to interact with specific functions and resource of refrigerators.
 
-Created: 2017-09-28 17:26:40
+Created: 2018-06-11 12:14:18
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -61,7 +61,7 @@ public class DeviceRefrigeratorFlexContainer extends AbstractFlexContainer {
 		}
 	}
 	
-	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainer.class)
+	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BinarySwitchFlexContainer binarySwitch;
 	
 	
@@ -75,7 +75,7 @@ public class DeviceRefrigeratorFlexContainer extends AbstractFlexContainer {
 		return binarySwitch;
 	}
 	
-	@XmlElement(name="powSe", required=true, type=PowerSaveFlexContainer.class)
+	@XmlElement(name="powSe", required=true, type=PowerSaveFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private PowerSaveFlexContainer powerSave;
 	
 	
@@ -89,7 +89,7 @@ public class DeviceRefrigeratorFlexContainer extends AbstractFlexContainer {
 		return powerSave;
 	}
 	
-	@XmlElement(name="dooSs", required=true, type=DoorStatusFlexContainer.class)
+	@XmlElement(name="dooSs", required=true, type=DoorStatusFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private DoorStatusFlexContainer doorStatus;
 	
 	
@@ -103,7 +103,7 @@ public class DeviceRefrigeratorFlexContainer extends AbstractFlexContainer {
 		return doorStatus;
 	}
 	
-	@XmlElement(name="refrn", required=true, type=RefrigerationFlexContainer.class)
+	@XmlElement(name="refrn", required=true, type=RefrigerationFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private RefrigerationFlexContainer refrigeration;
 	
 	

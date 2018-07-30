@@ -11,7 +11,7 @@ FlexContainerFactory : FlexContainerFactory
 
 
 
-Created: 2017-09-28 17:26:40
+Created: 2018-06-11 12:14:18
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -147,14 +147,6 @@ public class FlexContainerFactory {
 			return new NoiseFlexContainer();
 		case ExtendedCarbonDioxideSensorFlexContainer.SHORT_NAME:
 			return new ExtendedCarbonDioxideSensorFlexContainer();
-		case NumberValueFlexContainer.SHORT_NAME:
-			return new NumberValueFlexContainer();
-		case DecrementNumberValueFlexContainer.SHORT_NAME:
-			return new DecrementNumberValueFlexContainer();
-		case IncrementNumberValueFlexContainer.SHORT_NAME:
-			return new IncrementNumberValueFlexContainer();
-		case ResetNumberValueFlexContainer.SHORT_NAME:
-			return new ResetNumberValueFlexContainer();
 		case DeviceAirConditionerFlexContainer.SHORT_NAME:
 			return new DeviceAirConditionerFlexContainer();
 		case DeviceClothesWasherFlexContainer.SHORT_NAME:
@@ -209,8 +201,6 @@ public class FlexContainerFactory {
 			return new DeviceWaterValveFlexContainer();
 		case DeviceWeatherStationFlexContainer.SHORT_NAME:
 			return new DeviceWeatherStationFlexContainer();
-		case DeviceNumberDeviceFlexContainer.SHORT_NAME:
-			return new DeviceNumberDeviceFlexContainer();
 		}
 		return new FlexContainer();
 	}
@@ -339,14 +329,6 @@ public class FlexContainerFactory {
 			return new NoiseFlexContainerAnnc();
 		case ExtendedCarbonDioxideSensorFlexContainerAnnc.SHORT_NAME:
 			return new ExtendedCarbonDioxideSensorFlexContainerAnnc();
-		case NumberValueFlexContainerAnnc.SHORT_NAME:
-			return new NumberValueFlexContainerAnnc();
-		case DecrementNumberValueFlexContainerAnnc.SHORT_NAME:
-			return new DecrementNumberValueFlexContainerAnnc();
-		case IncrementNumberValueFlexContainerAnnc.SHORT_NAME:
-			return new IncrementNumberValueFlexContainerAnnc();
-		case ResetNumberValueFlexContainerAnnc.SHORT_NAME:
-			return new ResetNumberValueFlexContainerAnnc();
 		case DeviceAirConditionerFlexContainerAnnc.SHORT_NAME:
 			return new DeviceAirConditionerFlexContainerAnnc();
 		case DeviceClothesWasherFlexContainerAnnc.SHORT_NAME:
@@ -401,8 +383,6 @@ public class FlexContainerFactory {
 			return new DeviceWaterValveFlexContainerAnnc();
 		case DeviceWeatherStationFlexContainerAnnc.SHORT_NAME:
 			return new DeviceWeatherStationFlexContainerAnnc();
-		case DeviceNumberDeviceFlexContainerAnnc.SHORT_NAME:
-			return new DeviceNumberDeviceFlexContainerAnnc();
 		}
 		return new FlexContainerAnnc();
 	}

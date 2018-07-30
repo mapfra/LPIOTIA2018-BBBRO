@@ -11,7 +11,7 @@ ModuleClass : SpinLevel
 
 This ModuleClass provides capabilities to control and monitor  the level of spin. It is intended to be part of objects which use  spinning function such as a washing machine and a dryer.
 
-Created: 2017-09-28 17:26:40
+Created: 2018-06-11 12:14:18
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;

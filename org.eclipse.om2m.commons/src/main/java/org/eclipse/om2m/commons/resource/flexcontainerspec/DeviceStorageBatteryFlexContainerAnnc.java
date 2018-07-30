@@ -11,7 +11,7 @@ Device : DeviceStorageBatteryAnnc
 
 A storage battery is a HEMS device that is used to provide the home with electrical energy.
 
-Created: 2017-09-28 17:26:40
+Created: 2018-06-11 12:14:18
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -81,7 +81,7 @@ public class DeviceStorageBatteryFlexContainerAnnc extends AbstractFlexContainer
 		
 	}
 	
-	@XmlElement(name="fauDn", required=true, type=FaultDetectionFlexContainerAnnc.class)
+	@XmlElement(name="fauDn", required=true, type=FaultDetectionFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private FaultDetectionFlexContainer faultDetection;
 	
 	
@@ -95,7 +95,7 @@ public class DeviceStorageBatteryFlexContainerAnnc extends AbstractFlexContainer
 		return faultDetection;
 	}
 	
-	@XmlElement(name="fauDnAnnc", required=true, type=FaultDetectionFlexContainerAnnc.class)
+	@XmlElement(name="fauDnAnnc", required=true, type=FaultDetectionFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private FaultDetectionFlexContainerAnnc faultDetectionAnnc;
 	
 	
@@ -109,7 +109,7 @@ public class DeviceStorageBatteryFlexContainerAnnc extends AbstractFlexContainer
 		return faultDetectionAnnc;
 	}
 	
-	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainerAnnc.class)
+	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BinarySwitchFlexContainer binarySwitch;
 	
 	
@@ -123,7 +123,7 @@ public class DeviceStorageBatteryFlexContainerAnnc extends AbstractFlexContainer
 		return binarySwitch;
 	}
 	
-	@XmlElement(name="binShAnnc", required=true, type=BinarySwitchFlexContainerAnnc.class)
+	@XmlElement(name="binShAnnc", required=true, type=BinarySwitchFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BinarySwitchFlexContainerAnnc binarySwitchAnnc;
 	
 	
@@ -137,7 +137,7 @@ public class DeviceStorageBatteryFlexContainerAnnc extends AbstractFlexContainer
 		return binarySwitchAnnc;
 	}
 	
-	@XmlElement(name="runMe", required=true, type=RunModeFlexContainerAnnc.class)
+	@XmlElement(name="runMe", required=true, type=RunModeFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private RunModeFlexContainer runMode;
 	
 	
@@ -151,7 +151,7 @@ public class DeviceStorageBatteryFlexContainerAnnc extends AbstractFlexContainer
 		return runMode;
 	}
 	
-	@XmlElement(name="runMeAnnc", required=true, type=RunModeFlexContainerAnnc.class)
+	@XmlElement(name="runMeAnnc", required=true, type=RunModeFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private RunModeFlexContainerAnnc runModeAnnc;
 	
 	
@@ -165,7 +165,7 @@ public class DeviceStorageBatteryFlexContainerAnnc extends AbstractFlexContainer
 		return runModeAnnc;
 	}
 	
-	@XmlElement(name="batty", required=true, type=BatteryFlexContainerAnnc.class)
+	@XmlElement(name="batty", required=true, type=BatteryFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BatteryFlexContainer battery;
 	
 	
@@ -179,7 +179,7 @@ public class DeviceStorageBatteryFlexContainerAnnc extends AbstractFlexContainer
 		return battery;
 	}
 	
-	@XmlElement(name="battyAnnc", required=true, type=BatteryFlexContainerAnnc.class)
+	@XmlElement(name="battyAnnc", required=true, type=BatteryFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BatteryFlexContainerAnnc batteryAnnc;
 	
 	

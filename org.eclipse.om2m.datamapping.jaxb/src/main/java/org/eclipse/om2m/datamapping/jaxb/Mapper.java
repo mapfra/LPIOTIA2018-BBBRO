@@ -83,8 +83,12 @@ public class Mapper implements DataMapperService {
 					// XML
 					ClassLoader classLoader = Mapper.class.getClassLoader(); 
 					InputStream iStream = classLoader.getResourceAsStream("xml-binding.xml"); 
+					InputStream iStreamXmlFlexContainer = classLoader.getResourceAsStream("xml-binding-flexcontainer.xml"); 
+					List<Object> iStreamList = new ArrayList<>();
+					iStreamList.add(iStream);
+					iStreamList.add(iStreamXmlFlexContainer);
 					Map<String, Object> properties = new HashMap<String, Object>(); 
-					properties.put(JAXBContextProperties.OXM_METADATA_SOURCE, iStream);
+					properties.put(JAXBContextProperties.OXM_METADATA_SOURCE, iStreamList);
 					context = JAXBContext.newInstance(resourcePackage, classLoader , properties);
 				} else {
 					// other

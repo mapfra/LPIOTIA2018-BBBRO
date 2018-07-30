@@ -11,7 +11,7 @@ ModuleClass : TimerAnnc
 
 This ModuleClass provides capabilities to monitor and control  the times when the appliance executes its operations (i.e. when it  starts, when it ends).
 
-Created: 2017-09-28 17:26:40
+Created: 2018-06-11 12:14:18
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -53,7 +53,7 @@ public class TimerFlexContainerAnnc extends AbstractFlexContainerAnnc {
 		}
 	}
 	
-	@XmlElement(name=ActivateClockTimerFlexContainerAnnc.SHORT_NAME, required=true, type=ActivateClockTimerFlexContainerAnnc.class)
+	@XmlElement(name=ActivateClockTimerFlexContainerAnnc.SHORT_NAME, required=true, type=ActivateClockTimerFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private ActivateClockTimerFlexContainerAnnc activateClockTimerAnnc;
 	
 	
@@ -67,7 +67,7 @@ public class TimerFlexContainerAnnc extends AbstractFlexContainerAnnc {
 		return activateClockTimerAnnc;
 	}
 	
-	@XmlElement(name=DeactivateClockTimerFlexContainerAnnc.SHORT_NAME, required=true, type=DeactivateClockTimerFlexContainerAnnc.class)
+	@XmlElement(name=DeactivateClockTimerFlexContainerAnnc.SHORT_NAME, required=true, type=DeactivateClockTimerFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private DeactivateClockTimerFlexContainerAnnc deactivateClockTimerAnnc;
 	
 	

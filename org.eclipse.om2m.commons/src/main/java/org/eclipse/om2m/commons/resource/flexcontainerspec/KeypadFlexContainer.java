@@ -11,7 +11,7 @@ ModuleClass : Keypad
 
 This ModuleClass provides the capability to require a user  defined service through the key-in number. For example, a user can  define key 1 as "require a takeout from restaurant XXX with combo  meal 1". The IoT service provider or user can define the services.
 
-Created: 2017-09-28 17:26:40
+Created: 2018-06-11 12:14:17
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;

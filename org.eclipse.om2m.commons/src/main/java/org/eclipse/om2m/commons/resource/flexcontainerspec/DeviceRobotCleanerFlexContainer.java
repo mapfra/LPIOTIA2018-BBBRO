@@ -11,7 +11,7 @@ Device : DeviceRobotCleaner
 
 A robot cleaner is an autonomous robotic vacuum cleaner that has intelligent programming and a limited vacuum cleaning system. This robot cleaner information model provides capabilities to control and monitor robot cleaner specific functions and resources.
 
-Created: 2017-09-28 17:26:40
+Created: 2018-06-11 12:14:18
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -61,7 +61,7 @@ public class DeviceRobotCleanerFlexContainer extends AbstractFlexContainer {
 		}
 	}
 	
-	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainer.class)
+	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BinarySwitchFlexContainer binarySwitch;
 	
 	
@@ -75,7 +75,7 @@ public class DeviceRobotCleanerFlexContainer extends AbstractFlexContainer {
 		return binarySwitch;
 	}
 	
-	@XmlElement(name="runMe", required=true, type=RunModeFlexContainer.class)
+	@XmlElement(name="runMe", required=true, type=RunModeFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private RunModeFlexContainer runMode;
 	
 	
@@ -89,7 +89,7 @@ public class DeviceRobotCleanerFlexContainer extends AbstractFlexContainer {
 		return runMode;
 	}
 	
-	@XmlElement(name="batty", required=true, type=BatteryFlexContainer.class)
+	@XmlElement(name="batty", required=true, type=BatteryFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BatteryFlexContainer battery;
 	
 	
@@ -103,7 +103,7 @@ public class DeviceRobotCleanerFlexContainer extends AbstractFlexContainer {
 		return battery;
 	}
 	
-	@XmlElement(name="timer", required=true, type=TimerFlexContainer.class)
+	@XmlElement(name="timer", required=true, type=TimerFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private TimerFlexContainer timer;
 	
 	

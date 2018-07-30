@@ -11,7 +11,7 @@ Device : DeviceCoffeeMachineAnnc
 
 A CoffeeMachine is a device that produces coffee.
 
-Created: 2017-09-28 17:26:40
+Created: 2018-06-11 12:14:18
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -153,7 +153,7 @@ public class DeviceCoffeeMachineFlexContainerAnnc extends AbstractFlexContainerA
 		
 	}
 	
-	@XmlElement(name="fauDn", required=true, type=FaultDetectionFlexContainerAnnc.class)
+	@XmlElement(name="fauDn", required=true, type=FaultDetectionFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private FaultDetectionFlexContainer faultDetection;
 	
 	
@@ -167,7 +167,7 @@ public class DeviceCoffeeMachineFlexContainerAnnc extends AbstractFlexContainerA
 		return faultDetection;
 	}
 	
-	@XmlElement(name="fauDnAnnc", required=true, type=FaultDetectionFlexContainerAnnc.class)
+	@XmlElement(name="fauDnAnnc", required=true, type=FaultDetectionFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private FaultDetectionFlexContainerAnnc faultDetectionAnnc;
 	
 	
@@ -181,7 +181,7 @@ public class DeviceCoffeeMachineFlexContainerAnnc extends AbstractFlexContainerA
 		return faultDetectionAnnc;
 	}
 	
-	@XmlElement(name="runMe", required=true, type=RunModeFlexContainerAnnc.class)
+	@XmlElement(name="runMe", required=true, type=RunModeFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private RunModeFlexContainer runMode;
 	
 	
@@ -195,7 +195,7 @@ public class DeviceCoffeeMachineFlexContainerAnnc extends AbstractFlexContainerA
 		return runMode;
 	}
 	
-	@XmlElement(name="runMeAnnc", required=true, type=RunModeFlexContainerAnnc.class)
+	@XmlElement(name="runMeAnnc", required=true, type=RunModeFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private RunModeFlexContainerAnnc runModeAnnc;
 	
 	
@@ -209,7 +209,7 @@ public class DeviceCoffeeMachineFlexContainerAnnc extends AbstractFlexContainerA
 		return runModeAnnc;
 	}
 	
-	@XmlElement(name="clock", required=true, type=ClockFlexContainerAnnc.class)
+	@XmlElement(name="clock", required=true, type=ClockFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private ClockFlexContainer clock;
 	
 	
@@ -223,7 +223,7 @@ public class DeviceCoffeeMachineFlexContainerAnnc extends AbstractFlexContainerA
 		return clock;
 	}
 	
-	@XmlElement(name="clockAnnc", required=true, type=ClockFlexContainerAnnc.class)
+	@XmlElement(name="clockAnnc", required=true, type=ClockFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private ClockFlexContainerAnnc clockAnnc;
 	
 	
@@ -237,7 +237,7 @@ public class DeviceCoffeeMachineFlexContainerAnnc extends AbstractFlexContainerA
 		return clockAnnc;
 	}
 	
-	@XmlElement(name="brewg", required=true, type=BrewingFlexContainerAnnc.class)
+	@XmlElement(name="brewg", required=true, type=BrewingFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BrewingFlexContainer brewing;
 	
 	
@@ -251,7 +251,7 @@ public class DeviceCoffeeMachineFlexContainerAnnc extends AbstractFlexContainerA
 		return brewing;
 	}
 	
-	@XmlElement(name="brewgAnnc", required=true, type=BrewingFlexContainerAnnc.class)
+	@XmlElement(name="brewgAnnc", required=true, type=BrewingFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BrewingFlexContainerAnnc brewingAnnc;
 	
 	
@@ -265,7 +265,7 @@ public class DeviceCoffeeMachineFlexContainerAnnc extends AbstractFlexContainerA
 		return brewingAnnc;
 	}
 	
-	@XmlElement(name="watSs", required=true, type=LiquidLevelFlexContainerAnnc.class)
+	@XmlElement(name="watSs", required=true, type=LiquidLevelFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private LiquidLevelFlexContainer waterStatus;
 	
 	
@@ -279,7 +279,7 @@ public class DeviceCoffeeMachineFlexContainerAnnc extends AbstractFlexContainerA
 		return waterStatus;
 	}
 	
-	@XmlElement(name="watSsAnnc", required=true, type=LiquidLevelFlexContainerAnnc.class)
+	@XmlElement(name="watSsAnnc", required=true, type=LiquidLevelFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private LiquidLevelFlexContainerAnnc waterStatusAnnc;
 	
 	
@@ -293,7 +293,7 @@ public class DeviceCoffeeMachineFlexContainerAnnc extends AbstractFlexContainerA
 		return waterStatusAnnc;
 	}
 	
-	@XmlElement(name="milSs", required=true, type=LiquidLevelFlexContainerAnnc.class)
+	@XmlElement(name="milSs", required=true, type=LiquidLevelFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private LiquidLevelFlexContainer milkStatus;
 	
 	
@@ -307,7 +307,7 @@ public class DeviceCoffeeMachineFlexContainerAnnc extends AbstractFlexContainerA
 		return milkStatus;
 	}
 	
-	@XmlElement(name="milSsAnnc", required=true, type=LiquidLevelFlexContainerAnnc.class)
+	@XmlElement(name="milSsAnnc", required=true, type=LiquidLevelFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private LiquidLevelFlexContainerAnnc milkStatusAnnc;
 	
 	
@@ -321,7 +321,7 @@ public class DeviceCoffeeMachineFlexContainerAnnc extends AbstractFlexContainerA
 		return milkStatusAnnc;
 	}
 	
-	@XmlElement(name="beaSs", required=true, type=LiquidLevelFlexContainerAnnc.class)
+	@XmlElement(name="beaSs", required=true, type=LiquidLevelFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private LiquidLevelFlexContainer beansStatus;
 	
 	
@@ -335,7 +335,7 @@ public class DeviceCoffeeMachineFlexContainerAnnc extends AbstractFlexContainerA
 		return beansStatus;
 	}
 	
-	@XmlElement(name="beaSsAnnc", required=true, type=LiquidLevelFlexContainerAnnc.class)
+	@XmlElement(name="beaSsAnnc", required=true, type=LiquidLevelFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private LiquidLevelFlexContainerAnnc beansStatusAnnc;
 	
 	
@@ -349,7 +349,7 @@ public class DeviceCoffeeMachineFlexContainerAnnc extends AbstractFlexContainerA
 		return beansStatusAnnc;
 	}
 	
-	@XmlElement(name="grinr", required=true, type=GrinderFlexContainerAnnc.class)
+	@XmlElement(name="grinr", required=true, type=GrinderFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private GrinderFlexContainer grinder;
 	
 	
@@ -363,7 +363,7 @@ public class DeviceCoffeeMachineFlexContainerAnnc extends AbstractFlexContainerA
 		return grinder;
 	}
 	
-	@XmlElement(name="grinrAnnc", required=true, type=GrinderFlexContainerAnnc.class)
+	@XmlElement(name="grinrAnnc", required=true, type=GrinderFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private GrinderFlexContainerAnnc grinderAnnc;
 	
 	
@@ -377,7 +377,7 @@ public class DeviceCoffeeMachineFlexContainerAnnc extends AbstractFlexContainerA
 		return grinderAnnc;
 	}
 	
-	@XmlElement(name="foaMk", required=true, type=FoamingFlexContainerAnnc.class)
+	@XmlElement(name="foaMk", required=true, type=FoamingFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private FoamingFlexContainer foamedMilk;
 	
 	
@@ -391,7 +391,7 @@ public class DeviceCoffeeMachineFlexContainerAnnc extends AbstractFlexContainerA
 		return foamedMilk;
 	}
 	
-	@XmlElement(name="foaMkAnnc", required=true, type=FoamingFlexContainerAnnc.class)
+	@XmlElement(name="foaMkAnnc", required=true, type=FoamingFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private FoamingFlexContainerAnnc foamedMilkAnnc;
 	
 	
@@ -405,7 +405,7 @@ public class DeviceCoffeeMachineFlexContainerAnnc extends AbstractFlexContainerA
 		return foamedMilkAnnc;
 	}
 	
-	@XmlElement(name="milQy", required=true, type=LiquidLevelFlexContainerAnnc.class)
+	@XmlElement(name="milQy", required=true, type=LiquidLevelFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private LiquidLevelFlexContainer milkQuantity;
 	
 	
@@ -419,7 +419,7 @@ public class DeviceCoffeeMachineFlexContainerAnnc extends AbstractFlexContainerA
 		return milkQuantity;
 	}
 	
-	@XmlElement(name="milQyAnnc", required=true, type=LiquidLevelFlexContainerAnnc.class)
+	@XmlElement(name="milQyAnnc", required=true, type=LiquidLevelFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private LiquidLevelFlexContainerAnnc milkQuantityAnnc;
 	
 	
@@ -433,7 +433,7 @@ public class DeviceCoffeeMachineFlexContainerAnnc extends AbstractFlexContainerA
 		return milkQuantityAnnc;
 	}
 	
-	@XmlElement(name="keeWm", required=true, type=KeepWarmFlexContainerAnnc.class)
+	@XmlElement(name="keeWm", required=true, type=KeepWarmFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private KeepWarmFlexContainer keepWarm;
 	
 	
@@ -447,7 +447,7 @@ public class DeviceCoffeeMachineFlexContainerAnnc extends AbstractFlexContainerA
 		return keepWarm;
 	}
 	
-	@XmlElement(name="keeWmAnnc", required=true, type=KeepWarmFlexContainerAnnc.class)
+	@XmlElement(name="keeWmAnnc", required=true, type=KeepWarmFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private KeepWarmFlexContainerAnnc keepWarmAnnc;
 	
 	
@@ -461,7 +461,7 @@ public class DeviceCoffeeMachineFlexContainerAnnc extends AbstractFlexContainerA
 		return keepWarmAnnc;
 	}
 	
-	@XmlElement(name="breSh", required=true, type=BinarySwitchFlexContainerAnnc.class)
+	@XmlElement(name="breSh", required=true, type=BinarySwitchFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BinarySwitchFlexContainer brewingSwitch;
 	
 	
@@ -475,7 +475,7 @@ public class DeviceCoffeeMachineFlexContainerAnnc extends AbstractFlexContainerA
 		return brewingSwitch;
 	}
 	
-	@XmlElement(name="breShAnnc", required=true, type=BinarySwitchFlexContainerAnnc.class)
+	@XmlElement(name="breShAnnc", required=true, type=BinarySwitchFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BinarySwitchFlexContainerAnnc brewingSwitchAnnc;
 	
 	

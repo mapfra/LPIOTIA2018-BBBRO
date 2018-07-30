@@ -11,7 +11,7 @@ Device : DeviceTemperatureDetectorAnnc
 
 A SwitchButton is a device that provides button.
 
-Created: 2017-09-28 17:26:40
+Created: 2018-06-11 12:14:18
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -63,7 +63,7 @@ public class DeviceTemperatureDetectorFlexContainerAnnc extends AbstractFlexCont
 		
 	}
 	
-	@XmlElement(name="alSer", required=true, type=AlarmSensorFlexContainerAnnc.class)
+	@XmlElement(name="alSer", required=true, type=AlarmSensorFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private AlarmSensorFlexContainer alarmSensor;
 	
 	
@@ -77,7 +77,7 @@ public class DeviceTemperatureDetectorFlexContainerAnnc extends AbstractFlexCont
 		return alarmSensor;
 	}
 	
-	@XmlElement(name="alSerAnnc", required=true, type=AlarmSensorFlexContainerAnnc.class)
+	@XmlElement(name="alSerAnnc", required=true, type=AlarmSensorFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private AlarmSensorFlexContainerAnnc alarmSensorAnnc;
 	
 	
@@ -91,7 +91,7 @@ public class DeviceTemperatureDetectorFlexContainerAnnc extends AbstractFlexCont
 		return alarmSensorAnnc;
 	}
 	
-	@XmlElement(name="tempe", required=true, type=TemperatureFlexContainerAnnc.class)
+	@XmlElement(name="tempe", required=true, type=TemperatureFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private TemperatureFlexContainer temperature;
 	
 	
@@ -105,7 +105,7 @@ public class DeviceTemperatureDetectorFlexContainerAnnc extends AbstractFlexCont
 		return temperature;
 	}
 	
-	@XmlElement(name="tempeAnnc", required=true, type=TemperatureFlexContainerAnnc.class)
+	@XmlElement(name="tempeAnnc", required=true, type=TemperatureFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private TemperatureFlexContainerAnnc temperatureAnnc;
 	
 	

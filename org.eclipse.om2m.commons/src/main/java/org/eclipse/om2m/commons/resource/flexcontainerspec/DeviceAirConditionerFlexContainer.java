@@ -11,7 +11,7 @@ Device : DeviceAirConditioner
 
 An air conditioner is a home appliance used to alter the properties of air (primarily temperature and humidity) to more comfortable conditions. This air conditioner information model provides capabilities to control and monitor air conditioner specific functions and resources.
 
-Created: 2017-09-28 17:26:40
+Created: 2018-06-11 12:14:18
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -69,7 +69,7 @@ public class DeviceAirConditionerFlexContainer extends AbstractFlexContainer {
 		}
 	}
 	
-	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainer.class)
+	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BinarySwitchFlexContainer binarySwitch;
 	
 	
@@ -83,7 +83,7 @@ public class DeviceAirConditionerFlexContainer extends AbstractFlexContainer {
 		return binarySwitch;
 	}
 	
-	@XmlElement(name="runMe", required=true, type=RunModeFlexContainer.class)
+	@XmlElement(name="runMe", required=true, type=RunModeFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private RunModeFlexContainer runMode;
 	
 	
@@ -97,7 +97,7 @@ public class DeviceAirConditionerFlexContainer extends AbstractFlexContainer {
 		return runMode;
 	}
 	
-	@XmlElement(name="tempe", required=true, type=TemperatureFlexContainer.class)
+	@XmlElement(name="tempe", required=true, type=TemperatureFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private TemperatureFlexContainer temperature;
 	
 	
@@ -111,7 +111,7 @@ public class DeviceAirConditionerFlexContainer extends AbstractFlexContainer {
 		return temperature;
 	}
 	
-	@XmlElement(name="timer", required=true, type=TimerFlexContainer.class)
+	@XmlElement(name="timer", required=true, type=TimerFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private TimerFlexContainer timer;
 	
 	
@@ -125,7 +125,7 @@ public class DeviceAirConditionerFlexContainer extends AbstractFlexContainer {
 		return timer;
 	}
 	
-	@XmlElement(name="turbo", required=true, type=TurboFlexContainer.class)
+	@XmlElement(name="turbo", required=true, type=TurboFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private TurboFlexContainer turbo;
 	
 	
@@ -139,7 +139,7 @@ public class DeviceAirConditionerFlexContainer extends AbstractFlexContainer {
 		return turbo;
 	}
 	
-	@XmlElement(name="wind", required=true, type=WindFlexContainer.class)
+	@XmlElement(name="wind", required=true, type=WindFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private WindFlexContainer wind;
 	
 	

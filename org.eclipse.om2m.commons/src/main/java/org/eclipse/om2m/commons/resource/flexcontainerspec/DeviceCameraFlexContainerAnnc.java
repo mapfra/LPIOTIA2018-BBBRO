@@ -11,7 +11,7 @@ Device : DeviceCameraAnnc
 
 A Camera is a device that provides video streaming feature.
 
-Created: 2017-09-28 17:26:40
+Created: 2018-06-11 12:14:18
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -72,7 +72,7 @@ public class DeviceCameraFlexContainerAnnc extends AbstractFlexContainerAnnc {
 		
 	}
 	
-	@XmlElement(name="motSr", required=true, type=MotionSensorFlexContainerAnnc.class)
+	@XmlElement(name="motSr", required=true, type=MotionSensorFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private MotionSensorFlexContainer motionSensor;
 	
 	
@@ -86,7 +86,7 @@ public class DeviceCameraFlexContainerAnnc extends AbstractFlexContainerAnnc {
 		return motionSensor;
 	}
 	
-	@XmlElement(name="motSrAnnc", required=true, type=MotionSensorFlexContainerAnnc.class)
+	@XmlElement(name="motSrAnnc", required=true, type=MotionSensorFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private MotionSensorFlexContainerAnnc motionSensorAnnc;
 	
 	
@@ -100,7 +100,7 @@ public class DeviceCameraFlexContainerAnnc extends AbstractFlexContainerAnnc {
 		return motionSensorAnnc;
 	}
 	
-	@XmlElement(name="streg", required=true, type=StreamingFlexContainerAnnc.class)
+	@XmlElement(name="streg", required=true, type=StreamingFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private StreamingFlexContainer streaming;
 	
 	
@@ -114,7 +114,7 @@ public class DeviceCameraFlexContainerAnnc extends AbstractFlexContainerAnnc {
 		return streaming;
 	}
 	
-	@XmlElement(name="stregAnnc", required=true, type=StreamingFlexContainerAnnc.class)
+	@XmlElement(name="stregAnnc", required=true, type=StreamingFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private StreamingFlexContainerAnnc streamingAnnc;
 	
 	
@@ -128,7 +128,7 @@ public class DeviceCameraFlexContainerAnnc extends AbstractFlexContainerAnnc {
 		return streamingAnnc;
 	}
 	
-	@XmlElement(name="perSr", required=true, type=PersonSensorFlexContainerAnnc.class)
+	@XmlElement(name="perSr", required=true, type=PersonSensorFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private PersonSensorFlexContainer personSensor;
 	
 	
@@ -142,7 +142,7 @@ public class DeviceCameraFlexContainerAnnc extends AbstractFlexContainerAnnc {
 		return personSensor;
 	}
 	
-	@XmlElement(name="perSrAnnc", required=true, type=PersonSensorFlexContainerAnnc.class)
+	@XmlElement(name="perSrAnnc", required=true, type=PersonSensorFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private PersonSensorFlexContainerAnnc personSensorAnnc;
 	
 	

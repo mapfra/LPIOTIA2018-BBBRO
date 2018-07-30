@@ -11,7 +11,7 @@ ModuleClass : EnergyGeneration
 
 This ModuleClass provides the information about generation data  on electric generator devices such as a photo voltaic power system,  fuel cells, or microgeneration.
 
-Created: 2017-09-28 17:26:40
+Created: 2018-06-11 12:14:17
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;

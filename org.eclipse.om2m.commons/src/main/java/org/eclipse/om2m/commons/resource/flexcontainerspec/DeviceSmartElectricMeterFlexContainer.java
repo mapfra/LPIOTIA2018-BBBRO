@@ -11,7 +11,7 @@ Device : DeviceSmartElectricMeter
 
 A smart electric meter is a metering device that is used to measure consumption data for electrictricity.
 
-Created: 2017-09-28 17:26:40
+Created: 2018-06-11 12:14:18
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -69,7 +69,7 @@ public class DeviceSmartElectricMeterFlexContainer extends AbstractFlexContainer
 		}
 	}
 	
-	@XmlElement(name="fauDn", required=true, type=FaultDetectionFlexContainer.class)
+	@XmlElement(name="fauDn", required=true, type=FaultDetectionFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private FaultDetectionFlexContainer faultDetection;
 	
 	
@@ -83,7 +83,7 @@ public class DeviceSmartElectricMeterFlexContainer extends AbstractFlexContainer
 		return faultDetection;
 	}
 	
-	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainer.class)
+	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BinarySwitchFlexContainer binarySwitch;
 	
 	
@@ -97,7 +97,7 @@ public class DeviceSmartElectricMeterFlexContainer extends AbstractFlexContainer
 		return binarySwitch;
 	}
 	
-	@XmlElement(name="runMe", required=true, type=RunModeFlexContainer.class)
+	@XmlElement(name="runMe", required=true, type=RunModeFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private RunModeFlexContainer runMode;
 	
 	
@@ -111,7 +111,7 @@ public class DeviceSmartElectricMeterFlexContainer extends AbstractFlexContainer
 		return runMode;
 	}
 	
-	@XmlElement(name="clock", required=true, type=ClockFlexContainer.class)
+	@XmlElement(name="clock", required=true, type=ClockFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private ClockFlexContainer clock;
 	
 	
@@ -125,7 +125,7 @@ public class DeviceSmartElectricMeterFlexContainer extends AbstractFlexContainer
 		return clock;
 	}
 	
-	@XmlElement(name="eneCn", required=true, type=EnergyConsumptionFlexContainer.class)
+	@XmlElement(name="eneCn", required=true, type=EnergyConsumptionFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private EnergyConsumptionFlexContainer energyConsumption;
 	
 	
@@ -139,7 +139,7 @@ public class DeviceSmartElectricMeterFlexContainer extends AbstractFlexContainer
 		return energyConsumption;
 	}
 	
-	@XmlElement(name="eneGn", required=true, type=EnergyGenerationFlexContainer.class)
+	@XmlElement(name="eneGn", required=true, type=EnergyGenerationFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private EnergyGenerationFlexContainer energyGeneration;
 	
 	

@@ -11,7 +11,7 @@ Device : DeviceElectricVehicleCharger
 
 An electric vehicle charger is a device that is used for charging or discharging electric vehicles.
 
-Created: 2017-09-28 17:26:40
+Created: 2018-06-11 12:14:18
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -65,7 +65,7 @@ public class DeviceElectricVehicleChargerFlexContainer extends AbstractFlexConta
 		}
 	}
 	
-	@XmlElement(name="fauDn", required=true, type=FaultDetectionFlexContainer.class)
+	@XmlElement(name="fauDn", required=true, type=FaultDetectionFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private FaultDetectionFlexContainer faultDetection;
 	
 	
@@ -79,7 +79,7 @@ public class DeviceElectricVehicleChargerFlexContainer extends AbstractFlexConta
 		return faultDetection;
 	}
 	
-	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainer.class)
+	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BinarySwitchFlexContainer binarySwitch;
 	
 	
@@ -93,7 +93,7 @@ public class DeviceElectricVehicleChargerFlexContainer extends AbstractFlexConta
 		return binarySwitch;
 	}
 	
-	@XmlElement(name="runMe", required=true, type=RunModeFlexContainer.class)
+	@XmlElement(name="runMe", required=true, type=RunModeFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private RunModeFlexContainer runMode;
 	
 	
@@ -107,7 +107,7 @@ public class DeviceElectricVehicleChargerFlexContainer extends AbstractFlexConta
 		return runMode;
 	}
 	
-	@XmlElement(name="batty", required=true, type=BatteryFlexContainer.class)
+	@XmlElement(name="batty", required=true, type=BatteryFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BatteryFlexContainer battery;
 	
 	
@@ -121,7 +121,7 @@ public class DeviceElectricVehicleChargerFlexContainer extends AbstractFlexConta
 		return battery;
 	}
 	
-	@XmlElement(name="elVCr", required=true, type=ElectricVehicleConnectorFlexContainer.class)
+	@XmlElement(name="elVCr", required=true, type=ElectricVehicleConnectorFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private ElectricVehicleConnectorFlexContainer electricVehicleConnector;
 	
 	
