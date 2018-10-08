@@ -27,16 +27,16 @@ public class ColourSaturation extends Module {
 		setExtends(domain.getName(), "ColourSaturation");
 		
 		if ((colourSat == null) ||
-				! colourSat.getShortDefinitionType().equals(DatapointType.colourSat.getShortName())) {
+				! colourSat.getShortName().equals(DatapointType.colourSaturation.getShortName())) {
 			domain.removeModule(getName());
-			throw new IllegalArgumentException("Wrong colourSat datapoint: " + colourSat);
+			throw new IllegalArgumentException("Wrong colourSaturation datapoint: " + colourSat);
 		}
 		this.colourSat = colourSat;
 		addDataPoint(this.colourSat);
 	}
 
 	public ColourSaturation(final String name, final Domain domain, Map<String, DataPoint> dps) {
-		this(name, domain, (IntegerDataPoint) dps.get(DatapointType.colourSat.getShortName()));
+		this(name, domain, (IntegerDataPoint) dps.get(DatapointType.colourSaturation.getShortName()));
 	}
 
 	public int getColourSat() throws DataPointException, AccessException {

@@ -30,7 +30,7 @@ public class Colour extends Module {
 		setExtends(domain.getName(), "Colour");
 		
 		if ((red == null) ||
-				! red.getShortDefinitionType().equals(DatapointType.red.getShortName())) {
+				! red.getShortName().equals(DatapointType.red.getShortName())) {
 			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong red datapoint: " + red);
 		}
@@ -39,7 +39,7 @@ public class Colour extends Module {
 		addDataPoint(this.red);
 		
 		if ((green == null) ||
-				! green.getShortDefinitionType().equals(DatapointType.green.getShortName())) {
+				! green.getShortName().equals(DatapointType.green.getShortName())) {
 			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong green datapoint: " + green);
 		}
@@ -48,7 +48,7 @@ public class Colour extends Module {
 		addDataPoint(this.green);
 		
 		if ((blue == null) ||
-				! blue.getShortDefinitionType().equals(DatapointType.blue.getShortName())) {
+				! blue.getShortName().equals(DatapointType.blue.getShortName())) {
 			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong blue datapoint: " + blue);
 		}

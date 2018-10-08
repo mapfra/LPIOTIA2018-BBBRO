@@ -20,6 +20,8 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.eclipse.om2m.commons.constants.ShortName;
+
 
 /**
  * <p>Classe Java pour dynAuthDasRequest complex type.
@@ -104,26 +106,34 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 })
 public class DynAuthDasRequest {
 
-    @XmlElement(required = true)
+    @XmlElement(required = true, name=ShortName.ORIGINATOR)
     @XmlSchemaType(name = "anyURI")
     protected String originator;
-    @XmlElement(required = true)
+    @XmlElement(required = true, name = ShortName.TARGETED_RESOURCE_TYPE)
     protected BigInteger targetedResourceType;
-    @XmlElement(required = true)
+    @XmlElement(required = true, name=ShortName.OPERATION)
     protected BigInteger operation;
+    @XmlElement(name=ShortName.ORIGINATOR_IP)
     protected DynAuthDasRequest.OriginatorIP originatorIP;
+    @XmlElement(name=ShortName.ORIGINATOR_LOCATION)
     protected LocationRegion originatorLocation;
     @XmlList
+    @XmlElement(name=ShortName.ORIGINATOR_ROLE_IDS)
     protected List<String> originatorRoleIDs;
     @XmlSchemaType(name = "anySimpleType")
+    @XmlElement(name=ShortName.REQUEST_TIMESTAMP)
     protected String requestTimestamp;
     @XmlSchemaType(name = "anyURI")
+    @XmlElement(name=ShortName.TARGETED_RESOURCE_ID)
     protected String targetedResourceID;
     @XmlSchemaType(name = "anySimpleType")
+    @XmlElement(name=ShortName.PROPOSED_PRIVILEDGES_LIFETIME)
     protected String proposedPrivilegesLifetime;
     @XmlList
+    @XmlElement(name=ShortName.ROLE_IDS_FROM_ACPS)
     protected List<String> roleIDsFromACPs;
     @XmlList
+    @XmlElement(name=ShortName.TOKEN_IDS)
     protected List<String> tokenIDs;
 
     /**
@@ -435,9 +445,11 @@ public class DynAuthDasRequest {
 
         @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
         @XmlSchemaType(name = "token")
+        @XmlElement(name=ShortName.IPV4)
         protected String ipv4Address;
         @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
         @XmlSchemaType(name = "token")
+        @XmlElement(name=ShortName.IPV6)
         protected String ipv6Address;
 
         /**

@@ -38,8 +38,8 @@ public class WaterSensorFlexContainerTest extends FlexContainerTestSuite {
 		flexContainer.setOntologyRef("OntologyOrange");
 
 		CustomAttribute alarmCustomAttribute = new CustomAttribute();
-		alarmCustomAttribute.setCustomAttributeName("alarm");
-		alarmCustomAttribute.setCustomAttributeValue("true");
+		alarmCustomAttribute.setShortName("alarm");
+		alarmCustomAttribute.setValue("true");
 		flexContainer.getCustomAttributes().add(alarmCustomAttribute);
 
 		// send CREATE request
@@ -103,8 +103,8 @@ public class WaterSensorFlexContainerTest extends FlexContainerTestSuite {
 		flexContainer.setOntologyRef("OntologyOrange");
 
 		CustomAttribute alarmCustomAttribute = new CustomAttribute();
-		alarmCustomAttribute.setCustomAttributeName("alarm");
-		alarmCustomAttribute.setCustomAttributeValue("true");
+		alarmCustomAttribute.setShortName("alarm");
+		alarmCustomAttribute.setValue("true");
 		flexContainer.getCustomAttributes().add(alarmCustomAttribute);
 
 		// send CREATE request
@@ -150,8 +150,8 @@ public class WaterSensorFlexContainerTest extends FlexContainerTestSuite {
 		flexContainer.setOntologyRef("OntologyOrange");
 
 		CustomAttribute alarmCustomAttribute = new CustomAttribute();
-		alarmCustomAttribute.setCustomAttributeName("alarm");
-		alarmCustomAttribute.setCustomAttributeValue("true");
+		alarmCustomAttribute.setShortName("alarm");
+		alarmCustomAttribute.setValue("true");
 		flexContainer.getCustomAttributes().add(alarmCustomAttribute);
 
 		// send CREATE request
@@ -169,8 +169,8 @@ public class WaterSensorFlexContainerTest extends FlexContainerTestSuite {
 		// prepare UPDATE request
 		WaterSensorFlexContainer toBeUpdated = new WaterSensorFlexContainer();
 		CustomAttribute alarmToBeUpdated = new CustomAttribute();
-		alarmToBeUpdated.setCustomAttributeName("alarm");
-		alarmToBeUpdated.setCustomAttributeValue("false");
+		alarmToBeUpdated.setShortName("alarm");
+		alarmToBeUpdated.setValue("false");
 		toBeUpdated.getCustomAttributes().add(alarmToBeUpdated);
 
 		// send UPDATE request
@@ -189,12 +189,12 @@ public class WaterSensorFlexContainerTest extends FlexContainerTestSuite {
 				return;
 			}
 
-			if (!alarmToBeUpdated.getCustomAttributeValue()
-					.equals(updatedFlexContainer.getCustomAttribute("alarm").getCustomAttributeValue())) {
+			if (!alarmToBeUpdated.getValue()
+					.equals(updatedFlexContainer.getCustomAttribute("alarm").getValue())) {
 				createTestReport("testUpdateWaterSensorFlexContainer", Status.KO,
-						"Wrong alarm customAttribute value. Expecting:" + alarmToBeUpdated.getCustomAttributeValue()
+						"Wrong alarm customAttribute value. Expecting:" + alarmToBeUpdated.getValue()
 								+ ", found:"
-								+ updatedFlexContainer.getCustomAttribute("alarm").getCustomAttributeValue(),
+								+ updatedFlexContainer.getCustomAttribute("alarm").getValue(),
 						null);
 				return;
 			}
@@ -211,7 +211,7 @@ public class WaterSensorFlexContainerTest extends FlexContainerTestSuite {
 			WaterSensorFlexContainer retrievedFlexContainer = (WaterSensorFlexContainer) response.getContent();
 			
 			// apply update on createdFlexContainer
-			createdFlexContainer.getCustomAttribute("alarm").setCustomAttributeValue("false");
+			createdFlexContainer.getCustomAttribute("alarm").setValue("false");
 			
 			try {
 				checkFlexContainer(createdFlexContainer, retrievedFlexContainer);

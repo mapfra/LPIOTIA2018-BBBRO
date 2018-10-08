@@ -19,13 +19,13 @@ import org.eclipse.om2m.sdt.home.modules.Foaming;
 import org.eclipse.om2m.sdt.home.modules.Grinder;
 import org.eclipse.om2m.sdt.home.modules.KeepWarm;
 import org.eclipse.om2m.sdt.home.modules.LiquidLevel;
-import org.eclipse.om2m.sdt.home.modules.RunMode;
+import org.eclipse.om2m.sdt.home.modules.RunState;
 import org.eclipse.om2m.sdt.home.types.DeviceType;
 
 public class CoffeeMachine extends GenericDevice {
 	
 	private FaultDetection faultDetection;
-	private RunMode runMode;
+	private RunState runState;
 	private Clock clock;
 	private Brewing brewing;
 	private LiquidLevel waterStatus;
@@ -44,8 +44,8 @@ public class CoffeeMachine extends GenericDevice {
 	public void addModule(Module module) {
 		if (module instanceof FaultDetection)
 			addModule((FaultDetection)module);
-		else if (module instanceof RunMode)
-			addModule((RunMode)module);
+		else if (module instanceof RunState)
+			addModule((RunState)module);
 		else if (module instanceof Clock)
 			addModule((Clock)module);
 		else if (module instanceof Brewing)
@@ -93,9 +93,9 @@ public class CoffeeMachine extends GenericDevice {
 	}
 
 	
-	public void addModule(RunMode mod) {
-		this.runMode = mod;
-		super.addModule(runMode);
+	public void addModule(RunState mod) {
+		this.runState = mod;
+		super.addModule(runState);
 	}
 	
 	public void addModule(Clock mod) {
@@ -144,8 +144,8 @@ public class CoffeeMachine extends GenericDevice {
 		return faultDetection;
 	}
 
-	public RunMode getRunMode() {
-		return runMode;
+	public RunState getRunState() {
+		return runState;
 	}
 
 	public Clock getClock() {

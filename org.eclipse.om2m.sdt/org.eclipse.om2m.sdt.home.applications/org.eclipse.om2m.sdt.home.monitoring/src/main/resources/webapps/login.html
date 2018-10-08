@@ -15,6 +15,7 @@
 		<title>Smart Home | login</title>
 		<link rel="stylesheet" href="css/style.css">
 		<link rel="icon" type="image/png" href="../webapps/images/favicon.ico" />
+		<script src="../webapps/js/jquery.js"></script>
 		<script>
 			var params = {};
 			if (location.search) {
@@ -43,10 +44,21 @@
 			function updateFormAction(form) {
 				form.action = form.action + "?sessionId=" + Date.now();
 			}
+			
+			function loadAuthenticationProviders() {
+				$.get("/Home_Monitoring_Application/authentication_servlet", 
+					function(data, textStatus, jqXHR) {
+						$.each(data, function(index, d) {
+							var toBeAdded = "<div><a href=\"" + d.authenticationPage + "\">log with "
+								+ d.serviceName + "</a></div>";
+							$("#providers").append(toBeAdded);
+						});
+				});
+			}
 		</script>
 	</head>
 
-	<body onLoad="loginCenter()" onResize="loginCenter()"> 
+	<body onLoad="loginCenter(); loadAuthenticationProviders();" onResize="loginCenter()"> 
 		<!-- login screen -->
 		<div class="page-wrap" id="page-wrap">
 			<div class="login-strip clearfix" id="loginArea">
@@ -68,6 +80,9 @@
 						</label>
 						<input type="submit" value="login">
 					<form/>
+					
+				</div>
+				<div id="providers">
 				</div>
 			</div>
 		</div>

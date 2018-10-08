@@ -29,6 +29,10 @@ public abstract class ValuedDataPoint<T> extends DataPoint {
 		}
 		return doGetValue();
 	}
+	
+	public String toStringValue() throws DataPointException, AccessException, Exception {
+		return getDataType().getTypeChoice().toString(getValue());
+	}
 
 	public void setValue(T value) throws DataPointException, AccessException {
 		if (! isWritable()) {

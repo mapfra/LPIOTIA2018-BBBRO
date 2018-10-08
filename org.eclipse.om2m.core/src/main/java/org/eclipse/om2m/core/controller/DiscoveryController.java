@@ -55,6 +55,7 @@ import org.eclipse.om2m.commons.exceptions.BadRequestException;
 import org.eclipse.om2m.commons.exceptions.NotImplementedException;
 import org.eclipse.om2m.commons.exceptions.OperationNotAllowed;
 import org.eclipse.om2m.commons.exceptions.ResourceNotFoundException;
+import org.eclipse.om2m.commons.resource.DynAuthTokenReqInfo;
 import org.eclipse.om2m.commons.resource.FilterCriteria;
 import org.eclipse.om2m.commons.resource.RequestPrimitive;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
@@ -122,12 +123,11 @@ public class DiscoveryController extends Controller {
 		if (!filter.getLabels().isEmpty()) {
 			HashSet<UriMapperEntity> allFoundUriEntities = new HashSet<>();
 			int limit = (filter.getLimit() != null ? filter.getLimit().intValue() : -1);
-			for (int indexLabel = 0; indexLabel < filter.getLabels().size(); indexLabel++) {
-				String label = filter.getLabels().get(indexLabel);
+			for (String label : filter.getLabels()) {
 				LabelEntity labelEntity = dbs.getDAOFactory().getLabelDAO().find(transaction, label);
-
 				if (labelEntity != null) {
-					List<ResourceEntity> allFoundResources = stackLabelResources(labelEntity, filter, resourceEntity.getHierarchicalURI());
+					List<ResourceEntity> allFoundResources = stackLabelResources(labelEntity, 
+							filter.getResourceType(), resourceEntity.getHierarchicalURI());
 					for (ResourceEntity resEntity : allFoundResources) {
 						UriMapperEntity uriEntity = new UriMapperEntity();
 						uriEntity.setHierarchicalUri(resEntity.getHierarchicalURI());
@@ -151,8 +151,11 @@ public class DiscoveryController extends Controller {
 		URIList uriList = new URIList();
 		// need to call getListofUri in order to create at least an empty list
 		uriList.getListOfUri();
-		for(UriMapperEntity uriEntity : childUris){
-			if(filter.getLimit() != null && uriList.getListOfUri().size() == filter.getLimit().intValue()){
+		DynAuthTokenReqInfo tokenReqInfo = null;
+		for (UriMapperEntity uriEntity : childUris) {
+			LOGGER.debug("check URI " + uriEntity.getHierarchicalUri());
+			if (filter.getLimit() != null 
+					&& uriList.getListOfUri().size() == filter.getLimit().intValue()) {
 				break;
 			}
 			
@@ -174,9 +177,23 @@ public class DiscoveryController extends Controller {
 						}
 					}
 				} catch (AccessDeniedException e) {
+					LOGGER.warn("Access denied for " + currentResourceEntity + ": " + e.getMessage());
 					// nothing to do
+					// here we should retrieve dyn auth token req info if available
+					
+					if (tokenReqInfo != null) {
+						if (e.getDynAuthTokenReqInfo() != null) {
+							tokenReqInfo.getDasInfo().addAll(e.getDynAuthTokenReqInfo().getDasInfo());
+						}
+					} else {
+						tokenReqInfo = e.getDynAuthTokenReqInfo();
+					}
 				}
 			}
+		}
+		LOGGER.debug("checked URIs " + uriList.getListOfUri());
+		if (uriList.getListOfUri().isEmpty() && (tokenReqInfo != null)) {
+			throw new AccessDeniedException(tokenReqInfo);
 		}
 
 		response.setContent(uriList);
@@ -236,9 +253,9 @@ public class DiscoveryController extends Controller {
 		}
 	}
 
-	private List<ResourceEntity> stackLabelResources(LabelEntity labelEntity, FilterCriteria filter, String baseUri) {
+	private List<ResourceEntity> stackLabelResources(LabelEntity labelEntity, 
+			BigInteger rty, String baseUri) {
 		List<ResourceEntity> result = new ArrayList<>();
-		BigInteger rty = filter.getResourceType();
 		if (rty != null){
 			switch (rty.intValue()) {
 			case ResourceType.AE:
@@ -321,7 +338,6 @@ public class DiscoveryController extends Controller {
 				it.remove();
 			}
 		}
-		
 		return result;
 	}
 

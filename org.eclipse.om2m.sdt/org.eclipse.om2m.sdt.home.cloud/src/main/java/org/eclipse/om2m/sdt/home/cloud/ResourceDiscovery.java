@@ -139,7 +139,7 @@ public class ResourceDiscovery {
 			Activator.logger.info("No serial number property. Take id instead.");
 			serial = deviceId;
 		} else {
-			serial = serialAttr.getCustomAttributeValue();
+			serial = serialAttr.getValue();
 		}
 		GenericDevice device = (GenericDevice) Activator.DOMAIN.getDevice(deviceId);
 		if (device == null) {
@@ -159,14 +159,14 @@ public class ResourceDiscovery {
 		}
 		for (CustomAttribute attr : deviceFlexContainer.getCustomAttributes()) {
 			Activator.logger.info("dev CustomAttribute: " + attr);
-			PropertyType propType = PropertyType.fromShortName(attr.getCustomAttributeName());
+			PropertyType propType = PropertyType.fromShortName(attr.getShortName());
 			if (propType != null) {
-				Property prop = new Property(propType, attr.getCustomAttributeValue());
+				Property prop = new Property(propType, attr.getValue());
 //				device.addProperty(prop);
-				device.addProperty(propType, attr.getCustomAttributeValue());
+				device.addProperty(propType, attr.getValue());
 			} else {
 				Activator.logger.warning("Unknown custom attribute: " 
-						+ attr.getCustomAttributeName());
+						+ attr.getShortName());
 			}
 		}
 		// Search children resources: modules
@@ -204,9 +204,9 @@ public class ResourceDiscovery {
 		List<CustomAttribute> dpAttrs = new ArrayList<CustomAttribute>();
 		for (CustomAttribute attr : moduleFlexContainer.getCustomAttributes()) {
 			Activator.logger.info("mod CustomAttribute(1): " + attr);
-			PropertyType propType = PropertyType.fromShortName(attr.getCustomAttributeName());
+			PropertyType propType = PropertyType.fromShortName(attr.getShortName());
 			if (propType != null) {
-				Property prop = new Property(propType, attr.getCustomAttributeValue());
+				Property prop = new Property(propType, attr.getValue());
 				props.add(prop);
 			} else {
 				dpAttrs.add(attr);
@@ -231,10 +231,10 @@ public class ResourceDiscovery {
 		List<DataPoint> dps = new ArrayList<DataPoint>();
 		for (CustomAttribute attr : dpAttrs) {
 			Activator.logger.info("mod CustomAttribute(2): " + attr);
-			DatapointType datapointType = DatapointType.fromShortName(attr.getCustomAttributeName());
+			DatapointType datapointType = DatapointType.fromShortName(attr.getShortName());
 			if (datapointType == null) {
 				Activator.logger.warning("Unknown custom attribute, neither property nor datapoint: " 
-						+ attr.getCustomAttributeName());
+						+ attr.getShortName());
 				continue;
 			}
 			String type = datapointType.getDataType().getTypeChoice().getOneM2MType();
@@ -259,7 +259,7 @@ public class ResourceDiscovery {
 		Activator.logger.info("datapoints: " + dps);
 		Map<String, DataPoint> dpsMap = new HashMap<String, DataPoint>();
 		for (DataPoint dp : dps) {
-			dpsMap.put(dp.getShortDefinitionType(), dp);
+			dpsMap.put(dp.getShortName(), dp);
 		}
 		Class<?> clazz = Class.forName(className);
 		if (modName.startsWith(cntDef + "__")) {
@@ -319,7 +319,7 @@ public class ResourceDiscovery {
 //					new DataType(type, SimpleType.getSimpleType(type))) {
 //				public void setValue(Object value) {
 //					try {
-//						SDTUtil.setValue(attr, value);
+//						TypeConverter.setValue(attr, value);
 //						updateAttribute(uri, attr);
 //					} catch (Exception e) {
 //						Activator.logger.warning("Could not set arg", e);
@@ -370,7 +370,7 @@ public class ResourceDiscovery {
 
 	private static IntegerDataPoint getIntegerDataPoint(final CustomAttribute attr,
 			final String uri) {
-		return new IntegerDataPoint(DatapointType.fromShortName(attr.getCustomAttributeName())) {
+		return new IntegerDataPoint(DatapointType.fromShortName(attr.getShortName())) {
 			@Override
 			public void doSetValue(Integer val) throws DataPointException {
 				try {
@@ -383,7 +383,7 @@ public class ResourceDiscovery {
 			@Override
 			public Integer doGetValue() throws DataPointException {
 				try {
-					return (Integer) retrieveAttribute(uri, attr.getCustomAttributeName(), "xs:integer");
+					return (Integer) retrieveAttribute(uri, attr.getShortName(), "xs:integer");
 				} catch (Exception e) {
 					throw new DataPointException(e);
 				}
@@ -393,7 +393,7 @@ public class ResourceDiscovery {
 	
 	private static BooleanDataPoint getBooleanDataPoint(final CustomAttribute attr,
 			final String uri) {
-		BooleanDataPoint ret = new BooleanDataPoint(DatapointType.fromShortName(attr.getCustomAttributeName())) {
+		BooleanDataPoint ret = new BooleanDataPoint(DatapointType.fromShortName(attr.getShortName())) {
 			@Override
 			public void doSetValue(Boolean val) throws DataPointException {
 				try {
@@ -406,7 +406,7 @@ public class ResourceDiscovery {
 			@Override
 			public Boolean doGetValue() throws DataPointException {
 				try {
-					return (Boolean) retrieveAttribute(uri, attr.getCustomAttributeName(), "xs:boolean");
+					return (Boolean) retrieveAttribute(uri, attr.getShortName(), "xs:boolean");
 				} catch (Exception e) {
 					throw new DataPointException(e);
 				}
@@ -417,7 +417,7 @@ public class ResourceDiscovery {
 	
 	private static StringDataPoint getStringDataPoint(final CustomAttribute attr,
 			final String uri) {
-		return new StringDataPoint(DatapointType.fromShortName(attr.getCustomAttributeName())) {
+		return new StringDataPoint(DatapointType.fromShortName(attr.getShortName())) {
 			@Override
 			public void doSetValue(String val) throws DataPointException {
 				try {
@@ -430,7 +430,7 @@ public class ResourceDiscovery {
 			@Override
 			public String doGetValue() throws DataPointException {
 				try {
-					return (String) retrieveAttribute(uri, attr.getCustomAttributeName(), "xs:string");
+					return (String) retrieveAttribute(uri, attr.getShortName(), "xs:string");
 				} catch (Exception e) {
 					throw new DataPointException(e);
 				}
@@ -440,7 +440,7 @@ public class ResourceDiscovery {
 	
 	private static ByteDataPoint getByteDataPoint(final CustomAttribute attr,
 			final String uri) {
-		return new ByteDataPoint(DatapointType.fromShortName(attr.getCustomAttributeName())) {
+		return new ByteDataPoint(DatapointType.fromShortName(attr.getShortName())) {
 			@Override
 			public void doSetValue(Byte val) throws DataPointException {
 				try {
@@ -453,7 +453,7 @@ public class ResourceDiscovery {
 			@Override
 			public Byte doGetValue() throws DataPointException {
 				try {
-					return (Byte) retrieveAttribute(uri, attr.getCustomAttributeName(), "xs:byte");
+					return (Byte) retrieveAttribute(uri, attr.getShortName(), "xs:byte");
 				} catch (Exception e) {
 					throw new DataPointException(e);
 				}
@@ -463,7 +463,7 @@ public class ResourceDiscovery {
 	
 	private static FloatDataPoint getFloatDataPoint(final CustomAttribute attr,
 			final String uri) {
-		return new FloatDataPoint(DatapointType.fromShortName(attr.getCustomAttributeName())) {
+		return new FloatDataPoint(DatapointType.fromShortName(attr.getShortName())) {
 			@Override
 			public void doSetValue(Float val) throws DataPointException {
 				try {
@@ -476,7 +476,7 @@ public class ResourceDiscovery {
 			@Override
 			public Float doGetValue() throws DataPointException {
 				try {
-					return (Float) retrieveAttribute(uri, attr.getCustomAttributeName(), "xs:float");
+					return (Float) retrieveAttribute(uri, attr.getShortName(), "xs:float");
 				} catch (Exception e) {
 					throw new DataPointException(e);
 				}
@@ -486,7 +486,7 @@ public class ResourceDiscovery {
 	
 	private static DateTimeDataPoint getDateTimeDataPoint(final CustomAttribute attr,
 			final String uri) {
-		return new DateTimeDataPoint(DatapointType.fromShortName(attr.getCustomAttributeName())) {
+		return new DateTimeDataPoint(DatapointType.fromShortName(attr.getShortName())) {
 			@Override
 			public void doSetValue(Date val) throws DataPointException {
 				try {
@@ -499,7 +499,7 @@ public class ResourceDiscovery {
 			@Override
 			public Date doGetValue() throws DataPointException {
 				try {
-					return (Date) retrieveAttribute(uri, attr.getCustomAttributeName(), "xs:datetime");
+					return (Date) retrieveAttribute(uri, attr.getShortName(), "xs:datetime");
 				} catch (Exception e) {
 					throw new DataPointException(e);
 				}
@@ -509,7 +509,7 @@ public class ResourceDiscovery {
 	
 	private static DateDataPoint getDateDataPoint(final CustomAttribute attr,
 			final String uri) {
-		return new DateDataPoint(DatapointType.fromShortName(attr.getCustomAttributeName())) {
+		return new DateDataPoint(DatapointType.fromShortName(attr.getShortName())) {
 			@Override
 			public void doSetValue(Date val) throws DataPointException {
 				try {
@@ -522,7 +522,7 @@ public class ResourceDiscovery {
 			@Override
 			public Date doGetValue() throws DataPointException {
 				try {
-					return (Date) retrieveAttribute(uri, attr.getCustomAttributeName(), "xs:date");
+					return (Date) retrieveAttribute(uri, attr.getShortName(), "xs:date");
 				} catch (Exception e) {
 					throw new DataPointException(e);
 				}
@@ -532,7 +532,7 @@ public class ResourceDiscovery {
 	
 	private static TimeDataPoint getTimeDataPoint(final CustomAttribute attr,
 			final String uri) {
-		return new TimeDataPoint(DatapointType.fromShortName(attr.getCustomAttributeName())) {
+		return new TimeDataPoint(DatapointType.fromShortName(attr.getShortName())) {
 			@Override
 			public void doSetValue(Date val) throws DataPointException {
 				try {
@@ -545,7 +545,7 @@ public class ResourceDiscovery {
 			@Override
 			public Date doGetValue() throws DataPointException {
 				try {
-					return (Date) retrieveAttribute(uri, attr.getCustomAttributeName(), "xs:time");
+					return (Date) retrieveAttribute(uri, attr.getShortName(), "xs:time");
 				} catch (Exception e) {
 					throw new DataPointException(e);
 				}
@@ -555,7 +555,7 @@ public class ResourceDiscovery {
 	
 	private static ArrayDataPoint<String> getArrayDataPoint(final CustomAttribute attr,
 			final String uri) {
-		return new ArrayDataPoint<String>(DatapointType.fromShortName(attr.getCustomAttributeName())) {
+		return new ArrayDataPoint<String>(DatapointType.fromShortName(attr.getShortName())) {
 			@Override
 			public void doSetValue(List<String> val) throws DataPointException {
 				try {
@@ -569,7 +569,7 @@ public class ResourceDiscovery {
 			@Override
 			public List<String> doGetValue() throws DataPointException {
 				try {
-					return (List<String>) retrieveAttribute(uri, attr.getCustomAttributeName(), "xs:array");
+					return (List<String>) retrieveAttribute(uri, attr.getShortName(), "xs:array");
 				} catch (Exception e) {
 					throw new DataPointException(e);
 				}
@@ -586,7 +586,7 @@ public class ResourceDiscovery {
 			Class<?> clazz = Class.forName(className);
 			return (EnumDataPoint<Integer>) 
 				clazz.getConstructor(Identifiers.class, EnumDataPoint.class)
-					.newInstance(DatapointType.fromShortName(attr.getCustomAttributeName()), 
+					.newInstance(DatapointType.fromShortName(attr.getShortName()), 
 						new EnumDataPoint<Integer>(null) {
 							@Override
 							public void doSetValue(Integer val) throws DataPointException {
@@ -600,7 +600,7 @@ public class ResourceDiscovery {
 							@Override
 							public Integer doGetValue() throws DataPointException {
 								try {
-									return (Integer) retrieveAttribute(uri, attr.getCustomAttributeName(), "xs:integer");
+									return (Integer) retrieveAttribute(uri, attr.getShortName(), "xs:integer");
 								} catch (Exception e) {
 									throw new DataPointException(e);
 								}
@@ -686,7 +686,7 @@ public class ResourceDiscovery {
 		if (! ResponseStatusCode.UPDATED.equals(response.getResponseStatusCode()))
 			throw new Exception("Error invoking cloud action: " + response.getResponseStatusCode());
 		CustomAttribute ret = ((AbstractFlexContainer) response.getContent()).getCustomAttribute("output");
-		return (ret == null) ? null : ret.getCustomAttributeValue();
+		return (ret == null) ? null : ret.getValue();
 	}
 
 }

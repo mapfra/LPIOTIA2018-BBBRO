@@ -37,43 +37,43 @@ public class EnergyConsumptionFlexContainerTest extends FlexContainerTestSuite {
 		flexContainer.setCreator("greg");
 
 		CustomAttribute powerCustomAttribute = new CustomAttribute();
-		powerCustomAttribute.setCustomAttributeName("power");
-		powerCustomAttribute.setCustomAttributeValue("342");
+		powerCustomAttribute.setShortName("power");
+		powerCustomAttribute.setValue("342");
 		flexContainer.getCustomAttributes().add(powerCustomAttribute);
 
 		CustomAttribute absoluteEnergyConsumptionDataCustomAttribute = new CustomAttribute();
-		absoluteEnergyConsumptionDataCustomAttribute.setCustomAttributeName("abECn");
-		absoluteEnergyConsumptionDataCustomAttribute.setCustomAttributeValue("3434");
+		absoluteEnergyConsumptionDataCustomAttribute.setShortName("abECn");
+		absoluteEnergyConsumptionDataCustomAttribute.setValue("3434");
 		flexContainer.getCustomAttributes().add(absoluteEnergyConsumptionDataCustomAttribute);
 
 		CustomAttribute roundingEnergyConsumptionDataCustomAttribute = new CustomAttribute();
-		roundingEnergyConsumptionDataCustomAttribute.setCustomAttributeName("roECn");
-		roundingEnergyConsumptionDataCustomAttribute.setCustomAttributeValue("43242");
+		roundingEnergyConsumptionDataCustomAttribute.setShortName("roECn");
+		roundingEnergyConsumptionDataCustomAttribute.setValue("43242");
 		flexContainer.getCustomAttributes().add(roundingEnergyConsumptionDataCustomAttribute);
 
 		CustomAttribute significantFigures = new CustomAttribute();
-		significantFigures.setCustomAttributeName("sigDs");
-		significantFigures.setCustomAttributeValue("3");
+		significantFigures.setShortName("sigDs");
+		significantFigures.setValue("3");
 		flexContainer.getCustomAttributes().add(significantFigures);
 
 		CustomAttribute multiplyingFactors = new CustomAttribute();
-		multiplyingFactors.setCustomAttributeName("mulFs");
-		multiplyingFactors.setCustomAttributeValue("100");
+		multiplyingFactors.setShortName("mulFs");
+		multiplyingFactors.setValue("100");
 		flexContainer.getCustomAttributes().add(multiplyingFactors);
 
 		CustomAttribute voltage = new CustomAttribute();
-		voltage.setCustomAttributeName("volte");
-		voltage.setCustomAttributeValue("3443");
+		voltage.setShortName("volte");
+		voltage.setValue("3443");
 		flexContainer.getCustomAttributes().add(voltage);
 
 		CustomAttribute current = new CustomAttribute();
-		current.setCustomAttributeName("currt");
-		current.setCustomAttributeValue("45353");
+		current.setShortName("currt");
+		current.setValue("45353");
 		flexContainer.getCustomAttributes().add(current);
 
 		CustomAttribute frequency = new CustomAttribute();
-		frequency.setCustomAttributeName("freqy");
-		frequency.setCustomAttributeValue("34");
+		frequency.setShortName("freqy");
+		frequency.setValue("34");
 		flexContainer.getCustomAttributes().add(frequency);
 
 		// send CREATE request
@@ -159,43 +159,43 @@ public class EnergyConsumptionFlexContainerTest extends FlexContainerTestSuite {
 		flexContainer.setCreator("greg");
 
 		CustomAttribute powerCustomAttribute = new CustomAttribute();
-		powerCustomAttribute.setCustomAttributeName("power");
-		powerCustomAttribute.setCustomAttributeValue("342");
+		powerCustomAttribute.setShortName("power");
+		powerCustomAttribute.setValue("342");
 		flexContainer.getCustomAttributes().add(powerCustomAttribute);
 
 		CustomAttribute absoluteEnergyConsumptionDataCustomAttribute = new CustomAttribute();
-		absoluteEnergyConsumptionDataCustomAttribute.setCustomAttributeName("abECn");
-		absoluteEnergyConsumptionDataCustomAttribute.setCustomAttributeValue("3434");
+		absoluteEnergyConsumptionDataCustomAttribute.setShortName("abECn");
+		absoluteEnergyConsumptionDataCustomAttribute.setValue("3434");
 		flexContainer.getCustomAttributes().add(absoluteEnergyConsumptionDataCustomAttribute);
 
 		CustomAttribute roundingEnergyConsumptionDataCustomAttribute = new CustomAttribute();
-		roundingEnergyConsumptionDataCustomAttribute.setCustomAttributeName("roECn");
-		roundingEnergyConsumptionDataCustomAttribute.setCustomAttributeValue("43242");
+		roundingEnergyConsumptionDataCustomAttribute.setShortName("roECn");
+		roundingEnergyConsumptionDataCustomAttribute.setValue("43242");
 		flexContainer.getCustomAttributes().add(roundingEnergyConsumptionDataCustomAttribute);
 
 		CustomAttribute significantFigures = new CustomAttribute();
-		significantFigures.setCustomAttributeName("sigDs");
-		significantFigures.setCustomAttributeValue("3");
+		significantFigures.setShortName("sigDs");
+		significantFigures.setValue("3");
 		flexContainer.getCustomAttributes().add(significantFigures);
 
 		CustomAttribute multiplyingFactors = new CustomAttribute();
-		multiplyingFactors.setCustomAttributeName("mulFs");
-		multiplyingFactors.setCustomAttributeValue("100");
+		multiplyingFactors.setShortName("mulFs");
+		multiplyingFactors.setValue("100");
 		flexContainer.getCustomAttributes().add(multiplyingFactors);
 
 		CustomAttribute voltage = new CustomAttribute();
-		voltage.setCustomAttributeName("volte");
-		voltage.setCustomAttributeValue("3443");
+		voltage.setShortName("volte");
+		voltage.setValue("3443");
 		flexContainer.getCustomAttributes().add(voltage);
 
 		CustomAttribute current = new CustomAttribute();
-		current.setCustomAttributeName("currt");
-		current.setCustomAttributeValue("45353");
+		current.setShortName("currt");
+		current.setValue("45353");
 		flexContainer.getCustomAttributes().add(current);
 
 		CustomAttribute frequency = new CustomAttribute();
-		frequency.setCustomAttributeName("freqy");
-		frequency.setCustomAttributeValue("34");
+		frequency.setShortName("freqy");
+		frequency.setValue("34");
 		flexContainer.getCustomAttributes().add(frequency);
 
 		// send CREATE request
@@ -243,43 +243,43 @@ public class EnergyConsumptionFlexContainerTest extends FlexContainerTestSuite {
 		flexContainer.setCreator("greg");
 
 		CustomAttribute powerCustomAttribute = new CustomAttribute();
-		powerCustomAttribute.setCustomAttributeName("power");
-		powerCustomAttribute.setCustomAttributeValue("342");
+		powerCustomAttribute.setShortName("power");
+		powerCustomAttribute.setValue("342");
 		flexContainer.getCustomAttributes().add(powerCustomAttribute);
 
 		CustomAttribute absoluteEnergyConsumptionDataCustomAttribute = new CustomAttribute();
-		absoluteEnergyConsumptionDataCustomAttribute.setCustomAttributeName("abECn");
-		absoluteEnergyConsumptionDataCustomAttribute.setCustomAttributeValue("3434");
+		absoluteEnergyConsumptionDataCustomAttribute.setShortName("abECn");
+		absoluteEnergyConsumptionDataCustomAttribute.setValue("3434");
 		flexContainer.getCustomAttributes().add(absoluteEnergyConsumptionDataCustomAttribute);
 
 		CustomAttribute roundingEnergyConsumptionDataCustomAttribute = new CustomAttribute();
-		roundingEnergyConsumptionDataCustomAttribute.setCustomAttributeName("roECn");
-		roundingEnergyConsumptionDataCustomAttribute.setCustomAttributeValue("43242");
+		roundingEnergyConsumptionDataCustomAttribute.setShortName("roECn");
+		roundingEnergyConsumptionDataCustomAttribute.setValue("43242");
 		flexContainer.getCustomAttributes().add(roundingEnergyConsumptionDataCustomAttribute);
 
 		CustomAttribute significantFigures = new CustomAttribute();
-		significantFigures.setCustomAttributeName("sigDs");
-		significantFigures.setCustomAttributeValue("3");
+		significantFigures.setShortName("sigDs");
+		significantFigures.setValue("3");
 		flexContainer.getCustomAttributes().add(significantFigures);
 
 		CustomAttribute multiplyingFactors = new CustomAttribute();
-		multiplyingFactors.setCustomAttributeName("mulFs");
-		multiplyingFactors.setCustomAttributeValue("100");
+		multiplyingFactors.setShortName("mulFs");
+		multiplyingFactors.setValue("100");
 		flexContainer.getCustomAttributes().add(multiplyingFactors);
 
 		CustomAttribute voltage = new CustomAttribute();
-		voltage.setCustomAttributeName("volte");
-		voltage.setCustomAttributeValue("3443");
+		voltage.setShortName("volte");
+		voltage.setValue("3443");
 		flexContainer.getCustomAttributes().add(voltage);
 
 		CustomAttribute current = new CustomAttribute();
-		current.setCustomAttributeName("currt");
-		current.setCustomAttributeValue("45353");
+		current.setShortName("currt");
+		current.setValue("45353");
 		flexContainer.getCustomAttributes().add(current);
 
 		CustomAttribute frequency = new CustomAttribute();
-		frequency.setCustomAttributeName("freqy");
-		frequency.setCustomAttributeValue("34");
+		frequency.setShortName("freqy");
+		frequency.setValue("34");
 		flexContainer.getCustomAttributes().add(frequency);
 
 		// send CREATE request
@@ -298,8 +298,8 @@ public class EnergyConsumptionFlexContainerTest extends FlexContainerTestSuite {
 		// prepare Update request
 		EnergyConsumptionFlexContainer toBeUpdated = new EnergyConsumptionFlexContainer();
 		CustomAttribute updatedVoltage = new CustomAttribute();
-		updatedVoltage.setCustomAttributeName("volte");
-		updatedVoltage.setCustomAttributeValue("0");
+		updatedVoltage.setShortName("volte");
+		updatedVoltage.setValue("0");
 		toBeUpdated.getCustomAttributes().add(updatedVoltage);
 
 		// send UPDATE request
@@ -321,12 +321,12 @@ public class EnergyConsumptionFlexContainerTest extends FlexContainerTestSuite {
 				return;
 			}
 
-			if (!updatedFlexContainer.getCustomAttribute("volte").getCustomAttributeValue()
-					.equals(updatedVoltage.getCustomAttributeValue())) {
+			if (!updatedFlexContainer.getCustomAttribute("volte").getValue()
+					.equals(updatedVoltage.getValue())) {
 				createTestReport("testUpdateEnergyConsumptionFlexContainer", Status.KO,
-						"wrong voltage customAttribute value. Expecting: " + updatedVoltage.getCustomAttributeValue()
+						"wrong voltage customAttribute value. Expecting: " + updatedVoltage.getValue()
 								+ " , found: "
-								+ updatedFlexContainer.getCustomAttribute("volte").getCustomAttributeValue(),
+								+ updatedFlexContainer.getCustomAttribute("volte").getValue(),
 						null);
 
 				return;
@@ -346,7 +346,7 @@ public class EnergyConsumptionFlexContainerTest extends FlexContainerTestSuite {
 			
 			// prepare initial flexContainer
 			createdFlexContainer.setName(flexContainerName);
-			createdFlexContainer.getCustomAttribute("volte").setCustomAttributeValue("0");
+			createdFlexContainer.getCustomAttribute("volte").setValue("0");
 			
 			try {
 				checkFlexContainer(createdFlexContainer, retrievedFlexContainer);

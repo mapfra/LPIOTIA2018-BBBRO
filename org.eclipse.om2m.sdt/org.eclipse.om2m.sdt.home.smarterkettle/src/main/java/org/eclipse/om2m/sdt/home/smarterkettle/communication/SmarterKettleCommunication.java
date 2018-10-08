@@ -7,6 +7,8 @@
  *******************************************************************************/
 package org.eclipse.om2m.sdt.home.smarterkettle.communication;
 
+import static org.eclipse.om2m.sdt.home.smarterkettle.Activator.LOGGER;
+
 public class SmarterKettleCommunication {
 	
 	private SmarterKettleStatus kettleStatus;
@@ -18,7 +20,6 @@ public class SmarterKettleCommunication {
 		this.port = port;
 		kettleStatus = new SmarterKettleStatus();
 	}
-
 
 	public void startKettle(int temperature){
 		byte[] request = new byte[4];
@@ -61,8 +62,7 @@ public class SmarterKettleCommunication {
 		kettleStatus.setCurrentTemperature(Byte.toUnsignedInt(statusAnswer[2]));
 		kettleStatus.setBoiling(statusAnswer[1] != 0);
 		kettleStatus.setPlugged(statusAnswer[3] == 8);
-		kettleStatus.setWaterLevel(Byte.toUnsignedInt(statusAnswer[4]));	
-		kettleStatus.setWaterLevelEnum(Byte.toUnsignedInt(statusAnswer[4]));
+		kettleStatus.setWaterLevel(Byte.toUnsignedInt(statusAnswer[4]));
 	}
 
 	public Boolean getFaultDetection() {
@@ -84,7 +84,7 @@ public class SmarterKettleCommunication {
 	private void send(byte[] request) {
 		TCPConnection tcp = new TCPConnection(ip, port);
 		tcp.setWaitForResponse(true);
-		System.out.println("send: 0:" + request[0] + "| 1: " + request[1] + "| 2: " + request[2] + "| 3: " + request[3] + "|");
+		LOGGER.info("send: 0:" + request[0] + "| 1: " + request[1] + "| 2: " + request[2] + "| 3: " + request[3] + "|");
 		tcp.sendTCPPacket(request);	
 	}
 	

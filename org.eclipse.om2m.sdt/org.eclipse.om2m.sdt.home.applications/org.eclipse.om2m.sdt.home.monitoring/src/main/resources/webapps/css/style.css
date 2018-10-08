@@ -390,3 +390,7 @@ and (orientation : portrait) {
 .backgroundRed {
 	background:#F00;
 }
+
+.backgroundGray {
+	background:gray;
+}

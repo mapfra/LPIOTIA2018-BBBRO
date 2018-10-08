@@ -239,6 +239,7 @@ public abstract class LIFXDevice {
 	
 	
 	public abstract void setLightState(int newPower, double newHue, double newSaturation, double newKelvin, double newBrightness, int duration) throws Exception;
+	public abstract void setLightState(int newPower, int red, int green, int blue, int duration) throws Exception;
 
 	public String getLabel()  throws Exception {
 		return label;

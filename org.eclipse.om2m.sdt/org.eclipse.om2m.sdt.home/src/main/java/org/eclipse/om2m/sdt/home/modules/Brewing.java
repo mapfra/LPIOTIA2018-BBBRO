@@ -21,7 +21,7 @@ public class Brewing extends Module{
 		super(name, domain, ModuleType.brewing);
 
 		if ((cupsNumber == null) ||
-				! cupsNumber.getShortDefinitionType().equals(DatapointType.cupsNumber.getShortName())) {
+				! cupsNumber.getShortName().equals(DatapointType.cupsNumber.getShortName())) {
 			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong cupsNumber datapoint: " + cupsNumber);
 		}
@@ -30,7 +30,7 @@ public class Brewing extends Module{
 		addDataPoint(this.cupsNumber);
 
 		if ((strength == null) ||
-				! strength.getShortDefinitionType().equals(DatapointType.strength.getShortName())) {
+				! strength.getShortName().equals(DatapointType.strength.getShortName())) {
 			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong strength datapoint: " + strength);
 		}
@@ -52,11 +52,11 @@ public class Brewing extends Module{
 		cupsNumber.setValue(v);
 	}	
 
-	public int getStrength() throws DataPointException, AccessException {
+	public TasteStrength.Values getStrength() throws DataPointException, AccessException {
 		return strength.getValue();
 	}
 
-	public void setStrength(int v) throws DataPointException, AccessException {
+	public void setStrength(TasteStrength.Values v) throws DataPointException, AccessException {
 		strength.setValue(v);
 	}
 

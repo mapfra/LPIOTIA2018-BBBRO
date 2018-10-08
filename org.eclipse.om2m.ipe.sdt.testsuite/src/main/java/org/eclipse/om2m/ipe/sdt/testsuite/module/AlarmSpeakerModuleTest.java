@@ -18,10 +18,10 @@ import org.eclipse.om2m.ipe.sdt.testsuite.TestReport.State;
 import org.eclipse.om2m.sdt.Module;
 import org.eclipse.om2m.sdt.datapoints.BooleanDataPoint;
 import org.eclipse.om2m.sdt.datapoints.EnumDataPoint;
-import org.eclipse.om2m.sdt.home.types.AlertColourCode;
-import org.eclipse.om2m.sdt.home.types.DatapointType;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
+import org.eclipse.om2m.sdt.home.types.AlertColourCode;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
 
 public class AlarmSpeakerModuleTest extends AbstractModuleTest {
 
@@ -62,10 +62,10 @@ public class AlarmSpeakerModuleTest extends AbstractModuleTest {
 			// toneCA exist ==> check value
 			Integer toneValueFromFlexContainer = null;
 			try {
-				toneValueFromFlexContainer = Integer.parseInt(toneCA.getCustomAttributeValue());
+				toneValueFromFlexContainer = Integer.parseInt(toneCA.getValue());
 			} catch (NumberFormatException e) {
 				report.setErrorMessage(
-						"NumberFormatException on toneValue from FlexContainer:" + toneCA.getCustomAttributeValue());
+						"NumberFormatException on toneValue from FlexContainer:" + toneCA.getValue());
 				report.setException(e);
 				report.setState(State.KO);
 				return report;
@@ -132,8 +132,8 @@ public class AlarmSpeakerModuleTest extends AbstractModuleTest {
 
 			// set toneCA
 			toneCA = new CustomAttribute();
-			toneCA.setCustomAttributeName(DatapointType.tone.getShortName());
-			toneCA.setCustomAttributeValue(possibleValue.toString());
+			toneCA.setShortName(DatapointType.tone.getShortName());
+			toneCA.setValue(possibleValue.toString());
 
 			// flexcontainer
 			toBeUpdated = new AlarmSpeakerFlexContainer();
@@ -167,8 +167,9 @@ public class AlarmSpeakerModuleTest extends AbstractModuleTest {
 
 			// set toneCA
 			toneCA = new CustomAttribute();
-			toneCA.setCustomAttributeName(DatapointType.tone.getShortName());
-			toneCA.setCustomAttributeValue("1"); // fire
+			toneCA.setShortName(DatapointType.tone.getShortName());
+			toneCA.setValue("1"); // fire
+//			toneCA.setValue(Tone.Values.fire.toString());
 
 			// flexcontainer
 			toBeUpdated = new AlarmSpeakerFlexContainer();
@@ -229,7 +230,7 @@ public class AlarmSpeakerModuleTest extends AbstractModuleTest {
 			}
 
 			// retrieve alarmStatus value from FlexContainer
-			Boolean alarmStatusValueFromFlexContainer = Boolean.valueOf(alarmStatusCA.getCustomAttributeValue());
+			Boolean alarmStatusValueFromFlexContainer = Boolean.valueOf(alarmStatusCA.getValue());
 
 			if (!checkObject(alarmStatusValueFromDP, alarmStatusValueFromFlexContainer, report, DatapointType.alarmStatus.getShortName())) {
 				return report;
@@ -267,8 +268,8 @@ public class AlarmSpeakerModuleTest extends AbstractModuleTest {
 
 		// prepare request
 		CustomAttribute alarmStatusCA = new CustomAttribute();
-		alarmStatusCA.setCustomAttributeName(DatapointType.alarmStatus.getShortName());
-		alarmStatusCA.setCustomAttributeValue(newAlarmStatusValue.toString());
+		alarmStatusCA.setShortName(DatapointType.alarmStatus.getShortName());
+		alarmStatusCA.setValue(newAlarmStatusValue.toString());
 		AlarmSpeakerFlexContainer toBeUpdated = new AlarmSpeakerFlexContainer();
 		toBeUpdated.getCustomAttributes().add(alarmStatusCA);
 
@@ -311,7 +312,7 @@ public class AlarmSpeakerModuleTest extends AbstractModuleTest {
 		AlertColourCode lightDP = (AlertColourCode) getModule().getDataPoint(DatapointType.light.getShortName());
 		if (lightDP != null) {
 
-			Integer lightValueFromDP = null;
+			AlertColourCode.Values lightValueFromDP = null;
 			try {
 				lightValueFromDP = lightDP.getValue();
 			} catch (DataPointException | AccessException e) {
@@ -340,10 +341,10 @@ public class AlarmSpeakerModuleTest extends AbstractModuleTest {
 			// retrieve value from customAttribute
 			Integer lightValueFromFlexContainer = null;
 			try {
-				lightValueFromFlexContainer = Integer.parseInt(lightCA.getCustomAttributeValue());
+				lightValueFromFlexContainer = Integer.parseInt(lightCA.getValue());
 			} catch (NumberFormatException e) {
 				report.setErrorMessage("unable to cast light customAttribute value ("
-						+ lightCA.getCustomAttributeValue() + ") as an Integer");
+						+ lightCA.getValue() + ") as an Integer");
 				report.setState(State.KO);
 				return report;
 			}
@@ -392,7 +393,7 @@ public class AlarmSpeakerModuleTest extends AbstractModuleTest {
 			// light datapoint exist
 
 			// retrieve current value
-			Integer lightValueFromDP = null;
+			AlertColourCode.Values lightValueFromDP = null;
 			try {
 				lightValueFromDP = lightDP.getValue();
 			} catch (DataPointException | AccessException e) {
@@ -403,13 +404,14 @@ public class AlarmSpeakerModuleTest extends AbstractModuleTest {
 			}
 
 			// prepare new light value
-			Integer newLightValue = (lightValueFromDP.intValue() == 1 ? 2 : 1);
+			AlertColourCode.Values newLightValue = (lightValueFromDP == AlertColourCode.Values.green) 
+					? AlertColourCode.Values.red : AlertColourCode.Values.green;
 
 			// prepare request
 			AlarmSpeakerFlexContainer toBeUpdated = new AlarmSpeakerFlexContainer();
 			CustomAttribute lightCA = new CustomAttribute();
-			lightCA.setCustomAttributeName(DatapointType.light.getShortName());
-			lightCA.setCustomAttributeValue(newLightValue.toString());
+			lightCA.setShortName(DatapointType.light.getShortName());
+			lightCA.setValue(newLightValue.toString());
 			toBeUpdated.getCustomAttributes().add(lightCA);
 
 			// perform UPDATE request
@@ -441,8 +443,8 @@ public class AlarmSpeakerModuleTest extends AbstractModuleTest {
 			// prepare request
 			AlarmSpeakerFlexContainer toBeUpdated = new AlarmSpeakerFlexContainer();
 			CustomAttribute lightCA = new CustomAttribute();
-			lightCA.setCustomAttributeName(DatapointType.light.getShortName());
-			lightCA.setCustomAttributeValue(Integer.valueOf(AlertColourCode.Red).toString());
+			lightCA.setShortName(DatapointType.light.getShortName());
+			lightCA.setValue(AlertColourCode.Values.red.toString());
 			toBeUpdated.getCustomAttributes().add(lightCA);
 
 			// perform UPDATE request

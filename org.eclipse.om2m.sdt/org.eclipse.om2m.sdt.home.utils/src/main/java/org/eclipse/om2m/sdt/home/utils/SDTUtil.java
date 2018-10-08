@@ -23,7 +23,7 @@ public class SDTUtil {
 
 	public static Object getValue(CustomAttribute attr, String type) throws Exception {
 		return (attr == null) ? null
-			: getValue(attr.getCustomAttributeValue(), type);
+			: getValue(attr.getValue(), type);
 	}
 	
 	public static Object getValue(String value, String type) throws Exception {
@@ -62,7 +62,7 @@ public class SDTUtil {
 	
 	public static void setValue(CustomAttribute attr, Object val, String type) throws Exception {
 		if (val == null) {
-			attr.setCustomAttributeValue(null);
+			attr.setValue(null);
 			return;
 		}
 		switch (type) {
@@ -72,10 +72,10 @@ public class SDTUtil {
 		case "xs:boolean":
 		case "xs:byte":
 		case "xs:uri":
-			attr.setCustomAttributeValue(val.toString()); return;
-		case "xs:datetime": attr.setCustomAttributeValue(dateTimeFormat.format((Date)val)); return;
-		case "xs:time": attr.setCustomAttributeValue(timeFormat.format((Date)val)); return;
-		case "xs:date": attr.setCustomAttributeValue(dateFormat.format((Date)val)); return;
+			attr.setValue(val.toString()); return;
+		case "xs:datetime": attr.setValue(dateTimeFormat.format((Date)val)); return;
+		case "xs:time": attr.setValue(timeFormat.format((Date)val)); return;
+		case "xs:date": attr.setValue(dateFormat.format((Date)val)); return;
 		case "xs:enum":
 			String ret = "";
 			boolean first = true;
@@ -84,11 +84,11 @@ public class SDTUtil {
 				else first = false;
 				ret += s.toString();
 			}
-			attr.setCustomAttributeValue(ret); return;
+			attr.setValue(ret); return;
 		case "xs:blob": return;// TODO serialize byte array
 		default:
 			if (type.startsWith("hd:")) 
-				attr.setCustomAttributeValue(val.toString());
+				attr.setValue(val.toString());
 			return;
 		}
 	}

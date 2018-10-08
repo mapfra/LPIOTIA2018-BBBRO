@@ -55,9 +55,9 @@ public class FaultDetectionModuleTest extends AbstractModuleTest {
 		CustomAttribute statusCA = retrievedFlexContainer.getCustomAttribute(DatapointType.status.getShortName());
 		CustomAttribute codeCA = retrievedFlexContainer.getCustomAttribute(DatapointType.code.getShortName()); // optional
 		CustomAttribute descriptionCA = retrievedFlexContainer.getCustomAttribute(DatapointType.description.getShortName()); // optional
-		Boolean statusValueFromFlexContainer = Boolean.parseBoolean(statusCA.getCustomAttributeValue());
-		Integer codeValueFromFlexContainer = (codeCA != null ? Integer.valueOf(codeCA.getCustomAttributeValue()) :null);
-		String descriptionValueFromFlexContainer = (descriptionCA != null ? descriptionCA.getCustomAttributeValue() : null);
+		Boolean statusValueFromFlexContainer = Boolean.parseBoolean(statusCA.getValue());
+		Integer codeValueFromFlexContainer = (codeCA != null ? Integer.valueOf(codeCA.getValue()) :null);
+		String descriptionValueFromFlexContainer = (descriptionCA != null ? descriptionCA.getValue() : null);
 		
 		
 		// retrieve Datapoint 
@@ -127,7 +127,7 @@ public class FaultDetectionModuleTest extends AbstractModuleTest {
 		// set status customAttribute value
 		FaultDetectionFlexContainer toBeUpdated = new FaultDetectionFlexContainer();
 		Boolean newStatusValue = (statusValueFromDP.booleanValue() ? Boolean.FALSE : Boolean.TRUE);
-		statusCA.setCustomAttributeValue(newStatusValue.toString());
+		statusCA.setValue(newStatusValue.toString());
 		toBeUpdated.getCustomAttributes().add(statusCA);
 		response = CSEUtil.updateFlexContainerEntity(getCseService(), moduleUrl, toBeUpdated);
 		if (ResponseStatusCode.UPDATED.equals(response.getResponseStatusCode())) {
@@ -158,9 +158,9 @@ public class FaultDetectionModuleTest extends AbstractModuleTest {
 		toBeUpdated = new FaultDetectionFlexContainer();
 		if(codeCA == null) {
 			codeCA = new CustomAttribute();
-			codeCA.setCustomAttributeName(DatapointType.code.getShortName());
+			codeCA.setShortName(DatapointType.code.getShortName());
 		}
-		codeCA.setCustomAttributeValue("1");
+		codeCA.setValue("1");
 		toBeUpdated.getCustomAttributes().add(codeCA);
 		response = CSEUtil.updateFlexContainerEntity(getCseService(), moduleUrl, toBeUpdated);
 		if (ResponseStatusCode.UPDATED.equals(response.getResponseStatusCode())) {
@@ -185,7 +185,7 @@ public class FaultDetectionModuleTest extends AbstractModuleTest {
 				return report;
 			}
 		} else {
-			if (codeCA.getCustomAttributeValue().equals("1")) {
+			if (codeCA.getValue().equals("1")) {
 				report.setErrorMessage("writable operation should fail!!!");
 				report.setState(State.KO);
 				return report;
@@ -197,10 +197,10 @@ public class FaultDetectionModuleTest extends AbstractModuleTest {
 		toBeUpdated = new FaultDetectionFlexContainer();
 		if (descriptionCA == null) {
 			descriptionCA = new CustomAttribute();
-			descriptionCA.setCustomAttributeName(DatapointType.description.getShortName());
+			descriptionCA.setShortName(DatapointType.description.getShortName());
 		}
 		String newDescriptionValue = "A fake description value " + System.currentTimeMillis();
-		descriptionCA.setCustomAttributeValue(newDescriptionValue);
+		descriptionCA.setValue(newDescriptionValue);
 		toBeUpdated.getCustomAttributes().add(descriptionCA);
 		response = CSEUtil.updateFlexContainerEntity(getCseService(), moduleUrl, toBeUpdated);
 		if (ResponseStatusCode.UPDATED.equals(response.getResponseStatusCode())) {
@@ -227,7 +227,7 @@ public class FaultDetectionModuleTest extends AbstractModuleTest {
 				return report;
 			}
 		} else {
-			if (newDescriptionValue.equals(descriptionCA.getCustomAttributeValue())) {
+			if (newDescriptionValue.equals(descriptionCA.getValue())) {
 				report.setErrorMessage("writable operation should fail!!!");
 				report.setState(State.KO);
 				return report;

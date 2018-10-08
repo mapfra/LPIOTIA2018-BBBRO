@@ -7,30 +7,21 @@
  *******************************************************************************/
 package org.eclipse.om2m.sdt.home.types;
 
-import java.util.Arrays;
-import java.util.List;
-
-import org.eclipse.om2m.sdt.Identifiers;
-import org.eclipse.om2m.sdt.datapoints.ClonedEnum;
 import org.eclipse.om2m.sdt.datapoints.EnumDataPoint;
 
-public class FoamStrength extends ClonedEnum {
-
-	static public final int zero = 1;
-	static public final int medium = 2;
-	static public final int maximum = 3;
+public abstract class FoamStrength extends EnumDataPoint<FoamStrength.Values> {
 	
-	static private List<Integer> values = Arrays.asList(
-			zero, medium, maximum
-	);
-
-	public FoamStrength(EnumDataPoint<Integer> dp) {
-		this(DatapointType.foamingStrength, dp);
+	static public enum Values {
+		zero, low, medium, high, maximum
 	}
 	
-	public FoamStrength(Identifiers name, EnumDataPoint<Integer> dp) {
-		super(name, HomeDataType.FoamStrength, dp);
-		setValidValues(values);	
+	public FoamStrength() {
+		this(DatapointType.foamingStrength);
+	}
+	
+	public FoamStrength(DatapointType dt) {
+		super(dt, HomeDataType.FoamStrength);
+		setValidValues(Values.values());
 	}
 	
 }

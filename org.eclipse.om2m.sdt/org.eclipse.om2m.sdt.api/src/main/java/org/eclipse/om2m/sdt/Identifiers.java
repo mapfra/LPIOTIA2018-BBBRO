@@ -14,5 +14,11 @@ public interface Identifiers {
 	String getDefinition();
 	String getShortName();
 	String getLongName();
+	
+	public interface Typed extends Identifiers {
+		
+		DataType getDataType();
+		
+	}
 
 }

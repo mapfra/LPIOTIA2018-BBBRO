@@ -13,7 +13,7 @@ import org.eclipse.om2m.sdt.Domain;
 import org.eclipse.om2m.sdt.Event;
 import org.eclipse.om2m.sdt.datapoints.BooleanDataPoint;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
-import org.eclipse.om2m.sdt.home.devices.SwitchButton;
+import org.eclipse.om2m.sdt.home.devices.Switch;
 import org.eclipse.om2m.sdt.home.driver.Utils;
 import org.eclipse.om2m.sdt.home.enocean.Activator.EnOceanSDTDevice;
 import org.eclipse.om2m.sdt.home.modules.FaultDetection;
@@ -26,7 +26,7 @@ import org.osgi.service.enocean.EnOceanDevice;
 import org.osgi.service.enocean.EnOceanMessage;
 
 @SuppressWarnings("rawtypes")
-public class EOLightBlindControl extends SwitchButton implements EnOceanSDTDevice {
+public class EOLightBlindControl extends Switch implements EnOceanSDTDevice {
 	
 	private final EnOceanDevice eoDevice;
 	private Domain domain;
@@ -67,11 +67,11 @@ public class EOLightBlindControl extends SwitchButton implements EnOceanSDTDevic
 		} catch (Exception e) {
 			Activator.logger.warning("Error addBinarySwitch", e);
 		}
-		try {
-			addFaultDetection();
-		} catch (Exception e) {
-			Activator.logger.warning("Error addFaultDetection", e);
-		}
+//		try {
+//			addFaultDetection();
+//		} catch (Exception e) {
+//			Activator.logger.warning("Error addFaultDetection", e);
+//		}
 	}
 
 	@Override
@@ -132,16 +132,16 @@ public class EOLightBlindControl extends SwitchButton implements EnOceanSDTDevic
 		addModule(button);
 	}
 
-	private void addFaultDetection() {
-		faultDetection = new FaultDetection("FaultDetection_" + eoDevice.getChipId(), domain, 
-				new BooleanDataPoint(DatapointType.status) {
-			@Override
-			public Boolean doGetValue() throws DataPointException {
-				return false;
-			}
-		});
-		addModule(faultDetection);
-	}
+//	private void addFaultDetection() {
+//		faultDetection = new FaultDetection("FaultDetection_" + eoDevice.getChipId(), domain, 
+//				new BooleanDataPoint(DatapointType.status) {
+//			@Override
+//			public Boolean doGetValue() throws DataPointException {
+//				return false;
+//			}
+//		});
+//		addModule(faultDetection);
+//	}
 	
 	private void addSmokeSensor() {
 		status = new BooleanDataPoint(DatapointType.alarm) {

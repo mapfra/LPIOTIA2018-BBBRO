@@ -27,7 +27,7 @@ public class PushButton extends Module {
 		super(name, domain, ModuleType.pushButton);
 
 		if ((pushed == null) ||
-				! pushed.getShortDefinitionType().equals(DatapointType.pushed.getShortName())) {
+				! pushed.getShortName().equals(DatapointType.pushed.getShortName())) {
 			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong pushed datapoint: " + pushed);
 		}

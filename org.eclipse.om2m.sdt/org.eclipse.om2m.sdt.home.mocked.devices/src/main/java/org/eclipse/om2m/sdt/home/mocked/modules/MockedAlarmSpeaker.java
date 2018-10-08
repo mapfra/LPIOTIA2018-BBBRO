@@ -9,7 +9,6 @@ package org.eclipse.om2m.sdt.home.mocked.modules;
 
 import org.eclipse.om2m.sdt.Domain;
 import org.eclipse.om2m.sdt.datapoints.BooleanDataPoint;
-import org.eclipse.om2m.sdt.datapoints.EnumDataPoint;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.mocked.devices.Activator;
 import org.eclipse.om2m.sdt.home.modules.AlarmSpeaker;
@@ -34,18 +33,18 @@ public class MockedAlarmSpeaker extends AlarmSpeaker {
 			}
 		);
 
-		setTone(new Tone(new EnumDataPoint<Integer>(null) {
-			private Integer tone = Tone.Silent;
+		setTone(new Tone() {
+			private Tone.Values tone = Tone.Values.doorbell;
 			@Override
-			public void doSetValue(Integer value) throws DataPointException {
+			public void doSetValue(Tone.Values value) throws DataPointException {
 				tone = value;
 				Activator.logger.info("tone " + tone);
 			}
 			@Override
-			public Integer doGetValue() throws DataPointException {
+			public Tone.Values doGetValue() throws DataPointException {
 				return tone;
 			}
-		}));
+		});
 	}
 
 }

@@ -11,18 +11,14 @@
 *******************************************************************************/
 package org.eclipse.om2m.sdt.home.hue;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.eclipse.om2m.hue.api.HueLightDevice;
-import org.eclipse.om2m.hue.api.types.AlertMode;
-import org.eclipse.om2m.hue.api.types.LightEffect;
 import org.eclipse.om2m.hue.api.types.LightState;
 import org.eclipse.om2m.sdt.Domain;
 import org.eclipse.om2m.sdt.Module;
-import org.eclipse.om2m.sdt.datapoints.ArrayDataPoint;
 import org.eclipse.om2m.sdt.datapoints.BooleanDataPoint;
 import org.eclipse.om2m.sdt.datapoints.IntegerDataPoint;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
@@ -36,7 +32,6 @@ import org.eclipse.om2m.sdt.home.modules.Brightness;
 import org.eclipse.om2m.sdt.home.modules.Colour;
 import org.eclipse.om2m.sdt.home.modules.ColourSaturation;
 import org.eclipse.om2m.sdt.home.modules.FaultDetection;
-import org.eclipse.om2m.sdt.home.modules.RunMode;
 import org.eclipse.om2m.sdt.home.types.DatapointType;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
@@ -73,12 +68,6 @@ public class HomeLight extends Light {
 			addFaultDetection();
 		} catch (Exception e) {
 			Activator.logger.warning("Error addFaultDetection", e);
-		}
-		try {
-//			addRunState();
-			addRunMode();
-		} catch (Exception e) {
-			Activator.logger.warning("Error addRunState", e);
 		}
 		try {
 			addColour();
@@ -147,107 +136,6 @@ public class HomeLight extends Light {
 			});
 		addModule(faultDetection);
 	}
-
-	private void addRunMode() {
-		RunMode runMode = new RunMode("RunMode_" + getId(), domain, 
-				new ArrayDataPoint<String>(DatapointType.operationMode) {
-			@Override
-			public void doSetValue(List<String> values) throws DataPointException {
-				if ((values == null) || values.isEmpty())
-					return;
-				if (! hueLight.isReachable()) {
-					throw new DataPointException("Not reachable");
-				}
-				LightState state = new LightState(hueLight.isOn());
-				for (String value : values) {//.split(",")) {
-					if (value.equals("effect.none"))
-						state.setEffect(LightEffect.NONE);
-					else if (value.equals("effect.colorloop"))
-						state.setEffect(LightEffect.COLORLOOP);
-					else if (value.equals("alert.none"))
-						state.setAlert(AlertMode.NONE);
-					else if (value.equals("alert.lselect"))
-						state.setAlert(AlertMode.L_SELECT);
-					else if (value.equals("alert.select"))
-						state.setAlert(AlertMode.SELECT);
-				}
-				hueLight.setState(state);
-			}
-
-			@Override
-			public List<String> doGetValue() throws DataPointException {
-				if (!hueLight.isReachable()) {
-					throw new DataPointException("Not reachable");
-				}
-				LightState state = hueLight.getState();
-				return Arrays.asList("effect." + LightEffect.getLightEffect(state.getEffect()),
-						"alert." + AlertMode.getAlertMode(state.getAlert()));
-			}
-		}, 
-		new ArrayDataPoint<String>(DatapointType.supportedModes) {
-			@Override
-			public void doSetValue(List<String> value) throws DataPointException {
-				throw new DataPointException("Not implemented");
-			}
-
-			@Override
-			public List<String> doGetValue() throws DataPointException {
-				return Arrays.asList("effect.none", "effect.colorloop",
-						"alert.none", "alert.lselect", "alert.select");
-			}
-		});
-		addModule(runMode);
-	}
-
-//	private void addRunState() {
-//		RunState runState = new RunState("RunState_" + getId(), domain, 
-//			new JobStates(new EnumDataPoint<Integer>(null) {
-//				@Override
-//				public void doSetValue(Integer val) throws DataPointException {
-//					throw new DataPointException("Not implemented");
-//				}
-//				@Override
-//				public Integer doGetValue() throws DataPointException {
-//					LightState state = hueLight.getState();
-//					int effect = state.getEffect();
-//					if (effect == LightEffect.COLORLOOP)
-//						return JobStates.colorloop;
-//					int alert = state.getAlert();
-//					if (alert == AlertMode.L_SELECT)
-//						return JobStates.lselect;
-//					if (alert == AlertMode.SELECT)
-//						return JobStates.select;
-//					return JobStates.noeffect;
-//				}
-//			}), 
-//			new ArrayDataPoint<Integer>(DatapointType.jobStates) {
-//				@Override
-//				public List<Integer> doGetValue() throws DataPointException {
-//					return Arrays.asList(JobStates.noeffect, JobStates.colorloop, 
-//							JobStates.noalert, JobStates.lselect, JobStates.select);
-//				}
-//			},
-//			new MachineState(new EnumDataPoint<Integer>(null) {
-//				@Override
-//				public void doSetValue(Integer val) throws DataPointException {
-//					throw new DataPointException("Not implemented");
-//				}
-//				@Override
-//				public Integer doGetValue() throws DataPointException {
-//					if (! hueLight.isReachable())
-//						return MachineState.error;
-//					return hueLight.isOn() ? MachineState.active : MachineState.stopped;
-//				}
-//			}), 
-//			new ArrayDataPoint<Integer>(DatapointType.machineStates) {
-//				@Override
-//				public List<Integer> doGetValue() throws DataPointException {
-//					return Arrays.asList(MachineState.error, 
-//							MachineState.active, MachineState.stopped);
-//				}
-//			});
-//		addModule(runState);
-//	}
 
 	private void addColour() {
 		Colour colour = new Colour("colour_" + getId(), domain, 
@@ -329,7 +217,7 @@ public class HomeLight extends Light {
 
 	private void addColourSaturation() {
 		ColourSaturation colourSaturation = new ColourSaturation("colourSaturation_" + getId(), domain,
-			new IntegerDataPoint(DatapointType.colourSat) {
+			new IntegerDataPoint(DatapointType.colourSaturation) {
 				@Override
 				public void doSetValue(Integer value) throws DataPointException {
 					if (! hueLight.isReachable()) {

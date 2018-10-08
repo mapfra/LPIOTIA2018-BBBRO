@@ -27,6 +27,7 @@
 package org.eclipse.om2m.commons.resource;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -127,6 +128,8 @@ public class RequestPrimitive {
 	protected FilterCriteria filterCriteria;
 	@XmlElement(name = ShortName.DISCOVERY_RESULT_TYPE)
 	protected BigInteger discoveryResultType;
+	@XmlTransient
+	protected List<String> tokens;
 	@XmlTransient
 	protected String returnContentType;
 	@XmlTransient
@@ -607,6 +610,13 @@ public class RequestPrimitive {
 		}
 		return httpHeaders;
 	}
+	
+	public List<String> getTokens() {
+		if (tokens == null) {
+			tokens = new ArrayList<String>();
+		}
+		return tokens;
+	}
 
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
@@ -652,7 +662,8 @@ public class RequestPrimitive {
 						+ returnContentType + ",\n " : "")
 				+ (requestContentType != null ? "requestContentType="
 				+ requestContentType + ",\n ": "") 
-				+ (queryStrings != null ? "queryStrings=" + queryStrings : "")
+				+ (queryStrings != null ? "queryStrings=" + queryStrings : "") + ", \n"
+				+ ",tokens=" + (tokens != null ? tokens.toString() : "null") 
 				+ "]";
 	}
 	

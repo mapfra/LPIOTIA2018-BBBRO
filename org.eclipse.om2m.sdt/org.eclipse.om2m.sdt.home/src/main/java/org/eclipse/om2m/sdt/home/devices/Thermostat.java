@@ -9,14 +9,14 @@ package org.eclipse.om2m.sdt.home.devices;
 
 import org.eclipse.om2m.sdt.Domain;
 import org.eclipse.om2m.sdt.Module;
-import org.eclipse.om2m.sdt.home.modules.RunMode;
+import org.eclipse.om2m.sdt.home.modules.RunState;
 import org.eclipse.om2m.sdt.home.modules.Temperature;
 import org.eclipse.om2m.sdt.home.modules.Timer;
 import org.eclipse.om2m.sdt.home.types.DeviceType;
 
 public class Thermostat extends GenericDevice {
 	
-	private RunMode runMode;
+	private RunState runState;
 	private Temperature temperature;
 	private Timer timer;
 	
@@ -25,8 +25,8 @@ public class Thermostat extends GenericDevice {
 	}
 	
 	public void addModule(Module module) {
-		if (module instanceof RunMode)
-			addModule((RunMode)module);
+		if (module instanceof RunState)
+			addModule((RunState)module);
 		else if (module instanceof Temperature)
 			addModule((Temperature)module);
 		else if (module instanceof Timer)
@@ -35,9 +35,9 @@ public class Thermostat extends GenericDevice {
 			super.addModule(module);
 	}
 
-	public void addModule(RunMode runMode) {
-		this.runMode = runMode;
-		super.addModule(runMode);
+	public void addModule(RunState runState) {
+		this.runState = runState;
+		super.addModule(runState);
 	}
 
 	public void addModule(Temperature temperature) {
@@ -50,8 +50,8 @@ public class Thermostat extends GenericDevice {
 		super.addModule(timer);
 	}
 
-	public RunMode getRunMode() {
-		return runMode;
+	public RunState getRunState() {
+		return runState;
 	}
 
 	public Temperature getTemperature() {

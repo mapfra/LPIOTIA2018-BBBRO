@@ -10,11 +10,8 @@ package org.eclipse.om2m.sdt.home.mocked.devices;
 import java.util.List;
 
 import org.eclipse.om2m.sdt.Domain;
-import org.eclipse.om2m.sdt.datapoints.EnumDataPoint;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.devices.WaterValve;
-import org.eclipse.om2m.sdt.home.mocked.modules.MockedFaultDetection;
-import org.eclipse.om2m.sdt.home.types.DatapointType;
 import org.eclipse.om2m.sdt.home.types.LiquidLevel;
 import org.osgi.framework.ServiceRegistration;
 
@@ -28,18 +25,18 @@ public class MockedWaterValve extends WaterValve implements MockedDevice {
 
 		// Datapoints
 		addModule(new org.eclipse.om2m.sdt.home.modules.LiquidLevel("waterLevel_" + id, domain, 
-			new LiquidLevel(new EnumDataPoint<Integer>(DatapointType.liquidLevel) {
-				private Integer openLevel = LiquidLevel.zero;
+			new LiquidLevel() {
+				private LiquidLevel.Values openLevel = LiquidLevel.Values.zero;
 				@Override
-				public void doSetValue(Integer value) throws DataPointException {
+				public void doSetValue(LiquidLevel.Values value) throws DataPointException {
 					openLevel = value;
 					Activator.logger.info("openLevel set " + value);
 				}
 				@Override
-				public Integer doGetValue() throws DataPointException {
+				public LiquidLevel.Values doGetValue() throws DataPointException {
 					return openLevel;
 				}
-			})));
+			}));
 		
 //		addModule(new MockedFaultDetection("faultDetection_" + id, domain));
 	}

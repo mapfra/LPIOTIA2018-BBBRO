@@ -40,7 +40,7 @@ public abstract class ModuleClass extends Element {
 	private Map<String, Action> actions;
 
 	private Map<String, DataPoint> dataPoints;
-	private Map<String, DataPoint> dataPointsByShortDefinitionType;
+	private Map<String, DataPoint> dataPointsByShortName;
 
 	private Map<String, Event> events;
 
@@ -58,7 +58,7 @@ public abstract class ModuleClass extends Element {
 		optional = false;
 		this.actions = new HashMap<String, Action>();
 		this.dataPoints = new HashMap<String, DataPoint>();
-		this.dataPointsByShortDefinitionType = new HashMap<String, DataPoint>();
+		this.dataPointsByShortName = new HashMap<String, DataPoint>();
 		this.events = new HashMap<String, Event>();
 		this.properties = new HashMap<String, Property>();
 		domain.addModule(this);
@@ -116,8 +116,8 @@ public abstract class ModuleClass extends Element {
 		return dataPoints.get(name);
 	}
 	
-	public DataPoint getDataPointByShortName(final String shortDefinitionType) {
-		return dataPointsByShortDefinitionType.get(shortDefinitionType);
+	public DataPoint getDataPointByShortName(final String shortName) {
+		return dataPointsByShortName.get(shortName);
 	}
 
 	public void addDataPoint(final DataPoint dp) {
@@ -127,13 +127,13 @@ public abstract class ModuleClass extends Element {
 			throw new IllegalArgumentException(msg);
 		}
 		dp.setParent((Module) this);
-		if (dp.getShortDefinitionType() == null) {
+		if (dp.getShortName() == null) {
 			String msg = "Short definition type is null of " + dp.getName() + " in module " + getName();
 			Logger.warning(msg);
 			throw new IllegalArgumentException(msg);
 		}
 		dataPoints.put(dp.getName(), dp);
-		dataPointsByShortDefinitionType.put(dp.getShortDefinitionType(), dp);
+		dataPointsByShortName.put(dp.getShortName(), dp);
 		if (owner!= null) {
 			dp.setOwner(owner);
 		}
@@ -142,7 +142,7 @@ public abstract class ModuleClass extends Element {
 	public void removeDataPoint(final String name) {
 		DataPoint dp = dataPoints.remove(name);
 		if (dp != null) {
-			dataPointsByShortDefinitionType.remove(dp.getShortDefinitionType());
+			dataPointsByShortName.remove(dp.getShortName());
 		}
 	}
 

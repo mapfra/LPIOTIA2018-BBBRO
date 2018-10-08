@@ -18,7 +18,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
-import org.eclipse.om2m.commons.resource.CustomAttribute;
 import org.eclipse.om2m.commons.resource.Notification;
 import org.eclipse.om2m.commons.resource.Notification.NotificationEvent;
 import org.eclipse.om2m.commons.resource.Notification.NotificationEvent.Representation;

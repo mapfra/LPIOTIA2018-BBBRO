@@ -10,13 +10,13 @@ package org.eclipse.om2m.sdt.home.mocked.devices;
 import java.util.List;
 
 import org.eclipse.om2m.sdt.Domain;
-import org.eclipse.om2m.sdt.home.devices.WarningDevice;
+import org.eclipse.om2m.sdt.home.devices.Warning;
 import org.eclipse.om2m.sdt.home.mocked.modules.MockedAlarmSpeaker;
 import org.eclipse.om2m.sdt.home.mocked.modules.MockedFaultDetection;
 import org.osgi.framework.ServiceRegistration;
 
 @SuppressWarnings("rawtypes")
-public class MockedWarningDevice extends WarningDevice implements MockedDevice {
+public class MockedWarningDevice extends Warning implements MockedDevice {
 
 	private List<ServiceRegistration> serviceRegistrations;
 

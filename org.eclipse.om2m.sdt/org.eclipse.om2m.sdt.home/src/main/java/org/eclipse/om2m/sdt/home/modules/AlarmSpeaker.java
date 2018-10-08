@@ -30,7 +30,7 @@ public class AlarmSpeaker extends Module {
 		super(name, domain, ModuleType.alarmSpeaker);
 		
 		if ((alarmStatus == null) ||
-				! alarmStatus.getShortDefinitionType().equals(DatapointType.alarmStatus.getShortName())) {
+				! alarmStatus.getShortName().equals(DatapointType.alarmStatus.getShortName())) {
 			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong alarmStatus datapoint: " + alarmStatus);
 		}
@@ -68,13 +68,13 @@ public class AlarmSpeaker extends Module {
 		addDataPoint(tone);
 	}
 
-	public int getTone() throws DataPointException, AccessException {
+	public Tone.Values getTone() throws DataPointException, AccessException {
 		if (tone == null)
 			throw new UnsupportedOperationException("Not implemented");
 		return tone.getValue();
 	}
 
-	public void setTone(int v) throws DataPointException, AccessException {
+	public void setTone(Tone.Values v) throws DataPointException, AccessException {
 		if (tone == null)
 			throw new UnsupportedOperationException("Not implemented");
 		tone.setValue(v);
@@ -87,13 +87,13 @@ public class AlarmSpeaker extends Module {
 		addDataPoint(light);
 	}
 
-	public int getLight() throws DataPointException, AccessException {
+	public AlertColourCode.Values getLight() throws DataPointException, AccessException {
 		if (light == null)
 			throw new UnsupportedOperationException("Not implemented");
 		return light.getValue();
 	}
 
-	public void setLight(int v) throws DataPointException, AccessException {
+	public void setLight(AlertColourCode.Values v) throws DataPointException, AccessException {
 		if (light == null)
 			throw new UnsupportedOperationException("Not implemented");
 		light.setValue(v);

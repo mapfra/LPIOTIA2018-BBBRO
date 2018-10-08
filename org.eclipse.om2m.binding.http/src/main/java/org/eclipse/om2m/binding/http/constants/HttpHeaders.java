@@ -29,6 +29,7 @@ public class HttpHeaders {
 	public static final String ACCEPT = "Accept";
 	public static final String CONTENT_TYPE = "Content-Type";
 	public static final String CONTENT_LOCATION = "Content-Location";
+	public static final String AUTHORIZATION = "Authorization";
 	public static final String ETAG = "Etag";
 	public static final String ORIGINATOR = "X-M2M-Origin";
 	public static final String GROUP_REQUEST_IDENTIFIER = "X-M2M-GID";
@@ -40,5 +41,6 @@ public class HttpHeaders {
 	public static final String OPERATION_EXECUTION_TIME = "X-M2M-OET";
 	public static final String EVENT_CATEGORY = "X-M2M-EC";
 	public static final String RESPONSE_STATUS_CODE = "X-M2M-RSC";
+	public static final String TOKEN = "X-M2M-Token";
 	
 }

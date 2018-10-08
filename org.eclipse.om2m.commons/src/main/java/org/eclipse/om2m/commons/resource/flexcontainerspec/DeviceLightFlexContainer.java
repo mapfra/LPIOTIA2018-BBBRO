@@ -1,6 +1,6 @@
 /*
 ********************************************************************************
- * Copyright (c) 2014, 2017 Orange.
+ * Copyright (c) 2014, 2018 Orange.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,9 +9,9 @@
 
 Device : DeviceLight
 
-A light is a device that is used to control the state of an illumination device.
+A light is a device that is used to control the state of an illumination appliance.
 
-Created: 2018-06-11 12:14:18
+Created: 2018-06-29 17:19:55
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -21,9 +21,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
-import org.eclipse.om2m.commons.resource.AbstractFlexContainerAnnc;
 
+import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
 
 @XmlRootElement(name = DeviceLightFlexContainer.SHORT_NAME, namespace = "http://www.onem2m.org/xml/protocols/homedomain")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -39,10 +38,10 @@ public class DeviceLightFlexContainer extends AbstractFlexContainer {
 		setShortName(SHORT_NAME);
 	}
 	
-	public void finalizeSerialization() {
+    public void finalizeSerialization() {
 		getFaultDetection();
 		getBinarySwitch();
-		getRunMode();
+		getRunState();
 		getColour();
 		getColourSaturation();
 		getBrightness();
@@ -55,8 +54,8 @@ public class DeviceLightFlexContainer extends AbstractFlexContainer {
 		if (this.binarySwitch != null) {
 			setBinarySwitch(this.binarySwitch);
 		}
-		if (this.runMode != null) {
-			setRunMode(this.runMode);
+		if (this.runState != null) {
+			setRunState(this.runState);
 		}
 		if (this.colour != null) {
 			setColour(this.colour);
@@ -68,11 +67,10 @@ public class DeviceLightFlexContainer extends AbstractFlexContainer {
 			setBrightness(this.brightness);
 		}
 	}
-	
-	@XmlElement(name="fauDn", required=true, type=FaultDetectionFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+
+	@XmlElement(name=FaultDetectionFlexContainer.SHORT_NAME, required=true, type=FaultDetectionFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private FaultDetectionFlexContainer faultDetection;
-	
-	
+		
 	public void setFaultDetection(FaultDetectionFlexContainer faultDetection) {
 		this.faultDetection = faultDetection;
 		getFlexContainerOrContainerOrSubscription().add(faultDetection);
@@ -83,10 +81,9 @@ public class DeviceLightFlexContainer extends AbstractFlexContainer {
 		return faultDetection;
 	}
 	
-	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	@XmlElement(name=BinarySwitchFlexContainer.SHORT_NAME, required=true, type=BinarySwitchFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BinarySwitchFlexContainer binarySwitch;
-	
-	
+		
 	public void setBinarySwitch(BinarySwitchFlexContainer binarySwitch) {
 		this.binarySwitch = binarySwitch;
 		getFlexContainerOrContainerOrSubscription().add(binarySwitch);
@@ -97,24 +94,22 @@ public class DeviceLightFlexContainer extends AbstractFlexContainer {
 		return binarySwitch;
 	}
 	
-	@XmlElement(name="runMe", required=true, type=RunModeFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
-	private RunModeFlexContainer runMode;
-	
-	
-	public void setRunMode(RunModeFlexContainer runMode) {
-		this.runMode = runMode;
-		getFlexContainerOrContainerOrSubscription().add(runMode);
+	@XmlElement(name=RunStateFlexContainer.SHORT_NAME, required=true, type=RunStateFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	private RunStateFlexContainer runState;
+		
+	public void setRunState(RunStateFlexContainer runState) {
+		this.runState = runState;
+		getFlexContainerOrContainerOrSubscription().add(runState);
 	}
 	
-	public RunModeFlexContainer getRunMode() {
-		this.runMode = (RunModeFlexContainer) getResourceByName(RunModeFlexContainer.SHORT_NAME);
-		return runMode;
+	public RunStateFlexContainer getRunState() {
+		this.runState = (RunStateFlexContainer) getResourceByName(RunStateFlexContainer.SHORT_NAME);
+		return runState;
 	}
 	
-	@XmlElement(name="color", required=true, type=ColourFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	@XmlElement(name=ColourFlexContainer.SHORT_NAME, required=true, type=ColourFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private ColourFlexContainer colour;
-	
-	
+		
 	public void setColour(ColourFlexContainer colour) {
 		this.colour = colour;
 		getFlexContainerOrContainerOrSubscription().add(colour);
@@ -125,10 +120,9 @@ public class DeviceLightFlexContainer extends AbstractFlexContainer {
 		return colour;
 	}
 	
-	@XmlElement(name="colSn", required=true, type=ColourSaturationFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	@XmlElement(name=ColourSaturationFlexContainer.SHORT_NAME, required=true, type=ColourSaturationFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private ColourSaturationFlexContainer colourSaturation;
-	
-	
+		
 	public void setColourSaturation(ColourSaturationFlexContainer colourSaturation) {
 		this.colourSaturation = colourSaturation;
 		getFlexContainerOrContainerOrSubscription().add(colourSaturation);
@@ -139,10 +133,9 @@ public class DeviceLightFlexContainer extends AbstractFlexContainer {
 		return colourSaturation;
 	}
 	
-	@XmlElement(name="brigs", required=true, type=BrightnessFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	@XmlElement(name=BrightnessFlexContainer.SHORT_NAME, required=true, type=BrightnessFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BrightnessFlexContainer brightness;
-	
-	
+		
 	public void setBrightness(BrightnessFlexContainer brightness) {
 		this.brightness = brightness;
 		getFlexContainerOrContainerOrSubscription().add(brightness);

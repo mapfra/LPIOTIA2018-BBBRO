@@ -47,7 +47,7 @@ public abstract class EnumDataPoint<T> extends ValuedDataPoint<T> {
 	
 	public void setValue(T v) throws DataPointException, AccessException {
 		if (! values.contains(v))
-			throw new DataPointException("Unknown value");
+			throw new DataPointException("Invalid value " + v);
 		super.setValue(v);
 	}
 	

@@ -43,7 +43,7 @@ public class Battery extends Module {
 		super(name, domain, ModuleType.battery);
 
 		if ((level == null) ||
-				! level.getShortDefinitionType().equals(DatapointType.level.getShortName())) {
+				! level.getShortName().equals(DatapointType.level.getShortName())) {
 			throw new IllegalArgumentException("Wrong level datapoint: " + level);
 		}
 		this.level = level;

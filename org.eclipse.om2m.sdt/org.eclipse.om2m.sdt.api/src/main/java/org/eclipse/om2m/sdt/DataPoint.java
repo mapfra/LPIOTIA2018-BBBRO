@@ -21,8 +21,8 @@ public class DataPoint extends Element {
 	
 	private Module parent;
 	
-	private String longDefinitionType;
-	private String shortDefinitionType;
+	private String longName;
+	private String shortName;
 
 	public DataPoint(final Identifiers name, final DataType type) {
 		super(name.getShortName());
@@ -32,8 +32,8 @@ public class DataPoint extends Element {
 		optional = false;
 		readable = true;
 		writable = true;
-		longDefinitionType = name.getLongName();
-		shortDefinitionType = name.getShortName();
+		longName = name.getLongName();
+		shortName = name.getShortName();
 	}
 
 	public DataType getDataType() {
@@ -91,17 +91,24 @@ public class DataPoint extends Element {
 	}
 	
 	/**
-	 * @return the longDefinitionType
+	 * @return the longName
 	 */
-	public String getLongDefinitionType() {
-		return longDefinitionType;
+	public String getLongName() {
+		return longName;
 	}
 
 	/**
 	 * @return the shortDefinitionType
 	 */
-	public String getShortDefinitionType() {
-		return shortDefinitionType;
+	public String getShortName() {
+		return shortName;
+	}
+	
+	@Override
+	public String toString() {
+		return "<" + getClass().getSimpleName() + " name=" + name
+				+ " shortName=" + shortName + " longName=" + longName + " type=" + type
+				+ "/>";
 	}
 
 }

@@ -41,18 +41,18 @@ public class FaultDetectionFlexContainerTest extends FlexContainerTestSuite {
 		flexContainer.setCreator("Greg");
 
 		CustomAttribute statusCustomAttribute = new CustomAttribute();
-		statusCustomAttribute.setCustomAttributeName("stats");
-		statusCustomAttribute.setCustomAttributeValue("false");
+		statusCustomAttribute.setShortName("stats");
+		statusCustomAttribute.setValue("false");
 		flexContainer.getCustomAttributes().add(statusCustomAttribute);
 
 		CustomAttribute codeCustomAttribute = new CustomAttribute();
-		codeCustomAttribute.setCustomAttributeName("code");
-		codeCustomAttribute.setCustomAttributeValue("123");
+		codeCustomAttribute.setShortName("code");
+		codeCustomAttribute.setValue("123");
 		flexContainer.getCustomAttributes().add(codeCustomAttribute);
 
 		CustomAttribute descriptionCustomAttribute = new CustomAttribute();
-		descriptionCustomAttribute.setCustomAttributeName("descn");
-		descriptionCustomAttribute.setCustomAttributeValue("My description");
+		descriptionCustomAttribute.setShortName("descn");
+		descriptionCustomAttribute.setValue("My description");
 		flexContainer.getCustomAttributes().add(descriptionCustomAttribute);
 
 		// send create Request
@@ -148,18 +148,18 @@ public class FaultDetectionFlexContainerTest extends FlexContainerTestSuite {
 		flexContainer.setCreator("Greg");
 
 		CustomAttribute statusCustomAttribute = new CustomAttribute();
-		statusCustomAttribute.setCustomAttributeName("stats");
-		statusCustomAttribute.setCustomAttributeValue("false");
+		statusCustomAttribute.setShortName("stats");
+		statusCustomAttribute.setValue("false");
 		flexContainer.getCustomAttributes().add(statusCustomAttribute);
 
 		CustomAttribute codeCustomAttribute = new CustomAttribute();
-		codeCustomAttribute.setCustomAttributeName("code");
-		codeCustomAttribute.setCustomAttributeValue("123");
+		codeCustomAttribute.setShortName("code");
+		codeCustomAttribute.setValue("123");
 		flexContainer.getCustomAttributes().add(codeCustomAttribute);
 
 		CustomAttribute descriptionCustomAttribute = new CustomAttribute();
-		descriptionCustomAttribute.setCustomAttributeName("descn");
-		descriptionCustomAttribute.setCustomAttributeValue("My description");
+		descriptionCustomAttribute.setShortName("descn");
+		descriptionCustomAttribute.setValue("My description");
 		flexContainer.getCustomAttributes().add(descriptionCustomAttribute);
 
 		// send create Request
@@ -174,8 +174,8 @@ public class FaultDetectionFlexContainerTest extends FlexContainerTestSuite {
 		// update the status value
 		FaultDetectionFlexContainer flexContainerToBeUpdated = new FaultDetectionFlexContainer();
 		CustomAttribute statusCustomAttributeToBeUpdated = new CustomAttribute();
-		statusCustomAttributeToBeUpdated.setCustomAttributeName("stats");
-		statusCustomAttributeToBeUpdated.setCustomAttributeValue("true");
+		statusCustomAttributeToBeUpdated.setShortName("stats");
+		statusCustomAttributeToBeUpdated.setValue("true");
 		flexContainerToBeUpdated.getCustomAttributes().add(statusCustomAttributeToBeUpdated);
 
 		// send UPDATE request
@@ -188,7 +188,7 @@ public class FaultDetectionFlexContainerTest extends FlexContainerTestSuite {
 			return;
 		} else {
 			updatedFlexContainer = (FaultDetectionFlexContainer) response.getContent();
-			if (!updatedFlexContainer.getCustomAttribute("stats").getCustomAttributeValue().equals("true")) {
+			if (!updatedFlexContainer.getCustomAttribute("stats").getValue().equals("true")) {
 				createTestReport("testUpdateFaultDetectionFlexContainer", Status.KO,
 						"expected \"true\" value for status custom attribute", null);
 				return;
@@ -209,18 +209,18 @@ public class FaultDetectionFlexContainerTest extends FlexContainerTestSuite {
 		flexContainer.setCreator("Greg");
 
 		CustomAttribute statusCustomAttribute = new CustomAttribute();
-		statusCustomAttribute.setCustomAttributeName("stats");
-		statusCustomAttribute.setCustomAttributeValue("false");
+		statusCustomAttribute.setShortName("stats");
+		statusCustomAttribute.setValue("false");
 		flexContainer.getCustomAttributes().add(statusCustomAttribute);
 
 		CustomAttribute codeCustomAttribute = new CustomAttribute();
-		codeCustomAttribute.setCustomAttributeName("code");
-		codeCustomAttribute.setCustomAttributeValue("123");
+		codeCustomAttribute.setShortName("code");
+		codeCustomAttribute.setValue("123");
 		flexContainer.getCustomAttributes().add(codeCustomAttribute);
 
 		CustomAttribute descriptionCustomAttribute = new CustomAttribute();
-		descriptionCustomAttribute.setCustomAttributeName("descn");
-		descriptionCustomAttribute.setCustomAttributeValue("My description");
+		descriptionCustomAttribute.setShortName("descn");
+		descriptionCustomAttribute.setValue("My description");
 		flexContainer.getCustomAttributes().add(descriptionCustomAttribute);
 
 		// send create Request

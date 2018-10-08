@@ -189,31 +189,8 @@ public class LIFXSDTDevice extends Light {
 	}
 
 	private void setColors(Integer red, Integer green, Integer blue) throws Exception {
-		// get current state
-		int h = Math.round((float) (lifxDevice.getHue() / 65565d * 360d));
-		int s = Math.round((float) (lifxDevice.getSaturation() / 65535d * 100d));
-		int v = Math.round((float) (lifxDevice.getBrightness() / 65535d * 100d));
 
-		// convert current color in rgb
-		int[] rgb = HSVtoRGB(h, s, v);
-
-		// update values
-		if (red != null)
-			rgb[RED] = red;
-		if (green != null)
-			rgb[GREEN] = green;
-		if (blue != null)
-			rgb[BLUE] = blue;
-
-		// compute HSV
-		int[] hsv = RGBtoHSB(rgb[RED], rgb[GREEN], rgb[BLUE]);
-
-		// set new state
-		double newHue = ((double)hsv[0]) / 360d * 65535d;
-		double newSaturation = ((double) hsv[1]) / 100d * 65535d;
-		double newBrightness = ((double) hsv[2]) / 100d * 65535d;
-		
-		lifxDevice.setLightState(65535, newHue, newSaturation, lifxDevice.getKelvin(), newBrightness, 0);
+		lifxDevice.setLightState(65535, red, green, blue, 0);
 	}
 
 	private Integer getColor(int colorIndex) throws Exception {

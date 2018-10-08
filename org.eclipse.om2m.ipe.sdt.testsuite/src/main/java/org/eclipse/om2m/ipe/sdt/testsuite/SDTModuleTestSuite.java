@@ -11,14 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.om2m.core.service.CseService;
-import org.eclipse.om2m.ipe.sdt.testsuite.TestReport.State;
 import org.eclipse.om2m.ipe.sdt.testsuite.module.AbstractModuleTest;
 import org.eclipse.om2m.ipe.sdt.testsuite.module.AlarmSpeakerModuleTest;
 import org.eclipse.om2m.ipe.sdt.testsuite.module.BinarySwitchModuleTest;
 import org.eclipse.om2m.ipe.sdt.testsuite.module.ColourModuleTest;
 import org.eclipse.om2m.ipe.sdt.testsuite.module.ColourSaturationModuleTest;
 import org.eclipse.om2m.ipe.sdt.testsuite.module.FaultDetectionModuleTest;
-import org.eclipse.om2m.ipe.sdt.testsuite.module.RunModeModuleTest;
 import org.eclipse.om2m.ipe.sdt.testsuite.module.SmokeSensorModuleTest;
 import org.eclipse.om2m.ipe.sdt.testsuite.module.WaterLevelModuleTest;
 import org.eclipse.om2m.ipe.sdt.testsuite.module.WaterSensorModuleTest;
@@ -101,9 +99,9 @@ public class SDTModuleTestSuite {
 		case "org.onem2m.home.moduleclass.waterSensor":
 			amt = new WaterSensorModuleTest(cseService, module);
 			break;
-		case "org.onem2m.home.moduleclass.runMode":
-			amt = new RunModeModuleTest(cseService, module);
-			break;
+//		case "org.onem2m.home.moduleclass.runMode":
+//			amt = new RunStateModuleTest(cseService, module);
+//			break;
 		case "org.onem2m.home.moduleclass.alarmSpeaker":
 			amt = new AlarmSpeakerModuleTest(cseService, module);
 			break;

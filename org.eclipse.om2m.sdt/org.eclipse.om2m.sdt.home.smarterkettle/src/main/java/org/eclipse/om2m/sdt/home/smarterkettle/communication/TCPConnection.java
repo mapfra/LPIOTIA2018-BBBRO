@@ -7,6 +7,8 @@
  *******************************************************************************/
 package org.eclipse.om2m.sdt.home.smarterkettle.communication;
 
+import static org.eclipse.om2m.sdt.home.smarterkettle.Activator.LOGGER;
+
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,19 +39,12 @@ public class TCPConnection {
 			if (! waitForResponse) {
 				socket.close();
 			} else {
-				/*if(bytes2send[0] == SmarterCoffeeCommands.HEADER_START){
-
-				}
-				else{*/
 				readBytes(socket);
-				//socket.close();
 			}
 		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.warning("", e);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.warning("", e);
 		}
 	}
 
@@ -82,17 +77,9 @@ public class TCPConnection {
 		if (socket != null) {
 			InputStream in = socket.getInputStream();
 			while (!statusMsg) {
-				int iterator = 0;
 				while ((charsRead = in.read(buffer)) != -1) {	
-					iterator++;
 					if (charsRead == 3) break;  //ACK received
 					if (charsRead > 3) statusMsg = true; //Status received
-//					for (int i = 0; i < charsRead; i++) {
-//						if (i == 2)
-//							System.out.print( "Temp ( " + i + ")" +": " + Byte.toUnsignedInt(buffer[i]) + " | ");
-//						else
-//							System.out.print( i +": " + Byte.toUnsignedInt(buffer[i]) + " | ");	        
-//					}
 					if (buffer[charsRead-1] == SmarterKettleCommands.END_OF_MESSAGE) 
 						break; 
 				}
@@ -110,9 +97,9 @@ public class TCPConnection {
 			return readBytes(socket);
 			//socket.close();
 		} catch (UnknownHostException e) {
-			e.printStackTrace();
+			LOGGER.warning("", e);
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOGGER.warning("", e);
 		}
 		return new byte[7];
 	}

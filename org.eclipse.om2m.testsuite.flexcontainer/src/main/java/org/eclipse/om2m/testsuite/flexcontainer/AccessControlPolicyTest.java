@@ -66,8 +66,8 @@ public class AccessControlPolicyTest extends FlexContainerTestSuite {
 		// init a new FlexContainer
 		BinarySwitchFlexContainer flexContainer = new BinarySwitchFlexContainer();
 		CustomAttribute ca = new CustomAttribute();
-		ca.setCustomAttributeName("powSe");
-		ca.setCustomAttributeValue("false");
+		ca.setShortName("powSe");
+		ca.setValue("false");
 		flexContainer.getCustomAttributes().add(ca);
 		String flexContainerName = "flexContainerACPTest_" + System.currentTimeMillis();
 		flexContainer.setName(flexContainerName);
@@ -156,8 +156,8 @@ public class AccessControlPolicyTest extends FlexContainerTestSuite {
 		BinarySwitchFlexContainer flexContainer = new BinarySwitchFlexContainer();
 		flexContainer.setName(flexContainerName);
 		CustomAttribute ca = new CustomAttribute();
-		ca.setCustomAttributeName("powSe");
-		ca.setCustomAttributeValue("false");
+		ca.setShortName("powSe");
+		ca.setValue("false");
 		flexContainer.getCustomAttributes().add(ca);
 		
 		String flexContainerLocation = baseLocation + "/" + flexContainerName;
@@ -216,8 +216,8 @@ public class AccessControlPolicyTest extends FlexContainerTestSuite {
 		flexContainer.setName(flexContainerName);
 		flexContainer.setContainerDefinition("org.onem2m.home.moduleclass.binaryswitch");
 		CustomAttribute ca = new CustomAttribute();
-		ca.setCustomAttributeName("powSe");
-		ca.setCustomAttributeValue("false");
+		ca.setShortName("powSe");
+		ca.setValue("false");
 		flexContainer.getCustomAttributes().add(ca);
 		
 		String flexContainerLocation = baseLocation + "/" + flexContainerName;

@@ -1,6 +1,6 @@
 /*
 ********************************************************************************
- * Copyright (c) 2014, 2017 Orange.
+ * Copyright (c) 2014, 2018 Orange.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,9 +9,9 @@
 
 Device : DeviceTelevisionAnnc
 
-A stelevision (TV) is a home appliance used to show audio and visual content such as broadcasting programs and network streaming. This TV information model provides capabilities to control and monitor TV specific resources.
+A television (TV) is a home appliance used to show audio and visual content such as broadcasting programs and network streaming. This TV information model provides capabilities to control and monitor TV specific resources.
 
-Created: 2018-06-11 12:14:18
+Created: 2018-06-29 17:19:55
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -21,9 +21,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+
 import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
 import org.eclipse.om2m.commons.resource.AbstractFlexContainerAnnc;
-
 
 @XmlRootElement(name = DeviceTelevisionFlexContainerAnnc.SHORT_NAME, namespace = "http://www.onem2m.org/xml/protocols/homedomain")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -37,7 +37,7 @@ public class DeviceTelevisionFlexContainerAnnc extends AbstractFlexContainerAnnc
 		setContainerDefinition("org.onem2m.home.device." + DeviceTelevisionFlexContainer.LONG_NAME);
 		setLongName(LONG_NAME);
 		setShortName(SHORT_NAME);
-	}
+    }
 	
 	public void finalizeSerialization() {
 		getBinarySwitch();
@@ -46,9 +46,9 @@ public class DeviceTelevisionFlexContainerAnnc extends AbstractFlexContainerAnnc
 		getAudioVolumeAnnc();
 		getTelevisionChannel();
 		getTelevisionChannelAnnc();
-		getAudioVideoInput();
-		getAudioVideoInputAnnc();
-	}
+		getPlayerControl();
+		getPlayerControlAnnc();
+    }
 	
 	public void finalizeDeserialization() {
 		if (this.binarySwitch != null) {
@@ -56,35 +56,30 @@ public class DeviceTelevisionFlexContainerAnnc extends AbstractFlexContainerAnnc
 		}
 		if (this.binarySwitchAnnc != null) {
 			setBinarySwitchAnnc(this.binarySwitchAnnc);
-			}
-		
+		}
 		if (this.audioVolume != null) {
 			setAudioVolume(this.audioVolume);
 		}
 		if (this.audioVolumeAnnc != null) {
 			setAudioVolumeAnnc(this.audioVolumeAnnc);
-			}
-		
+		}
 		if (this.televisionChannel != null) {
 			setTelevisionChannel(this.televisionChannel);
 		}
 		if (this.televisionChannelAnnc != null) {
 			setTelevisionChannelAnnc(this.televisionChannelAnnc);
-			}
-		
-		if (this.audioVideoInput != null) {
-			setAudioVideoInput(this.audioVideoInput);
 		}
-		if (this.audioVideoInputAnnc != null) {
-			setAudioVideoInputAnnc(this.audioVideoInputAnnc);
-			}
-		
+		if (this.playerControl != null) {
+			setPlayerControl(this.playerControl);
+		}
+		if (this.playerControlAnnc != null) {
+			setPlayerControlAnnc(this.playerControlAnnc);
+		}
 	}
-	
-	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+
+	@XmlElement(name=BinarySwitchFlexContainer.SHORT_NAME, required=true, type=BinarySwitchFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BinarySwitchFlexContainer binarySwitch;
-	
-	
+		
 	public void setBinarySwitch(BinarySwitchFlexContainer binarySwitch) {
 		this.binarySwitch = binarySwitch;
 		getFlexContainerOrContainerOrSubscription().add(binarySwitch);
@@ -95,10 +90,9 @@ public class DeviceTelevisionFlexContainerAnnc extends AbstractFlexContainerAnnc
 		return binarySwitch;
 	}
 	
-	@XmlElement(name="binShAnnc", required=true, type=BinarySwitchFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	@XmlElement(name=BinarySwitchFlexContainerAnnc.SHORT_NAME, required=true, type=BinarySwitchFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BinarySwitchFlexContainerAnnc binarySwitchAnnc;
-	
-	
+		
 	public void setBinarySwitchAnnc(BinarySwitchFlexContainerAnnc binarySwitchAnnc) {
 		this.binarySwitchAnnc = binarySwitchAnnc;
 		getFlexContainerOrContainerOrSubscription().add(binarySwitchAnnc);
@@ -109,10 +103,9 @@ public class DeviceTelevisionFlexContainerAnnc extends AbstractFlexContainerAnnc
 		return binarySwitchAnnc;
 	}
 	
-	@XmlElement(name="audVe", required=true, type=AudioVolumeFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	@XmlElement(name=AudioVolumeFlexContainer.SHORT_NAME, required=true, type=AudioVolumeFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private AudioVolumeFlexContainer audioVolume;
-	
-	
+		
 	public void setAudioVolume(AudioVolumeFlexContainer audioVolume) {
 		this.audioVolume = audioVolume;
 		getFlexContainerOrContainerOrSubscription().add(audioVolume);
@@ -123,10 +116,9 @@ public class DeviceTelevisionFlexContainerAnnc extends AbstractFlexContainerAnnc
 		return audioVolume;
 	}
 	
-	@XmlElement(name="audVeAnnc", required=true, type=AudioVolumeFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	@XmlElement(name=AudioVolumeFlexContainerAnnc.SHORT_NAME, required=true, type=AudioVolumeFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private AudioVolumeFlexContainerAnnc audioVolumeAnnc;
-	
-	
+		
 	public void setAudioVolumeAnnc(AudioVolumeFlexContainerAnnc audioVolumeAnnc) {
 		this.audioVolumeAnnc = audioVolumeAnnc;
 		getFlexContainerOrContainerOrSubscription().add(audioVolumeAnnc);
@@ -137,10 +129,9 @@ public class DeviceTelevisionFlexContainerAnnc extends AbstractFlexContainerAnnc
 		return audioVolumeAnnc;
 	}
 	
-	@XmlElement(name="telCl", required=true, type=TelevisionChannelFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	@XmlElement(name=TelevisionChannelFlexContainer.SHORT_NAME, required=true, type=TelevisionChannelFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private TelevisionChannelFlexContainer televisionChannel;
-	
-	
+		
 	public void setTelevisionChannel(TelevisionChannelFlexContainer televisionChannel) {
 		this.televisionChannel = televisionChannel;
 		getFlexContainerOrContainerOrSubscription().add(televisionChannel);
@@ -151,10 +142,9 @@ public class DeviceTelevisionFlexContainerAnnc extends AbstractFlexContainerAnnc
 		return televisionChannel;
 	}
 	
-	@XmlElement(name="telClAnnc", required=true, type=TelevisionChannelFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	@XmlElement(name=TelevisionChannelFlexContainerAnnc.SHORT_NAME, required=true, type=TelevisionChannelFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private TelevisionChannelFlexContainerAnnc televisionChannelAnnc;
-	
-	
+		
 	public void setTelevisionChannelAnnc(TelevisionChannelFlexContainerAnnc televisionChannelAnnc) {
 		this.televisionChannelAnnc = televisionChannelAnnc;
 		getFlexContainerOrContainerOrSubscription().add(televisionChannelAnnc);
@@ -165,32 +155,30 @@ public class DeviceTelevisionFlexContainerAnnc extends AbstractFlexContainerAnnc
 		return televisionChannelAnnc;
 	}
 	
-	@XmlElement(name="auVIt", required=true, type=AudioVideoInputFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
-	private AudioVideoInputFlexContainer audioVideoInput;
-	
-	
-	public void setAudioVideoInput(AudioVideoInputFlexContainer audioVideoInput) {
-		this.audioVideoInput = audioVideoInput;
-		getFlexContainerOrContainerOrSubscription().add(audioVideoInput);
+	@XmlElement(name=PlayerControlFlexContainer.SHORT_NAME, required=true, type=PlayerControlFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	private PlayerControlFlexContainer playerControl;
+		
+	public void setPlayerControl(PlayerControlFlexContainer playerControl) {
+		this.playerControl = playerControl;
+		getFlexContainerOrContainerOrSubscription().add(playerControl);
 	}
 	
-	public AudioVideoInputFlexContainer getAudioVideoInput() {
-		this.audioVideoInput = (AudioVideoInputFlexContainer) getResourceByName(AudioVideoInputFlexContainer.SHORT_NAME);
-		return audioVideoInput;
+	public PlayerControlFlexContainer getPlayerControl() {
+		this.playerControl = (PlayerControlFlexContainer) getResourceByName(PlayerControlFlexContainer.SHORT_NAME);
+		return playerControl;
 	}
 	
-	@XmlElement(name="auVItAnnc", required=true, type=AudioVideoInputFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
-	private AudioVideoInputFlexContainerAnnc audioVideoInputAnnc;
-	
-	
-	public void setAudioVideoInputAnnc(AudioVideoInputFlexContainerAnnc audioVideoInputAnnc) {
-		this.audioVideoInputAnnc = audioVideoInputAnnc;
-		getFlexContainerOrContainerOrSubscription().add(audioVideoInputAnnc);
+	@XmlElement(name=PlayerControlFlexContainerAnnc.SHORT_NAME, required=true, type=PlayerControlFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	private PlayerControlFlexContainerAnnc playerControlAnnc;
+		
+	public void setPlayerControlAnnc(PlayerControlFlexContainerAnnc playerControlAnnc) {
+		this.playerControlAnnc = playerControlAnnc;
+		getFlexContainerOrContainerOrSubscription().add(playerControlAnnc);
 	}
 	
-	public AudioVideoInputFlexContainerAnnc getAudioVideoInputAnnc() {
-		this.audioVideoInputAnnc = (AudioVideoInputFlexContainerAnnc) getResourceByName(AudioVideoInputFlexContainerAnnc.SHORT_NAME);
-		return audioVideoInputAnnc;
+	public PlayerControlFlexContainerAnnc getPlayerControlAnnc() {
+		this.playerControlAnnc = (PlayerControlFlexContainerAnnc) getResourceByName(PlayerControlFlexContainerAnnc.SHORT_NAME);
+		return playerControlAnnc;
 	}
 	
 }

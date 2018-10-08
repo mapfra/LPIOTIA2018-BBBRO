@@ -1,6 +1,6 @@
 /*
 ********************************************************************************
- * Copyright (c) 2014, 2017 Orange.
+ * Copyright (c) 2014, 2018 Orange.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,9 +9,9 @@
 
 Device : DeviceStorageBattery
 
-A storage battery is a HEMS device that is used to provide the home with electrical energy.
+A storage battery is a Home Energy Management System HEMS device that is used to provide the home with electrical energy.
 
-Created: 2018-06-11 12:14:18
+Created: 2018-06-29 17:19:55
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -21,9 +21,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
-import org.eclipse.om2m.commons.resource.AbstractFlexContainerAnnc;
 
+import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
 
 @XmlRootElement(name = DeviceStorageBatteryFlexContainer.SHORT_NAME, namespace = "http://www.onem2m.org/xml/protocols/homedomain")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -39,10 +38,10 @@ public class DeviceStorageBatteryFlexContainer extends AbstractFlexContainer {
 		setShortName(SHORT_NAME);
 	}
 	
-	public void finalizeSerialization() {
+    public void finalizeSerialization() {
 		getFaultDetection();
 		getBinarySwitch();
-		getRunMode();
+		getRunState();
 		getBattery();
 	}
 	
@@ -53,18 +52,17 @@ public class DeviceStorageBatteryFlexContainer extends AbstractFlexContainer {
 		if (this.binarySwitch != null) {
 			setBinarySwitch(this.binarySwitch);
 		}
-		if (this.runMode != null) {
-			setRunMode(this.runMode);
+		if (this.runState != null) {
+			setRunState(this.runState);
 		}
 		if (this.battery != null) {
 			setBattery(this.battery);
 		}
 	}
-	
-	@XmlElement(name="fauDn", required=true, type=FaultDetectionFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+
+	@XmlElement(name=FaultDetectionFlexContainer.SHORT_NAME, required=true, type=FaultDetectionFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private FaultDetectionFlexContainer faultDetection;
-	
-	
+		
 	public void setFaultDetection(FaultDetectionFlexContainer faultDetection) {
 		this.faultDetection = faultDetection;
 		getFlexContainerOrContainerOrSubscription().add(faultDetection);
@@ -75,10 +73,9 @@ public class DeviceStorageBatteryFlexContainer extends AbstractFlexContainer {
 		return faultDetection;
 	}
 	
-	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	@XmlElement(name=BinarySwitchFlexContainer.SHORT_NAME, required=true, type=BinarySwitchFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BinarySwitchFlexContainer binarySwitch;
-	
-	
+		
 	public void setBinarySwitch(BinarySwitchFlexContainer binarySwitch) {
 		this.binarySwitch = binarySwitch;
 		getFlexContainerOrContainerOrSubscription().add(binarySwitch);
@@ -89,24 +86,22 @@ public class DeviceStorageBatteryFlexContainer extends AbstractFlexContainer {
 		return binarySwitch;
 	}
 	
-	@XmlElement(name="runMe", required=true, type=RunModeFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
-	private RunModeFlexContainer runMode;
-	
-	
-	public void setRunMode(RunModeFlexContainer runMode) {
-		this.runMode = runMode;
-		getFlexContainerOrContainerOrSubscription().add(runMode);
+	@XmlElement(name=RunStateFlexContainer.SHORT_NAME, required=true, type=RunStateFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	private RunStateFlexContainer runState;
+		
+	public void setRunState(RunStateFlexContainer runState) {
+		this.runState = runState;
+		getFlexContainerOrContainerOrSubscription().add(runState);
 	}
 	
-	public RunModeFlexContainer getRunMode() {
-		this.runMode = (RunModeFlexContainer) getResourceByName(RunModeFlexContainer.SHORT_NAME);
-		return runMode;
+	public RunStateFlexContainer getRunState() {
+		this.runState = (RunStateFlexContainer) getResourceByName(RunStateFlexContainer.SHORT_NAME);
+		return runState;
 	}
 	
-	@XmlElement(name="batty", required=true, type=BatteryFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	@XmlElement(name=BatteryFlexContainer.SHORT_NAME, required=true, type=BatteryFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BatteryFlexContainer battery;
-	
-	
+		
 	public void setBattery(BatteryFlexContainer battery) {
 		this.battery = battery;
 		getFlexContainerOrContainerOrSubscription().add(battery);

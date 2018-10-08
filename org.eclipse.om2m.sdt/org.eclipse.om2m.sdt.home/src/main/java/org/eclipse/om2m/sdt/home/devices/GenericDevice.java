@@ -44,15 +44,11 @@ public class GenericDevice extends Device {
 	private Property presentationURL;
 	private Property cloud;
 
-	public GenericDevice(final String id, final String serial, final Domain domain) {
-		this(id, serial, DeviceType.undefinedVendorExt, domain);
-	}
-
 	public GenericDevice(final String id, final String serial, 
 			final DeviceType type, final Domain domain) {
 		super(id, domain, type);
 		this.type = type;
-		deviceType = new Property(PropertyType.deviceType, Integer.toString(type.getValue()));
+		deviceType = new Property(PropertyType.deviceType, type.getDefinition());
 		deviceType.setType(SimpleType.Integer);
 		deviceType.setDoc("Device type");
 		super.addProperty(deviceType);
@@ -106,7 +102,7 @@ public class GenericDevice extends Device {
 
 	protected void setDeviceType(DeviceType type) {
 		this.type = type;
-		this.deviceType.setValue(Integer.toString(type.getValue()));
+		this.deviceType.setValue(type.getDefinition());
 	}
 
 	public DeviceType getDeviceType() {

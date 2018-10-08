@@ -11,7 +11,6 @@ import java.util.List;
 
 import org.eclipse.om2m.sdt.Domain;
 import org.eclipse.om2m.sdt.datapoints.BooleanDataPoint;
-import org.eclipse.om2m.sdt.datapoints.EnumDataPoint;
 import org.eclipse.om2m.sdt.datapoints.IntegerDataPoint;
 import org.eclipse.om2m.sdt.datapoints.StringDataPoint;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
@@ -144,26 +143,28 @@ public class SmarterCoffeeMachine extends CoffeeMachine{
 					smarterCoffee.setNumberOfCups(value);
 				}
 			},  
-			new TasteStrength(new EnumDataPoint<Integer>(null) {
-				int strength = TasteStrength.zero;
+			new TasteStrength() {
+				TasteStrength.Values strength = TasteStrength.Values.zero;
 				@Override
-				protected Integer doGetValue() throws DataPointException {
+				protected TasteStrength.Values doGetValue() throws DataPointException {
 					return strength;
 				}
 				@Override
-				protected void doSetValue(Integer value) throws DataPointException {
+				protected void doSetValue(TasteStrength.Values value) throws DataPointException {
 					strength = value;
-					if (value >= TasteStrength.zero && value < TasteStrength.medium) {
+					if (value.ordinal() >= TasteStrength.Values.zero.ordinal() 
+							&& value.ordinal() < TasteStrength.Values.medium.ordinal()) {
 						smarterCoffee.setBrewStrength(SmarterCoffeeCommands.BREW_STRENGTH_0);
 					}
-					else if (value == TasteStrength.medium) {
+					else if (value == TasteStrength.Values.medium) {
 						smarterCoffee.setBrewStrength(SmarterCoffeeCommands.BREW_STRENGTH_1);
 					}
-					else if (value > TasteStrength.medium && value <= TasteStrength.maximum) {
+					else if (value.ordinal() > TasteStrength.Values.medium.ordinal() 
+							&& value.ordinal() <= TasteStrength.Values.maximum.ordinal()) {
 						smarterCoffee.setBrewStrength(SmarterCoffeeCommands.BREW_STRENGTH_2);
 					}
 				}
-		}));
+		});
 		
 		addModule(brewing);
 	}
@@ -183,7 +184,7 @@ public class SmarterCoffeeMachine extends CoffeeMachine{
 							System.out.println("start brewing swtich");
 							smarterCoffee.start(getGrinder().getUseGrinder(), 
 									getBrewing().getCupsNumber(), 
-									getBrewing().getStrength(), 
+									getBrewing().getStrength().ordinal(), 
 									getKeepWarm().getPowerState());//tu się powinno pojawić getKeepWarm();
 							//smarterCoffee.start(true, 1, getBrewing().getStrength(), false);
 						} catch (AccessException e) {
@@ -228,13 +229,13 @@ public class SmarterCoffeeMachine extends CoffeeMachine{
 		Activator.logger.info("add WaterStatus starting");
 		org.eclipse.om2m.sdt.home.modules.LiquidLevel waterStatus = new org.eclipse.om2m.sdt.home.modules.LiquidLevel("waterStatus", 
 			domain, 
-			new LiquidLevel(DatapointType.water, new EnumDataPoint<Integer>(null) {
+			new LiquidLevel(DatapointType.water) {
 				@Override
-				protected Integer doGetValue() throws DataPointException {
+				protected LiquidLevel.Values doGetValue() throws DataPointException {
 					smarterCoffee.getStatus();
 					return smarterCoffee.getWaterStatus();
 				}
-			}));
+			});
 		addModule(waterStatus);
 	}
 	

@@ -37,4 +37,14 @@ public class Struct implements TypeChoice {
 		return "xs:notDefined";
 	}
 
+	@Override
+	public String toString(Object val) throws Exception {
+		throw new Exception("Not implemented");
+	}
+
+	@Override
+	public Object fromString(String val) throws Exception {
+		throw new Exception("Not implemented");
+	}
+
 }

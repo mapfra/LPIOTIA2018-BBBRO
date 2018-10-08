@@ -17,7 +17,7 @@ public class MockedLock extends Lock {
 	
 	public MockedLock(String name, Domain domain, boolean openOnly) {
 		super(name, domain,
-			new BooleanDataPoint(DatapointType.doorLock) {
+			new BooleanDataPoint(DatapointType.lock) {
 				private boolean state = true;
 				@Override
 				public Boolean doGetValue() throws DataPointException {

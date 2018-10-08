@@ -132,26 +132,26 @@ public class ContainerMapper extends EntityMapper<ContainerEntity, Container>{
 	protected void mapChildResources(ContainerEntity entity, Container resource, int level, int offset) {
 		// add child ref contentInstance
 		for (ContentInstanceEntity cin : entity.getChildContentInstances()) {
-			ContentInstance cinRes = new ContentInstanceMapper().mapEntityToResource(cin, ResultContent.ATTRIBUTES, level - 1, offset - 1);
+			ContentInstance cinRes = new ContentInstanceMapper().mapEntityToResource(cin, ResultContent.ATTRIBUTES_AND_CHILD_RES, level - 1, offset - 1);
 			resource.getContentInstanceOrContainerOrSubscription().add(cinRes);
 		}
 
 		// add child ref subscription
 		for (SubscriptionEntity sub : entity.getSubscriptions()){
-			Subscription subRes = new SubscriptionMapper().mapEntityToResource(sub, ResultContent.ATTRIBUTES, level - 1, offset - 1);
+			Subscription subRes = new SubscriptionMapper().mapEntityToResource(sub, ResultContent.ATTRIBUTES_AND_CHILD_RES, level - 1, offset - 1);
 			resource.getContentInstanceOrContainerOrSubscription().add(subRes);
 		}
 		
 		
 		// add child ref with containers
 		for (ContainerEntity childCont : entity.getChildContainers()) {
-			Container cnt = new ContainerMapper().mapEntityToResource(childCont, ResultContent.ATTRIBUTES, level - 1, offset - 1);
+			Container cnt = new ContainerMapper().mapEntityToResource(childCont, ResultContent.ATTRIBUTES_AND_CHILD_RES, level - 1, offset - 1);
 			resource.getContentInstanceOrContainerOrSubscription().add(cnt);
 		}
 		
 		// add child ref flexContainers
 		for(FlexContainerEntity childFlexCont : entity.getChildFlexContainers()) {
-			AbstractFlexContainer fcnt = new FlexContainerMapper().mapEntityToResource(childFlexCont, ResultContent.ATTRIBUTES, level - 1, offset - 1);
+			AbstractFlexContainer fcnt = new FlexContainerMapper().mapEntityToResource(childFlexCont, ResultContent.ATTRIBUTES_AND_CHILD_RES, level - 1, offset - 1);
 			resource.getContentInstanceOrContainerOrSubscription().add(fcnt);
 		}
 	}

@@ -25,12 +25,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.om2m.sdt.home.monitoring.util.Constants;
 import org.eclipse.om2m.sdt.home.monitoring.util.FileUtil;
-import org.osgi.framework.BundleContext;
+import org.eclipse.om2m.sdt.home.monitoring.util.HttpSessionHelper;
 
 public class HomeServlet extends HttpServlet {
 	
@@ -38,7 +39,7 @@ public class HomeServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
-	public HomeServlet(BundleContext context) {
+	public HomeServlet() {
 	}
 
 	@Override
@@ -46,11 +47,15 @@ public class HomeServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		// check session
 		LOGGER.info("home " + request.getParameterMap());
-		String sessionId = request.getParameter(SessionManager.SESSION_ID_PARAMETER);
-		if ((sessionId != null) && SessionManager.getInstance().checkTokenExists(sessionId)) {
-			response.sendRedirect("/" + Constants.APPNAME + "/monitor/home");
+		
+		HttpSession session = request.getSession();
+		HttpSessionHelper sessionHelper = new HttpSessionHelper(session);
+		boolean authenticatedUser = sessionHelper.getAuthenticatedUser();
+		if ((session != null) && authenticatedUser) {
+			response.setHeader("Set-Cookie", "JSESSIONID=" + System.currentTimeMillis() + ";Path=/");
+			response.sendRedirect("/" + Constants.APPNAME);
 		} else {
-			String redirect = "/" + Constants.WEBAPPS + "login.html";
+			String redirect = Constants.WEBAPPS + "login.html";
 			String name = request.getParameter(Constants.NAME);
 			String password = request.getParameter(Constants.PASSWORD);
 			if (! (FileUtil.isEmpty(name) || FileUtil.isEmpty(password))) {

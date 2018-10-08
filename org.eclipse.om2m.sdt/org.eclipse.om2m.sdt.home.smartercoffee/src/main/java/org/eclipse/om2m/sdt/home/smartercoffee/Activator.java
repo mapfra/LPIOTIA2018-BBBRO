@@ -66,13 +66,13 @@ public class Activator implements ManagedService, BundleActivator {
 		//test();
 	}
 
-	public void test(){
+	public void test() {
 		try{
 			System.out.println("URUCHOMIONO TEST");
 
 			//logger.debug("SENDING REQUEST TO SMARTER COFFEE");
 			sCoffee.getBrewing().setCupsNumber(1);
-			sCoffee.getBrewing().setStrength(TasteStrength.zero);
+			sCoffee.getBrewing().setStrength(TasteStrength.Values.zero);
 			//sCoffee.getKeepWarm();
 			sCoffee.getKeepWarm().setPowerState(true);
 			//sCoffee.getGrinder().setUseGrinder(true);

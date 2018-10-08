@@ -1,6 +1,6 @@
 /*
 ********************************************************************************
- * Copyright (c) 2014, 2017 Orange.
+ * Copyright (c) 2014, 2018 Orange.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,9 +9,9 @@
 
 Device : DeviceDoorAnnc
 
-A door is a door.
+A door is a device that is used to open and close a door.
 
-Created: 2018-06-11 12:14:18
+Created: 2018-06-29 17:19:55
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -21,9 +21,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+
 import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
 import org.eclipse.om2m.commons.resource.AbstractFlexContainerAnnc;
-
 
 @XmlRootElement(name = DeviceDoorFlexContainerAnnc.SHORT_NAME, namespace = "http://www.onem2m.org/xml/protocols/homedomain")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -31,79 +31,65 @@ import org.eclipse.om2m.commons.resource.AbstractFlexContainerAnnc;
 public class DeviceDoorFlexContainerAnnc extends AbstractFlexContainerAnnc {
 	
 	public static final String LONG_NAME = "deviceDoorAnnc";
-	public static final String SHORT_NAME = "devDrAnnc";
+	public static final String SHORT_NAME = "devD0Annc";
 	
 	public DeviceDoorFlexContainerAnnc () {
 		setContainerDefinition("org.onem2m.home.device." + DeviceDoorFlexContainer.LONG_NAME);
 		setLongName(LONG_NAME);
 		setShortName(SHORT_NAME);
-	}
+    }
 	
 	public void finalizeSerialization() {
-		getBattery();
-		getBatteryAnnc();
+		getOpenLevel();
+		getOpenLevelAnnc();
 		getDoorStatus();
 		getDoorStatusAnnc();
-		getLock();
-		getLockAnnc();
-	}
+    }
 	
 	public void finalizeDeserialization() {
-		if (this.battery != null) {
-			setBattery(this.battery);
+		if (this.openLevel != null) {
+			setOpenLevel(this.openLevel);
 		}
-		if (this.batteryAnnc != null) {
-			setBatteryAnnc(this.batteryAnnc);
-			}
-		
+		if (this.openLevelAnnc != null) {
+			setOpenLevelAnnc(this.openLevelAnnc);
+		}
 		if (this.doorStatus != null) {
 			setDoorStatus(this.doorStatus);
 		}
 		if (this.doorStatusAnnc != null) {
 			setDoorStatusAnnc(this.doorStatusAnnc);
-			}
-		
-		if (this.lock != null) {
-			setLock(this.lock);
 		}
-		if (this.lockAnnc != null) {
-			setLockAnnc(this.lockAnnc);
-			}
+	}
+
+	@XmlElement(name=OpenLevelFlexContainer.SHORT_NAME, required=true, type=OpenLevelFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	private OpenLevelFlexContainer openLevel;
 		
+	public void setOpenLevel(OpenLevelFlexContainer openLevel) {
+		this.openLevel = openLevel;
+		getFlexContainerOrContainerOrSubscription().add(openLevel);
 	}
 	
-	@XmlElement(name="batty", required=true, type=BatteryFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
-	private BatteryFlexContainer battery;
-	
-	
-	public void setBattery(BatteryFlexContainer battery) {
-		this.battery = battery;
-		getFlexContainerOrContainerOrSubscription().add(battery);
+	public OpenLevelFlexContainer getOpenLevel() {
+		this.openLevel = (OpenLevelFlexContainer) getResourceByName(OpenLevelFlexContainer.SHORT_NAME);
+		return openLevel;
 	}
 	
-	public BatteryFlexContainer getBattery() {
-		this.battery = (BatteryFlexContainer) getResourceByName(BatteryFlexContainer.SHORT_NAME);
-		return battery;
+	@XmlElement(name=OpenLevelFlexContainerAnnc.SHORT_NAME, required=true, type=OpenLevelFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	private OpenLevelFlexContainerAnnc openLevelAnnc;
+		
+	public void setOpenLevelAnnc(OpenLevelFlexContainerAnnc openLevelAnnc) {
+		this.openLevelAnnc = openLevelAnnc;
+		getFlexContainerOrContainerOrSubscription().add(openLevelAnnc);
 	}
 	
-	@XmlElement(name="battyAnnc", required=true, type=BatteryFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
-	private BatteryFlexContainerAnnc batteryAnnc;
-	
-	
-	public void setBatteryAnnc(BatteryFlexContainerAnnc batteryAnnc) {
-		this.batteryAnnc = batteryAnnc;
-		getFlexContainerOrContainerOrSubscription().add(batteryAnnc);
+	public OpenLevelFlexContainerAnnc getOpenLevelAnnc() {
+		this.openLevelAnnc = (OpenLevelFlexContainerAnnc) getResourceByName(OpenLevelFlexContainerAnnc.SHORT_NAME);
+		return openLevelAnnc;
 	}
 	
-	public BatteryFlexContainerAnnc getBatteryAnnc() {
-		this.batteryAnnc = (BatteryFlexContainerAnnc) getResourceByName(BatteryFlexContainerAnnc.SHORT_NAME);
-		return batteryAnnc;
-	}
-	
-	@XmlElement(name="dooSs", required=true, type=DoorStatusFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	@XmlElement(name=DoorStatusFlexContainer.SHORT_NAME, required=true, type=DoorStatusFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private DoorStatusFlexContainer doorStatus;
-	
-	
+		
 	public void setDoorStatus(DoorStatusFlexContainer doorStatus) {
 		this.doorStatus = doorStatus;
 		getFlexContainerOrContainerOrSubscription().add(doorStatus);
@@ -114,10 +100,9 @@ public class DeviceDoorFlexContainerAnnc extends AbstractFlexContainerAnnc {
 		return doorStatus;
 	}
 	
-	@XmlElement(name="dooSsAnnc", required=true, type=DoorStatusFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	@XmlElement(name=DoorStatusFlexContainerAnnc.SHORT_NAME, required=true, type=DoorStatusFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private DoorStatusFlexContainerAnnc doorStatusAnnc;
-	
-	
+		
 	public void setDoorStatusAnnc(DoorStatusFlexContainerAnnc doorStatusAnnc) {
 		this.doorStatusAnnc = doorStatusAnnc;
 		getFlexContainerOrContainerOrSubscription().add(doorStatusAnnc);
@@ -126,34 +111,6 @@ public class DeviceDoorFlexContainerAnnc extends AbstractFlexContainerAnnc {
 	public DoorStatusFlexContainerAnnc getDoorStatusAnnc() {
 		this.doorStatusAnnc = (DoorStatusFlexContainerAnnc) getResourceByName(DoorStatusFlexContainerAnnc.SHORT_NAME);
 		return doorStatusAnnc;
-	}
-	
-	@XmlElement(name="lock", required=true, type=LockFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
-	private LockFlexContainer lock;
-	
-	
-	public void setLock(LockFlexContainer lock) {
-		this.lock = lock;
-		getFlexContainerOrContainerOrSubscription().add(lock);
-	}
-	
-	public LockFlexContainer getLock() {
-		this.lock = (LockFlexContainer) getResourceByName(LockFlexContainer.SHORT_NAME);
-		return lock;
-	}
-	
-	@XmlElement(name="lockAnnc", required=true, type=LockFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
-	private LockFlexContainerAnnc lockAnnc;
-	
-	
-	public void setLockAnnc(LockFlexContainerAnnc lockAnnc) {
-		this.lockAnnc = lockAnnc;
-		getFlexContainerOrContainerOrSubscription().add(lockAnnc);
-	}
-	
-	public LockFlexContainerAnnc getLockAnnc() {
-		this.lockAnnc = (LockFlexContainerAnnc) getResourceByName(LockFlexContainerAnnc.SHORT_NAME);
-		return lockAnnc;
 	}
 	
 }

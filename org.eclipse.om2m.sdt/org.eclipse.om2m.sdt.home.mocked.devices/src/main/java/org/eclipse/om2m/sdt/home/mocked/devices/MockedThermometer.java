@@ -31,10 +31,10 @@ public class MockedThermometer extends TemperatureDetector implements MockedDevi
 	private boolean running;
 	private int delta;
 
-	public MockedThermometer(String id, String serial, Domain domain) {
+	public MockedThermometer(String id, String serial, Domain domain, boolean b) {
 		super(id, serial, domain);
 		
-		temperature = new MockedTemperature("temperature_" + id, domain, 
+		temperature = new MockedTemperature("temperature_" + id, domain, b,
 			new FloatDataPoint(DatapointType.currentTemperature) {
 				@Override
 				public Float doGetValue() throws DataPointException {

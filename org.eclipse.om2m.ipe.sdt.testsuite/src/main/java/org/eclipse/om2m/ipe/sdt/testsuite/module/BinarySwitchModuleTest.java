@@ -53,14 +53,14 @@ public class BinarySwitchModuleTest extends AbstractModuleTest {
 		// get powerState value
 		BinarySwitchFlexContainer retrievedFlexContainer = (BinarySwitchFlexContainer) response.getContent();
 		CustomAttribute powerStateCA = retrievedFlexContainer.getCustomAttribute(DatapointType.powerState.getShortName());
-		Boolean powerState = Boolean.parseBoolean(powerStateCA.getCustomAttributeValue());
+		Boolean powerState = Boolean.parseBoolean(powerStateCA.getValue());
 		System.out.println("powerState=" + powerState);
 		
 		
 		// set powerState value
 		BinarySwitchFlexContainer toBeUpdatedFlexContainer = new BinarySwitchFlexContainer();
 		Boolean newPowerState = new Boolean(!powerState.booleanValue());
-		powerStateCA.setCustomAttributeValue(newPowerState.toString());
+		powerStateCA.setValue(newPowerState.toString());
 		toBeUpdatedFlexContainer.getCustomAttributes().add(powerStateCA);
 		response = CSEUtil.updateFlexContainerEntity(getCseService(), moduleUrl, toBeUpdatedFlexContainer);
 		if (!ResponseStatusCode.UPDATED.equals(response.getResponseStatusCode())) {
@@ -91,7 +91,7 @@ public class BinarySwitchModuleTest extends AbstractModuleTest {
 		// then retrieve from OM2M tree
 		retrievedFlexContainer = (BinarySwitchFlexContainer) response.getContent();
 		powerStateCA = retrievedFlexContainer.getCustomAttribute(DatapointType.powerState.getShortName());
-		Boolean currentPowerStateValue = Boolean.parseBoolean(powerStateCA.getCustomAttributeValue());
+		Boolean currentPowerStateValue = Boolean.parseBoolean(powerStateCA.getValue());
 		if (!currentPowerStateValue.equals(newPowerState)) {
 			System.out.println("value from flexContainer (" + currentPowerStateValue + ") is the same as the one set (" + newPowerState +")");
 		}

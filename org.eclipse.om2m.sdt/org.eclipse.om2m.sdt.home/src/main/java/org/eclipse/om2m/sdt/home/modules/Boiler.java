@@ -26,7 +26,7 @@ public class Boiler extends Module {
 		super(name, domain, ModuleType.boiler);
 		
 		if ((status == null) ||
-				! status.getShortDefinitionType().equals(DatapointType.status.getShortName())) {
+				! status.getShortName().equals(DatapointType.status.getShortName())) {
 			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong status datapoint: " + status);
 		}

@@ -41,13 +41,11 @@ public class AeAnncDAO extends AbstractDAO<AeAnncEntity> {
 		// de-associate labels
 		List<LabelEntity> labels = resource.getLabelsEntities();
 		for (LabelEntity label : labels) {
-			label.getLinkedFcnt().remove(resource);
+			label.getLinkedAeA().remove(resource);
 		}
-		
 		if (resource.getParentCsr() != null) {
 			resource.getParentCsr().getChildAeAnncs().remove(resource);
 		}
-
 		transaction.getEm().remove(resource);
 	}
 

@@ -26,7 +26,7 @@ public class Foaming extends Module{
 		super(name, domain, ModuleType.foaming);
 
 		if ((foamingStrength == null) ||
-				! foamingStrength.getShortDefinitionType().equals(DatapointType.foamingStrength.getShortName())) {
+				! foamingStrength.getShortName().equals(DatapointType.foamingStrength.getShortName())) {
 			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong foamingStrength datapoint: " + foamingStrength);
 		}
@@ -39,11 +39,11 @@ public class Foaming extends Module{
 		this(name, domain,  (FoamStrength) dps.get(DatapointType.foamingStrength.getShortName()));
 	}
 
-	public int getFoamingStrength() throws DataPointException, AccessException{
+	public FoamStrength.Values getFoamingStrength() throws DataPointException, AccessException{
 		return foamingStrength.getValue();
 	}
 
-	public void setFoamingStrength(int v)  throws DataPointException, AccessException{
+	public void setFoamingStrength(FoamStrength.Values v)  throws DataPointException, AccessException{
 		this.foamingStrength.setValue(v);
 	}
 

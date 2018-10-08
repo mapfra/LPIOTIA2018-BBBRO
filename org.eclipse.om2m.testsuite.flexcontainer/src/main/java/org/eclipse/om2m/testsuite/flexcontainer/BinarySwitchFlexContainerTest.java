@@ -39,8 +39,8 @@ public class BinarySwitchFlexContainerTest extends FlexContainerTestSuite {
 		initialFlexContainer.setCreator("Greg");
 		initialFlexContainer.setName("GregFirstBinaryFlexContainer" + System.currentTimeMillis());
 		CustomAttribute ca = new CustomAttribute();
-		ca.setCustomAttributeName("powSe");
-		ca.setCustomAttributeValue("true");
+		ca.setShortName("powSe");
+		ca.setValue("true");
 		initialFlexContainer.getCustomAttributes().add(ca);
 
 		BinarySwitchFlexContainer responseCreatedFlexContainer = null;
@@ -112,8 +112,8 @@ public class BinarySwitchFlexContainerTest extends FlexContainerTestSuite {
 		initialFlexContainer.setCreator("Greg");
 		initialFlexContainer.setName("GregFirstBinaryFlexContainer" + System.currentTimeMillis());
 		CustomAttribute ca = new CustomAttribute();
-		ca.setCustomAttributeName("powerStateFake");
-		ca.setCustomAttributeValue("true");
+		ca.setShortName("powerStateFake");
+		ca.setValue("true");
 		initialFlexContainer.getCustomAttributes().add(ca);
 
 		BinarySwitchFlexContainer responseCreatedFlexContainer = null;
@@ -147,8 +147,8 @@ public class BinarySwitchFlexContainerTest extends FlexContainerTestSuite {
 		initialFlexContainer.setCreator("Greg");
 		initialFlexContainer.setName("GregFirstBinaryFlexContainer" + System.currentTimeMillis());
 		CustomAttribute ca = new CustomAttribute();
-		ca.setCustomAttributeName("powSe");
-		ca.setCustomAttributeValue("true");
+		ca.setShortName("powSe");
+		ca.setValue("true");
 		initialFlexContainer.getCustomAttributes().add(ca);
 
 		BinarySwitchFlexContainer responseCreatedFlexContainer = null;
@@ -171,7 +171,7 @@ public class BinarySwitchFlexContainerTest extends FlexContainerTestSuite {
 
 		// update the flexContainer powerState custom attribute
 		BinarySwitchFlexContainer toBeUpdated = new BinarySwitchFlexContainer();
-		ca.setCustomAttributeValue("false");
+		ca.setValue("false");
 		toBeUpdated.getCustomAttributes().add(ca);
 
 		// send UPDATE request and check the response
@@ -184,7 +184,7 @@ public class BinarySwitchFlexContainerTest extends FlexContainerTestSuite {
 			updatedFlexContainer = (BinarySwitchFlexContainer) response.getContent();
 
 			// check powerState has been updated
-			if (!updatedFlexContainer.getCustomAttribute("powSe").getCustomAttributeValue().equals("false")) {
+			if (!updatedFlexContainer.getCustomAttribute("powSe").getValue().equals("false")) {
 				createTestReport("testUpdateBinarySwitchFlexContainer", Status.KO,
 						"unable to update powerState value to false", null);
 				return;
@@ -206,7 +206,7 @@ public class BinarySwitchFlexContainerTest extends FlexContainerTestSuite {
 			// OK
 			BinarySwitchFlexContainer retrievedFlexContainer = (BinarySwitchFlexContainer) response.getContent();
 
-			responseCreatedFlexContainer.getCustomAttribute("powSe").setCustomAttributeValue("false");
+			responseCreatedFlexContainer.getCustomAttribute("powSe").setValue("false");
 
 			try {
 				checkFlexContainer(responseCreatedFlexContainer, retrievedFlexContainer);
@@ -236,8 +236,8 @@ public class BinarySwitchFlexContainerTest extends FlexContainerTestSuite {
 		initialFlexContainer.setCreator("Greg");
 		initialFlexContainer.setName("GregFirstBinaryFlexContainer" + System.currentTimeMillis());
 		CustomAttribute ca = new CustomAttribute();
-		ca.setCustomAttributeName("powSe");
-		ca.setCustomAttributeValue("true");
+		ca.setShortName("powSe");
+		ca.setValue("true");
 		initialFlexContainer.getCustomAttributes().add(ca);
 
 		BinarySwitchFlexContainer responseCreatedFlexContainer = null;

@@ -40,7 +40,7 @@ public class AudioVolume extends Module {
 		super(name, domain, ModuleType.audioVolume);
 
 		if ((muteEnabled == null) ||
-				! muteEnabled.getShortDefinitionType().equals(DatapointType.muteEnabled.getShortName())) {
+				! muteEnabled.getShortName().equals(DatapointType.muteEnabled.getShortName())) {
 			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong muteEnabled datapoint: " + muteEnabled);
 		}
@@ -49,7 +49,7 @@ public class AudioVolume extends Module {
 		addDataPoint(this.muteEnabled);
 		
 		if ((volumePercentage == null) ||
-				! volumePercentage.getShortDefinitionType().equals(DatapointType.volumePercentage.getShortName())) {
+				! volumePercentage.getShortName().equals(DatapointType.volumePercentage.getShortName())) {
 			throw new IllegalArgumentException("Wrong volumePercentage datapoint: " + volumePercentage);
 		}
 		this.volumePercentage = volumePercentage;

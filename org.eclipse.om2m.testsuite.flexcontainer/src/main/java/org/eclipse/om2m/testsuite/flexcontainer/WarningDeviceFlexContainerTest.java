@@ -11,7 +11,7 @@ import org.eclipse.om2m.commons.constants.Constants;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.resource.CustomAttribute;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
-import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceWarningDeviceFlexContainer;
+import org.eclipse.om2m.commons.resource.flexcontainerspec.DeviceWarningFlexContainer;
 import org.eclipse.om2m.core.service.CseService;
 import org.eclipse.om2m.testsuite.flexcontainer.TestReport.Status;
 
@@ -31,46 +31,46 @@ public class WarningDeviceFlexContainerTest extends FlexContainerTestSuite {
 		String flexContainerName = "SirenFlexContainer_" + System.currentTimeMillis();
 		String flexContainerLocation = baseLocation + "/" + flexContainerName;
 
-		DeviceWarningDeviceFlexContainer flexContainer = new DeviceWarningDeviceFlexContainer();
+		DeviceWarningFlexContainer flexContainer = new DeviceWarningFlexContainer();
 		flexContainer.setName(flexContainerName);
 		flexContainer.setCreator("Greg");
 		flexContainer.setOntologyRef("OntologyRef");
 
 		CustomAttribute serialNumberCA = new CustomAttribute();
-		serialNumberCA.setCustomAttributeName("pDSNm");
-		serialNumberCA.setCustomAttributeValue("sn1");
+		serialNumberCA.setShortName("pDSNm");
+		serialNumberCA.setValue("sn1");
 		flexContainer.getCustomAttributes().add(serialNumberCA);
 
 		CustomAttribute locationCA = new CustomAttribute();
-		locationCA.setCustomAttributeName("proLn");
-		locationCA.setCustomAttributeValue("kitchen");
+		locationCA.setShortName("proLn");
+		locationCA.setValue("kitchen");
 		flexContainer.getCustomAttributes().add(locationCA);
 
 		CustomAttribute deviceManufacturerCA = new CustomAttribute();
-		deviceManufacturerCA.setCustomAttributeName("prDMr");
-		deviceManufacturerCA.setCustomAttributeValue("Orange");
+		deviceManufacturerCA.setShortName("prDMr");
+		deviceManufacturerCA.setValue("Orange");
 		flexContainer.getCustomAttributes().add(deviceManufacturerCA);
 
 		CustomAttribute protocolCA = new CustomAttribute();
-		protocolCA.setCustomAttributeName("proPl");
-		protocolCA.setCustomAttributeValue("ZigBee");
+		protocolCA.setShortName("proPl");
+		protocolCA.setValue("ZigBee");
 		flexContainer.getCustomAttributes().add(protocolCA);
 
 		CustomAttribute deviceModelCA = new CustomAttribute();
-		deviceModelCA.setCustomAttributeName("pDMNe");
-		deviceModelCA.setCustomAttributeValue("Model1");
+		deviceModelCA.setShortName("pDMNe");
+		deviceModelCA.setValue("Model1");
 		flexContainer.getCustomAttributes().add(deviceModelCA);
 
 		// send CREATE request
 		ResponsePrimitive response = sendCreateFlexContainerRequest(flexContainer, baseLocation, Constants.ADMIN_REQUESTING_ENTITY);
-		DeviceWarningDeviceFlexContainer createdFlexContainer = null;
+		DeviceWarningFlexContainer createdFlexContainer = null;
 		if (!response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)) {
 			// KO
 			createTestReport("testCreateAndRetrieveWarningDeviceFlexContainer", Status.KO,
 					"unable to create WarningDevice FlexContainer:" + response.getContent(), null);
 			return;
 		} else {
-			createdFlexContainer = (DeviceWarningDeviceFlexContainer) response.getContent();
+			createdFlexContainer = (DeviceWarningFlexContainer) response.getContent();
 
 			if (!flexContainerName.equals(createdFlexContainer.getName())) {
 				createTestReport("testCreateAndRetrieveWarningDeviceFlexContainer", Status.KO,
@@ -98,7 +98,7 @@ public class WarningDeviceFlexContainerTest extends FlexContainerTestSuite {
 					"unable to retrieve Warning Device FlexContainer:" + response.getContent(), null);
 			return;
 		} else {
-			DeviceWarningDeviceFlexContainer retrievedFlexContainer = (DeviceWarningDeviceFlexContainer) response.getContent();
+			DeviceWarningFlexContainer retrievedFlexContainer = (DeviceWarningFlexContainer) response.getContent();
 			try {
 				checkFlexContainer(createdFlexContainer, retrievedFlexContainer);
 			} catch (Exception e) {
@@ -117,34 +117,34 @@ public class WarningDeviceFlexContainerTest extends FlexContainerTestSuite {
 		String flexContainerName = "WarningDeviceFlexContainer_" + System.currentTimeMillis();
 		String flexContainerLocation = baseLocation + "/" + flexContainerName;
 
-		DeviceWarningDeviceFlexContainer flexContainer = new DeviceWarningDeviceFlexContainer();
+		DeviceWarningFlexContainer flexContainer = new DeviceWarningFlexContainer();
 		flexContainer.setName(flexContainerName);
 		flexContainer.setCreator("Greg");
 		flexContainer.setOntologyRef("OntologyRef");
 
 		CustomAttribute serialNumberCA = new CustomAttribute();
-		serialNumberCA.setCustomAttributeName("pDSNm");
-		serialNumberCA.setCustomAttributeValue("sn1");
+		serialNumberCA.setShortName("pDSNm");
+		serialNumberCA.setValue("sn1");
 		flexContainer.getCustomAttributes().add(serialNumberCA);
 
 		CustomAttribute locationCA = new CustomAttribute();
-		locationCA.setCustomAttributeName("proLn");
-		locationCA.setCustomAttributeValue("kitchen");
+		locationCA.setShortName("proLn");
+		locationCA.setValue("kitchen");
 		flexContainer.getCustomAttributes().add(locationCA);
 
 		CustomAttribute deviceManufacturerCA = new CustomAttribute();
-		deviceManufacturerCA.setCustomAttributeName("prDMr");
-		deviceManufacturerCA.setCustomAttributeValue("Orange");
+		deviceManufacturerCA.setShortName("prDMr");
+		deviceManufacturerCA.setValue("Orange");
 		flexContainer.getCustomAttributes().add(deviceManufacturerCA);
 
 		CustomAttribute protocolCA = new CustomAttribute();
-		protocolCA.setCustomAttributeName("proPl");
-		protocolCA.setCustomAttributeValue("ZigBee");
+		protocolCA.setShortName("proPl");
+		protocolCA.setValue("ZigBee");
 		flexContainer.getCustomAttributes().add(protocolCA);
 
 		CustomAttribute deviceModelCA = new CustomAttribute();
-		deviceModelCA.setCustomAttributeName("pDMNe");
-		deviceModelCA.setCustomAttributeValue("Model1");
+		deviceModelCA.setShortName("pDMNe");
+		deviceModelCA.setValue("Model1");
 		flexContainer.getCustomAttributes().add(deviceModelCA);
 
 		// send CREATE request

@@ -49,7 +49,7 @@ public class NumberValue extends Module {
 		super(name, domain, type);
 
 		// numberValue is a mandatory data point
-		if ((numberValue == null) ||	! numberValue.getShortDefinitionType().equals(DatapointType.numberValue.getShortName())) {
+		if ((numberValue == null) ||	! numberValue.getShortName().equals(DatapointType.numberValue.getShortName())) {
 			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong numberValue datapoint: " + numberValue);
 		}
@@ -61,7 +61,7 @@ public class NumberValue extends Module {
 		
 
 		if (minValue != null) {
-			if (! minValue.getShortDefinitionType().equals(DatapointType.minValue.getShortName())) {
+			if (! minValue.getShortName().equals(DatapointType.minValue.getShortName())) {
 				domain.removeModule(getName());
 				throw new IllegalArgumentException("Wrong minValue datapoint: " + minValue);
 			}
@@ -73,7 +73,7 @@ public class NumberValue extends Module {
 		}
 		
 		if (maxValue != null) {
-			if (! maxValue.getShortDefinitionType().equals(DatapointType.maxValue.getShortName())) {
+			if (! maxValue.getShortName().equals(DatapointType.maxValue.getShortName())) {
 				domain.removeModule(getName());
 				throw new IllegalArgumentException("Wrong maxValue datapoint: " + maxValue);
 			}
@@ -85,7 +85,7 @@ public class NumberValue extends Module {
 		}
 		
 		if (defaultValue != null) {
-			if (! defaultValue.getShortDefinitionType().equals(DatapointType.defaultValue.getShortName())) {
+			if (! defaultValue.getShortName().equals(DatapointType.defaultValue.getShortName())) {
 				domain.removeModule(getName());
 				throw new IllegalArgumentException("Wrong defaultValue datapoint: " + defaultValue);
 			}
@@ -97,7 +97,7 @@ public class NumberValue extends Module {
 		}
 		
 		if (step != null) {
-			if (! step.getShortDefinitionType().equals(DatapointType.step.getShortName())) {
+			if (! step.getShortName().equals(DatapointType.step.getShortName())) {
 				domain.removeModule(getName());
 				throw new IllegalArgumentException("Wrong step datapoint: " + step);
 			}

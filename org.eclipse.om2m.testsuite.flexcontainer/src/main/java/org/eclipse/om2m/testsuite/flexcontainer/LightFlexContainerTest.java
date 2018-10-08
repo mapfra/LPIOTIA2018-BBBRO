@@ -37,23 +37,23 @@ public class LightFlexContainerTest extends FlexContainerTestSuite {
 		flexContainer.setOntologyRef("Orange");
 
 		CustomAttribute illuminanceLevelCustomAttribute = new CustomAttribute();
-		illuminanceLevelCustomAttribute.setCustomAttributeName("illuminanceLevel");
-		illuminanceLevelCustomAttribute.setCustomAttributeValue("90");
+		illuminanceLevelCustomAttribute.setShortName("illuminanceLevel");
+		illuminanceLevelCustomAttribute.setValue("90");
 		flexContainer.getCustomAttributes().add(illuminanceLevelCustomAttribute);
 
 		CustomAttribute illuminanceStepLevelCustomAttribute = new CustomAttribute();
-		illuminanceStepLevelCustomAttribute.setCustomAttributeName("illuminanceStepLevel");
-		illuminanceStepLevelCustomAttribute.setCustomAttributeValue("1");
+		illuminanceStepLevelCustomAttribute.setShortName("illuminanceStepLevel");
+		illuminanceStepLevelCustomAttribute.setValue("1");
 		flexContainer.getCustomAttributes().add(illuminanceStepLevelCustomAttribute);
 
 		CustomAttribute modeCustomAttribute = new CustomAttribute();
-		modeCustomAttribute.setCustomAttributeName("mode");
-		modeCustomAttribute.setCustomAttributeValue("normal");
+		modeCustomAttribute.setShortName("mode");
+		modeCustomAttribute.setValue("normal");
 		flexContainer.getCustomAttributes().add(modeCustomAttribute);
 
 		CustomAttribute rgbColorSettingCustomAttribute = new CustomAttribute();
-		rgbColorSettingCustomAttribute.setCustomAttributeName("rgbColorSetting");
-		rgbColorSettingCustomAttribute.setCustomAttributeValue(new Integer(0x222222).toString());
+		rgbColorSettingCustomAttribute.setShortName("rgbColorSetting");
+		rgbColorSettingCustomAttribute.setValue(new Integer(0x222222).toString());
 		flexContainer.getCustomAttributes().add(rgbColorSettingCustomAttribute);
 
 		// send CREATE request
@@ -142,23 +142,23 @@ public class LightFlexContainerTest extends FlexContainerTestSuite {
 		flexContainer.setOntologyRef("Orange");
 
 		CustomAttribute illuminanceLevelCustomAttribute = new CustomAttribute();
-		illuminanceLevelCustomAttribute.setCustomAttributeName("illuminanceLevel");
-		illuminanceLevelCustomAttribute.setCustomAttributeValue("90");
+		illuminanceLevelCustomAttribute.setShortName("illuminanceLevel");
+		illuminanceLevelCustomAttribute.setValue("90");
 		flexContainer.getCustomAttributes().add(illuminanceLevelCustomAttribute);
 
 		CustomAttribute illuminanceStepLevelCustomAttribute = new CustomAttribute();
-		illuminanceStepLevelCustomAttribute.setCustomAttributeName("illuminanceStepLevel");
-		illuminanceStepLevelCustomAttribute.setCustomAttributeValue("1");
+		illuminanceStepLevelCustomAttribute.setShortName("illuminanceStepLevel");
+		illuminanceStepLevelCustomAttribute.setValue("1");
 		flexContainer.getCustomAttributes().add(illuminanceStepLevelCustomAttribute);
 
 		CustomAttribute modeCustomAttribute = new CustomAttribute();
-		modeCustomAttribute.setCustomAttributeName("mode");
-		modeCustomAttribute.setCustomAttributeValue("normal");
+		modeCustomAttribute.setShortName("mode");
+		modeCustomAttribute.setValue("normal");
 		flexContainer.getCustomAttributes().add(modeCustomAttribute);
 
 		CustomAttribute rgbColorSettingCustomAttribute = new CustomAttribute();
-		rgbColorSettingCustomAttribute.setCustomAttributeName("rgbColorSetting");
-		rgbColorSettingCustomAttribute.setCustomAttributeValue(new Integer(0x222222).toString());
+		rgbColorSettingCustomAttribute.setShortName("rgbColorSetting");
+		rgbColorSettingCustomAttribute.setValue(new Integer(0x222222).toString());
 		flexContainer.getCustomAttributes().add(rgbColorSettingCustomAttribute);
 
 		// send CREATE request
@@ -203,23 +203,23 @@ public class LightFlexContainerTest extends FlexContainerTestSuite {
 		flexContainer.setOntologyRef("Orange");
 
 		CustomAttribute illuminanceLevelCustomAttribute = new CustomAttribute();
-		illuminanceLevelCustomAttribute.setCustomAttributeName("illuminanceLevel");
-		illuminanceLevelCustomAttribute.setCustomAttributeValue("90");
+		illuminanceLevelCustomAttribute.setShortName("illuminanceLevel");
+		illuminanceLevelCustomAttribute.setValue("90");
 		flexContainer.getCustomAttributes().add(illuminanceLevelCustomAttribute);
 
 		CustomAttribute illuminanceStepLevelCustomAttribute = new CustomAttribute();
-		illuminanceStepLevelCustomAttribute.setCustomAttributeName("illuminanceStepLevel");
-		illuminanceStepLevelCustomAttribute.setCustomAttributeValue("1");
+		illuminanceStepLevelCustomAttribute.setShortName("illuminanceStepLevel");
+		illuminanceStepLevelCustomAttribute.setValue("1");
 		flexContainer.getCustomAttributes().add(illuminanceStepLevelCustomAttribute);
 
 		CustomAttribute modeCustomAttribute = new CustomAttribute();
-		modeCustomAttribute.setCustomAttributeName("mode");
-		modeCustomAttribute.setCustomAttributeValue("normal");
+		modeCustomAttribute.setShortName("mode");
+		modeCustomAttribute.setValue("normal");
 		flexContainer.getCustomAttributes().add(modeCustomAttribute);
 
 		CustomAttribute rgbColorSettingCustomAttribute = new CustomAttribute();
-		rgbColorSettingCustomAttribute.setCustomAttributeName("rgbColorSetting");
-		rgbColorSettingCustomAttribute.setCustomAttributeValue(new Integer(0x222222).toString());
+		rgbColorSettingCustomAttribute.setShortName("rgbColorSetting");
+		rgbColorSettingCustomAttribute.setValue(new Integer(0x222222).toString());
 		flexContainer.getCustomAttributes().add(rgbColorSettingCustomAttribute);
 
 		// send CREATE request
@@ -237,8 +237,8 @@ public class LightFlexContainerTest extends FlexContainerTestSuite {
 		// prepare a FlexContainer for update
 		DeviceLightFlexContainer toBeUpdated = new DeviceLightFlexContainer();
 		CustomAttribute illuminanceToBeUpdated = new CustomAttribute();
-		illuminanceToBeUpdated.setCustomAttributeName("illuminanceLevel");
-		illuminanceToBeUpdated.setCustomAttributeValue("85");
+		illuminanceToBeUpdated.setShortName("illuminanceLevel");
+		illuminanceToBeUpdated.setValue("85");
 		toBeUpdated.getCustomAttributes().add(illuminanceToBeUpdated);
 
 		// send UPDATE request
@@ -257,12 +257,12 @@ public class LightFlexContainerTest extends FlexContainerTestSuite {
 				return;
 			}
 
-			if (!updatedFlexContainer.getCustomAttribute("illuminanceLevel").getCustomAttributeValue()
-					.equals(illuminanceToBeUpdated.getCustomAttributeValue())) {
+			if (!updatedFlexContainer.getCustomAttribute("illuminanceLevel").getValue()
+					.equals(illuminanceToBeUpdated.getValue())) {
 				createTestReport("testUpdateLightFlexContainer", Status.KO,
 						"wrong illuminanceLevel CustomAttribute value, expecting: "
-								+ illuminanceToBeUpdated.getCustomAttributeValue() + ", found: "
-								+ updatedFlexContainer.getCustomAttribute("illuminanceLevel").getCustomAttributeValue(),
+								+ illuminanceToBeUpdated.getValue() + ", found: "
+								+ updatedFlexContainer.getCustomAttribute("illuminanceLevel").getValue(),
 						null);
 				return;
 			}
@@ -278,7 +278,7 @@ public class LightFlexContainerTest extends FlexContainerTestSuite {
 		} else {
 			// OK
 			DeviceLightFlexContainer retrievedFlexContainer = (DeviceLightFlexContainer) response.getContent();
-			createdFlexContainer.getCustomAttribute("illuminanceLevel").setCustomAttributeValue("85");
+			createdFlexContainer.getCustomAttribute("illuminanceLevel").setValue("85");
 			try {
 				checkFlexContainer(createdFlexContainer, retrievedFlexContainer);
 			} catch (Exception e) {

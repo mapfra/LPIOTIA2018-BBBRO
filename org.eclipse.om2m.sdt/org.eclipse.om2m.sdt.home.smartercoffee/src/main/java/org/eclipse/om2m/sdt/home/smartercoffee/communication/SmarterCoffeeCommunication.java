@@ -10,6 +10,7 @@ package org.eclipse.om2m.sdt.home.smartercoffee.communication;
 import java.util.Date;
 
 import org.eclipse.om2m.sdt.home.smartercoffee.Activator;
+import org.eclipse.om2m.sdt.home.types.LiquidLevel;
 import org.eclipse.om2m.sdt.home.types.TasteStrength;
 
 public class SmarterCoffeeCommunication {
@@ -48,13 +49,13 @@ public class SmarterCoffeeCommunication {
 	
 	public void start(boolean useGrinder, int numberOfCups, int sdtStrength, boolean keepWarm) { 
 		byte strength = 0;
-		if (sdtStrength >= TasteStrength.zero && sdtStrength < TasteStrength.medium) {
+		if (sdtStrength >= TasteStrength.Values.zero.ordinal() && sdtStrength < TasteStrength.Values.medium.ordinal()) {
 			strength = SmarterCoffeeCommands.BREW_STRENGTH_0;
 		}
-		else if (sdtStrength == TasteStrength.medium) {
+		else if (sdtStrength == TasteStrength.Values.medium.ordinal()) {
 			strength = SmarterCoffeeCommands.BREW_STRENGTH_1;
 		}
-		else if (sdtStrength > TasteStrength.medium && sdtStrength <= TasteStrength.maximum) {
+		else if (sdtStrength > TasteStrength.Values.medium.ordinal() && sdtStrength <= TasteStrength.Values.maximum.ordinal()) {
 			strength = SmarterCoffeeCommands.BREW_STRENGTH_2;
 		}
 		
@@ -109,7 +110,7 @@ public class SmarterCoffeeCommunication {
 		return status.getCoffeePreparationStatus();
 	}
 	
-	public int getWaterStatus() {
+	public LiquidLevel.Values getWaterStatus() {
 		return status.getWaterLevel();
 	}
 	

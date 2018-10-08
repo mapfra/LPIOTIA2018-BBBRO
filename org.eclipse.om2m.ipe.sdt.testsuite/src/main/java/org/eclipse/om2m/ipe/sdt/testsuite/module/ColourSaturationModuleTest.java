@@ -75,11 +75,13 @@ public class ColourSaturationModuleTest extends AbstractModuleTest {
 		ColourSaturationFlexContainer retrievedFlexContainer = (ColourSaturationFlexContainer) response.getContent();
 
 		// get colourSaturation custom attribute
-		CustomAttribute colourSaturationCA = retrievedFlexContainer.getCustomAttribute(DatapointType.colourSat.getShortName());
-		Integer colourSaturationFromFlexContainer = Integer.valueOf(colourSaturationCA.getCustomAttributeValue());
+		CustomAttribute colourSaturationCA = 
+				retrievedFlexContainer.getCustomAttribute(DatapointType.colourSaturation.getShortName());
+		Integer colourSaturationFromFlexContainer = Integer.valueOf(colourSaturationCA.getValue());
 
 		// get colourSaturation from module
-		IntegerDataPoint colourSaturationDP = (IntegerDataPoint) getModule().getDataPoint(DatapointType.colourSat.getShortName());
+		IntegerDataPoint colourSaturationDP = 
+				(IntegerDataPoint) getModule().getDataPoint(DatapointType.colourSaturation.getShortName());
 		Integer colourSaturationFromDP = null;
 		try {
 			colourSaturationFromDP = colourSaturationDP.getValue();
@@ -103,7 +105,7 @@ public class ColourSaturationModuleTest extends AbstractModuleTest {
 		// set colourSaturation
 		ColourSaturationFlexContainer toBeUpdated = new ColourSaturationFlexContainer();
 		Integer newColourSaturation = new Integer((int) (Math.random() * 100d));
-		colourSaturationCA.setCustomAttributeValue(newColourSaturation.toString());
+		colourSaturationCA.setValue(newColourSaturation.toString());
 		toBeUpdated.getCustomAttributes().add(colourSaturationCA);
 		response = CSEUtil.updateFlexContainerEntity(getCseService(), moduleUrl, toBeUpdated);
 		if (!ResponseStatusCode.UPDATED.equals(response.getResponseStatusCode())) {
@@ -140,8 +142,9 @@ public class ColourSaturationModuleTest extends AbstractModuleTest {
 		retrievedFlexContainer = (ColourSaturationFlexContainer) response.getContent();
 
 		// get colourSaturation custom attribute
-		colourSaturationCA = retrievedFlexContainer.getCustomAttribute(DatapointType.colourSat.getShortName());
-		colourSaturationFromFlexContainer = Integer.valueOf(colourSaturationCA.getCustomAttributeValue());
+		colourSaturationCA = 
+				retrievedFlexContainer.getCustomAttribute(DatapointType.colourSaturation.getShortName());
+		colourSaturationFromFlexContainer = Integer.valueOf(colourSaturationCA.getValue());
 		// check value between flexContainer and newValue
 		if (Math.abs(colourSaturationFromFlexContainer - newColourSaturation) > 2) {
 			// if

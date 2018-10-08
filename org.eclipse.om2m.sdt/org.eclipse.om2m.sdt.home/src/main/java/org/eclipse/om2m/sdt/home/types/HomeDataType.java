@@ -7,32 +7,49 @@
  *******************************************************************************/
 package org.eclipse.om2m.sdt.home.types;
 
+import org.eclipse.om2m.sdt.types.Array;
 import org.eclipse.om2m.sdt.types.DataType;
 
 public class HomeDataType extends DataType {
 
-	static public final HomeDataType DeviceType = new HomeDataType("deviceType", HomeSimpleType.DeviceType);
-	static public final HomeDataType SupportedInputSources = new HomeDataType("supportedInputSources", HomeSimpleType.SupportedInputSources);
-	static public final HomeDataType LiquidLevel = new HomeDataType("liquidLevel", HomeSimpleType.LiquidLevel);
-	static public final HomeDataType SpinLevelStrength = new HomeDataType("spinLevelStrength", HomeSimpleType.SpinLevelStrength);
-	static public final HomeDataType DoorState = new HomeDataType("doorState", HomeSimpleType.DoorState);
-	static public final HomeDataType Tone = new HomeDataType("tone", HomeSimpleType.Tone);
-	static public final HomeDataType JobStates = new HomeDataType("jobStates", HomeSimpleType.JobStates);
-	static public final HomeDataType AlertColourCode = new HomeDataType("alertColourCode", HomeSimpleType.AlertColourCode);
-	static public final HomeDataType WaterFlowStrength = new HomeDataType("waterFlowStrength", HomeSimpleType.WaterFlowStrength);
-	static public final HomeDataType WindStrength = new HomeDataType("windStrength", HomeSimpleType.WindStrength);
-	static public final HomeDataType GrainsLevel = new HomeDataType("grainsLevel", HomeSimpleType.GrainsLevel);
-	static public final HomeDataType FoamStrength = new HomeDataType("foamStrength", HomeSimpleType.FoamStrength);
-	static public final HomeDataType TasteStrength = new HomeDataType("tasteStrength", HomeSimpleType.TasteStrength);
-	static public final HomeDataType GrindCoarseness = new HomeDataType("grindCoarseness", HomeSimpleType.GrindCoarseness);
-	static public final HomeDataType MachineState = new HomeDataType("machineState", HomeSimpleType.MachineState);
-	static public final HomeDataType WashingCourse = new HomeDataType("washingCourse", HomeSimpleType.WashingCourse);
-	static public final HomeDataType GeneralTemperature = new HomeDataType("generalTemperature", HomeSimpleType.GeneralTemperature);
-	static public final HomeDataType GeneralLevel = new HomeDataType("generalLevel", HomeSimpleType.GeneralLevel);
-	static public final HomeDataType GeneralSpeed = new HomeDataType("generalSpeed", HomeSimpleType.GeneralSpeed);
-
-	public HomeDataType(final String name, final TypeChoice type) {
-		super(name, type);
+	static public final HomeDataType AlertColourCode = new HomeDataType(HomeSimpleType.AlertColourCode);
+	static public final HomeDataType DoorState = new HomeDataType(HomeSimpleType.DoorState);
+	static public final HomeDataType FoamStrength = new HomeDataType(HomeSimpleType.FoamStrength);
+	static public final HomeDataType GeneralLevel = new HomeDataType(HomeSimpleType.GeneralLevel);
+	static public final HomeDataType GeneralSpeed = new HomeDataType(HomeSimpleType.GeneralSpeed);
+	static public final HomeDataType GeneralTemperature = new HomeDataType(HomeSimpleType.GeneralTemperature);
+	static public final HomeDataType GrainsLevel = new HomeDataType(HomeSimpleType.GrainsLevel);
+	static public final HomeDataType GrindCoarseness = new HomeDataType(HomeSimpleType.GrindCoarseness);
+	static public final HomeDataType JobState = new HomeDataType(HomeSimpleType.JobState);
+	static public final HomeDataType LiquidLevel = new HomeDataType(HomeSimpleType.LiquidLevel);
+	static public final HomeDataType MachineState = new HomeDataType(HomeSimpleType.MachineState);
+	static public final HomeDataType PlayerMode = new HomeDataType(HomeSimpleType.PlayerMode);
+	static public final HomeDataType SpinLevelStrength = new HomeDataType(HomeSimpleType.SpinLevelStrength);
+	static public final HomeDataType SupportedMediaSources = new HomeDataType(HomeSimpleType.SupportedMediaSources);
+	static public final HomeDataType TasteStrength = new HomeDataType(HomeSimpleType.TasteStrength);
+	static public final HomeDataType Tone = new HomeDataType(HomeSimpleType.Tone);
+	static public final HomeDataType WashingCourse = new HomeDataType(HomeSimpleType.WashingCourse);
+	static public final HomeDataType WaterFlowStrength = new HomeDataType(HomeSimpleType.WaterFlowStrength);
+	static public final HomeDataType WindStrength = new HomeDataType(HomeSimpleType.WindStrength);
+	static public final HomeDataType UvStatus = new HomeDataType(HomeSimpleType.UvStatus);
+	
+	public HomeDataType(final TypeChoice type) {
+		super(type);
 	}
 	
+	static public DataType getDataType(final String name) {
+		String s = name.trim();
+		DataType ret = DataType.getDataType(s);
+		if (ret != null) 
+			return ret;
+		if (s.startsWith("[")) {
+			DataType dt = getDataType(s.substring(1, s.length()-1));
+			return (dt == null) ? null : new DataType(new Array<>(dt));
+		}
+		HomeSimpleType st = (HomeSimpleType) HomeSimpleType.getSimpleType(s);
+		if (st != null)
+			return new HomeDataType(st);
+		return null;
+	}
+
 }

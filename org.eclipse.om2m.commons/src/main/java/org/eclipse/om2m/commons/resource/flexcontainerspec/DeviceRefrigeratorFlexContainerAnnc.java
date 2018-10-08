@@ -1,6 +1,6 @@
 /*
 ********************************************************************************
- * Copyright (c) 2014, 2017 Orange.
+ * Copyright (c) 2014, 2018 Orange.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,7 @@ Device : DeviceRefrigeratorAnnc
 
 A refrigerator is a home appliance used to store food at temperatures which are a few degrees above the freezing point of water. This information model provides capabilities to interact with specific functions and resource of refrigerators.
 
-Created: 2018-06-11 12:14:18
+Created: 2018-06-29 17:19:55
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -21,9 +21,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+
 import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
 import org.eclipse.om2m.commons.resource.AbstractFlexContainerAnnc;
-
 
 @XmlRootElement(name = DeviceRefrigeratorFlexContainerAnnc.SHORT_NAME, namespace = "http://www.onem2m.org/xml/protocols/homedomain")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -37,7 +37,7 @@ public class DeviceRefrigeratorFlexContainerAnnc extends AbstractFlexContainerAn
 		setContainerDefinition("org.onem2m.home.device." + DeviceRefrigeratorFlexContainer.LONG_NAME);
 		setLongName(LONG_NAME);
 		setShortName(SHORT_NAME);
-	}
+    }
 	
 	public void finalizeSerialization() {
 		getBinarySwitch();
@@ -48,7 +48,7 @@ public class DeviceRefrigeratorFlexContainerAnnc extends AbstractFlexContainerAn
 		getDoorStatusAnnc();
 		getRefrigeration();
 		getRefrigerationAnnc();
-	}
+    }
 	
 	public void finalizeDeserialization() {
 		if (this.binarySwitch != null) {
@@ -56,35 +56,30 @@ public class DeviceRefrigeratorFlexContainerAnnc extends AbstractFlexContainerAn
 		}
 		if (this.binarySwitchAnnc != null) {
 			setBinarySwitchAnnc(this.binarySwitchAnnc);
-			}
-		
+		}
 		if (this.powerSave != null) {
 			setPowerSave(this.powerSave);
 		}
 		if (this.powerSaveAnnc != null) {
 			setPowerSaveAnnc(this.powerSaveAnnc);
-			}
-		
+		}
 		if (this.doorStatus != null) {
 			setDoorStatus(this.doorStatus);
 		}
 		if (this.doorStatusAnnc != null) {
 			setDoorStatusAnnc(this.doorStatusAnnc);
-			}
-		
+		}
 		if (this.refrigeration != null) {
 			setRefrigeration(this.refrigeration);
 		}
 		if (this.refrigerationAnnc != null) {
 			setRefrigerationAnnc(this.refrigerationAnnc);
-			}
-		
+		}
 	}
-	
-	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+
+	@XmlElement(name=BinarySwitchFlexContainer.SHORT_NAME, required=true, type=BinarySwitchFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BinarySwitchFlexContainer binarySwitch;
-	
-	
+		
 	public void setBinarySwitch(BinarySwitchFlexContainer binarySwitch) {
 		this.binarySwitch = binarySwitch;
 		getFlexContainerOrContainerOrSubscription().add(binarySwitch);
@@ -95,10 +90,9 @@ public class DeviceRefrigeratorFlexContainerAnnc extends AbstractFlexContainerAn
 		return binarySwitch;
 	}
 	
-	@XmlElement(name="binShAnnc", required=true, type=BinarySwitchFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	@XmlElement(name=BinarySwitchFlexContainerAnnc.SHORT_NAME, required=true, type=BinarySwitchFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BinarySwitchFlexContainerAnnc binarySwitchAnnc;
-	
-	
+		
 	public void setBinarySwitchAnnc(BinarySwitchFlexContainerAnnc binarySwitchAnnc) {
 		this.binarySwitchAnnc = binarySwitchAnnc;
 		getFlexContainerOrContainerOrSubscription().add(binarySwitchAnnc);
@@ -109,10 +103,9 @@ public class DeviceRefrigeratorFlexContainerAnnc extends AbstractFlexContainerAn
 		return binarySwitchAnnc;
 	}
 	
-	@XmlElement(name="powSe", required=true, type=PowerSaveFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	@XmlElement(name=PowerSaveFlexContainer.SHORT_NAME, required=true, type=PowerSaveFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private PowerSaveFlexContainer powerSave;
-	
-	
+		
 	public void setPowerSave(PowerSaveFlexContainer powerSave) {
 		this.powerSave = powerSave;
 		getFlexContainerOrContainerOrSubscription().add(powerSave);
@@ -123,10 +116,9 @@ public class DeviceRefrigeratorFlexContainerAnnc extends AbstractFlexContainerAn
 		return powerSave;
 	}
 	
-	@XmlElement(name="powSeAnnc", required=true, type=PowerSaveFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	@XmlElement(name=PowerSaveFlexContainerAnnc.SHORT_NAME, required=true, type=PowerSaveFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private PowerSaveFlexContainerAnnc powerSaveAnnc;
-	
-	
+		
 	public void setPowerSaveAnnc(PowerSaveFlexContainerAnnc powerSaveAnnc) {
 		this.powerSaveAnnc = powerSaveAnnc;
 		getFlexContainerOrContainerOrSubscription().add(powerSaveAnnc);
@@ -137,10 +129,9 @@ public class DeviceRefrigeratorFlexContainerAnnc extends AbstractFlexContainerAn
 		return powerSaveAnnc;
 	}
 	
-	@XmlElement(name="dooSs", required=true, type=DoorStatusFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	@XmlElement(name=DoorStatusFlexContainer.SHORT_NAME, required=true, type=DoorStatusFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private DoorStatusFlexContainer doorStatus;
-	
-	
+		
 	public void setDoorStatus(DoorStatusFlexContainer doorStatus) {
 		this.doorStatus = doorStatus;
 		getFlexContainerOrContainerOrSubscription().add(doorStatus);
@@ -151,10 +142,9 @@ public class DeviceRefrigeratorFlexContainerAnnc extends AbstractFlexContainerAn
 		return doorStatus;
 	}
 	
-	@XmlElement(name="dooSsAnnc", required=true, type=DoorStatusFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	@XmlElement(name=DoorStatusFlexContainerAnnc.SHORT_NAME, required=true, type=DoorStatusFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private DoorStatusFlexContainerAnnc doorStatusAnnc;
-	
-	
+		
 	public void setDoorStatusAnnc(DoorStatusFlexContainerAnnc doorStatusAnnc) {
 		this.doorStatusAnnc = doorStatusAnnc;
 		getFlexContainerOrContainerOrSubscription().add(doorStatusAnnc);
@@ -165,10 +155,9 @@ public class DeviceRefrigeratorFlexContainerAnnc extends AbstractFlexContainerAn
 		return doorStatusAnnc;
 	}
 	
-	@XmlElement(name="refrn", required=true, type=RefrigerationFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	@XmlElement(name=RefrigerationFlexContainer.SHORT_NAME, required=true, type=RefrigerationFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private RefrigerationFlexContainer refrigeration;
-	
-	
+		
 	public void setRefrigeration(RefrigerationFlexContainer refrigeration) {
 		this.refrigeration = refrigeration;
 		getFlexContainerOrContainerOrSubscription().add(refrigeration);
@@ -179,10 +168,9 @@ public class DeviceRefrigeratorFlexContainerAnnc extends AbstractFlexContainerAn
 		return refrigeration;
 	}
 	
-	@XmlElement(name="refrnAnnc", required=true, type=RefrigerationFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	@XmlElement(name=RefrigerationFlexContainerAnnc.SHORT_NAME, required=true, type=RefrigerationFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private RefrigerationFlexContainerAnnc refrigerationAnnc;
-	
-	
+		
 	public void setRefrigerationAnnc(RefrigerationFlexContainerAnnc refrigerationAnnc) {
 		this.refrigerationAnnc = refrigerationAnnc;
 		getFlexContainerOrContainerOrSubscription().add(refrigerationAnnc);

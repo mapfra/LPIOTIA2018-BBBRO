@@ -15,31 +15,47 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlJavaTypeAdapter(CustomAttributeAdapter.class)
 public class CustomAttribute {
 	
-	private String customAttributeName;
+	private String shortName;
+	private String longName;
+	private String value;
+	private String type;
 	
-	private String customAttributeValue;
+	public String getLongName() {
+		return longName;
+	}
+
+	public void setLongName(String name) {
+		this.longName = name;
+	}
 	
-	public String getCustomAttributeName() {
-		return customAttributeName;
+	public String getShortName() {
+		return shortName;
 	}
 
-	public void setCustomAttributeName(String customAttributeName) {
-		this.customAttributeName = customAttributeName;
+	public void setShortName(String shortName) {
+		this.shortName = shortName;
 	}
 
-	public String getCustomAttributeValue() {
-		return customAttributeValue;
+	public String getValue() {
+		return value;
 	}
 
-	public void setCustomAttributeValue(String customAttributeValue) {
-		this.customAttributeValue = customAttributeValue;
+	public void setValue(String value) {
+		this.value = value;
+	}
+	
+	public String getType() {
+		return type;
 	}
 
+	public void setType(String type) {
+		this.type = type;
+	}
 
 	@Override
 	public String toString() {
-		return "<CustomAttribute " + customAttributeName + "/" +
-				customAttributeValue + "/>";
+		return "<CustomAttribute " + shortName + "/" + longName + "/" + type + "/" + 
+				value + "/>";
 	}
 	
 }

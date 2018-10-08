@@ -39,7 +39,7 @@ public class BinarySwitch extends Module {
 		super(name, domain, type);
 
 		if ((powerState == null) ||
-				! powerState.getShortDefinitionType().equals(DatapointType.powerState.getShortName())) {
+				! powerState.getShortName().equals(DatapointType.powerState.getShortName())) {
 			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong powerState datapoint: " + powerState);
 		}

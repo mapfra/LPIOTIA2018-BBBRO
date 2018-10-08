@@ -87,20 +87,8 @@ public class WelcomeCamera {
 	
 	@Override
 	public String toString() {
-		StringBuffer sb = new StringBuffer();
-		sb.append("Camera(id=");
-		sb.append(id);
-		sb.append(", name=");
-		sb.append(name);
-		sb.append(", type=" + type);
-		sb.append(", isOn=");
-		sb.append(isOn);
-		sb.append(", alimOk=");
-		sb.append(alimOk);
-		sb.append(", sdOk=");
-		sb.append(sdOk);
-		sb.append(")");
-		return sb.toString();
+		return "Camera(id=" + id + ", name=" + name + ", type=" + type 
+				+ ", isOn=" + isOn + ", alimOk=" + alimOk + ", sdOk=" + sdOk + ")";
 	}
 
 }

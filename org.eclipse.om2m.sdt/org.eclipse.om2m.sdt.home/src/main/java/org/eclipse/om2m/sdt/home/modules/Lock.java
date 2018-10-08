@@ -33,7 +33,7 @@ public class Lock extends Module {
 		super(name, domain, ModuleType.lock);
 		
 		if ((doorLock == null) ||
-				! doorLock.getShortDefinitionType().equals(DatapointType.doorLock.getShortName())) {
+				! doorLock.getShortName().equals(DatapointType.lock.getShortName())) {
 			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong doorLock datapoint: " + doorLock);
 		}
@@ -48,7 +48,7 @@ public class Lock extends Module {
 	}
 	
 	public Lock(final String name, final Domain domain, Map<String, DataPoint> dps) {
-		this(name, domain, (BooleanDataPoint) dps.get(DatapointType.doorLock.getShortName()));
+		this(name, domain, (BooleanDataPoint) dps.get(DatapointType.lock.getShortName()));
 	}
 
 	public void setDoorLock(boolean c) throws DataPointException, AccessException {

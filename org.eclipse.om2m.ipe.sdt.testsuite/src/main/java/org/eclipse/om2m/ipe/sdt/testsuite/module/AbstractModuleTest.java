@@ -15,7 +15,6 @@ import java.util.List;
 
 import org.eclipse.om2m.commons.constants.Constants;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
-import org.eclipse.om2m.commons.resource.DiscoveryResult;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
 import org.eclipse.om2m.commons.resource.URIList;
 import org.eclipse.om2m.core.service.CseService;

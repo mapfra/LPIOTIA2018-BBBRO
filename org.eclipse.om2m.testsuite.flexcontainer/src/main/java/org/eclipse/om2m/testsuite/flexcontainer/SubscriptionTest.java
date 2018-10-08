@@ -168,8 +168,8 @@ public class SubscriptionTest extends FlexContainerTestSuite {
 		// update the value of the custom attribute
 		BinarySwitchFlexContainer toBeUpdated = new BinarySwitchFlexContainer();
 		CustomAttribute ca = new CustomAttribute();
-		ca.setCustomAttributeName("powSe");
-		ca.setCustomAttributeValue("false");
+		ca.setShortName("powSe");
+		ca.setValue("false");
 		toBeUpdated.getCustomAttributes().add(ca);
 		response = sendUpdateFlexContainerRequest(flexContainerLocation, toBeUpdated);
 		if (!response.getResponseStatusCode().equals(ResponseStatusCode.UPDATED)) {
@@ -192,7 +192,7 @@ public class SubscriptionTest extends FlexContainerTestSuite {
 
 			ca = notifiedFlexContainer.getCustomAttribute("powSe");
 			if (ca != null) {
-				if (!ca.getCustomAttributeValue().equals("false")) {
+				if (!ca.getValue().equals("false")) {
 					createTestReport("testCreateSubscription", Status.KO, "CustomAttribute powerState value is wrong",
 							null);
 					return;
@@ -316,8 +316,8 @@ public class SubscriptionTest extends FlexContainerTestSuite {
 		// update the value of the custom attribute
 		BinarySwitchFlexContainer toBeUpdated = new BinarySwitchFlexContainer();
 		CustomAttribute ca = new CustomAttribute();
-		ca.setCustomAttributeName("powSe");
-		ca.setCustomAttributeValue("false");
+		ca.setShortName("powSe");
+		ca.setValue("false");
 		toBeUpdated.getCustomAttributes().add(ca);
 		response = sendUpdateFlexContainerRequest(flexContainerLocation, toBeUpdated);
 		if (!response.getResponseStatusCode().equals(ResponseStatusCode.UPDATED)) {
@@ -411,8 +411,8 @@ public class SubscriptionTest extends FlexContainerTestSuite {
 		// update the value of the custom attribute
 		BinarySwitchFlexContainer toBeUpdated = new BinarySwitchFlexContainer();
 		CustomAttribute ca = new CustomAttribute();
-		ca.setCustomAttributeName("powSe");
-		ca.setCustomAttributeValue("false");
+		ca.setShortName("powSe");
+		ca.setValue("false");
 		toBeUpdated.getCustomAttributes().add(ca);
 		response = sendUpdateFlexContainerRequest(flexContainerLocation, toBeUpdated);
 		if (!response.getResponseStatusCode().equals(ResponseStatusCode.UPDATED)) {
@@ -435,7 +435,7 @@ public class SubscriptionTest extends FlexContainerTestSuite {
 
 			ca = notifiedFlexContainer.getCustomAttribute("powSe");
 			if (ca != null) {
-				if (!ca.getCustomAttributeValue().equals("false")) {
+				if (!ca.getValue().equals("false")) {
 					createTestReport("testUpdateSubscription", Status.KO, "CustomAttribute powerState value is wrong",
 							null);
 					return;
@@ -481,8 +481,8 @@ public class SubscriptionTest extends FlexContainerTestSuite {
 		// update the value of the custom attribut
 		toBeUpdated = new BinarySwitchFlexContainer();
 		ca = new CustomAttribute();
-		ca.setCustomAttributeName("powSe");
-		ca.setCustomAttributeValue("false");
+		ca.setShortName("powSe");
+		ca.setValue("false");
 		toBeUpdated.getCustomAttributes().add(ca);
 		response = sendUpdateFlexContainerRequest(flexContainerLocation, toBeUpdated);
 		if (!response.getResponseStatusCode().equals(ResponseStatusCode.UPDATED)) {
@@ -505,7 +505,7 @@ public class SubscriptionTest extends FlexContainerTestSuite {
 
 			ca = notifiedFlexContainer.getCustomAttribute("powSe");
 			if (ca != null) {
-				if (!ca.getCustomAttributeValue().equals("false")) {
+				if (!ca.getValue().equals("false")) {
 					createTestReport("testUpdateSubscription", Status.KO, "CustomAttribute powerState value is wrong",
 							null);
 					return;
@@ -537,8 +537,8 @@ public class SubscriptionTest extends FlexContainerTestSuite {
 		BinarySwitchFlexContainer flexContainer = new BinarySwitchFlexContainer();
 		flexContainer.setName("FlexContainer_" + System.currentTimeMillis());
 		CustomAttribute ca = new CustomAttribute();
-		ca.setCustomAttributeName("powSe");
-		ca.setCustomAttributeValue("true");
+		ca.setShortName("powSe");
+		ca.setValue("true");
 		flexContainer.getCustomAttributes().add(ca);
 
 		ResponsePrimitive response = sendCreateFlexContainerRequest(flexContainer,

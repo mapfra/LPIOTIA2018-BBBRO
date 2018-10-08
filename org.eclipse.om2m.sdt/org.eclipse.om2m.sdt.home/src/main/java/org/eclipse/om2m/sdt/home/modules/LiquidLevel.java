@@ -15,6 +15,7 @@ import org.eclipse.om2m.sdt.Module;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.types.DatapointType;
+import org.eclipse.om2m.sdt.home.types.LiquidLevel.Values;
 import org.eclipse.om2m.sdt.home.types.ModuleType;
 
 public class LiquidLevel extends Module {
@@ -26,7 +27,7 @@ public class LiquidLevel extends Module {
 		super(name, domain, ModuleType.liquidLevel);
 
 		if ((liquidLevel == null) ||
-				! liquidLevel.getShortDefinitionType().equals(DatapointType.liquidLevel.getShortName())) {
+				! liquidLevel.getShortName().equals(DatapointType.liquidLevel.getShortName())) {
 			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong liquidLevel datapoint: " + liquidLevel);
 		}
@@ -39,11 +40,11 @@ public class LiquidLevel extends Module {
         this(name, domain, (org.eclipse.om2m.sdt.home.types.LiquidLevel) dps.get(DatapointType.liquidLevel.getShortName()));
     }
 
-	public int getLiquidLevel() throws DataPointException, AccessException {
+	public Values getLiquidLevel() throws DataPointException, AccessException {
 		return liquidLevel.getValue();
 	}
 
-	public void setLiquidLevel(int v) throws DataPointException, AccessException {
+	public void setLiquidLevel(Values v) throws DataPointException, AccessException {
 		liquidLevel.setValue(v);
 	}
 	

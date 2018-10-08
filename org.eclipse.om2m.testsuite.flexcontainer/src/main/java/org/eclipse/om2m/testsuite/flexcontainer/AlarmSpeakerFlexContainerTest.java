@@ -38,13 +38,13 @@ public class AlarmSpeakerFlexContainerTest extends FlexContainerTestSuite {
 		flexContainer.setCreator("Greg");
 
 		CustomAttribute toneCustomAttribute = new CustomAttribute();
-		toneCustomAttribute.setCustomAttributeName("tone");
-		toneCustomAttribute.setCustomAttributeValue("1");
+		toneCustomAttribute.setShortName("tone");
+		toneCustomAttribute.setValue("1");
 		flexContainer.getCustomAttributes().add(toneCustomAttribute);
 
 		CustomAttribute alarmStatusCustomAttribute = new CustomAttribute();
-		alarmStatusCustomAttribute.setCustomAttributeName("alaSs");
-		alarmStatusCustomAttribute.setCustomAttributeValue("true");
+		alarmStatusCustomAttribute.setShortName("alaSs");
+		alarmStatusCustomAttribute.setValue("true");
 		flexContainer.getCustomAttributes().add(alarmStatusCustomAttribute);
 
 		// send CREATE request
@@ -108,13 +108,13 @@ public class AlarmSpeakerFlexContainerTest extends FlexContainerTestSuite {
 		flexContainer.setCreator("Greg");
 
 		CustomAttribute toneCustomAttribute = new CustomAttribute();
-		toneCustomAttribute.setCustomAttributeName("tone");
-		toneCustomAttribute.setCustomAttributeValue("1");
+		toneCustomAttribute.setShortName("tone");
+		toneCustomAttribute.setValue("1");
 		flexContainer.getCustomAttributes().add(toneCustomAttribute);
 
 		CustomAttribute alarmStatusCustomAttribute = new CustomAttribute();
-		alarmStatusCustomAttribute.setCustomAttributeName("alaSs");
-		alarmStatusCustomAttribute.setCustomAttributeValue("true");
+		alarmStatusCustomAttribute.setShortName("alaSs");
+		alarmStatusCustomAttribute.setValue("true");
 		flexContainer.getCustomAttributes().add(alarmStatusCustomAttribute);
 
 		// send CREATE request
@@ -161,13 +161,13 @@ public class AlarmSpeakerFlexContainerTest extends FlexContainerTestSuite {
 		flexContainer.setCreator("Greg");
 
 		CustomAttribute toneCustomAttribute = new CustomAttribute();
-		toneCustomAttribute.setCustomAttributeName("tone");
-		toneCustomAttribute.setCustomAttributeValue("1");
+		toneCustomAttribute.setShortName("tone");
+		toneCustomAttribute.setValue("1");
 		flexContainer.getCustomAttributes().add(toneCustomAttribute);
 
 		CustomAttribute alarmStatusCustomAttribute = new CustomAttribute();
-		alarmStatusCustomAttribute.setCustomAttributeName("alaSs");
-		alarmStatusCustomAttribute.setCustomAttributeValue("true");
+		alarmStatusCustomAttribute.setShortName("alaSs");
+		alarmStatusCustomAttribute.setValue("true");
 		flexContainer.getCustomAttributes().add(alarmStatusCustomAttribute);
 
 		// send CREATE request
@@ -186,8 +186,8 @@ public class AlarmSpeakerFlexContainerTest extends FlexContainerTestSuite {
 		AlarmSpeakerFlexContainer toBeUpdated = new AlarmSpeakerFlexContainer();
 
 		CustomAttribute updatedTone = new CustomAttribute();
-		updatedTone.setCustomAttributeName("tone");
-		updatedTone.setCustomAttributeValue("1");
+		updatedTone.setShortName("tone");
+		updatedTone.setValue("1");
 		toBeUpdated.getCustomAttributes().add(updatedTone);
 
 		// send UPDATE request
@@ -206,11 +206,11 @@ public class AlarmSpeakerFlexContainerTest extends FlexContainerTestSuite {
 				return;
 			}
 
-			if (!updatedTone.getCustomAttributeValue()
-					.equals(updatedFlexContainer.getCustomAttribute("tone").getCustomAttributeValue())) {
+			if (!updatedTone.getValue()
+					.equals(updatedFlexContainer.getCustomAttribute("tone").getValue())) {
 				createTestReport("testUpdateAlarmSpeakerFlexContainer", Status.KO,
-						"Wrong tone attribute value. Expecting:" + updatedTone.getCustomAttributeValue() + ", received:"
-								+ updatedFlexContainer.getCustomAttribute("tone").getCustomAttributeValue(),
+						"Wrong tone attribute value. Expecting:" + updatedTone.getValue() + ", received:"
+								+ updatedFlexContainer.getCustomAttribute("tone").getValue(),
 						null);
 				return;
 			}
@@ -229,7 +229,7 @@ public class AlarmSpeakerFlexContainerTest extends FlexContainerTestSuite {
 			
 			// update createdFlexContainer with new tone value
 			createdFlexContainer.getCustomAttribute("tone")
-					.setCustomAttributeValue(updatedTone.getCustomAttributeValue());
+					.setValue(updatedTone.getValue());
 			
 			try {
 				checkFlexContainer(createdFlexContainer, retrievedFlexContainer);

@@ -10,10 +10,10 @@ package org.eclipse.om2m.sdt.home.devices;
 import org.eclipse.om2m.sdt.Domain;
 import org.eclipse.om2m.sdt.Module;
 import org.eclipse.om2m.sdt.home.modules.BinarySwitch;
-import org.eclipse.om2m.sdt.home.modules.Boiling;
+import org.eclipse.om2m.sdt.home.modules.Boiler;
 import org.eclipse.om2m.sdt.home.modules.FaultDetection;
 import org.eclipse.om2m.sdt.home.modules.KeepWarm;
-import org.eclipse.om2m.sdt.home.modules.RunMode;
+import org.eclipse.om2m.sdt.home.modules.LiquidLevel;
 import org.eclipse.om2m.sdt.home.modules.RunState;
 import org.eclipse.om2m.sdt.home.modules.Temperature;
 import org.eclipse.om2m.sdt.home.types.DeviceType;
@@ -21,40 +21,34 @@ import org.eclipse.om2m.sdt.home.types.DeviceType;
 public class Kettle extends GenericDevice {
 
 	private FaultDetection faultDetection;
-	private RunMode runMode;
-	//private LiquidRemaining waterLevel;
-	private BinarySwitch boilingSwitch;
+	private RunState runState;
+	private LiquidLevel waterLevel;
+	private BinarySwitch binarySwitch;
 	private Temperature temperature;
-	//private Boiling boiling;
+	private Boiler boiler;
 	private KeepWarm keepWarm;
-
-	public Kettle(String id, String serial, DeviceType type, Domain domain) {
-		super(id, serial, DeviceType.deviceKettle, domain);
-	}
 
 	public Kettle(final String id, final String serial, final Domain domain){
 		super(id, serial, DeviceType.deviceKettle, domain);
 	}
 
 	public void addModule(Module module){
-		if(module instanceof FaultDetection)
+		if (module instanceof FaultDetection)
 			addModule((FaultDetection)module);
-		else if(module instanceof RunMode)
-			addModule((RunMode)module);
-		/*else if(module instanceof LiquidRemaining)
-			addModule((LiquidRemaining)module);*/
-		else if(module instanceof BinarySwitch)
+		else if (module instanceof RunState)
+			addModule((RunState)module);
+		else if (module instanceof LiquidLevel)
+			addModule((LiquidLevel)module);
+		else if (module instanceof BinarySwitch)
 			addModule((BinarySwitch)module);
-		else if(module instanceof KeepWarm)
+		else if (module instanceof KeepWarm)
 			addModule((KeepWarm)module);
-		else if(module instanceof Temperature)
+		else if (module instanceof Temperature)
 			addModule((Temperature)module);
-		else if(module instanceof Boiling)
-			addModule((Boiling)module);
+		else if (module instanceof Boiler)
+			addModule((Boiler)module);
 		else 
 			super.addModule(module);
-
-
 	}
 
 	//******************ADD MODULES******************
@@ -64,32 +58,32 @@ public class Kettle extends GenericDevice {
 		super.addModule(faultDetection);
 	}
 
-	public void addModule(RunMode mod){
-		this.runMode = mod;
-		super.addModule(runMode);
+	public void addModule(RunState mod) {
+		this.runState = mod;
+		super.addModule(runState);
 	}
 
-	/*(public void addModule(Boiling mod){
-		this.boiling = mod;
-		super.addModule(boiling);
+	public void addModule(Boiler mod) {
+		this.boiler = mod;
+		super.addModule(boiler);
 	}
-	 */
-	/*public void addModule(LiquidRemaining mod){
+	 
+	public void addModule(LiquidLevel mod){
 		this.waterLevel = mod;
 		super.addModule(waterLevel);
-	}*/
-
-	public void addModule(BinarySwitch mod){
-		this.boilingSwitch = mod;
-		super.addModule(boilingSwitch);
 	}
 
-	public void addModule(Temperature mod){
+	public void addModule(BinarySwitch mod) {
+		this.binarySwitch = mod;
+		super.addModule(binarySwitch);
+	}
+
+	public void addModule(Temperature mod) {
 		this.temperature = mod;
 		super.addModule(temperature);
 	}
 
-	public void addModule(KeepWarm mod){
+	public void addModule(KeepWarm mod) {
 		this.keepWarm = mod;
 		super.addModule(keepWarm);
 	}
@@ -100,36 +94,29 @@ public class Kettle extends GenericDevice {
 		return faultDetection;
 	}
 
-	public Temperature getTemperature(){
+	public Temperature getTemperature() {
 		return temperature;
 	}
 
 
-	public KeepWarm getKeepWarm(){
+	public KeepWarm getKeepWarm() {
 		return keepWarm;
 	}
 
-	public RunMode getRunMode() {
-		return runMode;
+	public RunState getRunState() {
+		return runState;
 	}
 
-	/*public LiquidRemaining getWaterLevel() {
+	public LiquidLevel getWaterLevel() {
 		return waterLevel;
-	}*/
-
-	public BinarySwitch getBoilingSwitch() {
-		return boilingSwitch;
 	}
 
-	/*
-	  public Boiling getBoiling() {
-
-		return boiling;
+	public BinarySwitch getBinarySwitch() {
+		return binarySwitch;
 	}
 
-	public void setBoiling(Boiling boiling) {
-		this.boiling = boiling;
+	  public Boiler getBoiler() {
+		return boiler;
 	}
 
-	 */
 }

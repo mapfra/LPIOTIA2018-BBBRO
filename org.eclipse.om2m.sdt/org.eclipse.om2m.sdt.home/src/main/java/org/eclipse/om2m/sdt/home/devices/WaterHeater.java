@@ -14,7 +14,7 @@ import org.eclipse.om2m.sdt.home.modules.Boiler;
 import org.eclipse.om2m.sdt.home.modules.Clock;
 import org.eclipse.om2m.sdt.home.modules.FaultDetection;
 import org.eclipse.om2m.sdt.home.modules.HotWaterSupply;
-import org.eclipse.om2m.sdt.home.modules.RunMode;
+import org.eclipse.om2m.sdt.home.modules.RunState;
 import org.eclipse.om2m.sdt.home.types.DeviceType;
 
 public class WaterHeater extends GenericDevice {
@@ -23,7 +23,7 @@ public class WaterHeater extends GenericDevice {
 	
 	private BinarySwitch binarySwitch;
 	
-	private RunMode runMode;
+	private RunState runState;
 	
 	private Clock clock;
 	
@@ -41,8 +41,8 @@ public class WaterHeater extends GenericDevice {
 			addModule((BinarySwitch)module);
 		else if (module instanceof FaultDetection)
 			addModule((FaultDetection)module);
-		else if (module instanceof RunMode)
-			addModule((RunMode)module);
+		else if (module instanceof RunState)
+			addModule((RunState)module);
 		else if (module instanceof Clock)
 			addModule((Clock)module);
 		else if (module instanceof Boiler)
@@ -63,9 +63,9 @@ public class WaterHeater extends GenericDevice {
 		super.addModule(binarySwitch);
 	}
 
-	public void addModule(RunMode runMode) {
-		this.runMode = runMode;
-		super.addModule(runMode);
+	public void addModule(RunState runState) {
+		this.runState = runState;
+		super.addModule(runState);
 	}
 
 	public void addModule(Clock clock) {
@@ -91,8 +91,8 @@ public class WaterHeater extends GenericDevice {
 		return binarySwitch;
 	}
 
-	public RunMode getRunMode() {
-		return runMode;
+	public RunState getRunState() {
+		return runState;
 	}
 
 	public Clock getClock() {

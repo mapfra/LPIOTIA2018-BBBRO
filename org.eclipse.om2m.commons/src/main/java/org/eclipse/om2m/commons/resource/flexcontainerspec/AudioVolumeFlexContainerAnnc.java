@@ -1,6 +1,6 @@
 /*
 ********************************************************************************
- * Copyright (c) 2014, 2017 Orange.
+ * Copyright (c) 2014, 2018 Orange.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,9 +9,9 @@
 
 ModuleClass : AudioVolumeAnnc
 
-This ModuleClass provides capabilities to control and monitor  volume.
+This ModuleClass provides capabilities to control and monitor volume.
 
-Created: 2018-06-11 12:14:17
+Created: 2018-06-29 17:19:51
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -21,9 +21,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
-import org.eclipse.om2m.commons.resource.AbstractFlexContainerAnnc;
 
+import org.eclipse.om2m.commons.resource.AbstractFlexContainerAnnc;
 
 @XmlRootElement(name = AudioVolumeFlexContainerAnnc.SHORT_NAME, namespace = "http://www.onem2m.org/xml/protocols/homedomain")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -38,24 +37,23 @@ public class AudioVolumeFlexContainerAnnc extends AbstractFlexContainerAnnc {
 		setLongName(LONG_NAME);
 		setShortName(SHORT_NAME);
 	}
-	
+		
 	public void finalizeSerialization() {
-		getUpVolumeAnnc();
-		getDownVolumeAnnc();
+		getUpVolumeAnnc();	  
+		getDownVolumeAnnc();	  
 	}
 	
 	public void finalizeDeserialization() {
-		if (this.upVolumeAnnc != null) {
-			setUpVolumeAnnc(upVolumeAnnc);
+		if (this.upVolumeAnnc != null){
+			setUpVolumeAnnc(upVolumeAnnc);	  
 		}
-		if (this.downVolumeAnnc != null) {
-			setDownVolumeAnnc(downVolumeAnnc);
+		if (this.downVolumeAnnc != null){
+			setDownVolumeAnnc(downVolumeAnnc);	  
 		}
 	}
 	
 	@XmlElement(name=UpVolumeFlexContainerAnnc.SHORT_NAME, required=true, type=UpVolumeFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
-	private UpVolumeFlexContainerAnnc upVolumeAnnc;
-	
+	private UpVolumeFlexContainerAnnc upVolumeAnnc;	
 	
 	public void setUpVolumeAnnc(UpVolumeFlexContainerAnnc upVolumeAnnc) {
 		this.upVolumeAnnc = upVolumeAnnc;
@@ -66,10 +64,8 @@ public class AudioVolumeFlexContainerAnnc extends AbstractFlexContainerAnnc {
 		this.upVolumeAnnc = (UpVolumeFlexContainerAnnc) getResourceByName(UpVolumeFlexContainerAnnc.SHORT_NAME);
 		return upVolumeAnnc;
 	}
-	
 	@XmlElement(name=DownVolumeFlexContainerAnnc.SHORT_NAME, required=true, type=DownVolumeFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
-	private DownVolumeFlexContainerAnnc downVolumeAnnc;
-	
+	private DownVolumeFlexContainerAnnc downVolumeAnnc;	
 	
 	public void setDownVolumeAnnc(DownVolumeFlexContainerAnnc downVolumeAnnc) {
 		this.downVolumeAnnc = downVolumeAnnc;

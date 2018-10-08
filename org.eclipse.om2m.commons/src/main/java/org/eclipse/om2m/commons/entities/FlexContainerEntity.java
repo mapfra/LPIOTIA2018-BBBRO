@@ -426,10 +426,10 @@ public class FlexContainerEntity extends AnnounceableSubordinateEntity{
 		this.customAttributes = customAttributes;
 	}
 	
-	public void createOrUpdateCustomAttribute(String name, Object value) {
+	public void createOrUpdateCustomAttribute(String name, Object value, String type) {
 		CustomAttributeEntity attToCreateOrUpdate = null;
 		for(CustomAttributeEntity cae : getCustomAttributes()) {
-			if (cae.getCustomAttributeName().equals(name)) {
+			if (cae.getName().equals(name)) {
 				attToCreateOrUpdate = cae;
 				break;
 			}
@@ -437,11 +437,11 @@ public class FlexContainerEntity extends AnnounceableSubordinateEntity{
 		
 		if (attToCreateOrUpdate == null) {
 			attToCreateOrUpdate = new CustomAttributeEntity();
-			attToCreateOrUpdate.setCustomAttributeName(name);
+			attToCreateOrUpdate.setName(name);
 			getCustomAttributes().add(attToCreateOrUpdate);
 		}
-		attToCreateOrUpdate.setCustomAttributeValue((value != null) ? value.toString() : null);
-		
+		attToCreateOrUpdate.setValue((value != null) ? value.toString() : null);
+		attToCreateOrUpdate.setType(type);
 	}
 	
 }

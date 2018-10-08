@@ -8,7 +8,6 @@
 package org.eclipse.om2m.ipe.sdt;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
@@ -18,14 +17,11 @@ import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
 import org.eclipse.om2m.commons.resource.CustomAttribute;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
 import org.eclipse.om2m.commons.resource.flexcontainerspec.FlexContainerFactory;
-import org.eclipse.om2m.core.service.CseService;
 import org.eclipse.om2m.ipe.sdt.flexcontainerservice.ModuleFlexContainerService;
 import org.eclipse.om2m.sdt.Action;
 import org.eclipse.om2m.sdt.DataPoint;
 import org.eclipse.om2m.sdt.Module;
 import org.eclipse.om2m.sdt.Property;
-import org.eclipse.om2m.sdt.datapoints.AbstractDateDataPoint;
-import org.eclipse.om2m.sdt.datapoints.ArrayDataPoint;
 import org.eclipse.om2m.sdt.datapoints.ValuedDataPoint;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
@@ -89,32 +85,15 @@ public class SDTModuleAdaptor {
 		/// each DataPoint is a custom attribute
 		for (DataPoint dp : module.getDataPoints()) {
 			CustomAttribute customAttribute = new CustomAttribute();
-			String customAttributeName = dp.getShortDefinitionType();
+			String customAttributeName = dp.getShortName();
 			if (customAttributeName == null) {
 				customAttributeName = dp.getName();
 			}
-			customAttribute.setCustomAttributeName(customAttributeName);
-			String value = null;
+			customAttribute.setShortName(customAttributeName);
 			try {
-				if (dp instanceof AbstractDateDataPoint) {
-					value = ((AbstractDateDataPoint) dp).getStringValue();
-				} else if (dp instanceof ArrayDataPoint<?>) {
-					List<?> values = ((ArrayDataPoint<?>) dp).getValue();
-					if (values != null) {
-						StringBuffer sb = new StringBuffer();
-						boolean first = true;
-						for (Object i : values) {
-							if (first) first = false;
-							else sb.append(",");
-							sb.append(i.toString());
-						}
-						value = sb.toString();
-					}
-				} else {
-					Object val = ((ValuedDataPoint<Object>) dp).getValue();
-					if (val != null)
-						value = val.toString();
-				}
+				customAttribute.setValue(((ValuedDataPoint<Object>) dp).toStringValue());
+				customAttribute.setLongName(dp.getLongName());
+				customAttribute.setType(dp.getDataType().getTypeChoice().getOneM2MType());
 			} catch (DataPointException e) {
 				// how to handle this exception?
 				// should we stop module publishing step in oneM2M tree ?
@@ -128,7 +107,6 @@ public class SDTModuleAdaptor {
 			} catch (Exception e) {
 				logger.error("Error in datapoint " + dp, e);
 			}
-			customAttribute.setCustomAttributeValue(value);
 
 			logger.info("add DataPoint customAttribute(" + customAttribute + ")");
 			flexContainer.getCustomAttributes().add(customAttribute);
@@ -143,8 +121,8 @@ public class SDTModuleAdaptor {
 				}
 				
 				CustomAttribute caForSdtProperty = new CustomAttribute();
-				caForSdtProperty.setCustomAttributeName(sdtProperty.getShortName());
-				caForSdtProperty.setCustomAttributeValue(sdtProperty.getValue());
+				caForSdtProperty.setShortName(sdtProperty.getShortName());
+				caForSdtProperty.setValue(sdtProperty.getValue());
 
 				logger.info("add Property customAttribute(" + caForSdtProperty + ")");
 				flexContainer.getCustomAttributes().add(caForSdtProperty);

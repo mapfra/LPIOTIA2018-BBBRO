@@ -113,7 +113,7 @@ public class RemoteCSEEntity extends AnnounceableSubordinateEntity {
 			)
 	protected List<ContainerEntity> childCnt;
 	
-	@OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="parentCSR")
 	@JoinTable(
 			name = DBEntities.CSR_FCNTCHILD_JOIN,
 			joinColumns = { @JoinColumn(name = DBEntities.CSR_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) },

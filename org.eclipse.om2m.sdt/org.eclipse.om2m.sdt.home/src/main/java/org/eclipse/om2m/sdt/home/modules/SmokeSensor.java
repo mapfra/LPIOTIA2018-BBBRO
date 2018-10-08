@@ -21,16 +21,24 @@ import org.eclipse.om2m.sdt.home.types.ModuleType;
 public class SmokeSensor extends AbstractAlarmSensor {
 	
 	private IntegerDataPoint detectedTime;
-	
+	private IntegerDataPoint smokeThreshhold;
+	private IntegerDataPoint currentValue;
+
 	public SmokeSensor(final String name, final Domain domain, BooleanDataPoint alarm) {
 		super(name, domain, alarm, ModuleType.smokeSensor, "The detection of smoke.");
 	}
 	
 	public SmokeSensor(final String name, final Domain domain, Map<String, DataPoint> dps) {
 		this(name, domain, (BooleanDataPoint) dps.get(DatapointType.alarm.getShortName()));
-		IntegerDataPoint detectedTime = (IntegerDataPoint) dps.get(DatapointType.detectedTime.getShortName());
-		if (detectedTime != null)
-			setDetectedTime(detectedTime);
+		IntegerDataPoint dp = (IntegerDataPoint) dps.get(DatapointType.detectedTime.getShortName());
+		if (dp != null)
+			setDetectedTime(dp);
+		dp = (IntegerDataPoint) dps.get(DatapointType.smokeThreshhold.getShortName());
+		if (dp != null)
+			setSmokeThreshhold(dp);
+		dp = (IntegerDataPoint) dps.get(DatapointType.currentValue.getShortName());
+		if (dp != null)
+			setCurrentValue(dp);
 	}
 
 	public void setDetectedTime(IntegerDataPoint dp) {
@@ -50,6 +58,39 @@ public class SmokeSensor extends AbstractAlarmSensor {
 		if (detectedTime == null)
 			throw new DataPointException("Not implemented");
 		detectedTime.setValue(v);
+	}
+
+	private void setCurrentValue(IntegerDataPoint dp) {
+		currentValue = dp;
+		currentValue.setOptional(true);
+		currentValue.setWritable(false);
+		currentValue.setDoc("The current data value of the smoke sensor.");
+		addDataPoint(currentValue);
+	}
+	
+	public int getCurrentValue() throws DataPointException, AccessException {
+		if (currentValue == null)
+			throw new DataPointException("Not implemented");
+		return currentValue.getValue();
+	}
+
+	private void setSmokeThreshhold(IntegerDataPoint dp) {
+		smokeThreshhold = dp;
+		smokeThreshhold.setOptional(true);
+		smokeThreshhold.setDoc("The threshhold to trigger the alarm. The unit of measure is ppm.");
+		addDataPoint(smokeThreshhold);
+	}
+	
+	public int getSmokeThreshhold() throws DataPointException, AccessException {
+		if (smokeThreshhold == null)
+			throw new DataPointException("Not implemented");
+		return smokeThreshhold.getValue();
+	}
+
+	public void setSmokeThreshhold(int v) throws DataPointException, AccessException {
+		if (smokeThreshhold == null)
+			throw new DataPointException("Not implemented");
+		smokeThreshhold.setValue(v);
 	}
 
 }

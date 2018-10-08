@@ -11,58 +11,44 @@ import org.eclipse.om2m.sdt.Identifiers;
 
 public enum ActionType implements Identifiers {
 	
-	activateClockTimer(1, "timer.activateClockTimer", "activateClockTimer", "acCTr"),
-	deactivateClockTimer(2, "timer.deactivateClockTimer", "deactivateClockTimer","deCTr"),
-	downChannel(3, "televisionChannel.downChannel", "downChannel", "dowCl"),
-	downVolume(4, "audioVolume.downVolume", "downVolume", "dowVe"),
-	toggle(5, "binarySwitch.toggle", "toggle", "togge"),
-	upChannel(6, "televisionChannel.upChannel", "upChannel", "uphCl"),
-	upVolume(7, "audioVolume.upVolume", "upVolume", "upVol"),
+	activateClockTimer,
+	deactivateClockTimer,
+	downChannel,
+	downVolume,
+	toggle,
+	upChannel,
+	upVolume,
 	
-	resetNumberValue(8,"numbervalue.resetNumberValue", "resetNumberValue", "reNVe"), 					// Added by Andreas Kraft
-	incrementNumberValue(9, "numbervalue.incrementNumberValue", "incrementNumberValue", "inNVe"), 		// Added by Andreas Kraft
-	decrementNumberValue(10, "numbervalue.decrementNumberValue", "decrementNumberValue", "deNVe"); 	// Added by Andreas Kraft
+	nextTrack,
+	previousTrack,
 	
-	static private final String PATH = "org.onem2m.home.moduleclass.";
+	resetNumberValue,
+	incrementNumberValue,
+	decrementNumberValue;
 	
-	private int value;
-	private String def;
-	private final String longDefinitionName;
-	private final String shortDefinitionName;
+	private final String longName;
+	private final String shortName;
+	private final String cnd;
 	
-	ActionType(final int v, final String s, final String longDef, final String shortDef) {
-		value = v;
-		def = s;
-		longDefinitionName = longDef;
-		shortDefinitionName = shortDef;
+	ActionType() {
+		longName = toString();
+		shortName = FlexContainers.getFlexShortName(longName);
+		cnd = FlexContainers.getContainerDefinition(longName);
 	}
-
-    public int getValue() {
-        return value;
-    }
     
 	@Override
     public String getDefinition() {
-    	return PATH + def;
+    	return cnd;
     }
 
 	@Override
 	public String getShortName() {
-		return shortDefinitionName;
+		return shortName;
 	}
 
 	@Override
 	public String getLongName() {
-		return longDefinitionName;
+		return longName;
 	}
-
-	public static ActionType fromValue(int v) {
-        for (ActionType c: ActionType.values()) {
-            if (c.value == v) {
-                return c;
-            }
-        }
-        throw new IllegalArgumentException("Undefined value " + v);
-    }
 
 }

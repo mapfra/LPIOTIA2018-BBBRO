@@ -14,7 +14,7 @@ import org.eclipse.om2m.sdt.home.modules.BinarySwitch;
 import org.eclipse.om2m.sdt.home.modules.Colour;
 import org.eclipse.om2m.sdt.home.modules.ColourSaturation;
 import org.eclipse.om2m.sdt.home.modules.FaultDetection;
-import org.eclipse.om2m.sdt.home.modules.RunMode;
+import org.eclipse.om2m.sdt.home.modules.RunState;
 import org.eclipse.om2m.sdt.home.types.DeviceType;
 
 public class Light extends GenericDevice {
@@ -23,7 +23,7 @@ public class Light extends GenericDevice {
 	
 	private BinarySwitch binarySwitch;
 	
-	private RunMode runMode;
+	private RunState runState;
 	
 	private Colour colour;
 	
@@ -38,8 +38,8 @@ public class Light extends GenericDevice {
 			addModule((FaultDetection)module);
 		else if (module instanceof BinarySwitch)
 			addModule((BinarySwitch)module);
-		else if (module instanceof RunMode)
-			addModule((RunMode)module);
+		else if (module instanceof RunState)
+			addModule((RunState)module);
 		else if (module instanceof Colour)
 			addModule((Colour)module);
 		else if (module instanceof ColourSaturation)
@@ -68,9 +68,9 @@ public class Light extends GenericDevice {
 		super.addModule(binarySwitch);
 	}
 
-	public void addModule(RunMode mod) {
-		this.runMode = mod;
-		super.addModule(runMode);
+	public void addModule(RunState mod) {
+		this.runState = mod;
+		super.addModule(runState);
 	}
 
 	public FaultDetection getFaultDetection() {
@@ -83,8 +83,8 @@ public class Light extends GenericDevice {
 		return binarySwitch;
 	}
 
-	public RunMode getRunMode() {
-		return runMode;
+	public RunState getRunState() {
+		return runState;
 	}
 
 	public Colour getColour() {

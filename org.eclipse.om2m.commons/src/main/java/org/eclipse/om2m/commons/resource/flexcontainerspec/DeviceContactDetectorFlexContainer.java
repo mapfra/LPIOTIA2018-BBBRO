@@ -1,6 +1,6 @@
 /*
 ********************************************************************************
- * Copyright (c) 2014, 2017 Orange.
+ * Copyright (c) 2014, 2018 Orange.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,9 +9,9 @@
 
 Device : DeviceContactDetector
 
-A ContactDetector is a device that trigger alarm when contact is lost.
 
-Created: 2018-06-11 12:14:18
+
+Created: 2018-07-04 10:25:10
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -21,9 +21,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
-import org.eclipse.om2m.commons.resource.AbstractFlexContainerAnnc;
 
+import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
 
 @XmlRootElement(name = DeviceContactDetectorFlexContainer.SHORT_NAME, namespace = "http://www.onem2m.org/xml/protocols/homedomain")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -31,7 +30,7 @@ import org.eclipse.om2m.commons.resource.AbstractFlexContainerAnnc;
 public class DeviceContactDetectorFlexContainer extends AbstractFlexContainer {
 	
 	public static final String LONG_NAME = "deviceContactDetector";
-	public static final String SHORT_NAME = "deCDr";
+	public static final String SHORT_NAME = "dCDr";
 	
 	public DeviceContactDetectorFlexContainer () {
 		setContainerDefinition("org.onem2m.home.device." + DeviceContactDetectorFlexContainer.LONG_NAME);
@@ -39,7 +38,7 @@ public class DeviceContactDetectorFlexContainer extends AbstractFlexContainer {
 		setShortName(SHORT_NAME);
 	}
 	
-	public void finalizeSerialization() {
+    public void finalizeSerialization() {
 		getContactSensor();
 	}
 	
@@ -48,11 +47,10 @@ public class DeviceContactDetectorFlexContainer extends AbstractFlexContainer {
 			setContactSensor(this.contactSensor);
 		}
 	}
-	
-	@XmlElement(name="conSr", required=true, type=ContactSensorFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+
+	@XmlElement(name=ContactSensorFlexContainer.SHORT_NAME, required=true, type=ContactSensorFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private ContactSensorFlexContainer contactSensor;
-	
-	
+		
 	public void setContactSensor(ContactSensorFlexContainer contactSensor) {
 		this.contactSensor = contactSensor;
 		getFlexContainerOrContainerOrSubscription().add(contactSensor);

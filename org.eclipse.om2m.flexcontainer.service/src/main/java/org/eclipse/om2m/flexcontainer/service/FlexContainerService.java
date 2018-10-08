@@ -19,7 +19,7 @@ public interface FlexContainerService {
 	/**
 	 * Get the most updated value of a custom attribute
 	 * 
-	 * @param customAttributeName
+	 * @param name
 	 *            name of the custom attribute
 	 * @return the most updated value of the custom attribute
 	 */

@@ -20,12 +20,13 @@ import org.eclipse.om2m.sdt.home.actions.Toggle;
 import org.eclipse.om2m.sdt.home.devices.Kettle;
 import org.eclipse.om2m.sdt.home.driver.Utils;
 import org.eclipse.om2m.sdt.home.modules.BinarySwitch;
+import org.eclipse.om2m.sdt.home.modules.Boiler;
 import org.eclipse.om2m.sdt.home.modules.FaultDetection;
+import org.eclipse.om2m.sdt.home.modules.LiquidLevel;
 import org.eclipse.om2m.sdt.home.modules.Temperature;
 import org.eclipse.om2m.sdt.home.smarterkettle.communication.SmarterKettleCommunication;
 import org.eclipse.om2m.sdt.home.types.DatapointType;
 import org.eclipse.om2m.sdt.home.types.ModuleType;
-import org.eclipse.om2m.sdt.home.types.TasteStrength;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 
@@ -37,11 +38,6 @@ public class SmarterKettle extends Kettle {
 	
 	private SmarterKettleCommunication smarterKettle;
 	
-	private IntegerDataPoint cupsNumber;
-	private BooleanDataPoint keepWarm;
-	private TasteStrength strength;
-	private IntegerDataPoint status;
-	
 
 	public SmarterKettle(String id, Domain domain, String ip , int port) {
 		super(id, id, domain);
@@ -50,10 +46,23 @@ public class SmarterKettle extends Kettle {
 		addBinarySwitch();
 		addFaultDetection();
 		addTemperature();
+		addModule(new LiquidLevel("LiquidLevel_" + getId(), domain, 
+			new org.eclipse.om2m.sdt.home.types.LiquidLevel() {
+				@Override
+				public Values doGetValue() throws DataPointException {
+					return smarterKettle.getStatus().getWaterLevel();
+				}
+			}));
+		addModule(new Boiler(ip, domain, new BooleanDataPoint(DatapointType.status) {
+			@Override
+			protected Boolean doGetValue() throws DataPointException {
+				return smarterKettle.getStatus().isBoiling();
+			}
+		}));
 		setDeviceManufacturer("Smarter");
 		setDeviceName("SmarterKettle 2.0");
 	}
-	
+
 	public void register(BundleContext context) {
 		registrations = Utils.register(this, context);
 	}
@@ -119,7 +128,7 @@ public class SmarterKettle extends Kettle {
 	
 //*****************Temperature Module*******************
 	
-	private void addTemperature(){
+	private void addTemperature() {
 		Temperature temperature = new Temperature("Temperature_" + getId(), domain, 
 				new FloatDataPoint(DatapointType.currentTemperature) {
 			@Override
@@ -163,5 +172,14 @@ public class SmarterKettle extends Kettle {
 		});
 		addModule(temperature);
 	}
-
+	
+	public void unregister() {
+		if (registrations == null)
+			return;
+		for (ServiceRegistration reg : registrations) {
+			reg.unregister();
+		}
+		registrations.clear();
+	}
+	
 }

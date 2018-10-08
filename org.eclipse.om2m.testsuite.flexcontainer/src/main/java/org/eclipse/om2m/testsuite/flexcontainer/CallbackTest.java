@@ -42,8 +42,8 @@ public class CallbackTest extends FlexContainerTestSuite {
 		flexContainer = new BinarySwitchFlexContainer();
 		flexContainer.setName(flexContainerName);
 		CustomAttribute powerState = new CustomAttribute();
-		powerState.setCustomAttributeValue("false");
-		powerState.setCustomAttributeName("powSe");
+		powerState.setValue("false");
+		powerState.setShortName("powSe");
 		flexContainer.getCustomAttributes().add(powerState);
 
 		ResponsePrimitive response = sendCreateFlexContainerRequest(flexContainer, parentLocation, Constants.ADMIN_REQUESTING_ENTITY);
@@ -77,7 +77,7 @@ public class CallbackTest extends FlexContainerTestSuite {
 			public String getCustomAttributeValue(String customAttributeName) throws Om2mException {
 				if (!customAttributeName.equals("powSe")) {
 					throw new Om2mException(
-							"unexpected getCustomAttributeValue for attributeName=" + customAttributeName,
+							"unexpected getValue for attributeName=" + customAttributeName,
 							ResponseStatusCode.NOT_IMPLEMENTED);
 				}
 				numberOfGetAttributeValue++;
@@ -90,7 +90,7 @@ public class CallbackTest extends FlexContainerTestSuite {
 				if ((customAttributeNames.size() != 1)
 						|| customAttributeNames.get(0).equals("powSe")) {
 					throw new Om2mException(
-							"unexpected getCustomAttributeValue for attributeName=" + customAttributeNames,
+							"unexpected getValue for attributeName=" + customAttributeNames,
 							ResponseStatusCode.NOT_IMPLEMENTED);
 				}
 				numberOfGetAttributeValue++;
@@ -109,7 +109,7 @@ public class CallbackTest extends FlexContainerTestSuite {
 		if (!response.getResponseStatusCode().equals(ResponseStatusCode.OK)) {
 			BinarySwitchFlexContainer retrievedFlexContainer = (BinarySwitchFlexContainer) response.getContent();
 
-			if (!retrievedFlexContainer.getCustomAttribute("powSe").getCustomAttributeValue()
+			if (!retrievedFlexContainer.getCustomAttribute("powSe").getValue()
 					.equals(Boolean.TRUE.toString())) {
 				createTestReport("testCallback", Status.KO, "invalid powerState value, expecting true", null);
 				return;
@@ -131,7 +131,7 @@ public class CallbackTest extends FlexContainerTestSuite {
 		if (!response.getResponseStatusCode().equals(ResponseStatusCode.OK)) {
 			BinarySwitchFlexContainer retrievedFlexContainer = (BinarySwitchFlexContainer) response.getContent();
 
-			if (!retrievedFlexContainer.getCustomAttribute("powSe").getCustomAttributeValue()
+			if (!retrievedFlexContainer.getCustomAttribute("powSe").getValue()
 					.equals(Boolean.TRUE.toString())) {
 				createTestReport("testCallback", Status.KO, "invalid powerState value, expecting true", null);
 				return;
@@ -165,13 +165,13 @@ public class CallbackTest extends FlexContainerTestSuite {
 					throw new Om2mException("not allowed. Invalid size of CustomAttribute", ResponseStatusCode.INVALID_ARGUMENTS);
 				}
 				CustomAttribute powerStateCA = customAttributes.get(0);
-				if (!"powSe".equals(powerStateCA.getCustomAttributeName())) {
+				if (!"powSe".equals(powerStateCA.getShortName())) {
 					throw new Om2mException("not allowed", ResponseStatusCode.INVALID_ARGUMENTS);
 				}
 
 				Boolean booleanValue = null;
 				try {
-					booleanValue = new Boolean((String) powerStateCA.getCustomAttributeValue());
+					booleanValue = new Boolean((String) powerStateCA.getValue());
 				} catch (Exception e) {
 					throw new Om2mException("not allowed", ResponseStatusCode.INVALID_ARGUMENTS);
 				}
@@ -190,7 +190,7 @@ public class CallbackTest extends FlexContainerTestSuite {
 			public String getCustomAttributeValue(String customAttributeName) throws Om2mException {
 				if (!customAttributeName.equals("powSe")) {
 					throw new Om2mException(
-							"unexpected getCustomAttributeValue for attributeName=" + customAttributeName,
+							"unexpected getValue for attributeName=" + customAttributeName,
 							ResponseStatusCode.NOT_IMPLEMENTED);
 				}
 				numberOfGetAttributeValue++;
@@ -203,7 +203,7 @@ public class CallbackTest extends FlexContainerTestSuite {
 				if ((customAttributeNames.size() != 1)
 						|| customAttributeNames.get(0).equals("powSe")) {
 					throw new Om2mException(
-							"unexpected getCustomAttributeValue for attributeName=" + customAttributeNames,
+							"unexpected getValue for attributeName=" + customAttributeNames,
 							ResponseStatusCode.NOT_IMPLEMENTED);
 				}
 				numberOfGetAttributeValue++;
@@ -219,8 +219,8 @@ public class CallbackTest extends FlexContainerTestSuite {
 
 		BinarySwitchFlexContainer toBeUpdated = new BinarySwitchFlexContainer();
 		CustomAttribute powerState = new CustomAttribute();
-		powerState.setCustomAttributeValue("true");
-		powerState.setCustomAttributeName("powSe");
+		powerState.setValue("true");
+		powerState.setShortName("powSe");
 		toBeUpdated.getCustomAttributes().add(powerState);
 
 		ResponsePrimitive response = sendUpdateFlexContainerRequest(flexContainerLocation, toBeUpdated);
@@ -231,10 +231,10 @@ public class CallbackTest extends FlexContainerTestSuite {
 		}
 
 		BinarySwitchFlexContainer updatedFlexContainer = (BinarySwitchFlexContainer) response.getContent();
-		if (!updatedFlexContainer.getCustomAttribute("powSe").getCustomAttributeValue()
+		if (!updatedFlexContainer.getCustomAttribute("powSe").getValue()
 				.equals(Boolean.TRUE.toString())) {
 			createTestReport("testCallback_update", Status.KO, "invalid for powerState, expecting TRUE, found"
-					+ updatedFlexContainer.getCustomAttribute("powSe").getCustomAttributeValue(), null);
+					+ updatedFlexContainer.getCustomAttribute("powSe").getValue(), null);
 			return;
 		}
 		
@@ -243,7 +243,7 @@ public class CallbackTest extends FlexContainerTestSuite {
 		if (!response.getResponseStatusCode().equals(ResponseStatusCode.OK)) {
 			BinarySwitchFlexContainer retrievedFlexContainer = (BinarySwitchFlexContainer) response.getContent();
 
-			if (!retrievedFlexContainer.getCustomAttribute("powSe").getCustomAttributeValue()
+			if (!retrievedFlexContainer.getCustomAttribute("powSe").getValue()
 					.equals(Boolean.TRUE.toString())) {
 				createTestReport("testCallback", Status.KO, "invalid powerState value, expecting true", null);
 				return;

@@ -8,23 +8,35 @@
 package org.eclipse.om2m.sdt.home.monitoring.util;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.eclipse.om2m.sdt.home.monitoring.servlet.SessionManager;
+import org.eclipse.om2m.sdt.home.monitoring.authentication.service.AuthenticationInfo;
+import org.eclipse.om2m.sdt.home.monitoring.authentication.service.AuthenticationService;
 
 public class AuthFillter implements Constants {
 	
 	private static Log LOGGER = LogFactory.getLog(AuthFillter.class);
 
-	public static SessionManager.Session validateUserCredentials(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public static void validateUserCredentials(HttpServletRequest request, HttpServletResponse response,
+			List<AuthenticationService> authenticationServices) throws IOException {
 //		boolean isValid = false;
 		String name = "";
 		String password = "";
+		String bearer = null;
+		String clientId = null;
+		String serviceName = null;
+		String sessionId = null;
+		
+		HttpSession httpSession = request.getSession();
+		sessionId = httpSession.getId();
+		
 		if ((request.getParameter(NAME) != null) && (request.getParameter(PASSWORD) != null)) {
 			name = request.getParameter(NAME);
 			password = request.getParameter(PASSWORD);
@@ -42,21 +54,56 @@ public class AuthFillter implements Constants {
 			name = cred.substring(0, idx);
 			password = cred.substring(idx + 1);
 			LOGGER.info("headers " + name + "/" + password);
-		} else
+		} else if ((serviceName = request.getParameter("serviceName")) != null) {
+			AuthenticationService as = getAuthenticationService(serviceName, authenticationServices);
+			if (as != null) {
+				AuthenticationInfo ai = as.getAuthenticationInfo(sessionId);
+				bearer = ai.getAccessToken();
+				clientId = ai.getClientId();
+				name = as.getEndUserInfo(sessionId).getUserId();
+			}
+		} else 
 			LOGGER.info("void");
-		String result = ResourceDiscovery.validateUserCredentials(name, password);
-		LOGGER.info("result=" + result);
-		if (result != null) {
+		
+		boolean createNewSession = false;
+		if (bearer != null) {
+			// check bearer
+			createNewSession = true;
+		} else {
+			String result = ResourceDiscovery.validateUserCredentials(name, password);
+			LOGGER.info("result=" + result);
+			if (result != null) {
+				createNewSession = true;
+			}
+		}
+			
+		if (createNewSession) {
 			// create new session
-			return SessionManager.getInstance().createNewSession(name, password);
+			HttpSessionHelper sessionHelper = new HttpSessionHelper(httpSession);
+			sessionHelper.setAuthenticationUser(Boolean.TRUE);
+			sessionHelper.setName(name);
+			sessionHelper.setPassword(password);
+			sessionHelper.setBearer(bearer);
+			sessionHelper.setClientId(clientId);
+			sessionHelper.setServiceName(serviceName);
 		}
 
 		if (/*! isValid && */request.getHeader(REQUESTED) != null) {
 			response.addHeader(AUTHENTICATE, "Basic");
 			LOGGER.info(REQUESTED + " " + name + "/" + password);
 			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, null);
+			return;
 		}
-		LOGGER.info(name + "/" + password);
+		LOGGER.info("authenticated " + name + "/" + password);
+	}
+	
+	private static AuthenticationService getAuthenticationService(String name, 
+			List<AuthenticationService> authenticationServices) {
+		for (AuthenticationService as : authenticationServices) {
+			if (name.equals(as.getServiceName())) {
+				return as;
+			}
+		}
 		return null;
 	}
 	

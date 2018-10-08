@@ -50,8 +50,8 @@ public class LocationFlexContainerTest extends FlexContainerTestSuite {
 		String parentFlexContainerName = "parentFlexContainer_" + System.currentTimeMillis();
 		parentFlexContainer.setName(parentFlexContainerName);
 		CustomAttribute ca = new CustomAttribute();
-		ca.setCustomAttributeName("powSe");
-		ca.setCustomAttributeValue("true");
+		ca.setShortName("powSe");
+		ca.setValue("true");
 		parentFlexContainer.getCustomAttributes().add(ca);
 		
 		
@@ -94,8 +94,8 @@ public class LocationFlexContainerTest extends FlexContainerTestSuite {
 		// set a new flexContainer
 		BinarySwitchFlexContainer flexContainer = new BinarySwitchFlexContainer();
 		CustomAttribute ca = new CustomAttribute();
-		ca.setCustomAttributeName("powSe");
-		ca.setCustomAttributeValue("true");
+		ca.setShortName("powSe");
+		ca.setValue("true");
 		flexContainer.getCustomAttributes().add(ca);
 
 		String flexContainerName = "FLEXCONTAINER_" + System.currentTimeMillis();

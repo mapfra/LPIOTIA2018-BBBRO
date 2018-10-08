@@ -106,6 +106,10 @@ public class LIFXDeviceLan extends LIFXDevice implements LIFXDeviceListener {
 		executeSetPowerMessage(newPower, duration);
 		executeSetColorMessage((int)newHue, (int)newSaturation, (int)newBrightness, (int) newKelvin, duration);
 	}
+	
+	@Override
+	public void setLightState(int newPower, int red, int green, int blue, int duration) throws Exception {
+	}
 
 	public String getLabel() throws Exception {
 		executeGetLightMessage();

@@ -15,7 +15,7 @@ import org.eclipse.om2m.sdt.home.modules.Clock;
 import org.eclipse.om2m.sdt.home.modules.EnergyConsumption;
 import org.eclipse.om2m.sdt.home.modules.EnergyGeneration;
 import org.eclipse.om2m.sdt.home.modules.FaultDetection;
-import org.eclipse.om2m.sdt.home.modules.RunMode;
+import org.eclipse.om2m.sdt.home.modules.RunState;
 import org.eclipse.om2m.sdt.home.types.DeviceType;
 import org.eclipse.om2m.sdt.home.types.PropertyType;
 import org.eclipse.om2m.sdt.types.SimpleType;
@@ -25,7 +25,7 @@ public class SmartElectricMeter extends GenericDevice {
 	private BinarySwitch binarySwitch;
 	private EnergyConsumption energyConsumption;
 	private FaultDetection faultDetection;
-	private RunMode runMode;
+	private RunState runState;
 	private Clock clock;
 	private EnergyGeneration generationMeter;
 	
@@ -48,8 +48,8 @@ public class SmartElectricMeter extends GenericDevice {
 			addModule((EnergyConsumption)module);
 		else if (module instanceof BinarySwitch)
 			addModule((BinarySwitch)module);
-		else if (module instanceof RunMode)
-			addModule((RunMode)module);
+		else if (module instanceof RunState)
+			addModule((RunState)module);
 		else if (module instanceof Clock)
 			addModule((Clock)module);
 		else if (module instanceof EnergyGeneration)
@@ -73,9 +73,9 @@ public class SmartElectricMeter extends GenericDevice {
 		super.addModule(faultDetection);
 	}
 
-	public void addModule(RunMode runMode) {
-		this.runMode = runMode;
-		super.addModule(runMode);
+	public void addModule(RunState runState) {
+		this.runState = runState;
+		super.addModule(runState);
 	}
 
 	public void addModule(Clock clock) {
@@ -100,8 +100,8 @@ public class SmartElectricMeter extends GenericDevice {
 		return binarySwitch;
 	}
 
-	public RunMode getRunMode() {
-		return runMode;
+	public RunState getRunState() {
+		return runState;
 	}
 
 	public Clock getClock() {

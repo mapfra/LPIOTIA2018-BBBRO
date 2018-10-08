@@ -1,6 +1,6 @@
 /*
 ********************************************************************************
- * Copyright (c) 2014, 2017 Orange.
+ * Copyright (c) 2014, 2018 Orange.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,7 @@ Device : DeviceWaterHeaterAnnc
 
 A water heater is a device that is used to provide hot water through home facilities.
 
-Created: 2018-06-11 12:14:18
+Created: 2018-06-29 17:19:55
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -21,9 +21,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+
 import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
 import org.eclipse.om2m.commons.resource.AbstractFlexContainerAnnc;
-
 
 @XmlRootElement(name = DeviceWaterHeaterFlexContainerAnnc.SHORT_NAME, namespace = "http://www.onem2m.org/xml/protocols/homedomain")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -37,22 +37,22 @@ public class DeviceWaterHeaterFlexContainerAnnc extends AbstractFlexContainerAnn
 		setContainerDefinition("org.onem2m.home.device." + DeviceWaterHeaterFlexContainer.LONG_NAME);
 		setLongName(LONG_NAME);
 		setShortName(SHORT_NAME);
-	}
+    }
 	
 	public void finalizeSerialization() {
 		getFaultDetection();
 		getFaultDetectionAnnc();
 		getBinarySwitch();
 		getBinarySwitchAnnc();
-		getRunMode();
-		getRunModeAnnc();
+		getRunState();
+		getRunStateAnnc();
 		getClock();
 		getClockAnnc();
 		getBoiler();
 		getBoilerAnnc();
 		getHotWaterSupply();
 		getHotWaterSupplyAnnc();
-	}
+    }
 	
 	public void finalizeDeserialization() {
 		if (this.faultDetection != null) {
@@ -60,49 +60,42 @@ public class DeviceWaterHeaterFlexContainerAnnc extends AbstractFlexContainerAnn
 		}
 		if (this.faultDetectionAnnc != null) {
 			setFaultDetectionAnnc(this.faultDetectionAnnc);
-			}
-		
+		}
 		if (this.binarySwitch != null) {
 			setBinarySwitch(this.binarySwitch);
 		}
 		if (this.binarySwitchAnnc != null) {
 			setBinarySwitchAnnc(this.binarySwitchAnnc);
-			}
-		
-		if (this.runMode != null) {
-			setRunMode(this.runMode);
 		}
-		if (this.runModeAnnc != null) {
-			setRunModeAnnc(this.runModeAnnc);
-			}
-		
+		if (this.runState != null) {
+			setRunState(this.runState);
+		}
+		if (this.runStateAnnc != null) {
+			setRunStateAnnc(this.runStateAnnc);
+		}
 		if (this.clock != null) {
 			setClock(this.clock);
 		}
 		if (this.clockAnnc != null) {
 			setClockAnnc(this.clockAnnc);
-			}
-		
+		}
 		if (this.boiler != null) {
 			setBoiler(this.boiler);
 		}
 		if (this.boilerAnnc != null) {
 			setBoilerAnnc(this.boilerAnnc);
-			}
-		
+		}
 		if (this.hotWaterSupply != null) {
 			setHotWaterSupply(this.hotWaterSupply);
 		}
 		if (this.hotWaterSupplyAnnc != null) {
 			setHotWaterSupplyAnnc(this.hotWaterSupplyAnnc);
-			}
-		
+		}
 	}
-	
-	@XmlElement(name="fauDn", required=true, type=FaultDetectionFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+
+	@XmlElement(name=FaultDetectionFlexContainer.SHORT_NAME, required=true, type=FaultDetectionFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private FaultDetectionFlexContainer faultDetection;
-	
-	
+		
 	public void setFaultDetection(FaultDetectionFlexContainer faultDetection) {
 		this.faultDetection = faultDetection;
 		getFlexContainerOrContainerOrSubscription().add(faultDetection);
@@ -113,10 +106,9 @@ public class DeviceWaterHeaterFlexContainerAnnc extends AbstractFlexContainerAnn
 		return faultDetection;
 	}
 	
-	@XmlElement(name="fauDnAnnc", required=true, type=FaultDetectionFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	@XmlElement(name=FaultDetectionFlexContainerAnnc.SHORT_NAME, required=true, type=FaultDetectionFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private FaultDetectionFlexContainerAnnc faultDetectionAnnc;
-	
-	
+		
 	public void setFaultDetectionAnnc(FaultDetectionFlexContainerAnnc faultDetectionAnnc) {
 		this.faultDetectionAnnc = faultDetectionAnnc;
 		getFlexContainerOrContainerOrSubscription().add(faultDetectionAnnc);
@@ -127,10 +119,9 @@ public class DeviceWaterHeaterFlexContainerAnnc extends AbstractFlexContainerAnn
 		return faultDetectionAnnc;
 	}
 	
-	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	@XmlElement(name=BinarySwitchFlexContainer.SHORT_NAME, required=true, type=BinarySwitchFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BinarySwitchFlexContainer binarySwitch;
-	
-	
+		
 	public void setBinarySwitch(BinarySwitchFlexContainer binarySwitch) {
 		this.binarySwitch = binarySwitch;
 		getFlexContainerOrContainerOrSubscription().add(binarySwitch);
@@ -141,10 +132,9 @@ public class DeviceWaterHeaterFlexContainerAnnc extends AbstractFlexContainerAnn
 		return binarySwitch;
 	}
 	
-	@XmlElement(name="binShAnnc", required=true, type=BinarySwitchFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	@XmlElement(name=BinarySwitchFlexContainerAnnc.SHORT_NAME, required=true, type=BinarySwitchFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BinarySwitchFlexContainerAnnc binarySwitchAnnc;
-	
-	
+		
 	public void setBinarySwitchAnnc(BinarySwitchFlexContainerAnnc binarySwitchAnnc) {
 		this.binarySwitchAnnc = binarySwitchAnnc;
 		getFlexContainerOrContainerOrSubscription().add(binarySwitchAnnc);
@@ -155,38 +145,35 @@ public class DeviceWaterHeaterFlexContainerAnnc extends AbstractFlexContainerAnn
 		return binarySwitchAnnc;
 	}
 	
-	@XmlElement(name="runMe", required=true, type=RunModeFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
-	private RunModeFlexContainer runMode;
-	
-	
-	public void setRunMode(RunModeFlexContainer runMode) {
-		this.runMode = runMode;
-		getFlexContainerOrContainerOrSubscription().add(runMode);
+	@XmlElement(name=RunStateFlexContainer.SHORT_NAME, required=true, type=RunStateFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	private RunStateFlexContainer runState;
+		
+	public void setRunState(RunStateFlexContainer runState) {
+		this.runState = runState;
+		getFlexContainerOrContainerOrSubscription().add(runState);
 	}
 	
-	public RunModeFlexContainer getRunMode() {
-		this.runMode = (RunModeFlexContainer) getResourceByName(RunModeFlexContainer.SHORT_NAME);
-		return runMode;
+	public RunStateFlexContainer getRunState() {
+		this.runState = (RunStateFlexContainer) getResourceByName(RunStateFlexContainer.SHORT_NAME);
+		return runState;
 	}
 	
-	@XmlElement(name="runMeAnnc", required=true, type=RunModeFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
-	private RunModeFlexContainerAnnc runModeAnnc;
-	
-	
-	public void setRunModeAnnc(RunModeFlexContainerAnnc runModeAnnc) {
-		this.runModeAnnc = runModeAnnc;
-		getFlexContainerOrContainerOrSubscription().add(runModeAnnc);
+	@XmlElement(name=RunStateFlexContainerAnnc.SHORT_NAME, required=true, type=RunStateFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	private RunStateFlexContainerAnnc runStateAnnc;
+		
+	public void setRunStateAnnc(RunStateFlexContainerAnnc runStateAnnc) {
+		this.runStateAnnc = runStateAnnc;
+		getFlexContainerOrContainerOrSubscription().add(runStateAnnc);
 	}
 	
-	public RunModeFlexContainerAnnc getRunModeAnnc() {
-		this.runModeAnnc = (RunModeFlexContainerAnnc) getResourceByName(RunModeFlexContainerAnnc.SHORT_NAME);
-		return runModeAnnc;
+	public RunStateFlexContainerAnnc getRunStateAnnc() {
+		this.runStateAnnc = (RunStateFlexContainerAnnc) getResourceByName(RunStateFlexContainerAnnc.SHORT_NAME);
+		return runStateAnnc;
 	}
 	
-	@XmlElement(name="clock", required=true, type=ClockFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	@XmlElement(name=ClockFlexContainer.SHORT_NAME, required=true, type=ClockFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private ClockFlexContainer clock;
-	
-	
+		
 	public void setClock(ClockFlexContainer clock) {
 		this.clock = clock;
 		getFlexContainerOrContainerOrSubscription().add(clock);
@@ -197,10 +184,9 @@ public class DeviceWaterHeaterFlexContainerAnnc extends AbstractFlexContainerAnn
 		return clock;
 	}
 	
-	@XmlElement(name="clockAnnc", required=true, type=ClockFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	@XmlElement(name=ClockFlexContainerAnnc.SHORT_NAME, required=true, type=ClockFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private ClockFlexContainerAnnc clockAnnc;
-	
-	
+		
 	public void setClockAnnc(ClockFlexContainerAnnc clockAnnc) {
 		this.clockAnnc = clockAnnc;
 		getFlexContainerOrContainerOrSubscription().add(clockAnnc);
@@ -211,10 +197,9 @@ public class DeviceWaterHeaterFlexContainerAnnc extends AbstractFlexContainerAnn
 		return clockAnnc;
 	}
 	
-	@XmlElement(name="boilr", required=true, type=BoilerFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	@XmlElement(name=BoilerFlexContainer.SHORT_NAME, required=true, type=BoilerFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BoilerFlexContainer boiler;
-	
-	
+		
 	public void setBoiler(BoilerFlexContainer boiler) {
 		this.boiler = boiler;
 		getFlexContainerOrContainerOrSubscription().add(boiler);
@@ -225,10 +210,9 @@ public class DeviceWaterHeaterFlexContainerAnnc extends AbstractFlexContainerAnn
 		return boiler;
 	}
 	
-	@XmlElement(name="boilrAnnc", required=true, type=BoilerFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	@XmlElement(name=BoilerFlexContainerAnnc.SHORT_NAME, required=true, type=BoilerFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BoilerFlexContainerAnnc boilerAnnc;
-	
-	
+		
 	public void setBoilerAnnc(BoilerFlexContainerAnnc boilerAnnc) {
 		this.boilerAnnc = boilerAnnc;
 		getFlexContainerOrContainerOrSubscription().add(boilerAnnc);
@@ -239,10 +223,9 @@ public class DeviceWaterHeaterFlexContainerAnnc extends AbstractFlexContainerAnn
 		return boilerAnnc;
 	}
 	
-	@XmlElement(name="hoWSy", required=true, type=HotWaterSupplyFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	@XmlElement(name=HotWaterSupplyFlexContainer.SHORT_NAME, required=true, type=HotWaterSupplyFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private HotWaterSupplyFlexContainer hotWaterSupply;
-	
-	
+		
 	public void setHotWaterSupply(HotWaterSupplyFlexContainer hotWaterSupply) {
 		this.hotWaterSupply = hotWaterSupply;
 		getFlexContainerOrContainerOrSubscription().add(hotWaterSupply);
@@ -253,10 +236,9 @@ public class DeviceWaterHeaterFlexContainerAnnc extends AbstractFlexContainerAnn
 		return hotWaterSupply;
 	}
 	
-	@XmlElement(name="hoWSyAnnc", required=true, type=HotWaterSupplyFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	@XmlElement(name=HotWaterSupplyFlexContainerAnnc.SHORT_NAME, required=true, type=HotWaterSupplyFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private HotWaterSupplyFlexContainerAnnc hotWaterSupplyAnnc;
-	
-	
+		
 	public void setHotWaterSupplyAnnc(HotWaterSupplyFlexContainerAnnc hotWaterSupplyAnnc) {
 		this.hotWaterSupplyAnnc = hotWaterSupplyAnnc;
 		getFlexContainerOrContainerOrSubscription().add(hotWaterSupplyAnnc);

@@ -52,8 +52,8 @@ public class SDTWelcomeCameraDeviceTestCase extends TestCase {
 		welcomeCamera.setUseLocalUrl(Boolean.TRUE);
 		sdtWelcomeCamera = new SDTWelcomeCameraDevice(welcomeCamera, 1000);
 
-		assertNotNull(sdtWelcomeCamera.getStreaming().getUrlValue());
-		assertTrue(sdtWelcomeCamera.getStreaming().getUrlValue().equals(VPN_URL + "/live/index_local.m3u8"));
+		assertNotNull(sdtWelcomeCamera.getSessionDescription().getUrl());
+		assertTrue(sdtWelcomeCamera.getSessionDescription().getUrl().toString().equals(VPN_URL + "/live/index_local.m3u8"));
 		
 	}
 	
@@ -61,23 +61,23 @@ public class SDTWelcomeCameraDeviceTestCase extends TestCase {
 		welcomeCamera.setUseLocalUrl(Boolean.FALSE);
 		sdtWelcomeCamera = new SDTWelcomeCameraDevice(welcomeCamera, 1000);
 
-		assertNotNull(sdtWelcomeCamera.getStreaming().getUrlValue());
-		assertTrue(sdtWelcomeCamera.getStreaming().getUrlValue().equals(VPN_URL + "/live/index.m3u8"));
+		assertNotNull(sdtWelcomeCamera.getSessionDescription().getUrl());
+		assertTrue(sdtWelcomeCamera.getSessionDescription().getUrl().toString().equals(VPN_URL + "/live/index.m3u8"));
 		
 	}
 	
-	public void testPassword() throws Exception {
-		sdtWelcomeCamera = new SDTWelcomeCameraDevice(welcomeCamera, 1000);
-		assertEquals(sdtWelcomeCamera.getStreaming().getPasswordValue(), "");
-	}
-	
-	public void testLogin() throws Exception {
-		sdtWelcomeCamera = new SDTWelcomeCameraDevice(welcomeCamera, 1000);
-		assertEquals(sdtWelcomeCamera.getStreaming().getLoginValue(), "");
-	}
+//	public void testPassword() throws Exception {
+//		sdtWelcomeCamera = new SDTWelcomeCameraDevice(welcomeCamera, 1000);
+//		assertEquals(sdtWelcomeCamera.getSessionDescription().getPassword(), "");
+//	}
+//	
+//	public void testLogin() throws Exception {
+//		sdtWelcomeCamera = new SDTWelcomeCameraDevice(welcomeCamera, 1000);
+//		assertEquals(sdtWelcomeCamera.getSessionDescription().getLogin(), "");
+//	}
 	
 	public void testFormat() throws Exception {
 		sdtWelcomeCamera = new SDTWelcomeCameraDevice(welcomeCamera, 1000);
-		assertEquals(sdtWelcomeCamera.getStreaming().getFormatValue(), "HLS");
+		assertEquals(sdtWelcomeCamera.getSessionDescription().getSdp(), "HLS");
 	}
 }

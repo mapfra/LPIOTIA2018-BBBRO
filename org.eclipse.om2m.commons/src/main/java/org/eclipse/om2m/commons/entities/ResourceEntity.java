@@ -23,6 +23,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -43,19 +44,26 @@ public class ResourceEntity {
 	@Id
 	@Column(name=ShortName.RESOURCE_ID)
 	protected String resourceID;
+	
 	@Column(name = ShortName.RESOURCE_TYPE)
 	protected BigInteger resourceType;
+	
 	@Column(name=ShortName.PARENT_ID)
 	protected String parentID;
+	
 	@Column(name=ShortName.CREATION_TIME)
 	protected String creationTime;
+	
 	@Column(name=ShortName.LAST_MODIFIED_TIME)
 	protected String lastModifiedTime;
-	@ManyToMany(targetEntity = LabelEntity.class, fetch = FetchType.LAZY)
-	protected List<LabelEntity> labelsEntities;
 	
+	@ManyToMany(targetEntity = LabelEntity.class, fetch = FetchType.LAZY, 
+			cascade = {CascadeType.PERSIST})
+	protected List<LabelEntity> labelsEntities;
+
 	@Column(name=ShortName.RESOURCE_NAME)
 	protected String name;
+	
 	@Column(name=DBEntities.HIERARCHICAL_URI)
 	protected String hierarchicalURI;
 
@@ -221,10 +229,16 @@ public class ResourceEntity {
 	 */
 	public void setLabelsEntitiesFromSring(List<String> labelsStrings) {
 		this.getLabelsEntities().clear();
-		for (String s: labelsStrings) {
-			LabelEntity toAdd = new LabelEntity(s);
-			if(!this.getLabelsEntities().contains(toAdd)){
-				this.getLabelsEntities().add(new LabelEntity(s));				
+		for (String s : labelsStrings) {
+			boolean found = false;
+			for (LabelEntity label : this.getLabelsEntities()) {
+				if (s.equals(label.getLabel())) {
+					found = true;
+					break;
+				}
+			}
+			if (! found) {
+				this.getLabelsEntities().add(new LabelEntity(s));
 			}
 		}
 	}
@@ -233,5 +247,4 @@ public class ResourceEntity {
 		this.resourceType = BigInteger.valueOf(value);
 	}
 	
-
 }

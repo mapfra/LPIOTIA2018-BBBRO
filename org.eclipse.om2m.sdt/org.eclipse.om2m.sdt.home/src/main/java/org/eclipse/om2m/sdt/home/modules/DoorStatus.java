@@ -33,7 +33,7 @@ public class DoorStatus extends Module {
 		super(name, domain, ModuleType.doorStatus);
 
 		if ((state == null) ||
-				! state.getShortDefinitionType().equals(DatapointType.doorState.getShortName())) {
+				! state.getShortName().equals(DatapointType.doorState.getShortName())) {
 			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong doorState datapoint: " + state);
 		}
@@ -53,7 +53,7 @@ public class DoorStatus extends Module {
 			setOpenAlarm(openAlarm);
 	}
 
-	public int getDoorState() throws DataPointException, AccessException {
+	public DoorState.Values getDoorState() throws DataPointException, AccessException {
 		return doorState.getValue();
 	}
 

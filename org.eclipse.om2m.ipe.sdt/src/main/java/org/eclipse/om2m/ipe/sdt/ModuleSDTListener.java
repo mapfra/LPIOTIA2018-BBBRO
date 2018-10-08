@@ -78,9 +78,9 @@ public class ModuleSDTListener implements SDTEventListener {
 
 		AbstractFlexContainer toBeUpdated = new FlexContainer();
 		CustomAttribute ca = new CustomAttribute();
-		ca.setCustomAttributeName(notif.getDataPoint().getName());
+		ca.setShortName(notif.getDataPoint().getName());
 		Object value = notif.getValue();
-		ca.setCustomAttributeValue((value != null ? value.toString() : null));
+		ca.setValue((value != null ? value.toString() : null));
 		toBeUpdated.getCustomAttributes().add(ca);
 
 		ResponsePrimitive response = CseUtil.sendInternalNotifyFlexContainerRequest(toBeUpdated, 

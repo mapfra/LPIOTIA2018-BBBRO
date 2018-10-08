@@ -60,7 +60,7 @@ public class SmokeSensorModuleTest extends AbstractModuleTest {
 			report.setState(State.KO);
 			return report;
 		}
-		Boolean alarm = Boolean.parseBoolean(alarmCA.getCustomAttributeValue());
+		Boolean alarm = Boolean.parseBoolean(alarmCA.getValue());
 		
 		// alarm from module
 		BooleanDataPoint alarmDP = (BooleanDataPoint) getModule().getDataPoint(DatapointType.alarm.getShortName());
@@ -81,7 +81,7 @@ public class SmokeSensorModuleTest extends AbstractModuleTest {
 	
 		// try to set value
 		SmokeSensorFlexContainer toBeUpdated = new SmokeSensorFlexContainer();
-		alarmCA.setCustomAttributeValue("true");
+		alarmCA.setValue("true");
 		toBeUpdated.getCustomAttributes().add(alarmCA);
 		response = CSEUtil.updateFlexContainerEntity(getCseService(), moduleUrl, toBeUpdated);
 		if (ResponseStatusCode.UPDATED.equals(response.getResponseStatusCode())) {
@@ -104,7 +104,7 @@ public class SmokeSensorModuleTest extends AbstractModuleTest {
 		if (detectedTimeCA != null) {
 			// detectedTime is optional
 			
-			Integer detectedTime = new Integer(detectedTimeCA.getCustomAttributeValue());
+			Integer detectedTime = new Integer(detectedTimeCA.getValue());
 			
 			// get detectedTime from module
 			IntegerDataPoint detectedTimeDP = (IntegerDataPoint) getModule().getDataPoint(DatapointType.detectedTime.getShortName());

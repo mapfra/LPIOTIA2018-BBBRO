@@ -17,12 +17,14 @@ public interface Constants {
 	String RESOURCE_TYPE = "ResourceType/Application";
 	String POA = "HomeMonitoringPOA";
 	
-	String WEBAPPS = APPNAME + "/webapps/";
+	String WEBAPPS = "/" + APPNAME + "/webapps/";
 	String IMAGES = WEBAPPS + "images/";
 
 	String NAME = "name";
 	String CREDENTIALS = "credentials";
 	String PASSWORD = "password";
+	String BEARER = "bearer";
+	String CLIENT_ID = "clientId";
 	String AUTHORIZATION = "Authorization";
 	String AUTHENTICATE = "WWW-Authenticate";
 	String REQUESTED = "X-Requested-With";

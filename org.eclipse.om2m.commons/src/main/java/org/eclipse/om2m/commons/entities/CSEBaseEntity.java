@@ -148,7 +148,7 @@ public class CSEBaseEntity extends ResourceEntity {
 	
 	
 	/** List of FlexContainerEntites */
-	@OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.ALL})
+	@OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.ALL}, mappedBy="parentCSEB")
 	@JoinTable(
 			name=DBEntities.CSEB_FCNT_JOIN,
 			joinColumns={@JoinColumn(name=DBEntities.CSEB_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)},

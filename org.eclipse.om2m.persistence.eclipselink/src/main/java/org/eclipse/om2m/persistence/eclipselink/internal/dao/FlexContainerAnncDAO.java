@@ -22,20 +22,17 @@ public class FlexContainerAnncDAO extends AbstractDAO<FlexContainerAnncEntity> {
 		// de-associate labels
 		List<LabelEntity> labels = resource.getLabelsEntities();
 		for (LabelEntity label : labels) {
-			label.getLinkedFcnt().remove(resource);
+			label.getLinkedFcntA().remove(resource);
 		}
 		
 		// de-associate parent
 		if (resource.getParentAeAnnc() != null) {
 			resource.getParentAeAnnc().getFlexContainerAnncs().remove(resource);
 		}
-		
 		if (resource.getParentFlexContainerAnnc() != null) {
 			resource.getParentFlexContainerAnnc().getChildFlexContainerAnncs().remove(resource);
 		}
-
 		transaction.getEm().remove(resource);
-
 	}
 
 }

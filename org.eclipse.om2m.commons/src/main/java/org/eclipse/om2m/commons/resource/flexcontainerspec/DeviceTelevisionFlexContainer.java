@@ -1,6 +1,6 @@
 /*
 ********************************************************************************
- * Copyright (c) 2014, 2017 Orange.
+ * Copyright (c) 2014, 2018 Orange.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,9 +9,9 @@
 
 Device : DeviceTelevision
 
-A stelevision (TV) is a home appliance used to show audio and visual content such as broadcasting programs and network streaming. This TV information model provides capabilities to control and monitor TV specific resources.
+A television (TV) is a home appliance used to show audio and visual content such as broadcasting programs and network streaming. This TV information model provides capabilities to control and monitor TV specific resources.
 
-Created: 2018-06-11 12:14:18
+Created: 2018-06-29 17:19:55
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -21,9 +21,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
-import org.eclipse.om2m.commons.resource.AbstractFlexContainerAnnc;
 
+import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
 
 @XmlRootElement(name = DeviceTelevisionFlexContainer.SHORT_NAME, namespace = "http://www.onem2m.org/xml/protocols/homedomain")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -39,11 +38,13 @@ public class DeviceTelevisionFlexContainer extends AbstractFlexContainer {
 		setShortName(SHORT_NAME);
 	}
 	
-	public void finalizeSerialization() {
+    public void finalizeSerialization() {
 		getBinarySwitch();
 		getAudioVolume();
 		getTelevisionChannel();
-		getAudioVideoInput();
+		getPlayerControl();
+		getMediaInput();
+		getMediaOutput();
 	}
 	
 	public void finalizeDeserialization() {
@@ -56,15 +57,20 @@ public class DeviceTelevisionFlexContainer extends AbstractFlexContainer {
 		if (this.televisionChannel != null) {
 			setTelevisionChannel(this.televisionChannel);
 		}
-		if (this.audioVideoInput != null) {
-			setAudioVideoInput(this.audioVideoInput);
+		if (this.playerControl != null) {
+			setPlayerControl(this.playerControl);
+		}
+		if (this.mediaInput != null) {
+			setMediaInput(this.mediaInput);
+		}
+		if (this.mediaOutput != null) {
+			setMediaOutput(this.mediaOutput);
 		}
 	}
-	
-	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+
+	@XmlElement(name=BinarySwitchFlexContainer.SHORT_NAME, required=true, type=BinarySwitchFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BinarySwitchFlexContainer binarySwitch;
-	
-	
+		
 	public void setBinarySwitch(BinarySwitchFlexContainer binarySwitch) {
 		this.binarySwitch = binarySwitch;
 		getFlexContainerOrContainerOrSubscription().add(binarySwitch);
@@ -75,10 +81,9 @@ public class DeviceTelevisionFlexContainer extends AbstractFlexContainer {
 		return binarySwitch;
 	}
 	
-	@XmlElement(name="audVe", required=true, type=AudioVolumeFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	@XmlElement(name=AudioVolumeFlexContainer.SHORT_NAME, required=true, type=AudioVolumeFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private AudioVolumeFlexContainer audioVolume;
-	
-	
+		
 	public void setAudioVolume(AudioVolumeFlexContainer audioVolume) {
 		this.audioVolume = audioVolume;
 		getFlexContainerOrContainerOrSubscription().add(audioVolume);
@@ -89,10 +94,9 @@ public class DeviceTelevisionFlexContainer extends AbstractFlexContainer {
 		return audioVolume;
 	}
 	
-	@XmlElement(name="telCl", required=true, type=TelevisionChannelFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	@XmlElement(name=TelevisionChannelFlexContainer.SHORT_NAME, required=true, type=TelevisionChannelFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private TelevisionChannelFlexContainer televisionChannel;
-	
-	
+		
 	public void setTelevisionChannel(TelevisionChannelFlexContainer televisionChannel) {
 		this.televisionChannel = televisionChannel;
 		getFlexContainerOrContainerOrSubscription().add(televisionChannel);
@@ -103,18 +107,43 @@ public class DeviceTelevisionFlexContainer extends AbstractFlexContainer {
 		return televisionChannel;
 	}
 	
-	@XmlElement(name="auVIt", required=true, type=AudioVideoInputFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
-	private AudioVideoInputFlexContainer audioVideoInput;
-	
-	
-	public void setAudioVideoInput(AudioVideoInputFlexContainer audioVideoInput) {
-		this.audioVideoInput = audioVideoInput;
-		getFlexContainerOrContainerOrSubscription().add(audioVideoInput);
+	@XmlElement(name=PlayerControlFlexContainer.SHORT_NAME, required=true, type=PlayerControlFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	private PlayerControlFlexContainer playerControl;
+		
+	public void setPlayerControl(PlayerControlFlexContainer playerControl) {
+		this.playerControl = playerControl;
+		getFlexContainerOrContainerOrSubscription().add(playerControl);
 	}
 	
-	public AudioVideoInputFlexContainer getAudioVideoInput() {
-		this.audioVideoInput = (AudioVideoInputFlexContainer) getResourceByName(AudioVideoInputFlexContainer.SHORT_NAME);
-		return audioVideoInput;
+	public PlayerControlFlexContainer getPlayerControl() {
+		this.playerControl = (PlayerControlFlexContainer) getResourceByName(PlayerControlFlexContainer.SHORT_NAME);
+		return playerControl;
+	}
+	
+	@XmlElement(name=MediaSelectFlexContainer.SHORT_NAME, required=true, type=MediaSelectFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	private MediaSelectFlexContainer mediaInput;
+		
+	public void setMediaInput(MediaSelectFlexContainer mediaInput) {
+		this.mediaInput = mediaInput;
+		getFlexContainerOrContainerOrSubscription().add(mediaInput);
+	}
+	
+	public MediaSelectFlexContainer getMediaInput() {
+		this.mediaInput = (MediaSelectFlexContainer) getResourceByName(MediaSelectFlexContainer.SHORT_NAME);
+		return mediaInput;
+	}
+	
+	@XmlElement(name=MediaSelectFlexContainer.SHORT_NAME, required=true, type=MediaSelectFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	private MediaSelectFlexContainer mediaOutput;
+		
+	public void setMediaOutput(MediaSelectFlexContainer mediaOutput) {
+		this.mediaOutput = mediaOutput;
+		getFlexContainerOrContainerOrSubscription().add(mediaOutput);
+	}
+	
+	public MediaSelectFlexContainer getMediaOutput() {
+		this.mediaOutput = (MediaSelectFlexContainer) getResourceByName(MediaSelectFlexContainer.SHORT_NAME);
+		return mediaOutput;
 	}
 	
 }

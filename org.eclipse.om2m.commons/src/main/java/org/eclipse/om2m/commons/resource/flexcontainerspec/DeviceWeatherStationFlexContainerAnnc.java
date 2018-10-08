@@ -1,6 +1,6 @@
 /*
 ********************************************************************************
- * Copyright (c) 2014, 2017 Orange.
+ * Copyright (c) 2014, 2018 Orange.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,9 +9,9 @@
 
 Device : DeviceWeatherStationAnnc
 
-A WeatherStation is a device that provides weather information.
 
-Created: 2018-06-11 12:14:18
+
+Created: 2018-07-04 10:25:10
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -21,9 +21,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+
 import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
 import org.eclipse.om2m.commons.resource.AbstractFlexContainerAnnc;
-
 
 @XmlRootElement(name = DeviceWeatherStationFlexContainerAnnc.SHORT_NAME, namespace = "http://www.onem2m.org/xml/protocols/homedomain")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -37,197 +37,182 @@ public class DeviceWeatherStationFlexContainerAnnc extends AbstractFlexContainer
 		setContainerDefinition("org.onem2m.home.device." + DeviceWeatherStationFlexContainer.LONG_NAME);
 		setLongName(LONG_NAME);
 		setShortName(SHORT_NAME);
-	}
+    }
 	
 	public void finalizeSerialization() {
-		getTemperature();
-		getTemperatureAnnc();
-		getRelativeHumidity();
-		getRelativeHumidityAnnc();
-		getAtmosphericPressureSensor();
-		getAtmosphericPressureSensorAnnc();
-		getNoise();
-		getNoiseAnnc();
-		getExtendedCarbonDioxideSensor();
-		getExtendedCarbonDioxideSensorAnnc();
-	}
+		getAirQualitySensor();
+		getAirQualitySensorAnnc();
+		getAcousticSensor();
+		getAcousticSensorAnnc();
+		getAnemometer();
+		getAnemometerAnnc();
+		getBarometer();
+		getBarometerAnnc();
+		getUvSensor();
+		getUvSensorAnnc();
+    }
 	
 	public void finalizeDeserialization() {
-		if (this.temperature != null) {
-			setTemperature(this.temperature);
+		if (this.airQualitySensor != null) {
+			setAirQualitySensor(this.airQualitySensor);
 		}
-		if (this.temperatureAnnc != null) {
-			setTemperatureAnnc(this.temperatureAnnc);
-			}
-		
-		if (this.relativeHumidity != null) {
-			setRelativeHumidity(this.relativeHumidity);
+		if (this.airQualitySensorAnnc != null) {
+			setAirQualitySensorAnnc(this.airQualitySensorAnnc);
 		}
-		if (this.relativeHumidityAnnc != null) {
-			setRelativeHumidityAnnc(this.relativeHumidityAnnc);
-			}
-		
-		if (this.atmosphericPressureSensor != null) {
-			setAtmosphericPressureSensor(this.atmosphericPressureSensor);
+		if (this.acousticSensor != null) {
+			setAcousticSensor(this.acousticSensor);
 		}
-		if (this.atmosphericPressureSensorAnnc != null) {
-			setAtmosphericPressureSensorAnnc(this.atmosphericPressureSensorAnnc);
-			}
-		
-		if (this.noise != null) {
-			setNoise(this.noise);
+		if (this.acousticSensorAnnc != null) {
+			setAcousticSensorAnnc(this.acousticSensorAnnc);
 		}
-		if (this.noiseAnnc != null) {
-			setNoiseAnnc(this.noiseAnnc);
-			}
-		
-		if (this.extendedCarbonDioxideSensor != null) {
-			setExtendedCarbonDioxideSensor(this.extendedCarbonDioxideSensor);
+		if (this.anemometer != null) {
+			setAnemometer(this.anemometer);
 		}
-		if (this.extendedCarbonDioxideSensorAnnc != null) {
-			setExtendedCarbonDioxideSensorAnnc(this.extendedCarbonDioxideSensorAnnc);
-			}
+		if (this.anemometerAnnc != null) {
+			setAnemometerAnnc(this.anemometerAnnc);
+		}
+		if (this.barometer != null) {
+			setBarometer(this.barometer);
+		}
+		if (this.barometerAnnc != null) {
+			setBarometerAnnc(this.barometerAnnc);
+		}
+		if (this.uvSensor != null) {
+			setUvSensor(this.uvSensor);
+		}
+		if (this.uvSensorAnnc != null) {
+			setUvSensorAnnc(this.uvSensorAnnc);
+		}
+	}
+
+	@XmlElement(name=AirQualitySensorFlexContainer.SHORT_NAME, required=true, type=AirQualitySensorFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	private AirQualitySensorFlexContainer airQualitySensor;
 		
+	public void setAirQualitySensor(AirQualitySensorFlexContainer airQualitySensor) {
+		this.airQualitySensor = airQualitySensor;
+		getFlexContainerOrContainerOrSubscription().add(airQualitySensor);
 	}
 	
-	@XmlElement(name="tempe", required=true, type=TemperatureFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
-	private TemperatureFlexContainer temperature;
-	
-	
-	public void setTemperature(TemperatureFlexContainer temperature) {
-		this.temperature = temperature;
-		getFlexContainerOrContainerOrSubscription().add(temperature);
+	public AirQualitySensorFlexContainer getAirQualitySensor() {
+		this.airQualitySensor = (AirQualitySensorFlexContainer) getResourceByName(AirQualitySensorFlexContainer.SHORT_NAME);
+		return airQualitySensor;
 	}
 	
-	public TemperatureFlexContainer getTemperature() {
-		this.temperature = (TemperatureFlexContainer) getResourceByName(TemperatureFlexContainer.SHORT_NAME);
-		return temperature;
+	@XmlElement(name=AirQualitySensorFlexContainerAnnc.SHORT_NAME, required=true, type=AirQualitySensorFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	private AirQualitySensorFlexContainerAnnc airQualitySensorAnnc;
+		
+	public void setAirQualitySensorAnnc(AirQualitySensorFlexContainerAnnc airQualitySensorAnnc) {
+		this.airQualitySensorAnnc = airQualitySensorAnnc;
+		getFlexContainerOrContainerOrSubscription().add(airQualitySensorAnnc);
 	}
 	
-	@XmlElement(name="tempeAnnc", required=true, type=TemperatureFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
-	private TemperatureFlexContainerAnnc temperatureAnnc;
-	
-	
-	public void setTemperatureAnnc(TemperatureFlexContainerAnnc temperatureAnnc) {
-		this.temperatureAnnc = temperatureAnnc;
-		getFlexContainerOrContainerOrSubscription().add(temperatureAnnc);
+	public AirQualitySensorFlexContainerAnnc getAirQualitySensorAnnc() {
+		this.airQualitySensorAnnc = (AirQualitySensorFlexContainerAnnc) getResourceByName(AirQualitySensorFlexContainerAnnc.SHORT_NAME);
+		return airQualitySensorAnnc;
 	}
 	
-	public TemperatureFlexContainerAnnc getTemperatureAnnc() {
-		this.temperatureAnnc = (TemperatureFlexContainerAnnc) getResourceByName(TemperatureFlexContainerAnnc.SHORT_NAME);
-		return temperatureAnnc;
+	@XmlElement(name=AcousticSensorFlexContainer.SHORT_NAME, required=true, type=AcousticSensorFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	private AcousticSensorFlexContainer acousticSensor;
+		
+	public void setAcousticSensor(AcousticSensorFlexContainer acousticSensor) {
+		this.acousticSensor = acousticSensor;
+		getFlexContainerOrContainerOrSubscription().add(acousticSensor);
 	}
 	
-	@XmlElement(name="relHy", required=true, type=RelativeHumidityFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
-	private RelativeHumidityFlexContainer relativeHumidity;
-	
-	
-	public void setRelativeHumidity(RelativeHumidityFlexContainer relativeHumidity) {
-		this.relativeHumidity = relativeHumidity;
-		getFlexContainerOrContainerOrSubscription().add(relativeHumidity);
+	public AcousticSensorFlexContainer getAcousticSensor() {
+		this.acousticSensor = (AcousticSensorFlexContainer) getResourceByName(AcousticSensorFlexContainer.SHORT_NAME);
+		return acousticSensor;
 	}
 	
-	public RelativeHumidityFlexContainer getRelativeHumidity() {
-		this.relativeHumidity = (RelativeHumidityFlexContainer) getResourceByName(RelativeHumidityFlexContainer.SHORT_NAME);
-		return relativeHumidity;
+	@XmlElement(name=AcousticSensorFlexContainerAnnc.SHORT_NAME, required=true, type=AcousticSensorFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	private AcousticSensorFlexContainerAnnc acousticSensorAnnc;
+		
+	public void setAcousticSensorAnnc(AcousticSensorFlexContainerAnnc acousticSensorAnnc) {
+		this.acousticSensorAnnc = acousticSensorAnnc;
+		getFlexContainerOrContainerOrSubscription().add(acousticSensorAnnc);
 	}
 	
-	@XmlElement(name="relHyAnnc", required=true, type=RelativeHumidityFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
-	private RelativeHumidityFlexContainerAnnc relativeHumidityAnnc;
-	
-	
-	public void setRelativeHumidityAnnc(RelativeHumidityFlexContainerAnnc relativeHumidityAnnc) {
-		this.relativeHumidityAnnc = relativeHumidityAnnc;
-		getFlexContainerOrContainerOrSubscription().add(relativeHumidityAnnc);
+	public AcousticSensorFlexContainerAnnc getAcousticSensorAnnc() {
+		this.acousticSensorAnnc = (AcousticSensorFlexContainerAnnc) getResourceByName(AcousticSensorFlexContainerAnnc.SHORT_NAME);
+		return acousticSensorAnnc;
 	}
 	
-	public RelativeHumidityFlexContainerAnnc getRelativeHumidityAnnc() {
-		this.relativeHumidityAnnc = (RelativeHumidityFlexContainerAnnc) getResourceByName(RelativeHumidityFlexContainerAnnc.SHORT_NAME);
-		return relativeHumidityAnnc;
+	@XmlElement(name=AnemometerFlexContainer.SHORT_NAME, required=true, type=AnemometerFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	private AnemometerFlexContainer anemometer;
+		
+	public void setAnemometer(AnemometerFlexContainer anemometer) {
+		this.anemometer = anemometer;
+		getFlexContainerOrContainerOrSubscription().add(anemometer);
 	}
 	
-	@XmlElement(name="atPSr", required=true, type=AtmosphericPressureSensorFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
-	private AtmosphericPressureSensorFlexContainer atmosphericPressureSensor;
-	
-	
-	public void setAtmosphericPressureSensor(AtmosphericPressureSensorFlexContainer atmosphericPressureSensor) {
-		this.atmosphericPressureSensor = atmosphericPressureSensor;
-		getFlexContainerOrContainerOrSubscription().add(atmosphericPressureSensor);
+	public AnemometerFlexContainer getAnemometer() {
+		this.anemometer = (AnemometerFlexContainer) getResourceByName(AnemometerFlexContainer.SHORT_NAME);
+		return anemometer;
 	}
 	
-	public AtmosphericPressureSensorFlexContainer getAtmosphericPressureSensor() {
-		this.atmosphericPressureSensor = (AtmosphericPressureSensorFlexContainer) getResourceByName(AtmosphericPressureSensorFlexContainer.SHORT_NAME);
-		return atmosphericPressureSensor;
+	@XmlElement(name=AnemometerFlexContainerAnnc.SHORT_NAME, required=true, type=AnemometerFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	private AnemometerFlexContainerAnnc anemometerAnnc;
+		
+	public void setAnemometerAnnc(AnemometerFlexContainerAnnc anemometerAnnc) {
+		this.anemometerAnnc = anemometerAnnc;
+		getFlexContainerOrContainerOrSubscription().add(anemometerAnnc);
 	}
 	
-	@XmlElement(name="atPSrAnnc", required=true, type=AtmosphericPressureSensorFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
-	private AtmosphericPressureSensorFlexContainerAnnc atmosphericPressureSensorAnnc;
-	
-	
-	public void setAtmosphericPressureSensorAnnc(AtmosphericPressureSensorFlexContainerAnnc atmosphericPressureSensorAnnc) {
-		this.atmosphericPressureSensorAnnc = atmosphericPressureSensorAnnc;
-		getFlexContainerOrContainerOrSubscription().add(atmosphericPressureSensorAnnc);
+	public AnemometerFlexContainerAnnc getAnemometerAnnc() {
+		this.anemometerAnnc = (AnemometerFlexContainerAnnc) getResourceByName(AnemometerFlexContainerAnnc.SHORT_NAME);
+		return anemometerAnnc;
 	}
 	
-	public AtmosphericPressureSensorFlexContainerAnnc getAtmosphericPressureSensorAnnc() {
-		this.atmosphericPressureSensorAnnc = (AtmosphericPressureSensorFlexContainerAnnc) getResourceByName(AtmosphericPressureSensorFlexContainerAnnc.SHORT_NAME);
-		return atmosphericPressureSensorAnnc;
+	@XmlElement(name=BarometerFlexContainer.SHORT_NAME, required=true, type=BarometerFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	private BarometerFlexContainer barometer;
+		
+	public void setBarometer(BarometerFlexContainer barometer) {
+		this.barometer = barometer;
+		getFlexContainerOrContainerOrSubscription().add(barometer);
 	}
 	
-	@XmlElement(name="noise", required=true, type=NoiseFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
-	private NoiseFlexContainer noise;
-	
-	
-	public void setNoise(NoiseFlexContainer noise) {
-		this.noise = noise;
-		getFlexContainerOrContainerOrSubscription().add(noise);
+	public BarometerFlexContainer getBarometer() {
+		this.barometer = (BarometerFlexContainer) getResourceByName(BarometerFlexContainer.SHORT_NAME);
+		return barometer;
 	}
 	
-	public NoiseFlexContainer getNoise() {
-		this.noise = (NoiseFlexContainer) getResourceByName(NoiseFlexContainer.SHORT_NAME);
-		return noise;
+	@XmlElement(name=BarometerFlexContainerAnnc.SHORT_NAME, required=true, type=BarometerFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	private BarometerFlexContainerAnnc barometerAnnc;
+		
+	public void setBarometerAnnc(BarometerFlexContainerAnnc barometerAnnc) {
+		this.barometerAnnc = barometerAnnc;
+		getFlexContainerOrContainerOrSubscription().add(barometerAnnc);
 	}
 	
-	@XmlElement(name="noiseAnnc", required=true, type=NoiseFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
-	private NoiseFlexContainerAnnc noiseAnnc;
-	
-	
-	public void setNoiseAnnc(NoiseFlexContainerAnnc noiseAnnc) {
-		this.noiseAnnc = noiseAnnc;
-		getFlexContainerOrContainerOrSubscription().add(noiseAnnc);
+	public BarometerFlexContainerAnnc getBarometerAnnc() {
+		this.barometerAnnc = (BarometerFlexContainerAnnc) getResourceByName(BarometerFlexContainerAnnc.SHORT_NAME);
+		return barometerAnnc;
 	}
 	
-	public NoiseFlexContainerAnnc getNoiseAnnc() {
-		this.noiseAnnc = (NoiseFlexContainerAnnc) getResourceByName(NoiseFlexContainerAnnc.SHORT_NAME);
-		return noiseAnnc;
+	@XmlElement(name=UvSensorFlexContainer.SHORT_NAME, required=true, type=UvSensorFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	private UvSensorFlexContainer uvSensor;
+		
+	public void setUvSensor(UvSensorFlexContainer uvSensor) {
+		this.uvSensor = uvSensor;
+		getFlexContainerOrContainerOrSubscription().add(uvSensor);
 	}
 	
-	@XmlElement(name="eCDSr", required=true, type=ExtendedCarbonDioxideSensorFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
-	private ExtendedCarbonDioxideSensorFlexContainer extendedCarbonDioxideSensor;
-	
-	
-	public void setExtendedCarbonDioxideSensor(ExtendedCarbonDioxideSensorFlexContainer extendedCarbonDioxideSensor) {
-		this.extendedCarbonDioxideSensor = extendedCarbonDioxideSensor;
-		getFlexContainerOrContainerOrSubscription().add(extendedCarbonDioxideSensor);
+	public UvSensorFlexContainer getUvSensor() {
+		this.uvSensor = (UvSensorFlexContainer) getResourceByName(UvSensorFlexContainer.SHORT_NAME);
+		return uvSensor;
 	}
 	
-	public ExtendedCarbonDioxideSensorFlexContainer getExtendedCarbonDioxideSensor() {
-		this.extendedCarbonDioxideSensor = (ExtendedCarbonDioxideSensorFlexContainer) getResourceByName(ExtendedCarbonDioxideSensorFlexContainer.SHORT_NAME);
-		return extendedCarbonDioxideSensor;
+	@XmlElement(name=UvSensorFlexContainerAnnc.SHORT_NAME, required=true, type=UvSensorFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	private UvSensorFlexContainerAnnc uvSensorAnnc;
+		
+	public void setUvSensorAnnc(UvSensorFlexContainerAnnc uvSensorAnnc) {
+		this.uvSensorAnnc = uvSensorAnnc;
+		getFlexContainerOrContainerOrSubscription().add(uvSensorAnnc);
 	}
 	
-	@XmlElement(name="eCDSrAnnc", required=true, type=ExtendedCarbonDioxideSensorFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
-	private ExtendedCarbonDioxideSensorFlexContainerAnnc extendedCarbonDioxideSensorAnnc;
-	
-	
-	public void setExtendedCarbonDioxideSensorAnnc(ExtendedCarbonDioxideSensorFlexContainerAnnc extendedCarbonDioxideSensorAnnc) {
-		this.extendedCarbonDioxideSensorAnnc = extendedCarbonDioxideSensorAnnc;
-		getFlexContainerOrContainerOrSubscription().add(extendedCarbonDioxideSensorAnnc);
-	}
-	
-	public ExtendedCarbonDioxideSensorFlexContainerAnnc getExtendedCarbonDioxideSensorAnnc() {
-		this.extendedCarbonDioxideSensorAnnc = (ExtendedCarbonDioxideSensorFlexContainerAnnc) getResourceByName(ExtendedCarbonDioxideSensorFlexContainerAnnc.SHORT_NAME);
-		return extendedCarbonDioxideSensorAnnc;
+	public UvSensorFlexContainerAnnc getUvSensorAnnc() {
+		this.uvSensorAnnc = (UvSensorFlexContainerAnnc) getResourceByName(UvSensorFlexContainerAnnc.SHORT_NAME);
+		return uvSensorAnnc;
 	}
 	
 }

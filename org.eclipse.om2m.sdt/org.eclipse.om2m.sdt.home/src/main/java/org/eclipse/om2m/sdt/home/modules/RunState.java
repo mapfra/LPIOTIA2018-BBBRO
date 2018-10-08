@@ -18,35 +18,36 @@ import org.eclipse.om2m.sdt.datapoints.FloatDataPoint;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.types.DatapointType;
-import org.eclipse.om2m.sdt.home.types.JobStates;
+import org.eclipse.om2m.sdt.home.types.JobState;
 import org.eclipse.om2m.sdt.home.types.MachineState;
 import org.eclipse.om2m.sdt.home.types.ModuleType;
 
 public class RunState extends Module {
 	
-	private JobStates currentJobState;
-	private ArrayDataPoint<Integer> jobStates;
+	private JobState currentJobState;
+	private ArrayDataPoint<JobState.Values> jobStates;
 	private MachineState currentMachineState;
-	private ArrayDataPoint<Integer> machineStates;
+	private ArrayDataPoint<MachineState.Values> machineStates;
 	
 	private FloatDataPoint progressPercentage;
 
 	public RunState(final String name, final Domain domain,
-			JobStates jobState, ArrayDataPoint<Integer> jobStates,
-			MachineState machineState, ArrayDataPoint<Integer> machineStates) {
-		super(name, domain, ModuleType.runMode);
+			JobState jobState, ArrayDataPoint<JobState.Values> jobStates,
+			MachineState machineState, ArrayDataPoint<MachineState.Values> machineStates) {
+		super(name, domain, ModuleType.runState);
 		
 		if ((jobState == null) ||
-				! jobState.getShortDefinitionType().equals(DatapointType.currentJobState.getShortName())) {
+				! jobState.getShortName().equals(DatapointType.currentJobState.getShortName())) {
 			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong currentJobState datapoint: " + jobState);
 		}
 		this.currentJobState = jobState;
+		this.currentJobState.setWritable(false);
 		this.currentJobState.setDoc("Currently active job state. The value of this property shall be idle unless the value of currentMachineState property is active");
 		addDataPoint(this.currentJobState);
 		
 		if ((jobStates == null) ||
-				! jobStates.getShortDefinitionType().equals(DatapointType.jobStates.getShortName())) {
+				! jobStates.getShortName().equals(DatapointType.jobStates.getShortName())) {
 			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong jobStates datapoint: " + jobStates);
 		}
@@ -56,7 +57,7 @@ public class RunState extends Module {
 		addDataPoint(this.jobStates);
 		
 		if ((machineState == null) ||
-				! machineState.getShortDefinitionType().equals(DatapointType.currentMachineState.getShortName())) {
+				! machineState.getShortName().equals(DatapointType.currentMachineState.getShortName())) {
 			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong currentMachineState datapoint: " + machineState);
 		}
@@ -65,7 +66,7 @@ public class RunState extends Module {
 		addDataPoint(this.currentMachineState);
 		
 		if ((machineStates == null) ||
-				! machineStates.getShortDefinitionType().equals(DatapointType.machineStates.getShortName())) {
+				! machineStates.getShortName().equals(DatapointType.machineStates.getShortName())) {
 			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong machineStates datapoint: " + machineStates);
 		}
@@ -78,42 +79,40 @@ public class RunState extends Module {
 	@SuppressWarnings("unchecked")
 	public RunState(final String name, final Domain domain, Map<String, DataPoint> dps) {
 		this(name, domain,
-			(JobStates) dps.get(DatapointType.currentJobState.getShortName()),
-			(ArrayDataPoint<Integer>) dps.get(DatapointType.jobStates.getShortName()),
+			(JobState) dps.get(DatapointType.currentJobState.getShortName()),
+			(ArrayDataPoint<JobState.Values>) dps.get(DatapointType.jobStates.getShortName()),
 			(MachineState) dps.get(DatapointType.currentMachineState.getShortName()), 
-			(ArrayDataPoint<Integer>) dps.get(DatapointType.machineStates.getShortName()));
+			(ArrayDataPoint<MachineState.Values>) dps.get(DatapointType.machineStates.getShortName()));
 		FloatDataPoint progressPercentage = (FloatDataPoint) dps.get(DatapointType.progressPercentage.getShortName());
 		if (progressPercentage != null)
 			setProgressPercentage(progressPercentage);
 	}
 
-	public int getJobState() throws DataPointException, AccessException {
+	public JobState.Values getJobState() throws DataPointException, AccessException {
 		return currentJobState.getValue();
 	}
 
-	public void setJobState(int v) throws DataPointException, AccessException {
-		if (! getJobStates().contains(v)) {
-			throw new DataPointException("value " + v + " is not permitted");
-		}
+	public void setJobState(JobState.Values v) throws DataPointException, AccessException {
 		currentJobState.setValue(v);
 	}
 
-	public List<Integer> getJobStates() throws DataPointException, AccessException {
+	public List<JobState.Values> getJobStates() throws DataPointException, AccessException {
 		return jobStates.getValue();
 	}
 
-	public int getMachineState() throws DataPointException, AccessException {
+	public void setJobStates(List<JobState.Values> states) throws DataPointException, AccessException {
+		jobStates.setValue(states);
+	}
+
+	public MachineState.Values getMachineState() throws DataPointException, AccessException {
 		return currentMachineState.getValue();
 	}
 
-	public void setMachineState(int v) throws DataPointException, AccessException {
-		if (! getMachineStates().contains(v)) {
-			throw new DataPointException("value " + v + " is not permitted");
-		}
+	public void setMachineState(MachineState.Values v) throws DataPointException, AccessException {
 		currentMachineState.setValue(v);
 	}
 
-	public List<Integer> getMachineStates() throws DataPointException, AccessException {
+	public List<MachineState.Values> getMachineStates() throws DataPointException, AccessException {
 		return machineStates.getValue();
 	}
 

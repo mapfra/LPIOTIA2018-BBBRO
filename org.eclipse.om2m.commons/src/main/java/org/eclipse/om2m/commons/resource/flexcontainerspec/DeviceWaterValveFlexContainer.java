@@ -1,6 +1,6 @@
 /*
 ********************************************************************************
- * Copyright (c) 2014, 2017 Orange.
+ * Copyright (c) 2014, 2018 Orange.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,9 +9,9 @@
 
 Device : DeviceWaterValve
 
-A WaterValve is a device that controls liquid flux.
+A water valve is a device that is used to turn the water supply ON or OFF remotely.
 
-Created: 2018-06-11 12:14:18
+Created: 2018-06-29 17:19:55
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -21,9 +21,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
-import org.eclipse.om2m.commons.resource.AbstractFlexContainerAnnc;
 
+import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
 
 @XmlRootElement(name = DeviceWaterValveFlexContainer.SHORT_NAME, namespace = "http://www.onem2m.org/xml/protocols/homedomain")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -39,28 +38,27 @@ public class DeviceWaterValveFlexContainer extends AbstractFlexContainer {
 		setShortName(SHORT_NAME);
 	}
 	
-	public void finalizeSerialization() {
-		getWaterLevel();
+    public void finalizeSerialization() {
+		getOpenLevel();
 	}
 	
 	public void finalizeDeserialization() {
-		if (this.waterLevel != null) {
-			setWaterLevel(this.waterLevel);
+		if (this.openLevel != null) {
+			setOpenLevel(this.openLevel);
 		}
 	}
-	
-	@XmlElement(name="watLl", required=true, type=LiquidLevelFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
-	private LiquidLevelFlexContainer waterLevel;
-	
-	
-	public void setWaterLevel(LiquidLevelFlexContainer waterLevel) {
-		this.waterLevel = waterLevel;
-		getFlexContainerOrContainerOrSubscription().add(waterLevel);
+
+	@XmlElement(name=OpenLevelFlexContainer.SHORT_NAME, required=true, type=OpenLevelFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	private OpenLevelFlexContainer openLevel;
+		
+	public void setOpenLevel(OpenLevelFlexContainer openLevel) {
+		this.openLevel = openLevel;
+		getFlexContainerOrContainerOrSubscription().add(openLevel);
 	}
 	
-	public LiquidLevelFlexContainer getWaterLevel() {
-		this.waterLevel = (LiquidLevelFlexContainer) getResourceByName(LiquidLevelFlexContainer.SHORT_NAME);
-		return waterLevel;
+	public OpenLevelFlexContainer getOpenLevel() {
+		this.openLevel = (OpenLevelFlexContainer) getResourceByName(OpenLevelFlexContainer.SHORT_NAME);
+		return openLevel;
 	}
 	
 }

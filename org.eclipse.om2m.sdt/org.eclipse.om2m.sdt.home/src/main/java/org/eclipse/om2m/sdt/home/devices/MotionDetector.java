@@ -9,10 +9,11 @@ package org.eclipse.om2m.sdt.home.devices;
 
 import org.eclipse.om2m.sdt.Domain;
 import org.eclipse.om2m.sdt.home.modules.MotionSensor;
+import org.eclipse.om2m.sdt.home.modules.SmokeSensor;
 import org.eclipse.om2m.sdt.home.types.DeviceType;
 
 public class MotionDetector extends GenericSensor {
-
+	
 	public MotionDetector(final String id, final String serial, final Domain domain) {
 		super(id, serial, DeviceType.deviceMotionDetector, domain);
 		setDeviceSubModelName("MOTION");

@@ -91,6 +91,8 @@ public class ResponsePrimitive implements Constants {
 	protected String resultExpirationTimestamp;
 	@XmlElement(name = ShortName.EVENT_CATEGORY)
 	protected String eventCategory;
+	@XmlElement(name= ShortName.TOKEN_REQ_INFO)
+	protected DynAuthTokenReqInfo tokenReqInfo;
 	@XmlTransient
 	protected String location;
 	@XmlTransient
@@ -300,6 +302,16 @@ public class ResponsePrimitive implements Constants {
 	 */
 	public void setLocation(String location) {
 		this.location = location;
+	}
+	
+	
+
+	public DynAuthTokenReqInfo getTokenReqInfo() {
+		return tokenReqInfo;
+	}
+
+	public void setTokenReqInfo(DynAuthTokenReqInfo tokenReqInfo) {
+		this.tokenReqInfo = tokenReqInfo;
 	}
 
 	/* (non-Javadoc)

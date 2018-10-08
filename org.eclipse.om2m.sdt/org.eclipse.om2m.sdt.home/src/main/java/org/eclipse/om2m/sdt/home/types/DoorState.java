@@ -7,32 +7,21 @@
  *******************************************************************************/
 package org.eclipse.om2m.sdt.home.types;
 
-import java.util.Arrays;
-import java.util.List;
-
-import org.eclipse.om2m.sdt.Identifiers;
-import org.eclipse.om2m.sdt.datapoints.ClonedEnum;
 import org.eclipse.om2m.sdt.datapoints.EnumDataPoint;
 
-public class DoorState extends ClonedEnum {
+public abstract class DoorState extends EnumDataPoint<DoorState.Values> {
 	
-	static public final int Closed = 1;
-	static public final int Open = 2;
-	static public final int Opening = 3;
-	static public final int Closing = 4;
-	static public final int Stopped = 5;
-	
-	static private List<Integer> values = Arrays.asList(
-			Closed, Open, Opening, Closing, Stopped
-	);
-
-	public DoorState(EnumDataPoint<Integer> dp) {
-		this(DatapointType.doorState, dp);
+	static public enum Values {
+		closed, open, opening, closing, stopped
 	}
 	
-	public DoorState(Identifiers name, EnumDataPoint<Integer> dp) {
-		super(name, HomeDataType.DoorState, dp);
-		setValidValues(values);
+	public DoorState() {
+		this(DatapointType.doorState);
+	}
+	
+	public DoorState(DatapointType dt) {
+		super(dt, HomeDataType.DoorState);
+		setValidValues(Values.values());
 	}
 
 }

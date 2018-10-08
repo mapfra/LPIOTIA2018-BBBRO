@@ -51,7 +51,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
-				<version>1.1</version>
+				<version>1.8</version>
 				<executions>
 					<execution>
 						<phase>package</phase>
@@ -67,6 +67,16 @@
 									tofile="${basedir}/target/products/in-cse/${osgi.os}/${osgi.ws}/${osgi.arch}/start.bat" />
 								<copy file="${basedir}/log4j.configuration"
 									tofile="${basedir}/target/products/in-cse/${osgi.os}/${osgi.ws}/${osgi.arch}/log4j.configuration" />
+									
+								<copy
+									todir="${basedir}/target/products/in-cse/${osgi.os}/${osgi.ws}/${osgi.arch}/configurations">
+									<fileset dir="${basedir}/configurations" includes="**/*" />
+								</copy>
+								<propertyfile
+									file="${basedir}/target/products/in-cse/${osgi.os}/${osgi.ws}/${osgi.arch}/configuration/config.ini">
+									<entry key="osgi.bundles" type="string" operation="+"
+										value=", reference:file:pax-confman-propsloader-0.2.2.jar@1:start" />
+								</propertyfile>
 							</tasks>
 						</configuration>
 					</execution>

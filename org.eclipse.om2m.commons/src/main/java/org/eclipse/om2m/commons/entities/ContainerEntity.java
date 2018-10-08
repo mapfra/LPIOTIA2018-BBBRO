@@ -110,7 +110,7 @@ public class ContainerEntity extends AnnounceableSubordinateEntity{
 	protected List<ContentInstanceEntity> childContentInstances;
 	
 	/** List of child FlexContainer entities */
-	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL, mappedBy="parentContainer")
 	@JoinTable(
 			name=DBEntities.CNT_FCNTCHILD_JOIN,
 			joinColumns={@JoinColumn(name=DBEntities.CNT_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)},

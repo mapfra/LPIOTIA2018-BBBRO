@@ -19,6 +19,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.om2m.commons.constants.Constants;
 import org.eclipse.om2m.sdt.home.monitoring.util.AeRegistration;
+import org.eclipse.om2m.sdt.home.monitoring.util.HttpSessionHelper;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -37,8 +38,11 @@ public class InCseContextServlet extends HttpServlet {
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String sessionId = req.getParameter(SessionManager.SESSION_ID_PARAMETER);
-		if (! SessionManager.getInstance().checkTokenExists(sessionId)) {
+		HttpSessionHelper sessionHelper = new HttpSessionHelper(req.getSession());
+		
+//		String sessionId = req.getParameter(SessionManager.SESSION_ID_PARAMETER);
+//		if (! SessionManager.getInstance().checkTokenExists(sessionId)) {
+		if (!sessionHelper.getAuthenticatedUser()) {
 			resp.sendError(HttpServletResponse.SC_FORBIDDEN);
 			return;
 		}
@@ -51,6 +55,8 @@ public class InCseContextServlet extends HttpServlet {
 			resp.getWriter().print("~/" + cseId + "/" + cseName);
 		} else if (GET_NOTIFICATIONS.equals(pathInfo)) {
 			// retrieve notifications
+			String sessionId = req.getSession().getId();
+			
 			List<JSONObject> notifications = AeRegistration.getInstance().getNotificationsAndClears(sessionId);
 			JSONArray globalJson = new JSONArray();
 			for (JSONObject notification : notifications) {
@@ -70,7 +76,7 @@ public class InCseContextServlet extends HttpServlet {
 			JSONParser parser = new JSONParser();
 			JSONObject jsonObject = (JSONObject) parser.parse(req.getReader());
 			String resourceId = (String) jsonObject.get(RESOURCE_ID);
-			String sessionId = (String) jsonObject.get(SessionManager.SESSION_ID_PARAMETER);
+			String sessionId = req.getSession().getId();
 			LOGGER.info("doPost(subscribeTo) " + resourceId);
 			if (AeRegistration.getInstance().createSubscription(resourceId, sessionId)) {
 				resp.setStatus(HttpServletResponse.SC_OK);

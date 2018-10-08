@@ -1,6 +1,6 @@
 /*
 ********************************************************************************
- * Copyright (c) 2014, 2017 Orange.
+ * Copyright (c) 2014, 2018 Orange.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,9 +9,9 @@
 
 Device : DeviceMotionDetectorAnnc
 
-A MotionDetector is a device that triggers alarm in case of motion detection.
 
-Created: 2018-06-11 12:14:18
+
+Created: 2018-07-04 10:25:10
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -21,9 +21,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+
 import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
 import org.eclipse.om2m.commons.resource.AbstractFlexContainerAnnc;
-
 
 @XmlRootElement(name = DeviceMotionDetectorFlexContainerAnnc.SHORT_NAME, namespace = "http://www.onem2m.org/xml/protocols/homedomain")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -37,12 +37,12 @@ public class DeviceMotionDetectorFlexContainerAnnc extends AbstractFlexContainer
 		setContainerDefinition("org.onem2m.home.device." + DeviceMotionDetectorFlexContainer.LONG_NAME);
 		setLongName(LONG_NAME);
 		setShortName(SHORT_NAME);
-	}
+    }
 	
 	public void finalizeSerialization() {
 		getMotionSensor();
 		getMotionSensorAnnc();
-	}
+    }
 	
 	public void finalizeDeserialization() {
 		if (this.motionSensor != null) {
@@ -50,14 +50,12 @@ public class DeviceMotionDetectorFlexContainerAnnc extends AbstractFlexContainer
 		}
 		if (this.motionSensorAnnc != null) {
 			setMotionSensorAnnc(this.motionSensorAnnc);
-			}
-		
+		}
 	}
-	
-	@XmlElement(name="motSr", required=true, type=MotionSensorFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+
+	@XmlElement(name=MotionSensorFlexContainer.SHORT_NAME, required=true, type=MotionSensorFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private MotionSensorFlexContainer motionSensor;
-	
-	
+		
 	public void setMotionSensor(MotionSensorFlexContainer motionSensor) {
 		this.motionSensor = motionSensor;
 		getFlexContainerOrContainerOrSubscription().add(motionSensor);
@@ -68,10 +66,9 @@ public class DeviceMotionDetectorFlexContainerAnnc extends AbstractFlexContainer
 		return motionSensor;
 	}
 	
-	@XmlElement(name="motSrAnnc", required=true, type=MotionSensorFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	@XmlElement(name=MotionSensorFlexContainerAnnc.SHORT_NAME, required=true, type=MotionSensorFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private MotionSensorFlexContainerAnnc motionSensorAnnc;
-	
-	
+		
 	public void setMotionSensorAnnc(MotionSensorFlexContainerAnnc motionSensorAnnc) {
 		this.motionSensorAnnc = motionSensorAnnc;
 		getFlexContainerOrContainerOrSubscription().add(motionSensorAnnc);

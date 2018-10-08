@@ -27,14 +27,17 @@ public class CustomAttributeEntity {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name=ShortName.RESOURCE_ID)
+	@Column(name = ShortName.RESOURCE_ID)
 	protected long resourceID;
 
-	@Column(name= ShortName.CUSTOM_ATTRIBUTE_NAME)
-	protected String customAttributeName;
+	@Column(name = ShortName.CUSTOM_ATTRIBUTE_NAME)
+	protected String name;
+
+	@Column(name = ShortName.CUSTOM_ATTRIBUTE_TYPE)
+	protected String type;
 	
 	@Column(name = ShortName.CUSTOM_ATTRIBUTE_VALUE)
-	protected String customAttributeValue;
+	protected String value;
 	
 	@ManyToOne(targetEntity = FlexContainerEntity.class)
 	@JoinTable(name = DBEntities.FCNT_CA_JOIN, joinColumns = {
@@ -42,20 +45,28 @@ public class CustomAttributeEntity {
 					@JoinColumn(name = DBEntities.FCNT_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) })
 	protected FlexContainerEntity parentFlexContainer;
 
-	public String getCustomAttributeName() {
-		return customAttributeName;
+	public String getName() {
+		return name;
 	}
 
-	public void setCustomAttributeName(String customAttributeName) {
-		this.customAttributeName = customAttributeName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getCustomAttributeValue() {
-		return customAttributeValue;
+	public String getType() {
+		return type;
 	}
 
-	public void setCustomAttributeValue(String customAttributeValue) {
-		this.customAttributeValue = customAttributeValue;
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
 	}
 
 	public FlexContainerEntity getParentFlexContainer() {
@@ -73,8 +84,10 @@ public class CustomAttributeEntity {
 	public void setResourceID(long resourceID) {
 		this.resourceID = resourceID;
 	}
-	
-	
-	
+
+	@Override
+	public String toString() {
+		return "<CustomAttributeEntity " + name + "/" + type + "/" + value + "/>";
+	}
 
 }

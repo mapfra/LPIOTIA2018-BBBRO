@@ -25,6 +25,7 @@ import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -62,6 +63,12 @@ public class RestHttpServlet extends HttpServlet {
 	private static Log LOGGER = LogFactory.getLog(RestHttpServlet.class);
 	/** Serial Version UID */
 	private static final long serialVersionUID = 1L;
+	/** Bearer Auth Type */
+	private static final String BEARER_AUTH_TYPE = "Bearer";
+	/** Basic Auth Type */
+	private static final String BASIC_AUTH_TYPE = "Basic";
+	/** Authorization header */
+	private static final String AUTHORIZATION_HEADER = "Authorization";
 	/** Discovered CSE service */
 	private static CseService cse;
 	
@@ -335,10 +342,13 @@ public class RestHttpServlet extends HttpServlet {
 
 		// Get the originator from the X-M2M-Origin header
 
-		String authorization = httpServletRequest.getHeader(HttpHeaders.ORIGINATOR);
-		if (authorization != null) {
-			request.setFrom(authorization);
+		String originator = httpServletRequest.getHeader(HttpHeaders.ORIGINATOR);
+		if (originator != null) {
+			request.setFrom(originator);
 		}
+		
+		// authorization 
+		parseAuthorizationHeader(request, httpServletRequest.getHeader(AUTHORIZATION_HEADER));
 
 		// Get the request identifier
 		String requestIdentifier = httpServletRequest.getHeader(HttpHeaders.REQUEST_IDENTIFIER) ;
@@ -411,6 +421,31 @@ public class RestHttpServlet extends HttpServlet {
 			}
 		}
 
+	}
+
+	private void parseAuthorizationHeader(RequestPrimitive request, String authorizationHeader) {
+		LOGGER.info("parseAuthorizationHeader(authorizationHeader:" + authorizationHeader + ")" );
+		if ((authorizationHeader == null) || (authorizationHeader.isEmpty())) {
+			return;
+		}
+		
+		if (authorizationHeader.startsWith(BASIC_AUTH_TYPE)) {
+			// basic type
+			LOGGER.debug("request with basic http auth");
+			
+			String base64UsernameAndPassword = authorizationHeader.substring(BASIC_AUTH_TYPE.length() + 1).trim();
+			String usernameAndPassword = new String(Base64.getDecoder().decode(base64UsernameAndPassword));
+			
+			request.setFrom(usernameAndPassword);
+		}
+		
+		if (authorizationHeader.startsWith(BEARER_AUTH_TYPE)) {
+			// bearer type
+			String accessToken = authorizationHeader.substring(BEARER_AUTH_TYPE.length() + 1);
+			
+			request.getTokens().add(accessToken);
+		}
+		
 	}
 
 	public static String httpRequestToString(HttpServletRequest request, String content){

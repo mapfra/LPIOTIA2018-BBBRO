@@ -108,7 +108,6 @@
 			</java-attributes>
 		</java-type>
 		
-
 		<java-type name="ContentInstance">
 		</java-type>
 
@@ -136,6 +135,25 @@
 
 		<!-- TODO Mgmt Objects -->
 
+		<java-type name="MgmtObj">
+			<java-attributes>
+				<xml-element java-attribute="objectIDs" name="obis" xml-list="true" />
+				<xml-element java-attribute="objectPaths" name="obps" xml-list="true" />
+			</java-attributes>
+		</java-type>
+
+		<java-type name="AreaNwkDeviceInfo">
+			<java-attributes>
+				<xml-element java-attribute="listOfNeighbors" name="lnh" xml-list="true" />
+			</java-attributes>
+		</java-type>
+
+		<java-type name="AreaNwkInfo">
+			<java-attributes>
+				<xml-element java-attribute="listOfDevices" name="ldv" xml-list="true" />
+			</java-attributes>
+		</java-type>
+				
 		<!-- Other resources -->
 
         <java-type name="URIList">

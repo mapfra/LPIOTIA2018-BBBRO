@@ -76,9 +76,9 @@ public class ColourModuleTest extends AbstractModuleTest {
 		CustomAttribute redCA = retrievedFlexContainer.getCustomAttribute(DatapointType.red.getShortName());
 		CustomAttribute greenCA = retrievedFlexContainer.getCustomAttribute(DatapointType.green.getShortName());
 		CustomAttribute blueCA = retrievedFlexContainer.getCustomAttribute(DatapointType.blue.getShortName());
-		Integer redValueFromFlexContainer = Integer.valueOf(redCA.getCustomAttributeValue());
-		Integer greenValueFromFlexContainer = Integer.valueOf(greenCA.getCustomAttributeValue());
-		Integer blueValueFromFlexContainer = Integer.valueOf(blueCA.getCustomAttributeValue());
+		Integer redValueFromFlexContainer = Integer.valueOf(redCA.getValue());
+		Integer greenValueFromFlexContainer = Integer.valueOf(greenCA.getValue());
+		Integer blueValueFromFlexContainer = Integer.valueOf(blueCA.getValue());
 
 		// get value from DataPoint
 		IntegerDataPoint redDP = (IntegerDataPoint) getModule().getDataPoint(DatapointType.red.getShortName());
@@ -123,9 +123,9 @@ public class ColourModuleTest extends AbstractModuleTest {
 		Integer newGreenValue = (int) (Math.random()*255d);
 		Integer newBlueValue = (int) (Math.random()*255d);
 		ColourFlexContainer toBeUpdated = new ColourFlexContainer();
-		redCA.setCustomAttributeValue(newRedValue.toString());
-		greenCA.setCustomAttributeValue(newGreenValue.toString());
-		blueCA.setCustomAttributeValue(newBlueValue.toString());
+		redCA.setValue(newRedValue.toString());
+		greenCA.setValue(newGreenValue.toString());
+		blueCA.setValue(newBlueValue.toString());
 		toBeUpdated.getCustomAttributes().add(redCA);
 		toBeUpdated.getCustomAttributes().add(greenCA);
 		toBeUpdated.getCustomAttributes().add(blueCA);
@@ -179,9 +179,9 @@ public class ColourModuleTest extends AbstractModuleTest {
 		redCA = retrievedFlexContainer.getCustomAttribute(DatapointType.red.getShortName());
 		greenCA = retrievedFlexContainer.getCustomAttribute(DatapointType.green.getShortName());
 		blueCA = retrievedFlexContainer.getCustomAttribute(DatapointType.blue.getShortName());
-		redValueFromFlexContainer = Integer.valueOf(redCA.getCustomAttributeValue());
-		greenValueFromFlexContainer = Integer.valueOf(greenCA.getCustomAttributeValue());
-		blueValueFromFlexContainer = Integer.valueOf(blueCA.getCustomAttributeValue());
+		redValueFromFlexContainer = Integer.valueOf(redCA.getValue());
+		greenValueFromFlexContainer = Integer.valueOf(greenCA.getValue());
+		blueValueFromFlexContainer = Integer.valueOf(blueCA.getValue());
 		if (Math.abs(newRedValue - redValueFromFlexContainer) > 2) {
 //		if (!newRedValue.equals(redValueFromFlexContainer)) {
 			report.setErrorMessage("new red value (" + newRedValue

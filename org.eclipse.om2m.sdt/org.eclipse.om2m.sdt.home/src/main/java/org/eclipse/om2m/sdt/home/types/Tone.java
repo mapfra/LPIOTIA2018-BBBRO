@@ -7,33 +7,21 @@
  *******************************************************************************/
 package org.eclipse.om2m.sdt.home.types;
 
-import java.util.Arrays;
-import java.util.List;
-
-import org.eclipse.om2m.sdt.Identifiers;
-import org.eclipse.om2m.sdt.datapoints.ClonedEnum;
 import org.eclipse.om2m.sdt.datapoints.EnumDataPoint;
 
-public class Tone extends ClonedEnum {
+public abstract class Tone extends EnumDataPoint<Tone.Values> {
 	
-	static public final int Fire = 1;
-	static public final int Theft = 2;
-	static public final int Emergency = 3;
-	static public final int Doorbell = 4;
-	static public final int DeviceFail = 5;
-	static public final int Silent = 6;
+	static public enum Values {
+		fire, theft, emergency, doorbell, deviceFail
+	}
 	
-	static private List<Integer> values = Arrays.asList(
-			Fire, Theft, Emergency, Doorbell, DeviceFail, Silent
-	);
+	public Tone() {
+		this(DatapointType.tone);
+	}
+	
+	public Tone(DatapointType dt) {
+		super(dt, HomeDataType.Tone);
+		setValidValues(Values.values());
+	}
 
-	public Tone(EnumDataPoint<Integer> dp) {
-		this(DatapointType.tone, dp);
-	}
-	
-	public Tone(Identifiers identifiers, EnumDataPoint<Integer> dp) {
-		super(identifiers, HomeDataType.Tone, dp);
-		setValidValues(values);
-	}
-	
 }

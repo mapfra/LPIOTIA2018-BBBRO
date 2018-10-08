@@ -11,17 +11,15 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
-import org.eclipse.om2m.sdt.datapoints.BooleanDataPoint;
 import org.eclipse.om2m.sdt.datapoints.FloatDataPoint;
 import org.eclipse.om2m.sdt.datapoints.IntegerDataPoint;
 import org.eclipse.om2m.sdt.datapoints.StringDataPoint;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.devices.WeatherStation;
 import org.eclipse.om2m.sdt.home.driver.Utils;
-import org.eclipse.om2m.sdt.home.modules.AtmosphericPressureSensor;
-import org.eclipse.om2m.sdt.home.modules.ExtendedCarbonDioxideSensor;
-import org.eclipse.om2m.sdt.home.modules.Noise;
-import org.eclipse.om2m.sdt.home.modules.RelativeHumidity;
+import org.eclipse.om2m.sdt.home.modules.AcousticSensor;
+import org.eclipse.om2m.sdt.home.modules.AirQualitySensor;
+import org.eclipse.om2m.sdt.home.modules.Barometer;
 import org.eclipse.om2m.sdt.home.modules.Temperature;
 import org.eclipse.om2m.sdt.home.netatmo.impl.Activator;
 import org.eclipse.om2m.sdt.home.netatmo.model.WeatherStationModule;
@@ -52,26 +50,26 @@ public class SDTWeatherStation extends WeatherStation {
 
 		if (stationOrModule.getDataTypes().contains(WeatherStationModule.TEMPERATURE_DATA_TYPE)) {
 			// temperature
-			setTemperature(new Temperature("temperature_" + getId(), Activator.NETATMO_DOMAIN,
+			setIndoorTemperature(new Temperature("temperature_" + getId(), Activator.NETATMO_DOMAIN,
 				new FloatDataPoint(DatapointType.currentTemperature) {
 					@Override
 					protected Float doGetValue() throws DataPointException {
 						return new Double(stationOrModule.getCurrentTemperature()).floatValue();
 					}
 				}));
-			getTemperature().setMinValue(new FloatDataPoint(DatapointType.minValue) {
+			getIndoorTemperature().setMinValue(new FloatDataPoint(DatapointType.minValue) {
 				@Override
 				protected Float doGetValue() throws DataPointException {
 					return new Double(stationOrModule.getMinTemperature()).floatValue();
 				}
 			});
-			getTemperature().setMaxValue(new FloatDataPoint(DatapointType.maxValue) {
+			getIndoorTemperature().setMaxValue(new FloatDataPoint(DatapointType.maxValue) {
 				@Override
 				protected Float doGetValue() throws DataPointException {
 					return new Double(stationOrModule.getMaxTemperature()).floatValue();
 				}
 			});
-			getTemperature().setUnit(new StringDataPoint(DatapointType.unit) {
+			getIndoorTemperature().setUnit(new StringDataPoint(DatapointType.unit) {
 				@Override
 				protected String doGetValue() throws DataPointException {
 					return "°C";
@@ -79,32 +77,20 @@ public class SDTWeatherStation extends WeatherStation {
 			});
 		}
 
-		if (stationOrModule.getDataTypes().contains(WeatherStationModule.HUMIDITY_DATA_TYPE)) {
-			// humidity
-			setRelativeHumidity(new RelativeHumidity("relativeHumidity_" + getId(), 
-				Activator.NETATMO_DOMAIN,
-				new FloatDataPoint(DatapointType.relativeHumidity) {
-					@Override
-					protected Float doGetValue() throws DataPointException {
-						return (float) stationOrModule.getHumidity();
-					}
-				}));
-		}
-
 		if (stationOrModule.getDataTypes().contains(WeatherStationModule.NOISE_DATA_TYPE)) {
 			// noise
-			setNoise(new Noise("noise_" + getId(), Activator.NETATMO_DOMAIN, 
-				new IntegerDataPoint(DatapointType.noise) {
+			setAcousticSensor(new AcousticSensor("noise_" + getId(), Activator.NETATMO_DOMAIN, 
+				new FloatDataPoint(DatapointType.loudness) {
 					@Override
-					protected Integer doGetValue() throws DataPointException {
-						return new Long(stationOrModule.getNoise()).intValue();
+					protected Float doGetValue() throws DataPointException {
+						return (float)stationOrModule.getNoise();
 					}
 				}));
 		}
 
 		if (stationOrModule.getDataTypes().contains(WeatherStationModule.PRESSURE_DATA_TYPE)) {
 			// pressure
-			setAtmosphericPressureSensor(new AtmosphericPressureSensor("atmosphericPressureSensor_" + getId(), 
+			setBarometer(new Barometer("atmosphericPressureSensor_" + getId(), 
 				Activator.NETATMO_DOMAIN, 
 				new FloatDataPoint(DatapointType.atmosphericPressure) {
 					@Override
@@ -114,22 +100,26 @@ public class SDTWeatherStation extends WeatherStation {
 				}));
 		}
 
+		AirQualitySensor airQuality = new AirQualitySensor("airQuality_" + getId(), Activator.NETATMO_DOMAIN);
+		setAirQualitySensor(airQuality);
+
+		if (stationOrModule.getDataTypes().contains(WeatherStationModule.HUMIDITY_DATA_TYPE)) {
+			airQuality.setSensorHumidity(new IntegerDataPoint(DatapointType.sensorHumidity) {
+				@Override
+				protected Integer doGetValue() throws DataPointException {
+					return (int) stationOrModule.getHumidity();
+				}
+			});
+		}
+
 		if (stationOrModule.getDataTypes().contains(WeatherStationModule.CO2_DATA_TYPE)) {
 			// co2
-			setExtendedCarbonDioxideSensor(new ExtendedCarbonDioxideSensor("extendedCarbonDioxideSensor_" + getId(),
-				Activator.NETATMO_DOMAIN, 
-				new BooleanDataPoint(DatapointType.alarm) {
-					@Override
-					protected Boolean doGetValue() throws DataPointException {
-						return stationOrModule.getCo2() >= 600;
-					}
-				}, 
-				new IntegerDataPoint(DatapointType.carbonDioxideValue) {
-					@Override
-					protected Integer doGetValue() throws DataPointException {
-						return new Long(stationOrModule.getCo2()).intValue();
-					}
-				}));
+			airQuality.setCo2(new IntegerDataPoint(DatapointType.co2) {
+				@Override
+				protected Integer doGetValue() throws DataPointException {
+					return (int)stationOrModule.getCo2();
+				}
+			});
 		}
 	}
 

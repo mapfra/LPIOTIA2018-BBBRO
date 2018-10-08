@@ -1,6 +1,6 @@
 /*
 ********************************************************************************
- * Copyright (c) 2014, 2017 Orange.
+ * Copyright (c) 2014, 2018 Orange.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,9 +9,9 @@
 
 Device : DeviceCoffeeMachine
 
-A CoffeeMachine is a device that produces coffee.
+A coffee machine is a device that is used to brew a coffee, may add foamed milk, and may include some variants, for example a grinder.
 
-Created: 2018-06-11 12:14:18
+Created: 2018-06-29 17:19:54
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -21,9 +21,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
-import org.eclipse.om2m.commons.resource.AbstractFlexContainerAnnc;
 
+import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
 
 @XmlRootElement(name = DeviceCoffeeMachineFlexContainer.SHORT_NAME, namespace = "http://www.onem2m.org/xml/protocols/homedomain")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -39,27 +38,26 @@ public class DeviceCoffeeMachineFlexContainer extends AbstractFlexContainer {
 		setShortName(SHORT_NAME);
 	}
 	
-	public void finalizeSerialization() {
+    public void finalizeSerialization() {
 		getFaultDetection();
-		getRunMode();
+		getRunState();
 		getClock();
 		getBrewing();
 		getWaterStatus();
 		getMilkStatus();
-		getBeansStatus();
 		getGrinder();
-		getFoamedMilk();
+		getMilkFoaming();
 		getMilkQuantity();
-		getKeepWarm();
 		getBrewingSwitch();
+		getKeepWarm();
 	}
 	
 	public void finalizeDeserialization() {
 		if (this.faultDetection != null) {
 			setFaultDetection(this.faultDetection);
 		}
-		if (this.runMode != null) {
-			setRunMode(this.runMode);
+		if (this.runState != null) {
+			setRunState(this.runState);
 		}
 		if (this.clock != null) {
 			setClock(this.clock);
@@ -73,30 +71,26 @@ public class DeviceCoffeeMachineFlexContainer extends AbstractFlexContainer {
 		if (this.milkStatus != null) {
 			setMilkStatus(this.milkStatus);
 		}
-		if (this.beansStatus != null) {
-			setBeansStatus(this.beansStatus);
-		}
 		if (this.grinder != null) {
 			setGrinder(this.grinder);
 		}
-		if (this.foamedMilk != null) {
-			setFoamedMilk(this.foamedMilk);
+		if (this.milkFoaming != null) {
+			setMilkFoaming(this.milkFoaming);
 		}
 		if (this.milkQuantity != null) {
 			setMilkQuantity(this.milkQuantity);
 		}
-		if (this.keepWarm != null) {
-			setKeepWarm(this.keepWarm);
-		}
 		if (this.brewingSwitch != null) {
 			setBrewingSwitch(this.brewingSwitch);
 		}
+		if (this.keepWarm != null) {
+			setKeepWarm(this.keepWarm);
+		}
 	}
-	
-	@XmlElement(name="fauDn", required=true, type=FaultDetectionFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+
+	@XmlElement(name=FaultDetectionFlexContainer.SHORT_NAME, required=true, type=FaultDetectionFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private FaultDetectionFlexContainer faultDetection;
-	
-	
+		
 	public void setFaultDetection(FaultDetectionFlexContainer faultDetection) {
 		this.faultDetection = faultDetection;
 		getFlexContainerOrContainerOrSubscription().add(faultDetection);
@@ -107,24 +101,22 @@ public class DeviceCoffeeMachineFlexContainer extends AbstractFlexContainer {
 		return faultDetection;
 	}
 	
-	@XmlElement(name="runMe", required=true, type=RunModeFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
-	private RunModeFlexContainer runMode;
-	
-	
-	public void setRunMode(RunModeFlexContainer runMode) {
-		this.runMode = runMode;
-		getFlexContainerOrContainerOrSubscription().add(runMode);
+	@XmlElement(name=RunStateFlexContainer.SHORT_NAME, required=true, type=RunStateFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	private RunStateFlexContainer runState;
+		
+	public void setRunState(RunStateFlexContainer runState) {
+		this.runState = runState;
+		getFlexContainerOrContainerOrSubscription().add(runState);
 	}
 	
-	public RunModeFlexContainer getRunMode() {
-		this.runMode = (RunModeFlexContainer) getResourceByName(RunModeFlexContainer.SHORT_NAME);
-		return runMode;
+	public RunStateFlexContainer getRunState() {
+		this.runState = (RunStateFlexContainer) getResourceByName(RunStateFlexContainer.SHORT_NAME);
+		return runState;
 	}
 	
-	@XmlElement(name="clock", required=true, type=ClockFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	@XmlElement(name=ClockFlexContainer.SHORT_NAME, required=true, type=ClockFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private ClockFlexContainer clock;
-	
-	
+		
 	public void setClock(ClockFlexContainer clock) {
 		this.clock = clock;
 		getFlexContainerOrContainerOrSubscription().add(clock);
@@ -135,10 +127,9 @@ public class DeviceCoffeeMachineFlexContainer extends AbstractFlexContainer {
 		return clock;
 	}
 	
-	@XmlElement(name="brewg", required=true, type=BrewingFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	@XmlElement(name=BrewingFlexContainer.SHORT_NAME, required=true, type=BrewingFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BrewingFlexContainer brewing;
-	
-	
+		
 	public void setBrewing(BrewingFlexContainer brewing) {
 		this.brewing = brewing;
 		getFlexContainerOrContainerOrSubscription().add(brewing);
@@ -149,52 +140,35 @@ public class DeviceCoffeeMachineFlexContainer extends AbstractFlexContainer {
 		return brewing;
 	}
 	
-	@XmlElement(name="watSs", required=true, type=LiquidLevelFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
-	private LiquidLevelFlexContainer waterStatus;
-	
-	
-	public void setWaterStatus(LiquidLevelFlexContainer waterStatus) {
+	@XmlElement(name=LiquidRemainingFlexContainer.SHORT_NAME, required=true, type=LiquidRemainingFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	private LiquidRemainingFlexContainer waterStatus;
+		
+	public void setWaterStatus(LiquidRemainingFlexContainer waterStatus) {
 		this.waterStatus = waterStatus;
 		getFlexContainerOrContainerOrSubscription().add(waterStatus);
 	}
 	
-	public LiquidLevelFlexContainer getWaterStatus() {
-		this.waterStatus = (LiquidLevelFlexContainer) getResourceByName(LiquidLevelFlexContainer.SHORT_NAME);
+	public LiquidRemainingFlexContainer getWaterStatus() {
+		this.waterStatus = (LiquidRemainingFlexContainer) getResourceByName(LiquidRemainingFlexContainer.SHORT_NAME);
 		return waterStatus;
 	}
 	
-	@XmlElement(name="milSs", required=true, type=LiquidLevelFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
-	private LiquidLevelFlexContainer milkStatus;
-	
-	
-	public void setMilkStatus(LiquidLevelFlexContainer milkStatus) {
+	@XmlElement(name=LiquidRemainingFlexContainer.SHORT_NAME, required=true, type=LiquidRemainingFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	private LiquidRemainingFlexContainer milkStatus;
+		
+	public void setMilkStatus(LiquidRemainingFlexContainer milkStatus) {
 		this.milkStatus = milkStatus;
 		getFlexContainerOrContainerOrSubscription().add(milkStatus);
 	}
 	
-	public LiquidLevelFlexContainer getMilkStatus() {
-		this.milkStatus = (LiquidLevelFlexContainer) getResourceByName(LiquidLevelFlexContainer.SHORT_NAME);
+	public LiquidRemainingFlexContainer getMilkStatus() {
+		this.milkStatus = (LiquidRemainingFlexContainer) getResourceByName(LiquidRemainingFlexContainer.SHORT_NAME);
 		return milkStatus;
 	}
 	
-	@XmlElement(name="beaSs", required=true, type=LiquidLevelFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
-	private LiquidLevelFlexContainer beansStatus;
-	
-	
-	public void setBeansStatus(LiquidLevelFlexContainer beansStatus) {
-		this.beansStatus = beansStatus;
-		getFlexContainerOrContainerOrSubscription().add(beansStatus);
-	}
-	
-	public LiquidLevelFlexContainer getBeansStatus() {
-		this.beansStatus = (LiquidLevelFlexContainer) getResourceByName(LiquidLevelFlexContainer.SHORT_NAME);
-		return beansStatus;
-	}
-	
-	@XmlElement(name="grinr", required=true, type=GrinderFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	@XmlElement(name=GrinderFlexContainer.SHORT_NAME, required=true, type=GrinderFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private GrinderFlexContainer grinder;
-	
-	
+		
 	public void setGrinder(GrinderFlexContainer grinder) {
 		this.grinder = grinder;
 		getFlexContainerOrContainerOrSubscription().add(grinder);
@@ -205,24 +179,22 @@ public class DeviceCoffeeMachineFlexContainer extends AbstractFlexContainer {
 		return grinder;
 	}
 	
-	@XmlElement(name="foaMk", required=true, type=FoamingFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
-	private FoamingFlexContainer foamedMilk;
-	
-	
-	public void setFoamedMilk(FoamingFlexContainer foamedMilk) {
-		this.foamedMilk = foamedMilk;
-		getFlexContainerOrContainerOrSubscription().add(foamedMilk);
+	@XmlElement(name=FoamingFlexContainer.SHORT_NAME, required=true, type=FoamingFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	private FoamingFlexContainer milkFoaming;
+		
+	public void setMilkFoaming(FoamingFlexContainer milkFoaming) {
+		this.milkFoaming = milkFoaming;
+		getFlexContainerOrContainerOrSubscription().add(milkFoaming);
 	}
 	
-	public FoamingFlexContainer getFoamedMilk() {
-		this.foamedMilk = (FoamingFlexContainer) getResourceByName(FoamingFlexContainer.SHORT_NAME);
-		return foamedMilk;
+	public FoamingFlexContainer getMilkFoaming() {
+		this.milkFoaming = (FoamingFlexContainer) getResourceByName(FoamingFlexContainer.SHORT_NAME);
+		return milkFoaming;
 	}
 	
-	@XmlElement(name="milQy", required=true, type=LiquidLevelFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	@XmlElement(name=LiquidLevelFlexContainer.SHORT_NAME, required=true, type=LiquidLevelFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private LiquidLevelFlexContainer milkQuantity;
-	
-	
+		
 	public void setMilkQuantity(LiquidLevelFlexContainer milkQuantity) {
 		this.milkQuantity = milkQuantity;
 		getFlexContainerOrContainerOrSubscription().add(milkQuantity);
@@ -233,24 +205,9 @@ public class DeviceCoffeeMachineFlexContainer extends AbstractFlexContainer {
 		return milkQuantity;
 	}
 	
-	@XmlElement(name="keeWm", required=true, type=KeepWarmFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
-	private KeepWarmFlexContainer keepWarm;
-	
-	
-	public void setKeepWarm(KeepWarmFlexContainer keepWarm) {
-		this.keepWarm = keepWarm;
-		getFlexContainerOrContainerOrSubscription().add(keepWarm);
-	}
-	
-	public KeepWarmFlexContainer getKeepWarm() {
-		this.keepWarm = (KeepWarmFlexContainer) getResourceByName(KeepWarmFlexContainer.SHORT_NAME);
-		return keepWarm;
-	}
-	
-	@XmlElement(name="breSh", required=true, type=BinarySwitchFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	@XmlElement(name=BinarySwitchFlexContainer.SHORT_NAME, required=true, type=BinarySwitchFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BinarySwitchFlexContainer brewingSwitch;
-	
-	
+		
 	public void setBrewingSwitch(BinarySwitchFlexContainer brewingSwitch) {
 		this.brewingSwitch = brewingSwitch;
 		getFlexContainerOrContainerOrSubscription().add(brewingSwitch);
@@ -259,6 +216,19 @@ public class DeviceCoffeeMachineFlexContainer extends AbstractFlexContainer {
 	public BinarySwitchFlexContainer getBrewingSwitch() {
 		this.brewingSwitch = (BinarySwitchFlexContainer) getResourceByName(BinarySwitchFlexContainer.SHORT_NAME);
 		return brewingSwitch;
+	}
+	
+	@XmlElement(name=KeepWarmFlexContainer.SHORT_NAME, required=true, type=KeepWarmFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	private KeepWarmFlexContainer keepWarm;
+		
+	public void setKeepWarm(KeepWarmFlexContainer keepWarm) {
+		this.keepWarm = keepWarm;
+		getFlexContainerOrContainerOrSubscription().add(keepWarm);
+	}
+	
+	public KeepWarmFlexContainer getKeepWarm() {
+		this.keepWarm = (KeepWarmFlexContainer) getResourceByName(KeepWarmFlexContainer.SHORT_NAME);
+		return keepWarm;
 	}
 	
 }

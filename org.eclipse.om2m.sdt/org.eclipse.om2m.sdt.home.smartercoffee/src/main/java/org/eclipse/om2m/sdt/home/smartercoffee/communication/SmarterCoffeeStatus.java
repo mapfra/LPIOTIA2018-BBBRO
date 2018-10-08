@@ -194,25 +194,23 @@ public class SmarterCoffeeStatus {
 		this.coffeeReady = coffeeReady;
 	}
 
-	public int getWaterLevel() {
-		
+	public LiquidLevel.Values getWaterLevel() {
 		System.out.println("raw water level=" + waterLevel);
-		if(waterLevel == 0){
-			return LiquidLevel.low;
+		if (waterLevel == 0) {
+			return LiquidLevel.Values.low;
 		}
-		if(waterLevel == 17){		//about HALF -> from about level 7 on the right side of the tank			
-			return LiquidLevel.medium;
+		if (waterLevel == 17) {		//about HALF -> from about level 7 on the right side of the tank			
+			return LiquidLevel.Values.medium;
 		}
-		if(waterLevel == 18){	//from about level 7 to 10					
-			return LiquidLevel.high;
+		if (waterLevel == 18) {	//from about level 7 to 10					
+			return LiquidLevel.Values.high;
 		}
-		if(waterLevel == 19){							//almost FULL -> from about level 10
-			return LiquidLevel.maximum;
+		if (waterLevel == 19) {							//almost FULL -> from about level 10
+			return LiquidLevel.Values.maximum;
 		}
-		else{
-			return -1;
+		else {
+			return LiquidLevel.Values.zero;
 		}
-		
 	}
 
 	public void setKeepWarm(boolean keepWarm) {

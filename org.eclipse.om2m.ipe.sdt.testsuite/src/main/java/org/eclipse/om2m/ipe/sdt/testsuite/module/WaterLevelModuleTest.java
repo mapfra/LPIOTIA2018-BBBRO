@@ -16,10 +16,10 @@ import org.eclipse.om2m.ipe.sdt.testsuite.CSEUtil;
 import org.eclipse.om2m.ipe.sdt.testsuite.TestReport;
 import org.eclipse.om2m.ipe.sdt.testsuite.TestReport.State;
 import org.eclipse.om2m.sdt.Module;
-import org.eclipse.om2m.sdt.home.types.DatapointType;
-import org.eclipse.om2m.sdt.home.types.LiquidLevel;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
+import org.eclipse.om2m.sdt.home.types.DatapointType;
+import org.eclipse.om2m.sdt.home.types.LiquidLevel;
 
 public class WaterLevelModuleTest extends AbstractModuleTest {
 
@@ -58,7 +58,7 @@ public class WaterLevelModuleTest extends AbstractModuleTest {
 		LiquidLevel liquidLevelDP = (LiquidLevel) getModule().getDataPoint(DatapointType.liquidLevel.getShortName());
 		
 		// retrieve liquidLevel value from datapoint
-		Integer liquidLevelValueFromDP = null;
+		LiquidLevel.Values liquidLevelValueFromDP = null;
 		try {
 			liquidLevelValueFromDP = liquidLevelDP.getValue();
 		} catch (DataPointException | AccessException e) {
@@ -71,9 +71,9 @@ public class WaterLevelModuleTest extends AbstractModuleTest {
 		// retrieve value from customAttribute
 		Integer liquidLevelFromFlexContainer = null;
 		try {
-			liquidLevelFromFlexContainer = Integer.parseInt(liquidLevelCA.getCustomAttributeValue());
+			liquidLevelFromFlexContainer = Integer.parseInt(liquidLevelCA.getValue());
 		} catch (NumberFormatException nfe) {
-			report.setErrorMessage("unable to cast liquidLevel customAttribute value (" + liquidLevelCA.getCustomAttributeValue() + ") as an Integer");
+			report.setErrorMessage("unable to cast liquidLevel customAttribute value (" + liquidLevelCA.getValue() + ") as an Integer");
 			report.setState(State.KO);
 			return report;
 		}
@@ -81,7 +81,6 @@ public class WaterLevelModuleTest extends AbstractModuleTest {
 		if (!checkObject(liquidLevelFromFlexContainer, liquidLevelValueFromDP, report, DatapointType.liquidLevel.getShortName())) {
 			return report;
 		}
-		
 		
 		report.setState(State.OK);
 		return report;
@@ -96,7 +95,7 @@ public class WaterLevelModuleTest extends AbstractModuleTest {
 		
 		// retrieve liquidLevel datapoint
 		LiquidLevel liquidLevelDP = (LiquidLevel) getModule().getDataPoint(DatapointType.liquidLevel.getShortName());
-		Integer liquidLevelFromDP = null;
+		LiquidLevel.Values liquidLevelFromDP = null;
 		try {
 			liquidLevelFromDP = liquidLevelDP.getValue();
 		} catch (DataPointException | AccessException e) {
@@ -107,13 +106,13 @@ public class WaterLevelModuleTest extends AbstractModuleTest {
 		}
 		
 		// compute new value for liquidLevel customAttribute (value between 1 and 5)
-		Integer newLiquidLevelValue = (liquidLevelFromDP.intValue() == 1 ? 5 : 1);
+		Integer newLiquidLevelValue = (liquidLevelFromDP.ordinal() == 1 ? 5 : 1);
 		
 		// prepare FlexContainer + customAttribute
 		LiquidLevelFlexContainer toBeUpdated = new LiquidLevelFlexContainer();
 		CustomAttribute liquidLevelCA = new CustomAttribute();
-		liquidLevelCA.setCustomAttributeName(DatapointType.liquidLevel.getShortName());
-		liquidLevelCA.setCustomAttributeValue(newLiquidLevelValue.toString());
+		liquidLevelCA.setShortName(DatapointType.liquidLevel.getShortName());
+		liquidLevelCA.setValue(newLiquidLevelValue.toString());
 		toBeUpdated.getCustomAttributes().add(liquidLevelCA);
 		
 		// perform UPDATE request

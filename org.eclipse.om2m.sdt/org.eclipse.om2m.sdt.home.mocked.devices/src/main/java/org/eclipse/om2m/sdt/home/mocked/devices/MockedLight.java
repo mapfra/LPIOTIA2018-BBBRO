@@ -16,7 +16,7 @@ import org.eclipse.om2m.sdt.home.devices.Light;
 import org.eclipse.om2m.sdt.home.mocked.modules.MockedBinarySwitch;
 import org.eclipse.om2m.sdt.home.mocked.modules.MockedColour;
 import org.eclipse.om2m.sdt.home.mocked.modules.MockedFaultDetection;
-import org.eclipse.om2m.sdt.home.mocked.modules.MockedRunMode;
+import org.eclipse.om2m.sdt.home.mocked.modules.MockedRunState;
 import org.eclipse.om2m.sdt.home.modules.Brightness;
 import org.eclipse.om2m.sdt.home.modules.ColourSaturation;
 import org.eclipse.om2m.sdt.home.types.DatapointType;
@@ -37,14 +37,13 @@ public class MockedLight extends Light implements MockedDevice {
 		addModule(new MockedBinarySwitch("binarySwitch_" + id, domain));
 
 		// Module RunState
-//		addModule(new MockedRunState("runMode_" + id, domain));
-		addModule(new MockedRunMode("runMode_" + id, domain));
+		addModule(new MockedRunState("runState_" + id, domain));
 
 		// Module Color
 		addModule(new MockedColour("colour_" + id, domain));
 
 		addModule(new ColourSaturation("colourSaturation_" + id, domain, 
-			new IntegerDataPoint(DatapointType.colourSat) {
+			new IntegerDataPoint(DatapointType.colourSaturation) {
 				private Integer v = new Integer((int)(Math.random() * 100));
 				@Override
 				public void doSetValue(Integer value) throws DataPointException {

@@ -102,8 +102,8 @@ public class DASServiceTest_FlexContainerAnnc extends AbstractDASServiceTest {
 		// update FlexContainer
 		BinarySwitchFlexContainerAnnc toBeUpdated = new BinarySwitchFlexContainerAnnc();
 		CustomAttribute customAttribute = new CustomAttribute();
-		customAttribute.setCustomAttributeName("powSe");
-		customAttribute.setCustomAttributeValue("true");
+		customAttribute.setShortName("powSe");
+		customAttribute.setValue("true");
 		createdFlexContainerAnnc.getCustomAttributes().add(customAttribute);
 
 		// prepare update request

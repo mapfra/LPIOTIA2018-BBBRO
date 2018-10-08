@@ -1,6 +1,6 @@
 /*
 ********************************************************************************
- * Copyright (c) 2014, 2017 Orange.
+ * Copyright (c) 2014, 2018 Orange.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,9 +9,9 @@
 
 Device : DeviceGasValve
 
-A gas valve is a device that is used to open/close a gas valve.
+A gas valve is a device that is used to turn the gas supply ON or OFF remotely.
 
-Created: 2018-06-11 12:14:18
+Created: 2018-06-29 17:19:56
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -21,9 +21,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
-import org.eclipse.om2m.commons.resource.AbstractFlexContainerAnnc;
 
+import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
 
 @XmlRootElement(name = DeviceGasValveFlexContainer.SHORT_NAME, namespace = "http://www.onem2m.org/xml/protocols/homedomain")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -39,46 +38,27 @@ public class DeviceGasValveFlexContainer extends AbstractFlexContainer {
 		setShortName(SHORT_NAME);
 	}
 	
-	public void finalizeSerialization() {
-		getFaultDetection();
-		getBinarySwitch();
+    public void finalizeSerialization() {
+		getOpenLevel();
 	}
 	
 	public void finalizeDeserialization() {
-		if (this.faultDetection != null) {
-			setFaultDetection(this.faultDetection);
-		}
-		if (this.binarySwitch != null) {
-			setBinarySwitch(this.binarySwitch);
+		if (this.openLevel != null) {
+			setOpenLevel(this.openLevel);
 		}
 	}
-	
-	@XmlElement(name="fauDn", required=true, type=FaultDetectionFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
-	private FaultDetectionFlexContainer faultDetection;
-	
-	
-	public void setFaultDetection(FaultDetectionFlexContainer faultDetection) {
-		this.faultDetection = faultDetection;
-		getFlexContainerOrContainerOrSubscription().add(faultDetection);
+
+	@XmlElement(name=OpenLevelFlexContainer.SHORT_NAME, required=true, type=OpenLevelFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	private OpenLevelFlexContainer openLevel;
+		
+	public void setOpenLevel(OpenLevelFlexContainer openLevel) {
+		this.openLevel = openLevel;
+		getFlexContainerOrContainerOrSubscription().add(openLevel);
 	}
 	
-	public FaultDetectionFlexContainer getFaultDetection() {
-		this.faultDetection = (FaultDetectionFlexContainer) getResourceByName(FaultDetectionFlexContainer.SHORT_NAME);
-		return faultDetection;
-	}
-	
-	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
-	private BinarySwitchFlexContainer binarySwitch;
-	
-	
-	public void setBinarySwitch(BinarySwitchFlexContainer binarySwitch) {
-		this.binarySwitch = binarySwitch;
-		getFlexContainerOrContainerOrSubscription().add(binarySwitch);
-	}
-	
-	public BinarySwitchFlexContainer getBinarySwitch() {
-		this.binarySwitch = (BinarySwitchFlexContainer) getResourceByName(BinarySwitchFlexContainer.SHORT_NAME);
-		return binarySwitch;
+	public OpenLevelFlexContainer getOpenLevel() {
+		this.openLevel = (OpenLevelFlexContainer) getResourceByName(OpenLevelFlexContainer.SHORT_NAME);
+		return openLevel;
 	}
 	
 }

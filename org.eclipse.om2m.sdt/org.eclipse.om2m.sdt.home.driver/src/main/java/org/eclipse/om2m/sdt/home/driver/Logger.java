@@ -7,17 +7,13 @@
  *******************************************************************************/
 package org.eclipse.om2m.sdt.home.driver;
 
-import org.osgi.service.log.LogService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class Logger {
 	
+	private static Log LOG = LogFactory.getLog(Logger.class);
 	static private final String PREFIX  = "[ONEM2M.";
-	
-	static private final String[] LEVELS  = new String[] {
-		"ERROR ", "WARNING ", "INFO ", "DEBUG "
-	};
-
-	static private LogService logService;
 	
 	private String protocol;
 
@@ -26,78 +22,62 @@ public class Logger {
 		this.protocol = protocol;
 	}
 	
-	public final void setLogService(final LogService log) {
-		logService = log;
-	}
-
-	public final void unsetLogService() {
-		logService = null;
-	}
-
 	public final void debug(final String message) {
-		print(LogService.LOG_DEBUG, null, message);
+		LOG.debug(createLogMsg(null, message));
 	}
 
 	public final void debug(final String message, final Class<?> clazz) {
-		print(LogService.LOG_DEBUG, clazz, message);
+		LOG.debug(createLogMsg(clazz, message));
 	}
 
 	public final void info(final String message) {
-		print(LogService.LOG_INFO, null, message);
+		LOG.info(createLogMsg(null, message));
 	}
 
 	public final void info(final String message, final Class<?> clazz) {
-		print(LogService.LOG_INFO, clazz, message);
+		LOG.info(createLogMsg( clazz, message));
 	}
 
 	public final void warning(final String message) {
-		print(LogService.LOG_WARNING, null, message);
+		LOG.warn(createLogMsg(null, message));
 	}
 
 	public final void warning(final String message, final Throwable e) {
-		print(LogService.LOG_WARNING, null, message, e);
+		LOG.warn(createLogMsg(null, message), e);
 	}
 
 	public final void warning(final String message, final Class<?> clazz) {
-		print(LogService.LOG_WARNING, clazz, message);
+		LOG.warn(createLogMsg(clazz, message));
 	}
 
 	public final void warning(final String message, final Class<?> clazz, final Throwable e) {
-		print(LogService.LOG_WARNING, clazz, message, e);
+		LOG.warn(createLogMsg( clazz, message), e);
 	}
 
 	public final void error(final String message) {
-		print(LogService.LOG_ERROR, null, message);
+		LOG.error(createLogMsg(null, message));
 	}
 
 	public final void error(final String message, final Throwable e) {
-		print(LogService.LOG_ERROR, null, message, e);
-	}
+		LOG.error(createLogMsg(null, message), e);
+	}	
 
 	public final void error(final String message, final Class<?> clazz) {
-		print(LogService.LOG_ERROR, clazz, message);
+		LOG.error(createLogMsg(clazz, message));
 	}
 
 	public final void error(final String message, final Class<?> clazz, final Throwable e) {
-		print(LogService.LOG_ERROR, clazz, message, e);
+		LOG.error(createLogMsg(clazz, message), e);
+
 	}
 
-	private final void print(final int level, final Class<?> clazz, final String message) {
-		String msg = PREFIX + protocol + ((clazz == null) ? "] " : "." + clazz.getSimpleName() + "] ") + message;
-		if (logService != null)
-			logService.log(level, msg);
-		else
-			System.out.println(LEVELS[level-1] + msg);
+	private final String createLogMsg(final Class<?> clazz, final String message) {
+		return PREFIX + protocol + ((clazz == null) ? "] " : "." + clazz.getSimpleName() + "] ") + message;		
 	}
-
-	private final void print(final int level, final Class<?> clazz, final String message, final Throwable e) {
-		String msg = PREFIX + protocol + ((clazz == null) ? "] " : "." + clazz.getSimpleName() + "] ") + message;
-		if (logService != null)
-			logService.log(level, msg, e);
-		else
-			System.out.println(LEVELS[level-1] + msg + ": " + e.getMessage());
-		if (e != null)
-			e.printStackTrace();
-	}
-
+	
+	// Method kept for compatibility reasons
+	public <LogService> void setLogService(LogService log) {}
+	
+	// Method kept for compatibility reasons
+	public void unsetLogService( ) {}
 }

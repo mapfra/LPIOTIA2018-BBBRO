@@ -80,9 +80,13 @@ public class MapperTestUrilList extends AbstractMapperTest {
 		URIList uriList = new URIList();
 		uriList.getListOfUri().add("tof");
 		uriList.getListOfUri().add("plouf");
-		String s = jsonMapper.objToString(uriList);
+		String s = jsonMapper.objToString(uriList).replaceAll("\\s", "");
+		
 		System.out.println(s);
 		String expectedString = "{\r\n" + "   \"m2m:uril\" : [ \"tof\", \"plouf\" ]\r\n" + "}";
+                expectedString = expectedString.replaceAll("\\s", "");
+		System.out.println(expectedString);
+
 		assertTrue(expectedString.equals(s));
 	}
 
@@ -98,7 +102,7 @@ public class MapperTestUrilList extends AbstractMapperTest {
 
 		URIList uriList = (URIList) object;
 
-		// impossible de passer de string à object.
+		// impossible de passer de string a object.
 
 	}
 

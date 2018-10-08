@@ -45,17 +45,15 @@ public class AeDAO extends AbstractDAO<AeEntity> {
 		// de-associate labels
 		List<LabelEntity> labels = resource.getLabelsEntities();
 		for (LabelEntity label : labels) {
-			label.getLinkedFcnt().remove(resource);
+			label.getLinkedAe().remove(resource);
 		}
 		
 		if (resource.getParentCse() != null) {
 			resource.getParentCse().getAes().remove(resource);
 		}
-		
 		if (resource.getParentCsr() != null) {
 			resource.getParentCsr().getChildAes().remove(resource);
 		}
-
 		transaction.getEm().remove(resource);
 //		transaction.getEm().getEntityManagerFactory().getCache().evict(CSEBaseEntity.class);
 //		transaction.getEm().getEntityManagerFactory().getCache().evict(RemoteCSEEntity.class);

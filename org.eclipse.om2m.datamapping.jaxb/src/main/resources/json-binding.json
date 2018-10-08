@@ -206,6 +206,138 @@
         "name": "ChildResourceRef",
         "java-attributes": {
          }
+      },
+      {
+        "name": "DynAuthDasRequest",
+        "java-attributes": {
+          "xml-element": [
+            {
+              "java-attribute": "originator",
+              "name": "og",
+              "namespace": ""
+            },
+            {
+              "java-attribute": "targetedResourceType",
+              "name": "tirt",
+              "namespace": ""
+            },
+            {
+              "java-attribute": "operation",
+              "name": "op",
+              "namespace": ""
+            },
+            {
+              "java-attribute": "originatorIP",
+              "name": "oip",
+              "namespace": ""
+            },
+            {
+              "java-attribute": "originatorLocation",
+              "name": "olo",
+              "namespace": ""
+            },
+            {
+              "java-attribute": "originatorRoleIDs",
+              "name": "orid",
+              "namespace": ""
+            },
+            {
+              "java-attribute": "requestTimestamp",
+              "name": "rts",
+              "namespace": ""
+            },
+            {
+              "java-attribute": "targetedResourceID",
+              "name": "trid",
+              "namespace": ""
+            },
+            {
+              "java-attribute": "proposedPrivilegesLifetime",
+              "name": "ppl",
+              "namespace": ""
+            },
+            {
+              "java-attribute": "roleIDsFromACPs",
+              "name": "rfa",
+              "namespace": ""
+            },
+            {
+              "java-attribute": "tokenIDs",
+              "name": "tids",
+              "namespace": ""
+            }
+          ]
+        }
+      },
+      {
+        "name": "DynAuthTokenReqInfo",
+        "java-attributes": {
+          "xml-element": [
+            {
+              "java-attribute": "dasInfo",
+              "name": "dasi",
+              "namespace": ""
+            }
+          ]
+        }
+      },
+      {
+        "name": "DasInfo",
+        "java-attributes": {
+          "xml-element": [
+            {
+              "java-attribute": "URI",
+              "name": "uri",
+              "namespace": ""
+            },
+            {
+              "java-attribute": "dasRequest",
+              "name": "daq",
+              "namespace": ""
+            }
+          ]
+        }
+      },
+      {
+        "name": "MgmtObj",
+        "java-attributes": {
+          "xml-element": [
+            {
+              "java-attribute": "objectIDs",
+              "name": "obis",
+              "namespace": ""
+            },
+            {
+              "java-attribute": "objectPaths",
+              "name": "obps",
+              "namespace": ""
+            }
+          ]
+        }
+      },
+      {
+        "name": "AreaNwkDeviceInfo",
+        "java-attributes": {
+          "xml-element": [
+            {
+              "java-attribute": "listOfNeighbors",
+              "name": "lnh",
+              "namespace": ""
+            }
+          ]
+        }
+      },
+      {
+        "name": "AreaNwkInfo",
+        "java-attributes": {
+          "xml-element": [
+            {
+              "java-attribute": "listOfDevices",
+              "name": "ldv",
+              "namespace": ""
+            }
+          ]
+        }
       }
     ]
   }

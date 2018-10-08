@@ -27,7 +27,7 @@ public class PersonSensor extends Module {
 			final ArrayDataPoint<String> detectedPersons) {
 		super(name, domain, ModuleType.personSensor);
 		if ((detectedPersons == null) ||
-				! detectedPersons.getShortDefinitionType().equals(DatapointType.detectedPersons.getShortName())) {
+				! detectedPersons.getShortName().equals(DatapointType.detectedPersons.getShortName())) {
 			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong detectedPersons datapoint: " + detectedPersons);
 		}

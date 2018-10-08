@@ -57,15 +57,15 @@ public class WaterSensorModuleTest extends AbstractModuleTest {
 
 		// retrieve alarm value from flexContainer
 		Boolean alarmValueFromFlexContainer = null;
-		if (alarmCA.getCustomAttributeValue() == null) {
+		if (alarmCA.getValue() == null) {
 			report.setErrorMessage("alarm customAttribute value is null");
 			report.setState(State.KO);
 			return report;
 		}
 		try {
-			alarmValueFromFlexContainer = Boolean.valueOf(alarmCA.getCustomAttributeValue());
+			alarmValueFromFlexContainer = Boolean.valueOf(alarmCA.getValue());
 		} catch (ClassCastException e) {
-			report.setErrorMessage("alarm customAttribute value is not a Boolean value (" + alarmCA.getCustomAttributeValue() + ")");
+			report.setErrorMessage("alarm customAttribute value is not a Boolean value (" + alarmCA.getValue() + ")");
 			report.setState(State.KO);
 			return report;
 		}
@@ -118,8 +118,8 @@ public class WaterSensorModuleTest extends AbstractModuleTest {
 		// prepare update
 		WaterSensorFlexContainer toBeUpdated = new WaterSensorFlexContainer();
 		CustomAttribute alarmCA = new CustomAttribute();
-		alarmCA.setCustomAttributeName(DatapointType.alarm.getShortName());
-		alarmCA.setCustomAttributeValue(Boolean.valueOf(!alarmValueFromDP.booleanValue()).toString());
+		alarmCA.setShortName(DatapointType.alarm.getShortName());
+		alarmCA.setValue(Boolean.valueOf(!alarmValueFromDP.booleanValue()).toString());
 		toBeUpdated.getCustomAttributes().add(alarmCA);
 		
 		// perform UPDATE request ==> expect KO
@@ -142,7 +142,7 @@ public class WaterSensorModuleTest extends AbstractModuleTest {
 		WaterSensorFlexContainer retrievedFlexContainer = (WaterSensorFlexContainer) response.getContent();
 		CustomAttribute ca = retrievedFlexContainer.getCustomAttribute(DatapointType.alarm.getShortName());
 		try {
-			currentValueFromDP = Boolean.parseBoolean(ca.getCustomAttributeValue());
+			currentValueFromDP = Boolean.parseBoolean(ca.getValue());
 		} catch (Exception e) {
 			report.setErrorMessage("unable to retrieve alarm customAttribute value:" + e.getMessage());
 			report.setState(State.KO);

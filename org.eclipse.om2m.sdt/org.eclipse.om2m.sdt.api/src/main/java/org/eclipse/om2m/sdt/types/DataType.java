@@ -18,19 +18,21 @@ public class DataType extends Element {
 	
 	public interface TypeChoice {
 		public String getOneM2MType();
+		public String toString(Object val) throws Exception;
+		public Object fromString(String val) throws Exception;
 	}
 	
-	static public final DataType Boolean = new DataType("boolean", SimpleType.Boolean);
-	static public final DataType Byte = new DataType("byte", SimpleType.Byte);
-	static public final DataType Integer = new DataType("integer", SimpleType.Integer);
-	static public final DataType Float = new DataType("float", SimpleType.Float);
-	static public final DataType String = new DataType("string", SimpleType.String);
-	static public final DataType Enum = new DataType("enum", SimpleType.Enum);
-	static public final DataType Date = new DataType("date", SimpleType.Date);
-	static public final DataType Time = new DataType("time", SimpleType.Time);
-	static public final DataType Datetime = new DataType("datetime", SimpleType.Datetime);
-	static public final DataType Blob = new DataType("blob", SimpleType.Blob);
-	static public final DataType Uri = new DataType("uri", SimpleType.Uri);
+	static public final DataType Boolean = new DataType(SimpleType.Boolean);
+	static public final DataType Byte = new DataType(SimpleType.Byte);
+	static public final DataType Integer = new DataType(SimpleType.Integer);
+	static public final DataType Float = new DataType(SimpleType.Float);
+	static public final DataType String = new DataType(SimpleType.String);
+	static public final DataType Enum = new DataType(SimpleType.Enum);
+	static public final DataType Date = new DataType(SimpleType.Date);
+	static public final DataType Time = new DataType(SimpleType.Time);
+	static public final DataType Datetime = new DataType(SimpleType.Datetime);
+	static public final DataType Blob = new DataType(SimpleType.Blob);
+	static public final DataType Uri = new DataType(SimpleType.Uri);
 	
 	private String unitOfMeasure;
 	
@@ -38,10 +40,22 @@ public class DataType extends Element {
 	
 	private Map<String, Constraint> constraints;
 
-	public DataType(final String name, final TypeChoice type) {
-		super(name);
+	public DataType(final TypeChoice type) {
+		super(type.getOneM2MType());
 		this.type = type;
 		this.constraints = new HashMap<String, Constraint>();
+	}
+	
+	static public DataType getDataType(final String name) {
+		String s = name.trim();
+		if (s.startsWith("[")) {
+			DataType dt = getDataType(s.substring(1, s.length()-1));
+			return (dt == null) ? null : new DataType(new Array<>(dt));
+		}
+		SimpleType st = SimpleType.getSimpleType(s);
+		if (st != null)
+			return new DataType(st);
+		return null;
 	}
 
 	public TypeChoice getTypeChoice() {
@@ -84,6 +98,12 @@ public class DataType extends Element {
 		ret.append("\n").append(t2).append(type);
 		prettyPrint(ret, constraints.values(), "Constraints", t1);
 		return ret.append("\n").append(t1).append("</DataType>").toString();
+	}
+
+	@Override
+	public String toString() {
+		return "<" + getClass().getSimpleName() + " name=" + name 
+				+ " type=" + getTypeChoice().getOneM2MType() + "/>";
 	}
 
 }

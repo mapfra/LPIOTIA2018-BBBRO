@@ -20,7 +20,7 @@ import org.eclipse.om2m.sdt.home.mocked.modules.MockedClock;
 import org.eclipse.om2m.sdt.home.mocked.modules.MockedEnergyConsumption;
 import org.eclipse.om2m.sdt.home.mocked.modules.MockedEnergyGeneration;
 import org.eclipse.om2m.sdt.home.mocked.modules.MockedFaultDetection;
-import org.eclipse.om2m.sdt.home.mocked.modules.MockedRunMode;
+import org.eclipse.om2m.sdt.home.mocked.modules.MockedRunState;
 import org.eclipse.om2m.sdt.home.modules.EnergyConsumption;
 import org.eclipse.om2m.sdt.home.types.DatapointType;
 import org.osgi.framework.ServiceRegistration;
@@ -55,8 +55,7 @@ public class MockedSmartElectricMeter extends SmartElectricMeter implements Mock
 		addModule(new MockedClock("clock_" + id, domain));
 		
 		// runMode
-//		addModule(new MockedRunState("runState_" + id, domain));
-		addModule(new MockedRunMode("runMode_" + id, domain));
+		addModule(new MockedRunState("runState_" + id, domain));
 
 		// energyGeneration
 		addModule(new MockedEnergyGeneration("energyGeneration_" + id, domain));

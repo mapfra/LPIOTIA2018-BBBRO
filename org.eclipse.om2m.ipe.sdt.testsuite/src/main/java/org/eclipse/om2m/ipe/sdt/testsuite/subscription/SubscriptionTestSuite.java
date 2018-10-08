@@ -7,10 +7,7 @@
  *******************************************************************************/
 package org.eclipse.om2m.ipe.sdt.testsuite.subscription;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.sql.DatabaseMetaData;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -25,11 +22,6 @@ import org.eclipse.om2m.commons.constants.NotificationContentType;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
 import org.eclipse.om2m.commons.resource.CustomAttribute;
-import org.eclipse.om2m.commons.resource.DiscoveryResult;
-import org.eclipse.om2m.commons.resource.Notification;
-import org.eclipse.om2m.commons.resource.Notification.NotificationEvent;
-import org.eclipse.om2m.commons.resource.Notification.NotificationEvent.Representation;
-import org.eclipse.om2m.commons.resource.Resource;
 import org.eclipse.om2m.commons.resource.ResponsePrimitive;
 import org.eclipse.om2m.commons.resource.Subscription;
 import org.eclipse.om2m.commons.resource.URIList;
@@ -38,14 +30,11 @@ import org.eclipse.om2m.datamapping.service.DataMapperService;
 import org.eclipse.om2m.ipe.sdt.testsuite.CSEUtil;
 import org.eclipse.om2m.ipe.sdt.testsuite.TestReport;
 import org.eclipse.om2m.ipe.sdt.testsuite.TestReport.State;
-import org.eclipse.om2m.ipe.sdt.testsuite.module.exception.FlexContainerNotFound;
 import org.eclipse.om2m.sdt.DataPoint;
 import org.eclipse.om2m.sdt.Module;
-import org.eclipse.om2m.sdt.Property;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.http.HttpService;
-import org.osgi.service.http.NamespaceException;
 import org.osgi.util.tracker.ServiceTracker;
 
 public class SubscriptionTestSuite extends HttpServlet {
@@ -226,7 +215,7 @@ public class SubscriptionTestSuite extends HttpServlet {
 					}
 					
 					// check value
-					String valueFromOM2M = ca.getCustomAttributeValue();
+					String valueFromOM2M = ca.getValue();
 					if (!valueFromOM2M.equals(value.toString())) {
 						report.setErrorMessage("value from OM2M (" + valueFromOM2M + ") is different of the value from SDT (" + value.toString() + ")");
 						report.setState(State.KO);

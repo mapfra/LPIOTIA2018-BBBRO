@@ -382,7 +382,7 @@ public class ShortName {
 	public static final String HOSTED_SRV_LINK = "hsl";
 	
 	// Short names for mgmt objects generic attributes
-	public static final String DESCRIPTION = "des";
+	public static final String DESCRIPTION = "dc";
 	public static final String MGMT_DEF = "mgd";
 	public static final String OBJ_IDS = "obis";
 	public static final String OBJ_PATHS = "obps";
@@ -447,16 +447,16 @@ public class ShortName {
 	public static final String SW_VERSION = "swv";
 	public static final String HW_VERSION = "hwv";
 	public static final String OS_VERSION = "osv";
-	public static final String MANUF_DET_LINKS = "mfdtl";
-	public static final String MANUF_DATE = "mfDte";
-	public static final String DEVICE_SUB_MODEL = "sumod";
-	public static final String DEVICE_NAME = "dnm";
-	public static final String COUNTRY = "ctry";
+	public static final String MANUF_DET_LINKS = "mfdl";
+	public static final String MANUF_DATE = "mfd";
+	public static final String DEVICE_SUB_MODEL = "smod";
+	public static final String DEVICE_NAME = "dvnm";
+	public static final String COUNTRY = "cnty";
 	public static final String LOCATION = "loc";
 	public static final String SYS_TIME = "syst";
-	public static final String SUPPORT_URL = "surl";
+	public static final String SUPPORT_URL = "spur";
 	public static final String PRES_URL = "purl";
-	public static final String PROTOCOL = "prtl";
+	public static final String PROTOCOL = "ptl";
 
 	// short names for battery
 	public static final String BATTERY_LEVEL = "btl";
@@ -469,4 +469,22 @@ public class ShortName {
 	public static final String DYNAMIC_AUTHORIZATION_ENABLED = "dae";
 	public static final String DYNAMIC_AUTHORIZATION_PoA = "dap";
 	public static final String DYNAMIC_AUTHORIZATION_LIFETIME = "dal";
+	
+	// short names for DynAuthDasRequest
+	public static final String TARGETED_RESOURCE_TYPE = "tirt";
+	public static final String TARGETED_RESOURCE_ID = "trid";
+	public static final String ORIGINATOR_IP = "oip";
+	public static final String  ORIGINATOR_LOCATION = "olo";
+	public static final String  ORIGINATOR_ROLE_IDS = "orid";
+	public static final String  REQUEST_TIMESTAMP = "rts";
+	public static final String  PROPOSED_PRIVILEDGES_LIFETIME = "ppl";
+	public static final String  ROLE_IDS_FROM_ACPS = "rfa";
+	public static final String  TOKEN_IDS = "tids";
+	
+	// short names for DynamicAuthTokenReqInfo
+	public static final String DYNAMIC_AUTHORIZATION_TOKEN_REQ_INFO = "tqf";
+	public static final String TOKEN_REQ_INFO = "tqf";
+	public static final String DAS_INFO = "dasi";
+	public static final String URI = "uri";
+	public static final String DAS_REQUEST = "daq";
 }

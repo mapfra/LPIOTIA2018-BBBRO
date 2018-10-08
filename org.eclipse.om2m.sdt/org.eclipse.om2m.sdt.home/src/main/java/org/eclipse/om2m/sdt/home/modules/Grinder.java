@@ -31,7 +31,7 @@ public class Grinder extends Module {
 		setExtends(domain.getName(), "Grinder");
 		
 		if ((useGrinder == null) ||
-				! useGrinder.getShortDefinitionType().equals(DatapointType.useGrinder.getShortName())) {
+				! useGrinder.getShortName().equals(DatapointType.useGrinder.getShortName())) {
 			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong useGrinder datapoint: " + useGrinder);
 		}
@@ -40,7 +40,7 @@ public class Grinder extends Module {
 		addDataPoint(this.useGrinder);
 		
 		if ((coarseness == null) ||
-				! coarseness.getShortDefinitionType().equals(DatapointType.coarseness.getShortName())) {
+				! coarseness.getShortName().equals(DatapointType.coarseness.getShortName())) {
 			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong coarseness datapoint: " + coarseness);
 		}

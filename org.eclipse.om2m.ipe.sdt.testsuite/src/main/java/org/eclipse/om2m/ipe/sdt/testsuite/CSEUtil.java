@@ -25,7 +25,6 @@ import org.eclipse.om2m.core.service.CseService;
 public class CSEUtil {
 	
 	public static ResponsePrimitive retrieveEntity(CseService cseService, String flexContainerLocation) {
-		
 		RequestPrimitive request = new RequestPrimitive();
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 		request.setRequestContentType(MimeMediaType.OBJ);
@@ -34,7 +33,6 @@ public class CSEUtil {
 		request.setTo(flexContainerLocation);
 		
 		return cseService.doRequest(request);
-		
 	}
 	
 	public static ResponsePrimitive updateFlexContainerEntity(CseService cseService, String flexContainerLocation, AbstractFlexContainer flexContainer) {
@@ -50,7 +48,6 @@ public class CSEUtil {
 	}
 	
 	public static ResponsePrimitive discovery(final CseService cseService, final List<String> labels, final String to) {
-		
 		RequestPrimitive request = new RequestPrimitive();
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 		request.setRequestContentType(MimeMediaType.OBJ);

@@ -80,6 +80,9 @@
       <plugin id="org.eclipse.om2m.dal.driver.sample"/>
       <plugin id="org.eclipse.om2m.interworking.service"/>
       <plugin id="org.eclipse.om2m.ipe.dal"/>
+      <plugin id="org.eclipse.om2m.hue.api"/>
+      <plugin id="org.eclipse.om2m.hue.impl"/>
+      <plugin id="org.eclipse.om2m.sdt.home.hue"/>
    </plugins>
 
    <configurations>
@@ -107,6 +110,9 @@
       <plugin id="org.eclipse.om2m.sdt.home.smartercoffee" autoStart="false" startLevel="6" />
       <plugin id="org.eclipse.om2m.sdt.home.tester" autoStart="false" startLevel="5" />
       <plugin id="org.eclipse.om2m.webapp.resourcesbrowser.json" autoStart="true" startLevel="4" />
+      <plugin id="org.eclipse.om2m.hue.api" autoStart="true" startLevel="5" />
+      <plugin id="org.eclipse.om2m.hue.impl" autoStart="true" startLevel="5" />
+      <plugin id="org.eclipse.om2m.sdt.home.hue" autoStart="true" startLevel="6" />
       <property name="log4j.configuration" value="file:./log4j.configuration" />
       <property name="org.apache.commons.logging.Log" value="org.apache.commons.logging.impl.Log4JLogger" />
       <property name="org.eclipse.equinox.http.jetty.http.port" value="8282" />

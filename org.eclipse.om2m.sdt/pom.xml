@@ -46,6 +46,7 @@
 		<module>org.eclipse.om2m.sdt.home.lifx</module>
 		<module>org.eclipse.om2m.sdt.home.netatmo</module> 
 		<module>org.eclipse.om2m.sdt.home.smartercoffee</module>
+		<module>org.eclipse.om2m.sdt.home.smarterkettle</module>
 		<module>org.eclipse.om2m.sdt.home.mocked.devices</module> 
 		<module>org.eclipse.om2m.sdt.home.utils</module> 
 		<module>org.eclipse.om2m.sdt.home.applications</module> 

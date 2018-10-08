@@ -90,7 +90,7 @@ public class Home {
 				currentCamera.setVpnUrl(pCamera.getVpnUrl());
 				return true;
 			} else {
-				// add case
+				// add new camera
 				cameras.put(pCamera.getId(), pCamera);
 				return false;
 			}
@@ -129,7 +129,6 @@ public class Home {
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
-		
 		sb.append("Home(id=").append(id).append(", name=").append(name).append(", persons=[");
 		Map<String, Person> ps = getPersons();
 		for(Person p : ps.values()) {

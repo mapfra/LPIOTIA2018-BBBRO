@@ -23,7 +23,6 @@ import org.eclipse.om2m.sdt.home.modules.BinarySwitch;
 import org.eclipse.om2m.sdt.home.modules.Colour;
 import org.eclipse.om2m.sdt.home.modules.ColourSaturation;
 import org.eclipse.om2m.sdt.home.modules.FaultDetection;
-import org.eclipse.om2m.sdt.home.modules.RunMode;
 import org.eclipse.om2m.sdt.home.types.DatapointType;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
@@ -54,12 +53,6 @@ public class EOLight extends Light implements EnOceanSDTDevice {
 			addFaultDetection();
 		} catch (Exception e) {
 			Activator.logger.warning("Error addFaultDetection", e);
-		}
-		try {
-//			addRunState();
-			addRunMode();
-		} catch (Exception e) {
-			Activator.logger.warning("Error addRunMode", e);
 		}
 		try {
 			addColour();
@@ -119,68 +112,6 @@ public class EOLight extends Light implements EnOceanSDTDevice {
 		addModule(faultDetection);
 	}
 
-//	private void addRunState() {
-//		RunState runState = new RunState("RunState_" + eoDevice.getChipId(), domain, 
-//			new JobStates(new EnumDataPoint<Integer>(null) {
-//				@Override
-//				public void doSetValue(Integer val) throws DataPointException {
-//					throw new DataPointException("Not implemented");
-//				}
-//				@Override
-//				public Integer doGetValue() throws DataPointException {
-//					return null;
-//				}
-//			}), 
-//			new ArrayDataPoint<Integer>(DatapointType.jobStates) {
-//				@Override
-//				public List<Integer> doGetValue() throws DataPointException {
-//					return null;
-//				}
-//			},
-//			new MachineState(new EnumDataPoint<Integer>(null) {
-//				@Override
-//				public void doSetValue(Integer val) throws DataPointException {
-//					throw new DataPointException("Not implemented");
-//				}
-//				@Override
-//				public Integer doGetValue() throws DataPointException {
-//					return null;
-//				}
-//			}), 
-//			new ArrayDataPoint<Integer>(DatapointType.machineStates) {
-//				@Override
-//				public List<Integer> doGetValue() throws DataPointException {
-//					return null;
-//				}
-//			});
-//		addModule(runState);
-//	}
-
-	private void addRunMode() {
-		RunMode runMode = new RunMode("RunMode_" + eoDevice.getChipId(), domain, 
-			new ArrayDataPoint<String>(DatapointType.operationMode) {
-				@Override
-				public void doSetValue(List<String> values) throws DataPointException {
-					throw new DataPointException("Not implemented");
-				}
-				@Override
-				public List<String> doGetValue() throws DataPointException {
-					return null;
-				}
-			}, 
-			new ArrayDataPoint<String>(DatapointType.supportedModes) {
-				@Override
-				public void doSetValue(List<String> value) throws DataPointException {
-					throw new DataPointException("Not implemented");
-				}
-				@Override
-				public List<String> doGetValue() throws DataPointException {
-					return null;
-				}
-			});
-		addModule(runMode);
-	}
-
 	private void addColour() {
 		Colour colour = new Colour("colour_" + eoDevice.getChipId(), domain, 
 			new IntegerDataPoint(DatapointType.red) {
@@ -216,7 +147,7 @@ public class EOLight extends Light implements EnOceanSDTDevice {
 	private void addColourSaturation() {
 		ColourSaturation colourSaturation = new ColourSaturation("colourSaturation_" + eoDevice.getChipId(), 
 			domain,
-			new IntegerDataPoint(DatapointType.colourSat) {
+			new IntegerDataPoint(DatapointType.colourSaturation) {
 				@Override
 				public void doSetValue(Integer value) throws DataPointException {
 				}

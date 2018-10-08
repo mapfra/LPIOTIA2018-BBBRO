@@ -19,9 +19,10 @@
 		<link rel="stylesheet" href="../webapps/css/angular-ui-switch.css">
 		<link rel="stylesheet" href="../webapps/css/bootstrap-3.0.1.min.css">
 		<!-- WN Part -->
-	 <script type="text/javascript" src="../webapps/js/jquery.js"></script>
-		<script type="text/javascript" src="../webapps/js/farbtastic.js"></script>
-		<link rel="stylesheet" href="../webapps/css/farbtastic.css" type="text/css" />
+        <script type="text/javascript" src="../webapps/js/jquery.js"></script>
+        <script type="text/javascript" src="../webapps/js/color_tools.js"></script>
+		<script type="text/javascript" src="../webapps/js/color_picker.js"></script>
+		<link rel="stylesheet" href="../webapps/css/color_picker.css" type="text/css" />
 		<!-- End WN Part -->
 		
 		
@@ -43,7 +44,7 @@
 
 	<body onLoad="listHeight()" onResize="listHeight()" data-ng-controller="MainController">
 		<div class="page-wrap" id="page-wrap">
-			<script src="{{camera}}"></script>
+		
 			<!-- main page -->
 			<header class="top_bar">
 				<div class="container">
@@ -83,15 +84,21 @@
 					<form>
 						<ul>
 							<li ng-repeat='device in getDevicesAsArray() | filter: deviceFilter' 
-									ng-class="{'backgroundRed' : device.isUpdated}">
+									ng-class="{'backgroundRed' : device.isUpdated, 'backgroundGray' : !device.enable}">
 								<div>{{device.name}}</div>
 								<table width="100%">
 									<tr>
-										<td ng-repeat="module in getModulesFromDevice(device) | filter: moduleFilter">
-											<img ng-src="../webapps/{{module.img}}" />
-											{{module.value}}
+                                        <td ng-repeat="module in getModulesFromDevice(device) | filter: moduleFilter">
+                                            <div ng-repeat="el in getElementsToBeDisplayed(module)">
+                                                <img ng-src="../webapps/images/{{el.img}}" />
+                                                {{module.datapoints[el.dataPoint].value}}
+                                            </div>
 										</td>
-										<td class="tdSmall" 
+<!--										<td ng-repeat="module in getModulesFromDevice(device) | filter: moduleFilter">
+											<img ng-src="../webapps/images/{{moduleDisplay[module.name][0].img}}" />
+											{{module.datapoints[moduleDisplay[module.name][0].dataPoint].value}}
+										</td>
+-->										<td class="tdSmall" 
 												ng-repeat="module in getModulesFromDevice(device) | filter: switchFilter">
 											<div ng-hide="module.hideSpinning" class="spinner"></div>
 										</td>
@@ -110,8 +117,10 @@
 											<!-- 	<div id="{{color_(module)}}"> </div> -->
 												
 												<div id="{{picker_id(module)}}" class="picker">
-													<div class="farbtastic"><div class="color"  id="{{picker_id(module)}}_color"></div> 
-														<div class="wheel" ng-mousedown="startHueRGBChange(module)"></div><div class="h-marker marker" ng-mousedown="startHueRGBChange(module)"></div>
+													<div class="colorPicker">
+                                                        <div class="color"  id="{{picker_id(module)}}_color"></div> 
+														<div class="ring" ng-mousedown="startHueRGBChange(module)"></div>
+                                                        <div class="ringPointer pointer" ng-mousedown="startHueRGBChange(module)"></div>
 													</div>
 												</div>
 

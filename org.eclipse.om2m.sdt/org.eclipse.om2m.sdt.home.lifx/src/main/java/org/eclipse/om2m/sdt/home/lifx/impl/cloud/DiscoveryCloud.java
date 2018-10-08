@@ -124,12 +124,12 @@ public class DiscoveryCloud extends Discovery {
 			boolean deviceRemoved = false;
 			// 2016 11 28 - BONNARDEL Gregory
 			// do not remove LIFX device
-//			synchronized (devices) {
-//				if (devices.containsKey(device.getId())) {
-//					devices.remove(device.getId());
-//					deviceRemoved = true;
-//				}
-//			}
+			// synchronized (devices) {
+			// if (devices.containsKey(device.getId())) {
+			// devices.remove(device.getId());
+			// deviceRemoved = true;
+			// }
+			// }
 
 			if (deviceRemoved) {
 				notifyAllListeners_DeviceLeft(device);
@@ -166,12 +166,13 @@ public class DiscoveryCloud extends Discovery {
 		httpUrlConnection = (HttpURLConnection) new URL(LIGHT_URL + lifxDevice.getId() + "/state").openConnection();
 		httpUrlConnection.setRequestMethod("PUT");
 		httpUrlConnection.setRequestProperty("Authorization", "Bearer " + lifxDevice.getAuthenticationToken());
+		httpUrlConnection.setRequestProperty("Content-Type", "application/json");
 
 		String data = "{";
 		if (power != null) {
 			data += "\"power\":\"" + power + "\",";
 		}
-		
+
 		if (brightness != null) {
 			data += "\"brightness\":" + brightness + ",";
 		}
@@ -186,7 +187,7 @@ public class DiscoveryCloud extends Discovery {
 			if (saturation != null) {
 				data += "saturation:" + saturation;
 			}
-			
+
 			data += "\",";
 		}
 		if (duration != null) {
@@ -196,12 +197,55 @@ public class DiscoveryCloud extends Discovery {
 			data = data.substring(0, data.length() - 1);
 		}
 		data += "}";
-		
+
 		httpUrlConnection.setDoOutput(true);
 		httpUrlConnection.setDoInput(true);
 
 		httpUrlConnection.getOutputStream().write(data.getBytes());
 		httpUrlConnection.connect();
+		System.out.println(httpUrlConnection.getResponseMessage());
+
+		if (httpUrlConnection.getResponseCode() == 207) {
+
+		}
+	}
+
+	public static void setLightPower(LIFXDeviceCloud lifxDevice, String power, Integer red, Integer green, Integer blue,
+			Integer duration) throws MalformedURLException, IOException {
+		HttpURLConnection httpUrlConnection = null;
+		httpUrlConnection = (HttpURLConnection) new URL(LIGHT_URL + lifxDevice.getId() + "/state").openConnection();
+		httpUrlConnection.setRequestMethod("PUT");
+		httpUrlConnection.setRequestProperty("Authorization", "Bearer " + lifxDevice.getAuthenticationToken());
+		httpUrlConnection.setRequestProperty("Content-Type", "application/json");
+
+		String data = "{";
+		if (power != null) {
+			data += "\"power\":\"" + power + "\",";
+		}
+
+		if ((red != null) || (green != null) || (blue != null)) {
+			data += "\"color\":\"rgb:";
+			data += red;
+			data += ",";
+			data += green;
+			data += ",";
+			data += blue;
+			data += "\",";
+		}
+		if (duration != null) {
+			data += "\"duration\":" + duration + ",";
+		}
+		if (data.endsWith(",")) {
+			data = data.substring(0, data.length() - 1);
+		}
+		data += "}";
+
+		httpUrlConnection.setDoOutput(true);
+		httpUrlConnection.setDoInput(true);
+
+		httpUrlConnection.getOutputStream().write(data.getBytes());
+		httpUrlConnection.connect();
+		System.out.println(httpUrlConnection.getResponseMessage());
 
 		if (httpUrlConnection.getResponseCode() == 207) {
 

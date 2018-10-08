@@ -271,7 +271,7 @@ public abstract class FlexContainerTestSuite {
 
 			CustomAttribute foundCa = null;
 			for (CustomAttribute caOfToBeCompared : toBeCompared.getCustomAttributes()) {
-				if (caOfToBeCompared.getCustomAttributeName().equals(ca.getCustomAttributeName())) {
+				if (caOfToBeCompared.getShortName().equals(ca.getShortName())) {
 					foundCa = caOfToBeCompared;
 					break;
 				}
@@ -281,21 +281,21 @@ public abstract class FlexContainerTestSuite {
 	}
 
 	protected void checkCustomAttribute(CustomAttribute initialCa, CustomAttribute toBeComparedCa) throws Exception {
-		if (!initialCa.getCustomAttributeName().equals(toBeComparedCa.getCustomAttributeName())) {
+		if (!initialCa.getShortName().equals(toBeComparedCa.getShortName())) {
 			throw new Exception(
-					"customAttributeName are differents (initialCaName=" + initialCa.getCustomAttributeName()
-							+ ", toBeComparedCaName=" + toBeComparedCa.getCustomAttributeName());
+					"name are differents (initialCaName=" + initialCa.getShortName()
+							+ ", toBeComparedCaName=" + toBeComparedCa.getShortName());
 		}
 
 
 		// value may be null
-		if ((initialCa.getCustomAttributeValue() == null) && (toBeComparedCa.getCustomAttributeValue() != null)) {
+		if ((initialCa.getValue() == null) && (toBeComparedCa.getValue() != null)) {
 			throw new Exception("initialCa value is null but toBeComparedCa value is not null");
 		}
-		if (!initialCa.getCustomAttributeValue().equals(toBeComparedCa.getCustomAttributeValue())) {
+		if (!initialCa.getValue().equals(toBeComparedCa.getValue())) {
 			throw new Exception(
-					"customAttributeValue are differents (initialCaType=" + initialCa.getCustomAttributeValue()
-							+ ", toBeComparedCaType=" + toBeComparedCa.getCustomAttributeValue());
+					"customAttributeValue are differents (initialCaType=" + initialCa.getValue()
+							+ ", toBeComparedCaType=" + toBeComparedCa.getValue());
 		}
 
 	}

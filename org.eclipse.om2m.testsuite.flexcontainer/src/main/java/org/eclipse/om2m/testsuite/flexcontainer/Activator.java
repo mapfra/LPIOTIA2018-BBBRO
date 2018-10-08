@@ -178,7 +178,7 @@ public class Activator implements BundleActivator {
 		faultDetectionTest.executeTestsAndPrintReports();
 		tests.add(faultDetectionTest);
 		
-		RunModeFlexContainerTest runModeTest = new RunModeFlexContainerTest(cseService);
+		RunStateFlexContainerTest runModeTest = new RunStateFlexContainerTest(cseService);
 		runModeTest.executeTestsAndPrintReports();
 		tests.add(runModeTest);
 		

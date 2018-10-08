@@ -12,7 +12,6 @@ import java.util.List;
 import org.eclipse.om2m.sdt.Domain;
 import org.eclipse.om2m.sdt.Event;
 import org.eclipse.om2m.sdt.datapoints.BooleanDataPoint;
-import org.eclipse.om2m.sdt.datapoints.EnumDataPoint;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.devices.WaterValve;
 import org.eclipse.om2m.sdt.home.driver.Utils;
@@ -40,7 +39,7 @@ public class EOWaterValve extends WaterValve implements EnOceanSDTDevice {
 	private org.eclipse.om2m.sdt.home.modules.LiquidLevel waterLevel;
 	
 	private LiquidLevel liquidLevelDP;
-	private Integer liquidLevel = LiquidLevel.maximum;
+	private LiquidLevel.Values liquidLevel = LiquidLevel.Values.maximum;
 
 	public EOWaterValve(EnOceanDevice device, Domain domain,
 			String serial, BundleContext context) {
@@ -97,10 +96,10 @@ public class EOWaterValve extends WaterValve implements EnOceanSDTDevice {
 		String msg;
 		if (feedback == 1) {
 			msg = "Closed";
-			liquidLevel = LiquidLevel.zero;
+			liquidLevel = LiquidLevel.Values.zero;
 		} else if (feedback == 2) {
 			msg = "Opened";
-			liquidLevel = LiquidLevel.maximum;
+			liquidLevel = LiquidLevel.Values.maximum;
 		} else {
 			msg = "Not defined";
 			liquidLevel = null;
@@ -114,9 +113,9 @@ public class EOWaterValve extends WaterValve implements EnOceanSDTDevice {
 	}
 
 	private void addWaterLevel() {
-		liquidLevelDP = new LiquidLevel(new EnumDataPoint<Integer>(null) {
+		liquidLevelDP = new LiquidLevel() {
 			@Override
-			public void doSetValue(Integer value) throws DataPointException {
+			public void doSetValue(LiquidLevel.Values value) throws DataPointException {
 				try {
 					turn(value);
 				} catch (DataPointException e) {
@@ -126,13 +125,14 @@ public class EOWaterValve extends WaterValve implements EnOceanSDTDevice {
 				}
 			}
 			@Override
-			public Integer doGetValue() throws DataPointException {
+			public LiquidLevel.Values doGetValue() throws DataPointException {
 				if (liquidLevel == null)
 					throw new DataPointException("Unknown");
 				return liquidLevel;
 			}
-		});
-		waterLevel = new org.eclipse.om2m.sdt.home.modules.LiquidLevel("Level_" + eoDevice.getChipId(), domain, liquidLevelDP);
+		};
+		waterLevel = new org.eclipse.om2m.sdt.home.modules.LiquidLevel("Level_" + eoDevice.getChipId(),
+				domain, liquidLevelDP);
 		
 		Activator.logger.info("add LiquidLevel module: " + waterLevel);
 		addModule(waterLevel);
@@ -149,18 +149,13 @@ public class EOWaterValve extends WaterValve implements EnOceanSDTDevice {
 		addModule(faultDetection);
 	}
 
-	private void turn(int value) throws DataPointException {
+	private void turn(LiquidLevel.Values value) throws DataPointException {
 		final String command;
-		switch (value) {
-		case LiquidLevel.zero:
+		if (value == LiquidLevel.Values.zero) {
 			command = "HARDCODED_TURN_OFF";
-			break;
-		case LiquidLevel.maximum:
+		} else if (value == LiquidLevel.Values.maximum) {
 			command = "HARDCODED_APPAIR_TURN_ON";
-			break;
-		default:
-			throw new DataPointException("Invalid value " + value);
-		}
+		} else throw new DataPointException("Invalid value " + value);
 		EnOceanRPC appairRPC = new EnOceanRPC() {
 			private int senderId = 0x00000000;
 			public void setSenderId(int chipId) {
@@ -191,7 +186,7 @@ public class EOWaterValve extends WaterValve implements EnOceanSDTDevice {
 		};
 
 		Activator.logger.info("Water pump available, " 
-				+ ((value == LiquidLevel.zero) ? "close it!" : "Open it!"),
+				+ ((value == LiquidLevel.Values.zero) ? "close it!" : "Open it!"),
 			EOWaterValve.class);
 		eoDevice.invoke(appairRPC, handlerTurnRPC);
 		Activator.logger.info("OK!", EOWaterValve.class);

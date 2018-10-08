@@ -30,7 +30,7 @@ public class FaultDetection extends Module {
 		super(name, domain, ModuleType.faultDetection);
 		
 		if ((status == null) ||
-				! status.getShortDefinitionType().equals(DatapointType.status.getShortName())) {
+				! status.getShortName().equals(DatapointType.status.getShortName())) {
 			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong status datapoint: " + status);
 		}

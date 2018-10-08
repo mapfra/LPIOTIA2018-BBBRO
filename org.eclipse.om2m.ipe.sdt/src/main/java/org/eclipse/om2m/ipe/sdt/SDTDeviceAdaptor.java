@@ -114,6 +114,9 @@ public class SDTDeviceAdaptor {
 		nwkDeviceInfo.setDevID(this.device.getName());
 		nwkDeviceInfo.setDevType("SDT");
 		
+		// Set cnd in deviceInfo's deviceType
+		devInfo.setDeviceType(flexContainer.getContainerDefinition());
+		
 		logger.info("Node mgmtObjs: " + node.getMgmtObjs());
 
 		if (hasToBeAnnounced) {
@@ -153,8 +156,8 @@ public class SDTDeviceAdaptor {
 					devInfo.setManufacturer(sdtProperty.getValue());
 				} else if (shortName.equals(PropertyType.deviceModelName.getShortName())) {
 					devInfo.setModel(sdtProperty.getValue());
-				} else if (shortName.equals(PropertyType.deviceType.getShortName())) {
-					devInfo.setDeviceType(sdtProperty.getValue());
+//				} else if (shortName.equals(PropertyType.deviceType.getShortName())) {
+//					devInfo.setDeviceType(sdtProperty.getValue());
 				} else if (shortName.equals(PropertyType.hardwareVersion.getShortName())) {
 					devInfo.setHwVersion(sdtProperty.getValue());
 				} else if (shortName.equals(PropertyType.manufacturerDetailsLink.getShortName())) {
@@ -179,8 +182,8 @@ public class SDTDeviceAdaptor {
 					devInfo.setProtocol(sdtProperty.getValue());
 				} else {
 					CustomAttribute customAttributeForSdtProperty = new CustomAttribute();
-					customAttributeForSdtProperty.setCustomAttributeName(shortName);
-					customAttributeForSdtProperty.setCustomAttributeValue(sdtProperty.getValue());
+					customAttributeForSdtProperty.setShortName(shortName);
+					customAttributeForSdtProperty.setValue(sdtProperty.getValue());
 					logger.info("new Property CustomAttribute (" + customAttributeForSdtProperty + ")");
 					flexContainer.getCustomAttributes().add(customAttributeForSdtProperty);
 				}

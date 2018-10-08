@@ -1,6 +1,6 @@
 /*
 ********************************************************************************
- * Copyright (c) 2014, 2017 Orange.
+ * Copyright (c) 2014, 2018 Orange.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,9 +9,9 @@
 
 Device : DeviceCoffeeMachineAnnc
 
-A CoffeeMachine is a device that produces coffee.
+A coffee machine is a device that is used to brew a coffee, may add foamed milk, and may include some variants, for example a grinder.
 
-Created: 2018-06-11 12:14:18
+Created: 2018-06-29 17:19:54
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -21,9 +21,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+
 import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
 import org.eclipse.om2m.commons.resource.AbstractFlexContainerAnnc;
-
 
 @XmlRootElement(name = DeviceCoffeeMachineFlexContainerAnnc.SHORT_NAME, namespace = "http://www.onem2m.org/xml/protocols/homedomain")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -37,34 +37,22 @@ public class DeviceCoffeeMachineFlexContainerAnnc extends AbstractFlexContainerA
 		setContainerDefinition("org.onem2m.home.device." + DeviceCoffeeMachineFlexContainer.LONG_NAME);
 		setLongName(LONG_NAME);
 		setShortName(SHORT_NAME);
-	}
+    }
 	
 	public void finalizeSerialization() {
 		getFaultDetection();
 		getFaultDetectionAnnc();
-		getRunMode();
-		getRunModeAnnc();
+		getRunState();
+		getRunStateAnnc();
 		getClock();
 		getClockAnnc();
 		getBrewing();
 		getBrewingAnnc();
-		getWaterStatus();
-		getWaterStatusAnnc();
-		getMilkStatus();
-		getMilkStatusAnnc();
-		getBeansStatus();
-		getBeansStatusAnnc();
 		getGrinder();
 		getGrinderAnnc();
-		getFoamedMilk();
-		getFoamedMilkAnnc();
-		getMilkQuantity();
-		getMilkQuantityAnnc();
 		getKeepWarm();
 		getKeepWarmAnnc();
-		getBrewingSwitch();
-		getBrewingSwitchAnnc();
-	}
+    }
 	
 	public void finalizeDeserialization() {
 		if (this.faultDetection != null) {
@@ -72,91 +60,42 @@ public class DeviceCoffeeMachineFlexContainerAnnc extends AbstractFlexContainerA
 		}
 		if (this.faultDetectionAnnc != null) {
 			setFaultDetectionAnnc(this.faultDetectionAnnc);
-			}
-		
-		if (this.runMode != null) {
-			setRunMode(this.runMode);
 		}
-		if (this.runModeAnnc != null) {
-			setRunModeAnnc(this.runModeAnnc);
-			}
-		
+		if (this.runState != null) {
+			setRunState(this.runState);
+		}
+		if (this.runStateAnnc != null) {
+			setRunStateAnnc(this.runStateAnnc);
+		}
 		if (this.clock != null) {
 			setClock(this.clock);
 		}
 		if (this.clockAnnc != null) {
 			setClockAnnc(this.clockAnnc);
-			}
-		
+		}
 		if (this.brewing != null) {
 			setBrewing(this.brewing);
 		}
 		if (this.brewingAnnc != null) {
 			setBrewingAnnc(this.brewingAnnc);
-			}
-		
-		if (this.waterStatus != null) {
-			setWaterStatus(this.waterStatus);
 		}
-		if (this.waterStatusAnnc != null) {
-			setWaterStatusAnnc(this.waterStatusAnnc);
-			}
-		
-		if (this.milkStatus != null) {
-			setMilkStatus(this.milkStatus);
-		}
-		if (this.milkStatusAnnc != null) {
-			setMilkStatusAnnc(this.milkStatusAnnc);
-			}
-		
-		if (this.beansStatus != null) {
-			setBeansStatus(this.beansStatus);
-		}
-		if (this.beansStatusAnnc != null) {
-			setBeansStatusAnnc(this.beansStatusAnnc);
-			}
-		
 		if (this.grinder != null) {
 			setGrinder(this.grinder);
 		}
 		if (this.grinderAnnc != null) {
 			setGrinderAnnc(this.grinderAnnc);
-			}
-		
-		if (this.foamedMilk != null) {
-			setFoamedMilk(this.foamedMilk);
 		}
-		if (this.foamedMilkAnnc != null) {
-			setFoamedMilkAnnc(this.foamedMilkAnnc);
-			}
-		
-		if (this.milkQuantity != null) {
-			setMilkQuantity(this.milkQuantity);
-		}
-		if (this.milkQuantityAnnc != null) {
-			setMilkQuantityAnnc(this.milkQuantityAnnc);
-			}
-		
 		if (this.keepWarm != null) {
 			setKeepWarm(this.keepWarm);
 		}
 		if (this.keepWarmAnnc != null) {
 			setKeepWarmAnnc(this.keepWarmAnnc);
-			}
-		
-		if (this.brewingSwitch != null) {
-			setBrewingSwitch(this.brewingSwitch);
 		}
-		if (this.brewingSwitchAnnc != null) {
-			setBrewingSwitchAnnc(this.brewingSwitchAnnc);
-			}
-		
 	}
-	
-	@XmlElement(name="fauDn", required=true, type=FaultDetectionFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+
+	@XmlElement(name=FaultDetectionFlexContainer.SHORT_NAME, required=true, type=FaultDetectionFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private FaultDetectionFlexContainer faultDetection;
-	
-	
+		
 	public void setFaultDetection(FaultDetectionFlexContainer faultDetection) {
 		this.faultDetection = faultDetection;
 		getFlexContainerOrContainerOrSubscription().add(faultDetection);
@@ -167,10 +106,9 @@ public class DeviceCoffeeMachineFlexContainerAnnc extends AbstractFlexContainerA
 		return faultDetection;
 	}
 	
-	@XmlElement(name="fauDnAnnc", required=true, type=FaultDetectionFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	@XmlElement(name=FaultDetectionFlexContainerAnnc.SHORT_NAME, required=true, type=FaultDetectionFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private FaultDetectionFlexContainerAnnc faultDetectionAnnc;
-	
-	
+		
 	public void setFaultDetectionAnnc(FaultDetectionFlexContainerAnnc faultDetectionAnnc) {
 		this.faultDetectionAnnc = faultDetectionAnnc;
 		getFlexContainerOrContainerOrSubscription().add(faultDetectionAnnc);
@@ -181,38 +119,35 @@ public class DeviceCoffeeMachineFlexContainerAnnc extends AbstractFlexContainerA
 		return faultDetectionAnnc;
 	}
 	
-	@XmlElement(name="runMe", required=true, type=RunModeFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
-	private RunModeFlexContainer runMode;
-	
-	
-	public void setRunMode(RunModeFlexContainer runMode) {
-		this.runMode = runMode;
-		getFlexContainerOrContainerOrSubscription().add(runMode);
+	@XmlElement(name=RunStateFlexContainer.SHORT_NAME, required=true, type=RunStateFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	private RunStateFlexContainer runState;
+		
+	public void setRunState(RunStateFlexContainer runState) {
+		this.runState = runState;
+		getFlexContainerOrContainerOrSubscription().add(runState);
 	}
 	
-	public RunModeFlexContainer getRunMode() {
-		this.runMode = (RunModeFlexContainer) getResourceByName(RunModeFlexContainer.SHORT_NAME);
-		return runMode;
+	public RunStateFlexContainer getRunState() {
+		this.runState = (RunStateFlexContainer) getResourceByName(RunStateFlexContainer.SHORT_NAME);
+		return runState;
 	}
 	
-	@XmlElement(name="runMeAnnc", required=true, type=RunModeFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
-	private RunModeFlexContainerAnnc runModeAnnc;
-	
-	
-	public void setRunModeAnnc(RunModeFlexContainerAnnc runModeAnnc) {
-		this.runModeAnnc = runModeAnnc;
-		getFlexContainerOrContainerOrSubscription().add(runModeAnnc);
+	@XmlElement(name=RunStateFlexContainerAnnc.SHORT_NAME, required=true, type=RunStateFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	private RunStateFlexContainerAnnc runStateAnnc;
+		
+	public void setRunStateAnnc(RunStateFlexContainerAnnc runStateAnnc) {
+		this.runStateAnnc = runStateAnnc;
+		getFlexContainerOrContainerOrSubscription().add(runStateAnnc);
 	}
 	
-	public RunModeFlexContainerAnnc getRunModeAnnc() {
-		this.runModeAnnc = (RunModeFlexContainerAnnc) getResourceByName(RunModeFlexContainerAnnc.SHORT_NAME);
-		return runModeAnnc;
+	public RunStateFlexContainerAnnc getRunStateAnnc() {
+		this.runStateAnnc = (RunStateFlexContainerAnnc) getResourceByName(RunStateFlexContainerAnnc.SHORT_NAME);
+		return runStateAnnc;
 	}
 	
-	@XmlElement(name="clock", required=true, type=ClockFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	@XmlElement(name=ClockFlexContainer.SHORT_NAME, required=true, type=ClockFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private ClockFlexContainer clock;
-	
-	
+		
 	public void setClock(ClockFlexContainer clock) {
 		this.clock = clock;
 		getFlexContainerOrContainerOrSubscription().add(clock);
@@ -223,10 +158,9 @@ public class DeviceCoffeeMachineFlexContainerAnnc extends AbstractFlexContainerA
 		return clock;
 	}
 	
-	@XmlElement(name="clockAnnc", required=true, type=ClockFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	@XmlElement(name=ClockFlexContainerAnnc.SHORT_NAME, required=true, type=ClockFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private ClockFlexContainerAnnc clockAnnc;
-	
-	
+		
 	public void setClockAnnc(ClockFlexContainerAnnc clockAnnc) {
 		this.clockAnnc = clockAnnc;
 		getFlexContainerOrContainerOrSubscription().add(clockAnnc);
@@ -237,10 +171,9 @@ public class DeviceCoffeeMachineFlexContainerAnnc extends AbstractFlexContainerA
 		return clockAnnc;
 	}
 	
-	@XmlElement(name="brewg", required=true, type=BrewingFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	@XmlElement(name=BrewingFlexContainer.SHORT_NAME, required=true, type=BrewingFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BrewingFlexContainer brewing;
-	
-	
+		
 	public void setBrewing(BrewingFlexContainer brewing) {
 		this.brewing = brewing;
 		getFlexContainerOrContainerOrSubscription().add(brewing);
@@ -251,10 +184,9 @@ public class DeviceCoffeeMachineFlexContainerAnnc extends AbstractFlexContainerA
 		return brewing;
 	}
 	
-	@XmlElement(name="brewgAnnc", required=true, type=BrewingFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	@XmlElement(name=BrewingFlexContainerAnnc.SHORT_NAME, required=true, type=BrewingFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BrewingFlexContainerAnnc brewingAnnc;
-	
-	
+		
 	public void setBrewingAnnc(BrewingFlexContainerAnnc brewingAnnc) {
 		this.brewingAnnc = brewingAnnc;
 		getFlexContainerOrContainerOrSubscription().add(brewingAnnc);
@@ -265,94 +197,9 @@ public class DeviceCoffeeMachineFlexContainerAnnc extends AbstractFlexContainerA
 		return brewingAnnc;
 	}
 	
-	@XmlElement(name="watSs", required=true, type=LiquidLevelFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
-	private LiquidLevelFlexContainer waterStatus;
-	
-	
-	public void setWaterStatus(LiquidLevelFlexContainer waterStatus) {
-		this.waterStatus = waterStatus;
-		getFlexContainerOrContainerOrSubscription().add(waterStatus);
-	}
-	
-	public LiquidLevelFlexContainer getWaterStatus() {
-		this.waterStatus = (LiquidLevelFlexContainer) getResourceByName(LiquidLevelFlexContainer.SHORT_NAME);
-		return waterStatus;
-	}
-	
-	@XmlElement(name="watSsAnnc", required=true, type=LiquidLevelFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
-	private LiquidLevelFlexContainerAnnc waterStatusAnnc;
-	
-	
-	public void setWaterStatusAnnc(LiquidLevelFlexContainerAnnc waterStatusAnnc) {
-		this.waterStatusAnnc = waterStatusAnnc;
-		getFlexContainerOrContainerOrSubscription().add(waterStatusAnnc);
-	}
-	
-	public LiquidLevelFlexContainerAnnc getWaterStatusAnnc() {
-		this.waterStatusAnnc = (LiquidLevelFlexContainerAnnc) getResourceByName(LiquidLevelFlexContainerAnnc.SHORT_NAME);
-		return waterStatusAnnc;
-	}
-	
-	@XmlElement(name="milSs", required=true, type=LiquidLevelFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
-	private LiquidLevelFlexContainer milkStatus;
-	
-	
-	public void setMilkStatus(LiquidLevelFlexContainer milkStatus) {
-		this.milkStatus = milkStatus;
-		getFlexContainerOrContainerOrSubscription().add(milkStatus);
-	}
-	
-	public LiquidLevelFlexContainer getMilkStatus() {
-		this.milkStatus = (LiquidLevelFlexContainer) getResourceByName(LiquidLevelFlexContainer.SHORT_NAME);
-		return milkStatus;
-	}
-	
-	@XmlElement(name="milSsAnnc", required=true, type=LiquidLevelFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
-	private LiquidLevelFlexContainerAnnc milkStatusAnnc;
-	
-	
-	public void setMilkStatusAnnc(LiquidLevelFlexContainerAnnc milkStatusAnnc) {
-		this.milkStatusAnnc = milkStatusAnnc;
-		getFlexContainerOrContainerOrSubscription().add(milkStatusAnnc);
-	}
-	
-	public LiquidLevelFlexContainerAnnc getMilkStatusAnnc() {
-		this.milkStatusAnnc = (LiquidLevelFlexContainerAnnc) getResourceByName(LiquidLevelFlexContainerAnnc.SHORT_NAME);
-		return milkStatusAnnc;
-	}
-	
-	@XmlElement(name="beaSs", required=true, type=LiquidLevelFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
-	private LiquidLevelFlexContainer beansStatus;
-	
-	
-	public void setBeansStatus(LiquidLevelFlexContainer beansStatus) {
-		this.beansStatus = beansStatus;
-		getFlexContainerOrContainerOrSubscription().add(beansStatus);
-	}
-	
-	public LiquidLevelFlexContainer getBeansStatus() {
-		this.beansStatus = (LiquidLevelFlexContainer) getResourceByName(LiquidLevelFlexContainer.SHORT_NAME);
-		return beansStatus;
-	}
-	
-	@XmlElement(name="beaSsAnnc", required=true, type=LiquidLevelFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
-	private LiquidLevelFlexContainerAnnc beansStatusAnnc;
-	
-	
-	public void setBeansStatusAnnc(LiquidLevelFlexContainerAnnc beansStatusAnnc) {
-		this.beansStatusAnnc = beansStatusAnnc;
-		getFlexContainerOrContainerOrSubscription().add(beansStatusAnnc);
-	}
-	
-	public LiquidLevelFlexContainerAnnc getBeansStatusAnnc() {
-		this.beansStatusAnnc = (LiquidLevelFlexContainerAnnc) getResourceByName(LiquidLevelFlexContainerAnnc.SHORT_NAME);
-		return beansStatusAnnc;
-	}
-	
-	@XmlElement(name="grinr", required=true, type=GrinderFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	@XmlElement(name=GrinderFlexContainer.SHORT_NAME, required=true, type=GrinderFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private GrinderFlexContainer grinder;
-	
-	
+		
 	public void setGrinder(GrinderFlexContainer grinder) {
 		this.grinder = grinder;
 		getFlexContainerOrContainerOrSubscription().add(grinder);
@@ -363,10 +210,9 @@ public class DeviceCoffeeMachineFlexContainerAnnc extends AbstractFlexContainerA
 		return grinder;
 	}
 	
-	@XmlElement(name="grinrAnnc", required=true, type=GrinderFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	@XmlElement(name=GrinderFlexContainerAnnc.SHORT_NAME, required=true, type=GrinderFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private GrinderFlexContainerAnnc grinderAnnc;
-	
-	
+		
 	public void setGrinderAnnc(GrinderFlexContainerAnnc grinderAnnc) {
 		this.grinderAnnc = grinderAnnc;
 		getFlexContainerOrContainerOrSubscription().add(grinderAnnc);
@@ -377,66 +223,9 @@ public class DeviceCoffeeMachineFlexContainerAnnc extends AbstractFlexContainerA
 		return grinderAnnc;
 	}
 	
-	@XmlElement(name="foaMk", required=true, type=FoamingFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
-	private FoamingFlexContainer foamedMilk;
-	
-	
-	public void setFoamedMilk(FoamingFlexContainer foamedMilk) {
-		this.foamedMilk = foamedMilk;
-		getFlexContainerOrContainerOrSubscription().add(foamedMilk);
-	}
-	
-	public FoamingFlexContainer getFoamedMilk() {
-		this.foamedMilk = (FoamingFlexContainer) getResourceByName(FoamingFlexContainer.SHORT_NAME);
-		return foamedMilk;
-	}
-	
-	@XmlElement(name="foaMkAnnc", required=true, type=FoamingFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
-	private FoamingFlexContainerAnnc foamedMilkAnnc;
-	
-	
-	public void setFoamedMilkAnnc(FoamingFlexContainerAnnc foamedMilkAnnc) {
-		this.foamedMilkAnnc = foamedMilkAnnc;
-		getFlexContainerOrContainerOrSubscription().add(foamedMilkAnnc);
-	}
-	
-	public FoamingFlexContainerAnnc getFoamedMilkAnnc() {
-		this.foamedMilkAnnc = (FoamingFlexContainerAnnc) getResourceByName(FoamingFlexContainerAnnc.SHORT_NAME);
-		return foamedMilkAnnc;
-	}
-	
-	@XmlElement(name="milQy", required=true, type=LiquidLevelFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
-	private LiquidLevelFlexContainer milkQuantity;
-	
-	
-	public void setMilkQuantity(LiquidLevelFlexContainer milkQuantity) {
-		this.milkQuantity = milkQuantity;
-		getFlexContainerOrContainerOrSubscription().add(milkQuantity);
-	}
-	
-	public LiquidLevelFlexContainer getMilkQuantity() {
-		this.milkQuantity = (LiquidLevelFlexContainer) getResourceByName(LiquidLevelFlexContainer.SHORT_NAME);
-		return milkQuantity;
-	}
-	
-	@XmlElement(name="milQyAnnc", required=true, type=LiquidLevelFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
-	private LiquidLevelFlexContainerAnnc milkQuantityAnnc;
-	
-	
-	public void setMilkQuantityAnnc(LiquidLevelFlexContainerAnnc milkQuantityAnnc) {
-		this.milkQuantityAnnc = milkQuantityAnnc;
-		getFlexContainerOrContainerOrSubscription().add(milkQuantityAnnc);
-	}
-	
-	public LiquidLevelFlexContainerAnnc getMilkQuantityAnnc() {
-		this.milkQuantityAnnc = (LiquidLevelFlexContainerAnnc) getResourceByName(LiquidLevelFlexContainerAnnc.SHORT_NAME);
-		return milkQuantityAnnc;
-	}
-	
-	@XmlElement(name="keeWm", required=true, type=KeepWarmFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	@XmlElement(name=KeepWarmFlexContainer.SHORT_NAME, required=true, type=KeepWarmFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private KeepWarmFlexContainer keepWarm;
-	
-	
+		
 	public void setKeepWarm(KeepWarmFlexContainer keepWarm) {
 		this.keepWarm = keepWarm;
 		getFlexContainerOrContainerOrSubscription().add(keepWarm);
@@ -447,10 +236,9 @@ public class DeviceCoffeeMachineFlexContainerAnnc extends AbstractFlexContainerA
 		return keepWarm;
 	}
 	
-	@XmlElement(name="keeWmAnnc", required=true, type=KeepWarmFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	@XmlElement(name=KeepWarmFlexContainerAnnc.SHORT_NAME, required=true, type=KeepWarmFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private KeepWarmFlexContainerAnnc keepWarmAnnc;
-	
-	
+		
 	public void setKeepWarmAnnc(KeepWarmFlexContainerAnnc keepWarmAnnc) {
 		this.keepWarmAnnc = keepWarmAnnc;
 		getFlexContainerOrContainerOrSubscription().add(keepWarmAnnc);
@@ -459,34 +247,6 @@ public class DeviceCoffeeMachineFlexContainerAnnc extends AbstractFlexContainerA
 	public KeepWarmFlexContainerAnnc getKeepWarmAnnc() {
 		this.keepWarmAnnc = (KeepWarmFlexContainerAnnc) getResourceByName(KeepWarmFlexContainerAnnc.SHORT_NAME);
 		return keepWarmAnnc;
-	}
-	
-	@XmlElement(name="breSh", required=true, type=BinarySwitchFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
-	private BinarySwitchFlexContainer brewingSwitch;
-	
-	
-	public void setBrewingSwitch(BinarySwitchFlexContainer brewingSwitch) {
-		this.brewingSwitch = brewingSwitch;
-		getFlexContainerOrContainerOrSubscription().add(brewingSwitch);
-	}
-	
-	public BinarySwitchFlexContainer getBrewingSwitch() {
-		this.brewingSwitch = (BinarySwitchFlexContainer) getResourceByName(BinarySwitchFlexContainer.SHORT_NAME);
-		return brewingSwitch;
-	}
-	
-	@XmlElement(name="breShAnnc", required=true, type=BinarySwitchFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
-	private BinarySwitchFlexContainerAnnc brewingSwitchAnnc;
-	
-	
-	public void setBrewingSwitchAnnc(BinarySwitchFlexContainerAnnc brewingSwitchAnnc) {
-		this.brewingSwitchAnnc = brewingSwitchAnnc;
-		getFlexContainerOrContainerOrSubscription().add(brewingSwitchAnnc);
-	}
-	
-	public BinarySwitchFlexContainerAnnc getBrewingSwitchAnnc() {
-		this.brewingSwitchAnnc = (BinarySwitchFlexContainerAnnc) getResourceByName(BinarySwitchFlexContainerAnnc.SHORT_NAME);
-		return brewingSwitchAnnc;
 	}
 	
 }

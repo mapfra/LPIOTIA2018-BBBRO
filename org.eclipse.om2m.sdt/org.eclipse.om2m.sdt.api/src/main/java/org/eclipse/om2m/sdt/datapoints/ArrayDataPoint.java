@@ -15,8 +15,8 @@ import org.eclipse.om2m.sdt.types.DataType;
 
 public abstract class ArrayDataPoint<T> extends ValuedDataPoint<List<T>> {
 
-	public ArrayDataPoint(Identifiers name) {
-		super(name, new DataType("array", new Array<T>()));
+	public ArrayDataPoint(Identifiers.Typed name) {
+		super(name, new DataType(new Array<T>(name.getDataType())));
 	}
 
 }

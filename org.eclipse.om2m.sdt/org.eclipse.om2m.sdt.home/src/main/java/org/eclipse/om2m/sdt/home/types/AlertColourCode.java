@@ -7,25 +7,21 @@
  *******************************************************************************/
 package org.eclipse.om2m.sdt.home.types;
 
-import java.util.Arrays;
-import java.util.List;
-
-import org.eclipse.om2m.sdt.Identifiers;
-import org.eclipse.om2m.sdt.datapoints.ClonedEnum;
 import org.eclipse.om2m.sdt.datapoints.EnumDataPoint;
 
-public class AlertColourCode extends ClonedEnum {
+public abstract class AlertColourCode extends EnumDataPoint<AlertColourCode.Values> {
 	
-	static public final int Red = 1;
-	static public final int Green = 2;
+	static public enum Values {
+		red, green
+	}
 	
-	static private List<Integer> values = Arrays.asList(
-			Red, Green
-	);
-
-	public AlertColourCode(Identifiers identifiers, EnumDataPoint<Integer> dp) {
-		super(identifiers, HomeDataType.AlertColourCode, dp);
-		setValidValues(values);
+	public AlertColourCode() {
+		this(DatapointType.light);
+	}
+	
+	public AlertColourCode(DatapointType dt) {
+		super(dt, HomeDataType.AlertColourCode);
+		setValidValues(Values.values());
 	}
 
 }

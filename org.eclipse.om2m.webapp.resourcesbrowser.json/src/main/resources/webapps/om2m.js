@@ -134,7 +134,15 @@ function get(targetId){
                             }
                             table += "</tbody></table>";
                             value = table;
-                        } else if(attribute == "la" || attribute == "ol"){
+                        }  else if(attribute == "daci"){
+                            var table = "<table class='bordered'><thead><th>DynamicAuthorizationConsultationIDs</th></thdead><tbody>";
+                            var daciList = resource[attribute];
+                            for(var index in daciList){
+                                table += "<tr><td>" + daciList[index] + "</td></tr>";
+                            }
+                            table += "</tbody></table>";
+                            value = table;
+                        }else if(attribute == "la" || attribute == "ol"){
                             value = "<button onClick=\"get('"+ resource[attribute] +"')\">"+ resource[attribute] +"</button>";
                         } else if ((attribute =="lbl") || (attribute == "nu")) {
 	                        var lblList = resource[attribute];

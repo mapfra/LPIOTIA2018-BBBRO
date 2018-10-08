@@ -1,6 +1,6 @@
 /*
 ********************************************************************************
- * Copyright (c) 2014, 2017 Orange.
+ * Copyright (c) 2014, 2018 Orange.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,9 +9,9 @@
 
 Device : DeviceCameraAnnc
 
-A Camera is a device that provides video streaming feature.
+A camera is an optical instrument for recording or capturing images, which may be stored locally or transmitted to another locations.
 
-Created: 2018-06-11 12:14:18
+Created: 2018-06-29 17:19:54
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -21,9 +21,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+
 import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
 import org.eclipse.om2m.commons.resource.AbstractFlexContainerAnnc;
-
 
 @XmlRootElement(name = DeviceCameraFlexContainerAnnc.SHORT_NAME, namespace = "http://www.onem2m.org/xml/protocols/homedomain")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -37,45 +37,93 @@ public class DeviceCameraFlexContainerAnnc extends AbstractFlexContainerAnnc {
 		setContainerDefinition("org.onem2m.home.device." + DeviceCameraFlexContainer.LONG_NAME);
 		setLongName(LONG_NAME);
 		setShortName(SHORT_NAME);
-	}
+    }
 	
 	public void finalizeSerialization() {
+		getSessionDescription();
+		getSessionDescriptionAnnc();
+		getPlayerControl();
+		getPlayerControlAnnc();
 		getMotionSensor();
 		getMotionSensorAnnc();
-		getStreaming();
-		getStreamingAnnc();
-		getPersonSensor();
-		getPersonSensorAnnc();
-	}
+    }
 	
 	public void finalizeDeserialization() {
+		if (this.sessionDescription != null) {
+			setSessionDescription(this.sessionDescription);
+		}
+		if (this.sessionDescriptionAnnc != null) {
+			setSessionDescriptionAnnc(this.sessionDescriptionAnnc);
+		}
+		if (this.playerControl != null) {
+			setPlayerControl(this.playerControl);
+		}
+		if (this.playerControlAnnc != null) {
+			setPlayerControlAnnc(this.playerControlAnnc);
+		}
 		if (this.motionSensor != null) {
 			setMotionSensor(this.motionSensor);
 		}
 		if (this.motionSensorAnnc != null) {
 			setMotionSensorAnnc(this.motionSensorAnnc);
-			}
-		
-		if (this.streaming != null) {
-			setStreaming(this.streaming);
 		}
-		if (this.streamingAnnc != null) {
-			setStreamingAnnc(this.streamingAnnc);
-			}
+	}
+
+	@XmlElement(name=SessionDescriptionFlexContainer.SHORT_NAME, required=true, type=SessionDescriptionFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	private SessionDescriptionFlexContainer sessionDescription;
 		
-		if (this.personSensor != null) {
-			setPersonSensor(this.personSensor);
-		}
-		if (this.personSensorAnnc != null) {
-			setPersonSensorAnnc(this.personSensorAnnc);
-			}
-		
+	public void setSessionDescription(SessionDescriptionFlexContainer sessionDescription) {
+		this.sessionDescription = sessionDescription;
+		getFlexContainerOrContainerOrSubscription().add(sessionDescription);
 	}
 	
-	@XmlElement(name="motSr", required=true, type=MotionSensorFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	public SessionDescriptionFlexContainer getSessionDescription() {
+		this.sessionDescription = (SessionDescriptionFlexContainer) getResourceByName(SessionDescriptionFlexContainer.SHORT_NAME);
+		return sessionDescription;
+	}
+	
+	@XmlElement(name=SessionDescriptionFlexContainerAnnc.SHORT_NAME, required=true, type=SessionDescriptionFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	private SessionDescriptionFlexContainerAnnc sessionDescriptionAnnc;
+		
+	public void setSessionDescriptionAnnc(SessionDescriptionFlexContainerAnnc sessionDescriptionAnnc) {
+		this.sessionDescriptionAnnc = sessionDescriptionAnnc;
+		getFlexContainerOrContainerOrSubscription().add(sessionDescriptionAnnc);
+	}
+	
+	public SessionDescriptionFlexContainerAnnc getSessionDescriptionAnnc() {
+		this.sessionDescriptionAnnc = (SessionDescriptionFlexContainerAnnc) getResourceByName(SessionDescriptionFlexContainerAnnc.SHORT_NAME);
+		return sessionDescriptionAnnc;
+	}
+	
+	@XmlElement(name=PlayerControlFlexContainer.SHORT_NAME, required=true, type=PlayerControlFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	private PlayerControlFlexContainer playerControl;
+		
+	public void setPlayerControl(PlayerControlFlexContainer playerControl) {
+		this.playerControl = playerControl;
+		getFlexContainerOrContainerOrSubscription().add(playerControl);
+	}
+	
+	public PlayerControlFlexContainer getPlayerControl() {
+		this.playerControl = (PlayerControlFlexContainer) getResourceByName(PlayerControlFlexContainer.SHORT_NAME);
+		return playerControl;
+	}
+	
+	@XmlElement(name=PlayerControlFlexContainerAnnc.SHORT_NAME, required=true, type=PlayerControlFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	private PlayerControlFlexContainerAnnc playerControlAnnc;
+		
+	public void setPlayerControlAnnc(PlayerControlFlexContainerAnnc playerControlAnnc) {
+		this.playerControlAnnc = playerControlAnnc;
+		getFlexContainerOrContainerOrSubscription().add(playerControlAnnc);
+	}
+	
+	public PlayerControlFlexContainerAnnc getPlayerControlAnnc() {
+		this.playerControlAnnc = (PlayerControlFlexContainerAnnc) getResourceByName(PlayerControlFlexContainerAnnc.SHORT_NAME);
+		return playerControlAnnc;
+	}
+	
+	@XmlElement(name=MotionSensorFlexContainer.SHORT_NAME, required=true, type=MotionSensorFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private MotionSensorFlexContainer motionSensor;
-	
-	
+		
 	public void setMotionSensor(MotionSensorFlexContainer motionSensor) {
 		this.motionSensor = motionSensor;
 		getFlexContainerOrContainerOrSubscription().add(motionSensor);
@@ -86,10 +134,9 @@ public class DeviceCameraFlexContainerAnnc extends AbstractFlexContainerAnnc {
 		return motionSensor;
 	}
 	
-	@XmlElement(name="motSrAnnc", required=true, type=MotionSensorFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	@XmlElement(name=MotionSensorFlexContainerAnnc.SHORT_NAME, required=true, type=MotionSensorFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private MotionSensorFlexContainerAnnc motionSensorAnnc;
-	
-	
+		
 	public void setMotionSensorAnnc(MotionSensorFlexContainerAnnc motionSensorAnnc) {
 		this.motionSensorAnnc = motionSensorAnnc;
 		getFlexContainerOrContainerOrSubscription().add(motionSensorAnnc);
@@ -98,62 +145,6 @@ public class DeviceCameraFlexContainerAnnc extends AbstractFlexContainerAnnc {
 	public MotionSensorFlexContainerAnnc getMotionSensorAnnc() {
 		this.motionSensorAnnc = (MotionSensorFlexContainerAnnc) getResourceByName(MotionSensorFlexContainerAnnc.SHORT_NAME);
 		return motionSensorAnnc;
-	}
-	
-	@XmlElement(name="streg", required=true, type=StreamingFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
-	private StreamingFlexContainer streaming;
-	
-	
-	public void setStreaming(StreamingFlexContainer streaming) {
-		this.streaming = streaming;
-		getFlexContainerOrContainerOrSubscription().add(streaming);
-	}
-	
-	public StreamingFlexContainer getStreaming() {
-		this.streaming = (StreamingFlexContainer) getResourceByName(StreamingFlexContainer.SHORT_NAME);
-		return streaming;
-	}
-	
-	@XmlElement(name="stregAnnc", required=true, type=StreamingFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
-	private StreamingFlexContainerAnnc streamingAnnc;
-	
-	
-	public void setStreamingAnnc(StreamingFlexContainerAnnc streamingAnnc) {
-		this.streamingAnnc = streamingAnnc;
-		getFlexContainerOrContainerOrSubscription().add(streamingAnnc);
-	}
-	
-	public StreamingFlexContainerAnnc getStreamingAnnc() {
-		this.streamingAnnc = (StreamingFlexContainerAnnc) getResourceByName(StreamingFlexContainerAnnc.SHORT_NAME);
-		return streamingAnnc;
-	}
-	
-	@XmlElement(name="perSr", required=true, type=PersonSensorFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
-	private PersonSensorFlexContainer personSensor;
-	
-	
-	public void setPersonSensor(PersonSensorFlexContainer personSensor) {
-		this.personSensor = personSensor;
-		getFlexContainerOrContainerOrSubscription().add(personSensor);
-	}
-	
-	public PersonSensorFlexContainer getPersonSensor() {
-		this.personSensor = (PersonSensorFlexContainer) getResourceByName(PersonSensorFlexContainer.SHORT_NAME);
-		return personSensor;
-	}
-	
-	@XmlElement(name="perSrAnnc", required=true, type=PersonSensorFlexContainerAnnc.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
-	private PersonSensorFlexContainerAnnc personSensorAnnc;
-	
-	
-	public void setPersonSensorAnnc(PersonSensorFlexContainerAnnc personSensorAnnc) {
-		this.personSensorAnnc = personSensorAnnc;
-		getFlexContainerOrContainerOrSubscription().add(personSensorAnnc);
-	}
-	
-	public PersonSensorFlexContainerAnnc getPersonSensorAnnc() {
-		this.personSensorAnnc = (PersonSensorFlexContainerAnnc) getResourceByName(PersonSensorFlexContainerAnnc.SHORT_NAME);
-		return personSensorAnnc;
 	}
 	
 }

@@ -42,12 +42,22 @@ public class SimpleType implements TypeChoice {
 	}
 	
 	public String getOneM2MType() {
-		return "xs:" + getType().getValue();
+		return getType().getValue();
 	}
     
     static public SimpleType getSimpleType(final String s) {
     	return values.get(s);
     }
+
+	@Override
+	public String toString(Object val) throws Exception {
+		return type.toString(val);
+	}
+	
+	@Override
+	public Object fromString(String val) throws Exception {
+		return type.fromString(val);
+	}
 
 	@Override
 	public String toString() {

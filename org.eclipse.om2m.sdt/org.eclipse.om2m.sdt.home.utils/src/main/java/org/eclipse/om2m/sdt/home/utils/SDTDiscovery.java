@@ -257,7 +257,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 			Activator.LOGGER.info("No serial number property. Take id instead.");
 			serial = deviceId;
 		} else {
-			serial = serialAttr.getCustomAttributeValue();
+			serial = serialAttr.getValue();
 		}
 		Domain domain = cloud ? cloudDomain : localDomain;
 		GenericDevice device = (GenericDevice) domain.getDevice(deviceId);
@@ -277,13 +277,13 @@ public class SDTDiscovery implements ISDTDiscovery {
 			Activator.LOGGER.info("Created SDT device " + device);
 		}
 		for (CustomAttribute attr : deviceFlex.getCustomAttributes()) {
-			Activator.LOGGER.info("dev CustomAttribute: " + attr.getCustomAttributeName()
-				 + "/" + attr.getCustomAttributeValue());
-			PropertyType propType = PropertyType.fromShortName(attr.getCustomAttributeName());
+			Activator.LOGGER.info("dev CustomAttribute: " + attr.getShortName()
+				 + "/" + attr.getValue());
+			PropertyType propType = PropertyType.fromShortName(attr.getShortName());
 			if (propType != null) {
 //				Property prop = new Property(propType, attr.getCustomAttributeValue());
 //				device.addProperty(prop);
-				device.addProperty(propType, attr.getCustomAttributeValue());
+				device.addProperty(propType, attr.getValue());
 			}
 		}
 		// Search children resources: modules
@@ -320,11 +320,11 @@ public class SDTDiscovery implements ISDTDiscovery {
 		List<Property> props = new ArrayList<Property>();
 		List<CustomAttribute> dpAttrs = new ArrayList<CustomAttribute>();
 		for (CustomAttribute attr : moduleFlex.getCustomAttributes()) {
-			Activator.LOGGER.info("CustomAttribute(1): " + attr.getCustomAttributeName()
-					+ "/" + attr.getCustomAttributeValue());
-			PropertyType propType = PropertyType.fromShortName(attr.getCustomAttributeName());
+			Activator.LOGGER.info("CustomAttribute(1): " + attr.getShortName()
+					+ "/" + attr.getValue());
+			PropertyType propType = PropertyType.fromShortName(attr.getShortName());
 			if (propType != null) {
-				Property prop = new Property(propType, attr.getCustomAttributeValue());
+				Property prop = new Property(propType, attr.getValue());
 				props.add(prop);
 			} else {
 				dpAttrs.add(attr);
@@ -347,10 +347,10 @@ public class SDTDiscovery implements ISDTDiscovery {
 				+ cntDef.substring(idx + 1);
 		List<DataPoint> dps = new ArrayList<DataPoint>();
 		for (CustomAttribute attr : dpAttrs) {
-			DatapointType datapointType = DatapointType.fromShortName(attr.getCustomAttributeName());
+			DatapointType datapointType = DatapointType.fromShortName(attr.getShortName());
 			if (datapointType == null) {
 				Activator.LOGGER.warn("Unknown custom attribute, neither property nor datapoint: " 
-						+ attr.getCustomAttributeName());
+						+ attr.getShortName());
 				continue;
 			}
 			String type = datapointType.getDataType().getTypeChoice().getOneM2MType();
@@ -374,7 +374,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 		}
 		Map<String, DataPoint> dpsMap = new HashMap<String, DataPoint>();
 		for (DataPoint dp : dps) {
-			dpsMap.put(dp.getShortDefinitionType(), dp);
+			dpsMap.put(dp.getShortName(), dp);
 		}
 		Class<?> clazz = Class.forName(className);
 		if (modName.startsWith(cntDef + "__")) {
@@ -434,7 +434,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 //					new DataType(type, SimpleType.getSimpleType(type))) {
 //				public void setValue(Object value) {
 //					try {
-//						SDTUtil.setValue(attr, value);
+//						TypeConverter.setValue(attr, value);
 //						updateAttribute(uri, attr, cred);
 //					} catch (Exception e) {
 //						Activator.LOGGER.warn("Could not set arg", e);
@@ -484,7 +484,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 
 	private IntegerDataPoint getIntegerDataPoint(final CustomAttribute attr,
 			final String uri, final String cred) {
-		return new IntegerDataPoint(DatapointType.fromShortName(attr.getCustomAttributeName())) {
+		return new IntegerDataPoint(DatapointType.fromShortName(attr.getShortName())) {
 			@Override
 			public void doSetValue(Integer val) throws DataPointException {
 				try {
@@ -498,7 +498,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 			public Integer doGetValue() throws DataPointException {
 				try {
 					return (Integer) retrieveAttribute(uri, 
-							attr.getCustomAttributeName(), cred);
+							attr.getShortName(), cred);
 				} catch (Exception e) {
 					throw new DataPointException(e);
 				}
@@ -508,7 +508,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 
 	private BooleanDataPoint getBooleanDataPoint(final CustomAttribute attr, 
 			final String uri, final String cred) {
-		BooleanDataPoint ret = new BooleanDataPoint(DatapointType.fromShortName(attr.getCustomAttributeName())) {
+		BooleanDataPoint ret = new BooleanDataPoint(DatapointType.fromShortName(attr.getShortName())) {
 			@Override
 			public void doSetValue(Boolean val) throws DataPointException {
 				try {
@@ -522,7 +522,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 			public Boolean doGetValue() throws DataPointException {
 				try {
 					return (Boolean) retrieveAttribute(uri, 
-							attr.getCustomAttributeName(), cred);
+							attr.getShortName(), cred);
 				} catch (Exception e) {
 					throw new DataPointException(e);
 				}
@@ -533,7 +533,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 
 	private StringDataPoint getStringDataPoint(final CustomAttribute attr, 
 			final String uri, final String cred) {
-		return new StringDataPoint(DatapointType.fromShortName(attr.getCustomAttributeName())) {
+		return new StringDataPoint(DatapointType.fromShortName(attr.getShortName())) {
 			@Override
 			public void doSetValue(String val) throws DataPointException {
 				try {
@@ -547,7 +547,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 			public String doGetValue() throws DataPointException {
 				try {
 					return (String) retrieveAttribute(uri, 
-							attr.getCustomAttributeName(), cred);
+							attr.getShortName(), cred);
 				} catch (Exception e) {
 					throw new DataPointException(e);
 				}
@@ -557,7 +557,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 
 	private ByteDataPoint getByteDataPoint(final CustomAttribute attr, 
 			final String uri, final String cred) {
-		return new ByteDataPoint(DatapointType.fromShortName(attr.getCustomAttributeName())) {
+		return new ByteDataPoint(DatapointType.fromShortName(attr.getShortName())) {
 			@Override
 			public void doSetValue(Byte val) throws DataPointException {
 				try {
@@ -571,7 +571,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 			public Byte doGetValue() throws DataPointException {
 				try {
 					return (Byte) retrieveAttribute(uri, 
-							attr.getCustomAttributeName(), cred);
+							attr.getShortName(), cred);
 				} catch (Exception e) {
 					throw new DataPointException(e);
 				}
@@ -581,7 +581,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 
 	private FloatDataPoint getFloatDataPoint(final CustomAttribute attr, 
 			final String uri, final String cred) {
-		return new FloatDataPoint(DatapointType.fromShortName(attr.getCustomAttributeName())) {
+		return new FloatDataPoint(DatapointType.fromShortName(attr.getShortName())) {
 			@Override
 			public void doSetValue(Float val) throws DataPointException {
 				try {
@@ -595,7 +595,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 			public Float doGetValue() throws DataPointException {
 				try {
 					return (Float) retrieveAttribute(uri, 
-							attr.getCustomAttributeName(), cred);
+							attr.getShortName(), cred);
 				} catch (Exception e) {
 					throw new DataPointException(e);
 				}
@@ -605,7 +605,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 
 	private DateTimeDataPoint getDateTimeDataPoint(final CustomAttribute attr, 
 			final String uri, final String cred) {
-		return new DateTimeDataPoint(DatapointType.fromShortName(attr.getCustomAttributeName())) {
+		return new DateTimeDataPoint(DatapointType.fromShortName(attr.getShortName())) {
 			@Override
 			public void doSetValue(Date val) throws DataPointException {
 				try {
@@ -619,7 +619,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 			public Date doGetValue() throws DataPointException {
 				try {
 					return (Date) retrieveAttribute(uri, 
-							attr.getCustomAttributeName(), cred);
+							attr.getShortName(), cred);
 				} catch (Exception e) {
 					throw new DataPointException(e);
 				}
@@ -629,7 +629,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 
 	private DateDataPoint getDateDataPoint(final CustomAttribute attr, 
 			final String uri, final String cred) {
-		return new DateDataPoint(DatapointType.fromShortName(attr.getCustomAttributeName())) {
+		return new DateDataPoint(DatapointType.fromShortName(attr.getShortName())) {
 			@Override
 			public void doSetValue(Date val) throws DataPointException {
 				try {
@@ -643,7 +643,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 			public Date doGetValue() throws DataPointException {
 				try {
 					return (Date) retrieveAttribute(uri, 
-							attr.getCustomAttributeName(), cred);
+							attr.getShortName(), cred);
 				} catch (Exception e) {
 					throw new DataPointException(e);
 				}
@@ -653,7 +653,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 
 	private TimeDataPoint getTimeDataPoint(final CustomAttribute attr, 
 			final String uri, final String cred) {
-		return new TimeDataPoint(DatapointType.fromShortName(attr.getCustomAttributeName())) {
+		return new TimeDataPoint(DatapointType.fromShortName(attr.getShortName())) {
 			@Override
 			public void doSetValue(Date val) throws DataPointException {
 				try {
@@ -667,7 +667,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 			public Date doGetValue() throws DataPointException {
 				try {
 					return (Date) retrieveAttribute(uri, 
-							attr.getCustomAttributeName(), cred);
+							attr.getShortName(), cred);
 				} catch (Exception e) {
 					throw new DataPointException(e);
 				}
@@ -677,7 +677,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 
 	private ArrayDataPoint<String> getArrayDataPoint(final CustomAttribute attr, 
 			final String uri, final String cred) {
-		return new ArrayDataPoint<String>(DatapointType.fromShortName(attr.getCustomAttributeName())) {
+		return new ArrayDataPoint<String>(DatapointType.fromShortName(attr.getShortName())) {
 			@Override
 			public void doSetValue(List<String> val) throws DataPointException {
 				try {
@@ -692,7 +692,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 			public List<String> doGetValue() throws DataPointException {
 				try {
 					return (List<String>) retrieveAttribute(uri, 
-							attr.getCustomAttributeName(), cred);
+							attr.getShortName(), cred);
 				} catch (Exception e) {
 					throw new DataPointException(e);
 				}
@@ -709,7 +709,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 			Class<?> clazz = Class.forName(className);
 			return (EnumDataPoint<Integer>) 
 				clazz.getConstructor(Identifiers.class, EnumDataPoint.class)
-					.newInstance(DatapointType.fromShortName(attr.getCustomAttributeName()), 
+					.newInstance(DatapointType.fromShortName(attr.getShortName()), 
 						new EnumDataPoint<Integer>(null) {
 							@Override
 							public void doSetValue(Integer val) throws DataPointException {
@@ -724,7 +724,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 							public Integer doGetValue() throws DataPointException {
 								try {
 									return (Integer) retrieveAttribute(uri, 
-											attr.getCustomAttributeName(), cred);
+											attr.getShortName(), cred);
 								} catch (Exception e) {
 									throw new DataPointException(e);
 								}
@@ -823,7 +823,7 @@ public class SDTDiscovery implements ISDTDiscovery {
 		if (! ResponseStatusCode.UPDATED.equals(resp.getResponseStatusCode()))
 			throw new Exception("Error invoking cloud action: " + resp.getResponseStatusCode());
 		CustomAttribute ret = ((AbstractFlexContainer) resp.getContent()).getCustomAttribute("output");
-		return (ret == null) ? null : ret.getCustomAttributeValue();
+		return (ret == null) ? null : ret.getValue();
 	}
 
 }

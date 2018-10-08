@@ -1,6 +1,6 @@
 /*
 ********************************************************************************
- * Copyright (c) 2014, 2017 Orange.
+ * Copyright (c) 2014, 2018 Orange.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,7 @@ Device : DeviceAirConditioner
 
 An air conditioner is a home appliance used to alter the properties of air (primarily temperature and humidity) to more comfortable conditions. This air conditioner information model provides capabilities to control and monitor air conditioner specific functions and resources.
 
-Created: 2018-06-11 12:14:18
+Created: 2018-06-29 17:19:54
 */
 
 package org.eclipse.om2m.commons.resource.flexcontainerspec;
@@ -21,9 +21,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
-import org.eclipse.om2m.commons.resource.AbstractFlexContainerAnnc;
 
+import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
 
 @XmlRootElement(name = DeviceAirConditionerFlexContainer.SHORT_NAME, namespace = "http://www.onem2m.org/xml/protocols/homedomain")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -39,21 +38,37 @@ public class DeviceAirConditionerFlexContainer extends AbstractFlexContainer {
 		setShortName(SHORT_NAME);
 	}
 	
-	public void finalizeSerialization() {
+    public void finalizeSerialization() {
 		getBinarySwitch();
-		getRunMode();
+		getRunState();
+		getAirConJobMode();
+		getAirConOperationMode();
+		getAirCleanOperationMode();
 		getTemperature();
 		getTimer();
+		getSleepTimer();
 		getTurbo();
-		getWind();
+		getAirFlow();
+		getPowerSave();
+		getAirQualitySensor();
+		getFilterInfo();
 	}
 	
 	public void finalizeDeserialization() {
 		if (this.binarySwitch != null) {
 			setBinarySwitch(this.binarySwitch);
 		}
-		if (this.runMode != null) {
-			setRunMode(this.runMode);
+		if (this.runState != null) {
+			setRunState(this.runState);
+		}
+		if (this.airConJobMode != null) {
+			setAirConJobMode(this.airConJobMode);
+		}
+		if (this.airConOperationMode != null) {
+			setAirConOperationMode(this.airConOperationMode);
+		}
+		if (this.airCleanOperationMode != null) {
+			setAirCleanOperationMode(this.airCleanOperationMode);
 		}
 		if (this.temperature != null) {
 			setTemperature(this.temperature);
@@ -61,18 +76,29 @@ public class DeviceAirConditionerFlexContainer extends AbstractFlexContainer {
 		if (this.timer != null) {
 			setTimer(this.timer);
 		}
+		if (this.sleepTimer != null) {
+			setSleepTimer(this.sleepTimer);
+		}
 		if (this.turbo != null) {
 			setTurbo(this.turbo);
 		}
-		if (this.wind != null) {
-			setWind(this.wind);
+		if (this.airFlow != null) {
+			setAirFlow(this.airFlow);
+		}
+		if (this.powerSave != null) {
+			setPowerSave(this.powerSave);
+		}
+		if (this.airQualitySensor != null) {
+			setAirQualitySensor(this.airQualitySensor);
+		}
+		if (this.filterInfo != null) {
+			setFilterInfo(this.filterInfo);
 		}
 	}
-	
-	@XmlElement(name="binSh", required=true, type=BinarySwitchFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+
+	@XmlElement(name=BinarySwitchFlexContainer.SHORT_NAME, required=true, type=BinarySwitchFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private BinarySwitchFlexContainer binarySwitch;
-	
-	
+		
 	public void setBinarySwitch(BinarySwitchFlexContainer binarySwitch) {
 		this.binarySwitch = binarySwitch;
 		getFlexContainerOrContainerOrSubscription().add(binarySwitch);
@@ -83,24 +109,61 @@ public class DeviceAirConditionerFlexContainer extends AbstractFlexContainer {
 		return binarySwitch;
 	}
 	
-	@XmlElement(name="runMe", required=true, type=RunModeFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
-	private RunModeFlexContainer runMode;
-	
-	
-	public void setRunMode(RunModeFlexContainer runMode) {
-		this.runMode = runMode;
-		getFlexContainerOrContainerOrSubscription().add(runMode);
+	@XmlElement(name=RunStateFlexContainer.SHORT_NAME, required=true, type=RunStateFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	private RunStateFlexContainer runState;
+		
+	public void setRunState(RunStateFlexContainer runState) {
+		this.runState = runState;
+		getFlexContainerOrContainerOrSubscription().add(runState);
 	}
 	
-	public RunModeFlexContainer getRunMode() {
-		this.runMode = (RunModeFlexContainer) getResourceByName(RunModeFlexContainer.SHORT_NAME);
-		return runMode;
+	public RunStateFlexContainer getRunState() {
+		this.runState = (RunStateFlexContainer) getResourceByName(RunStateFlexContainer.SHORT_NAME);
+		return runState;
 	}
 	
-	@XmlElement(name="tempe", required=true, type=TemperatureFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	@XmlElement(name=AirConJobModeFlexContainer.SHORT_NAME, required=true, type=AirConJobModeFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	private AirConJobModeFlexContainer airConJobMode;
+		
+	public void setAirConJobMode(AirConJobModeFlexContainer airConJobMode) {
+		this.airConJobMode = airConJobMode;
+		getFlexContainerOrContainerOrSubscription().add(airConJobMode);
+	}
+	
+	public AirConJobModeFlexContainer getAirConJobMode() {
+		this.airConJobMode = (AirConJobModeFlexContainer) getResourceByName(AirConJobModeFlexContainer.SHORT_NAME);
+		return airConJobMode;
+	}
+	
+	@XmlElement(name=OperationModeFlexContainer.SHORT_NAME, required=true, type=OperationModeFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	private OperationModeFlexContainer airConOperationMode;
+		
+	public void setAirConOperationMode(OperationModeFlexContainer airConOperationMode) {
+		this.airConOperationMode = airConOperationMode;
+		getFlexContainerOrContainerOrSubscription().add(airConOperationMode);
+	}
+	
+	public OperationModeFlexContainer getAirConOperationMode() {
+		this.airConOperationMode = (OperationModeFlexContainer) getResourceByName(OperationModeFlexContainer.SHORT_NAME);
+		return airConOperationMode;
+	}
+	
+	@XmlElement(name=OperationModeFlexContainer.SHORT_NAME, required=true, type=OperationModeFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	private OperationModeFlexContainer airCleanOperationMode;
+		
+	public void setAirCleanOperationMode(OperationModeFlexContainer airCleanOperationMode) {
+		this.airCleanOperationMode = airCleanOperationMode;
+		getFlexContainerOrContainerOrSubscription().add(airCleanOperationMode);
+	}
+	
+	public OperationModeFlexContainer getAirCleanOperationMode() {
+		this.airCleanOperationMode = (OperationModeFlexContainer) getResourceByName(OperationModeFlexContainer.SHORT_NAME);
+		return airCleanOperationMode;
+	}
+	
+	@XmlElement(name=TemperatureFlexContainer.SHORT_NAME, required=true, type=TemperatureFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private TemperatureFlexContainer temperature;
-	
-	
+		
 	public void setTemperature(TemperatureFlexContainer temperature) {
 		this.temperature = temperature;
 		getFlexContainerOrContainerOrSubscription().add(temperature);
@@ -111,10 +174,9 @@ public class DeviceAirConditionerFlexContainer extends AbstractFlexContainer {
 		return temperature;
 	}
 	
-	@XmlElement(name="timer", required=true, type=TimerFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	@XmlElement(name=TimerFlexContainer.SHORT_NAME, required=true, type=TimerFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private TimerFlexContainer timer;
-	
-	
+		
 	public void setTimer(TimerFlexContainer timer) {
 		this.timer = timer;
 		getFlexContainerOrContainerOrSubscription().add(timer);
@@ -125,10 +187,22 @@ public class DeviceAirConditionerFlexContainer extends AbstractFlexContainer {
 		return timer;
 	}
 	
-	@XmlElement(name="turbo", required=true, type=TurboFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	@XmlElement(name=TimerFlexContainer.SHORT_NAME, required=true, type=TimerFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	private TimerFlexContainer sleepTimer;
+		
+	public void setSleepTimer(TimerFlexContainer sleepTimer) {
+		this.sleepTimer = sleepTimer;
+		getFlexContainerOrContainerOrSubscription().add(sleepTimer);
+	}
+	
+	public TimerFlexContainer getSleepTimer() {
+		this.sleepTimer = (TimerFlexContainer) getResourceByName(TimerFlexContainer.SHORT_NAME);
+		return sleepTimer;
+	}
+	
+	@XmlElement(name=TurboFlexContainer.SHORT_NAME, required=true, type=TurboFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
 	private TurboFlexContainer turbo;
-	
-	
+		
 	public void setTurbo(TurboFlexContainer turbo) {
 		this.turbo = turbo;
 		getFlexContainerOrContainerOrSubscription().add(turbo);
@@ -139,18 +213,56 @@ public class DeviceAirConditionerFlexContainer extends AbstractFlexContainer {
 		return turbo;
 	}
 	
-	@XmlElement(name="wind", required=true, type=WindFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
-	private WindFlexContainer wind;
-	
-	
-	public void setWind(WindFlexContainer wind) {
-		this.wind = wind;
-		getFlexContainerOrContainerOrSubscription().add(wind);
+	@XmlElement(name=AirFlowFlexContainer.SHORT_NAME, required=true, type=AirFlowFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	private AirFlowFlexContainer airFlow;
+		
+	public void setAirFlow(AirFlowFlexContainer airFlow) {
+		this.airFlow = airFlow;
+		getFlexContainerOrContainerOrSubscription().add(airFlow);
 	}
 	
-	public WindFlexContainer getWind() {
-		this.wind = (WindFlexContainer) getResourceByName(WindFlexContainer.SHORT_NAME);
-		return wind;
+	public AirFlowFlexContainer getAirFlow() {
+		this.airFlow = (AirFlowFlexContainer) getResourceByName(AirFlowFlexContainer.SHORT_NAME);
+		return airFlow;
+	}
+	
+	@XmlElement(name=PowerSaveFlexContainer.SHORT_NAME, required=true, type=PowerSaveFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	private PowerSaveFlexContainer powerSave;
+		
+	public void setPowerSave(PowerSaveFlexContainer powerSave) {
+		this.powerSave = powerSave;
+		getFlexContainerOrContainerOrSubscription().add(powerSave);
+	}
+	
+	public PowerSaveFlexContainer getPowerSave() {
+		this.powerSave = (PowerSaveFlexContainer) getResourceByName(PowerSaveFlexContainer.SHORT_NAME);
+		return powerSave;
+	}
+	
+	@XmlElement(name=AirQualitySensorFlexContainer.SHORT_NAME, required=true, type=AirQualitySensorFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	private AirQualitySensorFlexContainer airQualitySensor;
+		
+	public void setAirQualitySensor(AirQualitySensorFlexContainer airQualitySensor) {
+		this.airQualitySensor = airQualitySensor;
+		getFlexContainerOrContainerOrSubscription().add(airQualitySensor);
+	}
+	
+	public AirQualitySensorFlexContainer getAirQualitySensor() {
+		this.airQualitySensor = (AirQualitySensorFlexContainer) getResourceByName(AirQualitySensorFlexContainer.SHORT_NAME);
+		return airQualitySensor;
+	}
+	
+	@XmlElement(name=FilterInfoFlexContainer.SHORT_NAME, required=true, type=FilterInfoFlexContainer.class, namespace="http://www.onem2m.org/xml/protocols/homedomain")
+	private FilterInfoFlexContainer filterInfo;
+		
+	public void setFilterInfo(FilterInfoFlexContainer filterInfo) {
+		this.filterInfo = filterInfo;
+		getFlexContainerOrContainerOrSubscription().add(filterInfo);
+	}
+	
+	public FilterInfoFlexContainer getFilterInfo() {
+		this.filterInfo = (FilterInfoFlexContainer) getResourceByName(FilterInfoFlexContainer.SHORT_NAME);
+		return filterInfo;
 	}
 	
 }

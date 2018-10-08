@@ -23,6 +23,7 @@ import org.eclipse.om2m.commons.entities.CSEBaseEntity;
 import org.eclipse.om2m.commons.entities.ContainerEntity;
 import org.eclipse.om2m.commons.entities.DynamicAuthorizationConsultationEntity;
 import org.eclipse.om2m.commons.entities.FlexContainerEntity;
+import org.eclipse.om2m.commons.entities.LabelEntity;
 import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
 import org.eclipse.om2m.commons.entities.ResourceEntity;
 import org.eclipse.om2m.commons.entities.SubscriptionEntity;
@@ -247,6 +248,15 @@ public class FlexContainerController extends Controller {
 		case ResourceType.FLEXCONTAINER:
 			flexContainerEntity.setParentFlexContainer((FlexContainerEntity) parentEntity);
 			break;
+		case ResourceType.CONTAINER:
+			flexContainerEntity.setParentContainer((ContainerEntity) parentEntity);
+			break;
+		case ResourceType.CSE_BASE:
+			flexContainerEntity.setParentCSEB((CSEBaseEntity) parentEntity);
+			break;
+		case ResourceType.REMOTE_CSE:
+			flexContainerEntity.setParentCSR((CSEBaseEntity) parentEntity);
+			break;
 		}
 
 		// accessControlPolicyIDs O
@@ -280,8 +290,8 @@ public class FlexContainerController extends Controller {
 
 		// custom attributes
 		for (CustomAttribute ca : flexContainer.getCustomAttributes()) {
-			flexContainerEntity.createOrUpdateCustomAttribute(ca.getCustomAttributeName(),
-					ca.getCustomAttributeValue());
+			flexContainerEntity.createOrUpdateCustomAttribute(ca.getShortName(),
+					ca.getValue(), ca.getType());
 		}
 
 		// create the FlexContainer in the DB
@@ -342,6 +352,7 @@ public class FlexContainerController extends Controller {
 		if (flexContainerEntity == null) {
 			throw new ResourceNotFoundException("Resource not found");
 		}
+		LOGGER.debug("Retrieved flex entity: " + flexContainerEntity);
 
 		// if resource exists, check authorization
 		// retrieve
@@ -352,7 +363,7 @@ public class FlexContainerController extends Controller {
 		// Mapping the entity with the exchange resource
 		AbstractFlexContainer flexContainerResource = EntityMapperFactory.getFlexContainerMapper()
 				.mapEntityToResource(flexContainerEntity, request);
-
+		LOGGER.debug("Retrieved flex resource: " + flexContainerResource);
 
 		response.setContent(flexContainerResource);
 
@@ -480,14 +491,28 @@ public class FlexContainerController extends Controller {
 				// update link with flexContainerEntity - DacEntity
 				for(DynamicAuthorizationConsultationEntity dace : flexContainerEntity.getDynamicAuthorizationConsultations()) {
 					DynamicAuthorizationConsultationEntity daceFromDB = dbs.getDAOFactory().getDynamicAuthorizationDAO().find(transaction, dace.getResourceID());
-					daceFromDB.getLinkedFlexContainerEntites().add(flexContainerEntity);
-					dbs.getDAOFactory().getDynamicAuthorizationDAO().update(transaction, daceFromDB);
+					boolean found = false;
+					for (FlexContainerEntity fce : daceFromDB.getLinkedFlexContainerEntites()) {
+						if (fce.getResourceID().equals(flexContainerEntity.getResourceID())) {
+							found = true;
+							break;
+						}
+					}
+					if (!found) {
+						daceFromDB.getLinkedFlexContainerEntites().add(flexContainerEntity);
+						dbs.getDAOFactory().getDynamicAuthorizationDAO().update(transaction, daceFromDB);
+					}
+					
 				}
 			}
 			
 			// labels O
 			if (!flexContainer.getLabels().isEmpty()) {
-				flexContainerEntity.setLabelsEntitiesFromSring(flexContainer.getLabels());
+//				flexContainerEntity.setLabelsEntitiesFromSring(flexContainer.getLabels());
+				// Only accept new labels
+				for (String s : flexContainer.getLabels()) {
+					flexContainerEntity.getLabelsEntities().add(new LabelEntity(s));
+				}
 				modifiedFlexCtr.getLabels().addAll(flexContainer.getLabels());
 			}
 			// expirationTime O
@@ -525,13 +550,16 @@ public class FlexContainerController extends Controller {
 			}
 
 			// here add customAttribute that might be updated
-			if (!flexContainer.getCustomAttributes().isEmpty()) {
-				for (CustomAttribute ca : flexContainer.getCustomAttributes()) {
-					flexContainerEntity.createOrUpdateCustomAttribute(ca.getCustomAttributeName(),
-							ca.getCustomAttributeValue());
+			LOGGER.debug("request flex attributes: " + flexContainer.getCustomAttributes());
+			modifiedFlexCtr.getCustomAttributes().clear();
+			for (CustomAttribute ca : flexContainer.getCustomAttributes()) {
+				if (ca.getValue() != null) {
+					flexContainerEntity.createOrUpdateCustomAttribute(ca.getShortName(),
+							ca.getValue(), ca.getType());
+					modifiedFlexCtr.getCustomAttributes().add(ca);
 				}
-				modifiedFlexCtr.setCustomAttributes(flexContainer.getCustomAttributes());
 			}
+			LOGGER.debug("modified flex attributes: " + modifiedFlexCtr.getCustomAttributes());
 		}
 
 		flexContainerEntity.setLastModifiedTime(DateUtil.now());
@@ -541,7 +569,7 @@ public class FlexContainerController extends Controller {
 		if (!isInternalNotify) {
 			// check if a FlexContainerService exist
 			FlexContainerService fcs = FlexContainerSelector.getFlexContainerService(
-					/* request.getTo() */ /* UriUtil.toCseRelativeUri( */flexContainerEntity.getResourceID()/* ) */);
+					flexContainerEntity.getResourceID());
 			if (fcs != null) {
 				try {
 					fcs.setCustomAttributeValues(modifiedFlexCtr.getCustomAttributes(), request);

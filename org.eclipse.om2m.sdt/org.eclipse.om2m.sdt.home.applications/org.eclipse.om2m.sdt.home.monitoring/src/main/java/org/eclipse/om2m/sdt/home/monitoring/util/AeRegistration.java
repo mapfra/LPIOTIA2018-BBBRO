@@ -35,7 +35,6 @@ import org.eclipse.om2m.commons.resource.SetOfAcrs;
 import org.eclipse.om2m.commons.resource.Subscription;
 import org.eclipse.om2m.core.service.CseService;
 import org.eclipse.om2m.interworking.service.InterworkingService;
-import org.eclipse.om2m.sdt.home.monitoring.servlet.SessionManager;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -130,12 +129,12 @@ public class AeRegistration implements InterworkingService, org.eclipse.om2m.sdt
 		// create a Container to store the icon
 		Container iconContainer = createContainer(registeredApplication.getResourceID(), "ICON");
 		if (iconContainer != null) {
-			createContentInstance(iconContainer, "/" + IMAGES + "logo.png");
+			createContentInstance(iconContainer, IMAGES + "logo.png");
 		}
 		
 		Container presentationUrlContainer = createContainer(registeredApplication.getResourceID(), "PRESENTATION_URL");
 		if (presentationUrlContainer != null) {
-			createContentInstance(presentationUrlContainer, "/" + WEBAPPS + "login.html");
+			createContentInstance(presentationUrlContainer, WEBAPPS + "login.html");
 		}
 		
 		// ok
@@ -314,7 +313,7 @@ public class AeRegistration implements InterworkingService, org.eclipse.om2m.sdt
 	}
 
 	public boolean createSubscription(String resourceId, String sessionId) {
-		if ((resourceId == null) || ! SessionManager.getInstance().checkTokenExists(sessionId)) {
+		if ((resourceId == null) /*|| ! SessionManager.getInstance().checkTokenExists(sessionId)*/) {
 			return false;
 		}
 

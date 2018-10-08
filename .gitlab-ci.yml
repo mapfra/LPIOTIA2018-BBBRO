@@ -1,5 +1,9 @@
-image: registry.forge.orange-labs.fr/org.eclipse.om2m/om2m/com.orange.om2m.docker.builder:0.0.5
+image: registry.forge.orange-labs.fr/org.eclipse.om2m/om2m/com.orange.om2m.docker.builder:0.0.6
 
+variables:
+  MAVEN_OPTS: "-Xms4000m -Xmx6000m"
+
+  
 cache:
   paths:
     - .m2
@@ -15,6 +19,7 @@ build:
   script: 
     - "nohup dockerd&"
     - "mvn clean install -Dmaven.repo.local=./.m2/repository -B -s /root/.m2/settings.xml"
+    - "mvn sonar:sonar -Dsonar.host.url=http://10.192.37.63/sonar"
   tags:
     - docker-privileged
     - rsc
@@ -24,7 +29,7 @@ deploy:
   stage: deploy
   script: 
     - "nohup dockerd&"
-    - "mvn deploy -B -Dmaven.repo.local=./.m2/repository -s /root/.m2/settings.xml -DaltDeploymentRepository=inhouse.snapshot::default::http://maven2.rd.francetelecom.fr/proxy/repository/inhouse.snapshot -Drepo=${CI_COMMIT_REF_NAME} -Pdocker"
+    - "mvn deploy -B -Dmaven.test.skip=true -Dmaven.repo.local=./.m2/repository -s /root/.m2/settings.xml -DaltDeploymentRepository=inhouse.snapshot::default::http://maven2.rd.francetelecom.fr/proxy/repository/inhouse.snapshot -Drepo=${CI_COMMIT_REF_NAME} -Pdocker"
     - "rm -fr .m2"
   tags:
     - docker-privileged

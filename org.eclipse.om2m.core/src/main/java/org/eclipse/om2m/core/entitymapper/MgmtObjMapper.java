@@ -40,7 +40,8 @@ import org.eclipse.om2m.commons.resource.Subscription;
 public class MgmtObjMapper extends EntityMapper<MgmtObjEntity, MgmtObj> {
 
 	@Override
-	protected void mapAttributes(MgmtObjEntity entity, MgmtObj resource, int level, int offset) {
+	protected void mapAttributes(MgmtObjEntity entity, MgmtObj resource, 
+			int level, int offset) {
 		if (level < 0) {
 			return;
 		}
@@ -49,14 +50,10 @@ public class MgmtObjMapper extends EntityMapper<MgmtObjEntity, MgmtObj> {
 		EntityMapperFactory.getAnnounceableSubordonateEntity_AnnounceableResourceMapper().mapAttributes(entity,
 				resource, level, offset);
 
-		resource.setCreationTime(entity.getCreationTime());
-		resource.setDescription(entity.getDescription());
 		resource.setExpirationTime(entity.getExpirationTime());
-		resource.setLastModifiedTime(entity.getLastModifiedTime());
-		resource.setName(entity.getName());
-		resource.setParentID(entity.getParentID());
-		resource.setResourceID(entity.getResourceID());
-		resource.setResourceType(entity.getResourceType());
+		resource.setDescription(entity.getDescription());
+		resource.getObjectIDs().addAll(entity.getObjectIDs());
+		resource.getObjectPaths().addAll(entity.getObjectPaths());
 		
 		if (entity instanceof AreaNwkInfoEntity) {
 			mapSpecificAttributes((AreaNwkInfoEntity)entity, (AreaNwkInfo)resource);
@@ -69,18 +66,18 @@ public class MgmtObjMapper extends EntityMapper<MgmtObjEntity, MgmtObj> {
 	
 	private void mapSpecificAttributes(AreaNwkInfoEntity entity, AreaNwkInfo resource) {
 		resource.setAreaNwkType(entity.getAreaNwkType());
-		if (!entity.getListOfDevices().isEmpty()) {
-			resource.getListOfDevices().addAll(entity.getListOfDevices());
-		}
+		resource.getListOfDevices().addAll(entity.getListOfDevices());
 	}
 	
-	private void mapSpecificAttributes(AreaNwkDeviceInfoEntity entity, AreaNwkDeviceInfo resource) {
+	private void mapSpecificAttributes(AreaNwkDeviceInfoEntity entity, 
+			AreaNwkDeviceInfo resource) {
 		resource.setAreaNwkId(entity.getAreaNwkId());
 		resource.setDevID(entity.getDevID());
 		resource.setDevType(entity.getDevType());
 		resource.setSleepDuration(entity.getSleepDuration());
 		resource.setSleepInterval(entity.getSleepInterval());
 		resource.setStatus(entity.getStatus());
+		resource.getListOfNeighbors().addAll(entity.getListOfNeighbors());
 	}
 	
 	private void mapSpecificAttributes(DeviceInfoEntity entity, DeviceInfo resource) {
@@ -88,7 +85,6 @@ public class MgmtObjMapper extends EntityMapper<MgmtObjEntity, MgmtObj> {
 		resource.setModel(entity.getModel());
 		resource.setManufacturer(entity.getManufacturer());
 		resource.setDeviceType(entity.getDeviceType());
-		
 		resource.setDeviceName(entity.getDeviceName());
 		resource.setFwVersion(entity.getFwVersion());
 		resource.setSwVersion(entity.getSwVersion());
@@ -106,33 +102,39 @@ public class MgmtObjMapper extends EntityMapper<MgmtObjEntity, MgmtObj> {
 	}
 	
 	@Override
-	protected List<ChildResourceRef> getChildResourceRef(MgmtObjEntity entity, int level, int offset) {
+	protected List<ChildResourceRef> getChildResourceRef(MgmtObjEntity entity, 
+			int level, int offset) {
 		List<ChildResourceRef> childRefs = new ArrayList<>();
 		if (level == 0) {
 			return childRefs;
 		}
 		// add child ref subscription
-		for (SubscriptionEntity sub : entity.getSubscriptions()){
+		for (SubscriptionEntity sub : entity.getSubscriptions()) {
 			ChildResourceRef child = new ChildResourceRef();
 			child.setResourceName(sub.getName());
 			child.setType(ResourceType.SUBSCRIPTION);
 			child.setValue(sub.getResourceID());
 			childRefs.add(child);
-			childRefs.addAll(new SubscriptionMapper().getChildResourceRef(sub, level - 1, offset - 1));
+			childRefs.addAll(new SubscriptionMapper()
+					.getChildResourceRef(sub, level - 1, offset - 1));
 		}
 		return childRefs;
 	}
 
 	@Override
-	protected void mapChildResourceRef(MgmtObjEntity entity, MgmtObj resource, int level, int offset) {
-		((MgmtObjWithChildren)resource).getChildResource().addAll(getChildResourceRef(entity, level, offset));
+	protected void mapChildResourceRef(MgmtObjEntity entity, MgmtObj resource,
+			int level, int offset) {
+		((MgmtObjWithChildren)resource).getChildResource()
+			.addAll(getChildResourceRef(entity, level, offset));
 	}
 
 	@Override
-	protected void mapChildResources(MgmtObjEntity entity, MgmtObj resource, int level, int offset) {
+	protected void mapChildResources(MgmtObjEntity entity, MgmtObj resource, 
+			int level, int offset) {
 		// add child ref subscription
-		for (SubscriptionEntity sub : entity.getSubscriptions()){
-			Subscription subRes = new SubscriptionMapper().mapEntityToResource(sub, ResultContent.ATTRIBUTES, level - 1, offset - 1);
+		for (SubscriptionEntity sub : entity.getSubscriptions()) {
+			Subscription subRes = new SubscriptionMapper()
+					.mapEntityToResource(sub, ResultContent.ATTRIBUTES, level - 1, offset - 1);
 			((MgmtObjWithChildren)resource).getSubscriptions().add(subRes);
 		}
 	}

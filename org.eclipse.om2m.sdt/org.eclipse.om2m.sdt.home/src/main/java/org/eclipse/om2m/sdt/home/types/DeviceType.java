@@ -11,72 +11,63 @@ import org.eclipse.om2m.sdt.Identifiers;
 
 public enum DeviceType implements Identifiers {
 	
-	deviceAirConditioner(1, "deviceAirConditioner", "deviceAirConditioner", "deACr"),
-	deviceClothesWasher(2, "deviceClothesWasher", "deviceClothesWasher", "deCWr"),
-	deviceElectricVehicleCharger(3, "deviceElectricVehicleCharger", "deviceElectricVehicleCharger", "dEVCr"),
-	deviceLight(4, "deviceLight", "deviceLight", "devLt"),
-	deviceMicrogeneration (5, "deviceMicrogeneration", "deviceMicrogeneration", "devMn"),
-	deviceOven(6, "deviceOven", "deviceOven", "devOn"),
-	deviceRefrigerator(7, "deviceRefrigerator", "deviceRefrigerator", "devRr"),
-	deviceRobotCleaner(8, "deviceRobotCleaner", "deviceRobotCleaner", "devRCr"),
-	deviceSmartElectricMeter(9, "deviceSmartElectricMeter", "deviceSmartElectricMeter", "dSEMr"),
-	deviceStorageBattery(10, "deviceStorageBattery", "deviceStorageBattery", "deSBy"),
-	deviceTelevision(11, "deviceTelevision", "deviceTelevision", "devTn"),
-	deviceThermostat(12, "deviceThermostat", "deviceThermostat", "devTt"),
-	deviceWaterHeater(13, "deviceWaterHeater", "deviceWaterHeater", "devWHr"),
-	deviceCoffeeMachine(14, "deviceCoffeeMachine", "deviceCoffeeMachine", "dCeMe"), 
-	deviceKettle(15, "deviceKettle", "deviceKettle", "dKtle"),
+	deviceAirConditioner,
+	deviceAirQualityMonitor,
+	deviceClothesWasher,
+	deviceElectricVehicleCharger,
+	deviceLight,
+	deviceMicrogeneration,
+	deviceOven,
+	deviceRefrigerator,
+	deviceRobotCleaner,
+	deviceSmartElectricMeter,
+	deviceStorageBattery,
+	deviceTelevision,
+	deviceThermostat,
+	deviceWaterHeater,
+	deviceCoffeeMachine, 
+	deviceKettle,
 	
-	deviceDoor(100, "deviceDoor", "deviceDoor", "devDr"),
-	deviceSmokeExtractor(101, "deviceSmokeExtractor", "deviceSmokeExtractor", "dSeEr"),
-	deviceSwitchButton(102, "deviceSwitchButton", "deviceSwitchButton", "deSBn"),
-	deviceWarningDevice(103, "deviceWarningDevice", "deviceWarningDevice", "deWDe"),
+	deviceDoor,
+//	deviceSmokeExtractor,
+	deviceSwitch,
+	deviceWarning,
 	
-	deviceGasValve(200, "deviceGasValve", "deviceGasValve", "dGsVe"),
-	deviceWaterValve(201, "deviceWaterValve", "deviceWaterValve", "deWVe"),
+	deviceGasValve,
+	deviceWaterValve,
 	
-	deviceFloodDetector(300, "deviceFloodDetector", "deviceFloodDetector", "deFDr"),
-	deviceMotionDetector(301, "deviceMotionDetector", "deviceMotionDetector", "deMDr"),
-	deviceSmokeDetector(302, "deviceSmokeDetector", "deviceSmokeDetector", "deSDr"),
-	deviceTemperatureDetector(303, "deviceTemperatureDetector", "deviceTemperatureDetector", "deTDr"),
-	deviceContactDetector(304, "deviceContactDetector", "deviceContactDetector", "deCDr"),
+	deviceContactDetector,
+	deviceFloodDetector,
+	deviceMotionDetector,
+	deviceSmokeDetector,
+	deviceTemperatureDetector,
 	
-	deviceCamera(400, "deviceCamera", "deviceCamera", "devCa"),
-	deviceWeatherStation(500, "deviceWeatherStation", "deviceWeatherStation", "deWSn"),
-	deviceNumberDevice(600, "deviceNumberDevice", "deviceNumberDevice", "deNDe"),
+//	deviceCamera2,
+	deviceCamera,
+	deviceWeatherStation,
+	deviceHomeCCTV,
+	;
 	
-	undefinedVendorExt(0, "undefinedVendorExt", "", "");
+	private final String longName;
+	private final String shortName;
+	private final String cnd;
 	
-	static public final String PATH = "org.onem2m.home.device.";
-	
-	private int value;
-	private final String def;
-	private final String longDefinitionName;
-	private final String shortDefinitionName;
-	
-	DeviceType(int v, String s, String longDef, String shortDef) {
-		value = v;
-		def = s;
-		longDefinitionName = longDef;
-		shortDefinitionName = shortDef;
+	DeviceType() {
+		longName = toString();
+		shortName = FlexContainers.getFlexShortName(longName);
+		cnd = FlexContainers.getContainerDefinition(longName);
 	}
-
-    public int getValue() {
-        return value;
-    }
     
     public String getDefinition() {
-    	return PATH + def;
+    	return cnd;
     }
-    
-    
 
     /**
 	 * @return the longDefinitionName
 	 */
 	@Override
 	public String getLongName() {
-		return longDefinitionName;
+		return longName;
 	}
 
 	/**
@@ -84,25 +75,7 @@ public enum DeviceType implements Identifiers {
 	 */
 	@Override
 	public String getShortName() {
-		return shortDefinitionName;
+		return shortName;
 	}
-
-	public static DeviceType fromValue(int v) {
-        for (DeviceType c: DeviceType.values()) {
-            if (c.value == v) {
-                return c;
-            }
-        }
-        throw new IllegalArgumentException("Undefined value " + v);
-    }
-
-    public static DeviceType fromValue(String def) {
-        for (DeviceType c: DeviceType.values()) {
-            if (c.def.equals(def)) {
-                return c;
-            }
-        }
-        throw new IllegalArgumentException("Undefined definition " + def);
-    }
 
 }

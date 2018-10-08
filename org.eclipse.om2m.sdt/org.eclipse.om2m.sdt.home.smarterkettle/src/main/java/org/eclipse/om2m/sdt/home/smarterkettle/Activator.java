@@ -14,15 +14,19 @@ import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.ActionException;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.HomeDomain;
+import org.eclipse.om2m.sdt.home.driver.Logger;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.cm.ConfigurationException;
 import org.osgi.service.cm.ManagedService;
+import org.osgi.service.log.LogService;
 
 public class Activator implements ManagedService, BundleActivator {
 	
+	static public Logger LOGGER;
+	
 	private BundleContext context;
-	private Boolean activated;
+	private boolean activated;
 	private Domain domain;
 	private static final String ID = "SmarterKettle";
 	
@@ -31,25 +35,27 @@ public class Activator implements ManagedService, BundleActivator {
 	
 	
 	public Activator() {
-		
 		this.domain = new HomeDomain("Smarter Kettle Domain");
+		LOGGER = new Logger("SMARTER");
 	}
 	
 	private void addKettleMachine(String ip, int port){
-		System.out.println("AddKettleMachine");
-		System.out.println(ip + ":" + port);
-		
-		
+		LOGGER.info("AddKettleMachine");
+		LOGGER.info(ip + ":" + port);
 		sKettle = new SmarterKettle(ID + idNum++, domain, ip, port);
-		
 		sKettle.register(context);
-		
 	}
 
 	@Override
-	public void start(BundleContext context) throws Exception {
-		System.out.println("Bundle kettle machine starting");
-		this.context = context;
+	public void start(BundleContext ctxt) throws Exception {
+		try {
+			LOGGER = new Logger("SMARTER");
+			LOGGER.setLogService((LogService) ctxt.getService(
+					ctxt.getServiceReference(LogService.class.getName())));
+		} catch (Exception ignored) {
+		}
+		LOGGER.info("Bundle kettle machine starting");
+		this.context = ctxt;
 		activated = true;
 		
 		addKettleMachine("10.0.1.27", 2081);
@@ -57,56 +63,40 @@ public class Activator implements ManagedService, BundleActivator {
 	}
 	
 	public void test() throws ActionException, AccessException, InterruptedException, DataPointException{
-		System.out.println("----Test----");
-		
-		if(!sKettle.getFaultDetection().getStatus()){			
-			System.out.println("KOD bledu: " + sKettle.getFaultDetection().getCode() + " Opis: " + sKettle.getFaultDetection().getDescription());
+		LOGGER.info("----Test----");
+		if (sKettle.getFaultDetection().getStatus()) {
+			LOGGER.info("kettle OK");
+		} else {
+			LOGGER.info("Error code: " + sKettle.getFaultDetection().getCode() +
+					" / " + sKettle.getFaultDetection().getDescription());
 		}
-		else{
-			System.out.println("Brak błędów");
-		}
-		
-		
-		System.out.println("----Test modułu temperatury---");
+		LOGGER.info("----Test module temperature---");
 		
 		sKettle.getTemperature().setTargetTemperature(50);
 		sKettle.getTemperature().setTargetTemperature(50);
 		
+		LOGGER.info("Current: " + sKettle.getTemperature().getCurrentTemperature());
+		LOGGER.info("Target: " + sKettle.getTemperature().getTargetTemperature());
+		LOGGER.info("Max: " + sKettle.getTemperature().getMaxValue());
+		LOGGER.info("Min: " + sKettle.getTemperature().getMinValue());
+		LOGGER.info("Step: " + sKettle.getTemperature().getStepValue());
 		
-		System.out.println("Current: " + sKettle.getTemperature().getCurrentTemperature());
-		System.out.println("Target: " + sKettle.getTemperature().getTargetTemperature());
-		System.out.println("Max: " + sKettle.getTemperature().getMaxValue());
-		System.out.println("Min: " + sKettle.getTemperature().getMinValue());
-		System.out.println("Step: " + sKettle.getTemperature().getStepValue());
+		sKettle.getBinarySwitch().toggle();
 		
-		
-		
-		
-		sKettle.getBoilingSwitch().toggle();
-		
-		
-		System.out.println("Test modułu BOILING");
-		System.out.println("Spradzenie statusu za pomocą modułu BOILING");
-		//System.out.println("Czy gotuje: " + sKettle.getBoiling().getStatus());
-		System.out.println("Czy goutje: " + sKettle.getBoilingSwitch().getPowerState());
-		
-		
-		
-		
+		LOGGER.info("Boiling: " + sKettle.getBinarySwitch().getPowerState());
 	}
-
 
 	@Override
 	public void updated(Dictionary properties) throws ConfigurationException {
-		System.out.println("Uptaded");
+		LOGGER.info("Uptaded");
 		addKettleMachine("10.0.1.28", 2081);
-				
 	}
-	
 
 	@Override
 	public void stop(BundleContext context) throws Exception {
 		activated = false;
+		if (sKettle != null)
+			sKettle.unregister();
 	}
+
 }
-	

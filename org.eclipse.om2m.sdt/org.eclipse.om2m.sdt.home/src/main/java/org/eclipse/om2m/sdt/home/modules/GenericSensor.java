@@ -8,21 +8,15 @@
 package org.eclipse.om2m.sdt.home.modules;
 
 import org.eclipse.om2m.sdt.Domain;
-import org.eclipse.om2m.sdt.Module;
 import org.eclipse.om2m.sdt.Identifiers;
+import org.eclipse.om2m.sdt.Module;
 import org.eclipse.om2m.sdt.datapoints.BooleanDataPoint;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
-import org.eclipse.om2m.sdt.home.types.ModuleType;
 
 public class GenericSensor extends Module {
 	
 	private BooleanDataPoint value;
-	
-	public GenericSensor(final String name, final Domain domain, 
-			BooleanDataPoint value) {
-		this(name, domain, value, ModuleType.genericSensor);
-	}
 	
 	public GenericSensor(final String name, final Domain domain, 
 			BooleanDataPoint value, Identifiers identifiers) {

@@ -19,9 +19,9 @@ public class AbstractAlarmSensor extends Module {
 	
 	private BooleanDataPoint alarm;
 	
-	public AbstractAlarmSensor(final String name, final Domain domain, BooleanDataPoint alarm) {
-		this(name, domain, alarm, ModuleType.abstractAlarmSensor);
-	}
+//	public AbstractAlarmSensor(final String name, final Domain domain, BooleanDataPoint alarm) {
+//		this(name, domain, alarm, ModuleType.abstractAlarmSensor);
+//	}
 	
 	public AbstractAlarmSensor(final String name, final Domain domain, 
 			BooleanDataPoint alarm, ModuleType type) {
@@ -32,7 +32,7 @@ public class AbstractAlarmSensor extends Module {
 			BooleanDataPoint alarm, ModuleType type, String doc) {
 		super(name, domain, type);
 		if ((alarm == null) ||
-				! alarm.getShortDefinitionType().equals(DatapointType.alarm.getShortName())) {
+				! alarm.getShortName().equals(DatapointType.alarm.getShortName())) {
 			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong alarm datapoint: " + alarm);
 		}

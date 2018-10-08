@@ -65,7 +65,7 @@ public class SDTActionAdaptor {
 
 		for (Arg arg : action.getArgs()) {
 			CustomAttribute customAttribute = new CustomAttribute();
-			customAttribute.setCustomAttributeName(arg.getName());
+			customAttribute.setShortName(arg.getName());
 			actionFlexContainer.getCustomAttributes().add(customAttribute);
 		}
 

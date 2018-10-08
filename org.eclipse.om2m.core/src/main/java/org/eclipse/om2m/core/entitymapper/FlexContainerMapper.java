@@ -8,6 +8,7 @@
 package org.eclipse.om2m.core.entitymapper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,6 +29,8 @@ import org.eclipse.om2m.core.flexcontainer.FlexContainerSelector;
 import org.eclipse.om2m.flexcontainer.service.FlexContainerService;
 
 public class FlexContainerMapper extends EntityMapper<FlexContainerEntity, AbstractFlexContainer>{
+	
+//	private static Log LOGGER = LogFactory.getLog(FlexContainerMapper.class);
 
 	@Override
 	protected AbstractFlexContainer createResource() {
@@ -62,21 +65,30 @@ public class FlexContainerMapper extends EntityMapper<FlexContainerEntity, Abstr
 				.getFlexContainerService(entity.getResourceID());
 		
 		if (fcs == null) {
+			resource.getCustomAttributes().clear();
 			for (CustomAttributeEntity cae : entity.getCustomAttributes()) {
 				CustomAttribute ca = new CustomAttribute();
-				ca.setCustomAttributeName(cae.getCustomAttributeName());
-				ca.setCustomAttributeValue(cae.getCustomAttributeValue());
+				ca.setShortName(cae.getName());
+//				ca.setLongName(cae.getLongName());
+				ca.setType(cae.getType());
+				ca.setValue(cae.getValue());
 				resource.getCustomAttributes().add(ca);
 			}
 		} else {
-			List<String> customAttributeNames = new ArrayList<String>();
+			Map<String, CustomAttributeEntity> attributes = new HashMap<String, CustomAttributeEntity>();
 			for (CustomAttributeEntity cae : entity.getCustomAttributes()) {
-				customAttributeNames.add(cae.getCustomAttributeName());
+				attributes.put(cae.getName(), cae);
 			}
-			for (Map.Entry<String, String> entry : fcs.getCustomAttributeValues(customAttributeNames).entrySet()) {
+			List<String> names = new ArrayList<>(attributes.keySet());
+			resource.getCustomAttributes().clear();
+			for (Map.Entry<String, String> entry : fcs.getCustomAttributeValues(names).entrySet()) {
+				String name = entry.getKey();
+				CustomAttributeEntity cae = attributes.get(name);
 				CustomAttribute ca = new CustomAttribute();
-				ca.setCustomAttributeName(entry.getKey());
-				ca.setCustomAttributeValue(entry.getValue());
+				ca.setShortName(name);
+//				ca.setLongName(cae.getLongName());
+				ca.setType(cae.getType());
+				ca.setValue(entry.getValue());
 				resource.getCustomAttributes().add(ca);
 			}
 		}

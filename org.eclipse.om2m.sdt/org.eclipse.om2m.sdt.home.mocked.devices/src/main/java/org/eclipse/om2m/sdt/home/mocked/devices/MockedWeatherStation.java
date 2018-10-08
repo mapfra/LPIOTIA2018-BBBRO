@@ -16,8 +16,9 @@ import org.eclipse.om2m.sdt.datapoints.IntegerDataPoint;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.devices.WeatherStation;
 import org.eclipse.om2m.sdt.home.mocked.modules.MockedTemperature;
-import org.eclipse.om2m.sdt.home.modules.Noise;
-import org.eclipse.om2m.sdt.home.modules.RelativeHumidity;
+import org.eclipse.om2m.sdt.home.modules.AcousticSensor;
+import org.eclipse.om2m.sdt.home.modules.AirQualitySensor;
+import org.eclipse.om2m.sdt.home.modules.Barometer;
 import org.eclipse.om2m.sdt.home.modules.Temperature;
 import org.eclipse.om2m.sdt.home.types.DatapointType;
 import org.osgi.framework.ServiceRegistration;
@@ -30,9 +31,7 @@ public class MockedWeatherStation extends WeatherStation implements MockedDevice
 
 	private List<ServiceRegistration> serviceRegistrations;
 	private float temp;
-	private float humidity;
 	private Temperature temperature;
-	private RelativeHumidity relativeHumidity;
 	private boolean running;
 	private int delta = 1;
 
@@ -48,23 +47,41 @@ public class MockedWeatherStation extends WeatherStation implements MockedDevice
 			});
 		addModule(temperature);
 		
-		relativeHumidity = new RelativeHumidity("humidity_" + id, domain, 
-			new FloatDataPoint(DatapointType.relativeHumidity) {
-				@Override
-				public Float doGetValue() throws DataPointException {
-					return humidity;
-				}
-			});
-		addModule(relativeHumidity);
-		
-		addModule(new Noise("noise_" + id, domain, 
-			new IntegerDataPoint(DatapointType.noise) {
-				@Override
-				protected Integer doGetValue() throws DataPointException {
-					return 37;
-				}
-			}));
-		
+		AirQualitySensor airQuality = new AirQualitySensor("airQuality_" + id, domain);
+		setAirQualitySensor(airQuality);
+		airQuality.setSensorHumidity(new IntegerDataPoint(DatapointType.sensorHumidity) {
+			@Override
+			protected Integer doGetValue() throws DataPointException {
+				return (int) (Math.random() * 100);
+			}
+		});
+		// co2
+		airQuality.setCo2(new IntegerDataPoint(DatapointType.co2) {
+			@Override
+			protected Integer doGetValue() throws DataPointException {
+				return (int) (Math.random() * 100000);
+			}
+		});
+
+		// noise
+		setAcousticSensor(new AcousticSensor("noise_" + id, domain, 
+				new FloatDataPoint(DatapointType.loudness) {
+			@Override
+			protected Float doGetValue() throws DataPointException {
+				return (float) (Math.random() * 100);
+			}
+		}));
+
+		// pressure
+		setBarometer(new Barometer("atmosphericPressure_" + id, 
+				domain, 
+				new FloatDataPoint(DatapointType.atmosphericPressure) {
+			@Override
+			protected Float doGetValue() throws DataPointException {
+				return (float) (990 + Math.random() * 70);
+			}
+		}));
+
 		new MyThread().start();
 	}
 
@@ -96,7 +113,6 @@ public class MockedWeatherStation extends WeatherStation implements MockedDevice
 					if ((temp <= MIN) || (temp >= MAX)) {
 						delta = -delta;
 					}
-					humidity = (float) (Math.random() * 100);
 					Event evt = new Event("ALARM");
 					evt.addDataPoint(temperature.getDataPointByShortName(
 							DatapointType.currentTemperature.getShortName()));

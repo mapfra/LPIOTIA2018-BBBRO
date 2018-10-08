@@ -97,7 +97,7 @@ public class LIFXDeviceCloud extends LIFXDevice {
 
 	@Override
 	public void setBrightness(double brightness, double duration) throws Exception {
-		DiscoveryCloud.setLightPower(this, null, null, null, null, brightness / 65535d, duration);
+		DiscoveryCloud.setLightPower(this, null, (Double) null, null, null, brightness / 65535d, duration);
 		super.setBrightness(brightness);
 	}
 
@@ -139,7 +139,7 @@ public class LIFXDeviceCloud extends LIFXDevice {
 
 	@Override
 	public void setPower(int newPower, int duration) throws Exception {
-		DiscoveryCloud.setLightPower(this, (newPower == 0 ? "off" : "on"), null, null, null, null, (double) duration);
+		DiscoveryCloud.setLightPower(this, (newPower == 0 ? "off" : "on"), (Double)null, null, null, null, (double) duration);
 		super.setPower(newPower, duration);
 	}
 
@@ -153,6 +153,14 @@ public class LIFXDeviceCloud extends LIFXDevice {
 		super.setSaturation(newSaturation);
 		super.setKelvin(newKelvin);
 		super.setBrightness(newBrightness);
+	}
+	
+	@Override
+	public void setLightState(int newPower, int red, int green, int blue, int duration) throws Exception {
+		DiscoveryCloud.setLightPower(this, (newPower == 0 ? "off" : "on"), red, green, blue, duration);
+		
+		DiscoveryCloud.updateLightState(this);
+		
 	}
 
 	public static LIFXDeviceCloud fromJson(JSONObject json, String pAuthenticationToken) {
@@ -219,4 +227,6 @@ public class LIFXDeviceCloud extends LIFXDevice {
 		
 		return value;
 	}
+
+	
 }

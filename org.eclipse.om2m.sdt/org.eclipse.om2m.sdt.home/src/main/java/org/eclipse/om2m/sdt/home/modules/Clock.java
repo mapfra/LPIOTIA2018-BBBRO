@@ -30,7 +30,7 @@ public class Clock extends Module {
 		super(name, domain, ModuleType.clock);
 		
 		if ((currentDate == null) ||
-				! currentDate.getShortDefinitionType().equals(DatapointType.currentDate.getShortName())) {
+				! currentDate.getShortName().equals(DatapointType.currentDate.getShortName())) {
 			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong currentDate datapoint: " + currentDate);
 		}
@@ -39,7 +39,7 @@ public class Clock extends Module {
 		addDataPoint(currentDate);
 		
 		if ((currentTime == null) ||
-				! currentTime.getShortDefinitionType().equals(DatapointType.currentTime.getShortName())) {
+				! currentTime.getShortName().equals(DatapointType.currentTime.getShortName())) {
 			domain.removeModule(getName());
 			throw new IllegalArgumentException("Wrong currentTime datapoint: " + currentTime);
 		}

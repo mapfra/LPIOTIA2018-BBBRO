@@ -20,6 +20,7 @@ import org.eclipse.om2m.sdt.home.modules.AbstractAlarmSensor;
 import org.eclipse.om2m.sdt.home.modules.FaultDetection;
 import org.eclipse.om2m.sdt.home.modules.WaterSensor;
 import org.eclipse.om2m.sdt.home.types.DatapointType;
+import org.eclipse.om2m.sdt.home.types.ModuleType;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.enocean.EnOceanDevice;
@@ -104,7 +105,8 @@ public class EOFloodDetector extends FloodDetector implements EnOceanSDTDevice {
 			sensor = new WaterSensor("WaterSensor_" + eoDevice.getChipId(), domain, alarm);
 			addModule((WaterSensor)sensor);
 		} else {
-			sensor = new AbstractAlarmSensor("AbstractAlarmSensor_" + eoDevice.getChipId(), domain, alarm);
+			sensor = new AbstractAlarmSensor("AbstractAlarmSensor_" + eoDevice.getChipId(), domain,
+					alarm, ModuleType.waterSensor);
 			addModule(sensor);
 		}
 	}

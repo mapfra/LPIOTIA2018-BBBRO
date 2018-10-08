@@ -34,6 +34,7 @@ import org.eclipse.om2m.sdt.home.devices.WaterValve;
 import org.eclipse.om2m.sdt.home.modules.AlarmSpeaker;
 import org.eclipse.om2m.sdt.home.modules.AudioVolume;
 import org.eclipse.om2m.sdt.home.types.LiquidLevel;
+import org.eclipse.om2m.sdt.home.types.MachineState;
 import org.eclipse.om2m.sdt.types.Array;
 import org.eclipse.om2m.sdt.types.DataType.TypeChoice;
 import org.eclipse.om2m.sdt.types.SimpleType;
@@ -141,18 +142,14 @@ public class Activator implements SDTEventListener {
 				light.getColour().setBlue((int) Math.random() * 255);
 				Thread.sleep(2000);
 				light.getColourSaturation().setColourSat((int) Math.random() * 100);
-				List<String> modes = light.getRunMode().getSupportedModes();
-				if (! modes.isEmpty()) {
-					String mode = modes.get((int) (Math.random() * modes.size()));
-					Logger.info("set run mode: " + mode + " from supported " + modes);
-					light.getRunMode().setOperationMode(mode);
+				if (light.getRunState() != null) {
+					List<MachineState.Values> modes = light.getRunState().getMachineStates();
+					if (! modes.isEmpty()) {
+						MachineState.Values mode = modes.get((int) (Math.random() * modes.size()));
+						Logger.info("set run state: " + mode + " from supported " + modes);
+						light.getRunState().setMachineState(mode);
+					}
 				}
-//				List<Integer> states = light.getRunState().getJobStates();
-//				if (! states.isEmpty()) {
-//					Integer mode = states.get((int) (Math.random() * states.size()));
-//					Logger.info("set run state: " + mode + " from supported " + states);
-//					light.getRunState().setJobState(mode);
-//				}
 			}
 		}
 		Thread.sleep(1000);
@@ -160,7 +157,8 @@ public class Activator implements SDTEventListener {
 			Logger.info("light color: r=" + light.getColour().getRed() + ", g=" + light.getColour().getGreen() + ", b="
 					+ light.getColour().getBlue());
 			Logger.info("light color saturation: " + light.getColourSaturation().getColourSat());
-			Logger.info("light states: " + light.getRunMode().getSupportedModes());
+			if (light.getRunState() != null)
+				Logger.info("light states: " + light.getRunState().getMachineStates());
 		}
 		Thread.sleep(1000);
 		for (Light light : lights) {
@@ -311,15 +309,15 @@ public class Activator implements SDTEventListener {
 		if (valveTests == 0)
 			return;
 		try {
-			int on = LiquidLevel.zero;
+			LiquidLevel.Values on = LiquidLevel.Values.zero;
 			try {
 				on = valve.getWaterLevel().getLiquidLevel();
 				Logger.info("test valve: " + on);
 			} catch (Exception e) {
 				Logger.warning("", e);
 			}
-			on = (on == LiquidLevel.zero) ? LiquidLevel.maximum
-					: LiquidLevel.zero;
+			on = (on == LiquidLevel.Values.zero) ? LiquidLevel.Values.maximum
+					: LiquidLevel.Values.zero;
 			valve.getWaterLevel().setLiquidLevel(on);
 			Logger.info("test valve: OK");
 		} catch (Exception e) {

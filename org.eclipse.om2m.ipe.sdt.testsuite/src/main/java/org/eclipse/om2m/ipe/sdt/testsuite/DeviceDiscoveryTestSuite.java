@@ -28,7 +28,6 @@ import org.eclipse.om2m.sdt.datapoints.ValuedDataPoint;
 import org.eclipse.om2m.sdt.exceptions.AccessException;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.types.DataType;
-import org.eclipse.om2m.sdt.types.SimpleType;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import org.osgi.util.tracker.ServiceTracker;
@@ -41,9 +40,10 @@ public class DeviceDiscoveryTestSuite {
 	private final BundleContext bundleContext;
 	private final CseService cseService;
 
-	private final ServiceTracker deviceServiceTracker;
+	private final ServiceTracker<?, ?> deviceServiceTracker;
 	private final List<Device> devices;
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public DeviceDiscoveryTestSuite(BundleContext context, CseService pCseService) {
 		this.bundleContext = context;
 		this.cseService = pCseService;
@@ -52,21 +52,17 @@ public class DeviceDiscoveryTestSuite {
 
 		deviceServiceTracker = new ServiceTracker(bundleContext, Device.class.getName(),
 				new ServiceTrackerCustomizer() {
-
 					@Override
 					public void removedService(ServiceReference reference, Object service) {
 						removeDevice((Device) service);
 					}
-
 					@Override
 					public void modifiedService(ServiceReference reference, Object service) {
 					}
-
 					@Override
 					public Object addingService(ServiceReference reference) {
 						Device device = (Device) bundleContext.getService(reference);
 						addDevice(device);
-
 						checkDevice(device);
 						return device;
 					}
@@ -167,7 +163,7 @@ public class DeviceDiscoveryTestSuite {
 		// at this point, we are sure the CustomAttribute exist
 
 		if (attributeValue == null) {
-			if (customAttribute.getCustomAttributeValue() != null) {
+			if (customAttribute.getValue() != null) {
 				System.out.println("checkCustomAttribute(name=" + attributeName + ", expectedValue=" + attributeValue
 						+ ") - expecting null value");
 				return false;
@@ -176,16 +172,17 @@ public class DeviceDiscoveryTestSuite {
 			}
 		}
 
-		boolean result = attributeValue.equals(customAttribute.getCustomAttributeValue());
+		boolean result = attributeValue.equals(customAttribute.getValue());
 		if (!result) {
 			System.out.println("checkCustomAttribute(name=" + attributeName + ", expectedValue=" + attributeValue
-					+ ") - found " + customAttribute.getCustomAttributeValue() + "- foundType="
-					+ customAttribute.getCustomAttributeValue().getClass());
+					+ ") - found " + customAttribute.getValue() + "- foundType="
+					+ customAttribute.getValue().getClass());
 		}
 
 		return result;
 	}
 
+	@SuppressWarnings("unchecked")
 	private boolean checkModule(Module module, String moduleLocation) {
 		System.out.println("checkModule(name=" + module.getName() + ")");
 		ResponsePrimitive response = CSEUtil.retrieveEntity(cseService, moduleLocation);
@@ -255,6 +252,7 @@ public class DeviceDiscoveryTestSuite {
 		return true;
 	}
 
+	@SuppressWarnings("unchecked")
 	private boolean writeDataPoint(Module module, String moduleLocation, DataPoint dataPoint) {
 		System.out.println("writeDataPoint(moduleName=" + module.getName() + ", moduleLocation=" + moduleLocation
 				+ ", dataPointName=" + dataPoint.getName());
@@ -284,8 +282,6 @@ public class DeviceDiscoveryTestSuite {
 			Boolean currentValueBoolean = (Boolean) currentValue;
 			newValue = Boolean.valueOf(!currentValueBoolean.booleanValue()).toString();
 		} else if (dataPoint.getDataType().equals(DataType.Integer)) {
-			Integer currentValueInteger = (Integer) currentValue;
-
 			// colour
 			if ("red".equals(dataPoint.getName()) || "green".equals(dataPoint.getName())
 					|| "blue".equals(dataPoint.getName())) {
@@ -298,8 +294,8 @@ public class DeviceDiscoveryTestSuite {
 			// set new value through the ipe
 			AbstractFlexContainer updateFc = FlexContainerFactory.getSpecializationFlexContainer(module.getShortDefinitionName());
 			CustomAttribute dataPointCA = new CustomAttribute();
-			dataPointCA.setCustomAttributeName(dataPoint.getName());
-			dataPointCA.setCustomAttributeValue(newValue);
+			dataPointCA.setShortName(dataPoint.getShortName());
+			dataPointCA.setValue(newValue);
 			updateFc.getCustomAttributes().add(dataPointCA);
 
 			// send request
@@ -374,8 +370,8 @@ public class DeviceDiscoveryTestSuite {
 		for (String name : action.getArgNames()) {
 			CustomAttribute ca = new CustomAttribute();
 			executionFlexContainer.getCustomAttributes().add(ca);
-			ca.setCustomAttributeName(name);
-			ca.setCustomAttributeValue("12");
+			ca.setShortName(name);
+			ca.setValue("12");
 		}
 		response = CSEUtil.updateFlexContainerEntity(cseService, actionLocation, executionFlexContainer);
 		if (!ResponseStatusCode.UPDATED.equals(response.getResponseStatusCode())) {
@@ -388,6 +384,7 @@ public class DeviceDiscoveryTestSuite {
 	}
 
 	// Gregory BONNARDEL - 2016 05 20 : TO BE REMOVED
+	@SuppressWarnings("unchecked")
 	public boolean checkDataPoint(DataPoint dataPoint, String dataPointLocation) {
 		System.out.println("checkDataPoint(name=" + dataPoint.getName() + ", location=" + dataPointLocation + ")");
 
@@ -436,9 +433,9 @@ public class DeviceDiscoveryTestSuite {
 		// update
 		AbstractFlexContainer flexContainerToBeUpdated = FlexContainerFactory.getSpecializationFlexContainer(dataPointFlexContainer.getShortName());
 		CustomAttribute value = new CustomAttribute();
-		value.setCustomAttributeName("value");
+		value.setShortName("value");
 		String typedRandomValue = randomValue(dataPoint.getDataType().getName());
-		value.setCustomAttributeValue(typedRandomValue);
+		value.setValue(typedRandomValue);
 		flexContainerToBeUpdated.getCustomAttributes().add(value);
 
 		response = CSEUtil.updateFlexContainerEntity(cseService, dataPointLocation, flexContainerToBeUpdated);

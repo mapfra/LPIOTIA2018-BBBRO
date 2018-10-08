@@ -8,8 +8,11 @@
 package org.eclipse.om2m.sdt.home.netatmo.sdt;
 
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -17,16 +20,19 @@ import java.util.Map;
 
 import org.eclipse.om2m.sdt.datapoints.ArrayDataPoint;
 import org.eclipse.om2m.sdt.datapoints.StringDataPoint;
+import org.eclipse.om2m.sdt.datapoints.UriDataPoint;
 import org.eclipse.om2m.sdt.exceptions.DataPointException;
 import org.eclipse.om2m.sdt.home.devices.Camera;
 import org.eclipse.om2m.sdt.home.driver.Logger;
 import org.eclipse.om2m.sdt.home.driver.Utils;
 import org.eclipse.om2m.sdt.home.modules.PersonSensor;
-import org.eclipse.om2m.sdt.home.modules.Streaming;
+import org.eclipse.om2m.sdt.home.modules.PlayerControl;
+import org.eclipse.om2m.sdt.home.modules.SessionDescription;
 import org.eclipse.om2m.sdt.home.netatmo.impl.Activator;
 import org.eclipse.om2m.sdt.home.netatmo.model.DetectedPerson;
 import org.eclipse.om2m.sdt.home.netatmo.model.WelcomeCamera;
 import org.eclipse.om2m.sdt.home.types.DatapointType;
+import org.eclipse.om2m.sdt.home.types.PlayerMode;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 
@@ -35,6 +41,10 @@ public class SDTWelcomeCameraDevice extends Camera {
 
 	private static final long DEFAULT_DETECTION_THRESHOLD = 75000; // 75 s
 	private static final Logger LOGGER = new Logger("Netatmo");
+	
+	static private List<PlayerMode.Values> supportedPlayerModes = 
+			Arrays.asList(PlayerMode.Values.play, PlayerMode.Values.stop, 
+					PlayerMode.Values.pause, PlayerMode.Values.resume);
 
 	private final WelcomeCamera camera;
 	private List<ServiceRegistration> serviceRegistrations;
@@ -82,33 +92,55 @@ public class SDTWelcomeCameraDevice extends Camera {
 				}
 			}));
 		
-		setStreaming(new Streaming("streaming_" + getId(), Activator.NETATMO_DOMAIN, 
-			new StringDataPoint(DatapointType.url) {
-				@Override
-				protected String doGetValue() throws DataPointException {
-					if (camera.getUseLocalUrl()) {
-						return camera.getVpnUrl() + "/live/index_local.m3u8";
-					} else {
-						return camera.getVpnUrl() + "/live/index.m3u8";
-					}
+		SessionDescription sdp = new SessionDescription("sdp_" + getId(), Activator.NETATMO_DOMAIN);
+		sdp.setUrl(new UriDataPoint(DatapointType.url) {
+			@Override
+			protected URI doGetValue() throws DataPointException {
+				try {
+					return new URI(camera.getVpnUrl() + "/live/"
+						+ (camera.getUseLocalUrl() ? "index_local.m3u8" : "index.m3u8"));
+				} catch (URISyntaxException e) {
+					throw new DataPointException(e);
 				}
-			}, 
-			new StringDataPoint(DatapointType.login) {
+			}
+		});
+		sdp.setSdp(new StringDataPoint(DatapointType.sdp) {
+			@Override
+			protected String doGetValue() throws DataPointException {
+				return "HLS";
+			}
+		});
+//		sdp.setLogin(new StringDataPoint(DatapointType.login) {
+//				@Override
+//				protected String doGetValue() throws DataPointException {
+//					return "";
+//				}
+//			});
+//		sdp.setPassword(new StringDataPoint(DatapointType.password) {
+//			@Override
+//			protected String doGetValue() throws DataPointException {
+//				return "";
+//			}
+//		});
+		setSessionDescription(sdp);
+		
+		setPlayerControl(new PlayerControl("player_" + getId(), Activator.NETATMO_DOMAIN,
+			new PlayerMode() {
 				@Override
-				protected String doGetValue() throws DataPointException {
-					return "";
+				protected PlayerMode.Values doGetValue() throws DataPointException {
+					return camera.getAlimOk() ?
+							(camera.getIsOn() ? PlayerMode.Values.play : PlayerMode.Values.stop)
+							: PlayerMode.Values.pause;
 				}
-			}, 
-			new StringDataPoint(DatapointType.password) {
 				@Override
-				protected String doGetValue() throws DataPointException {
-					return "";
+				protected void doSetValue(PlayerMode.Values v) throws DataPointException {
+					throw new DataPointException("Not implemented");
 				}
-			}, 
-			new StringDataPoint(DatapointType.format) {
+			},
+			new ArrayDataPoint<PlayerMode.Values>(DatapointType.supportedPlayerModes) {
 				@Override
-				protected String doGetValue() throws DataPointException {
-					return "HLS";
+				public List<PlayerMode.Values> doGetValue() throws DataPointException {
+					return supportedPlayerModes;
 				}
 			}));
 	}

@@ -7,14 +7,16 @@
  *******************************************************************************/
 package org.eclipse.om2m.sdt.home.smarterkettle.communication;
 
+import static org.eclipse.om2m.sdt.home.smarterkettle.Activator.LOGGER;
+
 import java.util.Scanner;
 
 public class SmarterKettleMain {
 	
 	public static void main(String[] args) throws InterruptedException {
 		
-		System.out.println("Smart Kettle 2.0");
-		System.out.println("1 - start, 2 - stop, 3- checkStatus");
+		LOGGER.info("Smart Kettle 2.0");
+		LOGGER.info("1 - start, 2 - stop, 3- checkStatus");
 		
 		while (true) {
 			SmarterKettleCommunication kettle = new SmarterKettleCommunication("10.0.1.27", 2081);
@@ -24,7 +26,7 @@ public class SmarterKettleMain {
 			
 			switch (action) {
 			case 1:
-				System.out.println("Temperatura: ");
+				LOGGER.info("Temperature: ");
 				inputString = input.nextLine();
 				int temperature = Integer.parseInt(inputString);
 				kettle.startKettle(temperature);

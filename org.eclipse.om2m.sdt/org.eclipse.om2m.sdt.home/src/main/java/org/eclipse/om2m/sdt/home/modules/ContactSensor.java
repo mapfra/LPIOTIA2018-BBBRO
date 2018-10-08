@@ -16,9 +16,10 @@ import org.eclipse.om2m.sdt.home.types.DatapointType;
 import org.eclipse.om2m.sdt.home.types.ModuleType;
 
 public class ContactSensor extends AbstractAlarmSensor {
-
-	public ContactSensor(String name, Domain domain, BooleanDataPoint alarm) {
-		super(name, domain, alarm, ModuleType.contactSensor);
+	
+	public ContactSensor(final String name, final Domain domain, BooleanDataPoint alarm) {
+		super(name, domain, alarm, ModuleType.contactSensor,
+				"The detection of the contact occurrence.");
 	}
 
 	public ContactSensor(final String name, final Domain domain, Map<String, DataPoint> dps) {

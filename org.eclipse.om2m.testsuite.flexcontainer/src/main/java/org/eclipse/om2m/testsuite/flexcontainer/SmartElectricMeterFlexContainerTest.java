@@ -37,33 +37,33 @@ public class SmartElectricMeterFlexContainerTest extends FlexContainerTestSuite 
 		flexContainer.setOntologyRef("OntologyRef");
 
 		CustomAttribute serialNumberCA = new CustomAttribute();
-		serialNumberCA.setCustomAttributeName("pDSNm");
-		serialNumberCA.setCustomAttributeValue("sn1");
+		serialNumberCA.setShortName("pDSNm");
+		serialNumberCA.setValue("sn1");
 		flexContainer.getCustomAttributes().add(serialNumberCA);
 
 		CustomAttribute locationCA = new CustomAttribute();
-		locationCA.setCustomAttributeName("proLn");
-		locationCA.setCustomAttributeValue("kitchen");
+		locationCA.setShortName("proLn");
+		locationCA.setValue("kitchen");
 		flexContainer.getCustomAttributes().add(locationCA);
 
 		CustomAttribute deviceManufacturerCA = new CustomAttribute();
-		deviceManufacturerCA.setCustomAttributeName("prDMr");
-		deviceManufacturerCA.setCustomAttributeValue("Orange");
+		deviceManufacturerCA.setShortName("prDMr");
+		deviceManufacturerCA.setValue("Orange");
 		flexContainer.getCustomAttributes().add(deviceManufacturerCA);
 
 		CustomAttribute protocolCA = new CustomAttribute();
-		protocolCA.setCustomAttributeName("proPl");
-		protocolCA.setCustomAttributeValue("ZigBee");
+		protocolCA.setShortName("proPl");
+		protocolCA.setValue("ZigBee");
 		flexContainer.getCustomAttributes().add(protocolCA);
 
 		CustomAttribute deviceModelCA = new CustomAttribute();
-		deviceModelCA.setCustomAttributeName("pDMNe");
-		deviceModelCA.setCustomAttributeValue("Model1");
+		deviceModelCA.setShortName("pDMNe");
+		deviceModelCA.setValue("Model1");
 		flexContainer.getCustomAttributes().add(deviceModelCA);
 
 		CustomAttribute measuringScopeCA = new CustomAttribute();
-		measuringScopeCA.setCustomAttributeName("meaSe");
-		measuringScopeCA.setCustomAttributeValue("Room");
+		measuringScopeCA.setShortName("meaSe");
+		measuringScopeCA.setValue("Room");
 		flexContainer.getCustomAttributes().add(measuringScopeCA);
 
 		// send CREATE request
@@ -127,33 +127,33 @@ public class SmartElectricMeterFlexContainerTest extends FlexContainerTestSuite 
 		flexContainer.setOntologyRef("OntologyRef");
 
 		CustomAttribute serialNumberCA = new CustomAttribute();
-		serialNumberCA.setCustomAttributeName("pDSNm");
-		serialNumberCA.setCustomAttributeValue("sn1");
+		serialNumberCA.setShortName("pDSNm");
+		serialNumberCA.setValue("sn1");
 		flexContainer.getCustomAttributes().add(serialNumberCA);
 
 		CustomAttribute locationCA = new CustomAttribute();
-		locationCA.setCustomAttributeName("proLn");
-		locationCA.setCustomAttributeValue("kitchen");
+		locationCA.setShortName("proLn");
+		locationCA.setValue("kitchen");
 		flexContainer.getCustomAttributes().add(locationCA);
 
 		CustomAttribute deviceManufacturerCA = new CustomAttribute();
-		deviceManufacturerCA.setCustomAttributeName("prDMr");
-		deviceManufacturerCA.setCustomAttributeValue("Orange");
+		deviceManufacturerCA.setShortName("prDMr");
+		deviceManufacturerCA.setValue("Orange");
 		flexContainer.getCustomAttributes().add(deviceManufacturerCA);
 
 		CustomAttribute protocolCA = new CustomAttribute();
-		protocolCA.setCustomAttributeName("proPl");
-		protocolCA.setCustomAttributeValue("ZigBee");
+		protocolCA.setShortName("proPl");
+		protocolCA.setValue("ZigBee");
 		flexContainer.getCustomAttributes().add(protocolCA);
 
 		CustomAttribute deviceModelCA = new CustomAttribute();
-		deviceModelCA.setCustomAttributeName("pDMNe");
-		deviceModelCA.setCustomAttributeValue("Model1");
+		deviceModelCA.setShortName("pDMNe");
+		deviceModelCA.setValue("Model1");
 		flexContainer.getCustomAttributes().add(deviceModelCA);
 
 		CustomAttribute measuringScopeCA = new CustomAttribute();
-		measuringScopeCA.setCustomAttributeName("meaSe");
-		measuringScopeCA.setCustomAttributeValue("Room");
+		measuringScopeCA.setShortName("meaSe");
+		measuringScopeCA.setValue("Room");
 		flexContainer.getCustomAttributes().add(measuringScopeCA);
 
 		// send CREATE request

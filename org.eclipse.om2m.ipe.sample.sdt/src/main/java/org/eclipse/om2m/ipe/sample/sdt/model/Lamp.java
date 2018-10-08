@@ -33,7 +33,7 @@ public class Lamp extends Light {
 		addModule(new SampleColour("colour_" + id, domain));
 
 		addModule(new ColourSaturation("colourSaturation_" + id, domain, 
-			new IntegerDataPoint(DatapointType.colourSat) {
+			new IntegerDataPoint(DatapointType.colourSaturation) {
 				private Integer v = new Integer((int)(Math.random() * 100));
 				@Override
 				public void doSetValue(Integer value) throws DataPointException {

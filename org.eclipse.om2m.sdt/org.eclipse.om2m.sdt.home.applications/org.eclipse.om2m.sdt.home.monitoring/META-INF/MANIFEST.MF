@@ -4,7 +4,6 @@ Bundle-Name: org.eclipse.om2m.sdt.home.monitoring
 Bundle-SymbolicName: org.eclipse.om2m.sdt.home.monitoring
 Bundle-Version: 1.1.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Bundle-Activator: org.eclipse.om2m.sdt.home.monitoring.Activator
 Bundle-ClassPath: .,
  lib/json-simple-1.1.1.jar
 Import-Package: javax.servlet,
@@ -22,10 +21,14 @@ Import-Package: javax.servlet,
  org.eclipse.om2m.sdt.home.devices,
  org.eclipse.om2m.sdt.home.driver,
  org.eclipse.om2m.sdt.home.modules,
+ org.eclipse.om2m.sdt.home.monitoring.authentication.service,
  org.eclipse.om2m.sdt.home.types,
  org.eclipse.om2m.sdt.types,
  org.osgi.framework,
  org.osgi.service.cm,
+ org.osgi.service.component,
+ org.osgi.service.component.annotations,
  org.osgi.service.http,
  org.osgi.service.log,
  org.osgi.util.tracker
+Service-Component: OSGI-INF/home.monitoring.application.xml

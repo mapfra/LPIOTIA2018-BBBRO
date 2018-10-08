@@ -1,0 +1,86 @@
+ /*******************************************************************************
+ * Copyright (c) 2018, 2018 Orange.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *******************************************************************************/
+
+ 
+.pickerContainer {
+    height: 80px;
+}
+ 
+.picker {
+    float:left;
+}
+
+.sliders {
+    margin-top: 5px;
+    margin-left: 40px;
+    float: left;
+}
+
+.slider {
+    margin-top: 0px;
+    float: right;
+}
+
+.slidersLables {
+    width: 160px;
+    height: 30px;
+    margin-bottom: 0px;
+    margin-right: 20px;
+}
+
+.colorPicker {
+    position: relative;
+}
+
+.colorPicker * {
+    position: absolute;
+    cursor: crosshair;
+}
+
+.colorPicker {
+    width: 70px;
+    height: 70px;
+}
+
+.colorPicker .ring {
+    background: url(../images/ringM2M.png) no-repeat;
+    width: 70px;
+    height: 70px;
+}
+
+.colorPicker .color {
+    top: 1px;
+    left: 1px;
+    width: 68px;
+    height: 68px;
+}
+
+.colorPicker .pointer {
+    width: 17px;
+    height: 17px;
+    margin: -8px 0 0 -8px;
+    overflow: hidden; 
+    background: url(../images/pointer.png) no-repeat;
+}
+
+ @media screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none) {
+   /* IE10+ specific styles */
+    .sliders
+    {
+        margin-top: 5px;
+        margin-left: 90px;
+        float: none;
+    }
+
+    .slider
+    {
+        margin-top: -10px;
+        margin-bottom: -20px;
+        float: right;
+    }     
+}
