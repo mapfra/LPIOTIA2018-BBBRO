@@ -19,6 +19,9 @@
 // Replace the next variables with your SSID/Password combination
 const char* ssid = "LPiOTIA";
 const char* password = "";
+const int pin = 5; // broche du capteur PIR
+int pirState = LOW; //etat du sensor
+int buttonState = 0; // etat de la sortie du capteur
 
 // Add your MQTT Broker IP address, example:
 //const char* mqtt_server = "192.168.1.144";
@@ -46,6 +49,7 @@ void callback(char* topic, byte* message, unsigned int length) {
 void setup() {
   Serial.begin(115200);
   setup_wifi();
+  pinMode(pin,INPUT);
   client.setServer(mqtt_server, 1883);
   client.setCallback(callback);
 }
@@ -107,6 +111,36 @@ void loop()
       received[i] = Serial.read();
       i++;
     }
+    
     client.publish("outTopic", received);
+  }
+
+  buttonState = digitalRead(pin);//lecture du capteur
+ 
+  if(buttonState == HIGH){ //si quelquechose est detecte
+    if (pirState == LOW) {
+      // we have just turned on
+      String msg = " Presence detected";
+      Serial.println(msg);
+      Serial.println("données envoyées");
+      // We only want to print on the output change, not state
+      pirState = HIGH;
+      client.publish("pres", "detected");
+    }
+    
+    
+  }
+
+  else //sinon
+  {
+    if (pirState == HIGH){
+      // we have just turned of
+      String msg = " Motion ended";
+      Serial.println(msg);
+      client.publish("pres", "no one");
+      Serial.println("données envoyées");  
+      // We only want to print on the output change, not state
+      pirState = LOW;
+    }
   }
 }
