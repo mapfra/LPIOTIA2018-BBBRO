@@ -80,7 +80,7 @@ void reconnect() {
   while (!client.connected()) {
     Serial.print("Attempting MQTT connection...");
     // Attempt to connect
-    if (client.connect("arduinoClient")) {
+    if (client.connect("arduinoPresence")) {
       Serial.println("connected");
       // Once connected, publish an announcement...
       client.publish("outTopic","hello world");
@@ -125,7 +125,9 @@ void loop()
       Serial.println("données envoyées");
       // We only want to print on the output change, not state
       pirState = HIGH;
-      client.publish("pres", "detected");
+      client.publish("pres","detected");
+      char om2mResourceJson[] = "{\"mn-cse\":\"ae\":{\"api\":\"app-sensor\",\"rr\":\"faux\",\"lbl\":[\"Type / capteur\", \"Categorie / présence\", \"Lieu / domicile\"],\"rn\":\"arduinoPresence\"}}";
+      client.publish("/oneM2M/req/arduinoPresence/mn-cse/json", om2mResourceJson);
     }
     
     
