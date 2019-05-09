@@ -1,0 +1,1115 @@
+[2019-05-04 17:53:47,209 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+Starting Data Mapper
+[2019-05-04 17:53:47,214 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+Registering XML Mapper Service..
+[2019-05-04 17:55:46,688 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+XML Mapper service registered.
+[2019-05-04 17:55:46,688 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+Registering JSON Mapper Service..
+[2019-05-04 17:57:32,762 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+JSON Mapper service registered.
+[2019-05-04 17:57:32,782 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+System property [bundles.configuration.location] is not defined.
+[2019-05-04 17:57:32,782 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Using default configurations location [configurations].
+[2019-05-04 17:57:32,783 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Using configuration from [configurations]
+[2019-05-04 17:57:32,784 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Directory [configurations/factories] does not exist.
+[2019-05-04 17:57:32,787 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+System property [bundles.configuration.location] is not defined.
+[2019-05-04 17:57:32,787 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Using default configurations location [configurations].
+[2019-05-04 17:57:32,788 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Using configuration from [configurations]
+[2019-05-04 17:57:32,788 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Directory [configurations/factories] does not exist.
+[2019-05-04 17:57:32,850 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Register configuration [netatmo.sdt.driver]
+[2019-05-04 17:57:32,864 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Register configuration [hue.basedriver]
+[2019-05-04 17:57:32,874 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Register configuration [lifx.basedriver]
+[2019-05-04 17:57:32,882 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Register configuration [sdt.ipe]
+[2019-05-04 17:57:32,894 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Register configuration [smarter.coffee]
+[2019-05-04 17:57:32,901 INFO] - org.eclipse.om2m.binding.http.Activator 
+Register HTTP RestClientService..
+[2019-05-04 17:57:32,924 INFO] - org.eclipse.om2m.binding.http.Activator 
+HTTP RestClientService is registered.
+[2019-05-04 17:57:33,456 INFO] - org.eclipse.om2m.persistence.eclipselink.Activator 
+Starting Persistence JPA plugin...
+[2019-05-04 17:57:33,462 INFO] - org.eclipse.om2m.binding.http.Activator 
+HttpService discovered
+[2019-05-04 17:57:33,466 INFO] - org.eclipse.om2m.binding.http.Activator 
+Register / context
+[2019-05-04 17:57:33,467 INFO] - org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl 
+Initializing Database...
+[2019-05-04 17:57:33,469 INFO] - org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl 
+Creating new EntityManagerFactory...
+[2019-05-04 17:57:33,737 INFO] - org.eclipse.om2m.core.Activator 
+Starting CSE...
+[2019-05-04 17:57:33,738 INFO] - org.eclipse.om2m.core.Activator 
+Added Data Mapper Service: application/xml
+[2019-05-04 17:57:33,740 INFO] - org.eclipse.om2m.core.Activator 
+Added Data Mapper Service: application/json
+[2019-05-04 17:57:33,749 INFO] - org.eclipse.om2m.core.Activator 
+Rest client service discovered. Protocol: http
+[2019-05-04 17:57:33,756 INFO] - org.eclipse.om2m.core.Activator 
+Rest client service discovered. Protocol: mqtt
+[2019-05-04 17:57:33,773 INFO] - org.eclipse.om2m.webapp.resourcesbrowser.json.Activator 
+HttpService discovered
+[2019-05-04 17:57:33,773 INFO] - org.eclipse.om2m.webapp.resourcesbrowser.json.Activator 
+Register /webpage http context
+[2019-05-04 17:57:33,868 INFO] - org.eclipse.om2m.hue.impl.HueBasedriver 
+HueBasedriver ctor
+[2019-05-04 17:57:33,876 INFO] - org.eclipse.om2m.hue.impl.HueBasedriver 
+Activating
+[2019-05-04 17:57:34,213 INFO] - org.eclipse.om2m.hue.impl.HueBasedriver 
+Updating Hue Bridge connection upon the config file
+[2019-05-04 17:57:34,220 INFO] - org.eclipse.om2m.hue.impl.HueBasedriver 
+Config file description url: http://192.168.1.15:80/description.xml, config file user id: null
+[2019-05-04 17:57:34,221 WARN] - org.eclipse.om2m.hue.impl.HueBasedriver 
+No userId for Hue Bridge update...
+[2019-05-04 17:57:34,222 INFO] - org.eclipse.om2m.hue.impl.HueBridgeDiscovery 
+ProcessHueBridge with userId: null
+[2019-05-04 17:57:34,277 WARN] - org.eclipse.om2m.hue.impl.HueBridgeDiscovery 
+
+java.net.NoRouteToHostException: Aucun chemin d'accès pour atteindre l'hôte cible
+	at java.net.PlainSocketImpl.socketConnect(Native Method)
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:350)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:206)
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:188)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.net.Socket.connect(Socket.java:589)
+	at java.net.Socket.connect(Socket.java:538)
+	at sun.net.NetworkClient.doConnect(NetworkClient.java:180)
+	at sun.net.www.http.HttpClient.openServer(HttpClient.java:432)
+	at sun.net.www.http.HttpClient.openServer(HttpClient.java:527)
+	at sun.net.www.http.HttpClient.<init>(HttpClient.java:211)
+	at sun.net.www.http.HttpClient.New(HttpClient.java:308)
+	at sun.net.www.http.HttpClient.New(HttpClient.java:326)
+	at sun.net.www.protocol.http.HttpURLConnection.getNewHttpClient(HttpURLConnection.java:1169)
+	at sun.net.www.protocol.http.HttpURLConnection.plainConnect0(HttpURLConnection.java:1105)
+	at sun.net.www.protocol.http.HttpURLConnection.plainConnect(HttpURLConnection.java:999)
+	at sun.net.www.protocol.http.HttpURLConnection.connect(HttpURLConnection.java:933)
+	at sun.net.www.protocol.http.HttpURLConnection.getInputStream0(HttpURLConnection.java:1513)
+	at sun.net.www.protocol.http.HttpURLConnection.getInputStream(HttpURLConnection.java:1441)
+	at java.net.URL.openStream(URL.java:1038)
+	at org.eclipse.om2m.hue.impl.HueBridgeDiscovery.processHueBridge(HueBridgeDiscovery.java:98)
+	at org.eclipse.om2m.hue.impl.HueBridgeDiscovery.processHueBridge(HueBridgeDiscovery.java:132)
+	at org.eclipse.om2m.hue.impl.HueBasedriver$4.run(HueBasedriver.java:437)
+	at org.eclipse.om2m.hue.impl.HueBasedriver.updated(HueBasedriver.java:447)
+	at org.eclipse.equinox.internal.cm.ManagedServiceTracker$1.run(ManagedServiceTracker.java:276)
+	at org.eclipse.equinox.internal.cm.SerializedTaskQueue$1.run(SerializedTaskQueue.java:36)
+[2019-05-04 17:57:34,286 INFO] - org.eclipse.om2m.sdt.home.driver.Logger 
+[ONEM2M.Hue] ctor
+[2019-05-04 17:57:34,290 WARN] - org.eclipse.om2m.hue.impl.HueBasedriver 
+Error processing new bridge
+java.io.IOException: java.net.NoRouteToHostException: Aucun chemin d'accès pour atteindre l'hôte cible
+	at org.eclipse.om2m.hue.impl.HueBridgeDiscovery.processHueBridge(HueBridgeDiscovery.java:135)
+	at org.eclipse.om2m.hue.impl.HueBasedriver$4.run(HueBasedriver.java:437)
+	at org.eclipse.om2m.hue.impl.HueBasedriver.updated(HueBasedriver.java:447)
+	at org.eclipse.equinox.internal.cm.ManagedServiceTracker$1.run(ManagedServiceTracker.java:276)
+	at org.eclipse.equinox.internal.cm.SerializedTaskQueue$1.run(SerializedTaskQueue.java:36)
+Caused by: java.net.NoRouteToHostException: Aucun chemin d'accès pour atteindre l'hôte cible
+	at java.net.PlainSocketImpl.socketConnect(Native Method)
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:350)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:206)
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:188)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.net.Socket.connect(Socket.java:589)
+	at java.net.Socket.connect(Socket.java:538)
+	at sun.net.NetworkClient.doConnect(NetworkClient.java:180)
+	at sun.net.www.http.HttpClient.openServer(HttpClient.java:432)
+	at sun.net.www.http.HttpClient.openServer(HttpClient.java:527)
+	at sun.net.www.http.HttpClient.<init>(HttpClient.java:211)
+	at sun.net.www.http.HttpClient.New(HttpClient.java:308)
+	at sun.net.www.http.HttpClient.New(HttpClient.java:326)
+	at sun.net.www.protocol.http.HttpURLConnection.getNewHttpClient(HttpURLConnection.java:1169)
+	at sun.net.www.protocol.http.HttpURLConnection.plainConnect0(HttpURLConnection.java:1105)
+	at sun.net.www.protocol.http.HttpURLConnection.plainConnect(HttpURLConnection.java:999)
+	at sun.net.www.protocol.http.HttpURLConnection.connect(HttpURLConnection.java:933)
+	at sun.net.www.protocol.http.HttpURLConnection.getInputStream0(HttpURLConnection.java:1513)
+	at sun.net.www.protocol.http.HttpURLConnection.getInputStream(HttpURLConnection.java:1441)
+	at java.net.URL.openStream(URL.java:1038)
+	at org.eclipse.om2m.hue.impl.HueBridgeDiscovery.processHueBridge(HueBridgeDiscovery.java:98)
+	at org.eclipse.om2m.hue.impl.HueBridgeDiscovery.processHueBridge(HueBridgeDiscovery.java:132)
+	... 4 more
+[2019-05-04 17:57:34,326 INFO] - org.eclipse.om2m.sdt.home.driver.Logger 
+[ONEM2M.Hue] Activating
+[2019-05-04 17:57:34,328 INFO] - org.eclipse.om2m.sdt.home.driver.Logger 
+[ONEM2M.Hue] Activated <Domain xmlns:xi="http://www.w3.org/2001/XInclude" xmlns="http://homegatewayinitiative.org/xml/dal/3.0" id="Philips Hue Domain">
+</Domain>
+[2019-05-04 17:57:41,541 INFO] - org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl 
+DataBase initialized.
+[2019-05-04 17:57:41,622 INFO] - org.eclipse.om2m.persistence.eclipselink.Activator 
+Registering Database (JPA-EL) Service
+[2019-05-04 17:57:41,625 INFO] - org.eclipse.om2m.core.Activator 
+DataBase persistence service discovered
+[2019-05-04 17:57:41,639 INFO] - org.eclipse.om2m.core.thread.CoreExecutor 
+Creating thread pool with corePoolSize=5 & maximumSize=50
+[2019-05-04 17:57:41,651 INFO] - org.eclipse.om2m.core.CSEInitializer 
+Initializating the cseBase
+[2019-05-04 17:57:41,709 INFO] - org.eclipse.om2m.core.CSEInitializer 
+Create AccessControlPolicy resource
+[2019-05-04 17:57:41,933 INFO] - org.eclipse.om2m.core.CSEInitializer 
+Create CSEBase resource
+[2019-05-04 17:57:42,033 INFO] - org.eclipse.om2m.core.CSEInitializer 
+Register CSE to another CSE.
+[2019-05-04 17:57:42,035 INFO] - org.eclipse.om2m.core.Activator 
+Registering CseService...
+[2019-05-04 17:57:42,107 INFO] - org.eclipse.om2m.binding.http.Activator 
+CseService discovered
+[2019-05-04 17:57:42,131 INFO] - org.eclipse.om2m.core.Activator 
+CSE Started
+[2019-05-04 17:57:42,131 INFO] - org.eclipse.om2m.binding.mqtt.Activator 
+Creating MQTT Request Handler
+[2019-05-04 17:57:42,175 INFO] - org.eclipse.om2m.core.comm.RestClient 
+the requestIndication RC: RequestPrimitive [operation=1,
+ to=http://127.0.0.1:8080/~/in-cse,
+ from=admin:admin,
+ requestIdentifier=001,
+ resourceType=16,
+ content=<?xml version="1.0" encoding="UTF-8"?>
+<m2m:csr xmlns:m2m="http://www.onem2m.org/xml/protocols" xmlns:hd="http://www.onem2m.org/xml/protocols/homedomain" rn="mn-name">
+   <cst>2</cst>
+   <poa>http://127.0.0.1:8282/</poa>
+   <cb>//om2m.org/mn-cse</cb>
+   <csi>/mn-cse</csi>
+   <rr>true</rr>
+</m2m:csr>
+,
+ requestContentType=application/xml,
+ , 
+,tokens=null]
+[2019-05-04 17:57:42,185 INFO] - org.eclipse.om2m.binding.http.RestHttpClient 
+Sending request: RequestPrimitive [operation=1,
+ to=http://127.0.0.1:8080/~/in-cse,
+ from=admin:admin,
+ requestIdentifier=001,
+ resourceType=16,
+ content=<?xml version="1.0" encoding="UTF-8"?>
+<m2m:csr xmlns:m2m="http://www.onem2m.org/xml/protocols" xmlns:hd="http://www.onem2m.org/xml/protocols/homedomain" rn="mn-name">
+   <cst>2</cst>
+   <poa>http://127.0.0.1:8282/</poa>
+   <cb>//om2m.org/mn-cse</cb>
+   <csi>/mn-cse</csi>
+   <rr>true</rr>
+</m2m:csr>
+,
+ requestContentType=application/xml,
+ , 
+,tokens=null]
+[2019-05-04 17:57:43,970 INFO] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Subscribing on MQTT topic: /oneM2M/req/+/mn-cse/+
+[2019-05-04 17:57:44,441 INFO] - org.eclipse.om2m.binding.http.RestHttpClient 
+Request to be send: POST http://127.0.0.1:8080/~/in-cse HTTP/1.1
+[2019-05-04 17:57:44,446 INFO] - org.eclipse.om2m.binding.http.RestHttpClient 
+Headers:
+Accept: 
+X-M2M-RI: 001
+X-M2M-Origin: admin:admin
+Content-Type: application/xml;ty=16
+
+[2019-05-04 17:57:44,910 INFO] - org.eclipse.om2m.binding.http.RestHttpClient 
+Http Client response: ResponsePrimitive [
+ responseStatusCode=2001
+ requestIdentifier=001
+ to=admin:admin
+ from=/mn-cse
+ location=/in-cse/csr-362817983,
+ contentType=application/xml;charset=UTF-8,
+ content (Only first 1000 caracters)=
+ <?xml version="1.0" encoding="UTF-8"?>
+<m2m:csr xmlns:m2m="http://www.onem2m.org/xml/protocols" xmlns:hd="http://www.onem2m.org/xml/protocols/homedomain" rn="mn-name">
+   <ty>16</ty>
+   <ri>/in-cse/csr-362817983</ri>
+   <pi>/in-cse</pi>
+   <ct>20190504T175744</ct>
+   <lt>20190504T175744</lt>
+   <acpi>/in-cse/acp-622147964</acpi>
+   <cst>2</cst>
+   <poa>http://127.0.0.1:8282/</poa>
+   <cb>//om2m.org/mn-cse</cb>
+   <csi>/mn-cse</csi>
+   <rr>true</rr>
+</m2m:csr>
+
+]
+[2019-05-04 17:57:44,919 INFO] - org.eclipse.om2m.core.comm.RestClient 
+ResponsePrimitive [
+ responseStatusCode=2001
+ requestIdentifier=001
+ to=admin:admin
+ from=/mn-cse
+ location=/in-cse/csr-362817983,
+ contentType=application/xml;charset=UTF-8,
+ content (Only first 1000 caracters)=
+ <?xml version="1.0" encoding="UTF-8"?>
+<m2m:csr xmlns:m2m="http://www.onem2m.org/xml/protocols" xmlns:hd="http://www.onem2m.org/xml/protocols/homedomain" rn="mn-name">
+   <ty>16</ty>
+   <ri>/in-cse/csr-362817983</ri>
+   <pi>/in-cse</pi>
+   <ct>20190504T175744</ct>
+   <lt>20190504T175744</lt>
+   <acpi>/in-cse/acp-622147964</acpi>
+   <cst>2</cst>
+   <poa>http://127.0.0.1:8282/</poa>
+   <cb>//om2m.org/mn-cse</cb>
+   <csi>/mn-cse</csi>
+   <rr>true</rr>
+</m2m:csr>
+
+]
+[2019-05-04 17:57:44,926 INFO] - org.eclipse.om2m.core.CSEInitializer 
+response after registration: ResponsePrimitive [
+ responseStatusCode=2001
+ requestIdentifier=001
+ to=admin:admin
+ from=/mn-cse
+ location=/in-cse/csr-362817983,
+ contentType=application/xml;charset=UTF-8,
+ content (Only first 1000 caracters)=
+ <?xml version="1.0" encoding="UTF-8"?>
+<m2m:csr xmlns:m2m="http://www.onem2m.org/xml/protocols" xmlns:hd="http://www.onem2m.org/xml/protocols/homedomain" rn="mn-name">
+   <ty>16</ty>
+   <ri>/in-cse/csr-362817983</ri>
+   <pi>/in-cse</pi>
+   <ct>20190504T175744</ct>
+   <lt>20190504T175744</lt>
+   <acpi>/in-cse/acp-622147964</acpi>
+   <cst>2</cst>
+   <poa>http://127.0.0.1:8282/</poa>
+   <cb>//om2m.org/mn-cse</cb>
+   <csi>/mn-cse</csi>
+   <rr>true</rr>
+</m2m:csr>
+
+]
+[2019-05-04 17:57:44,983 INFO] - org.eclipse.om2m.core.CSEInitializer 
+Successfully registered to in-cse
+[2019-05-04 17:57:45,052 INFO] - org.eclipse.om2m.core.remotecse.RemoteCseService 
+addRemoteCseAndPublish(cseId=/mn-cse/csr-177721348, name=in-name)
+[2019-05-04 17:57:45,054 INFO] - org.eclipse.om2m.core.remotecse.RemoteCseService 
+post Event to inform about RemoteCSE creation (cseId=in-cse, cseName=in-name)
+[2019-05-04 17:59:48,074 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+----------------------------------------------------------------------------------------------
+[2019-05-04 17:59:48,089 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+Built RequestPrimitive: RequestPrimitive [to=/mn-cse,
+ resultContent=5,
+ filterCriteria=org.eclipse.om2m.commons.resource.FilterCriteria@5b8b36,
+ , 
+,tokens=null]
+[2019-05-04 17:59:48,090 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+parseAuthorizationHeader(authorizationHeader:null)
+[2019-05-04 17:59:48,091 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+Content type headers: application/xml
+[2019-05-04 17:59:48,091 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+Header value: application/xml
+[2019-05-04 17:59:48,091 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+Accept header: application/json
+[2019-05-04 17:59:48,093 INFO] - org.eclipse.om2m.core.router.Router 
+Received request in Router: RequestPrimitive [operation=2,
+ to=/mn-cse,
+ from=admin:admin,
+ resultContent=5,
+ filterCriteria=org.eclipse.om2m.commons.resource.FilterCriteria@5b8b36,
+ returnContentType=application/json,
+ requestContentType=application/xml,
+ queryStrings={rcn=[5], lvl=[1]}, 
+,tokens=null]
+[2019-05-04 17:59:48,102 INFO] - org.eclipse.om2m.core.router.Router 
+Request handling in the current CSE: /mn-cse
+[2019-05-04 17:59:48,115 INFO] - org.eclipse.om2m.core.router.Router 
+ResourceController to be used [CSEBaseController]
+[2019-05-04 17:59:48,165 INFO] - org.eclipse.om2m.core.controller.Controller 
+Clear and close transaction
+[2019-05-04 17:59:48,183 INFO] - org.eclipse.om2m.core.router.Router 
+Response in Router= ResponsePrimitive [
+ responseStatusCode=2000
+ to=admin:admin
+ from=/mn-cse
+ contentType=application/json,
+ content (Only first 1000 caracters)=
+ {
+   "m2m:cb" : {
+      "rn" : "mn-name",
+      "ty" : 5,
+      "ri" : "/mn-cse",
+      "ct" : "20190504T175741",
+      "lt" : "20190504T175741",
+      "acpi" : [ "/mn-cse/acp-890835103" ],
+      "cst" : 2,
+      "csi" : "mn-cse",
+      "srt" : [ 1, 2, 3, 4, 5, 9, 14, 15, 16, 17, 23, 28 ],
+      "poa" : [ "http://127.0.0.1:8282/" ],
+      "ch" : [ {
+         "nm" : "acp_admin",
+         "typ" : 1,
+         "val" : "/mn-cse/acp-890835103"
+      }, {
+         "nm" : "in-name",
+         "typ" : 16,
+         "val" : "/mn-cse/csr-177721348"
+      } ]
+   }
+}
+]
+[2019-05-04 17:59:48,186 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+send UTF8
+[2019-05-04 17:59:54,959 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+----------------------------------------------------------------------------------------------
+[2019-05-04 17:59:54,979 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+Built RequestPrimitive: RequestPrimitive [to=/mn-cse/csr-177721348,
+ resultContent=5,
+ filterCriteria=org.eclipse.om2m.commons.resource.FilterCriteria@dc8f15,
+ , 
+,tokens=null]
+[2019-05-04 17:59:54,982 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+parseAuthorizationHeader(authorizationHeader:null)
+[2019-05-04 17:59:54,983 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+Content type headers: application/xml
+[2019-05-04 17:59:54,984 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+Header value: application/xml
+[2019-05-04 17:59:54,985 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+Accept header: application/json
+[2019-05-04 17:59:54,986 INFO] - org.eclipse.om2m.core.router.Router 
+Received request in Router: RequestPrimitive [operation=2,
+ to=/mn-cse/csr-177721348,
+ from=admin:admin,
+ resultContent=5,
+ filterCriteria=org.eclipse.om2m.commons.resource.FilterCriteria@dc8f15,
+ returnContentType=application/json,
+ requestContentType=application/xml,
+ queryStrings={rcn=[5], lvl=[1]}, 
+,tokens=null]
+[2019-05-04 17:59:54,995 INFO] - org.eclipse.om2m.core.router.Router 
+Request handling in the current CSE: /mn-cse/csr-177721348
+[2019-05-04 17:59:55,009 INFO] - org.eclipse.om2m.core.router.Router 
+ResourceController to be used [RemoteCSEController]
+[2019-05-04 17:59:55,044 INFO] - org.eclipse.om2m.core.controller.Controller 
+Clear and close transaction
+[2019-05-04 17:59:55,076 INFO] - org.eclipse.om2m.core.router.Router 
+Response in Router= ResponsePrimitive [
+ responseStatusCode=2000
+ to=admin:admin
+ from=/mn-cse
+ contentType=application/json,
+ content (Only first 1000 caracters)=
+ {
+   "m2m:csr" : {
+      "rn" : "in-name",
+      "ty" : 16,
+      "ri" : "/mn-cse/csr-177721348",
+      "pi" : "/mn-cse",
+      "ct" : "20190504T175744",
+      "lt" : "20190504T175744",
+      "acpi" : [ "/mn-cse/acp-890835103" ],
+      "poa" : [ "http://127.0.0.1:8080/" ],
+      "cb" : "//om2m.org/in-cse",
+      "csi" : "/in-cse",
+      "rr" : true
+   }
+}
+]
+[2019-05-04 17:59:55,084 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+send UTF8
+[2019-05-04 18:00:00,441 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+----------------------------------------------------------------------------------------------
+[2019-05-04 18:00:00,442 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+Built RequestPrimitive: RequestPrimitive [to=/mn-cse,
+ resultContent=5,
+ filterCriteria=org.eclipse.om2m.commons.resource.FilterCriteria@9828dd,
+ , 
+,tokens=null]
+[2019-05-04 18:00:00,442 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+parseAuthorizationHeader(authorizationHeader:null)
+[2019-05-04 18:00:00,443 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+Content type headers: application/xml
+[2019-05-04 18:00:00,443 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+Header value: application/xml
+[2019-05-04 18:00:00,443 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+Accept header: application/json
+[2019-05-04 18:00:00,444 INFO] - org.eclipse.om2m.core.router.Router 
+Received request in Router: RequestPrimitive [operation=2,
+ to=/mn-cse,
+ from=admin:admin,
+ resultContent=5,
+ filterCriteria=org.eclipse.om2m.commons.resource.FilterCriteria@9828dd,
+ returnContentType=application/json,
+ requestContentType=application/xml,
+ queryStrings={rcn=[5], lvl=[1]}, 
+,tokens=null]
+[2019-05-04 18:00:00,446 INFO] - org.eclipse.om2m.core.router.Router 
+Request handling in the current CSE: /mn-cse
+[2019-05-04 18:00:00,458 INFO] - org.eclipse.om2m.core.router.Router 
+ResourceController to be used [CSEBaseController]
+[2019-05-04 18:00:00,475 INFO] - org.eclipse.om2m.core.controller.Controller 
+Clear and close transaction
+[2019-05-04 18:00:00,481 INFO] - org.eclipse.om2m.core.router.Router 
+Response in Router= ResponsePrimitive [
+ responseStatusCode=2000
+ to=admin:admin
+ from=/mn-cse
+ contentType=application/json,
+ content (Only first 1000 caracters)=
+ {
+   "m2m:cb" : {
+      "rn" : "mn-name",
+      "ty" : 5,
+      "ri" : "/mn-cse",
+      "ct" : "20190504T175741",
+      "lt" : "20190504T175741",
+      "acpi" : [ "/mn-cse/acp-890835103" ],
+      "cst" : 2,
+      "csi" : "mn-cse",
+      "srt" : [ 1, 2, 3, 4, 5, 9, 14, 15, 16, 17, 23, 28 ],
+      "poa" : [ "http://127.0.0.1:8282/" ],
+      "ch" : [ {
+         "nm" : "acp_admin",
+         "typ" : 1,
+         "val" : "/mn-cse/acp-890835103"
+      }, {
+         "nm" : "in-name",
+         "typ" : 16,
+         "val" : "/mn-cse/csr-177721348"
+      } ]
+   }
+}
+]
+[2019-05-04 18:00:00,482 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+send UTF8
+[2019-05-04 18:00:14,433 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+----------------------------------------------------------------------------------------------
+[2019-05-04 18:00:14,435 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+Built RequestPrimitive: RequestPrimitive [to=/mn-cse/acp-890835103,
+ resultContent=5,
+ filterCriteria=org.eclipse.om2m.commons.resource.FilterCriteria@b3d283,
+ , 
+,tokens=null]
+[2019-05-04 18:00:14,436 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+parseAuthorizationHeader(authorizationHeader:null)
+[2019-05-04 18:00:14,437 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+Content type headers: application/xml
+[2019-05-04 18:00:14,437 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+Header value: application/xml
+[2019-05-04 18:00:14,437 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+Accept header: application/json
+[2019-05-04 18:00:14,439 INFO] - org.eclipse.om2m.core.router.Router 
+Received request in Router: RequestPrimitive [operation=2,
+ to=/mn-cse/acp-890835103,
+ from=admin:admin,
+ resultContent=5,
+ filterCriteria=org.eclipse.om2m.commons.resource.FilterCriteria@b3d283,
+ returnContentType=application/json,
+ requestContentType=application/xml,
+ queryStrings={rcn=[5], lvl=[1]}, 
+,tokens=null]
+[2019-05-04 18:00:14,444 INFO] - org.eclipse.om2m.core.router.Router 
+Request handling in the current CSE: /mn-cse/acp-890835103
+[2019-05-04 18:00:14,451 INFO] - org.eclipse.om2m.core.router.Router 
+ResourceController to be used [AccessControlPolicyController]
+[2019-05-04 18:00:14,485 INFO] - org.eclipse.om2m.core.controller.Controller 
+Clear and close transaction
+[2019-05-04 18:00:14,507 INFO] - org.eclipse.om2m.core.router.Router 
+Response in Router= ResponsePrimitive [
+ responseStatusCode=2000
+ to=admin:admin
+ from=/mn-cse
+ contentType=application/json,
+ content (Only first 1000 caracters)=
+ {
+   "m2m:acp" : {
+      "rn" : "acp_admin",
+      "ty" : 1,
+      "ri" : "/mn-cse/acp-890835103",
+      "pi" : "/mn-cse",
+      "ct" : "20190504T175741",
+      "lt" : "20190504T175741",
+      "pv" : {
+         "acr" : [ {
+            "acor" : [ "admin:admin", "/mn-cse" ],
+            "acop" : 63
+         }, {
+            "acor" : [ "guest:guest" ],
+            "acop" : 34
+         } ]
+      },
+      "pvs" : {
+         "acr" : [ {
+            "acor" : [ "admin:admin" ],
+            "acop" : 63
+         } ]
+      }
+   }
+}
+]
+[2019-05-04 18:00:14,509 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+send UTF8
+[2019-05-04 18:00:19,018 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+----------------------------------------------------------------------------------------------
+[2019-05-04 18:00:19,021 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+Built RequestPrimitive: RequestPrimitive [to=/mn-cse/acp-890835103,
+ resultContent=5,
+ filterCriteria=org.eclipse.om2m.commons.resource.FilterCriteria@129c8d1,
+ , 
+,tokens=null]
+[2019-05-04 18:00:19,022 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+parseAuthorizationHeader(authorizationHeader:null)
+[2019-05-04 18:00:19,022 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+Content type headers: application/xml
+[2019-05-04 18:00:19,022 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+Header value: application/xml
+[2019-05-04 18:00:19,024 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+Accept header: application/json
+[2019-05-04 18:00:19,026 INFO] - org.eclipse.om2m.core.router.Router 
+Received request in Router: RequestPrimitive [operation=2,
+ to=/mn-cse/acp-890835103,
+ from=admin:admin,
+ resultContent=5,
+ filterCriteria=org.eclipse.om2m.commons.resource.FilterCriteria@129c8d1,
+ returnContentType=application/json,
+ requestContentType=application/xml,
+ queryStrings={rcn=[5], lvl=[1]}, 
+,tokens=null]
+[2019-05-04 18:00:19,033 INFO] - org.eclipse.om2m.core.router.Router 
+Request handling in the current CSE: /mn-cse/acp-890835103
+[2019-05-04 18:00:19,040 INFO] - org.eclipse.om2m.core.router.Router 
+ResourceController to be used [AccessControlPolicyController]
+[2019-05-04 18:00:19,073 INFO] - org.eclipse.om2m.core.controller.Controller 
+Clear and close transaction
+[2019-05-04 18:00:19,082 INFO] - org.eclipse.om2m.core.router.Router 
+Response in Router= ResponsePrimitive [
+ responseStatusCode=2000
+ to=admin:admin
+ from=/mn-cse
+ contentType=application/json,
+ content (Only first 1000 caracters)=
+ {
+   "m2m:acp" : {
+      "rn" : "acp_admin",
+      "ty" : 1,
+      "ri" : "/mn-cse/acp-890835103",
+      "pi" : "/mn-cse",
+      "ct" : "20190504T175741",
+      "lt" : "20190504T175741",
+      "pv" : {
+         "acr" : [ {
+            "acor" : [ "admin:admin", "/mn-cse" ],
+            "acop" : 63
+         }, {
+            "acor" : [ "guest:guest" ],
+            "acop" : 34
+         } ]
+      },
+      "pvs" : {
+         "acr" : [ {
+            "acor" : [ "admin:admin" ],
+            "acop" : 63
+         } ]
+      }
+   }
+}
+]
+[2019-05-04 18:00:19,085 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+send UTF8
+[2019-05-04 18:00:45,057 INFO] - org.eclipse.om2m.core.CSEInitializer 
+check CSE registration
+[2019-05-04 18:00:45,060 INFO] - org.eclipse.om2m.core.comm.RestClient 
+the requestIndication RC: RequestPrimitive [operation=2,
+ to=http://127.0.0.1:8080/~/in-cse/in-name/mn-name,
+ from=admin:admin,
+ resultContent=1,
+ returnContentType=application/xml,
+ , 
+,tokens=null]
+[2019-05-04 18:00:45,061 INFO] - org.eclipse.om2m.binding.http.RestHttpClient 
+Sending request: RequestPrimitive [operation=2,
+ to=http://127.0.0.1:8080/~/in-cse/in-name/mn-name,
+ from=admin:admin,
+ resultContent=1,
+ returnContentType=application/xml,
+ , 
+,tokens=null]
+[2019-05-04 18:00:45,065 INFO] - org.eclipse.om2m.binding.http.RestHttpClient 
+Query string generated: ?rcn=1
+[2019-05-04 18:00:45,069 INFO] - org.eclipse.om2m.binding.http.RestHttpClient 
+Request to be send: GET http://127.0.0.1:8080/~/in-cse/in-name/mn-name?rcn=1 HTTP/1.1
+[2019-05-04 18:00:45,069 INFO] - org.eclipse.om2m.binding.http.RestHttpClient 
+Headers:
+Accept: application/xml
+X-M2M-Origin: admin:admin
+Content-Type: 
+
+[2019-05-04 18:00:45,134 INFO] - org.eclipse.om2m.binding.http.RestHttpClient 
+Http Client response: ResponsePrimitive [
+ responseStatusCode=2000
+ to=admin:admin
+ from=/mn-cse
+ contentType=application/xml;charset=UTF-8,
+ content (Only first 1000 caracters)=
+ <?xml version="1.0" encoding="UTF-8"?>
+<m2m:csr xmlns:m2m="http://www.onem2m.org/xml/protocols" xmlns:hd="http://www.onem2m.org/xml/protocols/homedomain" rn="mn-name">
+   <ty>16</ty>
+   <ri>/in-cse/csr-362817983</ri>
+   <pi>/in-cse</pi>
+   <ct>20190504T175744</ct>
+   <lt>20190504T175744</lt>
+   <acpi>/in-cse/acp-622147964</acpi>
+   <cst>2</cst>
+   <poa>http://127.0.0.1:8282/</poa>
+   <cb>//om2m.org/mn-cse</cb>
+   <csi>/mn-cse</csi>
+   <rr>true</rr>
+</m2m:csr>
+
+]
+[2019-05-04 18:00:45,142 INFO] - org.eclipse.om2m.core.comm.RestClient 
+ResponsePrimitive [
+ responseStatusCode=2000
+ to=admin:admin
+ from=/mn-cse
+ contentType=application/xml;charset=UTF-8,
+ content (Only first 1000 caracters)=
+ <?xml version="1.0" encoding="UTF-8"?>
+<m2m:csr xmlns:m2m="http://www.onem2m.org/xml/protocols" xmlns:hd="http://www.onem2m.org/xml/protocols/homedomain" rn="mn-name">
+   <ty>16</ty>
+   <ri>/in-cse/csr-362817983</ri>
+   <pi>/in-cse</pi>
+   <ct>20190504T175744</ct>
+   <lt>20190504T175744</lt>
+   <acpi>/in-cse/acp-622147964</acpi>
+   <cst>2</cst>
+   <poa>http://127.0.0.1:8282/</poa>
+   <cb>//om2m.org/mn-cse</cb>
+   <csi>/mn-cse</csi>
+   <rr>true</rr>
+</m2m:csr>
+
+]
+[2019-05-04 18:00:45,154 INFO] - org.eclipse.om2m.core.CSEInitializer 
+registration is good
+[2019-05-04 18:22:03,642 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+Starting Data Mapper
+[2019-05-04 18:22:03,647 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+Registering XML Mapper Service..
+[2019-05-04 18:23:54,479 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+XML Mapper service registered.
+[2019-05-04 18:23:54,479 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+Registering JSON Mapper Service..
+[2019-05-04 18:25:41,214 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+JSON Mapper service registered.
+[2019-05-04 18:25:41,232 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+System property [bundles.configuration.location] is not defined.
+[2019-05-04 18:25:41,233 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Using default configurations location [configurations].
+[2019-05-04 18:25:41,233 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Using configuration from [configurations]
+[2019-05-04 18:25:41,234 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Directory [configurations/factories] does not exist.
+[2019-05-04 18:25:41,237 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+System property [bundles.configuration.location] is not defined.
+[2019-05-04 18:25:41,238 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Using default configurations location [configurations].
+[2019-05-04 18:25:41,238 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Using configuration from [configurations]
+[2019-05-04 18:25:41,239 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Directory [configurations/factories] does not exist.
+[2019-05-04 18:25:41,307 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Register configuration [netatmo.sdt.driver]
+[2019-05-04 18:25:41,317 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Register configuration [hue.basedriver]
+[2019-05-04 18:25:41,331 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Register configuration [lifx.basedriver]
+[2019-05-04 18:25:41,340 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Register configuration [sdt.ipe]
+[2019-05-04 18:25:41,348 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Register configuration [smarter.coffee]
+[2019-05-04 18:25:41,356 INFO] - org.eclipse.om2m.binding.http.Activator 
+Register HTTP RestClientService..
+[2019-05-04 18:25:41,380 INFO] - org.eclipse.om2m.binding.http.Activator 
+HTTP RestClientService is registered.
+[2019-05-04 18:25:41,921 INFO] - org.eclipse.om2m.persistence.eclipselink.Activator 
+Starting Persistence JPA plugin...
+[2019-05-04 18:25:41,927 INFO] - org.eclipse.om2m.binding.http.Activator 
+HttpService discovered
+[2019-05-04 18:25:41,931 INFO] - org.eclipse.om2m.binding.http.Activator 
+Register / context
+[2019-05-04 18:25:41,934 INFO] - org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl 
+Initializing Database...
+[2019-05-04 18:25:41,936 INFO] - org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl 
+Creating new EntityManagerFactory...
+[2019-05-04 18:25:42,205 INFO] - org.eclipse.om2m.core.Activator 
+Starting CSE...
+[2019-05-04 18:25:42,207 INFO] - org.eclipse.om2m.core.Activator 
+Added Data Mapper Service: application/xml
+[2019-05-04 18:25:42,208 INFO] - org.eclipse.om2m.core.Activator 
+Added Data Mapper Service: application/json
+[2019-05-04 18:25:42,217 INFO] - org.eclipse.om2m.core.Activator 
+Rest client service discovered. Protocol: http
+[2019-05-04 18:25:42,225 INFO] - org.eclipse.om2m.core.Activator 
+Rest client service discovered. Protocol: mqtt
+[2019-05-04 18:25:42,243 INFO] - org.eclipse.om2m.webapp.resourcesbrowser.json.Activator 
+HttpService discovered
+[2019-05-04 18:25:42,244 INFO] - org.eclipse.om2m.webapp.resourcesbrowser.json.Activator 
+Register /webpage http context
+[2019-05-04 18:25:42,301 INFO] - org.eclipse.om2m.hue.impl.HueBasedriver 
+HueBasedriver ctor
+[2019-05-04 18:25:42,306 INFO] - org.eclipse.om2m.hue.impl.HueBasedriver 
+Activating
+[2019-05-04 18:25:42,796 INFO] - org.eclipse.om2m.hue.impl.HueBasedriver 
+Updating Hue Bridge connection upon the config file
+[2019-05-04 18:25:42,798 INFO] - org.eclipse.om2m.hue.impl.HueBasedriver 
+Config file description url: http://192.168.1.15:80/description.xml, config file user id: null
+[2019-05-04 18:25:42,799 WARN] - org.eclipse.om2m.hue.impl.HueBasedriver 
+No userId for Hue Bridge update...
+[2019-05-04 18:25:42,799 INFO] - org.eclipse.om2m.hue.impl.HueBridgeDiscovery 
+ProcessHueBridge with userId: null
+[2019-05-04 18:25:42,848 WARN] - org.eclipse.om2m.hue.impl.HueBridgeDiscovery 
+
+java.net.NoRouteToHostException: Aucun chemin d'accès pour atteindre l'hôte cible
+	at java.net.PlainSocketImpl.socketConnect(Native Method)
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:350)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:206)
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:188)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.net.Socket.connect(Socket.java:589)
+	at java.net.Socket.connect(Socket.java:538)
+	at sun.net.NetworkClient.doConnect(NetworkClient.java:180)
+	at sun.net.www.http.HttpClient.openServer(HttpClient.java:432)
+	at sun.net.www.http.HttpClient.openServer(HttpClient.java:527)
+	at sun.net.www.http.HttpClient.<init>(HttpClient.java:211)
+	at sun.net.www.http.HttpClient.New(HttpClient.java:308)
+	at sun.net.www.http.HttpClient.New(HttpClient.java:326)
+	at sun.net.www.protocol.http.HttpURLConnection.getNewHttpClient(HttpURLConnection.java:1169)
+	at sun.net.www.protocol.http.HttpURLConnection.plainConnect0(HttpURLConnection.java:1105)
+	at sun.net.www.protocol.http.HttpURLConnection.plainConnect(HttpURLConnection.java:999)
+	at sun.net.www.protocol.http.HttpURLConnection.connect(HttpURLConnection.java:933)
+	at sun.net.www.protocol.http.HttpURLConnection.getInputStream0(HttpURLConnection.java:1513)
+	at sun.net.www.protocol.http.HttpURLConnection.getInputStream(HttpURLConnection.java:1441)
+	at java.net.URL.openStream(URL.java:1038)
+	at org.eclipse.om2m.hue.impl.HueBridgeDiscovery.processHueBridge(HueBridgeDiscovery.java:98)
+	at org.eclipse.om2m.hue.impl.HueBridgeDiscovery.processHueBridge(HueBridgeDiscovery.java:132)
+	at org.eclipse.om2m.hue.impl.HueBasedriver$4.run(HueBasedriver.java:437)
+	at org.eclipse.om2m.hue.impl.HueBasedriver.updated(HueBasedriver.java:447)
+	at org.eclipse.equinox.internal.cm.ManagedServiceTracker$1.run(ManagedServiceTracker.java:276)
+	at org.eclipse.equinox.internal.cm.SerializedTaskQueue$1.run(SerializedTaskQueue.java:36)
+[2019-05-04 18:25:42,853 INFO] - org.eclipse.om2m.sdt.home.driver.Logger 
+[ONEM2M.Hue] ctor
+[2019-05-04 18:25:42,854 WARN] - org.eclipse.om2m.hue.impl.HueBasedriver 
+Error processing new bridge
+java.io.IOException: java.net.NoRouteToHostException: Aucun chemin d'accès pour atteindre l'hôte cible
+	at org.eclipse.om2m.hue.impl.HueBridgeDiscovery.processHueBridge(HueBridgeDiscovery.java:135)
+	at org.eclipse.om2m.hue.impl.HueBasedriver$4.run(HueBasedriver.java:437)
+	at org.eclipse.om2m.hue.impl.HueBasedriver.updated(HueBasedriver.java:447)
+	at org.eclipse.equinox.internal.cm.ManagedServiceTracker$1.run(ManagedServiceTracker.java:276)
+	at org.eclipse.equinox.internal.cm.SerializedTaskQueue$1.run(SerializedTaskQueue.java:36)
+Caused by: java.net.NoRouteToHostException: Aucun chemin d'accès pour atteindre l'hôte cible
+	at java.net.PlainSocketImpl.socketConnect(Native Method)
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:350)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:206)
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:188)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.net.Socket.connect(Socket.java:589)
+	at java.net.Socket.connect(Socket.java:538)
+	at sun.net.NetworkClient.doConnect(NetworkClient.java:180)
+	at sun.net.www.http.HttpClient.openServer(HttpClient.java:432)
+	at sun.net.www.http.HttpClient.openServer(HttpClient.java:527)
+	at sun.net.www.http.HttpClient.<init>(HttpClient.java:211)
+	at sun.net.www.http.HttpClient.New(HttpClient.java:308)
+	at sun.net.www.http.HttpClient.New(HttpClient.java:326)
+	at sun.net.www.protocol.http.HttpURLConnection.getNewHttpClient(HttpURLConnection.java:1169)
+	at sun.net.www.protocol.http.HttpURLConnection.plainConnect0(HttpURLConnection.java:1105)
+	at sun.net.www.protocol.http.HttpURLConnection.plainConnect(HttpURLConnection.java:999)
+	at sun.net.www.protocol.http.HttpURLConnection.connect(HttpURLConnection.java:933)
+	at sun.net.www.protocol.http.HttpURLConnection.getInputStream0(HttpURLConnection.java:1513)
+	at sun.net.www.protocol.http.HttpURLConnection.getInputStream(HttpURLConnection.java:1441)
+	at java.net.URL.openStream(URL.java:1038)
+	at org.eclipse.om2m.hue.impl.HueBridgeDiscovery.processHueBridge(HueBridgeDiscovery.java:98)
+	at org.eclipse.om2m.hue.impl.HueBridgeDiscovery.processHueBridge(HueBridgeDiscovery.java:132)
+	... 4 more
+[2019-05-04 18:25:42,874 INFO] - org.eclipse.om2m.sdt.home.driver.Logger 
+[ONEM2M.Hue] Activating
+[2019-05-04 18:25:42,876 INFO] - org.eclipse.om2m.sdt.home.driver.Logger 
+[ONEM2M.Hue] Activated <Domain xmlns:xi="http://www.w3.org/2001/XInclude" xmlns="http://homegatewayinitiative.org/xml/dal/3.0" id="Philips Hue Domain">
+</Domain>
+[2019-05-04 18:25:48,617 INFO] - org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl 
+DataBase initialized.
+[2019-05-04 18:25:48,701 INFO] - org.eclipse.om2m.persistence.eclipselink.Activator 
+Registering Database (JPA-EL) Service
+[2019-05-04 18:25:48,704 INFO] - org.eclipse.om2m.core.Activator 
+DataBase persistence service discovered
+[2019-05-04 18:25:48,713 INFO] - org.eclipse.om2m.core.thread.CoreExecutor 
+Creating thread pool with corePoolSize=5 & maximumSize=50
+[2019-05-04 18:25:48,723 INFO] - org.eclipse.om2m.core.CSEInitializer 
+Initializating the cseBase
+[2019-05-04 18:25:48,826 INFO] - org.eclipse.om2m.core.CSEInitializer 
+cseBase already initialized
+[2019-05-04 18:25:48,826 INFO] - org.eclipse.om2m.core.Activator 
+Registering CseService...
+[2019-05-04 18:25:48,864 INFO] - org.eclipse.om2m.binding.http.Activator 
+CseService discovered
+[2019-05-04 18:25:48,874 INFO] - org.eclipse.om2m.core.Activator 
+CSE Started
+[2019-05-04 18:25:48,874 INFO] - org.eclipse.om2m.binding.mqtt.Activator 
+Creating MQTT Request Handler
+[2019-05-04 18:25:49,045 INFO] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Subscribing on MQTT topic: /oneM2M/req/+/mn-cse/+
+[2019-05-04 18:27:49,924 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+----------------------------------------------------------------------------------------------
+[2019-05-04 18:27:49,950 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+Built RequestPrimitive: RequestPrimitive [to=/mn-cse,
+ resultContent=5,
+ filterCriteria=org.eclipse.om2m.commons.resource.FilterCriteria@9118db,
+ , 
+,tokens=null]
+[2019-05-04 18:27:49,953 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+parseAuthorizationHeader(authorizationHeader:null)
+[2019-05-04 18:27:49,954 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+Content type headers: application/xml
+[2019-05-04 18:27:49,954 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+Header value: application/xml
+[2019-05-04 18:27:49,954 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+Accept header: application/json
+[2019-05-04 18:27:49,957 INFO] - org.eclipse.om2m.core.router.Router 
+Received request in Router: RequestPrimitive [operation=2,
+ to=/mn-cse,
+ from=admin:admin,
+ resultContent=5,
+ filterCriteria=org.eclipse.om2m.commons.resource.FilterCriteria@9118db,
+ returnContentType=application/json,
+ requestContentType=application/xml,
+ queryStrings={rcn=[5], lvl=[1]}, 
+,tokens=null]
+[2019-05-04 18:27:49,976 INFO] - org.eclipse.om2m.core.router.Router 
+Request handling in the current CSE: /mn-cse
+[2019-05-04 18:27:50,005 INFO] - org.eclipse.om2m.core.router.Router 
+ResourceController to be used [CSEBaseController]
+[2019-05-04 18:27:50,164 INFO] - org.eclipse.om2m.core.controller.Controller 
+Clear and close transaction
+[2019-05-04 18:27:50,256 INFO] - org.eclipse.om2m.core.router.Router 
+Response in Router= ResponsePrimitive [
+ responseStatusCode=2000
+ to=admin:admin
+ from=/mn-cse
+ contentType=application/json,
+ content (Only first 1000 caracters)=
+ {
+   "m2m:cb" : {
+      "rn" : "mn-name",
+      "ty" : 5,
+      "ri" : "/mn-cse",
+      "ct" : "20190504T175741",
+      "lt" : "20190504T175741",
+      "acpi" : [ "/mn-cse/acp-890835103" ],
+      "cst" : 2,
+      "csi" : "mn-cse",
+      "srt" : [ 1, 2, 3, 4, 5, 9, 14, 15, 16, 17, 23, 28 ],
+      "poa" : [ "http://127.0.0.1:8282/" ],
+      "ch" : [ {
+         "nm" : "acp_admin",
+         "typ" : 1,
+         "val" : "/mn-cse/acp-890835103"
+      } ]
+   }
+}
+]
+[2019-05-04 18:27:50,257 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+send UTF8
+[2019-05-04 18:27:52,072 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+----------------------------------------------------------------------------------------------
+[2019-05-04 18:27:52,075 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+Built RequestPrimitive: RequestPrimitive [to=/mn-cse/acp-890835103,
+ resultContent=5,
+ filterCriteria=org.eclipse.om2m.commons.resource.FilterCriteria@c049e8,
+ , 
+,tokens=null]
+[2019-05-04 18:27:52,075 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+parseAuthorizationHeader(authorizationHeader:null)
+[2019-05-04 18:27:52,076 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+Content type headers: application/xml
+[2019-05-04 18:27:52,076 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+Header value: application/xml
+[2019-05-04 18:27:52,076 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+Accept header: application/json
+[2019-05-04 18:27:52,077 INFO] - org.eclipse.om2m.core.router.Router 
+Received request in Router: RequestPrimitive [operation=2,
+ to=/mn-cse/acp-890835103,
+ from=admin:admin,
+ resultContent=5,
+ filterCriteria=org.eclipse.om2m.commons.resource.FilterCriteria@c049e8,
+ returnContentType=application/json,
+ requestContentType=application/xml,
+ queryStrings={rcn=[5], lvl=[1]}, 
+,tokens=null]
+[2019-05-04 18:27:52,083 INFO] - org.eclipse.om2m.core.router.Router 
+Request handling in the current CSE: /mn-cse/acp-890835103
+[2019-05-04 18:27:52,089 INFO] - org.eclipse.om2m.core.router.Router 
+ResourceController to be used [AccessControlPolicyController]
+[2019-05-04 18:27:52,139 INFO] - org.eclipse.om2m.core.controller.Controller 
+Clear and close transaction
+[2019-05-04 18:27:52,146 INFO] - org.eclipse.om2m.core.router.Router 
+Response in Router= ResponsePrimitive [
+ responseStatusCode=2000
+ to=admin:admin
+ from=/mn-cse
+ contentType=application/json,
+ content (Only first 1000 caracters)=
+ {
+   "m2m:acp" : {
+      "rn" : "acp_admin",
+      "ty" : 1,
+      "ri" : "/mn-cse/acp-890835103",
+      "pi" : "/mn-cse",
+      "ct" : "20190504T175741",
+      "lt" : "20190504T175741",
+      "pv" : {
+         "acr" : [ {
+            "acor" : [ "admin:admin", "/mn-cse" ],
+            "acop" : 63
+         }, {
+            "acor" : [ "guest:guest" ],
+            "acop" : 34
+         } ]
+      },
+      "pvs" : {
+         "acr" : [ {
+            "acor" : [ "admin:admin" ],
+            "acop" : 63
+         } ]
+      }
+   }
+}
+]
+[2019-05-04 18:27:52,147 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+send UTF8
+[2019-05-04 18:28:27,175 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+----------------------------------------------------------------------------------------------
+[2019-05-04 18:28:27,177 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+Built RequestPrimitive: RequestPrimitive [to=/mn-cse/acp-890835103,
+ resultContent=5,
+ filterCriteria=org.eclipse.om2m.commons.resource.FilterCriteria@dc8f15,
+ , 
+,tokens=null]
+[2019-05-04 18:28:27,178 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+parseAuthorizationHeader(authorizationHeader:null)
+[2019-05-04 18:28:27,178 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+Content type headers: application/xml
+[2019-05-04 18:28:27,179 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+Header value: application/xml
+[2019-05-04 18:28:27,179 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+Accept header: application/json
+[2019-05-04 18:28:27,180 INFO] - org.eclipse.om2m.core.router.Router 
+Received request in Router: RequestPrimitive [operation=2,
+ to=/mn-cse/acp-890835103,
+ from=admin:admin,
+ resultContent=5,
+ filterCriteria=org.eclipse.om2m.commons.resource.FilterCriteria@dc8f15,
+ returnContentType=application/json,
+ requestContentType=application/xml,
+ queryStrings={rcn=[5], lvl=[1]}, 
+,tokens=null]
+[2019-05-04 18:28:27,192 INFO] - org.eclipse.om2m.core.router.Router 
+Request handling in the current CSE: /mn-cse/acp-890835103
+[2019-05-04 18:28:27,197 INFO] - org.eclipse.om2m.core.router.Router 
+ResourceController to be used [AccessControlPolicyController]
+[2019-05-04 18:28:27,220 INFO] - org.eclipse.om2m.core.controller.Controller 
+Clear and close transaction
+[2019-05-04 18:28:27,226 INFO] - org.eclipse.om2m.core.router.Router 
+Response in Router= ResponsePrimitive [
+ responseStatusCode=2000
+ to=admin:admin
+ from=/mn-cse
+ contentType=application/json,
+ content (Only first 1000 caracters)=
+ {
+   "m2m:acp" : {
+      "rn" : "acp_admin",
+      "ty" : 1,
+      "ri" : "/mn-cse/acp-890835103",
+      "pi" : "/mn-cse",
+      "ct" : "20190504T175741",
+      "lt" : "20190504T175741",
+      "pv" : {
+         "acr" : [ {
+            "acor" : [ "admin:admin", "/mn-cse" ],
+            "acop" : 63
+         }, {
+            "acor" : [ "guest:guest" ],
+            "acop" : 34
+         } ]
+      },
+      "pvs" : {
+         "acr" : [ {
+            "acor" : [ "admin:admin" ],
+            "acop" : 63
+         } ]
+      }
+   }
+}
+]
+[2019-05-04 18:28:27,227 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+send UTF8
+[2019-05-04 18:28:28,542 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+----------------------------------------------------------------------------------------------
+[2019-05-04 18:28:28,544 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+Built RequestPrimitive: RequestPrimitive [to=/mn-cse,
+ resultContent=5,
+ filterCriteria=org.eclipse.om2m.commons.resource.FilterCriteria@129c8d1,
+ , 
+,tokens=null]
+[2019-05-04 18:28:28,545 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+parseAuthorizationHeader(authorizationHeader:null)
+[2019-05-04 18:28:28,545 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+Content type headers: application/xml
+[2019-05-04 18:28:28,545 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+Header value: application/xml
+[2019-05-04 18:28:28,546 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+Accept header: application/json
+[2019-05-04 18:28:28,547 INFO] - org.eclipse.om2m.core.router.Router 
+Received request in Router: RequestPrimitive [operation=2,
+ to=/mn-cse,
+ from=admin:admin,
+ resultContent=5,
+ filterCriteria=org.eclipse.om2m.commons.resource.FilterCriteria@129c8d1,
+ returnContentType=application/json,
+ requestContentType=application/xml,
+ queryStrings={rcn=[5], lvl=[1]}, 
+,tokens=null]
+[2019-05-04 18:28:28,551 INFO] - org.eclipse.om2m.core.router.Router 
+Request handling in the current CSE: /mn-cse
+[2019-05-04 18:28:28,558 INFO] - org.eclipse.om2m.core.router.Router 
+ResourceController to be used [CSEBaseController]
+[2019-05-04 18:28:28,598 INFO] - org.eclipse.om2m.core.controller.Controller 
+Clear and close transaction
+[2019-05-04 18:28:28,609 INFO] - org.eclipse.om2m.core.router.Router 
+Response in Router= ResponsePrimitive [
+ responseStatusCode=2000
+ to=admin:admin
+ from=/mn-cse
+ contentType=application/json,
+ content (Only first 1000 caracters)=
+ {
+   "m2m:cb" : {
+      "rn" : "mn-name",
+      "ty" : 5,
+      "ri" : "/mn-cse",
+      "ct" : "20190504T175741",
+      "lt" : "20190504T175741",
+      "acpi" : [ "/mn-cse/acp-890835103" ],
+      "cst" : 2,
+      "csi" : "mn-cse",
+      "srt" : [ 1, 2, 3, 4, 5, 9, 14, 15, 16, 17, 23, 28 ],
+      "poa" : [ "http://127.0.0.1:8282/" ],
+      "ch" : [ {
+         "nm" : "acp_admin",
+         "typ" : 1,
+         "val" : "/mn-cse/acp-890835103"
+      } ]
+   }
+}
+]
+[2019-05-04 18:28:28,610 INFO] - org.eclipse.om2m.binding.http.RestHttpServlet 
+send UTF8

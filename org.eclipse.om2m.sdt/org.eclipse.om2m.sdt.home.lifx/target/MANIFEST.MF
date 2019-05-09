@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-SymbolicName: org.eclipse.om2m.sdt.home.lifx
+Bundle-Name: org.eclipse.om2m.sdt.home.lifx
+Bundle-Version: 1.1.0.20190504-1504
+Bundle-ClassPath: .,lib/json-simple-1.1.1.jar
+Bundle-ManifestVersion: 2
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-Activator: org.eclipse.om2m.sdt.home.lifx.impl.Activator
+Import-Package: org.eclipse.om2m.sdt,org.eclipse.om2m.sdt.datapoints,o
+ rg.eclipse.om2m.sdt.exceptions,org.eclipse.om2m.sdt.home,org.eclipse.
+ om2m.sdt.home.devices,org.eclipse.om2m.sdt.home.driver,org.eclipse.om
+ 2m.sdt.home.modules,org.eclipse.om2m.sdt.home.types,org.osgi.framewor
+ k,org.osgi.service.cm,org.osgi.service.log
+

@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-SymbolicName: org.eclipse.om2m.sdt.home.smarterkettle
+Bundle-Name: org.eclipse.om2m.sdt.home.smarterkettle
+Bundle-Version: 1.1.0.20190504-1504
+Bundle-ClassPath: .
+Bundle-ManifestVersion: 2
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-Activator: org.eclipse.om2m.sdt.home.smarterkettle.Activator
+Import-Package: org.eclipse.om2m.sdt,org.eclipse.om2m.sdt.datapoints,o
+ rg.eclipse.om2m.sdt.exceptions,org.eclipse.om2m.sdt.home,org.eclipse.
+ om2m.sdt.home.actions,org.eclipse.om2m.sdt.home.devices,org.eclipse.o
+ m2m.sdt.home.driver,org.eclipse.om2m.sdt.home.modules,org.eclipse.om2
+ m.sdt.home.types,org.osgi.framework,org.osgi.service.cm,org.osgi.serv
+ ice.log
+

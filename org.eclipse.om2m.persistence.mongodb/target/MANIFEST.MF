@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-SymbolicName: org.eclipse.om2m.persistence.mongodb
+Bundle-Name: Jpa
+Bundle-Version: 1.1.0.20190504-1504
+Bundle-ClassPath: .,libs/gson-2.2.4.jar,libs/mongo-java-driver-3.4.2.j
+ ar
+Bundle-ManifestVersion: 2
+Bundle-Activator: org.eclipse.om2m.persistence.mongodb.Activator
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Import-Package: javax.persistence,org.apache.commons.logging,org.eclip
+ se.om2m.commons.constants,org.eclipse.om2m.commons.entities,org.eclip
+ se.om2m.commons.resource,org.eclipse.om2m.persistence.service,org.ecl
+ ipse.om2m.persistence.service.util,org.osgi.framework
+
