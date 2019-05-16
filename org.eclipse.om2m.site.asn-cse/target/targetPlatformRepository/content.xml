@@ -50,47 +50,6 @@
         </instructions>
       </touchpointData>
     </unit>
-    <unit id='org.eclipse.om2m.core' version='1.1.0.20190504-1504'>
-      <update id='org.eclipse.om2m.core' range='[0.0.0,1.1.0.20190504-1504)' severity='0'/>
-      <properties size='4'>
-        <property name='org.eclipse.equinox.p2.name' value='org.eclipse.om2m Core Plugin'/>
-        <property name='maven-groupId' value='org.eclipse.om2m'/>
-        <property name='maven-artifactId' value='org.eclipse.om2m.core'/>
-        <property name='maven-version' value='1.1.0-SNAPSHOT'/>
-      </properties>
-      <provides size='3'>
-        <provided namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.core' version='1.1.0.20190504-1504'/>
-        <provided namespace='osgi.bundle' name='org.eclipse.om2m.core' version='1.1.0.20190504-1504'/>
-        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
-      </provides>
-      <requires size='14'>
-        <required namespace='osgi.bundle' name='org.eclipse.om2m.commons' range='0.0.0'/>
-        <required namespace='osgi.bundle' name='org.eclipse.om2m.persistence.service' range='0.0.0'/>
-        <required namespace='java.package' name='javax.persistence' range='0.0.0'/>
-        <required namespace='java.package' name='org.apache.commons.logging' range='0.0.0'/>
-        <required namespace='java.package' name='org.eclipse.om2m.binding.service' range='0.0.0'/>
-        <required namespace='java.package' name='org.eclipse.om2m.core.service' range='0.0.0'/>
-        <required namespace='java.package' name='org.eclipse.om2m.datamapping.service' range='0.0.0'/>
-        <required namespace='java.package' name='org.eclipse.om2m.flexcontainer.service' range='0.0.0'/>
-        <required namespace='java.package' name='org.eclipse.om2m.interworking.service' range='0.0.0'/>
-        <required namespace='java.package' name='org.eclipse.om2m.persistence.service' range='0.0.0'/>
-        <required namespace='java.package' name='org.eclipse.om2m.persistence.service.util' range='0.0.0'/>
-        <required namespace='java.package' name='org.osgi.framework' range='0.0.0'/>
-        <required namespace='java.package' name='org.osgi.service.event' range='0.0.0'/>
-        <required namespace='java.package' name='org.osgi.util.tracker' range='0.0.0'/>
-      </requires>
-      <artifacts size='1'>
-        <artifact classifier='osgi.bundle' id='org.eclipse.om2m.core' version='1.1.0.20190504-1504'/>
-      </artifacts>
-      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
-      <touchpointData size='1'>
-        <instructions size='1'>
-          <instruction key='manifest'>
-            Bundle-SymbolicName: org.eclipse.om2m.core;singleton:=true&#xA;Bundle-Version: 1.1.0.20190504-1504&#xA;
-          </instruction>
-        </instructions>
-      </touchpointData>
-    </unit>
     <unit id='org.apache.felix.gogo.shell' version='0.10.0.v201212101605' singleton='false'>
       <update id='org.apache.felix.gogo.shell' range='[0.0.0,0.10.0.v201212101605)' severity='0'/>
       <properties size='7'>
@@ -126,35 +85,31 @@
         </instructions>
       </touchpointData>
     </unit>
-    <unit id='org.eclipse.om2m.webapp.resourcesbrowser.xml' version='1.1.0.20190504-1504' singleton='false'>
-      <update id='org.eclipse.om2m.webapp.resourcesbrowser.xml' range='[0.0.0,1.1.0.20190504-1504)' severity='0'/>
+    <unit id='org.eclipse.om2m.datamapping.service' version='1.1.0.20190516-1509' singleton='false'>
+      <update id='org.eclipse.om2m.datamapping.service' range='[0.0.0,1.1.0.20190516-1509)' severity='0'/>
       <properties size='4'>
-        <property name='org.eclipse.equinox.p2.name' value='Resourcesbrowser'/>
+        <property name='org.eclipse.equinox.p2.name' value='org.eclipse.om2m DataMapper Service'/>
         <property name='maven-groupId' value='org.eclipse.om2m'/>
-        <property name='maven-artifactId' value='org.eclipse.om2m.webapp.resourcesbrowser.xml'/>
+        <property name='maven-artifactId' value='org.eclipse.om2m.datamapping.service'/>
         <property name='maven-version' value='1.1.0-SNAPSHOT'/>
       </properties>
-      <provides size='3'>
-        <provided namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.webapp.resourcesbrowser.xml' version='1.1.0.20190504-1504'/>
-        <provided namespace='osgi.bundle' name='org.eclipse.om2m.webapp.resourcesbrowser.xml' version='1.1.0.20190504-1504'/>
+      <provides size='4'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.datamapping.service' version='1.1.0.20190516-1509'/>
+        <provided namespace='osgi.bundle' name='org.eclipse.om2m.datamapping.service' version='1.1.0.20190516-1509'/>
+        <provided namespace='java.package' name='org.eclipse.om2m.datamapping.service' version='0.0.0'/>
         <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
       </provides>
-      <requires size='6'>
-        <required namespace='java.package' name='javax.servlet' range='0.0.0'/>
-        <required namespace='java.package' name='javax.servlet.http' range='0.0.0'/>
-        <required namespace='java.package' name='org.apache.commons.logging' range='0.0.0'/>
-        <required namespace='java.package' name='org.osgi.framework' range='0.0.0'/>
-        <required namespace='java.package' name='org.osgi.service.http' range='0.0.0'/>
-        <required namespace='java.package' name='org.osgi.util.tracker' range='0.0.0'/>
+      <requires size='1'>
+        <required namespace='osgi.bundle' name='org.eclipse.om2m.commons' range='0.0.0'/>
       </requires>
       <artifacts size='1'>
-        <artifact classifier='osgi.bundle' id='org.eclipse.om2m.webapp.resourcesbrowser.xml' version='1.1.0.20190504-1504'/>
+        <artifact classifier='osgi.bundle' id='org.eclipse.om2m.datamapping.service' version='1.1.0.20190516-1509'/>
       </artifacts>
       <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
       <touchpointData size='1'>
         <instructions size='1'>
           <instruction key='manifest'>
-            Bundle-SymbolicName: org.eclipse.om2m.webapp.resourcesbrowser.xml&#xA;Bundle-Version: 1.1.0.20190504-1504&#xA;
+            Bundle-SymbolicName: org.eclipse.om2m.datamapping.service&#xA;Bundle-Version: 1.1.0.20190516-1509&#xA;
           </instruction>
         </instructions>
       </touchpointData>
@@ -241,8 +196,8 @@
         </instructions>
       </touchpointData>
     </unit>
-    <unit id='org.eclipse.om2m.binding.coap' version='1.1.0.20190504-1504' singleton='false'>
-      <update id='org.eclipse.om2m.binding.coap' range='[0.0.0,1.1.0.20190504-1504)' severity='0'/>
+    <unit id='org.eclipse.om2m.binding.coap' version='1.1.0.20190516-1509' singleton='false'>
+      <update id='org.eclipse.om2m.binding.coap' range='[0.0.0,1.1.0.20190516-1509)' severity='0'/>
       <properties size='4'>
         <property name='org.eclipse.equinox.p2.name' value='coap'/>
         <property name='maven-groupId' value='org.eclipse.om2m'/>
@@ -250,8 +205,8 @@
         <property name='maven-version' value='1.1.0-SNAPSHOT'/>
       </properties>
       <provides size='3'>
-        <provided namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.binding.coap' version='1.1.0.20190504-1504'/>
-        <provided namespace='osgi.bundle' name='org.eclipse.om2m.binding.coap' version='1.1.0.20190504-1504'/>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.binding.coap' version='1.1.0.20190516-1509'/>
+        <provided namespace='osgi.bundle' name='org.eclipse.om2m.binding.coap' version='1.1.0.20190516-1509'/>
         <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
       </provides>
       <requires size='6'>
@@ -263,13 +218,44 @@
         <required namespace='java.package' name='org.osgi.util.tracker' range='0.0.0'/>
       </requires>
       <artifacts size='1'>
-        <artifact classifier='osgi.bundle' id='org.eclipse.om2m.binding.coap' version='1.1.0.20190504-1504'/>
+        <artifact classifier='osgi.bundle' id='org.eclipse.om2m.binding.coap' version='1.1.0.20190516-1509'/>
       </artifacts>
       <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
       <touchpointData size='1'>
         <instructions size='1'>
           <instruction key='manifest'>
-            Bundle-SymbolicName: org.eclipse.om2m.binding.coap&#xA;Bundle-Version: 1.1.0.20190504-1504&#xA;
+            Bundle-SymbolicName: org.eclipse.om2m.binding.coap&#xA;Bundle-Version: 1.1.0.20190516-1509&#xA;
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='org.eclipse.om2m.persistence.service' version='1.1.0.20190516-1509' singleton='false'>
+      <update id='org.eclipse.om2m.persistence.service' range='[0.0.0,1.1.0.20190516-1509)' severity='0'/>
+      <properties size='4'>
+        <property name='org.eclipse.equinox.p2.name' value='Service'/>
+        <property name='maven-groupId' value='org.eclipse.om2m'/>
+        <property name='maven-artifactId' value='org.eclipse.om2m.persistence.service'/>
+        <property name='maven-version' value='1.1.0-SNAPSHOT'/>
+      </properties>
+      <provides size='5'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.persistence.service' version='1.1.0.20190516-1509'/>
+        <provided namespace='osgi.bundle' name='org.eclipse.om2m.persistence.service' version='1.1.0.20190516-1509'/>
+        <provided namespace='java.package' name='org.eclipse.om2m.persistence.service' version='0.0.0'/>
+        <provided namespace='java.package' name='org.eclipse.om2m.persistence.service.util' version='0.0.0'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='2'>
+        <required namespace='osgi.bundle' name='org.eclipse.om2m.commons' range='1.0.0'/>
+        <required namespace='java.package' name='javax.persistence' range='0.0.0'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='org.eclipse.om2m.persistence.service' version='1.1.0.20190516-1509'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: org.eclipse.om2m.persistence.service&#xA;Bundle-Version: 1.1.0.20190516-1509&#xA;
           </instruction>
         </instructions>
       </touchpointData>
@@ -303,48 +289,8 @@
         </instructions>
       </touchpointData>
     </unit>
-    <unit id='org.eclipse.om2m.persistence.eclipselink' version='1.1.0.20190504-1504' singleton='false'>
-      <update id='org.eclipse.om2m.persistence.eclipselink' range='[0.0.0,1.1.0.20190504-1504)' severity='0'/>
-      <properties size='4'>
-        <property name='org.eclipse.equinox.p2.name' value='Jpa'/>
-        <property name='maven-groupId' value='org.eclipse.om2m'/>
-        <property name='maven-artifactId' value='org.eclipse.om2m.persistence.eclipselink'/>
-        <property name='maven-version' value='1.1.0-SNAPSHOT'/>
-      </properties>
-      <provides size='4'>
-        <provided namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.persistence.eclipselink' version='1.1.0.20190504-1504'/>
-        <provided namespace='osgi.bundle' name='org.eclipse.om2m.persistence.eclipselink' version='1.1.0.20190504-1504'/>
-        <provided namespace='java.package' name='org.eclipse.om2m.persistence.eclipselink.internal.dao' version='0.0.0'/>
-        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
-      </provides>
-      <requires size='12'>
-        <required namespace='java.package' name='javax.persistence' range='0.0.0'/>
-        <required namespace='java.package' name='javax.persistence.criteria' range='0.0.0'/>
-        <required namespace='java.package' name='javax.persistence.metamodel' range='0.0.0'/>
-        <required namespace='java.package' name='javax.persistence.spi' range='0.0.0'/>
-        <required namespace='java.package' name='org.apache.commons.logging' range='0.0.0'/>
-        <required namespace='java.package' name='org.eclipse.om2m.commons.constants' range='0.0.0'/>
-        <required namespace='java.package' name='org.eclipse.om2m.commons.entities' range='0.0.0'/>
-        <required namespace='java.package' name='org.eclipse.om2m.commons.resource' range='0.0.0'/>
-        <required namespace='java.package' name='org.eclipse.om2m.persistence.service' range='0.0.0'/>
-        <required namespace='java.package' name='org.eclipse.om2m.persistence.service.util' range='0.0.0'/>
-        <required namespace='java.package' name='org.osgi.framework' range='0.0.0'/>
-        <required namespace='java.package' name='org.osgi.util.tracker' range='0.0.0'/>
-      </requires>
-      <artifacts size='1'>
-        <artifact classifier='osgi.bundle' id='org.eclipse.om2m.persistence.eclipselink' version='1.1.0.20190504-1504'/>
-      </artifacts>
-      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
-      <touchpointData size='1'>
-        <instructions size='1'>
-          <instruction key='manifest'>
-            Bundle-SymbolicName: org.eclipse.om2m.persistence.eclipselink&#xA;Bundle-Version: 1.1.0.20190504-1504&#xA;
-          </instruction>
-        </instructions>
-      </touchpointData>
-    </unit>
-    <unit id='org.eclipse.om2m.binding.mqtt' version='1.1.0.20190504-1504' singleton='false'>
-      <update id='org.eclipse.om2m.binding.mqtt' range='[0.0.0,1.1.0.20190504-1504)' severity='0'/>
+    <unit id='org.eclipse.om2m.binding.mqtt' version='1.1.0.20190516-1509' singleton='false'>
+      <update id='org.eclipse.om2m.binding.mqtt' range='[0.0.0,1.1.0.20190516-1509)' severity='0'/>
       <properties size='4'>
         <property name='org.eclipse.equinox.p2.name' value='MQTT Binding'/>
         <property name='maven-groupId' value='org.eclipse.om2m'/>
@@ -352,8 +298,8 @@
         <property name='maven-version' value='1.1.0-SNAPSHOT'/>
       </properties>
       <provides size='3'>
-        <provided namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.binding.mqtt' version='1.1.0.20190504-1504'/>
-        <provided namespace='osgi.bundle' name='org.eclipse.om2m.binding.mqtt' version='1.1.0.20190504-1504'/>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.binding.mqtt' version='1.1.0.20190516-1509'/>
+        <provided namespace='osgi.bundle' name='org.eclipse.om2m.binding.mqtt' version='1.1.0.20190516-1509'/>
         <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
       </provides>
       <requires size='8'>
@@ -367,13 +313,46 @@
         <required namespace='java.package' name='org.osgi.util.tracker' range='1.5.1'/>
       </requires>
       <artifacts size='1'>
-        <artifact classifier='osgi.bundle' id='org.eclipse.om2m.binding.mqtt' version='1.1.0.20190504-1504'/>
+        <artifact classifier='osgi.bundle' id='org.eclipse.om2m.binding.mqtt' version='1.1.0.20190516-1509'/>
       </artifacts>
       <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
       <touchpointData size='1'>
         <instructions size='1'>
           <instruction key='manifest'>
-            Bundle-SymbolicName: org.eclipse.om2m.binding.mqtt&#xA;Bundle-Version: 1.1.0.20190504-1504&#xA;
+            Bundle-SymbolicName: org.eclipse.om2m.binding.mqtt&#xA;Bundle-Version: 1.1.0.20190516-1509&#xA;
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='org.eclipse.om2m.webapp.resourcesbrowser.xml' version='1.1.0.20190516-1509' singleton='false'>
+      <update id='org.eclipse.om2m.webapp.resourcesbrowser.xml' range='[0.0.0,1.1.0.20190516-1509)' severity='0'/>
+      <properties size='4'>
+        <property name='org.eclipse.equinox.p2.name' value='Resourcesbrowser'/>
+        <property name='maven-groupId' value='org.eclipse.om2m'/>
+        <property name='maven-artifactId' value='org.eclipse.om2m.webapp.resourcesbrowser.xml'/>
+        <property name='maven-version' value='1.1.0-SNAPSHOT'/>
+      </properties>
+      <provides size='3'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.webapp.resourcesbrowser.xml' version='1.1.0.20190516-1509'/>
+        <provided namespace='osgi.bundle' name='org.eclipse.om2m.webapp.resourcesbrowser.xml' version='1.1.0.20190516-1509'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='6'>
+        <required namespace='java.package' name='javax.servlet' range='0.0.0'/>
+        <required namespace='java.package' name='javax.servlet.http' range='0.0.0'/>
+        <required namespace='java.package' name='org.apache.commons.logging' range='0.0.0'/>
+        <required namespace='java.package' name='org.osgi.framework' range='0.0.0'/>
+        <required namespace='java.package' name='org.osgi.service.http' range='0.0.0'/>
+        <required namespace='java.package' name='org.osgi.util.tracker' range='0.0.0'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='org.eclipse.om2m.webapp.resourcesbrowser.xml' version='1.1.0.20190516-1509'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: org.eclipse.om2m.webapp.resourcesbrowser.xml&#xA;Bundle-Version: 1.1.0.20190516-1509&#xA;
           </instruction>
         </instructions>
       </touchpointData>
@@ -411,62 +390,37 @@
         </instructions>
       </touchpointData>
     </unit>
-    <unit id='org.eclipse.om2m.binding.service' version='1.1.0.20190504-1504' singleton='false'>
-      <update id='org.eclipse.om2m.binding.service' range='[0.0.0,1.1.0.20190504-1504)' severity='0'/>
+    <unit id='org.eclipse.om2m.datamapping.jaxb' version='1.1.0.20190516-1509' singleton='false'>
+      <update id='org.eclipse.om2m.datamapping.jaxb' range='[0.0.0,1.1.0.20190516-1509)' severity='0'/>
       <properties size='4'>
-        <property name='org.eclipse.equinox.p2.name' value='Service'/>
+        <property name='org.eclipse.equinox.p2.name' value='org.eclipse.om2m DataMapper JAXB XML'/>
         <property name='maven-groupId' value='org.eclipse.om2m'/>
-        <property name='maven-artifactId' value='org.eclipse.om2m.binding.service'/>
+        <property name='maven-artifactId' value='org.eclipse.om2m.datamapping.jaxb'/>
         <property name='maven-version' value='1.1.0-SNAPSHOT'/>
       </properties>
-      <provides size='4'>
-        <provided namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.binding.service' version='1.1.0.20190504-1504'/>
-        <provided namespace='osgi.bundle' name='org.eclipse.om2m.binding.service' version='1.1.0.20190504-1504'/>
-        <provided namespace='java.package' name='org.eclipse.om2m.binding.service' version='0.0.0'/>
+      <provides size='3'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.datamapping.jaxb' version='1.1.0.20190516-1509'/>
+        <provided namespace='osgi.bundle' name='org.eclipse.om2m.datamapping.jaxb' version='1.1.0.20190516-1509'/>
         <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
       </provides>
-      <requires size='1'>
-        <required namespace='osgi.bundle' name='org.eclipse.om2m.commons' range='0.0.0'/>
-      </requires>
-      <artifacts size='1'>
-        <artifact classifier='osgi.bundle' id='org.eclipse.om2m.binding.service' version='1.1.0.20190504-1504'/>
-      </artifacts>
-      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
-      <touchpointData size='1'>
-        <instructions size='1'>
-          <instruction key='manifest'>
-            Bundle-SymbolicName: org.eclipse.om2m.binding.service&#xA;Bundle-Version: 1.1.0.20190504-1504&#xA;
-          </instruction>
-        </instructions>
-      </touchpointData>
-    </unit>
-    <unit id='org.eclipse.om2m.core.service' version='1.1.0.20190504-1504' singleton='false'>
-      <update id='org.eclipse.om2m.core.service' range='[0.0.0,1.1.0.20190504-1504)' severity='0'/>
-      <properties size='4'>
-        <property name='org.eclipse.equinox.p2.name' value='Service'/>
-        <property name='maven-groupId' value='org.eclipse.om2m'/>
-        <property name='maven-artifactId' value='org.eclipse.om2m.core.service'/>
-        <property name='maven-version' value='1.1.0-SNAPSHOT'/>
-      </properties>
-      <provides size='4'>
-        <provided namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.core.service' version='1.1.0.20190504-1504'/>
-        <provided namespace='osgi.bundle' name='org.eclipse.om2m.core.service' version='1.1.0.20190504-1504'/>
-        <provided namespace='java.package' name='org.eclipse.om2m.core.service' version='0.0.0'/>
-        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
-      </provides>
-      <requires size='3'>
-        <required namespace='java.package' name='javax.persistence' range='0.0.0'/>
-        <required namespace='java.package' name='org.eclipse.om2m.commons.entities' range='0.0.0'/>
+      <requires size='8'>
+        <required namespace='java.package' name='org.apache.commons.logging' range='0.0.0'/>
+        <required namespace='java.package' name='org.eclipse.om2m.commons.constants' range='0.0.0'/>
         <required namespace='java.package' name='org.eclipse.om2m.commons.resource' range='0.0.0'/>
+        <required namespace='java.package' name='org.eclipse.om2m.commons.resource.flexcontainerspec' range='0.0.0'/>
+        <required namespace='java.package' name='org.eclipse.om2m.datamapping.service' range='0.0.0'/>
+        <required namespace='java.package' name='org.junit' range='0.0.0' optional='true' greedy='false'/>
+        <required namespace='java.package' name='org.osgi.framework' range='0.0.0'/>
+        <required namespace='java.package' name='org.osgi.util.tracker' range='0.0.0'/>
       </requires>
       <artifacts size='1'>
-        <artifact classifier='osgi.bundle' id='org.eclipse.om2m.core.service' version='1.1.0.20190504-1504'/>
+        <artifact classifier='osgi.bundle' id='org.eclipse.om2m.datamapping.jaxb' version='1.1.0.20190516-1509'/>
       </artifacts>
       <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
       <touchpointData size='1'>
         <instructions size='1'>
           <instruction key='manifest'>
-            Bundle-SymbolicName: org.eclipse.om2m.core.service&#xA;Bundle-Version: 1.1.0.20190504-1504&#xA;
+            Bundle-SymbolicName: org.eclipse.om2m.datamapping.jaxb&#xA;Bundle-Version: 1.1.0.20190516-1509&#xA;
           </instruction>
         </instructions>
       </touchpointData>
@@ -576,31 +530,43 @@
         </instructions>
       </touchpointData>
     </unit>
-    <unit id='org.eclipse.om2m.interworking.service' version='1.1.0.20190504-1504' singleton='false'>
-      <update id='org.eclipse.om2m.interworking.service' range='[0.0.0,1.1.0.20190504-1504)' severity='0'/>
+    <unit id='org.eclipse.om2m.core' version='1.1.0.20190516-1509'>
+      <update id='org.eclipse.om2m.core' range='[0.0.0,1.1.0.20190516-1509)' severity='0'/>
       <properties size='4'>
-        <property name='org.eclipse.equinox.p2.name' value='Service'/>
+        <property name='org.eclipse.equinox.p2.name' value='org.eclipse.om2m Core Plugin'/>
         <property name='maven-groupId' value='org.eclipse.om2m'/>
-        <property name='maven-artifactId' value='org.eclipse.om2m.interworking.service'/>
+        <property name='maven-artifactId' value='org.eclipse.om2m.core'/>
         <property name='maven-version' value='1.1.0-SNAPSHOT'/>
       </properties>
-      <provides size='4'>
-        <provided namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.interworking.service' version='1.1.0.20190504-1504'/>
-        <provided namespace='osgi.bundle' name='org.eclipse.om2m.interworking.service' version='1.1.0.20190504-1504'/>
-        <provided namespace='java.package' name='org.eclipse.om2m.interworking.service' version='0.0.0'/>
+      <provides size='3'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.core' version='1.1.0.20190516-1509'/>
+        <provided namespace='osgi.bundle' name='org.eclipse.om2m.core' version='1.1.0.20190516-1509'/>
         <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
       </provides>
-      <requires size='1'>
+      <requires size='14'>
         <required namespace='osgi.bundle' name='org.eclipse.om2m.commons' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.om2m.persistence.service' range='0.0.0'/>
+        <required namespace='java.package' name='javax.persistence' range='0.0.0'/>
+        <required namespace='java.package' name='org.apache.commons.logging' range='0.0.0'/>
+        <required namespace='java.package' name='org.eclipse.om2m.binding.service' range='0.0.0'/>
+        <required namespace='java.package' name='org.eclipse.om2m.core.service' range='0.0.0'/>
+        <required namespace='java.package' name='org.eclipse.om2m.datamapping.service' range='0.0.0'/>
+        <required namespace='java.package' name='org.eclipse.om2m.flexcontainer.service' range='0.0.0'/>
+        <required namespace='java.package' name='org.eclipse.om2m.interworking.service' range='0.0.0'/>
+        <required namespace='java.package' name='org.eclipse.om2m.persistence.service' range='0.0.0'/>
+        <required namespace='java.package' name='org.eclipse.om2m.persistence.service.util' range='0.0.0'/>
+        <required namespace='java.package' name='org.osgi.framework' range='0.0.0'/>
+        <required namespace='java.package' name='org.osgi.service.event' range='0.0.0'/>
+        <required namespace='java.package' name='org.osgi.util.tracker' range='0.0.0'/>
       </requires>
       <artifacts size='1'>
-        <artifact classifier='osgi.bundle' id='org.eclipse.om2m.interworking.service' version='1.1.0.20190504-1504'/>
+        <artifact classifier='osgi.bundle' id='org.eclipse.om2m.core' version='1.1.0.20190516-1509'/>
       </artifacts>
       <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
       <touchpointData size='1'>
         <instructions size='1'>
           <instruction key='manifest'>
-            Bundle-SymbolicName: org.eclipse.om2m.interworking.service&#xA;Bundle-Version: 1.1.0.20190504-1504&#xA;
+            Bundle-SymbolicName: org.eclipse.om2m.core;singleton:=true&#xA;Bundle-Version: 1.1.0.20190516-1509&#xA;
           </instruction>
         </instructions>
       </touchpointData>
@@ -644,6 +610,35 @@
         </instructions>
       </touchpointData>
     </unit>
+    <unit id='org.eclipse.om2m.commons.logging' version='1.1.0.20190516-1509' singleton='false'>
+      <update id='org.eclipse.om2m.commons.logging' range='[0.0.0,1.1.0.20190516-1509)' severity='0'/>
+      <properties size='4'>
+        <property name='org.eclipse.equinox.p2.name' value='Logging'/>
+        <property name='maven-groupId' value='org.eclipse.om2m.commons.logging'/>
+        <property name='maven-artifactId' value='org.eclipse.om2m.commons.logging'/>
+        <property name='maven-version' value='1.1.0-SNAPSHOT'/>
+      </properties>
+      <provides size='4'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.commons.logging' version='1.1.0.20190516-1509'/>
+        <provided namespace='osgi.bundle' name='org.eclipse.om2m.commons.logging' version='1.1.0.20190516-1509'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+        <provided namespace='osgi.fragment' name='org.apache.commons.logging' version='1.1.0.20190516-1509'/>
+      </provides>
+      <requires size='1'>
+        <required namespace='osgi.bundle' name='org.apache.commons.logging' range='0.0.0'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='org.eclipse.om2m.commons.logging' version='1.1.0.20190516-1509'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: org.eclipse.om2m.commons.logging&#xA;Bundle-Version: 1.1.0.20190516-1509&#xA;Fragment-Host: org.apache.commons.logging&#xA;
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
     <unit id='org.apache.felix.gogo.runtime' version='0.10.0.v201209301036' singleton='false'>
       <update id='org.apache.felix.gogo.runtime' range='[0.0.0,0.10.0.v201209301036)' severity='0'/>
       <properties size='7'>
@@ -680,6 +675,64 @@
         <instructions size='1'>
           <instruction key='manifest'>
             Bundle-SymbolicName: org.apache.felix.gogo.runtime&#xA;Bundle-Version: 0.10.0.v201209301036
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='org.eclipse.om2m.interworking.service' version='1.1.0.20190516-1509' singleton='false'>
+      <update id='org.eclipse.om2m.interworking.service' range='[0.0.0,1.1.0.20190516-1509)' severity='0'/>
+      <properties size='4'>
+        <property name='org.eclipse.equinox.p2.name' value='Service'/>
+        <property name='maven-groupId' value='org.eclipse.om2m'/>
+        <property name='maven-artifactId' value='org.eclipse.om2m.interworking.service'/>
+        <property name='maven-version' value='1.1.0-SNAPSHOT'/>
+      </properties>
+      <provides size='4'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.interworking.service' version='1.1.0.20190516-1509'/>
+        <provided namespace='osgi.bundle' name='org.eclipse.om2m.interworking.service' version='1.1.0.20190516-1509'/>
+        <provided namespace='java.package' name='org.eclipse.om2m.interworking.service' version='0.0.0'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='1'>
+        <required namespace='osgi.bundle' name='org.eclipse.om2m.commons' range='0.0.0'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='org.eclipse.om2m.interworking.service' version='1.1.0.20190516-1509'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: org.eclipse.om2m.interworking.service&#xA;Bundle-Version: 1.1.0.20190516-1509&#xA;
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='org.eclipse.om2m.flexcontainer.service' version='1.1.0.20190516-1509' singleton='false'>
+      <update id='org.eclipse.om2m.flexcontainer.service' range='[0.0.0,1.1.0.20190516-1509)' severity='0'/>
+      <properties size='4'>
+        <property name='org.eclipse.equinox.p2.name' value='Service'/>
+        <property name='maven-groupId' value='org.eclipse.om2m'/>
+        <property name='maven-artifactId' value='org.eclipse.om2m.flexcontainer.service'/>
+        <property name='maven-version' value='1.1.0-SNAPSHOT'/>
+      </properties>
+      <provides size='4'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.flexcontainer.service' version='1.1.0.20190516-1509'/>
+        <provided namespace='osgi.bundle' name='org.eclipse.om2m.flexcontainer.service' version='1.1.0.20190516-1509'/>
+        <provided namespace='java.package' name='org.eclipse.om2m.flexcontainer.service' version='0.0.0'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='1'>
+        <required namespace='osgi.bundle' name='org.eclipse.om2m.commons' range='0.0.0'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='org.eclipse.om2m.flexcontainer.service' version='1.1.0.20190516-1509'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: org.eclipse.om2m.flexcontainer.service&#xA;Bundle-Version: 1.1.0.20190516-1509&#xA;
           </instruction>
         </instructions>
       </touchpointData>
@@ -800,41 +853,6 @@
         </instructions>
       </touchpointData>
     </unit>
-    <unit id='org.eclipse.om2m.datamapping.jaxb' version='1.1.0.20190504-1504' singleton='false'>
-      <update id='org.eclipse.om2m.datamapping.jaxb' range='[0.0.0,1.1.0.20190504-1504)' severity='0'/>
-      <properties size='4'>
-        <property name='org.eclipse.equinox.p2.name' value='org.eclipse.om2m DataMapper JAXB XML'/>
-        <property name='maven-groupId' value='org.eclipse.om2m'/>
-        <property name='maven-artifactId' value='org.eclipse.om2m.datamapping.jaxb'/>
-        <property name='maven-version' value='1.1.0-SNAPSHOT'/>
-      </properties>
-      <provides size='3'>
-        <provided namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.datamapping.jaxb' version='1.1.0.20190504-1504'/>
-        <provided namespace='osgi.bundle' name='org.eclipse.om2m.datamapping.jaxb' version='1.1.0.20190504-1504'/>
-        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
-      </provides>
-      <requires size='8'>
-        <required namespace='java.package' name='org.apache.commons.logging' range='0.0.0'/>
-        <required namespace='java.package' name='org.eclipse.om2m.commons.constants' range='0.0.0'/>
-        <required namespace='java.package' name='org.eclipse.om2m.commons.resource' range='0.0.0'/>
-        <required namespace='java.package' name='org.eclipse.om2m.commons.resource.flexcontainerspec' range='0.0.0'/>
-        <required namespace='java.package' name='org.eclipse.om2m.datamapping.service' range='0.0.0'/>
-        <required namespace='java.package' name='org.junit' range='0.0.0' optional='true' greedy='false'/>
-        <required namespace='java.package' name='org.osgi.framework' range='0.0.0'/>
-        <required namespace='java.package' name='org.osgi.util.tracker' range='0.0.0'/>
-      </requires>
-      <artifacts size='1'>
-        <artifact classifier='osgi.bundle' id='org.eclipse.om2m.datamapping.jaxb' version='1.1.0.20190504-1504'/>
-      </artifacts>
-      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
-      <touchpointData size='1'>
-        <instructions size='1'>
-          <instruction key='manifest'>
-            Bundle-SymbolicName: org.eclipse.om2m.datamapping.jaxb&#xA;Bundle-Version: 1.1.0.20190504-1504&#xA;
-          </instruction>
-        </instructions>
-      </touchpointData>
-    </unit>
     <unit id='javax.servlet' version='3.1.0.v201410161800' singleton='false'>
       <update id='javax.servlet' range='[0.0.0,3.1.0.v201410161800)' severity='0'/>
       <properties size='8'>
@@ -906,46 +924,6 @@
         </instructions>
       </touchpointData>
     </unit>
-    <unit id='org.eclipse.om2m.commons' version='1.1.0.20190504-1504' singleton='false'>
-      <update id='org.eclipse.om2m.commons' range='[0.0.0,1.1.0.20190504-1504)' severity='0'/>
-      <properties size='4'>
-        <property name='org.eclipse.equinox.p2.name' value='Commons'/>
-        <property name='maven-groupId' value='org.eclipse.om2m'/>
-        <property name='maven-artifactId' value='org.eclipse.om2m.commons'/>
-        <property name='maven-version' value='1.1.0-SNAPSHOT'/>
-      </properties>
-      <provides size='15'>
-        <provided namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.commons' version='1.1.0.20190504-1504'/>
-        <provided namespace='osgi.bundle' name='org.eclipse.om2m.commons' version='1.1.0.20190504-1504'/>
-        <provided namespace='java.package' name='javax.persistence' version='0.0.0'/>
-        <provided namespace='java.package' name='javax.persistence.criteria' version='0.0.0'/>
-        <provided namespace='java.package' name='javax.persistence.metamodel' version='0.0.0'/>
-        <provided namespace='java.package' name='javax.persistence.spi' version='0.0.0'/>
-        <provided namespace='java.package' name='org.eclipse.om2m.commons.constants' version='0.0.0'/>
-        <provided namespace='java.package' name='org.eclipse.om2m.commons.entities' version='0.0.0'/>
-        <provided namespace='java.package' name='org.eclipse.om2m.commons.exceptions' version='0.0.0'/>
-        <provided namespace='java.package' name='org.eclipse.om2m.commons.obix' version='0.0.0'/>
-        <provided namespace='java.package' name='org.eclipse.om2m.commons.obix.io' version='0.0.0'/>
-        <provided namespace='java.package' name='org.eclipse.om2m.commons.resource' version='0.0.0'/>
-        <provided namespace='java.package' name='org.eclipse.om2m.commons.resource.flexcontainerspec' version='0.0.0'/>
-        <provided namespace='java.package' name='org.eclipse.om2m.commons.utils' version='0.0.0'/>
-        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
-      </provides>
-      <requires size='1'>
-        <required namespace='java.package' name='org.apache.commons.logging' range='0.0.0'/>
-      </requires>
-      <artifacts size='1'>
-        <artifact classifier='osgi.bundle' id='org.eclipse.om2m.commons' version='1.1.0.20190504-1504'/>
-      </artifacts>
-      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
-      <touchpointData size='1'>
-        <instructions size='1'>
-          <instruction key='manifest'>
-            Bundle-SymbolicName: org.eclipse.om2m.commons&#xA;Bundle-Version: 1.1.0.20190504-1504&#xA;
-          </instruction>
-        </instructions>
-      </touchpointData>
-    </unit>
     <unit id='org.eclipse.osgi.services' version='3.4.0.v20140312-2051' singleton='false'>
       <update id='org.eclipse.osgi.services' range='[0.0.0,3.4.0.v20140312-2051)' severity='0'/>
       <properties size='12'>
@@ -1009,60 +987,40 @@
         </instructions>
       </touchpointData>
     </unit>
-    <unit id='org.eclipse.om2m.commons.logging' version='1.1.0.20190504-1504' singleton='false'>
-      <update id='org.eclipse.om2m.commons.logging' range='[0.0.0,1.1.0.20190504-1504)' severity='0'/>
+    <unit id='org.eclipse.om2m.binding.http' version='1.1.0.20190516-1509' singleton='false'>
+      <update id='org.eclipse.om2m.binding.http' range='[0.0.0,1.1.0.20190516-1509)' severity='0'/>
       <properties size='4'>
-        <property name='org.eclipse.equinox.p2.name' value='Logging'/>
-        <property name='maven-groupId' value='org.eclipse.om2m.commons.logging'/>
-        <property name='maven-artifactId' value='org.eclipse.om2m.commons.logging'/>
-        <property name='maven-version' value='1.1.0-SNAPSHOT'/>
-      </properties>
-      <provides size='4'>
-        <provided namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.commons.logging' version='1.1.0.20190504-1504'/>
-        <provided namespace='osgi.bundle' name='org.eclipse.om2m.commons.logging' version='1.1.0.20190504-1504'/>
-        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
-        <provided namespace='osgi.fragment' name='org.apache.commons.logging' version='1.1.0.20190504-1504'/>
-      </provides>
-      <requires size='1'>
-        <required namespace='osgi.bundle' name='org.apache.commons.logging' range='0.0.0'/>
-      </requires>
-      <artifacts size='1'>
-        <artifact classifier='osgi.bundle' id='org.eclipse.om2m.commons.logging' version='1.1.0.20190504-1504'/>
-      </artifacts>
-      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
-      <touchpointData size='1'>
-        <instructions size='1'>
-          <instruction key='manifest'>
-            Bundle-SymbolicName: org.eclipse.om2m.commons.logging&#xA;Bundle-Version: 1.1.0.20190504-1504&#xA;Fragment-Host: org.apache.commons.logging&#xA;
-          </instruction>
-        </instructions>
-      </touchpointData>
-    </unit>
-    <unit id='org.eclipse.om2m.flexcontainer.service' version='1.1.0.20190504-1504' singleton='false'>
-      <update id='org.eclipse.om2m.flexcontainer.service' range='[0.0.0,1.1.0.20190504-1504)' severity='0'/>
-      <properties size='4'>
-        <property name='org.eclipse.equinox.p2.name' value='Service'/>
+        <property name='org.eclipse.equinox.p2.name' value='http'/>
         <property name='maven-groupId' value='org.eclipse.om2m'/>
-        <property name='maven-artifactId' value='org.eclipse.om2m.flexcontainer.service'/>
+        <property name='maven-artifactId' value='org.eclipse.om2m.binding.http'/>
         <property name='maven-version' value='1.1.0-SNAPSHOT'/>
       </properties>
-      <provides size='4'>
-        <provided namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.flexcontainer.service' version='1.1.0.20190504-1504'/>
-        <provided namespace='osgi.bundle' name='org.eclipse.om2m.flexcontainer.service' version='1.1.0.20190504-1504'/>
-        <provided namespace='java.package' name='org.eclipse.om2m.flexcontainer.service' version='0.0.0'/>
+      <provides size='3'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.binding.http' version='1.1.0.20190516-1509'/>
+        <provided namespace='osgi.bundle' name='org.eclipse.om2m.binding.http' version='1.1.0.20190516-1509'/>
         <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
       </provides>
-      <requires size='1'>
+      <requires size='11'>
         <required namespace='osgi.bundle' name='org.eclipse.om2m.commons' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.apache.httpcomponents.httpcore' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.apache.httpcomponents.httpclient' range='0.0.0'/>
+        <required namespace='java.package' name='javax.servlet' range='0.0.0'/>
+        <required namespace='java.package' name='javax.servlet.http' range='0.0.0'/>
+        <required namespace='java.package' name='org.apache.commons.logging' range='0.0.0'/>
+        <required namespace='java.package' name='org.eclipse.om2m.binding.service' range='0.0.0'/>
+        <required namespace='java.package' name='org.eclipse.om2m.core.service' range='0.0.0'/>
+        <required namespace='java.package' name='org.osgi.framework' range='0.0.0'/>
+        <required namespace='java.package' name='org.osgi.service.http' range='0.0.0'/>
+        <required namespace='java.package' name='org.osgi.util.tracker' range='0.0.0'/>
       </requires>
       <artifacts size='1'>
-        <artifact classifier='osgi.bundle' id='org.eclipse.om2m.flexcontainer.service' version='1.1.0.20190504-1504'/>
+        <artifact classifier='osgi.bundle' id='org.eclipse.om2m.binding.http' version='1.1.0.20190516-1509'/>
       </artifacts>
       <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
       <touchpointData size='1'>
         <instructions size='1'>
           <instruction key='manifest'>
-            Bundle-SymbolicName: org.eclipse.om2m.flexcontainer.service&#xA;Bundle-Version: 1.1.0.20190504-1504&#xA;
+            Bundle-SymbolicName: org.eclipse.om2m.binding.http&#xA;Bundle-Version: 1.1.0.20190516-1509&#xA;
           </instruction>
         </instructions>
       </touchpointData>
@@ -1118,6 +1076,46 @@
         </instructions>
       </touchpointData>
     </unit>
+    <unit id='org.eclipse.om2m.commons' version='1.1.0.20190516-1509' singleton='false'>
+      <update id='org.eclipse.om2m.commons' range='[0.0.0,1.1.0.20190516-1509)' severity='0'/>
+      <properties size='4'>
+        <property name='org.eclipse.equinox.p2.name' value='Commons'/>
+        <property name='maven-groupId' value='org.eclipse.om2m'/>
+        <property name='maven-artifactId' value='org.eclipse.om2m.commons'/>
+        <property name='maven-version' value='1.1.0-SNAPSHOT'/>
+      </properties>
+      <provides size='15'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.commons' version='1.1.0.20190516-1509'/>
+        <provided namespace='osgi.bundle' name='org.eclipse.om2m.commons' version='1.1.0.20190516-1509'/>
+        <provided namespace='java.package' name='javax.persistence' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.persistence.criteria' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.persistence.metamodel' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.persistence.spi' version='0.0.0'/>
+        <provided namespace='java.package' name='org.eclipse.om2m.commons.constants' version='0.0.0'/>
+        <provided namespace='java.package' name='org.eclipse.om2m.commons.entities' version='0.0.0'/>
+        <provided namespace='java.package' name='org.eclipse.om2m.commons.exceptions' version='0.0.0'/>
+        <provided namespace='java.package' name='org.eclipse.om2m.commons.obix' version='0.0.0'/>
+        <provided namespace='java.package' name='org.eclipse.om2m.commons.obix.io' version='0.0.0'/>
+        <provided namespace='java.package' name='org.eclipse.om2m.commons.resource' version='0.0.0'/>
+        <provided namespace='java.package' name='org.eclipse.om2m.commons.resource.flexcontainerspec' version='0.0.0'/>
+        <provided namespace='java.package' name='org.eclipse.om2m.commons.utils' version='0.0.0'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='1'>
+        <required namespace='java.package' name='org.apache.commons.logging' range='0.0.0'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='org.eclipse.om2m.commons' version='1.1.0.20190516-1509'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: org.eclipse.om2m.commons&#xA;Bundle-Version: 1.1.0.20190516-1509&#xA;
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
     <unit id='org.apache.commons.codec' version='1.6.0.v201305230611' singleton='false'>
       <update id='org.apache.commons.codec' range='[0.0.0,1.6.0.v201305230611)' severity='0'/>
       <properties size='7'>
@@ -1149,44 +1147,6 @@
         <instructions size='1'>
           <instruction key='manifest'>
             Bundle-SymbolicName: org.apache.commons.codec&#xA;Bundle-Version: 1.6.0.v201305230611
-          </instruction>
-        </instructions>
-      </touchpointData>
-    </unit>
-    <unit id='org.eclipse.om2m.binding.http' version='1.1.0.20190504-1504' singleton='false'>
-      <update id='org.eclipse.om2m.binding.http' range='[0.0.0,1.1.0.20190504-1504)' severity='0'/>
-      <properties size='4'>
-        <property name='org.eclipse.equinox.p2.name' value='http'/>
-        <property name='maven-groupId' value='org.eclipse.om2m'/>
-        <property name='maven-artifactId' value='org.eclipse.om2m.binding.http'/>
-        <property name='maven-version' value='1.1.0-SNAPSHOT'/>
-      </properties>
-      <provides size='3'>
-        <provided namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.binding.http' version='1.1.0.20190504-1504'/>
-        <provided namespace='osgi.bundle' name='org.eclipse.om2m.binding.http' version='1.1.0.20190504-1504'/>
-        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
-      </provides>
-      <requires size='11'>
-        <required namespace='osgi.bundle' name='org.eclipse.om2m.commons' range='0.0.0'/>
-        <required namespace='osgi.bundle' name='org.apache.httpcomponents.httpcore' range='0.0.0'/>
-        <required namespace='osgi.bundle' name='org.apache.httpcomponents.httpclient' range='0.0.0'/>
-        <required namespace='java.package' name='javax.servlet' range='0.0.0'/>
-        <required namespace='java.package' name='javax.servlet.http' range='0.0.0'/>
-        <required namespace='java.package' name='org.apache.commons.logging' range='0.0.0'/>
-        <required namespace='java.package' name='org.eclipse.om2m.binding.service' range='0.0.0'/>
-        <required namespace='java.package' name='org.eclipse.om2m.core.service' range='0.0.0'/>
-        <required namespace='java.package' name='org.osgi.framework' range='0.0.0'/>
-        <required namespace='java.package' name='org.osgi.service.http' range='0.0.0'/>
-        <required namespace='java.package' name='org.osgi.util.tracker' range='0.0.0'/>
-      </requires>
-      <artifacts size='1'>
-        <artifact classifier='osgi.bundle' id='org.eclipse.om2m.binding.http' version='1.1.0.20190504-1504'/>
-      </artifacts>
-      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
-      <touchpointData size='1'>
-        <instructions size='1'>
-          <instruction key='manifest'>
-            Bundle-SymbolicName: org.eclipse.om2m.binding.http&#xA;Bundle-Version: 1.1.0.20190504-1504&#xA;
           </instruction>
         </instructions>
       </touchpointData>
@@ -1226,6 +1186,37 @@
         <instructions size='1'>
           <instruction key='manifest'>
             Bundle-SymbolicName: org.eclipse.equinox.http.servlet&#xA;Bundle-Version: 1.1.500.v20140318-1755
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='org.eclipse.om2m.core.service' version='1.1.0.20190516-1509' singleton='false'>
+      <update id='org.eclipse.om2m.core.service' range='[0.0.0,1.1.0.20190516-1509)' severity='0'/>
+      <properties size='4'>
+        <property name='org.eclipse.equinox.p2.name' value='Service'/>
+        <property name='maven-groupId' value='org.eclipse.om2m'/>
+        <property name='maven-artifactId' value='org.eclipse.om2m.core.service'/>
+        <property name='maven-version' value='1.1.0-SNAPSHOT'/>
+      </properties>
+      <provides size='4'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.core.service' version='1.1.0.20190516-1509'/>
+        <provided namespace='osgi.bundle' name='org.eclipse.om2m.core.service' version='1.1.0.20190516-1509'/>
+        <provided namespace='java.package' name='org.eclipse.om2m.core.service' version='0.0.0'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='3'>
+        <required namespace='java.package' name='javax.persistence' range='0.0.0'/>
+        <required namespace='java.package' name='org.eclipse.om2m.commons.entities' range='0.0.0'/>
+        <required namespace='java.package' name='org.eclipse.om2m.commons.resource' range='0.0.0'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='org.eclipse.om2m.core.service' version='1.1.0.20190516-1509'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: org.eclipse.om2m.core.service&#xA;Bundle-Version: 1.1.0.20190516-1509&#xA;
           </instruction>
         </instructions>
       </touchpointData>
@@ -1277,62 +1268,42 @@
         </instructions>
       </touchpointData>
     </unit>
-    <unit id='org.eclipse.om2m.datamapping.service' version='1.1.0.20190504-1504' singleton='false'>
-      <update id='org.eclipse.om2m.datamapping.service' range='[0.0.0,1.1.0.20190504-1504)' severity='0'/>
+    <unit id='org.eclipse.om2m.persistence.eclipselink' version='1.1.0.20190516-1509' singleton='false'>
+      <update id='org.eclipse.om2m.persistence.eclipselink' range='[0.0.0,1.1.0.20190516-1509)' severity='0'/>
       <properties size='4'>
-        <property name='org.eclipse.equinox.p2.name' value='org.eclipse.om2m DataMapper Service'/>
+        <property name='org.eclipse.equinox.p2.name' value='Jpa'/>
         <property name='maven-groupId' value='org.eclipse.om2m'/>
-        <property name='maven-artifactId' value='org.eclipse.om2m.datamapping.service'/>
+        <property name='maven-artifactId' value='org.eclipse.om2m.persistence.eclipselink'/>
         <property name='maven-version' value='1.1.0-SNAPSHOT'/>
       </properties>
       <provides size='4'>
-        <provided namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.datamapping.service' version='1.1.0.20190504-1504'/>
-        <provided namespace='osgi.bundle' name='org.eclipse.om2m.datamapping.service' version='1.1.0.20190504-1504'/>
-        <provided namespace='java.package' name='org.eclipse.om2m.datamapping.service' version='0.0.0'/>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.persistence.eclipselink' version='1.1.0.20190516-1509'/>
+        <provided namespace='osgi.bundle' name='org.eclipse.om2m.persistence.eclipselink' version='1.1.0.20190516-1509'/>
+        <provided namespace='java.package' name='org.eclipse.om2m.persistence.eclipselink.internal.dao' version='0.0.0'/>
         <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
       </provides>
-      <requires size='1'>
-        <required namespace='osgi.bundle' name='org.eclipse.om2m.commons' range='0.0.0'/>
-      </requires>
-      <artifacts size='1'>
-        <artifact classifier='osgi.bundle' id='org.eclipse.om2m.datamapping.service' version='1.1.0.20190504-1504'/>
-      </artifacts>
-      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
-      <touchpointData size='1'>
-        <instructions size='1'>
-          <instruction key='manifest'>
-            Bundle-SymbolicName: org.eclipse.om2m.datamapping.service&#xA;Bundle-Version: 1.1.0.20190504-1504&#xA;
-          </instruction>
-        </instructions>
-      </touchpointData>
-    </unit>
-    <unit id='org.eclipse.om2m.persistence.service' version='1.1.0.20190504-1504' singleton='false'>
-      <update id='org.eclipse.om2m.persistence.service' range='[0.0.0,1.1.0.20190504-1504)' severity='0'/>
-      <properties size='4'>
-        <property name='org.eclipse.equinox.p2.name' value='Service'/>
-        <property name='maven-groupId' value='org.eclipse.om2m'/>
-        <property name='maven-artifactId' value='org.eclipse.om2m.persistence.service'/>
-        <property name='maven-version' value='1.1.0-SNAPSHOT'/>
-      </properties>
-      <provides size='5'>
-        <provided namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.persistence.service' version='1.1.0.20190504-1504'/>
-        <provided namespace='osgi.bundle' name='org.eclipse.om2m.persistence.service' version='1.1.0.20190504-1504'/>
-        <provided namespace='java.package' name='org.eclipse.om2m.persistence.service' version='0.0.0'/>
-        <provided namespace='java.package' name='org.eclipse.om2m.persistence.service.util' version='0.0.0'/>
-        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
-      </provides>
-      <requires size='2'>
-        <required namespace='osgi.bundle' name='org.eclipse.om2m.commons' range='1.0.0'/>
+      <requires size='12'>
         <required namespace='java.package' name='javax.persistence' range='0.0.0'/>
+        <required namespace='java.package' name='javax.persistence.criteria' range='0.0.0'/>
+        <required namespace='java.package' name='javax.persistence.metamodel' range='0.0.0'/>
+        <required namespace='java.package' name='javax.persistence.spi' range='0.0.0'/>
+        <required namespace='java.package' name='org.apache.commons.logging' range='0.0.0'/>
+        <required namespace='java.package' name='org.eclipse.om2m.commons.constants' range='0.0.0'/>
+        <required namespace='java.package' name='org.eclipse.om2m.commons.entities' range='0.0.0'/>
+        <required namespace='java.package' name='org.eclipse.om2m.commons.resource' range='0.0.0'/>
+        <required namespace='java.package' name='org.eclipse.om2m.persistence.service' range='0.0.0'/>
+        <required namespace='java.package' name='org.eclipse.om2m.persistence.service.util' range='0.0.0'/>
+        <required namespace='java.package' name='org.osgi.framework' range='0.0.0'/>
+        <required namespace='java.package' name='org.osgi.util.tracker' range='0.0.0'/>
       </requires>
       <artifacts size='1'>
-        <artifact classifier='osgi.bundle' id='org.eclipse.om2m.persistence.service' version='1.1.0.20190504-1504'/>
+        <artifact classifier='osgi.bundle' id='org.eclipse.om2m.persistence.eclipselink' version='1.1.0.20190516-1509'/>
       </artifacts>
       <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
       <touchpointData size='1'>
         <instructions size='1'>
           <instruction key='manifest'>
-            Bundle-SymbolicName: org.eclipse.om2m.persistence.service&#xA;Bundle-Version: 1.1.0.20190504-1504&#xA;
+            Bundle-SymbolicName: org.eclipse.om2m.persistence.eclipselink&#xA;Bundle-Version: 1.1.0.20190516-1509&#xA;
           </instruction>
         </instructions>
       </touchpointData>
@@ -1431,6 +1402,35 @@
         <instructions size='1'>
           <instruction key='manifest'>
             Bundle-SymbolicName: org.eclipse.osgi; singleton:=true&#xA;Bundle-Version: 3.10.2.v20150203-1939
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='org.eclipse.om2m.binding.service' version='1.1.0.20190516-1509' singleton='false'>
+      <update id='org.eclipse.om2m.binding.service' range='[0.0.0,1.1.0.20190516-1509)' severity='0'/>
+      <properties size='4'>
+        <property name='org.eclipse.equinox.p2.name' value='Service'/>
+        <property name='maven-groupId' value='org.eclipse.om2m'/>
+        <property name='maven-artifactId' value='org.eclipse.om2m.binding.service'/>
+        <property name='maven-version' value='1.1.0-SNAPSHOT'/>
+      </properties>
+      <provides size='4'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.binding.service' version='1.1.0.20190516-1509'/>
+        <provided namespace='osgi.bundle' name='org.eclipse.om2m.binding.service' version='1.1.0.20190516-1509'/>
+        <provided namespace='java.package' name='org.eclipse.om2m.binding.service' version='0.0.0'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='1'>
+        <required namespace='osgi.bundle' name='org.eclipse.om2m.commons' range='0.0.0'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='org.eclipse.om2m.binding.service' version='1.1.0.20190516-1509'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: org.eclipse.om2m.binding.service&#xA;Bundle-Version: 1.1.0.20190516-1509&#xA;
           </instruction>
         </instructions>
       </touchpointData>

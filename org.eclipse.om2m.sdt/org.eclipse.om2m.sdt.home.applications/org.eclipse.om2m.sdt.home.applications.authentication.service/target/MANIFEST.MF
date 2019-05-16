@@ -5,7 +5,7 @@ Export-Package: org.eclipse.om2m.sdt.home.monitoring.authentication.se
  rvice
 Bundle-Name: org.eclipse.om2m.sdt.home.monitoring.authentication.servi
  ce
-Bundle-Version: 1.1.0.20190504-1504
+Bundle-Version: 1.1.0.20190516-1509
 Bundle-ClassPath: .
 Bundle-ManifestVersion: 2
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7

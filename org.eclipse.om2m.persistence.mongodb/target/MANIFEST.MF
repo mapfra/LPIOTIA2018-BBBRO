@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-SymbolicName: org.eclipse.om2m.persistence.mongodb
 Bundle-Name: Jpa
-Bundle-Version: 1.1.0.20190504-1504
+Bundle-Version: 1.1.0.20190516-1509
 Bundle-ClassPath: .,libs/gson-2.2.4.jar,libs/mongo-java-driver-3.4.2.j
  ar
 Bundle-ManifestVersion: 2

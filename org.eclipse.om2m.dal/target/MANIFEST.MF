@@ -3,7 +3,7 @@ Bundle-SymbolicName: org.eclipse.om2m.dal
 Export-Package: org.osgi.service.dal,org.osgi.service.dal.functions,or
  g.osgi.service.dal.functions.data,org.osgi.service.device
 Bundle-Name: Dal
-Bundle-Version: 1.1.0.20190504-1504
+Bundle-Version: 1.1.0.20190516-1509
 Bundle-ClassPath: libs/osgi.residential-6.0.0.jar
 Bundle-ManifestVersion: 2
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7

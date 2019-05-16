@@ -232,69 +232,69 @@
       <provided namespace='org.eclipse.equinox.p2.iu' name='toolingasn-cse.configuration' version='1.0.0'/>
     </provides>
     <requires size='13'>
-      <required namespace='org.eclipse.equinox.p2.iu' name='toolinggtk.linux.armorg.eclipse.om2m.datamapping.jaxb' range='[1.0.0,1.0.0]'>
+      <required namespace='org.eclipse.equinox.p2.iu' name='toolingcocoa.macosx.x86_64org.eclipse.om2m.binding.mqtt' range='[1.0.0,1.0.0]'>
         <filter>
-          (&amp;(osgi.arch=arm)(osgi.os=linux)(osgi.ws=gtk))
+          (&amp;(osgi.arch=x86_64)(osgi.os=macosx)(osgi.ws=cocoa))
         </filter>
       </required>
-      <required namespace='org.eclipse.equinox.p2.iu' name='toolingasn-cse.ini.gtk.linux.arm' range='[1.0.0,1.0.0]'>
+      <required namespace='org.eclipse.equinox.p2.iu' name='toolingcocoa.macosx.x86_64org.eclipse.om2m.binding.http' range='[1.0.0,1.0.0]'>
         <filter>
-          (&amp;(osgi.arch=arm)(osgi.os=linux)(osgi.ws=gtk))
+          (&amp;(osgi.arch=x86_64)(osgi.os=macosx)(osgi.ws=cocoa))
         </filter>
       </required>
-      <required namespace='org.eclipse.equinox.p2.iu' name='toolinggtk.linux.armorg.eclipse.om2m.binding.mqtt' range='[1.0.0,1.0.0]'>
+      <required namespace='org.eclipse.equinox.p2.iu' name='toolingcocoa.macosx.x86_64org.eclipse.equinox.console' range='[1.0.0,1.0.0]'>
         <filter>
-          (&amp;(osgi.arch=arm)(osgi.os=linux)(osgi.ws=gtk))
+          (&amp;(osgi.arch=x86_64)(osgi.os=macosx)(osgi.ws=cocoa))
         </filter>
       </required>
-      <required namespace='org.eclipse.equinox.p2.iu' name='toolinggtk.linux.armorg.apache.felix.gogo.runtime' range='[1.0.0,1.0.0]'>
+      <required namespace='org.eclipse.equinox.p2.iu' name='toolingcocoa.macosx.x86_64org.eclipse.om2m.webapp.resourcesbrowser.xml' range='[1.0.0,1.0.0]'>
         <filter>
-          (&amp;(osgi.arch=arm)(osgi.os=linux)(osgi.ws=gtk))
+          (&amp;(osgi.arch=x86_64)(osgi.os=macosx)(osgi.ws=cocoa))
         </filter>
       </required>
-      <required namespace='org.eclipse.equinox.p2.iu' name='toolinggtk.linux.armorg.eclipse.om2m.persistence.eclipselink' range='[1.0.0,1.0.0]'>
+      <required namespace='org.eclipse.equinox.p2.iu' name='toolingasn-cse.config.cocoa.macosx.x86_64' range='[1.0.0,1.0.0]'>
         <filter>
-          (&amp;(osgi.arch=arm)(osgi.os=linux)(osgi.ws=gtk))
+          (&amp;(osgi.arch=x86_64)(osgi.os=macosx)(osgi.ws=cocoa))
         </filter>
       </required>
-      <required namespace='org.eclipse.equinox.p2.iu' name='toolinggtk.linux.armorg.eclipse.equinox.http.jetty' range='[1.0.0,1.0.0]'>
+      <required namespace='org.eclipse.equinox.p2.iu' name='toolingcocoa.macosx.x86_64org.eclipse.om2m.persistence.eclipselink' range='[1.0.0,1.0.0]'>
         <filter>
-          (&amp;(osgi.arch=arm)(osgi.os=linux)(osgi.ws=gtk))
+          (&amp;(osgi.arch=x86_64)(osgi.os=macosx)(osgi.ws=cocoa))
         </filter>
       </required>
-      <required namespace='org.eclipse.equinox.p2.iu' name='toolingasn-cse.config.gtk.linux.arm' range='[1.0.0,1.0.0]'>
+      <required namespace='org.eclipse.equinox.p2.iu' name='toolingcocoa.macosx.x86_64org.eclipse.equinox.http.jetty' range='[1.0.0,1.0.0]'>
         <filter>
-          (&amp;(osgi.arch=arm)(osgi.os=linux)(osgi.ws=gtk))
+          (&amp;(osgi.arch=x86_64)(osgi.os=macosx)(osgi.ws=cocoa))
         </filter>
       </required>
-      <required namespace='org.eclipse.equinox.p2.iu' name='toolinggtk.linux.armorg.apache.felix.gogo.command' range='[1.0.0,1.0.0]'>
+      <required namespace='org.eclipse.equinox.p2.iu' name='toolingcocoa.macosx.x86_64org.eclipse.om2m.datamapping.jaxb' range='[1.0.0,1.0.0]'>
         <filter>
-          (&amp;(osgi.arch=arm)(osgi.os=linux)(osgi.ws=gtk))
+          (&amp;(osgi.arch=x86_64)(osgi.os=macosx)(osgi.ws=cocoa))
         </filter>
       </required>
-      <required namespace='org.eclipse.equinox.p2.iu' name='toolinggtk.linux.armorg.eclipse.om2m.core' range='[1.0.0,1.0.0]'>
+      <required namespace='org.eclipse.equinox.p2.iu' name='toolingcocoa.macosx.x86_64org.apache.felix.gogo.runtime' range='[1.0.0,1.0.0]'>
         <filter>
-          (&amp;(osgi.arch=arm)(osgi.os=linux)(osgi.ws=gtk))
+          (&amp;(osgi.arch=x86_64)(osgi.os=macosx)(osgi.ws=cocoa))
         </filter>
       </required>
-      <required namespace='org.eclipse.equinox.p2.iu' name='toolinggtk.linux.armorg.eclipse.om2m.binding.http' range='[1.0.0,1.0.0]'>
+      <required namespace='org.eclipse.equinox.p2.iu' name='toolingcocoa.macosx.x86_64org.apache.felix.gogo.shell' range='[1.0.0,1.0.0]'>
         <filter>
-          (&amp;(osgi.arch=arm)(osgi.os=linux)(osgi.ws=gtk))
+          (&amp;(osgi.arch=x86_64)(osgi.os=macosx)(osgi.ws=cocoa))
         </filter>
       </required>
-      <required namespace='org.eclipse.equinox.p2.iu' name='toolinggtk.linux.armorg.apache.felix.gogo.shell' range='[1.0.0,1.0.0]'>
+      <required namespace='org.eclipse.equinox.p2.iu' name='toolingcocoa.macosx.x86_64org.eclipse.om2m.core' range='[1.0.0,1.0.0]'>
         <filter>
-          (&amp;(osgi.arch=arm)(osgi.os=linux)(osgi.ws=gtk))
+          (&amp;(osgi.arch=x86_64)(osgi.os=macosx)(osgi.ws=cocoa))
         </filter>
       </required>
-      <required namespace='org.eclipse.equinox.p2.iu' name='toolinggtk.linux.armorg.eclipse.equinox.console' range='[1.0.0,1.0.0]'>
+      <required namespace='org.eclipse.equinox.p2.iu' name='toolingcocoa.macosx.x86_64org.apache.felix.gogo.command' range='[1.0.0,1.0.0]'>
         <filter>
-          (&amp;(osgi.arch=arm)(osgi.os=linux)(osgi.ws=gtk))
+          (&amp;(osgi.arch=x86_64)(osgi.os=macosx)(osgi.ws=cocoa))
         </filter>
       </required>
-      <required namespace='org.eclipse.equinox.p2.iu' name='toolinggtk.linux.armorg.eclipse.om2m.webapp.resourcesbrowser.xml' range='[1.0.0,1.0.0]'>
+      <required namespace='org.eclipse.equinox.p2.iu' name='toolingasn-cse.ini.cocoa.macosx.x86_64' range='[1.0.0,1.0.0]'>
         <filter>
-          (&amp;(osgi.arch=arm)(osgi.os=linux)(osgi.ws=gtk))
+          (&amp;(osgi.arch=x86_64)(osgi.os=macosx)(osgi.ws=cocoa))
         </filter>
       </required>
     </requires>
@@ -358,140 +358,24 @@
       </instructions>
     </touchpointData>
   </unit>
-  <unit id='asn-cse' version='1.0.0'>
-    <update id='asn-cse' range='0.0.0' severity='0'/>
-    <properties size='3'>
-      <property name='org.eclipse.equinox.p2.name' value='asn-cse'/>
-      <property name='org.eclipse.equinox.p2.type.product' value='true'/>
-      <property name='org.eclipse.equinox.p2.type.group' value='true'/>
-    </properties>
-    <provides size='1'>
-      <provided namespace='org.eclipse.equinox.p2.iu' name='asn-cse' version='1.0.0'/>
-    </provides>
-    <requires size='41'>
-      <required namespace='org.eclipse.equinox.p2.iu' name='org.apache.httpcomponents.httpcore' range='[4.3.3.v201411290715,4.3.3.v201411290715]'/>
-      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.core' range='[1.1.0.20190504-1504,1.1.0.20190504-1504]'/>
-      <required namespace='org.eclipse.equinox.p2.iu' name='org.apache.felix.gogo.shell' range='[0.10.0.v201212101605,0.10.0.v201212101605]'/>
-      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.webapp.resourcesbrowser.xml' range='[1.1.0.20190504-1504,1.1.0.20190504-1504]'/>
-      <required namespace='org.eclipse.equinox.p2.iu' name='tooling.org.eclipse.update.feature.default' range='[1.0.0,1.0.0]'>
-        <filter>
-          (org.eclipse.update.install.features=true)
-        </filter>
-      </required>
-      <required namespace='org.eclipse.equinox.p2.iu' name='org.apache.felix.gogo.command' range='[0.10.0.v201209301215,0.10.0.v201209301215]'/>
-      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.jetty.security' range='[8.1.16.v20140903,8.1.16.v20140903]'/>
-      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.binding.coap' range='[1.1.0.20190504-1504,1.1.0.20190504-1504]'/>
-      <required namespace='org.eclipse.equinox.p2.iu' name='config.a.jre.javase' range='[1.6.0,1.6.0]'/>
-      <required namespace='org.eclipse.equinox.p2.iu' name='org.apache.commons.logging' range='[1.1.1.v201101211721,1.1.1.v201101211721]'/>
-      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.persistence.eclipselink' range='[1.1.0.20190504-1504,1.1.0.20190504-1504]'/>
-      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.binding.mqtt' range='[1.1.0.20190504-1504,1.1.0.20190504-1504]'/>
-      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.equinox.launcher' range='[1.3.0.v20140415-2008,1.3.0.v20140415-2008]'/>
-      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.binding.service' range='[1.1.0.20190504-1504,1.1.0.20190504-1504]'/>
-      <required namespace='org.eclipse.equinox.p2.iu' name='a.jre.javase' range='[1.6.0,1.6.0]'/>
-      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.core.service' range='[1.1.0.20190504-1504,1.1.0.20190504-1504]'/>
-      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.jetty.server' range='[8.1.16.v20140903,8.1.16.v20140903]'/>
-      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.jetty.util' range='[8.1.16.v20140903,8.1.16.v20140903]'/>
-      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.interworking.service' range='[1.1.0.20190504-1504,1.1.0.20190504-1504]'/>
-      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.jetty.http' range='[8.1.16.v20140903,8.1.16.v20140903]'/>
-      <required namespace='org.eclipse.equinox.p2.iu' name='org.apache.felix.gogo.runtime' range='[0.10.0.v201209301036,0.10.0.v201209301036]'/>
-      <required namespace='org.eclipse.equinox.p2.iu' name='org.apache.httpcomponents.httpclient' range='[4.3.6.v201511171540,4.3.6.v201511171540]'/>
-      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.jetty.io' range='[8.1.16.v20140903,8.1.16.v20140903]'/>
-      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.datamapping.jaxb' range='[1.1.0.20190504-1504,1.1.0.20190504-1504]'/>
-      <required namespace='org.eclipse.equinox.p2.iu' name='javax.servlet' range='[3.1.0.v201410161800,3.1.0.v201410161800]'/>
-      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.jetty.continuation' range='[8.1.16.v20140903,8.1.16.v20140903]'/>
-      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.commons' range='[1.1.0.20190504-1504,1.1.0.20190504-1504]'/>
-      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.osgi.services' range='[3.4.0.v20140312-2051,3.4.0.v20140312-2051]'/>
-      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.commons.logging' range='[1.1.0.20190504-1504,1.1.0.20190504-1504]'/>
-      <required namespace='org.eclipse.equinox.p2.iu' name='tooling.source.default' range='[1.0.0,1.0.0]'/>
-      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.equinox.console' range='[1.1.0.v20140131-1639,1.1.0.v20140131-1639]'/>
-      <required namespace='org.eclipse.equinox.p2.iu' name='org.apache.commons.codec' range='[1.6.0.v201305230611,1.6.0.v201305230611]'/>
-      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.binding.http' range='[1.1.0.20190504-1504,1.1.0.20190504-1504]'/>
-      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.equinox.http.servlet' range='[1.1.500.v20140318-1755,1.1.500.v20140318-1755]'/>
-      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.jetty.servlet' range='[8.1.16.v20140903,8.1.16.v20140903]'/>
-      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.datamapping.service' range='[1.1.0.20190504-1504,1.1.0.20190504-1504]'/>
-      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.persistence.service' range='[1.1.0.20190504-1504,1.1.0.20190504-1504]'/>
-      <required namespace='org.eclipse.equinox.p2.iu' name='toolingasn-cse.configuration' range='[1.0.0,1.0.0]'/>
-      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.osgi' range='[3.10.2.v20150203-1939,3.10.2.v20150203-1939]'/>
-      <required namespace='org.eclipse.equinox.p2.iu' name='tooling.osgi.bundle.default' range='[1.0.0,1.0.0]'/>
-      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.equinox.http.jetty' range='[3.0.200.v20131021-1843,3.0.200.v20131021-1843]'/>
-    </requires>
-    <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
-  </unit>
-  <unit id='toolinggtk.linux.armorg.eclipse.om2m.datamapping.jaxb' version='1.0.0' singleton='false'>
+  <unit id='toolingcocoa.macosx.x86_64org.eclipse.om2m.binding.mqtt' version='1.0.0' singleton='false'>
     <hostRequirements size='2'>
-      <required namespace='osgi.bundle' name='org.eclipse.om2m.datamapping.jaxb' range='1.1.0.20190504-1504'/>
+      <required namespace='osgi.bundle' name='org.eclipse.om2m.binding.mqtt' range='1.1.0.20190516-1509'/>
       <required namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' range='[1.0.0,2.0.0)' greedy='false'/>
     </hostRequirements>
     <properties size='1'>
       <property name='org.eclipse.equinox.p2.type.fragment' value='true'/>
     </properties>
     <provides size='2'>
-      <provided namespace='org.eclipse.equinox.p2.iu' name='toolinggtk.linux.armorg.eclipse.om2m.datamapping.jaxb' version='1.0.0'/>
-      <provided namespace='org.eclipse.equinox.p2.flavor' name='toolinggtk.linux.arm' version='1.0.0'/>
+      <provided namespace='org.eclipse.equinox.p2.iu' name='toolingcocoa.macosx.x86_64org.eclipse.om2m.binding.mqtt' version='1.0.0'/>
+      <provided namespace='org.eclipse.equinox.p2.flavor' name='toolingcocoa.macosx.x86_64' version='1.0.0'/>
     </provides>
     <requires size='2'>
-      <required namespace='osgi.bundle' name='org.eclipse.om2m.datamapping.jaxb' range='1.1.0.20190504-1504'/>
+      <required namespace='osgi.bundle' name='org.eclipse.om2m.binding.mqtt' range='1.1.0.20190516-1509'/>
       <required namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' range='[1.0.0,2.0.0)' greedy='false'/>
     </requires>
     <filter>
-      (&amp;(osgi.arch=arm)(osgi.os=linux)(osgi.ws=gtk))
-    </filter>
-    <touchpoint id='null' version='0.0.0'/>
-    <touchpointData size='1'>
-      <instructions size='4'>
-        <instruction key='uninstall'>
-          uninstallBundle(bundle:${artifact})
-        </instruction>
-        <instruction key='install'>
-          installBundle(bundle:${artifact})
-        </instruction>
-        <instruction key='configure'>
-          setStartLevel(startLevel:1);markStarted(started: true);
-        </instruction>
-        <instruction key='unconfigure'>
-          setStartLevel(startLevel:-1);markStarted(started: false);
-        </instruction>
-      </instructions>
-    </touchpointData>
-  </unit>
-  <unit id='toolingasn-cse.ini.gtk.linux.arm' version='1.0.0' singleton='false'>
-    <provides size='2'>
-      <provided namespace='org.eclipse.equinox.p2.iu' name='toolingasn-cse.ini.gtk.linux.arm' version='1.0.0'/>
-      <provided namespace='toolingasn-cse' name='asn-cse.ini' version='1.0.0'/>
-    </provides>
-    <filter>
-      (&amp;(osgi.arch=arm)(osgi.os=linux)(osgi.ws=gtk))
-    </filter>
-    <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
-    <touchpointData size='1'>
-      <instructions size='2'>
-        <instruction key='configure'>
-          addJvmArg(jvmArg:-ea);addJvmArg(jvmArg:-Declipse.ignoreApp=true);addJvmArg(jvmArg:-Dosgi.clean=true);addJvmArg(jvmArg:-Ddebug=true);addProgramArg(programArg:-console);addProgramArg(programArg:-noExit);addProgramArg(programArg:--launcher.secondThread);
-        </instruction>
-        <instruction key='unconfigure'>
-          removeJvmArg(jvmArg:-ea);removeJvmArg(jvmArg:-Declipse.ignoreApp=true);removeJvmArg(jvmArg:-Dosgi.clean=true);removeJvmArg(jvmArg:-Ddebug=true);removeProgramArg(programArg:-console);removeProgramArg(programArg:-noExit);removeProgramArg(programArg:--launcher.secondThread);
-        </instruction>
-      </instructions>
-    </touchpointData>
-  </unit>
-  <unit id='toolinggtk.linux.armorg.eclipse.om2m.binding.mqtt' version='1.0.0' singleton='false'>
-    <hostRequirements size='2'>
-      <required namespace='osgi.bundle' name='org.eclipse.om2m.binding.mqtt' range='1.1.0.20190504-1504'/>
-      <required namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' range='[1.0.0,2.0.0)' greedy='false'/>
-    </hostRequirements>
-    <properties size='1'>
-      <property name='org.eclipse.equinox.p2.type.fragment' value='true'/>
-    </properties>
-    <provides size='2'>
-      <provided namespace='org.eclipse.equinox.p2.iu' name='toolinggtk.linux.armorg.eclipse.om2m.binding.mqtt' version='1.0.0'/>
-      <provided namespace='org.eclipse.equinox.p2.flavor' name='toolinggtk.linux.arm' version='1.0.0'/>
-    </provides>
-    <requires size='2'>
-      <required namespace='osgi.bundle' name='org.eclipse.om2m.binding.mqtt' range='1.1.0.20190504-1504'/>
-      <required namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' range='[1.0.0,2.0.0)' greedy='false'/>
-    </requires>
-    <filter>
-      (&amp;(osgi.arch=arm)(osgi.os=linux)(osgi.ws=gtk))
+      (&amp;(osgi.arch=x86_64)(osgi.os=macosx)(osgi.ws=cocoa))
     </filter>
     <touchpoint id='null' version='0.0.0'/>
     <touchpointData size='1'>
@@ -511,24 +395,61 @@
       </instructions>
     </touchpointData>
   </unit>
-  <unit id='toolinggtk.linux.armorg.apache.felix.gogo.runtime' version='1.0.0' singleton='false'>
+  <unit id='toolingcocoa.macosx.x86_64org.eclipse.om2m.binding.http' version='1.0.0' singleton='false'>
     <hostRequirements size='2'>
-      <required namespace='osgi.bundle' name='org.apache.felix.gogo.runtime' range='0.10.0.v201209301036'/>
+      <required namespace='osgi.bundle' name='org.eclipse.om2m.binding.http' range='1.1.0.20190516-1509'/>
       <required namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' range='[1.0.0,2.0.0)' greedy='false'/>
     </hostRequirements>
     <properties size='1'>
       <property name='org.eclipse.equinox.p2.type.fragment' value='true'/>
     </properties>
     <provides size='2'>
-      <provided namespace='org.eclipse.equinox.p2.iu' name='toolinggtk.linux.armorg.apache.felix.gogo.runtime' version='1.0.0'/>
-      <provided namespace='org.eclipse.equinox.p2.flavor' name='toolinggtk.linux.arm' version='1.0.0'/>
+      <provided namespace='org.eclipse.equinox.p2.iu' name='toolingcocoa.macosx.x86_64org.eclipse.om2m.binding.http' version='1.0.0'/>
+      <provided namespace='org.eclipse.equinox.p2.flavor' name='toolingcocoa.macosx.x86_64' version='1.0.0'/>
     </provides>
     <requires size='2'>
-      <required namespace='osgi.bundle' name='org.apache.felix.gogo.runtime' range='0.10.0.v201209301036'/>
+      <required namespace='osgi.bundle' name='org.eclipse.om2m.binding.http' range='1.1.0.20190516-1509'/>
       <required namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' range='[1.0.0,2.0.0)' greedy='false'/>
     </requires>
     <filter>
-      (&amp;(osgi.arch=arm)(osgi.os=linux)(osgi.ws=gtk))
+      (&amp;(osgi.arch=x86_64)(osgi.os=macosx)(osgi.ws=cocoa))
+    </filter>
+    <touchpoint id='null' version='0.0.0'/>
+    <touchpointData size='1'>
+      <instructions size='4'>
+        <instruction key='uninstall'>
+          uninstallBundle(bundle:${artifact})
+        </instruction>
+        <instruction key='install'>
+          installBundle(bundle:${artifact})
+        </instruction>
+        <instruction key='configure'>
+          setStartLevel(startLevel:2);markStarted(started: true);
+        </instruction>
+        <instruction key='unconfigure'>
+          setStartLevel(startLevel:-1);markStarted(started: false);
+        </instruction>
+      </instructions>
+    </touchpointData>
+  </unit>
+  <unit id='toolingcocoa.macosx.x86_64org.eclipse.equinox.console' version='1.0.0' singleton='false'>
+    <hostRequirements size='2'>
+      <required namespace='osgi.bundle' name='org.eclipse.equinox.console' range='1.1.0.v20140131-1639'/>
+      <required namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' range='[1.0.0,2.0.0)' greedy='false'/>
+    </hostRequirements>
+    <properties size='1'>
+      <property name='org.eclipse.equinox.p2.type.fragment' value='true'/>
+    </properties>
+    <provides size='2'>
+      <provided namespace='org.eclipse.equinox.p2.iu' name='toolingcocoa.macosx.x86_64org.eclipse.equinox.console' version='1.0.0'/>
+      <provided namespace='org.eclipse.equinox.p2.flavor' name='toolingcocoa.macosx.x86_64' version='1.0.0'/>
+    </provides>
+    <requires size='2'>
+      <required namespace='osgi.bundle' name='org.eclipse.equinox.console' range='1.1.0.v20140131-1639'/>
+      <required namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' range='[1.0.0,2.0.0)' greedy='false'/>
+    </requires>
+    <filter>
+      (&amp;(osgi.arch=x86_64)(osgi.os=macosx)(osgi.ws=cocoa))
     </filter>
     <touchpoint id='null' version='0.0.0'/>
     <touchpointData size='1'>
@@ -548,24 +469,83 @@
       </instructions>
     </touchpointData>
   </unit>
-  <unit id='toolinggtk.linux.armorg.eclipse.om2m.persistence.eclipselink' version='1.0.0' singleton='false'>
+  <unit id='asn-cse' version='1.0.0'>
+    <update id='asn-cse' range='0.0.0' severity='0'/>
+    <properties size='3'>
+      <property name='org.eclipse.equinox.p2.name' value='asn-cse'/>
+      <property name='org.eclipse.equinox.p2.type.product' value='true'/>
+      <property name='org.eclipse.equinox.p2.type.group' value='true'/>
+    </properties>
+    <provides size='1'>
+      <provided namespace='org.eclipse.equinox.p2.iu' name='asn-cse' version='1.0.0'/>
+    </provides>
+    <requires size='41'>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.apache.httpcomponents.httpcore' range='[4.3.3.v201411290715,4.3.3.v201411290715]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.apache.felix.gogo.shell' range='[0.10.0.v201212101605,0.10.0.v201212101605]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.datamapping.service' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='tooling.org.eclipse.update.feature.default' range='[1.0.0,1.0.0]'>
+        <filter>
+          (org.eclipse.update.install.features=true)
+        </filter>
+      </required>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.apache.felix.gogo.command' range='[0.10.0.v201209301215,0.10.0.v201209301215]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.jetty.security' range='[8.1.16.v20140903,8.1.16.v20140903]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='config.a.jre.javase' range='[1.6.0,1.6.0]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.binding.coap' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.persistence.service' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.apache.commons.logging' range='[1.1.1.v201101211721,1.1.1.v201101211721]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.binding.mqtt' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.webapp.resourcesbrowser.xml' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.equinox.launcher' range='[1.3.0.v20140415-2008,1.3.0.v20140415-2008]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='a.jre.javase' range='[1.6.0,1.6.0]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.datamapping.jaxb' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.jetty.server' range='[8.1.16.v20140903,8.1.16.v20140903]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.jetty.util' range='[8.1.16.v20140903,8.1.16.v20140903]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.core' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.jetty.http' range='[8.1.16.v20140903,8.1.16.v20140903]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.commons.logging' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.apache.felix.gogo.runtime' range='[0.10.0.v201209301036,0.10.0.v201209301036]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.interworking.service' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.apache.httpcomponents.httpclient' range='[4.3.6.v201511171540,4.3.6.v201511171540]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.jetty.io' range='[8.1.16.v20140903,8.1.16.v20140903]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='javax.servlet' range='[3.1.0.v201410161800,3.1.0.v201410161800]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.jetty.continuation' range='[8.1.16.v20140903,8.1.16.v20140903]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.osgi.services' range='[3.4.0.v20140312-2051,3.4.0.v20140312-2051]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.binding.http' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='tooling.source.default' range='[1.0.0,1.0.0]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.equinox.console' range='[1.1.0.v20140131-1639,1.1.0.v20140131-1639]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.commons' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.apache.commons.codec' range='[1.6.0.v201305230611,1.6.0.v201305230611]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.equinox.http.servlet' range='[1.1.500.v20140318-1755,1.1.500.v20140318-1755]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.core.service' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.jetty.servlet' range='[8.1.16.v20140903,8.1.16.v20140903]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='toolingasn-cse.configuration' range='[1.0.0,1.0.0]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.persistence.eclipselink' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.osgi' range='[3.10.2.v20150203-1939,3.10.2.v20150203-1939]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='tooling.osgi.bundle.default' range='[1.0.0,1.0.0]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.binding.service' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.equinox.http.jetty' range='[3.0.200.v20131021-1843,3.0.200.v20131021-1843]'/>
+    </requires>
+    <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+  </unit>
+  <unit id='toolingcocoa.macosx.x86_64org.eclipse.om2m.webapp.resourcesbrowser.xml' version='1.0.0' singleton='false'>
     <hostRequirements size='2'>
-      <required namespace='osgi.bundle' name='org.eclipse.om2m.persistence.eclipselink' range='1.1.0.20190504-1504'/>
+      <required namespace='osgi.bundle' name='org.eclipse.om2m.webapp.resourcesbrowser.xml' range='1.1.0.20190516-1509'/>
       <required namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' range='[1.0.0,2.0.0)' greedy='false'/>
     </hostRequirements>
     <properties size='1'>
       <property name='org.eclipse.equinox.p2.type.fragment' value='true'/>
     </properties>
     <provides size='2'>
-      <provided namespace='org.eclipse.equinox.p2.iu' name='toolinggtk.linux.armorg.eclipse.om2m.persistence.eclipselink' version='1.0.0'/>
-      <provided namespace='org.eclipse.equinox.p2.flavor' name='toolinggtk.linux.arm' version='1.0.0'/>
+      <provided namespace='org.eclipse.equinox.p2.iu' name='toolingcocoa.macosx.x86_64org.eclipse.om2m.webapp.resourcesbrowser.xml' version='1.0.0'/>
+      <provided namespace='org.eclipse.equinox.p2.flavor' name='toolingcocoa.macosx.x86_64' version='1.0.0'/>
     </provides>
     <requires size='2'>
-      <required namespace='osgi.bundle' name='org.eclipse.om2m.persistence.eclipselink' range='1.1.0.20190504-1504'/>
+      <required namespace='osgi.bundle' name='org.eclipse.om2m.webapp.resourcesbrowser.xml' range='1.1.0.20190516-1509'/>
       <required namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' range='[1.0.0,2.0.0)' greedy='false'/>
     </requires>
     <filter>
-      (&amp;(osgi.arch=arm)(osgi.os=linux)(osgi.ws=gtk))
+      (&amp;(osgi.arch=x86_64)(osgi.os=macosx)(osgi.ws=cocoa))
     </filter>
     <touchpoint id='null' version='0.0.0'/>
     <touchpointData size='1'>
@@ -577,7 +557,7 @@
           installBundle(bundle:${artifact})
         </instruction>
         <instruction key='configure'>
-          setStartLevel(startLevel:2);markStarted(started: true);
+          setStartLevel(startLevel:4);markStarted(started: true);
         </instruction>
         <instruction key='unconfigure'>
           setStartLevel(startLevel:-1);markStarted(started: false);
@@ -585,50 +565,13 @@
       </instructions>
     </touchpointData>
   </unit>
-  <unit id='toolinggtk.linux.armorg.eclipse.equinox.http.jetty' version='1.0.0' singleton='false'>
-    <hostRequirements size='2'>
-      <required namespace='osgi.bundle' name='org.eclipse.equinox.http.jetty' range='3.0.200.v20131021-1843'/>
-      <required namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' range='[1.0.0,2.0.0)' greedy='false'/>
-    </hostRequirements>
-    <properties size='1'>
-      <property name='org.eclipse.equinox.p2.type.fragment' value='true'/>
-    </properties>
+  <unit id='toolingasn-cse.config.cocoa.macosx.x86_64' version='1.0.0' singleton='false'>
     <provides size='2'>
-      <provided namespace='org.eclipse.equinox.p2.iu' name='toolinggtk.linux.armorg.eclipse.equinox.http.jetty' version='1.0.0'/>
-      <provided namespace='org.eclipse.equinox.p2.flavor' name='toolinggtk.linux.arm' version='1.0.0'/>
-    </provides>
-    <requires size='2'>
-      <required namespace='osgi.bundle' name='org.eclipse.equinox.http.jetty' range='3.0.200.v20131021-1843'/>
-      <required namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' range='[1.0.0,2.0.0)' greedy='false'/>
-    </requires>
-    <filter>
-      (&amp;(osgi.arch=arm)(osgi.os=linux)(osgi.ws=gtk))
-    </filter>
-    <touchpoint id='null' version='0.0.0'/>
-    <touchpointData size='1'>
-      <instructions size='4'>
-        <instruction key='uninstall'>
-          uninstallBundle(bundle:${artifact})
-        </instruction>
-        <instruction key='install'>
-          installBundle(bundle:${artifact})
-        </instruction>
-        <instruction key='configure'>
-          setStartLevel(startLevel:1);markStarted(started: true);
-        </instruction>
-        <instruction key='unconfigure'>
-          setStartLevel(startLevel:-1);markStarted(started: false);
-        </instruction>
-      </instructions>
-    </touchpointData>
-  </unit>
-  <unit id='toolingasn-cse.config.gtk.linux.arm' version='1.0.0' singleton='false'>
-    <provides size='2'>
-      <provided namespace='org.eclipse.equinox.p2.iu' name='toolingasn-cse.config.gtk.linux.arm' version='1.0.0'/>
+      <provided namespace='org.eclipse.equinox.p2.iu' name='toolingasn-cse.config.cocoa.macosx.x86_64' version='1.0.0'/>
       <provided namespace='toolingasn-cse' name='asn-cse.config' version='1.0.0'/>
     </provides>
     <filter>
-      (&amp;(osgi.arch=arm)(osgi.os=linux)(osgi.ws=gtk))
+      (&amp;(osgi.arch=x86_64)(osgi.os=macosx)(osgi.ws=cocoa))
     </filter>
     <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
     <touchpointData size='1'>
@@ -642,98 +585,24 @@
       </instructions>
     </touchpointData>
   </unit>
-  <unit id='toolinggtk.linux.armorg.apache.felix.gogo.command' version='1.0.0' singleton='false'>
+  <unit id='toolingcocoa.macosx.x86_64org.eclipse.om2m.persistence.eclipselink' version='1.0.0' singleton='false'>
     <hostRequirements size='2'>
-      <required namespace='osgi.bundle' name='org.apache.felix.gogo.command' range='0.10.0.v201209301215'/>
+      <required namespace='osgi.bundle' name='org.eclipse.om2m.persistence.eclipselink' range='1.1.0.20190516-1509'/>
       <required namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' range='[1.0.0,2.0.0)' greedy='false'/>
     </hostRequirements>
     <properties size='1'>
       <property name='org.eclipse.equinox.p2.type.fragment' value='true'/>
     </properties>
     <provides size='2'>
-      <provided namespace='org.eclipse.equinox.p2.iu' name='toolinggtk.linux.armorg.apache.felix.gogo.command' version='1.0.0'/>
-      <provided namespace='org.eclipse.equinox.p2.flavor' name='toolinggtk.linux.arm' version='1.0.0'/>
+      <provided namespace='org.eclipse.equinox.p2.iu' name='toolingcocoa.macosx.x86_64org.eclipse.om2m.persistence.eclipselink' version='1.0.0'/>
+      <provided namespace='org.eclipse.equinox.p2.flavor' name='toolingcocoa.macosx.x86_64' version='1.0.0'/>
     </provides>
     <requires size='2'>
-      <required namespace='osgi.bundle' name='org.apache.felix.gogo.command' range='0.10.0.v201209301215'/>
+      <required namespace='osgi.bundle' name='org.eclipse.om2m.persistence.eclipselink' range='1.1.0.20190516-1509'/>
       <required namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' range='[1.0.0,2.0.0)' greedy='false'/>
     </requires>
     <filter>
-      (&amp;(osgi.arch=arm)(osgi.os=linux)(osgi.ws=gtk))
-    </filter>
-    <touchpoint id='null' version='0.0.0'/>
-    <touchpointData size='1'>
-      <instructions size='4'>
-        <instruction key='uninstall'>
-          uninstallBundle(bundle:${artifact})
-        </instruction>
-        <instruction key='install'>
-          installBundle(bundle:${artifact})
-        </instruction>
-        <instruction key='configure'>
-          markStarted(started: true);
-        </instruction>
-        <instruction key='unconfigure'>
-          markStarted(started: false);
-        </instruction>
-      </instructions>
-    </touchpointData>
-  </unit>
-  <unit id='toolinggtk.linux.armorg.eclipse.om2m.core' version='1.0.0' singleton='false'>
-    <hostRequirements size='2'>
-      <required namespace='osgi.bundle' name='org.eclipse.om2m.core' range='1.1.0.20190504-1504'/>
-      <required namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' range='[1.0.0,2.0.0)' greedy='false'/>
-    </hostRequirements>
-    <properties size='1'>
-      <property name='org.eclipse.equinox.p2.type.fragment' value='true'/>
-    </properties>
-    <provides size='2'>
-      <provided namespace='org.eclipse.equinox.p2.iu' name='toolinggtk.linux.armorg.eclipse.om2m.core' version='1.0.0'/>
-      <provided namespace='org.eclipse.equinox.p2.flavor' name='toolinggtk.linux.arm' version='1.0.0'/>
-    </provides>
-    <requires size='2'>
-      <required namespace='osgi.bundle' name='org.eclipse.om2m.core' range='1.1.0.20190504-1504'/>
-      <required namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' range='[1.0.0,2.0.0)' greedy='false'/>
-    </requires>
-    <filter>
-      (&amp;(osgi.arch=arm)(osgi.os=linux)(osgi.ws=gtk))
-    </filter>
-    <touchpoint id='null' version='0.0.0'/>
-    <touchpointData size='1'>
-      <instructions size='4'>
-        <instruction key='uninstall'>
-          uninstallBundle(bundle:${artifact})
-        </instruction>
-        <instruction key='install'>
-          installBundle(bundle:${artifact})
-        </instruction>
-        <instruction key='configure'>
-          setStartLevel(startLevel:4);markStarted(started: true);
-        </instruction>
-        <instruction key='unconfigure'>
-          setStartLevel(startLevel:-1);markStarted(started: false);
-        </instruction>
-      </instructions>
-    </touchpointData>
-  </unit>
-  <unit id='toolinggtk.linux.armorg.eclipse.om2m.binding.http' version='1.0.0' singleton='false'>
-    <hostRequirements size='2'>
-      <required namespace='osgi.bundle' name='org.eclipse.om2m.binding.http' range='1.1.0.20190504-1504'/>
-      <required namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' range='[1.0.0,2.0.0)' greedy='false'/>
-    </hostRequirements>
-    <properties size='1'>
-      <property name='org.eclipse.equinox.p2.type.fragment' value='true'/>
-    </properties>
-    <provides size='2'>
-      <provided namespace='org.eclipse.equinox.p2.iu' name='toolinggtk.linux.armorg.eclipse.om2m.binding.http' version='1.0.0'/>
-      <provided namespace='org.eclipse.equinox.p2.flavor' name='toolinggtk.linux.arm' version='1.0.0'/>
-    </provides>
-    <requires size='2'>
-      <required namespace='osgi.bundle' name='org.eclipse.om2m.binding.http' range='1.1.0.20190504-1504'/>
-      <required namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' range='[1.0.0,2.0.0)' greedy='false'/>
-    </requires>
-    <filter>
-      (&amp;(osgi.arch=arm)(osgi.os=linux)(osgi.ws=gtk))
+      (&amp;(osgi.arch=x86_64)(osgi.os=macosx)(osgi.ws=cocoa))
     </filter>
     <touchpoint id='null' version='0.0.0'/>
     <touchpointData size='1'>
@@ -753,24 +622,98 @@
       </instructions>
     </touchpointData>
   </unit>
-  <unit id='toolinggtk.linux.armorg.apache.felix.gogo.shell' version='1.0.0' singleton='false'>
+  <unit id='toolingcocoa.macosx.x86_64org.eclipse.equinox.http.jetty' version='1.0.0' singleton='false'>
     <hostRequirements size='2'>
-      <required namespace='osgi.bundle' name='org.apache.felix.gogo.shell' range='0.10.0.v201212101605'/>
+      <required namespace='osgi.bundle' name='org.eclipse.equinox.http.jetty' range='3.0.200.v20131021-1843'/>
       <required namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' range='[1.0.0,2.0.0)' greedy='false'/>
     </hostRequirements>
     <properties size='1'>
       <property name='org.eclipse.equinox.p2.type.fragment' value='true'/>
     </properties>
     <provides size='2'>
-      <provided namespace='org.eclipse.equinox.p2.iu' name='toolinggtk.linux.armorg.apache.felix.gogo.shell' version='1.0.0'/>
-      <provided namespace='org.eclipse.equinox.p2.flavor' name='toolinggtk.linux.arm' version='1.0.0'/>
+      <provided namespace='org.eclipse.equinox.p2.iu' name='toolingcocoa.macosx.x86_64org.eclipse.equinox.http.jetty' version='1.0.0'/>
+      <provided namespace='org.eclipse.equinox.p2.flavor' name='toolingcocoa.macosx.x86_64' version='1.0.0'/>
     </provides>
     <requires size='2'>
-      <required namespace='osgi.bundle' name='org.apache.felix.gogo.shell' range='0.10.0.v201212101605'/>
+      <required namespace='osgi.bundle' name='org.eclipse.equinox.http.jetty' range='3.0.200.v20131021-1843'/>
       <required namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' range='[1.0.0,2.0.0)' greedy='false'/>
     </requires>
     <filter>
-      (&amp;(osgi.arch=arm)(osgi.os=linux)(osgi.ws=gtk))
+      (&amp;(osgi.arch=x86_64)(osgi.os=macosx)(osgi.ws=cocoa))
+    </filter>
+    <touchpoint id='null' version='0.0.0'/>
+    <touchpointData size='1'>
+      <instructions size='4'>
+        <instruction key='uninstall'>
+          uninstallBundle(bundle:${artifact})
+        </instruction>
+        <instruction key='install'>
+          installBundle(bundle:${artifact})
+        </instruction>
+        <instruction key='configure'>
+          setStartLevel(startLevel:1);markStarted(started: true);
+        </instruction>
+        <instruction key='unconfigure'>
+          setStartLevel(startLevel:-1);markStarted(started: false);
+        </instruction>
+      </instructions>
+    </touchpointData>
+  </unit>
+  <unit id='toolingcocoa.macosx.x86_64org.eclipse.om2m.datamapping.jaxb' version='1.0.0' singleton='false'>
+    <hostRequirements size='2'>
+      <required namespace='osgi.bundle' name='org.eclipse.om2m.datamapping.jaxb' range='1.1.0.20190516-1509'/>
+      <required namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' range='[1.0.0,2.0.0)' greedy='false'/>
+    </hostRequirements>
+    <properties size='1'>
+      <property name='org.eclipse.equinox.p2.type.fragment' value='true'/>
+    </properties>
+    <provides size='2'>
+      <provided namespace='org.eclipse.equinox.p2.iu' name='toolingcocoa.macosx.x86_64org.eclipse.om2m.datamapping.jaxb' version='1.0.0'/>
+      <provided namespace='org.eclipse.equinox.p2.flavor' name='toolingcocoa.macosx.x86_64' version='1.0.0'/>
+    </provides>
+    <requires size='2'>
+      <required namespace='osgi.bundle' name='org.eclipse.om2m.datamapping.jaxb' range='1.1.0.20190516-1509'/>
+      <required namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' range='[1.0.0,2.0.0)' greedy='false'/>
+    </requires>
+    <filter>
+      (&amp;(osgi.arch=x86_64)(osgi.os=macosx)(osgi.ws=cocoa))
+    </filter>
+    <touchpoint id='null' version='0.0.0'/>
+    <touchpointData size='1'>
+      <instructions size='4'>
+        <instruction key='uninstall'>
+          uninstallBundle(bundle:${artifact})
+        </instruction>
+        <instruction key='install'>
+          installBundle(bundle:${artifact})
+        </instruction>
+        <instruction key='configure'>
+          setStartLevel(startLevel:1);markStarted(started: true);
+        </instruction>
+        <instruction key='unconfigure'>
+          setStartLevel(startLevel:-1);markStarted(started: false);
+        </instruction>
+      </instructions>
+    </touchpointData>
+  </unit>
+  <unit id='toolingcocoa.macosx.x86_64org.apache.felix.gogo.runtime' version='1.0.0' singleton='false'>
+    <hostRequirements size='2'>
+      <required namespace='osgi.bundle' name='org.apache.felix.gogo.runtime' range='0.10.0.v201209301036'/>
+      <required namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' range='[1.0.0,2.0.0)' greedy='false'/>
+    </hostRequirements>
+    <properties size='1'>
+      <property name='org.eclipse.equinox.p2.type.fragment' value='true'/>
+    </properties>
+    <provides size='2'>
+      <provided namespace='org.eclipse.equinox.p2.iu' name='toolingcocoa.macosx.x86_64org.apache.felix.gogo.runtime' version='1.0.0'/>
+      <provided namespace='org.eclipse.equinox.p2.flavor' name='toolingcocoa.macosx.x86_64' version='1.0.0'/>
+    </provides>
+    <requires size='2'>
+      <required namespace='osgi.bundle' name='org.apache.felix.gogo.runtime' range='0.10.0.v201209301036'/>
+      <required namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' range='[1.0.0,2.0.0)' greedy='false'/>
+    </requires>
+    <filter>
+      (&amp;(osgi.arch=x86_64)(osgi.os=macosx)(osgi.ws=cocoa))
     </filter>
     <touchpoint id='null' version='0.0.0'/>
     <touchpointData size='1'>
@@ -790,24 +733,24 @@
       </instructions>
     </touchpointData>
   </unit>
-  <unit id='toolinggtk.linux.armorg.eclipse.equinox.console' version='1.0.0' singleton='false'>
+  <unit id='toolingcocoa.macosx.x86_64org.apache.felix.gogo.shell' version='1.0.0' singleton='false'>
     <hostRequirements size='2'>
-      <required namespace='osgi.bundle' name='org.eclipse.equinox.console' range='1.1.0.v20140131-1639'/>
+      <required namespace='osgi.bundle' name='org.apache.felix.gogo.shell' range='0.10.0.v201212101605'/>
       <required namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' range='[1.0.0,2.0.0)' greedy='false'/>
     </hostRequirements>
     <properties size='1'>
       <property name='org.eclipse.equinox.p2.type.fragment' value='true'/>
     </properties>
     <provides size='2'>
-      <provided namespace='org.eclipse.equinox.p2.iu' name='toolinggtk.linux.armorg.eclipse.equinox.console' version='1.0.0'/>
-      <provided namespace='org.eclipse.equinox.p2.flavor' name='toolinggtk.linux.arm' version='1.0.0'/>
+      <provided namespace='org.eclipse.equinox.p2.iu' name='toolingcocoa.macosx.x86_64org.apache.felix.gogo.shell' version='1.0.0'/>
+      <provided namespace='org.eclipse.equinox.p2.flavor' name='toolingcocoa.macosx.x86_64' version='1.0.0'/>
     </provides>
     <requires size='2'>
-      <required namespace='osgi.bundle' name='org.eclipse.equinox.console' range='1.1.0.v20140131-1639'/>
+      <required namespace='osgi.bundle' name='org.apache.felix.gogo.shell' range='0.10.0.v201212101605'/>
       <required namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' range='[1.0.0,2.0.0)' greedy='false'/>
     </requires>
     <filter>
-      (&amp;(osgi.arch=arm)(osgi.os=linux)(osgi.ws=gtk))
+      (&amp;(osgi.arch=x86_64)(osgi.os=macosx)(osgi.ws=cocoa))
     </filter>
     <touchpoint id='null' version='0.0.0'/>
     <touchpointData size='1'>
@@ -827,24 +770,24 @@
       </instructions>
     </touchpointData>
   </unit>
-  <unit id='toolinggtk.linux.armorg.eclipse.om2m.webapp.resourcesbrowser.xml' version='1.0.0' singleton='false'>
+  <unit id='toolingcocoa.macosx.x86_64org.eclipse.om2m.core' version='1.0.0' singleton='false'>
     <hostRequirements size='2'>
-      <required namespace='osgi.bundle' name='org.eclipse.om2m.webapp.resourcesbrowser.xml' range='1.1.0.20190504-1504'/>
+      <required namespace='osgi.bundle' name='org.eclipse.om2m.core' range='1.1.0.20190516-1509'/>
       <required namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' range='[1.0.0,2.0.0)' greedy='false'/>
     </hostRequirements>
     <properties size='1'>
       <property name='org.eclipse.equinox.p2.type.fragment' value='true'/>
     </properties>
     <provides size='2'>
-      <provided namespace='org.eclipse.equinox.p2.iu' name='toolinggtk.linux.armorg.eclipse.om2m.webapp.resourcesbrowser.xml' version='1.0.0'/>
-      <provided namespace='org.eclipse.equinox.p2.flavor' name='toolinggtk.linux.arm' version='1.0.0'/>
+      <provided namespace='org.eclipse.equinox.p2.iu' name='toolingcocoa.macosx.x86_64org.eclipse.om2m.core' version='1.0.0'/>
+      <provided namespace='org.eclipse.equinox.p2.flavor' name='toolingcocoa.macosx.x86_64' version='1.0.0'/>
     </provides>
     <requires size='2'>
-      <required namespace='osgi.bundle' name='org.eclipse.om2m.webapp.resourcesbrowser.xml' range='1.1.0.20190504-1504'/>
+      <required namespace='osgi.bundle' name='org.eclipse.om2m.core' range='1.1.0.20190516-1509'/>
       <required namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' range='[1.0.0,2.0.0)' greedy='false'/>
     </requires>
     <filter>
-      (&amp;(osgi.arch=arm)(osgi.os=linux)(osgi.ws=gtk))
+      (&amp;(osgi.arch=x86_64)(osgi.os=macosx)(osgi.ws=cocoa))
     </filter>
     <touchpoint id='null' version='0.0.0'/>
     <touchpointData size='1'>
@@ -860,6 +803,63 @@
         </instruction>
         <instruction key='unconfigure'>
           setStartLevel(startLevel:-1);markStarted(started: false);
+        </instruction>
+      </instructions>
+    </touchpointData>
+  </unit>
+  <unit id='toolingcocoa.macosx.x86_64org.apache.felix.gogo.command' version='1.0.0' singleton='false'>
+    <hostRequirements size='2'>
+      <required namespace='osgi.bundle' name='org.apache.felix.gogo.command' range='0.10.0.v201209301215'/>
+      <required namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' range='[1.0.0,2.0.0)' greedy='false'/>
+    </hostRequirements>
+    <properties size='1'>
+      <property name='org.eclipse.equinox.p2.type.fragment' value='true'/>
+    </properties>
+    <provides size='2'>
+      <provided namespace='org.eclipse.equinox.p2.iu' name='toolingcocoa.macosx.x86_64org.apache.felix.gogo.command' version='1.0.0'/>
+      <provided namespace='org.eclipse.equinox.p2.flavor' name='toolingcocoa.macosx.x86_64' version='1.0.0'/>
+    </provides>
+    <requires size='2'>
+      <required namespace='osgi.bundle' name='org.apache.felix.gogo.command' range='0.10.0.v201209301215'/>
+      <required namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' range='[1.0.0,2.0.0)' greedy='false'/>
+    </requires>
+    <filter>
+      (&amp;(osgi.arch=x86_64)(osgi.os=macosx)(osgi.ws=cocoa))
+    </filter>
+    <touchpoint id='null' version='0.0.0'/>
+    <touchpointData size='1'>
+      <instructions size='4'>
+        <instruction key='uninstall'>
+          uninstallBundle(bundle:${artifact})
+        </instruction>
+        <instruction key='install'>
+          installBundle(bundle:${artifact})
+        </instruction>
+        <instruction key='configure'>
+          markStarted(started: true);
+        </instruction>
+        <instruction key='unconfigure'>
+          markStarted(started: false);
+        </instruction>
+      </instructions>
+    </touchpointData>
+  </unit>
+  <unit id='toolingasn-cse.ini.cocoa.macosx.x86_64' version='1.0.0' singleton='false'>
+    <provides size='2'>
+      <provided namespace='org.eclipse.equinox.p2.iu' name='toolingasn-cse.ini.cocoa.macosx.x86_64' version='1.0.0'/>
+      <provided namespace='toolingasn-cse' name='asn-cse.ini' version='1.0.0'/>
+    </provides>
+    <filter>
+      (&amp;(osgi.arch=x86_64)(osgi.os=macosx)(osgi.ws=cocoa))
+    </filter>
+    <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+    <touchpointData size='1'>
+      <instructions size='2'>
+        <instruction key='configure'>
+          addJvmArg(jvmArg:-ea);addJvmArg(jvmArg:-Declipse.ignoreApp=true);addJvmArg(jvmArg:-Dosgi.clean=true);addJvmArg(jvmArg:-Ddebug=true);addJvmArg(jvmArg:-XstartOnFirstThread);addJvmArg(jvmArg:-Dorg.eclipse.swt.internal.carbon.smallFonts);addProgramArg(programArg:-console);addProgramArg(programArg:-noExit);addProgramArg(programArg:--launcher.secondThread);
+        </instruction>
+        <instruction key='unconfigure'>
+          removeJvmArg(jvmArg:-ea);removeJvmArg(jvmArg:-Declipse.ignoreApp=true);removeJvmArg(jvmArg:-Dosgi.clean=true);removeJvmArg(jvmArg:-Ddebug=true);removeJvmArg(jvmArg:-XstartOnFirstThread);removeJvmArg(jvmArg:-Dorg.eclipse.swt.internal.carbon.smallFonts);removeProgramArg(programArg:-console);removeProgramArg(programArg:-noExit);removeProgramArg(programArg:--launcher.secondThread);
         </instruction>
       </instructions>
     </touchpointData>

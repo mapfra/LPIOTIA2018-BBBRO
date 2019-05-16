@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-SymbolicName: org.eclipse.om2m.dal.driver.sample
 Bundle-Name: DAL Driver Sample
-Bundle-Version: 1.1.0.20190504-1504
+Bundle-Version: 1.1.0.20190516-1509
 Bundle-ClassPath: .
 Require-Bundle: org.eclipse.om2m.dal,org.eclipse.osgi.services
 Bundle-ManifestVersion: 2

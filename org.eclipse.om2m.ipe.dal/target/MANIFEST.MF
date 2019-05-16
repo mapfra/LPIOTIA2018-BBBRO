@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-SymbolicName: org.eclipse.om2m.ipe.dal
 Bundle-Name: Dal IPE
-Bundle-Version: 1.1.0.20190504-1504
+Bundle-Version: 1.1.0.20190516-1509
 Require-Bundle: org.eclipse.om2m.commons,org.eclipse.om2m.core.service
  ,org.eclipse.om2m.persistence.service,org.eclipse.om2m.dal
 Bundle-ManifestVersion: 2
