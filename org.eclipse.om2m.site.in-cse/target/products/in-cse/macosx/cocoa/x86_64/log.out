@@ -1081,3 +1081,25 @@ Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to serv
 Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
 [2019-05-17 13:18:01,507 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
 Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:18:11,512 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:18:21,519 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:18:31,525 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:18:41,527 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:18:51,538 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:19:01,542 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:19:11,549 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:19:21,551 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:19:31,555 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:19:41,557 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:19:51,561 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
