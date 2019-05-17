@@ -127,12 +127,12 @@
       <property name="org.eclipse.om2m.cseBaseName" value="mn-name" />
       <property name="org.eclipse.om2m.cseBaseProtocol.default" value="http" />
       <property name="org.eclipse.om2m.cseType" value="MN" />
-      <property name="org.eclipse.om2m.dbDriver" value="org.h2.Driver" />
-      <property name="org.eclipse.om2m.dbPassword" value="om2m" />
+      <property name="org.eclipse.om2m.dbDriver" value="org.postgresql.Driver" />
+      <property name="org.eclipse.om2m.dbPassword" value="password" />
       <property name="org.eclipse.om2m.dbReset" value="false" />
-      <!-- EclipseLink -->	<property name="org.eclipse.om2m.dbUrl" value="jdbc:h2:./database/mndb;MULTI_THREADED=1" /> 
+      <!-- EclipseLink -->	<property name="org.eclipse.om2m.dbUrl" value="jdbc:postgres://10.0.4.12/bbbro;MULTI_THREADED=1" /> 
       <!-- MongoDB -->		<!--property name="org.eclipse.om2m.dbUrl" value="127.0.0.1" /--> 
-      <property name="org.eclipse.om2m.dbUser" value="om2m" />
+      <property name="org.eclipse.om2m.dbUser" value="postgres" />
       <property name="org.eclipse.om2m.globalContext" value="" />
       <property name="org.eclipse.om2m.guestRequestingEntity" value="guest:guest" />
       <property name="org.eclipse.om2m.maxNrOfInstances" value="1000" />

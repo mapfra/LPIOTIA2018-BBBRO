@@ -1,0 +1,590 @@
+[2019-05-17 12:50:19,675 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+Starting Data Mapper
+[2019-05-17 12:50:19,676 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+Registering XML Mapper Service..
+[2019-05-17 12:50:25,064 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+XML Mapper service registered.
+[2019-05-17 12:50:25,064 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+Registering JSON Mapper Service..
+[2019-05-17 12:50:28,870 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+JSON Mapper service registered.
+[2019-05-17 12:50:28,875 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+System property [bundles.configuration.location] is not defined.
+[2019-05-17 12:50:28,875 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Using default configurations location [configurations].
+[2019-05-17 12:50:28,876 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Using configuration from [configurations]
+[2019-05-17 12:50:28,876 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Directory [configurations/factories] does not exist.
+[2019-05-17 12:50:28,876 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+System property [bundles.configuration.location] is not defined.
+[2019-05-17 12:50:28,877 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Using default configurations location [configurations].
+[2019-05-17 12:50:28,877 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Using configuration from [configurations]
+[2019-05-17 12:50:28,877 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Directory [configurations/factories] does not exist.
+[2019-05-17 12:50:28,891 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Register configuration [netatmo.sdt.driver]
+[2019-05-17 12:50:28,894 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Register configuration [hue.basedriver]
+[2019-05-17 12:50:28,896 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Register configuration [lifx.basedriver]
+[2019-05-17 12:50:28,897 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Register configuration [smarter.coffee]
+[2019-05-17 12:50:28,900 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Register configuration [sdt.ipe]
+[2019-05-17 12:50:28,901 INFO] - org.eclipse.om2m.binding.http.Activator 
+Register HTTP RestClientService..
+[2019-05-17 12:50:28,906 INFO] - org.eclipse.om2m.binding.http.Activator 
+HTTP RestClientService is registered.
+[2019-05-17 12:50:29,125 INFO] - org.eclipse.om2m.persistence.eclipselink.Activator 
+Starting Persistence JPA plugin...
+[2019-05-17 12:50:29,126 INFO] - org.eclipse.om2m.binding.http.Activator 
+HttpService discovered
+[2019-05-17 12:50:29,127 INFO] - org.eclipse.om2m.binding.http.Activator 
+Register / context
+[2019-05-17 12:50:29,127 INFO] - org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl 
+Initializing Database...
+[2019-05-17 12:50:29,128 INFO] - org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl 
+Creating new EntityManagerFactory...
+[2019-05-17 12:50:29,186 INFO] - org.eclipse.om2m.core.Activator 
+Starting CSE...
+[2019-05-17 12:50:29,186 INFO] - org.eclipse.om2m.core.Activator 
+Added Data Mapper Service: application/xml
+[2019-05-17 12:50:29,186 INFO] - org.eclipse.om2m.core.Activator 
+Added Data Mapper Service: application/json
+[2019-05-17 12:50:29,187 INFO] - org.eclipse.om2m.core.Activator 
+Rest client service discovered. Protocol: http
+[2019-05-17 12:50:29,188 INFO] - org.eclipse.om2m.core.Activator 
+Rest client service discovered. Protocol: mqtt
+[2019-05-17 12:50:29,191 INFO] - org.eclipse.om2m.webapp.resourcesbrowser.json.Activator 
+HttpService discovered
+[2019-05-17 12:50:29,191 INFO] - org.eclipse.om2m.webapp.resourcesbrowser.json.Activator 
+Register /webpage http context
+[2019-05-17 12:50:29,205 INFO] - org.eclipse.om2m.hue.impl.HueBasedriver 
+HueBasedriver ctor
+[2019-05-17 12:50:29,206 INFO] - org.eclipse.om2m.hue.impl.HueBasedriver 
+Activating
+[2019-05-17 12:50:29,210 INFO] - org.eclipse.om2m.hue.impl.HueBasedriver 
+Updating Hue Bridge connection upon the config file
+[2019-05-17 12:50:29,213 INFO] - org.eclipse.om2m.hue.impl.HueBasedriver 
+Config file description url: http://192.168.1.15:80/description.xml, config file user id: null
+[2019-05-17 12:50:29,213 WARN] - org.eclipse.om2m.hue.impl.HueBasedriver 
+No userId for Hue Bridge update...
+[2019-05-17 12:50:29,214 INFO] - org.eclipse.om2m.hue.impl.HueBridgeDiscovery 
+ProcessHueBridge with userId: null
+[2019-05-17 12:50:29,224 INFO] - org.eclipse.om2m.sdt.home.driver.Logger 
+[ONEM2M.Hue] ctor
+[2019-05-17 12:50:29,230 INFO] - org.eclipse.om2m.sdt.home.driver.Logger 
+[ONEM2M.Hue] Activating
+[2019-05-17 12:50:29,231 INFO] - org.eclipse.om2m.sdt.home.driver.Logger 
+[ONEM2M.Hue] Activated <Domain xmlns:xi="http://www.w3.org/2001/XInclude" xmlns="http://homegatewayinitiative.org/xml/dal/3.0" id="Philips Hue Domain">
+</Domain>
+[2019-05-17 12:50:29,892 ERROR] - org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl 
+Error in creation of EntityManagerFactory
+javax.persistence.PersistenceException: Exception [EclipseLink-4003] (Eclipse Persistence Services - 2.5.2.v20140319-9ad6abd): org.eclipse.persistence.exceptions.DatabaseException
+Exception Description: Configuration error.  Class [org.postgresql.Driver] not found.
+	at org.eclipse.persistence.internal.jpa.EntityManagerSetupImpl.deploy(EntityManagerSetupImpl.java:766)
+	at org.eclipse.persistence.internal.jpa.EntityManagerFactoryDelegate.getAbstractSession(EntityManagerFactoryDelegate.java:204)
+	at org.eclipse.persistence.internal.jpa.EntityManagerFactoryDelegate.getDatabaseSession(EntityManagerFactoryDelegate.java:182)
+	at org.eclipse.persistence.internal.jpa.EntityManagerFactoryImpl.getDatabaseSession(EntityManagerFactoryImpl.java:527)
+	at org.eclipse.persistence.jpa.PersistenceProvider.createEntityManagerFactoryImpl(PersistenceProvider.java:140)
+	at org.eclipse.persistence.jpa.PersistenceProvider.createEntityManagerFactory(PersistenceProvider.java:177)
+	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:79)
+	at org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl.init(DBServiceJPAImpl.java:111)
+	at org.eclipse.om2m.persistence.eclipselink.Activator$1.run(Activator.java:51)
+Caused by: Exception [EclipseLink-4003] (Eclipse Persistence Services - 2.5.2.v20140319-9ad6abd): org.eclipse.persistence.exceptions.DatabaseException
+Exception Description: Configuration error.  Class [org.postgresql.Driver] not found.
+	at org.eclipse.persistence.exceptions.DatabaseException.configurationErrorClassNotFound(DatabaseException.java:89)
+	at org.eclipse.persistence.sessions.DefaultConnector.loadDriverClass(DefaultConnector.java:267)
+	at org.eclipse.persistence.sessions.DefaultConnector.connect(DefaultConnector.java:85)
+	at org.eclipse.persistence.sessions.DatasourceLogin.connectToDatasource(DatasourceLogin.java:162)
+	at org.eclipse.persistence.internal.sessions.DatabaseSessionImpl.setOrDetectDatasource(DatabaseSessionImpl.java:204)
+	at org.eclipse.persistence.internal.sessions.DatabaseSessionImpl.loginAndDetectDatasource(DatabaseSessionImpl.java:741)
+	at org.eclipse.persistence.internal.jpa.EntityManagerFactoryProvider.login(EntityManagerFactoryProvider.java:239)
+	at org.eclipse.persistence.internal.jpa.EntityManagerSetupImpl.deploy(EntityManagerSetupImpl.java:685)
+	... 8 more
+[2019-05-17 12:50:29,894 ERROR] - org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl 
+ERROR initializing Database: EntityManagerFactory is null!
+[2019-05-17 12:50:29,894 INFO] - org.eclipse.om2m.persistence.eclipselink.Activator 
+Registering Database (JPA-EL) Service
+[2019-05-17 12:50:29,895 INFO] - org.eclipse.om2m.core.Activator 
+DataBase persistence service discovered
+[2019-05-17 12:50:29,896 INFO] - org.eclipse.om2m.core.thread.CoreExecutor 
+Creating thread pool with corePoolSize=5 & maximumSize=50
+[2019-05-17 12:50:29,898 INFO] - org.eclipse.om2m.core.CSEInitializer 
+Initializating the cseBase
+[2019-05-17 12:56:19,882 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+Starting Data Mapper
+[2019-05-17 12:56:19,883 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+Registering XML Mapper Service..
+[2019-05-17 12:56:25,429 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+XML Mapper service registered.
+[2019-05-17 12:56:25,429 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+Registering JSON Mapper Service..
+[2019-05-17 12:56:29,242 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+JSON Mapper service registered.
+[2019-05-17 12:56:29,248 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+System property [bundles.configuration.location] is not defined.
+[2019-05-17 12:56:29,248 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Using default configurations location [configurations].
+[2019-05-17 12:56:29,248 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Using configuration from [configurations]
+[2019-05-17 12:56:29,248 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Directory [configurations/factories] does not exist.
+[2019-05-17 12:56:29,249 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+System property [bundles.configuration.location] is not defined.
+[2019-05-17 12:56:29,249 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Using default configurations location [configurations].
+[2019-05-17 12:56:29,249 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Using configuration from [configurations]
+[2019-05-17 12:56:29,249 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Directory [configurations/factories] does not exist.
+[2019-05-17 12:56:29,263 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Register configuration [netatmo.sdt.driver]
+[2019-05-17 12:56:29,265 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Register configuration [hue.basedriver]
+[2019-05-17 12:56:29,267 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Register configuration [lifx.basedriver]
+[2019-05-17 12:56:29,269 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Register configuration [smarter.coffee]
+[2019-05-17 12:56:29,271 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Register configuration [sdt.ipe]
+[2019-05-17 12:56:29,273 INFO] - org.eclipse.om2m.binding.http.Activator 
+Register HTTP RestClientService..
+[2019-05-17 12:56:29,278 INFO] - org.eclipse.om2m.binding.http.Activator 
+HTTP RestClientService is registered.
+[2019-05-17 12:56:29,499 INFO] - org.eclipse.om2m.persistence.eclipselink.Activator 
+Starting Persistence JPA plugin...
+[2019-05-17 12:56:29,501 INFO] - org.eclipse.om2m.binding.http.Activator 
+HttpService discovered
+[2019-05-17 12:56:29,502 INFO] - org.eclipse.om2m.binding.http.Activator 
+Register / context
+[2019-05-17 12:56:29,502 INFO] - org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl 
+Initializing Database...
+[2019-05-17 12:56:29,503 INFO] - org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl 
+Creating new EntityManagerFactory...
+[2019-05-17 12:56:29,566 INFO] - org.eclipse.om2m.core.Activator 
+Starting CSE...
+[2019-05-17 12:56:29,567 INFO] - org.eclipse.om2m.core.Activator 
+Added Data Mapper Service: application/xml
+[2019-05-17 12:56:29,567 INFO] - org.eclipse.om2m.core.Activator 
+Added Data Mapper Service: application/json
+[2019-05-17 12:56:29,569 INFO] - org.eclipse.om2m.core.Activator 
+Rest client service discovered. Protocol: http
+[2019-05-17 12:56:29,569 INFO] - org.eclipse.om2m.core.Activator 
+Rest client service discovered. Protocol: mqtt
+[2019-05-17 12:56:29,572 INFO] - org.eclipse.om2m.webapp.resourcesbrowser.json.Activator 
+HttpService discovered
+[2019-05-17 12:56:29,572 INFO] - org.eclipse.om2m.webapp.resourcesbrowser.json.Activator 
+Register /webpage http context
+[2019-05-17 12:56:29,586 INFO] - org.eclipse.om2m.hue.impl.HueBasedriver 
+HueBasedriver ctor
+[2019-05-17 12:56:29,587 INFO] - org.eclipse.om2m.hue.impl.HueBasedriver 
+Activating
+[2019-05-17 12:56:29,592 INFO] - org.eclipse.om2m.hue.impl.HueBasedriver 
+Updating Hue Bridge connection upon the config file
+[2019-05-17 12:56:29,593 INFO] - org.eclipse.om2m.hue.impl.HueBasedriver 
+Config file description url: http://192.168.1.15:80/description.xml, config file user id: null
+[2019-05-17 12:56:29,593 WARN] - org.eclipse.om2m.hue.impl.HueBasedriver 
+No userId for Hue Bridge update...
+[2019-05-17 12:56:29,593 INFO] - org.eclipse.om2m.hue.impl.HueBridgeDiscovery 
+ProcessHueBridge with userId: null
+[2019-05-17 12:56:29,603 INFO] - org.eclipse.om2m.sdt.home.driver.Logger 
+[ONEM2M.Hue] ctor
+[2019-05-17 12:56:29,610 INFO] - org.eclipse.om2m.sdt.home.driver.Logger 
+[ONEM2M.Hue] Activating
+[2019-05-17 12:56:29,610 INFO] - org.eclipse.om2m.sdt.home.driver.Logger 
+[ONEM2M.Hue] Activated <Domain xmlns:xi="http://www.w3.org/2001/XInclude" xmlns="http://homegatewayinitiative.org/xml/dal/3.0" id="Philips Hue Domain">
+</Domain>
+[2019-05-17 12:56:30,265 ERROR] - org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl 
+Error in creation of EntityManagerFactory
+javax.persistence.PersistenceException: Exception [EclipseLink-4003] (Eclipse Persistence Services - 2.5.2.v20140319-9ad6abd): org.eclipse.persistence.exceptions.DatabaseException
+Exception Description: Configuration error.  Class [org.postgresql.Driver] not found.
+	at org.eclipse.persistence.internal.jpa.EntityManagerSetupImpl.deploy(EntityManagerSetupImpl.java:766)
+	at org.eclipse.persistence.internal.jpa.EntityManagerFactoryDelegate.getAbstractSession(EntityManagerFactoryDelegate.java:204)
+	at org.eclipse.persistence.internal.jpa.EntityManagerFactoryDelegate.getDatabaseSession(EntityManagerFactoryDelegate.java:182)
+	at org.eclipse.persistence.internal.jpa.EntityManagerFactoryImpl.getDatabaseSession(EntityManagerFactoryImpl.java:527)
+	at org.eclipse.persistence.jpa.PersistenceProvider.createEntityManagerFactoryImpl(PersistenceProvider.java:140)
+	at org.eclipse.persistence.jpa.PersistenceProvider.createEntityManagerFactory(PersistenceProvider.java:177)
+	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:79)
+	at org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl.init(DBServiceJPAImpl.java:111)
+	at org.eclipse.om2m.persistence.eclipselink.Activator$1.run(Activator.java:51)
+Caused by: Exception [EclipseLink-4003] (Eclipse Persistence Services - 2.5.2.v20140319-9ad6abd): org.eclipse.persistence.exceptions.DatabaseException
+Exception Description: Configuration error.  Class [org.postgresql.Driver] not found.
+	at org.eclipse.persistence.exceptions.DatabaseException.configurationErrorClassNotFound(DatabaseException.java:89)
+	at org.eclipse.persistence.sessions.DefaultConnector.loadDriverClass(DefaultConnector.java:267)
+	at org.eclipse.persistence.sessions.DefaultConnector.connect(DefaultConnector.java:85)
+	at org.eclipse.persistence.sessions.DatasourceLogin.connectToDatasource(DatasourceLogin.java:162)
+	at org.eclipse.persistence.internal.sessions.DatabaseSessionImpl.setOrDetectDatasource(DatabaseSessionImpl.java:204)
+	at org.eclipse.persistence.internal.sessions.DatabaseSessionImpl.loginAndDetectDatasource(DatabaseSessionImpl.java:741)
+	at org.eclipse.persistence.internal.jpa.EntityManagerFactoryProvider.login(EntityManagerFactoryProvider.java:239)
+	at org.eclipse.persistence.internal.jpa.EntityManagerSetupImpl.deploy(EntityManagerSetupImpl.java:685)
+	... 8 more
+[2019-05-17 12:56:30,266 ERROR] - org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl 
+ERROR initializing Database: EntityManagerFactory is null!
+[2019-05-17 12:56:30,267 INFO] - org.eclipse.om2m.persistence.eclipselink.Activator 
+Registering Database (JPA-EL) Service
+[2019-05-17 12:56:30,267 INFO] - org.eclipse.om2m.core.Activator 
+DataBase persistence service discovered
+[2019-05-17 12:56:30,269 INFO] - org.eclipse.om2m.core.thread.CoreExecutor 
+Creating thread pool with corePoolSize=5 & maximumSize=50
+[2019-05-17 12:56:30,271 INFO] - org.eclipse.om2m.core.CSEInitializer 
+Initializating the cseBase
+[2019-05-17 12:57:44,854 WARN] - org.eclipse.om2m.hue.impl.HueBridgeDiscovery 
+
+java.net.ConnectException: Operation timed out (Connection timed out)
+	at java.net.PlainSocketImpl.socketConnect(Native Method)
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:350)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:206)
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:188)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.net.Socket.connect(Socket.java:589)
+	at java.net.Socket.connect(Socket.java:538)
+	at sun.net.NetworkClient.doConnect(NetworkClient.java:180)
+	at sun.net.www.http.HttpClient.openServer(HttpClient.java:463)
+	at sun.net.www.http.HttpClient.openServer(HttpClient.java:558)
+	at sun.net.www.http.HttpClient.<init>(HttpClient.java:242)
+	at sun.net.www.http.HttpClient.New(HttpClient.java:339)
+	at sun.net.www.http.HttpClient.New(HttpClient.java:357)
+	at sun.net.www.protocol.http.HttpURLConnection.getNewHttpClient(HttpURLConnection.java:1220)
+	at sun.net.www.protocol.http.HttpURLConnection.plainConnect0(HttpURLConnection.java:1156)
+	at sun.net.www.protocol.http.HttpURLConnection.plainConnect(HttpURLConnection.java:1050)
+	at sun.net.www.protocol.http.HttpURLConnection.connect(HttpURLConnection.java:984)
+	at sun.net.www.protocol.http.HttpURLConnection.getInputStream0(HttpURLConnection.java:1564)
+	at sun.net.www.protocol.http.HttpURLConnection.getInputStream(HttpURLConnection.java:1492)
+	at java.net.URL.openStream(URL.java:1045)
+	at org.eclipse.om2m.hue.impl.HueBridgeDiscovery.processHueBridge(HueBridgeDiscovery.java:98)
+	at org.eclipse.om2m.hue.impl.HueBridgeDiscovery.processHueBridge(HueBridgeDiscovery.java:132)
+	at org.eclipse.om2m.hue.impl.HueBasedriver$4.run(HueBasedriver.java:437)
+	at org.eclipse.om2m.hue.impl.HueBasedriver.updated(HueBasedriver.java:447)
+	at org.eclipse.equinox.internal.cm.ManagedServiceTracker$1.run(ManagedServiceTracker.java:276)
+	at org.eclipse.equinox.internal.cm.SerializedTaskQueue$1.run(SerializedTaskQueue.java:36)
+[2019-05-17 12:57:44,857 WARN] - org.eclipse.om2m.hue.impl.HueBasedriver 
+Error processing new bridge
+java.io.IOException: java.net.ConnectException: Operation timed out (Connection timed out)
+	at org.eclipse.om2m.hue.impl.HueBridgeDiscovery.processHueBridge(HueBridgeDiscovery.java:135)
+	at org.eclipse.om2m.hue.impl.HueBasedriver$4.run(HueBasedriver.java:437)
+	at org.eclipse.om2m.hue.impl.HueBasedriver.updated(HueBasedriver.java:447)
+	at org.eclipse.equinox.internal.cm.ManagedServiceTracker$1.run(ManagedServiceTracker.java:276)
+	at org.eclipse.equinox.internal.cm.SerializedTaskQueue$1.run(SerializedTaskQueue.java:36)
+Caused by: java.net.ConnectException: Operation timed out (Connection timed out)
+	at java.net.PlainSocketImpl.socketConnect(Native Method)
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:350)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:206)
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:188)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.net.Socket.connect(Socket.java:589)
+	at java.net.Socket.connect(Socket.java:538)
+	at sun.net.NetworkClient.doConnect(NetworkClient.java:180)
+	at sun.net.www.http.HttpClient.openServer(HttpClient.java:463)
+	at sun.net.www.http.HttpClient.openServer(HttpClient.java:558)
+	at sun.net.www.http.HttpClient.<init>(HttpClient.java:242)
+	at sun.net.www.http.HttpClient.New(HttpClient.java:339)
+	at sun.net.www.http.HttpClient.New(HttpClient.java:357)
+	at sun.net.www.protocol.http.HttpURLConnection.getNewHttpClient(HttpURLConnection.java:1220)
+	at sun.net.www.protocol.http.HttpURLConnection.plainConnect0(HttpURLConnection.java:1156)
+	at sun.net.www.protocol.http.HttpURLConnection.plainConnect(HttpURLConnection.java:1050)
+	at sun.net.www.protocol.http.HttpURLConnection.connect(HttpURLConnection.java:984)
+	at sun.net.www.protocol.http.HttpURLConnection.getInputStream0(HttpURLConnection.java:1564)
+	at sun.net.www.protocol.http.HttpURLConnection.getInputStream(HttpURLConnection.java:1492)
+	at java.net.URL.openStream(URL.java:1045)
+	at org.eclipse.om2m.hue.impl.HueBridgeDiscovery.processHueBridge(HueBridgeDiscovery.java:98)
+	at org.eclipse.om2m.hue.impl.HueBridgeDiscovery.processHueBridge(HueBridgeDiscovery.java:132)
+	... 4 more
+[2019-05-17 13:04:48,518 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+Starting Data Mapper
+[2019-05-17 13:04:48,519 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+Registering XML Mapper Service..
+[2019-05-17 13:04:54,230 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+XML Mapper service registered.
+[2019-05-17 13:04:54,231 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+Registering JSON Mapper Service..
+[2019-05-17 13:04:57,979 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+JSON Mapper service registered.
+[2019-05-17 13:04:57,984 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+System property [bundles.configuration.location] is not defined.
+[2019-05-17 13:04:57,984 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Using default configurations location [configurations].
+[2019-05-17 13:04:57,984 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Using configuration from [configurations]
+[2019-05-17 13:04:57,984 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Directory [configurations/factories] does not exist.
+[2019-05-17 13:04:57,985 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+System property [bundles.configuration.location] is not defined.
+[2019-05-17 13:04:57,985 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Using default configurations location [configurations].
+[2019-05-17 13:04:57,985 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Using configuration from [configurations]
+[2019-05-17 13:04:57,985 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Directory [configurations/factories] does not exist.
+[2019-05-17 13:04:58,000 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Register configuration [netatmo.sdt.driver]
+[2019-05-17 13:04:58,005 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Register configuration [hue.basedriver]
+[2019-05-17 13:04:58,007 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Register configuration [lifx.basedriver]
+[2019-05-17 13:04:58,009 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Register configuration [smarter.coffee]
+[2019-05-17 13:04:58,011 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Register configuration [sdt.ipe]
+[2019-05-17 13:04:58,013 INFO] - org.eclipse.om2m.binding.http.Activator 
+Register HTTP RestClientService..
+[2019-05-17 13:04:58,019 INFO] - org.eclipse.om2m.binding.http.Activator 
+HTTP RestClientService is registered.
+[2019-05-17 13:04:58,238 INFO] - org.eclipse.om2m.persistence.eclipselink.Activator 
+Starting Persistence JPA plugin...
+[2019-05-17 13:04:58,239 INFO] - org.eclipse.om2m.binding.http.Activator 
+HttpService discovered
+[2019-05-17 13:04:58,240 INFO] - org.eclipse.om2m.binding.http.Activator 
+Register / context
+[2019-05-17 13:04:58,241 INFO] - org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl 
+Initializing Database...
+[2019-05-17 13:04:58,241 INFO] - org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl 
+Creating new EntityManagerFactory...
+[2019-05-17 13:04:58,307 INFO] - org.eclipse.om2m.core.Activator 
+Starting CSE...
+[2019-05-17 13:04:58,308 INFO] - org.eclipse.om2m.core.Activator 
+Added Data Mapper Service: application/xml
+[2019-05-17 13:04:58,308 INFO] - org.eclipse.om2m.core.Activator 
+Added Data Mapper Service: application/json
+[2019-05-17 13:04:58,309 INFO] - org.eclipse.om2m.core.Activator 
+Rest client service discovered. Protocol: http
+[2019-05-17 13:04:58,310 INFO] - org.eclipse.om2m.core.Activator 
+Rest client service discovered. Protocol: mqtt
+[2019-05-17 13:04:58,313 INFO] - org.eclipse.om2m.webapp.resourcesbrowser.json.Activator 
+HttpService discovered
+[2019-05-17 13:04:58,313 INFO] - org.eclipse.om2m.webapp.resourcesbrowser.json.Activator 
+Register /webpage http context
+[2019-05-17 13:04:58,327 INFO] - org.eclipse.om2m.hue.impl.HueBasedriver 
+HueBasedriver ctor
+[2019-05-17 13:04:58,328 INFO] - org.eclipse.om2m.hue.impl.HueBasedriver 
+Activating
+[2019-05-17 13:04:58,334 INFO] - org.eclipse.om2m.hue.impl.HueBasedriver 
+Updating Hue Bridge connection upon the config file
+[2019-05-17 13:04:58,335 INFO] - org.eclipse.om2m.hue.impl.HueBasedriver 
+Config file description url: http://192.168.1.15:80/description.xml, config file user id: null
+[2019-05-17 13:04:58,335 WARN] - org.eclipse.om2m.hue.impl.HueBasedriver 
+No userId for Hue Bridge update...
+[2019-05-17 13:04:58,336 INFO] - org.eclipse.om2m.hue.impl.HueBridgeDiscovery 
+ProcessHueBridge with userId: null
+[2019-05-17 13:04:58,346 INFO] - org.eclipse.om2m.sdt.home.driver.Logger 
+[ONEM2M.Hue] ctor
+[2019-05-17 13:04:58,353 INFO] - org.eclipse.om2m.sdt.home.driver.Logger 
+[ONEM2M.Hue] Activating
+[2019-05-17 13:04:58,354 INFO] - org.eclipse.om2m.sdt.home.driver.Logger 
+[ONEM2M.Hue] Activated <Domain xmlns:xi="http://www.w3.org/2001/XInclude" xmlns="http://homegatewayinitiative.org/xml/dal/3.0" id="Philips Hue Domain">
+</Domain>
+[2019-05-17 13:04:59,020 ERROR] - org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl 
+Error in creation of EntityManagerFactory
+javax.persistence.PersistenceException: Exception [EclipseLink-4003] (Eclipse Persistence Services - 2.5.2.v20140319-9ad6abd): org.eclipse.persistence.exceptions.DatabaseException
+Exception Description: Configuration error.  Class [org.postgresql.Driver] not found.
+	at org.eclipse.persistence.internal.jpa.EntityManagerSetupImpl.deploy(EntityManagerSetupImpl.java:766)
+	at org.eclipse.persistence.internal.jpa.EntityManagerFactoryDelegate.getAbstractSession(EntityManagerFactoryDelegate.java:204)
+	at org.eclipse.persistence.internal.jpa.EntityManagerFactoryDelegate.getDatabaseSession(EntityManagerFactoryDelegate.java:182)
+	at org.eclipse.persistence.internal.jpa.EntityManagerFactoryImpl.getDatabaseSession(EntityManagerFactoryImpl.java:527)
+	at org.eclipse.persistence.jpa.PersistenceProvider.createEntityManagerFactoryImpl(PersistenceProvider.java:140)
+	at org.eclipse.persistence.jpa.PersistenceProvider.createEntityManagerFactory(PersistenceProvider.java:177)
+	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:79)
+	at org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl.init(DBServiceJPAImpl.java:111)
+	at org.eclipse.om2m.persistence.eclipselink.Activator$1.run(Activator.java:51)
+Caused by: Exception [EclipseLink-4003] (Eclipse Persistence Services - 2.5.2.v20140319-9ad6abd): org.eclipse.persistence.exceptions.DatabaseException
+Exception Description: Configuration error.  Class [org.postgresql.Driver] not found.
+	at org.eclipse.persistence.exceptions.DatabaseException.configurationErrorClassNotFound(DatabaseException.java:89)
+	at org.eclipse.persistence.sessions.DefaultConnector.loadDriverClass(DefaultConnector.java:267)
+	at org.eclipse.persistence.sessions.DefaultConnector.connect(DefaultConnector.java:85)
+	at org.eclipse.persistence.sessions.DatasourceLogin.connectToDatasource(DatasourceLogin.java:162)
+	at org.eclipse.persistence.internal.sessions.DatabaseSessionImpl.setOrDetectDatasource(DatabaseSessionImpl.java:204)
+	at org.eclipse.persistence.internal.sessions.DatabaseSessionImpl.loginAndDetectDatasource(DatabaseSessionImpl.java:741)
+	at org.eclipse.persistence.internal.jpa.EntityManagerFactoryProvider.login(EntityManagerFactoryProvider.java:239)
+	at org.eclipse.persistence.internal.jpa.EntityManagerSetupImpl.deploy(EntityManagerSetupImpl.java:685)
+	... 8 more
+[2019-05-17 13:04:59,022 ERROR] - org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl 
+ERROR initializing Database: EntityManagerFactory is null!
+[2019-05-17 13:04:59,022 INFO] - org.eclipse.om2m.persistence.eclipselink.Activator 
+Registering Database (JPA-EL) Service
+[2019-05-17 13:04:59,023 INFO] - org.eclipse.om2m.core.Activator 
+DataBase persistence service discovered
+[2019-05-17 13:04:59,024 INFO] - org.eclipse.om2m.core.thread.CoreExecutor 
+Creating thread pool with corePoolSize=5 & maximumSize=50
+[2019-05-17 13:04:59,026 INFO] - org.eclipse.om2m.core.CSEInitializer 
+Initializating the cseBase
+[2019-05-17 13:10:26,889 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+Starting Data Mapper
+[2019-05-17 13:10:26,890 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+Registering XML Mapper Service..
+[2019-05-17 13:10:32,318 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+XML Mapper service registered.
+[2019-05-17 13:10:32,318 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+Registering JSON Mapper Service..
+[2019-05-17 13:10:36,071 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+JSON Mapper service registered.
+[2019-05-17 13:10:36,075 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+System property [bundles.configuration.location] is not defined.
+[2019-05-17 13:10:36,075 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Using default configurations location [configurations].
+[2019-05-17 13:10:36,075 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Using configuration from [configurations]
+[2019-05-17 13:10:36,075 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Directory [configurations/factories] does not exist.
+[2019-05-17 13:10:36,076 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+System property [bundles.configuration.location] is not defined.
+[2019-05-17 13:10:36,076 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Using default configurations location [configurations].
+[2019-05-17 13:10:36,076 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Using configuration from [configurations]
+[2019-05-17 13:10:36,076 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Directory [configurations/factories] does not exist.
+[2019-05-17 13:10:36,091 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Register configuration [netatmo.sdt.driver]
+[2019-05-17 13:10:36,093 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Register configuration [hue.basedriver]
+[2019-05-17 13:10:36,095 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Register configuration [lifx.basedriver]
+[2019-05-17 13:10:36,097 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Register configuration [smarter.coffee]
+[2019-05-17 13:10:36,099 INFO] - org.ops4j.pax.configmanager.internal.ConfigurationAdminFacade 
+Register configuration [sdt.ipe]
+[2019-05-17 13:10:36,100 INFO] - org.eclipse.om2m.binding.http.Activator 
+Register HTTP RestClientService..
+[2019-05-17 13:10:36,104 INFO] - org.eclipse.om2m.binding.http.Activator 
+HTTP RestClientService is registered.
+[2019-05-17 13:10:36,328 INFO] - org.eclipse.om2m.persistence.eclipselink.Activator 
+Starting Persistence JPA plugin...
+[2019-05-17 13:10:36,329 INFO] - org.eclipse.om2m.binding.http.Activator 
+HttpService discovered
+[2019-05-17 13:10:36,330 INFO] - org.eclipse.om2m.binding.http.Activator 
+Register / context
+[2019-05-17 13:10:36,331 INFO] - org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl 
+Initializing Database...
+[2019-05-17 13:10:36,331 INFO] - org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl 
+Creating new EntityManagerFactory...
+[2019-05-17 13:10:36,394 INFO] - org.eclipse.om2m.core.Activator 
+Starting CSE...
+[2019-05-17 13:10:36,395 INFO] - org.eclipse.om2m.core.Activator 
+Added Data Mapper Service: application/xml
+[2019-05-17 13:10:36,395 INFO] - org.eclipse.om2m.core.Activator 
+Added Data Mapper Service: application/json
+[2019-05-17 13:10:36,396 INFO] - org.eclipse.om2m.core.Activator 
+Rest client service discovered. Protocol: http
+[2019-05-17 13:10:36,397 INFO] - org.eclipse.om2m.core.Activator 
+Rest client service discovered. Protocol: mqtt
+[2019-05-17 13:10:36,399 INFO] - org.eclipse.om2m.webapp.resourcesbrowser.json.Activator 
+HttpService discovered
+[2019-05-17 13:10:36,400 INFO] - org.eclipse.om2m.webapp.resourcesbrowser.json.Activator 
+Register /webpage http context
+[2019-05-17 13:10:36,416 INFO] - org.eclipse.om2m.hue.impl.HueBasedriver 
+HueBasedriver ctor
+[2019-05-17 13:10:36,417 INFO] - org.eclipse.om2m.hue.impl.HueBasedriver 
+Activating
+[2019-05-17 13:10:36,423 INFO] - org.eclipse.om2m.hue.impl.HueBasedriver 
+Updating Hue Bridge connection upon the config file
+[2019-05-17 13:10:36,424 INFO] - org.eclipse.om2m.hue.impl.HueBasedriver 
+Config file description url: http://192.168.1.15:80/description.xml, config file user id: null
+[2019-05-17 13:10:36,424 WARN] - org.eclipse.om2m.hue.impl.HueBasedriver 
+No userId for Hue Bridge update...
+[2019-05-17 13:10:36,425 INFO] - org.eclipse.om2m.hue.impl.HueBridgeDiscovery 
+ProcessHueBridge with userId: null
+[2019-05-17 13:10:36,436 INFO] - org.eclipse.om2m.sdt.home.driver.Logger 
+[ONEM2M.Hue] ctor
+[2019-05-17 13:10:36,443 INFO] - org.eclipse.om2m.sdt.home.driver.Logger 
+[ONEM2M.Hue] Activating
+[2019-05-17 13:10:36,443 INFO] - org.eclipse.om2m.sdt.home.driver.Logger 
+[ONEM2M.Hue] Activated <Domain xmlns:xi="http://www.w3.org/2001/XInclude" xmlns="http://homegatewayinitiative.org/xml/dal/3.0" id="Philips Hue Domain">
+</Domain>
+[2019-05-17 13:10:37,119 ERROR] - org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl 
+Error in creation of EntityManagerFactory
+javax.persistence.PersistenceException: Exception [EclipseLink-4003] (Eclipse Persistence Services - 2.5.2.v20140319-9ad6abd): org.eclipse.persistence.exceptions.DatabaseException
+Exception Description: Configuration error.  Class [org.postgresql.Driver] not found.
+	at org.eclipse.persistence.internal.jpa.EntityManagerSetupImpl.deploy(EntityManagerSetupImpl.java:766)
+	at org.eclipse.persistence.internal.jpa.EntityManagerFactoryDelegate.getAbstractSession(EntityManagerFactoryDelegate.java:204)
+	at org.eclipse.persistence.internal.jpa.EntityManagerFactoryDelegate.getDatabaseSession(EntityManagerFactoryDelegate.java:182)
+	at org.eclipse.persistence.internal.jpa.EntityManagerFactoryImpl.getDatabaseSession(EntityManagerFactoryImpl.java:527)
+	at org.eclipse.persistence.jpa.PersistenceProvider.createEntityManagerFactoryImpl(PersistenceProvider.java:140)
+	at org.eclipse.persistence.jpa.PersistenceProvider.createEntityManagerFactory(PersistenceProvider.java:177)
+	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:79)
+	at org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl.init(DBServiceJPAImpl.java:111)
+	at org.eclipse.om2m.persistence.eclipselink.Activator$1.run(Activator.java:51)
+Caused by: Exception [EclipseLink-4003] (Eclipse Persistence Services - 2.5.2.v20140319-9ad6abd): org.eclipse.persistence.exceptions.DatabaseException
+Exception Description: Configuration error.  Class [org.postgresql.Driver] not found.
+	at org.eclipse.persistence.exceptions.DatabaseException.configurationErrorClassNotFound(DatabaseException.java:89)
+	at org.eclipse.persistence.sessions.DefaultConnector.loadDriverClass(DefaultConnector.java:267)
+	at org.eclipse.persistence.sessions.DefaultConnector.connect(DefaultConnector.java:85)
+	at org.eclipse.persistence.sessions.DatasourceLogin.connectToDatasource(DatasourceLogin.java:162)
+	at org.eclipse.persistence.internal.sessions.DatabaseSessionImpl.setOrDetectDatasource(DatabaseSessionImpl.java:204)
+	at org.eclipse.persistence.internal.sessions.DatabaseSessionImpl.loginAndDetectDatasource(DatabaseSessionImpl.java:741)
+	at org.eclipse.persistence.internal.jpa.EntityManagerFactoryProvider.login(EntityManagerFactoryProvider.java:239)
+	at org.eclipse.persistence.internal.jpa.EntityManagerSetupImpl.deploy(EntityManagerSetupImpl.java:685)
+	... 8 more
+[2019-05-17 13:10:37,120 ERROR] - org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl 
+ERROR initializing Database: EntityManagerFactory is null!
+[2019-05-17 13:10:37,120 INFO] - org.eclipse.om2m.persistence.eclipselink.Activator 
+Registering Database (JPA-EL) Service
+[2019-05-17 13:10:37,121 INFO] - org.eclipse.om2m.core.Activator 
+DataBase persistence service discovered
+[2019-05-17 13:10:37,123 INFO] - org.eclipse.om2m.core.thread.CoreExecutor 
+Creating thread pool with corePoolSize=5 & maximumSize=50
+[2019-05-17 13:10:37,125 INFO] - org.eclipse.om2m.core.CSEInitializer 
+Initializating the cseBase
+[2019-05-17 13:11:51,621 WARN] - org.eclipse.om2m.hue.impl.HueBridgeDiscovery 
+
+java.net.ConnectException: Operation timed out (Connection timed out)
+	at java.net.PlainSocketImpl.socketConnect(Native Method)
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:350)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:206)
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:188)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.net.Socket.connect(Socket.java:589)
+	at java.net.Socket.connect(Socket.java:538)
+	at sun.net.NetworkClient.doConnect(NetworkClient.java:180)
+	at sun.net.www.http.HttpClient.openServer(HttpClient.java:463)
+	at sun.net.www.http.HttpClient.openServer(HttpClient.java:558)
+	at sun.net.www.http.HttpClient.<init>(HttpClient.java:242)
+	at sun.net.www.http.HttpClient.New(HttpClient.java:339)
+	at sun.net.www.http.HttpClient.New(HttpClient.java:357)
+	at sun.net.www.protocol.http.HttpURLConnection.getNewHttpClient(HttpURLConnection.java:1220)
+	at sun.net.www.protocol.http.HttpURLConnection.plainConnect0(HttpURLConnection.java:1156)
+	at sun.net.www.protocol.http.HttpURLConnection.plainConnect(HttpURLConnection.java:1050)
+	at sun.net.www.protocol.http.HttpURLConnection.connect(HttpURLConnection.java:984)
+	at sun.net.www.protocol.http.HttpURLConnection.getInputStream0(HttpURLConnection.java:1564)
+	at sun.net.www.protocol.http.HttpURLConnection.getInputStream(HttpURLConnection.java:1492)
+	at java.net.URL.openStream(URL.java:1045)
+	at org.eclipse.om2m.hue.impl.HueBridgeDiscovery.processHueBridge(HueBridgeDiscovery.java:98)
+	at org.eclipse.om2m.hue.impl.HueBridgeDiscovery.processHueBridge(HueBridgeDiscovery.java:132)
+	at org.eclipse.om2m.hue.impl.HueBasedriver$4.run(HueBasedriver.java:437)
+	at org.eclipse.om2m.hue.impl.HueBasedriver.updated(HueBasedriver.java:447)
+	at org.eclipse.equinox.internal.cm.ManagedServiceTracker$1.run(ManagedServiceTracker.java:276)
+	at org.eclipse.equinox.internal.cm.SerializedTaskQueue$1.run(SerializedTaskQueue.java:36)
+[2019-05-17 13:11:51,622 WARN] - org.eclipse.om2m.hue.impl.HueBasedriver 
+Error processing new bridge
+java.io.IOException: java.net.ConnectException: Operation timed out (Connection timed out)
+	at org.eclipse.om2m.hue.impl.HueBridgeDiscovery.processHueBridge(HueBridgeDiscovery.java:135)
+	at org.eclipse.om2m.hue.impl.HueBasedriver$4.run(HueBasedriver.java:437)
+	at org.eclipse.om2m.hue.impl.HueBasedriver.updated(HueBasedriver.java:447)
+	at org.eclipse.equinox.internal.cm.ManagedServiceTracker$1.run(ManagedServiceTracker.java:276)
+	at org.eclipse.equinox.internal.cm.SerializedTaskQueue$1.run(SerializedTaskQueue.java:36)
+Caused by: java.net.ConnectException: Operation timed out (Connection timed out)
+	at java.net.PlainSocketImpl.socketConnect(Native Method)
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:350)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:206)
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:188)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.net.Socket.connect(Socket.java:589)
+	at java.net.Socket.connect(Socket.java:538)
+	at sun.net.NetworkClient.doConnect(NetworkClient.java:180)
+	at sun.net.www.http.HttpClient.openServer(HttpClient.java:463)
+	at sun.net.www.http.HttpClient.openServer(HttpClient.java:558)
+	at sun.net.www.http.HttpClient.<init>(HttpClient.java:242)
+	at sun.net.www.http.HttpClient.New(HttpClient.java:339)
+	at sun.net.www.http.HttpClient.New(HttpClient.java:357)
+	at sun.net.www.protocol.http.HttpURLConnection.getNewHttpClient(HttpURLConnection.java:1220)
+	at sun.net.www.protocol.http.HttpURLConnection.plainConnect0(HttpURLConnection.java:1156)
+	at sun.net.www.protocol.http.HttpURLConnection.plainConnect(HttpURLConnection.java:1050)
+	at sun.net.www.protocol.http.HttpURLConnection.connect(HttpURLConnection.java:984)
+	at sun.net.www.protocol.http.HttpURLConnection.getInputStream0(HttpURLConnection.java:1564)
+	at sun.net.www.protocol.http.HttpURLConnection.getInputStream(HttpURLConnection.java:1492)
+	at java.net.URL.openStream(URL.java:1045)
+	at org.eclipse.om2m.hue.impl.HueBridgeDiscovery.processHueBridge(HueBridgeDiscovery.java:98)
+	at org.eclipse.om2m.hue.impl.HueBridgeDiscovery.processHueBridge(HueBridgeDiscovery.java:132)
+	... 4 more
