@@ -116,7 +116,7 @@ void loop()
   }
 
   buttonState = digitalRead(pin);//lecture du capteur
- 
+ //Up front detection
   if(buttonState == HIGH){ //si quelquechose est detecte
     if (pirState == LOW) {
       // we have just turned on
@@ -129,19 +129,23 @@ void loop()
       int msgLen = 0;
       time_t timer;
       time(&timer);
+      //The message has to be dimensionned in order to be sent properly through mqtt publish
       msgLen = String("{\"m2m:rqp\":{\"m2m:fr\":\"admin:admin\",\"m2m:to\":\"/mn-cse/cnt-542942786\",\"m2m:op\":1,\"m2m:rqi\":123456,\"m2m:pc\":{\"m2m:cin\":{\"cnf\":\"message\",\"con\":\"detected "+String(timer)+"\"}},\"m2m:ty\":4}}").length();
       Serial.println(msgLen);
+      //Send long messages to om2m via mqtt
+      //Initialialization of the long message to be sent ("topic imposed by om2m mqtt binding /om2m/req/<originator>/<destinator>/<format>", length, retained) 
       client.beginPublish("/oneM2M/req/AE_arduinoPresence/mn-cse/json", msgLen, false);
+      //80 char max per submission
       client.print("{\"m2m:rqp\":{\"m2m:fr\":\"admin:admin\",\"m2m:to\":\"/mn-cse/cnt-542942786\",");
       client.print("\"m2m:op\":1,\"m2m:rqi\":123456,\"m2m:pc\":{\"m2m:cin\":{\"cnf\":\"message\",\"");
       client.print("con\":\"detected "+String(timer)+"\"}},\"m2m:ty\":4}}");
+      //end message
       Serial.println(client.endPublish());
     }
     
     
   }
-
-  else //sinon
+  else //Else Low front detection
   {
     if (pirState == HIGH){
       // we have just turned of
