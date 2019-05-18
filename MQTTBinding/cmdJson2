@@ -1,1 +1,0 @@
-mosquitto_pub -h localhost -m '{"m2m:rqp" : {"m2m:fr" : "admin:admin","m2m:to" : "/mn-cse/cnt-542942786","m2m:op" : 1,"m2m:rqi": 123456,"m2m:pc": {"m2m:cin" : {"cnf": "message","con": "test"}},"m2m:ty": 4}}' -t /oneM2M/req/AE_arduinoPresence/mn-cse/json
