@@ -1,0 +1,91 @@
+{
+	"info": {
+		"_postman_id": "aab7689d-c2b7-4cce-a134-c79839c08746",
+		"name": "MyCollection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+			{
+			"name": "http://10.0.4.12:8080/~/mn-cse",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-M2M-Origin",
+						"value": "admin:admin",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json; ty=2",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"m2m:ae\": {\n        \"rn\": \"arduinoDistance\",\n        \"rr\": false,\n        \"api\": \"app-sensor\"\n    }\n}"
+				},
+				"url": {
+					"raw": "http://10.0.4.12:8080/~/mn-cse",
+					"protocol": "http",
+					"host": [
+						"10",
+						"0",
+						"4",
+						"12"
+					],
+					"port": "8080",
+					"path": [
+						"~",
+						"mn-cse"
+					]
+				},
+				"description": "Création AE"
+			},
+			"response": []
+		},
+		{
+			"name": "http://10.0.4.12:8080/~/mn-cse/CAE220525133",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-M2M-Origin",
+						"value": "admin:admin",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json; ty=3",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"m2m:cnt\": {\n        \"rn\": \"Salon\",\n        \"mni\": 1000\n    }\n}"
+				},
+				"url": {
+					"raw": "http://10.0.4.12:8080/~/mn-cse/CAE220525133",
+					"protocol": "http",
+					"host": [
+						"10",
+						"0",
+						"4",
+						"12"
+					],
+					"port": "8080",
+					"path": [
+						"~",
+						"mn-cse",
+						"CAE220525133"
+					]
+				},
+				"description": "Créatio ressource ty=3"
+			},
+			"response": []
+		}
+
+	]
+}
