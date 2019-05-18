@@ -1,0 +1,172 @@
+.app_logo_new_delegation { 
+	.img-thumbnail;
+	width: 70px;
+	height: 70px;
+}
+
+.app_logo_list_delegations {
+	.img-responsive;
+	width: 70px;
+	height: 70px;
+}
+
+.cont {
+	margin-top: 15px;
+	margin-left: 15px;
+	margin-right:15px;
+	margin-bottom:15px;
+}
+
+.table > tbody > tr > td {
+     vertical-align: middle;
+}
+
+table {    
+	border-spacing: 10px 0px;
+}
+
+
+li.waterSensor a {
+	color:blue;
+	background-color:#f0f2ff;
+}
+
+li.waterLevel a {
+	color:navy;
+	background-color:#fffdf0;
+}
+
+li.faultDetection a {
+	color:purple;
+	background-color:azure;
+}
+
+li.alarmSpeaker a {
+	color:#685fa0;
+	background-color:#f3ffb0;
+}
+
+li.color a {
+	color:orange;
+	background-color:#c0c0c0;
+}
+
+li.colorSaturation a {
+	color:fuchsia;
+	background-color:#cafffe;
+}
+
+li.binarySwitch a {
+	color:#b900b9;
+	background-color:#f3d6f1;
+}
+
+li.runMode a {
+	color:black;
+	background-color:#f3f4fe;
+}
+
+li.smokeSensor a {
+	color:teal;
+	background-color:#e9fefe;
+}
+
+li.energyGeneration a {
+	color:#004040;
+		background-color:#eee6ff;
+}
+
+li.energyConsumption a {
+	color:black;
+	background-color:#FFFFB0;
+}
+
+li.clock a {
+	color:aqua;
+	color:#c0c0c0;
+}
+
+li.personSensor a {
+	color:black;
+	background-color:#ffe6f9;
+	}
+
+li.streaming a {
+		color:#ea6400;
+	background-color:#fff1e6;
+}
+
+li.noise a {
+	color:#000000;
+	background-color:#dfe8c1;	
+}
+
+li.extendedCarbonDioxideSensor a {
+	color:#000000;
+	background-color:#d4d4d4;	
+}
+
+li.atmosphericPressureSensor a {
+	color:#0000a0;
+	background-color:#ccf9f8;	
+}
+
+li.temperature a {
+	color:#000000;
+	background-color:#fffdaa;	
+}
+
+li.relativeHumidity a {
+	color:#000000;
+	background-color:#d7deff;	
+}
+
+li.colour a {
+	color:#ffffff;
+	background-color:#0000a0;	
+}
+
+li.colourSaturation a {
+	color:#000000;
+	background-color:#81fcef;	
+}
+
+li.lock a {
+	color:#000000;
+	background-color:#c1b0cc;	
+}
+
+li.doorStatus a {
+	color:#000000;
+	background-color:#e9f2db;	
+}
+
+li.grinder a {
+	color:#ffffff;
+	background-color:#794041;	
+}
+
+li.brewing a {
+	color:#ffffff;
+	background-color:#354755;	
+}
+
+li.level a {
+	color:#ffffff;
+	background-color:#44dde6;	
+}
+
+li.contactSensor a {
+	color:#ffffff;
+	background-color:#ff0080;
+}
+
+li.motionSensor a {
+	color:#ffffff;
+	background-color:#ff00ff;
+}
+
+li.brightness a {
+	color:#ff0000;
+	background-color:#ff8040;
+}

@@ -1,0 +1,20 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: IPE SDT Sample
+Bundle-SymbolicName: org.eclipse.om2m.ipe.sample.sdt
+Bundle-Version: 1.1.0.qualifier
+Bundle-Activator: org.eclipse.om2m.ipe.sample.sdt.Activator
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Import-Package: org.apache.commons.logging,
+ org.eclipse.om2m.sdt,
+ org.eclipse.om2m.sdt.datapoints,
+ org.eclipse.om2m.sdt.events,
+ org.eclipse.om2m.sdt.exceptions,
+ org.eclipse.om2m.sdt.home,
+ org.eclipse.om2m.sdt.home.actions,
+ org.eclipse.om2m.sdt.home.devices,
+ org.eclipse.om2m.sdt.home.driver,
+ org.eclipse.om2m.sdt.home.modules,
+ org.eclipse.om2m.sdt.home.types,
+ org.osgi.framework

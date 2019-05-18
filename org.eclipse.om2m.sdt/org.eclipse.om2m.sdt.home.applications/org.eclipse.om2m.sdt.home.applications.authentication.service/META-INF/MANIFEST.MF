@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: org.eclipse.om2m.sdt.home.monitoring.authentication.service
+Bundle-SymbolicName: org.eclipse.om2m.sdt.home.monitoring.authentication.service
+Bundle-Version: 1.1.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ClassPath: .
+Export-Package: org.eclipse.om2m.sdt.home.monitoring.authentication.service

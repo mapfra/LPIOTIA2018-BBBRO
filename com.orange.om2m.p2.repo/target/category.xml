@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <bundle id="org.eclipse.om2m.binding.coap" version="1.1.0.qualifier">
+      <category name="om2m"/>
+   </bundle>
+   <bundle id="org.eclipse.om2m.binding.http" version="1.1.0.qualifier">
+      <category name="om2m"/>
+   </bundle>
+   <bundle id="org.eclipse.om2m.binding.mqtt" version="1.1.0.qualifier">
+      <category name="om2m"/>
+   </bundle>
+   <bundle id="org.eclipse.om2m.binding.service" version="1.1.0.qualifier">
+      <category name="om2m"/>
+   </bundle>
+   <bundle id="org.eclipse.om2m.commons" version="1.1.0.qualifier">
+      <category name="om2m"/>
+   </bundle>
+   <bundle id="org.eclipse.om2m.commons.logging" version="1.1.0.qualifier">
+      <category name="om2m"/>
+   </bundle>
+   <bundle id="org.eclipse.om2m.core" version="1.1.0.qualifier">
+      <category name="om2m"/>
+   </bundle>
+   <bundle id="org.eclipse.om2m.core.service" version="1.1.0.qualifier">
+      <category name="om2m"/>
+   </bundle>
+   <bundle id="org.eclipse.om2m.dal" version="1.1.0.qualifier">
+      <category name="om2m"/>
+   </bundle>
+   <bundle id="org.eclipse.om2m.dal.driver.sample" version="1.1.0.qualifier">
+      <category name="om2m"/>
+   </bundle>
+   <bundle id="org.eclipse.om2m.das.testsuite" version="1.1.0.qualifier">
+      <category name="om2m"/>
+   </bundle>
+   <bundle id="org.eclipse.om2m.datamapping.jaxb" version="1.1.0.qualifier">
+      <category name="om2m"/>
+   </bundle>
+   <bundle id="org.eclipse.om2m.datamapping.service" version="1.1.0.qualifier">
+      <category name="om2m"/>
+   </bundle>
+   <bundle id="org.eclipse.om2m.flexcontainer.service" version="1.1.0.qualifier">
+      <category name="om2m"/>
+   </bundle>
+   <bundle id="org.eclipse.om2m.interworking.service" version="1.1.0.qualifier">
+      <category name="om2m"/>
+   </bundle>
+   <bundle id="org.eclipse.om2m.ipe.dal" version="1.1.0.qualifier">
+      <category name="om2m"/>
+   </bundle>
+   <bundle id="org.eclipse.om2m.ipe.sample" version="1.1.0.qualifier">
+      <category name="om2m"/>
+   </bundle>
+   <bundle id="org.eclipse.om2m.ipe.sample.sdt" version="1.1.0.qualifier">
+      <category name="om2m"/>
+   </bundle>
+   <bundle id="org.eclipse.om2m.ipe.sdt" version="1.1.0.qualifier">
+      <category name="om2m"/>
+   </bundle>
+   <bundle id="org.eclipse.om2m.ipe.sdt.testsuite" version="1.1.0.qualifier">
+      <category name="om2m"/>
+   </bundle>
+   <bundle id="org.eclipse.om2m.persistence.eclipselink" version="1.1.0.qualifier">
+      <category name="om2m"/>
+   </bundle>
+   <bundle id="org.eclipse.om2m.persistence.mongodb" version="1.1.0.qualifier">
+      <category name="om2m"/>
+   </bundle>
+   <bundle id="org.eclipse.om2m.persistence.service" version="1.1.0.qualifier">
+      <category name="om2m"/>
+   </bundle>
+   <bundle id="org.eclipse.om2m.sdt.api" version="1.1.0.qualifier">
+      <category name="om2m"/>
+   </bundle>
+   <bundle id="org.eclipse.om2m.sdt.comparator.xml" version="1.1.0.qualifier">
+      <category name="om2m"/>
+   </bundle>
+   <bundle id="org.eclipse.om2m.sdt.home" version="1.1.0.qualifier">
+      <category name="om2m"/>
+   </bundle>
+   <bundle id="org.eclipse.om2m.sdt.home.cloud" version="1.1.0.qualifier">
+      <category name="om2m"/>
+   </bundle>
+   <bundle id="org.eclipse.om2m.sdt.home.driver" version="1.1.0.qualifier">
+      <category name="om2m"/>
+   </bundle>
+   <bundle id="org.eclipse.om2m.sdt.home.lifx" version="1.1.0.qualifier">
+      <category name="om2m"/>
+   </bundle>
+   <bundle id="org.eclipse.om2m.sdt.home.mocked.devices" version="1.1.0.qualifier">
+      <category name="om2m"/>
+   </bundle>
+   <bundle id="org.eclipse.om2m.sdt.home.monitoring" version="1.1.0.qualifier">
+      <category name="om2m"/>
+   </bundle>
+   <bundle id="org.eclipse.om2m.sdt.home.netatmo" version="1.1.0.qualifier">
+      <category name="om2m"/>
+   </bundle>
+   <bundle id="org.eclipse.om2m.sdt.home.smartercoffee" version="1.1.0.qualifier">
+      <category name="om2m"/>
+   </bundle>
+   <bundle id="org.eclipse.om2m.sdt.home.tester" version="1.1.0.qualifier">
+      <category name="om2m"/>
+   </bundle>
+   <bundle id="org.eclipse.om2m.sdt.home.utils" version="1.1.0.qualifier">
+      <category name="om2m"/>
+   </bundle>
+   <bundle id="org.eclipse.om2m.testsuite.flexcontainer" version="1.1.0.qualifier">
+      <category name="om2m"/>
+   </bundle>
+   <bundle id="org.eclipse.om2m.webapp.resourcesbrowser.json" version="1.1.0.qualifier">
+      <category name="om2m"/>
+   </bundle>
+   <bundle id="org.eclipse.om2m.webapp.resourcesbrowser.xml" version="1.1.0.qualifier">
+      <category name="om2m"/>
+   </bundle>
+   <bundle id="org.eclipse.om2m.sdt.home.hue" version="1.1.0.qualifier">
+      <category name="om2m"/>
+   </bundle>
+   <bundle id="org.eclipse.om2m.hue.api" version="1.1.0.qualifier">
+      <category name="om2m"/>
+   </bundle>
+   <bundle id="org.eclipse.om2m.hue.impl" version="1.1.0.qualifier">
+      <category name="om2m"/>
+   </bundle>
+   <bundle id="org.eclipse.om2m.sdt.home.monitoring.authentication.service" version="1.1.0.qualifier">
+      <category name="om2m"/>
+   </bundle>
+   <category-def name="om2m" label="om2m">
+      <description>
+         om2m p2 repository
+      </description>
+   </category-def>
+</site>

@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Resourcesbrowser
+Bundle-SymbolicName: org.eclipse.om2m.webapp.resourcesbrowser.xml
+Bundle-Version: 1.1.0.qualifier
+Bundle-Activator: org.eclipse.om2m.webapp.resourcesbrowser.xml.Activator
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Import-Package: javax.servlet,
+ javax.servlet.http,
+ org.apache.commons.logging,
+ org.osgi.framework,
+ org.osgi.service.http,
+ org.osgi.util.tracker

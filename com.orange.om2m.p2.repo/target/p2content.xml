@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<units size='1'>
+  <unit id='20190516-1509.om2m' version='1.0.0.8J8I-cLTVKEBGe5Ej61LL04oC'>
+    <properties size='3'>
+      <property name='org.eclipse.equinox.p2.name' value='om2m'/>
+      <property name='org.eclipse.equinox.p2.description' value='om2m p2 repository'/>
+      <property name='org.eclipse.equinox.p2.type.category' value='true'/>
+    </properties>
+    <provides size='1'>
+      <provided namespace='org.eclipse.equinox.p2.iu' name='20190516-1509.om2m' version='1.0.0.8J8I-cLTVKEBGe5Ej61LL04oC'/>
+    </provides>
+    <requires size='42'>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.sdt.home.monitoring' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.datamapping.service' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.sdt.comparator.xml' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.hue.impl' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.dal' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.sdt.home.mocked.devices' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.persistence.service' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.binding.coap' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.das.testsuite' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.binding.mqtt' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.dal.driver.sample' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.webapp.resourcesbrowser.xml' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.ipe.dal' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.ipe.sdt.testsuite' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.datamapping.jaxb' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.sdt.home.smartercoffee' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.hue.api' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.ipe.sdt' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.ipe.sample.sdt' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.core' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.commons.logging' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.interworking.service' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.flexcontainer.service' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.sdt.home.lifx' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.sdt.home.hue' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.sdt.home.tester' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.binding.http' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.sdt.home.monitoring.authentication.service' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.sdt.home.driver' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.sdt.home.cloud' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.commons' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.testsuite.flexcontainer' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.webapp.resourcesbrowser.json' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.core.service' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.ipe.sample' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.sdt.api' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.sdt.home.utils' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.sdt.home.netatmo' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.persistence.mongodb' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.persistence.eclipselink' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.binding.service' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.sdt.home' range='[1.1.0.20190516-1509,1.1.0.20190516-1509]'/>
+    </requires>
+    <touchpoint id='null' version='0.0.0'/>
+  </unit>
+</units>

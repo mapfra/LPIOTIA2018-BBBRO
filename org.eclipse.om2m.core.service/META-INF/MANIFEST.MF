@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Service
+Bundle-SymbolicName: org.eclipse.om2m.core.service
+Bundle-Version: 1.1.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Export-Package: org.eclipse.om2m.core.service
+Import-Package: javax.persistence,
+ org.eclipse.om2m.commons.entities,
+ org.eclipse.om2m.commons.resource

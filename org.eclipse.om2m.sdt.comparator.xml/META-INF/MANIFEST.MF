@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: sdt comparator
+Bundle-SymbolicName: org.eclipse.om2m.sdt.comparator.xml
+Bundle-Version: 1.1.0.qualifier
+Bundle-Activator: org.eclipse.om2m.sdt.comparator.xml.Activator
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Import-Package: javax.servlet,
+ javax.servlet.http,
+ org.apache.commons.logging,
+ org.eclipse.om2m.commons.constants,
+ org.osgi.framework,
+ org.osgi.service.http,
+ org.osgi.util.tracker

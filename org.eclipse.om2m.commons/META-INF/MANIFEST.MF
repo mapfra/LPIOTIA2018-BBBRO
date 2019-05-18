@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Commons
+Bundle-SymbolicName: org.eclipse.om2m.commons
+Bundle-Version: 1.1.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Export-Package: javax.persistence,javax.persistence.criteria,javax.per
+ sistence.metamodel,javax.persistence.spi,org.eclipse.om2m.commons.con
+ stants,org.eclipse.om2m.commons.entities,org.eclipse.om2m.commons.exc
+ eptions,org.eclipse.om2m.commons.obix,org.eclipse.om2m.commons.obix.i
+ o,org.eclipse.om2m.commons.resource,org.eclipse.om2m.commons.resource
+ .flexcontainerspec,org.eclipse.om2m.commons.utils
+Bundle-ClassPath: .,
+ libs/javax.persistence.jar
+Import-Package: org.apache.commons.logging

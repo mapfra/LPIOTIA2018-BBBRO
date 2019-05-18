@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: org.eclipse.om2m.das.service
+Bundle-SymbolicName: org.eclipse.om2m.das.service
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+No-otb-proxy: true
+Bundle-ClassPath: .
+Import-Package: org.eclipse.om2m.commons.entities,
+ org.eclipse.om2m.commons.exceptions,
+ org.eclipse.om2m.commons.resource,
+ org.eclipse.om2m.core.service,
+ org.osgi.framework
+Export-Package: org.eclipse.om2m.das.service

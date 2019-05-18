@@ -1,2 +1,12 @@
+<<<<<<< HEAD
 node_modules
 *.diff
+=======
+
+data
+.DS_Store
+.settings
+.classpath
+.project
+bin
+>>>>>>> rasp2

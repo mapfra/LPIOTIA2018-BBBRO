@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright (c) 2013, 2017 Orange.
+    All rights reserved. This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License v1.0
+    which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html
+   
+    Contributors:
+       BAREAU Cyrille <cyrille.bareau@orange.com>, 
+       BONNARDEL Gregory <gbonnardel.ext@orange.com>, 
+       BOLLE Sebastien <sebastien.bolle@orange.com>.
+ -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="175dp"
+    android:layout_height="wrap_content"
+    android:minWidth="165dp"
+    android:orientation="vertical"
+    android:paddingBottom="5dp"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp"
+    android:paddingTop="5dp" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <ImageView
+            android:id="@+id/iv_main_app_entry_icon"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/otb_appicon_default" />
+
+        <RelativeLayout
+            android:id="@+id/rl_main_app_entry_stopped"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_centerInParent="true"
+            android:background="#aaffffff"
+            android:visibility="invisible" >
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_main_app_entry_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
+        android:text="@string/device_name"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/otb_red"
+        android:textSize="12sp"
+        android:width="165dp" />
+    
+</LinearLayout>

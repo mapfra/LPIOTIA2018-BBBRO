@@ -1,0 +1,36 @@
+<!--
+    Copyright (c) 2013, 2017 Orange.
+    All rights reserved. This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License v1.0
+    which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html
+   
+    Contributors:
+       BAREAU Cyrille <cyrille.bareau@orange.com>, 
+       BONNARDEL Gregory <gbonnardel.ext@orange.com>, 
+       BOLLE Sebastien <sebastien.bolle@orange.com>.
+ -->
+<resources>
+
+    <color name="background">#ffc6c6c6</color>    
+    <color name="list_background">#ffe0e0e0</color>
+    
+    <color name="gray">#ff878787</color>
+    <color name="soft_gray">#ffc6c6c6</color>
+    <color name="very_soft_gray">#fff2f2f2</color>
+    <color name="white">#ffffffff</color>    
+    <color name="black">#ff000000</color>    
+    <color name="transparent">#00000000</color>
+    
+    <color name="otb_red">#ffbe1f2e</color>
+    <color name="otb_green">#ff009444</color>
+    <color name="otb_orange">#fff78b1e</color>
+    <color name="otb_blue">#ff25b2ce</color>
+    <color name="otb_pale_green">#ffA6D785</color>
+    
+    
+    <color name="otb_red_transparent">#44be1f2e</color>
+    
+    <color name="otb_dark_gray">#ff404040</color>
+    <color name="solf_background">#ffe2e2e2</color>
+</resources>

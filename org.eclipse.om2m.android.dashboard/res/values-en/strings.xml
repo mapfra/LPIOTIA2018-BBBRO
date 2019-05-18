@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright (c) 2013, 2017 Orange.
+    All rights reserved. This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License v1.0
+    which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html
+   
+    Contributors:
+       BAREAU Cyrille <cyrille.bareau@orange.com>, 
+       BONNARDEL Gregory <gbonnardel.ext@orange.com>, 
+       BOLLE Sebastien <sebastien.bolle@orange.com>.
+ -->
+
+<resources>
+
+    <string name="app_name">Home Dashboard</string>
+    <string name="action_settings">Settings</string>
+    <string name="empty"></string>
+    <string name="main_applications">Installed applications</string>
+    <string name="main_store">Available applications</string>
+    <string name="main_devices">Connected devices</string>
+    <string name="main_config">Dashboard</string>
+    <string name="main_users">Users</string>
+    <string name="applications_title">Installed applications</string>
+    <string name="store_title">Applications Store</string>
+    <string name="config_title">Permissions</string>
+    <string name="devices_title">Connected devices</string>
+    <string name="users_title">Connected users</string>
+    <string name="settings_title">Settings</string>
+    <string name="login_title">Connection</string>
+    <string name="main_cse">Dashboard is </string>
+    <string name="main_cse_state">Status</string>
+    <string name="main_cse_fw">Firmware</string>
+    <string name="main_cse_state_ok">is connected</string>
+    <string name="main_cse_state_warning">is partially operational</string>
+    <string name="main_cse_state_error">is not connected</string>
+    <string name="main_cse_state_not_detected">is not detected</string>
+    <string name="main_cse_state_not_connected">is not connected</string>
+    <string name="main_btn_apps">apps</string>
+    <string name="main_btn_config">permissions</string>
+    <string name="main_btn_devs">add device</string>
+    <string name="main_btn_usrs">add user</string>
+    <string name="main_btn_delegate">delegate rights</string>
+    <string name="main_btn_replace">replace device</string>
+    <string name="main_login_titles">Login</string>
+    <string name="main_login_needed">You are not logged in. See Settings.</string>
+    <string name="main_login_wrong">Authentication failed. Retry...</string>
+    <string name="main_subtitle_app">quick access to your installed applications</string>
+    <string name="main_subtitle_dev">your connected devices by category</string>
+    <string name="main_subtitle_store">new applications can be downloaded on your HAB</string>
+    <string name="main_subtitle_config">the status of your HAB and permissions configuration</string>
+    <string name="main_dev_cat">device(s)</string>
+    <string name="main_dev_sup_cat" formatted="false">there is %sup% other category(ies)</string>
+    <string name="main_app_sup" formatted="false">there is %sup% other application(s)</string>
+    <string name="main_config_action">configure permissions</string>
+    <string name="main_store_intro">For new features and optimize your installation, you can download new applications from the Applications Store</string>
+    <string name="main_store_go">access the store</string>
+    <string name="card_cpu">CPU:</string>
+    <string name="card_ram">RAM:</string>
+    <string name="device_type_name">type</string>
+    <string name="device_name">name</string>
+    <string name="device_description">description</string>
+    <string name="device_btn_detail">details</string>
+    <string name="device_show_details">more details</string>
+    <string name="device_remove_asso" formatted="false">remove association</string>
+    <string name="device_replacement">Device Replacement</string>
+    <string name="device_replacement_select">Select the device to be replaced in the following list</string>
+    <string name="device_replacement_0_all">List of all devices</string>
+    <string name="device_replacement_0_type">List of similar devices</string>
+    <string name="device_replacement_apply" formatted="false">Do replace the device \"%dev_name%\" by another device of same type %dev_type%?</string>
+    <string name="device_replacement_select_new">Select the new device in the following list</string>
+    <string name="device_replacement_nodevice_error">No similar device</string>
+    <string name="device_replacement_error">Error during device replacement: </string>
+    <string name="device_replacement_ok" formatted="false">Device replacement performed. You can uninstall device \"%dev_name%\"</string>
+    <string name="device_details_info">Informations:</string>
+    <string name="device_details_asso">Could be used by:</string>
+    <string name="device_details_check">Check the device:</string>
+    <string name="device_details_state">Status:</string>
+    <string name="device_details_btn_update">Update associations</string>
+    <string name="device_details_btn_asso">Manage permissions</string>
+    <string name="device_details_btn_store">Subscribe to new services\nfor your devices</string>
+    <string name="device_details_msg_eject">Do you really want to disconnect this device?\n\nAssociated applications with this device could be affected.</string>
+    <string name="device_details_msg_eject_title">Disconnect this device</string>
+    <string name="device_details_permissions_update_title">Permissions update</string>
+    <string name="device_details_permissions_update_msg">During the permissions update, the selected applications will restart.\n\nDo you want to perform the update?</string>
+    <string name="device_details_no_access_rights">You are not allowed to access this device</string>
+    <string name="device_details_no_access_rights_title">Device Access</string>
+    <string name="devices_addnewone_title">Install a new device</string>
+    <string name="devices_addnewone_dev_type">Which type of device would you like to install?</string>
+    <string name="devices_addnewone_dev_procedure">Installation procedure:</string>
+    <string name="devices_addnewone_dev_type_zigbee">ZigBee</string>
+    <string name="devices_addnewone_dev_type_x3d">X3D</string>
+    <string name="devices_addnewone_dev_type_greennet">GreenNet</string>
+    <string name="devices_addnewone_dev_type_upnp">UPnP</string>
+    <string name="devices_addnewone_dev_type_agora">Agora</string>
+    <string name="devices_addnewone_dev_agora_msg">You just have to connect your Agora device on the network.\n\nIt will be automatically discovered by your HAB.</string>
+    <string name="devices_addnewone_dev_upnp_msg">You just have to connect your Upnp device on the network.\n\nIt will be automatically discovered by your HAB.</string>
+    <string name="devices_addnewone_dev_zigbee_msg" formatted="false">While adding an element in the Zigbee network requires the activation of \"pairing mode\" at its coordinator\n\nTo do this, follow these steps:</string>
+    <string name="devices_addnewone_dev_step_1">1 - </string>
+    <string name="devices_addnewone_dev_step_2">2 - </string>
+    <string name="devices_addnewone_dev_step_3">3 - </string>
+    <string name="devices_addnewone_dev_step_4">4 - </string>
+    <string name="devices_addnewone_dev_zigbee_submsg_1">Check that the Zigbee coordinator is plugged into the USB port on your HAB</string>
+    <string name="devices_addnewone_dev_zigbee_submsg_2" formatted="false">Activate the \"pairing mode\" of your coordinator</string>
+    <string name="devices_addnewone_dev_zigbee_submsg_2_1">. If your coordinator has a pairing button, press it.</string>
+    <string name="devices_addnewone_dev_zigbee_submsg_2_2">. Otherwise, press the generic pairing button on your HAB.</string>
+    <string name="devices_addnewone_dev_zigbee_submsg_3" formatted="false">Connect your new ZigBee device on the network and activate his \"pairing mode\". (see instructions)</string>
+    <string name="devices_addnewone_dev_zigbee_submsg_4">The pairing will occur between your coordinator and the new device. Once completed, your device will be visible and functional.</string>
+    <string name="application_simple_name">APP NAME</string>
+    <string name="application_simple_version">Version:</string>
+    <string name="application_simple_state">Status:</string>
+    <string name="application_simple_details">Details</string>
+    <string name="application_simple_noasso">there is no associated device with this application</string>
+    <string name="application_simple_update">an update is available</string>
+    <string name="application_show_details">more details</string>
+    <string name="application_remove_asso" formatted="false">remove association</string>
+    <string name="application_config_title" formatted="false">\"%app_name%\" configuration</string>
+    <string name="application_details_servicename">Service:</string>
+    <string name="application_details_serviceversion">Service version:</string>
+    <string name="application_details_title">Application</string>
+    <string name="application_details_info">Information:</string>
+    <string name="application_details_compo">Composition:</string>
+    <string name="application_details_version">Version:</string>
+    <string name="application_details_state">Status:</string>
+    <string name="application_details_installdate">Installation date:</string>
+    <string name="application_details_resources">Used resources:</string>
+    <string name="application_details_resource_unavailable">unavailable</string>
+    <string name="application_details_ram">RAM:</string>
+    <string name="application_details_cpu">CPU (time):</string>
+    <string name="application_details_threads">Threads count:</string>
+    <string name="application_details_sockets">Sockets count:</string>
+    <string name="application_details_flash">Flash size:</string>
+    <string name="application_details_bandwidth">Bandwidth:</string>
+    <string name="application_details_ram_value" formatted="false">%VALUE% bytes</string>
+    <string name="application_details_cpu_value" formatted="false">%VALUE% %</string>
+    <string name="application_details_threads_value" formatted="false">%VALUE% thread(s)</string>
+    <string name="application_details_sockets_value" formatted="false">%VALUE% socket(s)</string>
+    <string name="application_details_flash_value" formatted="false">%VALUE% bytes</string>
+    <string name="application_details_bandwidth_value" formatted="false">%VALUE% bytes/s</string>
+    <string name="application_details_update">Update:</string>
+    <string name="application_details_update_btn">Update</string>
+    <string name="application_details_update_msg1">An update is available.</string>
+    <string name="application_details_update_msg2">During the update, the application will be momentarily out.</string>
+    <string name="application_details_config">Configuration:</string>
+    <string name="application_details_config_btn">Configure</string>
+    <string name="application_details_permissions">Permissions:</string>
+    <string name="application_details_bundle_3rd">Partners</string>
+    <string name="application_details_bundle_op">Operator</string>
+    <string name="application_details_monitoring_activated">The application\'s resources monitoring is activated</string>
+    <string name="application_details_monitoring_unactivated">The application\'s resources monitoring is disabled</string>
+    <string name="application_details_btn_now">now</string>
+    <string name="application_details_btn_later">later</string>
+    <string name="application_details_btn_no">no</string>
+    <string name="application_details_msg_update">During the update, the application will no longer be functional.\n\nDo you want to perform the update?</string>
+    <string name="application_details_msg_update_title">Update</string>
+    <string name="application_details_msg_uninstall">Do you really want to uninstall this application?</string>
+    <string name="application_details_msg_uninstall_title">Uninstallation</string>
+    <string name="application_details_no_config">This application does not have configuration interface</string>
+    <string name="application_details_no_access_rights">You are not allowed to access this application</string>
+    <string name="application_details_no_uninstall_rights">You are not allowed to uninstall this application</string>
+    <string name="application_details_permissions_btn">Manage permissions</string>
+    <string name="application_details_permissions_msg">permissions established between</string>
+    <string name="application_details_permissions_update_title">Permissions Update</string>
+    <string name="application_details_permissions_update_msg">During the permissions update, the application will restart.\n\nDo you want to perform the update?</string>
+    <string name="application_details_startstop">Start</string>
+    <string name="application_details_description">---</string>
+    <string name="application_details_msgRunning">The application is currently running</string>
+    <string name="application_details_msgNotRunning">The application is currently stopped</string>
+    <string name="application_details_btnStop">Stop</string>
+    <string name="application_details_btnStart">Start</string>
+    <string name="application_details_stopped">(stopped)</string>
+    <string name="application_details_not_accessible">Not accessible</string>
+    <string name="dialog_btn_ok">OK</string>
+    <string name="dialog_btn_yes">Yes</string>
+    <string name="dialog_btn_no">No</string>
+    <string name="dialog_btn_cancel">Cancel</string>
+    <string name="dialog_btn_apply">Apply</string>
+    <string name="dialog_btn_validate">Validate</string>
+    <string name="dialog_btn_create">Create</string>
+    <string name="dialog_btn_modify">Modify</string>
+    <string name="config_devices">Associated Devices</string>
+    <string name="config_application">Application</string>
+    <string name="config_device_name">Device xxxx</string>
+    <string name="config_app_name">Application xxxx</string>
+    <string name="config_serv_name">Service xxxx</string>
+    <string name="config_btn_update">Update</string>
+    <string name="config_btn_associate">Associate</string>
+    <string name="config_asso">associate with</string>
+    <string name="config_update_title_dev" formatted="false">Select the applications that may use \"%dev_name%\"</string>
+    <string name="config_update_title_app" formatted="false">Select the devices that may be used by \"%app_name%\"</string>
+    <string name="config_update_noapp">There is no installed application that can use this device</string>
+    <string name="config_update_nodev">There is no connected device nor installed applications that can be used by this application</string>
+    <string name="menu_settings">options</string>
+    <string name="menu_help">help</string>
+    <string name="menu_login">Connection</string>
+    <string name="settings_hab_ip">HAB IP address:</string>
+    <string name="settings_hab_port">HAB port:</string>
+    <string name="settings_activateWizard">Active all wizards</string>
+    <string name="settings_autoDiscorevy">Auto HAB discovery</string>
+    <string name="settings_manualDiscorevy">Manual HAB discovery</string>
+    <string name="settings_discovered_ip">HAB found at the ip:</string>
+    <string name="settings_no_hab">HAB not found</string>
+    <string name="settings_version">dasboard version: %version%</string>
+    <string name="settings_language_en">english</string>
+    <string name="settings_language_fr">français</string>
+    <string name="login_current">%current%</string>
+    <string name="login_cse_login">Login</string>
+    <string name="login_cse_pwd">Password</string>
+    <string name="wizard_application_simple_mainMsg">This screen shows all installed applications on your HAB</string>
+    <string name="wizard_application_simple_actions">Actions:</string>
+    <string name="wizard_application_simple_action_uninstall">uninstall an application</string>
+    <string name="wizard_application_simple_action_config">configure an application</string>
+    <string name="wizard_application_simple_action_details">display more details about an application</string>
+    <string name="wizard_application_details_action_device">display more information about a device associated with an application. "long click" to remove association</string>
+    <string name="wizard_application_details_action_asso">associate the application with devices</string>
+    <string name="wizard_application_details_mainMsg">This screen shows the details of the application</string>
+    <string name="wizard_application_details_actions">Actions:</string>
+    <string name="wizard_application_details_action_uninstall">uninstall the application</string>
+    <string name="wizard_application_details_action_config">configure the application / update permissions</string>
+    <string name="wizard_application_details_action_openclose">open / close a section</string>
+    <string name="wizard_device_details_mainMsg">This screen shows the details of the device</string>
+    <string name="wizard_device_details_actions">Actions:</string>
+    <string name="wizard_device_details_action_eject">disconnect safely the device</string>
+    <string name="wizard_device_details_action_check">display settings and controls to test the device</string>
+    <string name="wizard_device_details_action_asso">associate the device to applications</string>
+    <string name="wizard_device_details_action_app">display more information about associated applications with the device. "long click" to remove association</string>
+    <string name="wizard_device_simple_mainMsg">This screen shows all your connected devices</string>
+    <string name="wizard_device_simple_actions">Actions:</string>
+    <string name="wizard_device_simple_action_details">display more details about a device</string>
+    <string name="wizard_device_simple_action_add">install a new device</string>
+    <string name="wizard_device_simple_action_moreless">open/close the category</string>
+    <string name="wizard_config_mainMsg">This screen shows the devices than can be used by each application</string>
+    <string name="wizard_config_actions">Actions:</string>
+    <string name="wizard_config_action_update">update the permissions</string>
+    <string name="wizard_config_action_device">display more details about a device</string>
+    <string name="wizard_config_action_app">display more details about an application</string>
+    <string name="wizard_user_simple_mainMsg">This screen shows all the existing user accounts</string>
+    <string name="wizard_user_simple_action_add">create a new user account</string>
+    <string name="wizard_user_simple_action_details">display more details about a user</string>
+    <string name="wizard_user_details_mainMsg">This screen shows the detailed access rights of a user account</string>
+    <string name="wizard_user_details_action_delete">remove the user account</string>
+    <string name="wizard_user_details_action_update">modify the access rights of the user</string>
+    <string name="usr_details_title">User</string>
+    <string name="usr_details_access_rights">Access Rights:</string>
+    <string name="usr_details_access_rights_msg">Access Rights on</string>
+    <string name="user_details_no_access_rights">You are not allowed to access users accounts</string>
+    <string name="user_details_no_access_rights_title">Users Access</string>
+    <string name="appstore_no_access_rights_title">Access to the AppStore</string>
+    <string name="appstore_no_access_rights">You are not allowed to access the AppStore</string>
+    <string name="user_add_title">Add User</string>
+    <string name="user_add_create">Create new user</string>
+    <string name="add_user_creator">Creator:</string>
+    <string name="add_user_type">Type:</string>
+    <string name="add_user_name">User name:</string>
+    <string name="add_user_empty_name">Name can not be empty</string>
+    <string name="add_user_empty_password">Password can not be empty</string>
+    <string name="add_user_image">Image:</string>
+    <string name="user_delegation">User Access Rights Delegation</string>
+    <string name="user_delegation_no_config">The delegation application is not available</string>
+    <string name="user_delegation_no_access_rights">You are not allowed to delegate rights</string>
+    <string name="user_details_msg_remove_title">User Removal</string>
+    <string name="user_details_msg_create_title">User Creation</string>
+    <string name="user_details_no_remove_rights">You are not allowed to remove this user</string>
+    <string name="user_details_no_create_rights">You are not allowed to create users</string>
+    <string name="user_details_msg_remove_user" formatted="false">Do you really want to remove user %usr_name%?</string>
+    <string name="user_details_rights_btn">Manage rights</string>
+    <string name="user_details_rights_update_title">User Access Rights Update</string>
+    <string name="user_details_rights_update_msg" formatted="false">Do you really want to modify the Access Rights of %usr_id%?</string>
+    <string name="user_details_rights_help_title">Description of User Access Rights</string>
+    <string name="user_type_admins_list">Administrators</string>
+    <string name="user_type_family_list">Family</string>
+    <string name="user_type_friends_list">Friends</string>
+    <string name="user_type_admins_icon">Admins</string>
+    <string name="user_type_family_icon">Family</string>
+    <string name="user_type_friends_icon">Friends</string>
+    <string name="user_type_admin">Administrator</string>
+    <string name="user_type_family">Family</string>
+    <string name="user_type_friend">Friend</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_otbusers">OTBUsersActivity</string>
+
+    <string-array name="avatar_imgs">
+        <item>@drawable/radio_btn_avatar_businessman</item>
+        <item>@drawable/radio_btn_avatar_male</item>
+        <item>@drawable/radio_btn_avatar_female</item>
+        <item>@drawable/radio_btn_avatar_male_headset</item>
+        <item>@drawable/radio_btn_avatar_female_headset</item>
+        <item>@drawable/radio_btn_avatar_boy</item>
+        <item>@drawable/radio_btn_avatar_girl</item>
+        <item>@drawable/radio_btn_avatar_grandpa</item>
+        <item>@drawable/radio_btn_avatar_grandma</item>
+    </string-array>
+    <string-array name="devices">
+        <item>deviceAirConditioner</item>
+        <item>Air Conditioners</item>
+        <item></item>
+        <item>deviceClothesWasher</item>
+        <item>Clothes Washers</item>
+        <item></item>
+        <item>deviceElectricVehicleCharger</item>
+        <item>Electric Vehicle Chargers</item>
+        <item></item>
+        <item>deviceLight</item>
+        <item>Lights</item>
+        <item>@drawable/otb_picto_dev_cat_light</item>
+        <item>deviceMicrogeneration</item>
+        <item>Microgenerators</item>
+        <item></item>
+        <item>deviceOven</item>
+        <item>Ovens</item>
+        <item></item>
+        <item>deviceRefrigerator</item>
+        <item>Refrigerators</item>
+        <item></item>
+        <item>deviceRobotCleaner</item>
+        <item>Robot Cleaners</item>
+        <item></item>
+        <item>deviceSmartElectricMeter</item>
+        <item>Smart Electric Meters</item>
+        <item>@drawable/otb_picto_dev_cat_gauge</item>
+        <item>deviceStorageBattery</item>
+        <item>Storage Batteries</item>
+        <item>@drawable/otb_picto_dev_cat_battery</item>
+        <item>deviceTelevision</item>
+        <item>Televisions</item>
+        <item></item>
+        <item>deviceThermostat</item>
+        <item>Thermostats</item>
+        <item></item>
+        <item>deviceWaterHeater</item>
+        <item>Water Heaters</item>
+        <item></item>
+        <item>deviceDoor</item>
+        <item>Doors</item>
+        <item>@drawable/otb_picto_dev_cat_door</item>
+        <item>deviceSmokeExtractor</item>
+        <item>Smoke Extractors</item>
+        <item>@drawable/otb_picto_dev_cat_smokeextractor</item>
+        <item>deviceSwitchButton</item>
+        <item>Switch Buttons</item>
+        <item>@drawable/otb_picto_dev_cat_switchbutton</item>
+        <item>deviceWarningDevice</item>
+        <item>Warning Devices</item>
+        <item>@drawable/otb_picto_dev_cat_warningdevice</item>
+        <item>deviceGasValve</item>
+        <item>Gas Valves</item>
+        <item>@drawable/otb_picto_dev_cat_gasvalve</item>
+        <item>deviceWaterValve</item>
+        <item>Water Valves</item>
+        <item>@drawable/otb_picto_dev_cat_watervalve</item>
+        <item>deviceFloodDetector</item>
+        <item>Flood Detectors</item>
+        <item>@drawable/otb_picto_dev_cat_flooddetector</item>
+        <item>deviceMotionDetector</item>
+        <item>Motion Detectors</item>
+        <item>@drawable/otb_picto_dev_cat_motiondetector</item>
+        <item>deviceSmokeDetector</item>
+        <item>Smoke Detectors</item>
+        <item>@drawable/otb_picto_dev_cat_smokedetector</item>
+        <item>deviceTemperatureDetector</item>
+        <item>Temperature Detectors</item>
+        <item>@drawable/otb_picto_dev_cat_thermometer</item>
+        <item>deviceContactDetector</item>
+        <item>Contact Detectors</item>
+        <item>@drawable/otb_picto_dev_cat_contactsensor</item>
+        <item>deviceCamera</item>
+        <item>Cameras</item>
+        <item>@drawable/otb_picto_dev_cat_camera</item>
+        <item>deviceWeatherStation</item>
+        <item>Weather Stations</item>
+        <item>@drawable/otb_picto_dev_cat_weatherstation</item>
+        <item>deviceCoffeeMachine</item>
+        <item>Coffee Makers</item>
+        <item>@drawable/otb_picto_dev_cat_coffeemachine</item>
+        <item>default</item>
+        <item>SDT Device</item>
+        <item>@drawable/otb_picto_dev_cat_sdt</item>
+        <item>undefined</item>
+        <item>Undefined</item>
+        <item>@drawable/otb_picto_dev_cat_sdt</item>
+    </string-array>
+
+    <string name="device_details_cnd">Container Definition</string>
+    <string name="device_details_modules">Modules</string>
+    <string name="device_details_model">Model</string>
+    <string name="device_details_manufacturer">Manufacturer</string>
+    <string name="device_details_description">Description</string>
+    <string name="device_details_type">Type</string>
+    <string name="device_details_location">Location</string>
+    <string name="device_details_protocol">Protocol</string>
+    <string name="settings_cse_url_label">URL</string>
+    <string name="settings_cse">CSE</string>
+    <string name="device_details_serialNumber">Serial number</string>
+    <string name="device_details_deviceName">Device name</string>
+    <string name="settings_cse_hostname">Hostname</string>
+    <string name="settings_cse_port">Port</string>
+    <string name="settings_cse_cseId">CSE Id</string>
+    <string name="settings_cse_cseName">CSE Name</string>
+
+</resources>
