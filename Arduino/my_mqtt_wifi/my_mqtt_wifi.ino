@@ -12,7 +12,7 @@
  achieve the same result without blocking the main loop.
  
 */
-
+#include <time.h>
 #include <WiFi.h>
 #include <PubSubClient.h>
 
@@ -80,12 +80,12 @@ void reconnect() {
   while (!client.connected()) {
     Serial.print("Attempting MQTT connection...");
     // Attempt to connect
-    if (client.connect("arduinoClient")) {
+    if (client.connect("arduinoPresence")) {
       Serial.println("connected");
       // Once connected, publish an announcement...
-      client.publish("outTopic","hello world");
+      client.publish("/oneM2M/req/AE_arduinoPresence/mn-cse/json","hello world");
       // ... and resubscribe
-      client.subscribe("inTopic");
+      client.subscribe("/oneM2M/req/AE_arduinoPresence/mn-cse/json");
     } else {
       Serial.print("failed, rc=");
       Serial.print(client.state());
@@ -125,7 +125,17 @@ void loop()
       Serial.println("données envoyées");
       // We only want to print on the output change, not state
       pirState = HIGH;
-      client.publish("pres", "detected");
+      //client.publish("pres","detected");
+      int msgLen = 0;
+      time_t timer;
+      time(&timer);
+      msgLen = String("{\"m2m:rqp\":{\"m2m:fr\":\"admin:admin\",\"m2m:to\":\"/mn-cse/cnt-542942786\",\"m2m:op\":1,\"m2m:rqi\":123456,\"m2m:pc\":{\"m2m:cin\":{\"cnf\":\"message\",\"con\":\"detected "+String(timer)+"\"}},\"m2m:ty\":4}}").length();
+      Serial.println(msgLen);
+      client.beginPublish("/oneM2M/req/AE_arduinoPresence/mn-cse/json", msgLen, false);
+      client.print("{\"m2m:rqp\":{\"m2m:fr\":\"admin:admin\",\"m2m:to\":\"/mn-cse/cnt-542942786\",");
+      client.print("\"m2m:op\":1,\"m2m:rqi\":123456,\"m2m:pc\":{\"m2m:cin\":{\"cnf\":\"message\",\"");
+      client.print("con\":\"detected "+String(timer)+"\"}},\"m2m:ty\":4}}");
+      Serial.println(client.endPublish());
     }
     
     
