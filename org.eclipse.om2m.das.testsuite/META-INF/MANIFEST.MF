@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: org.eclipse.om2m.das.testsuite
+Bundle-SymbolicName: org.eclipse.om2m.das.testsuite
+Bundle-Version: 1.1.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+No-otb-proxy: true
+Bundle-ClassPath: .
+Bundle-Activator: org.eclipse.om2m.das.testsuite.Activator
+Import-Package: org.eclipse.om2m.commons.constants,
+ org.eclipse.om2m.commons.entities,
+ org.eclipse.om2m.commons.exceptions,
+ org.eclipse.om2m.commons.resource,
+ org.eclipse.om2m.commons.resource.flexcontainerspec,
+ org.eclipse.om2m.core.service,
+ org.eclipse.om2m.interworking.service,
+ org.osgi.framework

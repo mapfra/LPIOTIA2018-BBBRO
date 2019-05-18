@@ -1,0 +1,58 @@
+/*
+********************************************************************************
+ * Copyright (c) 2014, 2018 Orange.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ ********************************************************************************
+
+ModuleClass : SecurityMode
+
+This ModuleClasses provides capabilities to control and monitor a security mode.
+
+Created: 2018-06-29 17:19:53
+*/
+
+package org.eclipse.om2m.commons.resource.flexcontainerspec;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
+import org.eclipse.om2m.commons.resource.AbstractFlexContainer;
+import org.eclipse.om2m.commons.resource.CustomAttribute;
+
+@XmlRootElement(name = SecurityModeFlexContainer.SHORT_NAME, namespace = "http://www.onem2m.org/xml/protocols/homedomain")
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = SecurityModeFlexContainer.SHORT_NAME, namespace = "http://www.onem2m.org/xml/protocols/homedomain")
+public class SecurityModeFlexContainer extends AbstractFlexContainer {
+	
+	public static final String LONG_NAME = "securityMode";
+	public static final String SHORT_NAME = "secMe";
+		
+	public SecurityModeFlexContainer () {
+		setContainerDefinition("org.onem2m.home.moduleclass." + SecurityModeFlexContainer.LONG_NAME);
+		setLongName(LONG_NAME);
+		setShortName(SHORT_NAME);
+		CustomAttribute currentSecurityMode = new CustomAttribute();
+		currentSecurityMode.setLongName("currentSecurityMode");
+		currentSecurityMode.setShortName("cuSMe");
+		currentSecurityMode.setType("hd:enumSecurityMode");
+		getCustomAttributes().add(currentSecurityMode);
+		CustomAttribute securityModes = new CustomAttribute();
+		securityModes.setLongName("securityModes");
+		securityModes.setShortName("secMs");
+		securityModes.setType("[hd:enumSecurityMode]");
+		getCustomAttributes().add(securityModes);
+	}
+
+		
+	public void finalizeSerialization() {
+	}
+	
+	public void finalizeDeserialization() {
+	}
+	
+}

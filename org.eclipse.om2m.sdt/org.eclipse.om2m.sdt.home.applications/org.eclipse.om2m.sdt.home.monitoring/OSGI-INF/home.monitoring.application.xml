@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" activate="activate" deactivate="deactivate" enabled="true" immediate="true" name="home.monitoring.application">
+   <reference bind="bindAuthenticationService" cardinality="0..n" interface="org.eclipse.om2m.sdt.home.monitoring.authentication.service.AuthenticationService" name="AuthenticationService" policy="dynamic" unbind="unbindAuthenticationService"/>
+   <reference bind="bindCseService" cardinality="1..1" interface="org.eclipse.om2m.core.service.CseService" name="CseService" policy="dynamic" unbind="unbindCseService"/>
+   <reference bind="bindHttpService" cardinality="1..1" interface="org.osgi.service.http.HttpService" name="HttpService" policy="dynamic" unbind="unbindHttpService"/>
+   <implementation class="org.eclipse.om2m.sdt.home.monitoring.Activator"/>
+</scr:component>

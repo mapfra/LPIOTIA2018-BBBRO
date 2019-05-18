@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<m2m:grp xmlns:m2m="http://www.onem2m.org/xml/protocols" xmlns:hd="http://www.onem2m.org/xml/protocols/homedomain">
+   <mt>2</mt>
+   <mid>id1 id2</mid>
+</m2m:grp>

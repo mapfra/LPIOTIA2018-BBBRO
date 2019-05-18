@@ -1,0 +1,125 @@
+<!--
+    Copyright (c) 2013-2016 LAAS-CNRS (www.laas.fr)
+    7 Colonel Roche 31077 Toulouse - France
+   
+    All rights reserved. This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License v1.0
+    which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html
+   
+    Initial Contributors:
+        Thierry Monteil : Project manager, technical co-manager
+        Mahdi Ben Alaya : Technical co-manager
+        Samir Medjiah : Technical co-manager
+        Khalil Drira : Strategy expert
+        Guillaume Garzone : Developer
+        Fran?ois A?ssaoui : Developer
+   
+    New contributors :
+        Sebastien BOLLE <sebastien.bolle@orange.com>
+        Gregory BONNARDEL <gbonnardel.ext@orange.com>
+        Cyrille BAREAU <cyrille.bareau@orange.com>
+ -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>org.eclipse.om2m.site.mn-cse</artifactId>
+	<packaging>eclipse-repository</packaging>
+	<name>org.eclipse.om2m :: mn product</name>
+	<parent>
+		<groupId>org.eclipse.om2m</groupId>
+		<artifactId>org.eclipse.om2m</artifactId>
+		<version>1.1.0-SNAPSHOT</version>
+	</parent>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-p2-director-plugin</artifactId>
+				<version>${tycho.version}</version>
+				<executions>
+					<execution>
+						<id>materialize-products</id>
+						<phase>package</phase>
+						<goals>
+							<goal>materialize-products</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.8</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target>
+								<echo>Copying scripts into mn product</echo>
+								<copy file="${basedir}/script"
+									tofile="${basedir}/target/products/mn-cse/${osgi.os}/${osgi.ws}/${osgi.arch}/start.sh" />
+								<copy file="${basedir}/script"
+									tofile="${basedir}/target/products/mn-cse/${osgi.os}/${osgi.ws}/${osgi.arch}/start.bat" />
+								<copy file="${basedir}/log4j.configuration"
+									tofile="${basedir}/target/products/mn-cse/${osgi.os}/${osgi.ws}/${osgi.arch}/log4j.configuration" />
+								<!-- <copy file="${basedir}/org.eclipse.equinox.cm_1.0.400.v20130327-1442.jar" 
+									todir="${basedir}/target/products/mn-cse/${osgi.os}/${osgi.ws}/${osgi.arch}/plugins/" 
+									/> -->
+								<copy file="${basedir}/pax-confman-propsloader-0.2.2.jar"
+									todir="${basedir}/target/products/mn-cse/${osgi.os}/${osgi.ws}/${osgi.arch}/plugins/" />
+								<copy
+									todir="${basedir}/target/products/mn-cse/${osgi.os}/${osgi.ws}/${osgi.arch}/configurations">
+									<fileset dir="${basedir}/configurations" includes="**/*" />
+								</copy>
+
+
+								<propertyfile
+									file="${basedir}/target/products/mn-cse/${osgi.os}/${osgi.ws}/${osgi.arch}/configuration/config.ini">
+									<entry key="osgi.bundles" type="string" operation="+"
+										value=", reference:file:pax-confman-propsloader-0.2.2.jar@1:start" />
+								</propertyfile>
+							</target>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	<profiles>
+		<profile>
+			<id>docker</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>com.spotify</groupId>
+						<artifactId>docker-maven-plugin</artifactId>
+						<version>1.0.0</version>
+						<executions>
+							<execution>
+								<phase>package</phase>
+								<goals>
+									<goal>build</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<imageName>org.eclipse.om2m.site.mncse</imageName>
+							<dockerDirectory>${basedir}</dockerDirectory>
+							<resources>
+								<resource>
+									<targetPath>/</targetPath>
+									<directory>${project.build.directory}</directory>
+								</resource>
+							</resources>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+</project>

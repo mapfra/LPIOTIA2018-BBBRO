@@ -1,0 +1,60 @@
+<!--
+    Copyright (c) 2013, 2017 Orange.
+    All rights reserved. This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License v1.0
+    which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html
+   
+    Contributors:
+       BAREAU Cyrille <cyrille.bareau@orange.com>, 
+       BONNARDEL Gregory <gbonnardel.ext@orange.com>, 
+       BOLLE Sebastien <sebastien.bolle@orange.com>.
+ -->
+<resources>
+
+    <!--
+         Declare custom theme attributes that allow changing which styles are
+         used for button bars depending on the API level.
+         ?android:attr/buttonBarStyle is new as of API 11 so this is
+         necessary to support previous API levels.
+    -->
+    <declare-styleable name="ButtonBarContainerTheme">
+        <attr name="buttonBarStyle" format="reference" />
+        <attr name="buttonBarButtonStyle" format="reference" />
+    </declare-styleable>
+    <declare-styleable name="ActionComponent">
+        <attr name="actionLabel" format="string" />
+    </declare-styleable>
+
+    <!-- 
+    <declare-styleable name="DeviceTypeContainerView">
+        <attr name="name" format="string" />
+    </declare-styleable>-->        
+    
+    <declare-styleable name="CustomLine">
+        <attr name="orientation" format="enum" >
+            <enum name="horizontal" value="0" />
+            <enum name="vertical" value="1" />
+        </attr> 
+        <attr name="dashed" format="boolean" />
+        <attr name="color" format="reference" />
+        <attr name="dashWidth" format="integer" />
+        <attr name="dashGap" format="integer" />
+        <attr name="thickness" format="integer" />        
+        <attr name="shadow" format="boolean" />      
+        <attr name="toto" format="boolean" />
+    </declare-styleable>
+    
+    <declare-styleable name="WizardCard">
+        <attr name="type" format="enum" >
+            <enum name="applicationSimple" value="0" />
+            <enum name="applicationDetails" value="1" />
+            <enum name="deviceSimple" value="2" />
+            <enum name="deviceDetails" value="3" />
+            <enum name="config" value="4" />
+            <enum name="userDetails" value="5" />
+            <enum name="userSimple" value="6" />
+            </attr>         
+    </declare-styleable>
+    
+</resources>

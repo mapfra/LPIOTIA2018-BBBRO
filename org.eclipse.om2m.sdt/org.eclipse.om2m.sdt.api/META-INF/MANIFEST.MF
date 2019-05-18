@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: org.eclipse.om2m.sdt.api
+Bundle-SymbolicName: org.eclipse.om2m.sdt.api
+Bundle-Version: 1.1.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-Activator: org.eclipse.om2m.sdt.utils.Activator
+Bundle-ClassPath: .
+Import-Package: org.osgi.framework,
+ org.osgi.service.log,
+ org.osgi.util.tracker
+Export-Package: org.eclipse.om2m.sdt,org.eclipse.om2m.sdt.args,org.ecl
+ ipse.om2m.sdt.datapoints,org.eclipse.om2m.sdt.events,org.eclipse.om2m
+ .sdt.exceptions,org.eclipse.om2m.sdt.rights,org.eclipse.om2m.sdt.type
+ s,org.eclipse.om2m.sdt.utils

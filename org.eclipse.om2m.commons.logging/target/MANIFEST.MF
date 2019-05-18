@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-SymbolicName: org.eclipse.om2m.commons.logging
+Bundle-Name: Logging
+Bundle-Version: 1.1.0.20190516-1509
+Bundle-ClassPath: libs/org.apache.log4j_1.2.13.v200903072027.jar
+Bundle-ManifestVersion: 2
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Fragment-Host: org.apache.commons.logging
+

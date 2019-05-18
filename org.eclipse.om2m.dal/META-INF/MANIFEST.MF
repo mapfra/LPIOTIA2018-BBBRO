@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Dal
+Bundle-SymbolicName: org.eclipse.om2m.dal
+Bundle-Version: 1.1.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Import-Package: org.osgi.framework,
+ org.osgi.service.event
+Export-Package: org.osgi.service.dal,org.osgi.service.dal.functions,or
+ g.osgi.service.dal.functions.data,org.osgi.service.device
+Bundle-ClassPath: libs/osgi.residential-6.0.0.jar

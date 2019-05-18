@@ -1,0 +1,12 @@
+{
+  "package-name": "org.eclipse.om2m.commons.resource.flexcontainerspec",
+  "xml-schema": {
+    "element-form-default": "QUALIFIED",
+    "namespace": "http:\/\/www.onem2m.org\/xml\/protocols\/homedomain"
+  },
+  "java-types": {
+  	"java-type": [
+      ]
+  }
+}
+

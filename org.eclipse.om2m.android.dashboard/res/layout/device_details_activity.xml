@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright (c) 2013, 2017 Orange.
+    All rights reserved. This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License v1.0
+    which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html
+   
+    Contributors:
+       BAREAU Cyrille <cyrille.bareau@orange.com>, 
+       BONNARDEL Gregory <gbonnardel.ext@orange.com>, 
+       BOLLE Sebastien <sebastien.bolle@orange.com>.
+ -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res/com.orange.openthebox.dashboard"
+    xmlns:app="http://schemas.android.com/apk/res/com.orange.openthebox.dashboard"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/solf_background"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/otb_blue" >
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/otb_white_posterous" />
+
+        <TextView
+            android:id="@+id/tv_device_details_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:text="@string/devices_title"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+        
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/blur_shadow"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/device_details_info"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/otb_blue"
+                    android:textSize="17sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text="@string/device_details_serialNumber"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/otb_dark_gray"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/tv_device_details_serialNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/otb_dark_gray"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text="@string/device_details_deviceName"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/otb_dark_gray"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/tv_device_details_deviceName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/otb_dark_gray"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text="@string/device_details_cnd"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/otb_dark_gray"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/tv_device_details_cnd"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/otb_dark_gray"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text="@string/device_details_manufacturer"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/otb_dark_gray"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/tv_device_details_manufacturer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/otb_dark_gray"
+                        android:textSize="15sp" />
+                    
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_device_details_model"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text="@string/device_details_model"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/otb_dark_gray"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/tv_device_details_model"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/otb_dark_gray"
+                        android:textSize="15sp" />
+                    
+                </LinearLayout>
+                
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text="@string/device_details_protocol"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/otb_dark_gray"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/tv_device_details_protocol"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/otb_dark_gray"
+                        android:textSize="15sp" />
+                    
+                </LinearLayout>
+                
+                <LinearLayout
+                    android:id="@+id/ll_device_details_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text="@string/device_details_location"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/otb_dark_gray"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/tv_device_details_location"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/otb_dark_gray"
+                        android:textSize="15sp" />
+                    
+                </LinearLayout>
+                
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp" >
+
+                    <TextView
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text="@string/device_details_modules"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/otb_dark_gray"
+                        android:textSize="15sp" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_device_details_modules"
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/otb_dark_gray"
+                        android:ems="10"
+                        android:inputType="text"
+                        android:textSize="15sp" >
+
+                    </LinearLayout>
+
+                </LinearLayout>
+                
+            </LinearLayout>
+
+        </LinearLayout>
+        
+    </ScrollView>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:background="@color/otb_blue"
+        android:orientation="horizontal" >
+
+    </RelativeLayout>
+
+</LinearLayout>

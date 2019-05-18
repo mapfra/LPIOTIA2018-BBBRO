@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="maven-antrun-" default="main"  >
+<target name="main">
+  <echo>Copying scripts into in product</echo>
+  <copy file="/Users/Paul/Development/bbbro/org.eclipse.om2m.site.in-cse/script" tofile="/Users/Paul/Development/bbbro/org.eclipse.om2m.site.in-cse/target/products/in-cse/${osgi.os}/${osgi.ws}/${osgi.arch}/start.sh"/>
+  <copy file="/Users/Paul/Development/bbbro/org.eclipse.om2m.site.in-cse/script" tofile="/Users/Paul/Development/bbbro/org.eclipse.om2m.site.in-cse/target/products/in-cse/${osgi.os}/${osgi.ws}/${osgi.arch}/start.bat"/>
+  <copy file="/Users/Paul/Development/bbbro/org.eclipse.om2m.site.in-cse/log4j.configuration" tofile="/Users/Paul/Development/bbbro/org.eclipse.om2m.site.in-cse/target/products/in-cse/${osgi.os}/${osgi.ws}/${osgi.arch}/log4j.configuration"/>
+  <copy todir="/Users/Paul/Development/bbbro/org.eclipse.om2m.site.in-cse/target/products/in-cse/${osgi.os}/${osgi.ws}/${osgi.arch}/configurations">
+    <fileset includes="**/*" dir="/Users/Paul/Development/bbbro/org.eclipse.om2m.site.in-cse/configurations"/>
+  </copy>
+  <propertyfile file="/Users/Paul/Development/bbbro/org.eclipse.om2m.site.in-cse/target/products/in-cse/${osgi.os}/${osgi.ws}/${osgi.arch}/configuration/config.ini">
+    <entry type="string" operation="+" value=", reference:file:pax-confman-propsloader-0.2.2.jar@1:start" key="osgi.bundles"/>
+  </propertyfile>
+</target>
+</project>

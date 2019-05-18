@@ -1,0 +1,1105 @@
+[2019-05-16 17:25:44,620 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+Starting Data Mapper
+[2019-05-16 17:25:44,621 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+Registering XML Mapper Service..
+[2019-05-16 17:25:51,501 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+XML Mapper service registered.
+[2019-05-16 17:25:51,501 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+Registering JSON Mapper Service..
+[2019-05-16 17:25:55,253 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+JSON Mapper service registered.
+[2019-05-16 17:25:55,272 INFO] - org.eclipse.om2m.binding.coap.Activator 
+Register CoAP RestClientService..
+[2019-05-16 17:25:55,273 INFO] - org.eclipse.om2m.binding.coap.Activator 
+Starting CoAP server
+[2019-05-16 17:25:55,309 INFO] - org.eclipse.om2m.binding.coap.Activator 
+CseService opened
+[2019-05-16 17:25:55,311 INFO] - org.eclipse.om2m.binding.http.Activator 
+Register HTTP RestClientService..
+[2019-05-16 17:25:55,316 INFO] - org.eclipse.om2m.binding.http.Activator 
+HTTP RestClientService is registered.
+[2019-05-16 17:25:55,546 INFO] - org.eclipse.om2m.persistence.eclipselink.Activator 
+Starting Persistence JPA plugin...
+[2019-05-16 17:25:55,549 INFO] - org.eclipse.om2m.core.Activator 
+Starting CSE...
+[2019-05-16 17:25:55,549 INFO] - org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl 
+Initializing Database...
+[2019-05-16 17:25:55,549 INFO] - org.eclipse.om2m.core.Activator 
+Added Data Mapper Service: application/xml
+[2019-05-16 17:25:55,549 INFO] - org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl 
+Creating new EntityManagerFactory...
+[2019-05-16 17:25:55,549 INFO] - org.eclipse.om2m.core.Activator 
+Added Data Mapper Service: application/json
+[2019-05-16 17:25:55,551 INFO] - org.eclipse.om2m.core.Activator 
+Rest client service discovered. Protocol: coap
+[2019-05-16 17:25:55,551 INFO] - org.eclipse.om2m.core.Activator 
+Rest client service discovered. Protocol: http
+[2019-05-16 17:25:55,551 INFO] - org.eclipse.om2m.core.Activator 
+Rest client service discovered. Protocol: mqtt
+[2019-05-16 17:25:55,554 INFO] - org.eclipse.om2m.binding.http.Activator 
+HttpService discovered
+[2019-05-16 17:25:55,555 INFO] - org.eclipse.om2m.binding.http.Activator 
+Register / context
+[2019-05-16 17:25:55,618 INFO] - org.eclipse.om2m.webapp.resourcesbrowser.json.Activator 
+HttpService discovered
+[2019-05-16 17:25:55,618 INFO] - org.eclipse.om2m.webapp.resourcesbrowser.json.Activator 
+Register /webpage http context
+[2019-05-16 17:25:55,627 INFO] - org.eclipse.om2m.sdt.comparator.xml.Activator 
+HttpService discovered
+[2019-05-16 17:25:55,627 INFO] - org.eclipse.om2m.sdt.comparator.xml.Activator 
+Register /comparator http context
+[2019-05-16 17:25:56,368 ERROR] - org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl 
+Error in creation of EntityManagerFactory
+javax.persistence.PersistenceException: Exception [EclipseLink-4003] (Eclipse Persistence Services - 2.5.2.v20140319-9ad6abd): org.eclipse.persistence.exceptions.DatabaseException
+Exception Description: Configuration error.  Class [org.postgresql.Driver] not found.
+	at org.eclipse.persistence.internal.jpa.EntityManagerSetupImpl.deploy(EntityManagerSetupImpl.java:766)
+	at org.eclipse.persistence.internal.jpa.EntityManagerFactoryDelegate.getAbstractSession(EntityManagerFactoryDelegate.java:204)
+	at org.eclipse.persistence.internal.jpa.EntityManagerFactoryDelegate.getDatabaseSession(EntityManagerFactoryDelegate.java:182)
+	at org.eclipse.persistence.internal.jpa.EntityManagerFactoryImpl.getDatabaseSession(EntityManagerFactoryImpl.java:527)
+	at org.eclipse.persistence.jpa.PersistenceProvider.createEntityManagerFactoryImpl(PersistenceProvider.java:140)
+	at org.eclipse.persistence.jpa.PersistenceProvider.createEntityManagerFactory(PersistenceProvider.java:177)
+	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:79)
+	at org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl.init(DBServiceJPAImpl.java:111)
+	at org.eclipse.om2m.persistence.eclipselink.Activator$1.run(Activator.java:51)
+Caused by: Exception [EclipseLink-4003] (Eclipse Persistence Services - 2.5.2.v20140319-9ad6abd): org.eclipse.persistence.exceptions.DatabaseException
+Exception Description: Configuration error.  Class [org.postgresql.Driver] not found.
+	at org.eclipse.persistence.exceptions.DatabaseException.configurationErrorClassNotFound(DatabaseException.java:89)
+	at org.eclipse.persistence.sessions.DefaultConnector.loadDriverClass(DefaultConnector.java:267)
+	at org.eclipse.persistence.sessions.DefaultConnector.connect(DefaultConnector.java:85)
+	at org.eclipse.persistence.sessions.DatasourceLogin.connectToDatasource(DatasourceLogin.java:162)
+	at org.eclipse.persistence.internal.sessions.DatabaseSessionImpl.setOrDetectDatasource(DatabaseSessionImpl.java:204)
+	at org.eclipse.persistence.internal.sessions.DatabaseSessionImpl.loginAndDetectDatasource(DatabaseSessionImpl.java:741)
+	at org.eclipse.persistence.internal.jpa.EntityManagerFactoryProvider.login(EntityManagerFactoryProvider.java:239)
+	at org.eclipse.persistence.internal.jpa.EntityManagerSetupImpl.deploy(EntityManagerSetupImpl.java:685)
+	... 8 more
+[2019-05-16 17:25:56,369 ERROR] - org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl 
+ERROR initializing Database: EntityManagerFactory is null!
+[2019-05-16 17:25:56,369 INFO] - org.eclipse.om2m.persistence.eclipselink.Activator 
+Registering Database (JPA-EL) Service
+[2019-05-16 17:25:56,370 INFO] - org.eclipse.om2m.core.Activator 
+DataBase persistence service discovered
+[2019-05-16 17:25:56,371 INFO] - org.eclipse.om2m.core.thread.CoreExecutor 
+Creating thread pool with corePoolSize=5 & maximumSize=50
+[2019-05-16 17:25:56,373 INFO] - org.eclipse.om2m.core.CSEInitializer 
+Initializating the cseBase
+[2019-05-16 17:42:43,757 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+Starting Data Mapper
+[2019-05-16 17:42:43,758 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+Registering XML Mapper Service..
+[2019-05-16 17:42:51,423 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+XML Mapper service registered.
+[2019-05-16 17:42:51,424 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+Registering JSON Mapper Service..
+[2019-05-16 17:42:57,786 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+JSON Mapper service registered.
+[2019-05-16 17:42:57,806 INFO] - org.eclipse.om2m.binding.coap.Activator 
+Register CoAP RestClientService..
+[2019-05-16 17:42:57,807 INFO] - org.eclipse.om2m.binding.coap.Activator 
+Starting CoAP server
+[2019-05-16 17:42:57,844 INFO] - org.eclipse.om2m.binding.coap.Activator 
+CseService opened
+[2019-05-16 17:42:57,846 INFO] - org.eclipse.om2m.binding.http.Activator 
+Register HTTP RestClientService..
+[2019-05-16 17:42:57,853 INFO] - org.eclipse.om2m.binding.http.Activator 
+HTTP RestClientService is registered.
+[2019-05-16 17:42:58,088 INFO] - org.eclipse.om2m.persistence.eclipselink.Activator 
+Starting Persistence JPA plugin...
+[2019-05-16 17:42:58,090 INFO] - org.eclipse.om2m.core.Activator 
+Starting CSE...
+[2019-05-16 17:42:58,090 INFO] - org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl 
+Initializing Database...
+[2019-05-16 17:42:58,091 INFO] - org.eclipse.om2m.core.Activator 
+Added Data Mapper Service: application/xml
+[2019-05-16 17:42:58,091 INFO] - org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl 
+Creating new EntityManagerFactory...
+[2019-05-16 17:42:58,091 INFO] - org.eclipse.om2m.core.Activator 
+Added Data Mapper Service: application/json
+[2019-05-16 17:42:58,093 INFO] - org.eclipse.om2m.core.Activator 
+Rest client service discovered. Protocol: coap
+[2019-05-16 17:42:58,093 INFO] - org.eclipse.om2m.core.Activator 
+Rest client service discovered. Protocol: http
+[2019-05-16 17:42:58,093 INFO] - org.eclipse.om2m.core.Activator 
+Rest client service discovered. Protocol: mqtt
+[2019-05-16 17:42:58,095 INFO] - org.eclipse.om2m.binding.http.Activator 
+HttpService discovered
+[2019-05-16 17:42:58,096 INFO] - org.eclipse.om2m.binding.http.Activator 
+Register / context
+[2019-05-16 17:42:58,153 INFO] - org.eclipse.om2m.webapp.resourcesbrowser.json.Activator 
+HttpService discovered
+[2019-05-16 17:42:58,153 INFO] - org.eclipse.om2m.webapp.resourcesbrowser.json.Activator 
+Register /webpage http context
+[2019-05-16 17:42:58,160 INFO] - org.eclipse.om2m.sdt.comparator.xml.Activator 
+HttpService discovered
+[2019-05-16 17:42:58,160 INFO] - org.eclipse.om2m.sdt.comparator.xml.Activator 
+Register /comparator http context
+[2019-05-16 17:42:58,949 ERROR] - org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl 
+Error in creation of EntityManagerFactory
+javax.persistence.PersistenceException: Exception [EclipseLink-4003] (Eclipse Persistence Services - 2.5.2.v20140319-9ad6abd): org.eclipse.persistence.exceptions.DatabaseException
+Exception Description: Configuration error.  Class [org.postgresql.Driver] not found.
+	at org.eclipse.persistence.internal.jpa.EntityManagerSetupImpl.deploy(EntityManagerSetupImpl.java:766)
+	at org.eclipse.persistence.internal.jpa.EntityManagerFactoryDelegate.getAbstractSession(EntityManagerFactoryDelegate.java:204)
+	at org.eclipse.persistence.internal.jpa.EntityManagerFactoryDelegate.getDatabaseSession(EntityManagerFactoryDelegate.java:182)
+	at org.eclipse.persistence.internal.jpa.EntityManagerFactoryImpl.getDatabaseSession(EntityManagerFactoryImpl.java:527)
+	at org.eclipse.persistence.jpa.PersistenceProvider.createEntityManagerFactoryImpl(PersistenceProvider.java:140)
+	at org.eclipse.persistence.jpa.PersistenceProvider.createEntityManagerFactory(PersistenceProvider.java:177)
+	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:79)
+	at org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl.init(DBServiceJPAImpl.java:111)
+	at org.eclipse.om2m.persistence.eclipselink.Activator$1.run(Activator.java:51)
+Caused by: Exception [EclipseLink-4003] (Eclipse Persistence Services - 2.5.2.v20140319-9ad6abd): org.eclipse.persistence.exceptions.DatabaseException
+Exception Description: Configuration error.  Class [org.postgresql.Driver] not found.
+	at org.eclipse.persistence.exceptions.DatabaseException.configurationErrorClassNotFound(DatabaseException.java:89)
+	at org.eclipse.persistence.sessions.DefaultConnector.loadDriverClass(DefaultConnector.java:267)
+	at org.eclipse.persistence.sessions.DefaultConnector.connect(DefaultConnector.java:85)
+	at org.eclipse.persistence.sessions.DatasourceLogin.connectToDatasource(DatasourceLogin.java:162)
+	at org.eclipse.persistence.internal.sessions.DatabaseSessionImpl.setOrDetectDatasource(DatabaseSessionImpl.java:204)
+	at org.eclipse.persistence.internal.sessions.DatabaseSessionImpl.loginAndDetectDatasource(DatabaseSessionImpl.java:741)
+	at org.eclipse.persistence.internal.jpa.EntityManagerFactoryProvider.login(EntityManagerFactoryProvider.java:239)
+	at org.eclipse.persistence.internal.jpa.EntityManagerSetupImpl.deploy(EntityManagerSetupImpl.java:685)
+	... 8 more
+[2019-05-16 17:42:58,950 ERROR] - org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl 
+ERROR initializing Database: EntityManagerFactory is null!
+[2019-05-16 17:42:58,950 INFO] - org.eclipse.om2m.persistence.eclipselink.Activator 
+Registering Database (JPA-EL) Service
+[2019-05-16 17:42:58,951 INFO] - org.eclipse.om2m.core.Activator 
+DataBase persistence service discovered
+[2019-05-16 17:42:58,952 INFO] - org.eclipse.om2m.core.thread.CoreExecutor 
+Creating thread pool with corePoolSize=5 & maximumSize=50
+[2019-05-16 17:42:58,955 INFO] - org.eclipse.om2m.core.CSEInitializer 
+Initializating the cseBase
+[2019-05-16 17:53:15,759 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+Starting Data Mapper
+[2019-05-16 17:53:15,760 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+Registering XML Mapper Service..
+[2019-05-16 17:53:26,677 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+XML Mapper service registered.
+[2019-05-16 17:53:26,677 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+Registering JSON Mapper Service..
+[2019-05-16 17:53:35,924 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+JSON Mapper service registered.
+[2019-05-16 17:53:35,944 INFO] - org.eclipse.om2m.binding.coap.Activator 
+Register CoAP RestClientService..
+[2019-05-16 17:53:35,946 INFO] - org.eclipse.om2m.binding.coap.Activator 
+Starting CoAP server
+[2019-05-16 17:53:35,980 INFO] - org.eclipse.om2m.binding.coap.Activator 
+CseService opened
+[2019-05-16 17:53:35,981 INFO] - org.eclipse.om2m.binding.http.Activator 
+Register HTTP RestClientService..
+[2019-05-16 17:53:35,986 INFO] - org.eclipse.om2m.binding.http.Activator 
+HTTP RestClientService is registered.
+[2019-05-16 17:53:36,201 INFO] - org.eclipse.om2m.persistence.eclipselink.Activator 
+Starting Persistence JPA plugin...
+[2019-05-16 17:53:36,204 INFO] - org.eclipse.om2m.core.Activator 
+Starting CSE...
+[2019-05-16 17:53:36,204 INFO] - org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl 
+Initializing Database...
+[2019-05-16 17:53:36,205 INFO] - org.eclipse.om2m.core.Activator 
+Added Data Mapper Service: application/xml
+[2019-05-16 17:53:36,205 INFO] - org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl 
+Creating new EntityManagerFactory...
+[2019-05-16 17:53:36,205 INFO] - org.eclipse.om2m.core.Activator 
+Added Data Mapper Service: application/json
+[2019-05-16 17:53:36,206 INFO] - org.eclipse.om2m.core.Activator 
+Rest client service discovered. Protocol: coap
+[2019-05-16 17:53:36,206 INFO] - org.eclipse.om2m.core.Activator 
+Rest client service discovered. Protocol: http
+[2019-05-16 17:53:36,206 INFO] - org.eclipse.om2m.core.Activator 
+Rest client service discovered. Protocol: mqtt
+[2019-05-16 17:53:36,209 INFO] - org.eclipse.om2m.binding.http.Activator 
+HttpService discovered
+[2019-05-16 17:53:36,210 INFO] - org.eclipse.om2m.binding.http.Activator 
+Register / context
+[2019-05-16 17:53:36,273 INFO] - org.eclipse.om2m.webapp.resourcesbrowser.json.Activator 
+HttpService discovered
+[2019-05-16 17:53:36,273 INFO] - org.eclipse.om2m.webapp.resourcesbrowser.json.Activator 
+Register /webpage http context
+[2019-05-16 17:53:36,279 INFO] - org.eclipse.om2m.sdt.comparator.xml.Activator 
+HttpService discovered
+[2019-05-16 17:53:36,279 INFO] - org.eclipse.om2m.sdt.comparator.xml.Activator 
+Register /comparator http context
+[2019-05-16 17:53:37,034 ERROR] - org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl 
+Error in creation of EntityManagerFactory
+javax.persistence.PersistenceException: Exception [EclipseLink-4003] (Eclipse Persistence Services - 2.5.2.v20140319-9ad6abd): org.eclipse.persistence.exceptions.DatabaseException
+Exception Description: Configuration error.  Class [org.postgresql.Driver] not found.
+	at org.eclipse.persistence.internal.jpa.EntityManagerSetupImpl.deploy(EntityManagerSetupImpl.java:766)
+	at org.eclipse.persistence.internal.jpa.EntityManagerFactoryDelegate.getAbstractSession(EntityManagerFactoryDelegate.java:204)
+	at org.eclipse.persistence.internal.jpa.EntityManagerFactoryDelegate.getDatabaseSession(EntityManagerFactoryDelegate.java:182)
+	at org.eclipse.persistence.internal.jpa.EntityManagerFactoryImpl.getDatabaseSession(EntityManagerFactoryImpl.java:527)
+	at org.eclipse.persistence.jpa.PersistenceProvider.createEntityManagerFactoryImpl(PersistenceProvider.java:140)
+	at org.eclipse.persistence.jpa.PersistenceProvider.createEntityManagerFactory(PersistenceProvider.java:177)
+	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:79)
+	at org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl.init(DBServiceJPAImpl.java:111)
+	at org.eclipse.om2m.persistence.eclipselink.Activator$1.run(Activator.java:51)
+Caused by: Exception [EclipseLink-4003] (Eclipse Persistence Services - 2.5.2.v20140319-9ad6abd): org.eclipse.persistence.exceptions.DatabaseException
+Exception Description: Configuration error.  Class [org.postgresql.Driver] not found.
+	at org.eclipse.persistence.exceptions.DatabaseException.configurationErrorClassNotFound(DatabaseException.java:89)
+	at org.eclipse.persistence.sessions.DefaultConnector.loadDriverClass(DefaultConnector.java:267)
+	at org.eclipse.persistence.sessions.DefaultConnector.connect(DefaultConnector.java:85)
+	at org.eclipse.persistence.sessions.DatasourceLogin.connectToDatasource(DatasourceLogin.java:162)
+	at org.eclipse.persistence.internal.sessions.DatabaseSessionImpl.setOrDetectDatasource(DatabaseSessionImpl.java:204)
+	at org.eclipse.persistence.internal.sessions.DatabaseSessionImpl.loginAndDetectDatasource(DatabaseSessionImpl.java:741)
+	at org.eclipse.persistence.internal.jpa.EntityManagerFactoryProvider.login(EntityManagerFactoryProvider.java:239)
+	at org.eclipse.persistence.internal.jpa.EntityManagerSetupImpl.deploy(EntityManagerSetupImpl.java:685)
+	... 8 more
+[2019-05-16 17:53:37,035 ERROR] - org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl 
+ERROR initializing Database: EntityManagerFactory is null!
+[2019-05-16 17:53:37,035 INFO] - org.eclipse.om2m.persistence.eclipselink.Activator 
+Registering Database (JPA-EL) Service
+[2019-05-16 17:53:37,036 INFO] - org.eclipse.om2m.core.Activator 
+DataBase persistence service discovered
+[2019-05-16 17:53:37,037 INFO] - org.eclipse.om2m.core.thread.CoreExecutor 
+Creating thread pool with corePoolSize=5 & maximumSize=50
+[2019-05-16 17:53:37,039 INFO] - org.eclipse.om2m.core.CSEInitializer 
+Initializating the cseBase
+[2019-05-16 17:57:46,380 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+Starting Data Mapper
+[2019-05-16 17:57:46,381 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+Registering XML Mapper Service..
+[2019-05-16 17:57:53,799 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+XML Mapper service registered.
+[2019-05-16 17:57:53,799 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+Registering JSON Mapper Service..
+[2019-05-16 17:57:57,529 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+JSON Mapper service registered.
+[2019-05-16 17:57:57,554 INFO] - org.eclipse.om2m.binding.coap.Activator 
+Register CoAP RestClientService..
+[2019-05-16 17:57:57,556 INFO] - org.eclipse.om2m.binding.coap.Activator 
+Starting CoAP server
+[2019-05-16 17:57:57,591 INFO] - org.eclipse.om2m.binding.coap.Activator 
+CseService opened
+[2019-05-16 17:57:57,592 INFO] - org.eclipse.om2m.binding.http.Activator 
+Register HTTP RestClientService..
+[2019-05-16 17:57:57,599 INFO] - org.eclipse.om2m.binding.http.Activator 
+HTTP RestClientService is registered.
+[2019-05-16 17:57:57,832 INFO] - org.eclipse.om2m.persistence.eclipselink.Activator 
+Starting Persistence JPA plugin...
+[2019-05-16 17:57:57,834 INFO] - org.eclipse.om2m.core.Activator 
+Starting CSE...
+[2019-05-16 17:57:57,834 INFO] - org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl 
+Initializing Database...
+[2019-05-16 17:57:57,834 INFO] - org.eclipse.om2m.core.Activator 
+Added Data Mapper Service: application/xml
+[2019-05-16 17:57:57,834 INFO] - org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl 
+Creating new EntityManagerFactory...
+[2019-05-16 17:57:57,834 INFO] - org.eclipse.om2m.core.Activator 
+Added Data Mapper Service: application/json
+[2019-05-16 17:57:57,836 INFO] - org.eclipse.om2m.core.Activator 
+Rest client service discovered. Protocol: coap
+[2019-05-16 17:57:57,836 INFO] - org.eclipse.om2m.core.Activator 
+Rest client service discovered. Protocol: http
+[2019-05-16 17:57:57,836 INFO] - org.eclipse.om2m.core.Activator 
+Rest client service discovered. Protocol: mqtt
+[2019-05-16 17:57:57,838 INFO] - org.eclipse.om2m.binding.http.Activator 
+HttpService discovered
+[2019-05-16 17:57:57,839 INFO] - org.eclipse.om2m.binding.http.Activator 
+Register / context
+[2019-05-16 17:57:57,892 INFO] - org.eclipse.om2m.webapp.resourcesbrowser.json.Activator 
+HttpService discovered
+[2019-05-16 17:57:57,892 INFO] - org.eclipse.om2m.webapp.resourcesbrowser.json.Activator 
+Register /webpage http context
+[2019-05-16 17:57:57,900 INFO] - org.eclipse.om2m.sdt.comparator.xml.Activator 
+HttpService discovered
+[2019-05-16 17:57:57,900 INFO] - org.eclipse.om2m.sdt.comparator.xml.Activator 
+Register /comparator http context
+[2019-05-16 17:57:58,674 ERROR] - org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl 
+Error in creation of EntityManagerFactory
+javax.persistence.PersistenceException: Exception [EclipseLink-4021] (Eclipse Persistence Services - 2.5.2.v20140319-9ad6abd): org.eclipse.persistence.exceptions.DatabaseException
+Exception Description: Unable to acquire a connection from driver [org.h2.Driver], user [postgres] and URL [jdbc:postgres://10.0.4.7:5432/bbbro].  Verify that you have set the expected driver class and URL.  Check your login, persistence.xml or sessions.xml resource.  The jdbc.driver property should be set to a class that is compatible with your database platform
+Internal Exception: java.sql.SQLException: No suitable driver found for jdbc:postgres://10.0.4.7:5432/bbbro
+Error Code: 0
+	at org.eclipse.persistence.internal.jpa.EntityManagerSetupImpl.deploy(EntityManagerSetupImpl.java:766)
+	at org.eclipse.persistence.internal.jpa.EntityManagerFactoryDelegate.getAbstractSession(EntityManagerFactoryDelegate.java:204)
+	at org.eclipse.persistence.internal.jpa.EntityManagerFactoryDelegate.getDatabaseSession(EntityManagerFactoryDelegate.java:182)
+	at org.eclipse.persistence.internal.jpa.EntityManagerFactoryImpl.getDatabaseSession(EntityManagerFactoryImpl.java:527)
+	at org.eclipse.persistence.jpa.PersistenceProvider.createEntityManagerFactoryImpl(PersistenceProvider.java:140)
+	at org.eclipse.persistence.jpa.PersistenceProvider.createEntityManagerFactory(PersistenceProvider.java:177)
+	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:79)
+	at org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl.init(DBServiceJPAImpl.java:111)
+	at org.eclipse.om2m.persistence.eclipselink.Activator$1.run(Activator.java:51)
+Caused by: Exception [EclipseLink-4021] (Eclipse Persistence Services - 2.5.2.v20140319-9ad6abd): org.eclipse.persistence.exceptions.DatabaseException
+Exception Description: Unable to acquire a connection from driver [org.h2.Driver], user [postgres] and URL [jdbc:postgres://10.0.4.7:5432/bbbro].  Verify that you have set the expected driver class and URL.  Check your login, persistence.xml or sessions.xml resource.  The jdbc.driver property should be set to a class that is compatible with your database platform
+Internal Exception: java.sql.SQLException: No suitable driver found for jdbc:postgres://10.0.4.7:5432/bbbro
+Error Code: 0
+	at org.eclipse.persistence.exceptions.DatabaseException.unableToAcquireConnectionFromDriverException(DatabaseException.java:383)
+	at org.eclipse.persistence.exceptions.DatabaseException.unableToAcquireConnectionFromDriverException(DatabaseException.java:400)
+	at org.eclipse.persistence.sessions.DefaultConnector.connect(DefaultConnector.java:123)
+	at org.eclipse.persistence.sessions.DatasourceLogin.connectToDatasource(DatasourceLogin.java:162)
+	at org.eclipse.persistence.internal.sessions.DatabaseSessionImpl.setOrDetectDatasource(DatabaseSessionImpl.java:204)
+	at org.eclipse.persistence.internal.sessions.DatabaseSessionImpl.loginAndDetectDatasource(DatabaseSessionImpl.java:741)
+	at org.eclipse.persistence.internal.jpa.EntityManagerFactoryProvider.login(EntityManagerFactoryProvider.java:239)
+	at org.eclipse.persistence.internal.jpa.EntityManagerSetupImpl.deploy(EntityManagerSetupImpl.java:685)
+	... 8 more
+Caused by: java.sql.SQLException: No suitable driver found for jdbc:postgres://10.0.4.7:5432/bbbro
+	at java.sql.DriverManager.getConnection(DriverManager.java:689)
+	at java.sql.DriverManager.getConnection(DriverManager.java:208)
+	at org.eclipse.persistence.sessions.DefaultConnector.connect(DefaultConnector.java:98)
+	... 13 more
+[2019-05-16 17:57:58,676 ERROR] - org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl 
+ERROR initializing Database: EntityManagerFactory is null!
+[2019-05-16 17:57:58,676 INFO] - org.eclipse.om2m.persistence.eclipselink.Activator 
+Registering Database (JPA-EL) Service
+[2019-05-16 17:57:58,677 INFO] - org.eclipse.om2m.core.Activator 
+DataBase persistence service discovered
+[2019-05-16 17:57:58,678 INFO] - org.eclipse.om2m.core.thread.CoreExecutor 
+Creating thread pool with corePoolSize=5 & maximumSize=50
+[2019-05-16 17:57:58,681 INFO] - org.eclipse.om2m.core.CSEInitializer 
+Initializating the cseBase
+[2019-05-16 18:05:26,340 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+Starting Data Mapper
+[2019-05-16 18:05:26,341 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+Registering XML Mapper Service..
+[2019-05-16 18:05:33,998 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+XML Mapper service registered.
+[2019-05-16 18:05:33,998 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+Registering JSON Mapper Service..
+[2019-05-16 18:05:40,368 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+JSON Mapper service registered.
+[2019-05-16 18:05:40,389 INFO] - org.eclipse.om2m.binding.coap.Activator 
+Register CoAP RestClientService..
+[2019-05-16 18:05:40,390 INFO] - org.eclipse.om2m.binding.coap.Activator 
+Starting CoAP server
+[2019-05-16 18:05:40,424 INFO] - org.eclipse.om2m.binding.coap.Activator 
+CseService opened
+[2019-05-16 18:05:40,426 INFO] - org.eclipse.om2m.binding.http.Activator 
+Register HTTP RestClientService..
+[2019-05-16 18:05:40,431 INFO] - org.eclipse.om2m.binding.http.Activator 
+HTTP RestClientService is registered.
+[2019-05-16 18:05:40,664 INFO] - org.eclipse.om2m.persistence.eclipselink.Activator 
+Starting Persistence JPA plugin...
+[2019-05-16 18:05:40,667 INFO] - org.eclipse.om2m.core.Activator 
+Starting CSE...
+[2019-05-16 18:05:40,667 INFO] - org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl 
+Initializing Database...
+[2019-05-16 18:05:40,667 INFO] - org.eclipse.om2m.core.Activator 
+Added Data Mapper Service: application/xml
+[2019-05-16 18:05:40,667 INFO] - org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl 
+Creating new EntityManagerFactory...
+[2019-05-16 18:05:40,668 INFO] - org.eclipse.om2m.core.Activator 
+Added Data Mapper Service: application/json
+[2019-05-16 18:05:40,669 INFO] - org.eclipse.om2m.core.Activator 
+Rest client service discovered. Protocol: coap
+[2019-05-16 18:05:40,669 INFO] - org.eclipse.om2m.core.Activator 
+Rest client service discovered. Protocol: http
+[2019-05-16 18:05:40,669 INFO] - org.eclipse.om2m.core.Activator 
+Rest client service discovered. Protocol: mqtt
+[2019-05-16 18:05:40,672 INFO] - org.eclipse.om2m.binding.http.Activator 
+HttpService discovered
+[2019-05-16 18:05:40,672 INFO] - org.eclipse.om2m.binding.http.Activator 
+Register / context
+[2019-05-16 18:05:40,723 INFO] - org.eclipse.om2m.webapp.resourcesbrowser.json.Activator 
+HttpService discovered
+[2019-05-16 18:05:40,723 INFO] - org.eclipse.om2m.webapp.resourcesbrowser.json.Activator 
+Register /webpage http context
+[2019-05-16 18:05:40,730 INFO] - org.eclipse.om2m.sdt.comparator.xml.Activator 
+HttpService discovered
+[2019-05-16 18:05:40,730 INFO] - org.eclipse.om2m.sdt.comparator.xml.Activator 
+Register /comparator http context
+[2019-05-16 18:05:41,474 ERROR] - org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl 
+Error in creation of EntityManagerFactory
+javax.persistence.PersistenceException: Exception [EclipseLink-4021] (Eclipse Persistence Services - 2.5.2.v20140319-9ad6abd): org.eclipse.persistence.exceptions.DatabaseException
+Exception Description: Unable to acquire a connection from driver [org.h2.Driver], user [postgres] and URL [jdbc:postgres://10.0.4.7:5432/bbbro].  Verify that you have set the expected driver class and URL.  Check your login, persistence.xml or sessions.xml resource.  The jdbc.driver property should be set to a class that is compatible with your database platform
+Internal Exception: java.sql.SQLException: No suitable driver found for jdbc:postgres://10.0.4.7:5432/bbbro
+Error Code: 0
+	at org.eclipse.persistence.internal.jpa.EntityManagerSetupImpl.deploy(EntityManagerSetupImpl.java:766)
+	at org.eclipse.persistence.internal.jpa.EntityManagerFactoryDelegate.getAbstractSession(EntityManagerFactoryDelegate.java:204)
+	at org.eclipse.persistence.internal.jpa.EntityManagerFactoryDelegate.getDatabaseSession(EntityManagerFactoryDelegate.java:182)
+	at org.eclipse.persistence.internal.jpa.EntityManagerFactoryImpl.getDatabaseSession(EntityManagerFactoryImpl.java:527)
+	at org.eclipse.persistence.jpa.PersistenceProvider.createEntityManagerFactoryImpl(PersistenceProvider.java:140)
+	at org.eclipse.persistence.jpa.PersistenceProvider.createEntityManagerFactory(PersistenceProvider.java:177)
+	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:79)
+	at org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl.init(DBServiceJPAImpl.java:111)
+	at org.eclipse.om2m.persistence.eclipselink.Activator$1.run(Activator.java:51)
+Caused by: Exception [EclipseLink-4021] (Eclipse Persistence Services - 2.5.2.v20140319-9ad6abd): org.eclipse.persistence.exceptions.DatabaseException
+Exception Description: Unable to acquire a connection from driver [org.h2.Driver], user [postgres] and URL [jdbc:postgres://10.0.4.7:5432/bbbro].  Verify that you have set the expected driver class and URL.  Check your login, persistence.xml or sessions.xml resource.  The jdbc.driver property should be set to a class that is compatible with your database platform
+Internal Exception: java.sql.SQLException: No suitable driver found for jdbc:postgres://10.0.4.7:5432/bbbro
+Error Code: 0
+	at org.eclipse.persistence.exceptions.DatabaseException.unableToAcquireConnectionFromDriverException(DatabaseException.java:383)
+	at org.eclipse.persistence.exceptions.DatabaseException.unableToAcquireConnectionFromDriverException(DatabaseException.java:400)
+	at org.eclipse.persistence.sessions.DefaultConnector.connect(DefaultConnector.java:123)
+	at org.eclipse.persistence.sessions.DatasourceLogin.connectToDatasource(DatasourceLogin.java:162)
+	at org.eclipse.persistence.internal.sessions.DatabaseSessionImpl.setOrDetectDatasource(DatabaseSessionImpl.java:204)
+	at org.eclipse.persistence.internal.sessions.DatabaseSessionImpl.loginAndDetectDatasource(DatabaseSessionImpl.java:741)
+	at org.eclipse.persistence.internal.jpa.EntityManagerFactoryProvider.login(EntityManagerFactoryProvider.java:239)
+	at org.eclipse.persistence.internal.jpa.EntityManagerSetupImpl.deploy(EntityManagerSetupImpl.java:685)
+	... 8 more
+Caused by: java.sql.SQLException: No suitable driver found for jdbc:postgres://10.0.4.7:5432/bbbro
+	at java.sql.DriverManager.getConnection(DriverManager.java:689)
+	at java.sql.DriverManager.getConnection(DriverManager.java:208)
+	at org.eclipse.persistence.sessions.DefaultConnector.connect(DefaultConnector.java:98)
+	... 13 more
+[2019-05-16 18:05:41,476 ERROR] - org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl 
+ERROR initializing Database: EntityManagerFactory is null!
+[2019-05-16 18:05:41,476 INFO] - org.eclipse.om2m.persistence.eclipselink.Activator 
+Registering Database (JPA-EL) Service
+[2019-05-16 18:05:41,476 INFO] - org.eclipse.om2m.core.Activator 
+DataBase persistence service discovered
+[2019-05-16 18:05:41,478 INFO] - org.eclipse.om2m.core.thread.CoreExecutor 
+Creating thread pool with corePoolSize=5 & maximumSize=50
+[2019-05-16 18:05:41,481 INFO] - org.eclipse.om2m.core.CSEInitializer 
+Initializating the cseBase
+[2019-05-17 12:48:42,804 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+Starting Data Mapper
+[2019-05-17 12:48:42,806 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+Registering XML Mapper Service..
+[2019-05-17 12:48:51,656 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+XML Mapper service registered.
+[2019-05-17 12:48:51,656 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+Registering JSON Mapper Service..
+[2019-05-17 12:48:58,402 INFO] - org.eclipse.om2m.datamapping.jaxb.Activator 
+JSON Mapper service registered.
+[2019-05-17 12:48:58,420 INFO] - org.eclipse.om2m.binding.coap.Activator 
+Register CoAP RestClientService..
+[2019-05-17 12:48:58,422 INFO] - org.eclipse.om2m.binding.coap.Activator 
+Starting CoAP server
+[2019-05-17 12:48:58,468 INFO] - org.eclipse.om2m.binding.coap.Activator 
+CseService opened
+[2019-05-17 12:48:58,469 INFO] - org.eclipse.om2m.binding.http.Activator 
+Register HTTP RestClientService..
+[2019-05-17 12:48:58,474 INFO] - org.eclipse.om2m.binding.http.Activator 
+HTTP RestClientService is registered.
+[2019-05-17 12:48:58,695 INFO] - org.eclipse.om2m.persistence.eclipselink.Activator 
+Starting Persistence JPA plugin...
+[2019-05-17 12:48:58,697 INFO] - org.eclipse.om2m.core.Activator 
+Starting CSE...
+[2019-05-17 12:48:58,697 INFO] - org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl 
+Initializing Database...
+[2019-05-17 12:48:58,698 INFO] - org.eclipse.om2m.core.Activator 
+Added Data Mapper Service: application/xml
+[2019-05-17 12:48:58,698 INFO] - org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl 
+Creating new EntityManagerFactory...
+[2019-05-17 12:48:58,698 INFO] - org.eclipse.om2m.core.Activator 
+Added Data Mapper Service: application/json
+[2019-05-17 12:48:58,699 INFO] - org.eclipse.om2m.core.Activator 
+Rest client service discovered. Protocol: coap
+[2019-05-17 12:48:58,699 INFO] - org.eclipse.om2m.core.Activator 
+Rest client service discovered. Protocol: http
+[2019-05-17 12:48:58,699 INFO] - org.eclipse.om2m.core.Activator 
+Rest client service discovered. Protocol: mqtt
+[2019-05-17 12:48:58,702 INFO] - org.eclipse.om2m.binding.http.Activator 
+HttpService discovered
+[2019-05-17 12:48:58,702 INFO] - org.eclipse.om2m.binding.http.Activator 
+Register / context
+[2019-05-17 12:48:58,753 INFO] - org.eclipse.om2m.webapp.resourcesbrowser.json.Activator 
+HttpService discovered
+[2019-05-17 12:48:58,753 INFO] - org.eclipse.om2m.webapp.resourcesbrowser.json.Activator 
+Register /webpage http context
+[2019-05-17 12:48:58,759 INFO] - org.eclipse.om2m.sdt.comparator.xml.Activator 
+HttpService discovered
+[2019-05-17 12:48:58,759 INFO] - org.eclipse.om2m.sdt.comparator.xml.Activator 
+Register /comparator http context
+[2019-05-17 12:49:00,208 INFO] - org.eclipse.om2m.persistence.eclipselink.internal.DBServiceJPAImpl 
+DataBase initialized.
+[2019-05-17 12:49:00,225 INFO] - org.eclipse.om2m.persistence.eclipselink.Activator 
+Registering Database (JPA-EL) Service
+[2019-05-17 12:49:00,225 INFO] - org.eclipse.om2m.core.Activator 
+DataBase persistence service discovered
+[2019-05-17 12:49:00,227 INFO] - org.eclipse.om2m.core.thread.CoreExecutor 
+Creating thread pool with corePoolSize=5 & maximumSize=50
+[2019-05-17 12:49:00,230 INFO] - org.eclipse.om2m.core.CSEInitializer 
+Initializating the cseBase
+[2019-05-17 12:49:00,240 INFO] - org.eclipse.om2m.core.CSEInitializer 
+Create AccessControlPolicy resource
+[2019-05-17 12:49:00,278 INFO] - org.eclipse.om2m.core.CSEInitializer 
+Create CSEBase resource
+[2019-05-17 12:49:00,297 INFO] - org.eclipse.om2m.core.Activator 
+Registering CseService...
+[2019-05-17 12:49:00,304 INFO] - org.eclipse.om2m.binding.http.Activator 
+CseService discovered
+[2019-05-17 12:49:00,315 INFO] - org.eclipse.om2m.sdt.home.monitoring.util.AeRegistration 
+createACP
+[2019-05-17 12:49:00,316 INFO] - org.eclipse.om2m.core.router.Router 
+Received request in Router: RequestPrimitive [operation=1,
+ to=/in-cse/in-name,
+ from=admin:admin,
+ resourceType=1,
+ content=org.eclipse.om2m.commons.resource.AccessControlPolicy@1fb2a692,
+ returnContentType=application/obj,
+ requestContentType=application/obj,
+ , 
+,tokens=null]
+[2019-05-17 12:49:00,318 INFO] - org.eclipse.om2m.core.router.Router 
+Request handling in the current CSE: /in-cse/in-name
+[2019-05-17 12:49:00,320 INFO] - org.eclipse.om2m.core.router.Router 
+ResourceController to be used [AccessControlPolicyController]
+[2019-05-17 12:49:00,354 INFO] - org.eclipse.om2m.core.controller.Controller 
+Clear and close transaction
+[2019-05-17 12:49:00,356 INFO] - org.eclipse.om2m.core.router.Router 
+Response in Router= ResponsePrimitive [
+ responseStatusCode=2001
+ to=admin:admin
+ from=/in-cse
+ location=/in-cse/acp-394327732,
+ content (Only first 1000 caracters)=
+ org.eclipse.om2m.commons.resource.AccessControlPolicy@490e9156
+]
+[2019-05-17 12:49:00,356 INFO] - org.eclipse.om2m.sdt.home.monitoring.util.AeRegistration 
+createACP OK org.eclipse.om2m.commons.resource.AccessControlPolicy@490e9156
+[2019-05-17 12:49:00,356 INFO] - org.eclipse.om2m.core.router.Router 
+Received request in Router: RequestPrimitive [operation=1,
+ to=/in-cse/in-name,
+ from=admin:admin,
+ resourceType=2,
+ content=org.eclipse.om2m.commons.resource.AE@65f59c59,
+ returnContentType=application/obj,
+ requestContentType=application/obj,
+ , 
+,tokens=null]
+[2019-05-17 12:49:00,357 INFO] - org.eclipse.om2m.core.router.Router 
+Request handling in the current CSE: /in-cse/in-name
+[2019-05-17 12:49:00,359 INFO] - org.eclipse.om2m.core.router.Router 
+ResourceController to be used [AEController]
+[2019-05-17 12:49:00,380 INFO] - org.eclipse.om2m.core.controller.Controller 
+Clear and close transaction
+[2019-05-17 12:49:00,380 INFO] - org.eclipse.om2m.core.router.Router 
+Response in Router= ResponsePrimitive [
+ responseStatusCode=2001
+ to=admin:admin
+ from=/in-cse
+ location=/in-cse/CAE387608216,
+ content (Only first 1000 caracters)=
+ org.eclipse.om2m.commons.resource.AE@4a5fb793
+]
+[2019-05-17 12:49:00,380 INFO] - org.eclipse.om2m.core.router.Router 
+Received request in Router: RequestPrimitive [operation=1,
+ to=/in-cse/CAE387608216,
+ from=admin:admin,
+ resourceType=3,
+ content=org.eclipse.om2m.commons.resource.Container@3472c0d7,
+ returnContentType=application/obj,
+ requestContentType=application/obj,
+ , 
+,tokens=null]
+[2019-05-17 12:49:00,380 INFO] - org.eclipse.om2m.core.router.Router 
+Request handling in the current CSE: /in-cse/CAE387608216
+[2019-05-17 12:49:00,381 INFO] - org.eclipse.om2m.core.router.Router 
+ResourceController to be used [ContainerController]
+[2019-05-17 12:49:00,392 INFO] - org.eclipse.om2m.core.controller.Controller 
+Clear and close transaction
+[2019-05-17 12:49:00,392 INFO] - org.eclipse.om2m.core.router.Router 
+Response in Router= ResponsePrimitive [
+ responseStatusCode=2001
+ to=admin:admin
+ from=/in-cse
+ location=/in-cse/cnt-646160478,
+ content (Only first 1000 caracters)=
+ org.eclipse.om2m.commons.resource.Container@7bff1906
+]
+[2019-05-17 12:49:00,392 INFO] - org.eclipse.om2m.core.router.Router 
+Received request in Router: RequestPrimitive [operation=1,
+ to=/in-cse/cnt-646160478,
+ from=admin:admin,
+ resourceType=4,
+ content=org.eclipse.om2m.commons.resource.ContentInstance@373491ad,
+ returnContentType=application/obj,
+ requestContentType=application/obj,
+ , 
+,tokens=null]
+[2019-05-17 12:49:00,393 INFO] - org.eclipse.om2m.core.router.Router 
+Request handling in the current CSE: /in-cse/cnt-646160478
+[2019-05-17 12:49:00,393 INFO] - org.eclipse.om2m.core.router.Router 
+ResourceController to be used [ContentInstanceController]
+[2019-05-17 12:49:00,403 INFO] - org.eclipse.om2m.core.controller.Controller 
+Clear and close transaction
+[2019-05-17 12:49:00,403 INFO] - org.eclipse.om2m.core.router.Router 
+Response in Router= ResponsePrimitive [
+ responseStatusCode=2001
+ to=admin:admin
+ from=/in-cse
+ location=/in-cse/cin-326986294,
+ content (Only first 1000 caracters)=
+ org.eclipse.om2m.commons.resource.ContentInstance@34f4eead
+]
+[2019-05-17 12:49:00,403 INFO] - org.eclipse.om2m.core.router.Router 
+Received request in Router: RequestPrimitive [operation=1,
+ to=/in-cse/CAE387608216,
+ from=admin:admin,
+ resourceType=3,
+ content=org.eclipse.om2m.commons.resource.Container@5f497e25,
+ returnContentType=application/obj,
+ requestContentType=application/obj,
+ , 
+,tokens=null]
+[2019-05-17 12:49:00,404 INFO] - org.eclipse.om2m.core.router.Router 
+Request handling in the current CSE: /in-cse/CAE387608216
+[2019-05-17 12:49:00,404 INFO] - org.eclipse.om2m.core.router.Router 
+ResourceController to be used [ContainerController]
+[2019-05-17 12:49:00,417 INFO] - org.eclipse.om2m.core.controller.Controller 
+Clear and close transaction
+[2019-05-17 12:49:00,417 INFO] - org.eclipse.om2m.core.router.Router 
+Response in Router= ResponsePrimitive [
+ responseStatusCode=2001
+ to=admin:admin
+ from=/in-cse
+ location=/in-cse/cnt-296318126,
+ content (Only first 1000 caracters)=
+ org.eclipse.om2m.commons.resource.Container@77670c2d
+]
+[2019-05-17 12:49:00,418 INFO] - org.eclipse.om2m.core.router.Router 
+Received request in Router: RequestPrimitive [operation=1,
+ to=/in-cse/cnt-296318126,
+ from=admin:admin,
+ resourceType=4,
+ content=org.eclipse.om2m.commons.resource.ContentInstance@90607a5,
+ returnContentType=application/obj,
+ requestContentType=application/obj,
+ , 
+,tokens=null]
+[2019-05-17 12:49:00,418 INFO] - org.eclipse.om2m.core.router.Router 
+Request handling in the current CSE: /in-cse/cnt-296318126
+[2019-05-17 12:49:00,418 INFO] - org.eclipse.om2m.core.router.Router 
+ResourceController to be used [ContentInstanceController]
+[2019-05-17 12:49:00,425 INFO] - org.eclipse.om2m.core.controller.Controller 
+Clear and close transaction
+[2019-05-17 12:49:00,426 INFO] - org.eclipse.om2m.core.router.Router 
+Response in Router= ResponsePrimitive [
+ responseStatusCode=2001
+ to=admin:admin
+ from=/in-cse
+ location=/in-cse/cin-2407551,
+ content (Only first 1000 caracters)=
+ org.eclipse.om2m.commons.resource.ContentInstance@40bd4446
+]
+[2019-05-17 12:49:00,426 INFO] - org.eclipse.om2m.core.Activator 
+IPE service discovered: HomeMonitoringPOA
+[2019-05-17 12:49:00,427 INFO] - org.eclipse.om2m.sdt.home.monitoring.Activator 
+Register test /Home_Monitoring_Application http context
+[2019-05-17 12:49:00,432 INFO] - org.eclipse.om2m.ipe.sdt.Activator 
+setCseService
+[2019-05-17 12:49:00,433 INFO] - org.eclipse.om2m.ipe.sdt.Activator 
+activate SDT IPE
+[2019-05-17 12:49:00,433 INFO] - org.eclipse.om2m.ipe.sdt.Activator 
+updated(cse.id.to.be.announced=null)
+updated(cse.name.to.be.announced=null)
+updated(announcement.enabled=false)
+updated(ipe.under.announced.resource=false)
+[2019-05-17 12:49:00,433 INFO] - org.eclipse.om2m.ipe.sdt.Activator 
+Start IPE App null / null / false
+[2019-05-17 12:49:00,434 INFO] - org.eclipse.om2m.ipe.sdt.SDTIpeApplication 
+create ipe application
+[2019-05-17 12:49:00,434 INFO] - org.eclipse.om2m.core.router.Router 
+Received request in Router: RequestPrimitive [operation=1,
+ to=/in-cse/in-name,
+ from=admin:admin,
+ resourceType=2,
+ content=org.eclipse.om2m.commons.resource.AE@56fb404c,
+ returnContentType=application/obj,
+ requestContentType=application/obj,
+ , 
+,tokens=null]
+[2019-05-17 12:49:00,435 INFO] - org.eclipse.om2m.core.router.Router 
+Request handling in the current CSE: /in-cse/in-name
+[2019-05-17 12:49:00,435 INFO] - org.eclipse.om2m.core.router.Router 
+ResourceController to be used [AEController]
+[2019-05-17 12:49:00,447 INFO] - org.eclipse.om2m.core.controller.Controller 
+Clear and close transaction
+[2019-05-17 12:49:00,447 INFO] - org.eclipse.om2m.core.router.Router 
+Response in Router= ResponsePrimitive [
+ responseStatusCode=2001
+ to=admin:admin
+ from=/in-cse
+ location=/in-cse/CAE653605540,
+ content (Only first 1000 caracters)=
+ org.eclipse.om2m.commons.resource.AE@7279e1db
+]
+[2019-05-17 12:49:00,447 INFO] - org.eclipse.om2m.core.router.Router 
+Received request in Router: RequestPrimitive [operation=1,
+ to=/in-cse/in-name,
+ from=admin:admin,
+ resourceType=1,
+ content=org.eclipse.om2m.commons.resource.AccessControlPolicy@2e57e76d,
+ returnContentType=application/obj,
+ requestContentType=application/obj,
+ , 
+,tokens=null]
+[2019-05-17 12:49:00,448 INFO] - org.eclipse.om2m.core.router.Router 
+Request handling in the current CSE: /in-cse/in-name
+[2019-05-17 12:49:00,448 INFO] - org.eclipse.om2m.core.router.Router 
+ResourceController to be used [AccessControlPolicyController]
+[2019-05-17 12:49:00,462 INFO] - org.eclipse.om2m.core.controller.Controller 
+Clear and close transaction
+[2019-05-17 12:49:00,463 INFO] - org.eclipse.om2m.core.router.Router 
+Response in Router= ResponsePrimitive [
+ responseStatusCode=2001
+ to=admin:admin
+ from=/in-cse
+ location=/in-cse/acp-787871942,
+ content (Only first 1000 caracters)=
+ org.eclipse.om2m.commons.resource.AccessControlPolicy@783c740f
+]
+[2019-05-17 12:49:00,465 INFO] - org.eclipse.om2m.binding.coap.Activator 
+CSE Service discovered
+[2019-05-17 12:49:00,468 INFO] - org.eclipse.om2m.core.Activator 
+CSE Started
+[2019-05-17 12:49:00,468 INFO] - org.eclipse.om2m.binding.mqtt.Activator 
+Creating MQTT Request Handler
+[2019-05-17 12:49:00,500 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:49:10,507 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:49:20,516 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:49:30,522 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:49:40,524 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:49:50,532 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:50:00,537 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:50:10,544 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:50:20,550 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:50:30,556 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:50:40,561 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:50:50,567 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:51:00,573 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:51:10,576 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:51:20,586 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:51:30,588 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:51:40,590 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:51:50,598 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:52:00,602 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:52:10,610 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:52:20,619 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:52:30,626 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:52:40,632 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:52:50,638 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:53:00,640 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:53:10,642 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:53:20,646 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:53:30,650 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:53:40,656 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:53:50,665 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:54:00,672 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:54:10,675 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:54:20,685 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:54:30,689 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:54:40,693 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:54:50,702 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:55:00,707 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:55:10,715 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:55:20,722 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:55:30,729 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:55:40,736 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:55:50,742 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:56:00,748 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:56:10,753 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:56:20,762 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:56:30,768 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:56:40,776 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:56:50,782 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:57:00,789 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:57:10,795 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:57:20,805 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:57:30,808 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:57:40,811 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:57:50,820 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:58:00,823 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:58:10,826 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:58:20,833 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:58:30,838 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:58:40,841 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:58:50,846 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:59:00,853 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:59:10,860 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:59:20,866 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:59:30,871 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:59:40,878 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 12:59:50,885 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:00:00,891 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:00:10,898 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:00:20,904 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:00:30,910 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:00:40,914 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:00:50,919 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:01:00,923 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:01:10,929 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:01:20,936 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:01:30,943 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:01:40,950 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:01:50,957 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:02:00,963 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:02:10,968 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:02:20,976 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:02:30,983 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:02:40,990 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:02:50,999 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:03:01,003 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:03:11,009 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:03:21,016 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:03:31,018 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:03:41,022 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:03:51,027 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:04:01,034 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:04:11,036 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:04:21,039 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:04:31,047 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:04:41,052 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:04:51,061 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:05:01,066 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:05:11,071 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:05:21,079 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:05:31,085 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:05:41,088 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:05:51,097 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:06:01,101 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:06:11,105 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:06:21,110 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:06:31,116 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:06:41,123 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:06:51,130 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:07:01,136 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:07:11,141 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:07:21,147 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:07:31,153 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:07:41,156 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:07:51,162 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:08:01,166 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:08:11,168 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:08:21,174 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:08:31,177 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:08:41,184 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:08:51,189 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:09:01,194 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:09:11,201 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:09:21,211 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:09:31,217 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:09:41,219 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:09:51,223 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:10:01,229 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:10:11,233 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:10:21,242 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:10:31,248 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:10:41,255 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:10:51,264 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:11:01,268 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:11:11,275 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:11:21,281 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:11:31,285 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:11:41,293 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:11:51,302 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:12:01,308 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:12:11,315 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:12:21,321 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:12:31,324 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:12:41,325 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:12:51,330 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:13:01,337 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:13:11,344 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:13:21,353 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:13:31,359 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:13:41,366 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:13:51,373 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:14:01,385 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:14:11,392 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:14:21,398 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:14:31,400 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:14:41,408 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:14:51,412 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:15:01,414 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:15:11,416 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:15:21,420 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:15:31,422 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:15:41,424 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:15:51,434 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:16:01,440 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:16:11,443 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:16:21,450 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:16:31,457 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:16:41,460 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:16:51,466 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:17:01,472 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:17:11,478 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:17:21,486 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:17:31,491 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:17:41,497 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:17:51,501 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:18:01,507 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:18:11,512 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:18:21,519 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:18:31,525 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:18:41,527 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:18:51,538 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:19:01,542 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:19:11,549 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:19:21,551 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:19:31,555 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:19:41,557 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
+[2019-05-17 13:19:51,561 WARN] - org.eclipse.om2m.binding.mqtt.MqttRequestHandler 
+Cannot connect to MQTT Broker, retrying in 10s. Cause: Unable to connect to server
