@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-SymbolicName: org.eclipse.om2m.hue.impl
+Bundle-Name: org.eclipse.om2m.hue.impl
+Bundle-Version: 1.1.0.20190516-1509
+Bundle-ClassPath: .,lib/json-simple-1.1.jar
+Bundle-ManifestVersion: 2
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Import-Package: org.eclipse.om2m.hue.api,org.eclipse.om2m.hue.api.type
+ s,org.osgi.framework,org.osgi.service.cm,org.osgi.service.component,o
+ rg.osgi.service.device,org.osgi.service.upnp,org.osgi.service.compone
+ nt.annotations,org.apache.commons.logging
+Service-Component: OSGI-INF/hue.basedriver.xml
+

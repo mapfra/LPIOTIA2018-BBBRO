@@ -1,0 +1,125 @@
+/**
+ * Farbtastic Color Picker 1.2
+ *  2008 Steven Wittens
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ */
+ 
+ 
+
+ 
+ 
+.pickerContainer
+{
+	
+	height: 80px;
+	
+	
+}
+ 
+.picker{
+float:left;
+
+}
+
+
+.sliders
+{
+margin-top: 5px;
+margin-left: 40px;
+float:left;
+
+}
+
+.slider
+{
+margin-top: 0px;
+
+float:right;
+
+}
+
+.slidersLables
+{
+width:160px;
+height: 30px;
+margin-bottom: 0px;
+margin-right: 20px;
+
+}
+
+.farbtastic {
+  position: relative;
+}
+.farbtastic * {
+  position: absolute;
+  cursor: crosshair;
+}
+.farbtastic, .farbtastic .wheel {
+  width: 70px;
+  height: 70px;
+}
+.farbtastic .color, .farbtastic .overlay {
+  top: 17px;
+  left: 17px;
+  width: 38px;
+  height: 38px;
+}
+.farbtastic .wheel {
+  background: url(../images/wheel3.png) no-repeat;
+  width: 70px;
+  height: 70px;
+}
+.farbtastic .overlay {
+ // background: url(mask.png) no-repeat;
+}
+.farbtastic .marker {
+  width: 17px;
+  height: 17px;
+  margin: -8px 0 0 -8px;
+  overflow: hidden; 
+  background: url(../images/marker.png) no-repeat;
+}
+
+.sl2-marker {
+  width: 17px;
+  height: 17px;
+  margin: -8px 10 10 -8px;
+  overflow: hidden; 
+  background: url(../images/marker.png) no-repeat;
+}
+
+ @media screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none) {  
+   /* IE10+ specific styles go here */  
+.sliders
+{
+margin-top: 5px;
+margin-left: 90px;
+float:none;
+
+}
+
+.slider
+{
+margin-top: -10px;
+margin-bottom: -20px;
+float:right;
+
+
+
+}   
+   
+   
+}

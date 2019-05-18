@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bundle-SymbolicName: org.eclipse.om2m.sdt.home.utils
+Export-Package: org.eclipse.om2m.sdt.home.utils.api
+Bundle-Name: org.eclipse.om2m.sdt.home.utils
+Bundle-Version: 1.1.0.20190516-1509
+Bundle-ClassPath: .
+Bundle-ManifestVersion: 2
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-Activator: org.eclipse.om2m.sdt.home.utils.Activator
+Import-Package: org.apache.commons.logging,org.eclipse.om2m.commons.co
+ nstants,org.eclipse.om2m.commons.resource,org.eclipse.om2m.core.servi
+ ce,org.eclipse.om2m.sdt,org.eclipse.om2m.sdt.args,org.eclipse.om2m.sd
+ t.datapoints,org.eclipse.om2m.sdt.events,org.eclipse.om2m.sdt.excepti
+ ons,org.eclipse.om2m.sdt.home.devices,org.eclipse.om2m.sdt.home.drive
+ r,org.eclipse.om2m.sdt.home.modules,org.eclipse.om2m.sdt.home.types,o
+ rg.eclipse.om2m.sdt.types,org.osgi.framework,org.osgi.service.log,org
+ .osgi.util.tracker
+

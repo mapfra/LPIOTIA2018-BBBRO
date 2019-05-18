@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-SymbolicName: org.eclipse.om2m.sdt.home
+Export-Package: org.eclipse.om2m.sdt.home,org.eclipse.om2m.sdt.home.ac
+ tions,org.eclipse.om2m.sdt.home.devices,org.eclipse.om2m.sdt.home.mod
+ ules,org.eclipse.om2m.sdt.home.types,org.eclipse.om2m.sdt.home.utils
+Bundle-Name: org.eclipse.om2m.sdt.home
+Bundle-Version: 1.1.0.20190516-1509
+Bundle-ClassPath: .
+Bundle-ManifestVersion: 2
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-Activator: org.eclipse.om2m.sdt.home.utils.Activator
+Import-Package: org.eclipse.om2m.commons.resource,org.eclipse.om2m.com
+ mons.resource.flexcontainerspec,org.eclipse.om2m.sdt,org.eclipse.om2m
+ .sdt.args,org.eclipse.om2m.sdt.datapoints,org.eclipse.om2m.sdt.except
+ ions,org.eclipse.om2m.sdt.types,org.osgi.framework,org.osgi.service.l
+ og,org.osgi.util.tracker
+

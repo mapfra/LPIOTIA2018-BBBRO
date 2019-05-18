@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-SymbolicName: org.eclipse.om2m.flexcontainer.service
+Export-Package: org.eclipse.om2m.flexcontainer.service
+Bundle-Name: Service
+Bundle-Version: 1.1.0.20190516-1509
+Require-Bundle: org.eclipse.om2m.commons
+Bundle-ManifestVersion: 2
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+

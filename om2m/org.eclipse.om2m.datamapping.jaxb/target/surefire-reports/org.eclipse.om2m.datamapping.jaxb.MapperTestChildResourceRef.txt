@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: org.eclipse.om2m.datamapping.jaxb.MapperTestChildResourceRef
+-------------------------------------------------------------------------------
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 13.792 s - in org.eclipse.om2m.datamapping.jaxb.MapperTestChildResourceRef

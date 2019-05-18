@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-SymbolicName: org.eclipse.om2m.ipe.sdt.testsuite
+Bundle-Name: org.eclipse.om2m.ipe.sdt.testsuite
+Bundle-Version: 1.1.0.20190516-1509
+Bundle-ClassPath: .
+Bundle-ManifestVersion: 2
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-Activator: org.eclipse.om2m.ipe.sdt.testsuite.Activator
+No-otb-proxy: true
+Import-Package: javax.servlet,javax.servlet.http,org.eclipse.om2m.comm
+ ons.constants,org.eclipse.om2m.commons.resource,org.eclipse.om2m.comm
+ ons.resource.flexcontainerspec,org.eclipse.om2m.core.service,org.ecli
+ pse.om2m.datamapping.service,org.eclipse.om2m.sdt,org.eclipse.om2m.sd
+ t.datapoints,org.eclipse.om2m.sdt.events,org.eclipse.om2m.sdt.excepti
+ ons,org.eclipse.om2m.sdt.home.types,org.eclipse.om2m.sdt.types,org.os
+ gi.framework,org.osgi.service.http,org.osgi.util.tracker
+

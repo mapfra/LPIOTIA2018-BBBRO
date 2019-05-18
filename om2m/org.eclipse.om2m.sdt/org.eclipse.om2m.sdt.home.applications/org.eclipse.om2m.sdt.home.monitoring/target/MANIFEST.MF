@@ -1,0 +1,20 @@
+Manifest-Version: 1.0
+Bundle-SymbolicName: org.eclipse.om2m.sdt.home.monitoring
+Bundle-Name: org.eclipse.om2m.sdt.home.monitoring
+Bundle-Version: 1.1.0.20190516-1509
+Bundle-ClassPath: .,lib/json-simple-1.1.1.jar
+Bundle-ManifestVersion: 2
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Import-Package: javax.servlet,javax.servlet.http,org.apache.commons.co
+ dec.binary,org.apache.commons.logging,org.eclipse.om2m.commons.consta
+ nts,org.eclipse.om2m.commons.resource,org.eclipse.om2m.core.service,o
+ rg.eclipse.om2m.interworking.service,org.eclipse.om2m.sdt,org.eclipse
+ .om2m.sdt.args,org.eclipse.om2m.sdt.datapoints,org.eclipse.om2m.sdt.e
+ xceptions,org.eclipse.om2m.sdt.home.devices,org.eclipse.om2m.sdt.home
+ .driver,org.eclipse.om2m.sdt.home.modules,org.eclipse.om2m.sdt.home.m
+ onitoring.authentication.service,org.eclipse.om2m.sdt.home.types,org.
+ eclipse.om2m.sdt.types,org.osgi.framework,org.osgi.service.cm,org.osg
+ i.service.component,org.osgi.service.component.annotations,org.osgi.s
+ ervice.http,org.osgi.service.log,org.osgi.util.tracker
+Service-Component: OSGI-INF/home.monitoring.application.xml
+

@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<units size='1'>
+  <unit id='org.eclipse.om2m.persistence.eclipselink' version='1.1.0.20190516-1509' singleton='false'>
+    <update id='org.eclipse.om2m.persistence.eclipselink' range='[0.0.0,1.1.0.20190516-1509)' severity='0'/>
+    <properties size='4'>
+      <property name='org.eclipse.equinox.p2.name' value='Jpa'/>
+      <property name='maven-groupId' value='org.eclipse.om2m'/>
+      <property name='maven-artifactId' value='org.eclipse.om2m.persistence.eclipselink'/>
+      <property name='maven-version' value='1.1.0-SNAPSHOT'/>
+    </properties>
+    <provides size='4'>
+      <provided namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.persistence.eclipselink' version='1.1.0.20190516-1509'/>
+      <provided namespace='osgi.bundle' name='org.eclipse.om2m.persistence.eclipselink' version='1.1.0.20190516-1509'/>
+      <provided namespace='java.package' name='org.eclipse.om2m.persistence.eclipselink.internal.dao' version='0.0.0'/>
+      <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+    </provides>
+    <requires size='12'>
+      <required namespace='java.package' name='javax.persistence' range='0.0.0'/>
+      <required namespace='java.package' name='javax.persistence.criteria' range='0.0.0'/>
+      <required namespace='java.package' name='javax.persistence.metamodel' range='0.0.0'/>
+      <required namespace='java.package' name='javax.persistence.spi' range='0.0.0'/>
+      <required namespace='java.package' name='org.apache.commons.logging' range='0.0.0'/>
+      <required namespace='java.package' name='org.eclipse.om2m.commons.constants' range='0.0.0'/>
+      <required namespace='java.package' name='org.eclipse.om2m.commons.entities' range='0.0.0'/>
+      <required namespace='java.package' name='org.eclipse.om2m.commons.resource' range='0.0.0'/>
+      <required namespace='java.package' name='org.eclipse.om2m.persistence.service' range='0.0.0'/>
+      <required namespace='java.package' name='org.eclipse.om2m.persistence.service.util' range='0.0.0'/>
+      <required namespace='java.package' name='org.osgi.framework' range='0.0.0'/>
+      <required namespace='java.package' name='org.osgi.util.tracker' range='0.0.0'/>
+    </requires>
+    <artifacts size='1'>
+      <artifact classifier='osgi.bundle' id='org.eclipse.om2m.persistence.eclipselink' version='1.1.0.20190516-1509'/>
+    </artifacts>
+    <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+    <touchpointData size='1'>
+      <instructions size='1'>
+        <instruction key='manifest'>
+          Bundle-SymbolicName: org.eclipse.om2m.persistence.eclipselink&#xA;Bundle-Version: 1.1.0.20190516-1509&#xA;
+        </instruction>
+      </instructions>
+    </touchpointData>
+  </unit>
+</units>
