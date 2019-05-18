@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-SymbolicName: org.eclipse.om2m.binding.http
+Bundle-Name: http
+Bundle-Version: 1.1.0.20190516-1509
+Bundle-ClassPath: .
+Require-Bundle: org.eclipse.om2m.commons,org.apache.httpcomponents.htt
+ pcore,org.apache.httpcomponents.httpclient
+Bundle-ManifestVersion: 2
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-Activator: org.eclipse.om2m.binding.http.Activator
+Import-Package: javax.servlet,javax.servlet.http,org.apache.commons.lo
+ gging,org.eclipse.om2m.binding.service,org.eclipse.om2m.core.service,
+ org.osgi.framework,org.osgi.service.http,org.osgi.util.tracker
+

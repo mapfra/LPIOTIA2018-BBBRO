@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-SymbolicName: org.eclipse.om2m.testsuite.flexcontainer
+Bundle-Name: FlexContainer Test Suite
+Bundle-Version: 1.1.0.20190516-1509
+Require-Bundle: org.eclipse.om2m.commons
+Bundle-ManifestVersion: 2
+Bundle-Activator: org.eclipse.om2m.testsuite.flexcontainer.Activator
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Import-Package: javax.servlet;version="3.1.0",javax.servlet.http;versi
+ on="3.1.0",org.apache.commons.logging,org.eclipse.om2m.core.service,o
+ rg.eclipse.om2m.datamapping.service,org.eclipse.om2m.flexcontainer.se
+ rvice,org.eclipse.om2m.interworking.service,org.osgi.framework,org.os
+ gi.service.http;version="1.2.1",org.osgi.util.tracker
+

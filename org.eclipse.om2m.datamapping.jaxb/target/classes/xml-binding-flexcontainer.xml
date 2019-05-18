@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<xml-bindings xmlns="http://www.eclipse.org/eclipselink/xsds/persistence/oxm"
+	package-name="org.eclipse.om2m.commons.resource.flexcontainerspec">
+	
+	
+	<xml-schema element-form-default="QUALIFIED">
+        <xml-ns prefix="hd" namespace-uri="http://www.onem2m.org/xml/protocols/homedomain" />
+    </xml-schema>
+
+		
+
+</xml-bindings>

@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-SymbolicName: org.eclipse.om2m.sdt.home.cloud
+Bundle-Name: org.eclipse.om2m.sdt.home.cloud
+Bundle-Version: 1.1.0.20190516-1509
+Bundle-ClassPath: .
+Bundle-ManifestVersion: 2
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-Activator: org.eclipse.om2m.sdt.home.cloud.Activator
+Import-Package: org.eclipse.om2m.commons.constants,org.eclipse.om2m.co
+ mmons.resource,org.eclipse.om2m.core.service,org.eclipse.om2m.sdt,org
+ .eclipse.om2m.sdt.args,org.eclipse.om2m.sdt.datapoints,org.eclipse.om
+ 2m.sdt.exceptions,org.eclipse.om2m.sdt.home.devices,org.eclipse.om2m.
+ sdt.home.driver,org.eclipse.om2m.sdt.home.modules,org.eclipse.om2m.sd
+ t.home.types,org.eclipse.om2m.sdt.types,org.osgi.framework,org.osgi.s
+ ervice.log,org.osgi.util.tracker
+

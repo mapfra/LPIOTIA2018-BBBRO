@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- *******************************************************************************
+* Copyright (c) 2014-2018 Orange.
+* All rights reserved. This program and the accompanying materials
+* are made available under the terms of the Eclipse Public License v1.0
+* which accompanies this distribution, and is available at
+* http://www.eclipse.org/legal/epl-v10.html
+*
+* Contributors:
+*    BAREAU Cyrille <cyrille.bareau@orange.com>
+*    BONNARDEL Gregory <gbonnardel.ext@orange.com>
+*    OSKO Tomasz <tomasz.osko@orange.com>
+*    RATUSZEK Przemyslaw <przemyslaw.ratuszek@orange.com>
+******************************************************************************* -->
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.2.0"
+	enabled="true" immediate="true"  name="Hue.BaseDriver.Impl">
+
+	<implementation class="org.eclipse.om2m.hue.impl.HueBasedriver" />
+
+	<property name="service.pid" value="hue.basedriver" />
+
+	<service>
+		<provide interface="org.osgi.service.cm.ManagedService" />
+	</service>
+
+</scr:component>

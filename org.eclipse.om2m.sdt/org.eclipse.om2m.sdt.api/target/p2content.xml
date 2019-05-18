@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<units size='1'>
+  <unit id='org.eclipse.om2m.sdt.api' version='1.1.0.20190516-1509' singleton='false'>
+    <update id='org.eclipse.om2m.sdt.api' range='[0.0.0,1.1.0.20190516-1509)' severity='0'/>
+    <properties size='4'>
+      <property name='org.eclipse.equinox.p2.name' value='org.eclipse.om2m.sdt.api'/>
+      <property name='maven-groupId' value='org.eclipse.om2m'/>
+      <property name='maven-artifactId' value='org.eclipse.om2m.sdt.api'/>
+      <property name='maven-version' value='1.1.0-SNAPSHOT'/>
+    </properties>
+    <provides size='11'>
+      <provided namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.sdt.api' version='1.1.0.20190516-1509'/>
+      <provided namespace='osgi.bundle' name='org.eclipse.om2m.sdt.api' version='1.1.0.20190516-1509'/>
+      <provided namespace='java.package' name='org.eclipse.om2m.sdt' version='0.0.0'/>
+      <provided namespace='java.package' name='org.eclipse.om2m.sdt.args' version='0.0.0'/>
+      <provided namespace='java.package' name='org.eclipse.om2m.sdt.datapoints' version='0.0.0'/>
+      <provided namespace='java.package' name='org.eclipse.om2m.sdt.events' version='0.0.0'/>
+      <provided namespace='java.package' name='org.eclipse.om2m.sdt.exceptions' version='0.0.0'/>
+      <provided namespace='java.package' name='org.eclipse.om2m.sdt.rights' version='0.0.0'/>
+      <provided namespace='java.package' name='org.eclipse.om2m.sdt.types' version='0.0.0'/>
+      <provided namespace='java.package' name='org.eclipse.om2m.sdt.utils' version='0.0.0'/>
+      <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+    </provides>
+    <requires size='3'>
+      <required namespace='java.package' name='org.osgi.framework' range='0.0.0'/>
+      <required namespace='java.package' name='org.osgi.service.log' range='0.0.0'/>
+      <required namespace='java.package' name='org.osgi.util.tracker' range='0.0.0'/>
+    </requires>
+    <artifacts size='1'>
+      <artifact classifier='osgi.bundle' id='org.eclipse.om2m.sdt.api' version='1.1.0.20190516-1509'/>
+    </artifacts>
+    <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+    <touchpointData size='1'>
+      <instructions size='1'>
+        <instruction key='manifest'>
+          Bundle-SymbolicName: org.eclipse.om2m.sdt.api&#xA;Bundle-Version: 1.1.0.20190516-1509&#xA;
+        </instruction>
+      </instructions>
+    </touchpointData>
+  </unit>
+</units>

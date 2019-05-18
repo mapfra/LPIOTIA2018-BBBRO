@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-SymbolicName: org.eclipse.om2m.sdt.home.tester
+Export-Package: org.eclipse.om2m.sdt.home.tester
+Bundle-Name: org.eclipse.om2m.sdt.home.tester
+Bundle-Version: 1.1.0.20190516-1509
+Bundle-ClassPath: .
+Bundle-ManifestVersion: 2
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-Activator: org.eclipse.om2m.sdt.home.tester.Activator
+No-otb-proxy: true
+Import-Package: org.eclipse.om2m.sdt,org.eclipse.om2m.sdt.args,org.ecl
+ ipse.om2m.sdt.datapoints,org.eclipse.om2m.sdt.events,org.eclipse.om2m
+ .sdt.exceptions,org.eclipse.om2m.sdt.home.actions,org.eclipse.om2m.sd
+ t.home.devices,org.eclipse.om2m.sdt.home.modules,org.eclipse.om2m.sdt
+ .home.types,org.eclipse.om2m.sdt.types,org.osgi.framework,org.osgi.se
+ rvice.component,org.osgi.service.log,org.osgi.util.tracker
+

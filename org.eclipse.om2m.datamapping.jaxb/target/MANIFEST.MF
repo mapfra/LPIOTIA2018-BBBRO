@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-SymbolicName: org.eclipse.om2m.datamapping.jaxb
+Bundle-Name: org.eclipse.om2m DataMapper JAXB XML
+Bundle-Version: 1.1.0.20190516-1509
+Bundle-ClassPath: .,eclipselink.jar
+Bundle-ManifestVersion: 2
+Bundle-Activator: org.eclipse.om2m.datamapping.jaxb.Activator
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Import-Package: org.apache.commons.logging,org.eclipse.om2m.commons.co
+ nstants,org.eclipse.om2m.commons.resource,org.eclipse.om2m.commons.re
+ source.flexcontainerspec,org.eclipse.om2m.datamapping.service,org.jun
+ it;resolution:=optional,org.osgi.framework,org.osgi.util.tracker
+

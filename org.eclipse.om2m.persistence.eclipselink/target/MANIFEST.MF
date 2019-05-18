@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-SymbolicName: org.eclipse.om2m.persistence.eclipselink
+Export-Package: org.eclipse.om2m.persistence.eclipselink.internal.dao
+Bundle-Name: Jpa
+Bundle-Version: 1.1.0.20190516-1509
+Bundle-ClassPath: libs/eclipselink.jar,libs/h2-1.4.186.jar,.
+Bundle-ManifestVersion: 2
+Bundle-Activator: org.eclipse.om2m.persistence.eclipselink.Activator
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Import-Package: javax.persistence,javax.persistence.criteria,javax.per
+ sistence.metamodel,javax.persistence.spi,org.apache.commons.logging,o
+ rg.eclipse.om2m.commons.constants,org.eclipse.om2m.commons.entities,o
+ rg.eclipse.om2m.commons.resource,org.eclipse.om2m.persistence.service
+ ,org.eclipse.om2m.persistence.service.util,org.osgi.framework,org.osg
+ i.util.tracker
+

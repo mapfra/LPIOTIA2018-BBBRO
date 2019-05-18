@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-SymbolicName: org.eclipse.om2m.core;singleton:=true
+Bundle-Name: org.eclipse.om2m Core Plugin
+Bundle-Version: 1.1.0.20190516-1509
+Bundle-ClassPath: .
+Require-Bundle: org.eclipse.om2m.commons,org.eclipse.om2m.persistence.
+ service
+Bundle-ManifestVersion: 2
+Bundle-Activator: org.eclipse.om2m.core.Activator
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Import-Package: javax.persistence,org.apache.commons.logging,org.eclip
+ se.om2m.binding.service,org.eclipse.om2m.core.service,org.eclipse.om2
+ m.datamapping.service,org.eclipse.om2m.flexcontainer.service,org.ecli
+ pse.om2m.interworking.service,org.eclipse.om2m.persistence.service,or
+ g.eclipse.om2m.persistence.service.util,org.osgi.framework,org.osgi.s
+ ervice.event,org.osgi.util.tracker
+
