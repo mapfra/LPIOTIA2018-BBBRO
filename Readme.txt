@@ -8,3 +8,5 @@ A l'intérieur de ce dossier se trouve la bibliothèque 'PubSubClient' nécessaire.
 Le fichier 'MQTTSub.py' contient le code Python qui permet de souscrire à un topic.
 
 Le fichier 'lecture_son.py' contient le code python qui envoi en bluetooth l'alerte a une enceinte bluetooth.
+
+Le PowerPoint contient la présentation.
